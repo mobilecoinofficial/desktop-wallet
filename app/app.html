@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none';
+                   img-src 'self';
+                   connect-src ws://localhost:1212/
+                               http://localhost:1212/;
+                   script-src 'self'
+                               http://localhost:1212/
+                              'unsafe-eval'
+                              'sha256-f7gMtshsVI7mmPkQlBpl9zRvFqFSagSGF35HpPJWVN0='
+                              'sha256-8Erw+VkyoBtxUXLGntciz6A33qQwpM3PTVab6ZFO2hk='
+                              'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='
+                              'sha256-FjPZIUuM5/AZCcWa2/4fPzDGE3ZDBZVaOUgoqNPi7s8='
+                              'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='
+                              'sha256-L73jLH5FARHleV3XNmb9wLiyIJkKreR14xeA78di8ec=';
+                   style-src 'self'
+                             http://localhost:1212/
+                             'unsafe-inline';
+                   font-src 'self' http://localhost:1212/;
+                   object-src 'none';"
+    />
+    <title>MobileCoin Desktop Wallet</title>
+    <script>
+      (() => {
+        if (
+          typeof process !== 'object' ||
+          (typeof process === 'object' && !process.env.START_HOT)
+        ) {
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = './dist/style.css';
+          // HACK: Writing the script path should be done with webpack
+          document.getElementsByTagName('head')[0].appendChild(link);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      if (typeof process === 'object') {
+        const scripts = [];
+
+        if (process.env.NODE_ENV === 'development') {
+          // Dynamically insert the DLL script in development env in the
+          // renderer process
+          scripts.push('../dll/renderer.dev.dll.js');
+        }
+        if (process.env.START_HOT) {
+          // Dynamically insert the bundled app script in the renderer process
+          const port = process.env.PORT || 1212;
+          scripts.push(`http://localhost:${port}/dist/renderer.dev.js`);
+        } else {
+          scripts.push('./dist/renderer.prod.js');
+        }
+
+        if (scripts.length) {
+          document.write(
+            scripts
+              .map((script) => `<script defer src="${script}"><\/script>`)
+              .join('')
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UnlockWalletForm component render it renders correctly 1`] = `
+<DocumentFragment>
+  <form
+    action="#"
+    name="UnlockWalletInnerForm"
+  >
+    <div
+      class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+        data-shrink="false"
+        for="passwordField"
+        id="passwordField-label"
+      >
+        Password
+      </label>
+      <div
+        class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
+      >
+        <input
+          aria-invalid="false"
+          class="MuiInputBase-input MuiInput-input"
+          id="passwordField"
+          name="password"
+          type="password"
+          value=""
+        />
+      </div>
+    </div>
+    <div
+      class="MuiBox-root MuiBox-root makeStyles-root"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-disabled MuiButton-fullWidth MuiButtonBase-disabled"
+        data-testid="submit-button"
+        disabled=""
+        tabindex="-1"
+        type="button"
+      >
+        <span
+          class="MuiButton-label"
+        >
+          Unlock Wallet
+        </span>
+      </button>
+    </div>
+  </form>
+</DocumentFragment>
+`;

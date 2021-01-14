@@ -1,0 +1,13 @@
+// const platinum = '#ADB0BB'; // get rid of this
+export const BLACK = '#292A2D';
+export const BLACK_DARK = '#202124';
+export const GOLD_DARK = '#BA9236';
+export const GOLD_LIGHT = '#FACF55';
+export const GOLD = '#D6AE53';
+export const GREEN = '#34AA44';
+export const GREY_DARK = '#757575';
+export const GREY_LIGHT = '#E6E5E8';
+export const GREY = '#A6AAB4';
+export const PURPLE = '#613EEA';
+export const RED = '#E6492D';
+export const WHITE = '#fff';

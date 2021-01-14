@@ -1,0 +1,64 @@
+module.exports = {
+  extends: ['airbnb-typescript'],
+  parserOptions: {
+    createDefaultProgram: true,
+    ecmaVersion: 2020,
+    project: './tsconfig.json',
+    sourceType: 'module',
+    tsconfigRootDir: __dirname,
+  },
+  rules: {
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      { 'ts-ignore': 'allow-with-description' },
+    ],
+    'arrow-body-style': ['error', 'always'],
+    'import/no-extraneous-dependencies': 'off',
+    'import/order': [
+      'error',
+      {
+        alphabetize: {
+          caseInsensitive: false,
+          order: 'asc',
+        },
+        groups: ['builtin', 'external', 'internal'],
+        'newlines-between': 'always',
+        pathGroups: [
+          {
+            group: 'external',
+            pattern: 'react',
+            position: 'before',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['react'],
+      },
+    ],
+    'no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+      },
+    ],
+    'react/jsx-props-no-spreading': 0,
+    'sort-keys': [
+      'error',
+      'asc',
+      {
+        natural: true,
+      },
+    ],
+    'sort-vars': 'error',
+  },
+  settings: {
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+    'import/resolver': {
+      // See https://github.com/benmosher/eslint-plugin-import/issues/1396#issuecomment-575727774 for line below
+      node: {},
+      webpack: {
+        config: require.resolve('./configs/webpack.config.eslint.js'),
+      },
+    },
+  },
+};

@@ -11,9 +11,6 @@ import renderSnapshot from '../../../renderSnapshot';
 jest.mock('../../../../app/hooks/useMobileCoinD');
 
 function setupComponent() {
-  // Mocks
-  const mockOnSubmit = jest.fn();
-
   // Variables
   const password = 'password';
 
@@ -32,7 +29,6 @@ function setupComponent() {
   return {
     asFragment,
     form,
-    mockOnSubmit,
     mockUseMobileCoinDValues,
     password,
     passwordField,

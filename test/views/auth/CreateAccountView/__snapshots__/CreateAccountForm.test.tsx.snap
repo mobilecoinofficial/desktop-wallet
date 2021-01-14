@@ -159,6 +159,20 @@ exports[`CreateAccountForm component render it renders correctly 1`] = `
         </span>
       </button>
     </div>
+    <button
+      class="MuiButtonBase-root MuiButton-root MuiButton-text"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="MuiButton-label"
+      >
+        TEST BUTTON
+      </span>
+      <span
+        class="MuiTouchRipple-root"
+      />
+    </button>
   </form>
 </DocumentFragment>
 `;

@@ -53,10 +53,12 @@ export const createAccountFormOnSubmit = async (
 };
 
 interface CreateAccountFormProps {
+  isTest: boolean;
   onSubmit?: typeof createAccountFormOnSubmit;
 }
 
 const CreateAccountForm: FC<CreateAccountFormProps> = ({
+  isTest,
   onSubmit,
 }: CreateAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
@@ -97,10 +99,9 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
       64,
       'Account Name cannot be more than 64 characters.',
     ),
-    checkedTerms: Yup.bool().oneOf(
-      [true],
-      'You must accept Terms of Use to use wallet.',
-    ),
+    // CBB: It appears that the checkedTerms error message is not working properly.
+    checkedTerms:
+      Yup.bool().oneOf([true], 'You must accept Terms of Use to use wallet.'),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters in length.')
       .max(99, 'Passwords cannot be more than 99 characters.')
@@ -188,6 +189,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
             >
               Create Account
             </SubmitButton>
+            {isTest && <Button onClick={handleCloseTerms}>TEST BUTTON</Button>}
             <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
           </Form>
         );

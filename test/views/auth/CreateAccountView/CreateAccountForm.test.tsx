@@ -11,9 +11,6 @@ import renderSnapshot from '../../../renderSnapshot';
 jest.mock('../../../../app/hooks/useMobileCoinD');
 
 function setupComponent() {
-  // Mocks
-  const mockOnSubmit = jest.fn();
-
   // Variables
   const validAccountName64 = '64llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll';
   const invalidAccountName65 = '65lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll';
@@ -21,7 +18,7 @@ function setupComponent() {
   const validPassword99 = 'longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglon';
 
   const { asFragment, mockUseMobileCoinDValues } = renderSnapshot(
-    <CreateAccountForm />,
+    <CreateAccountForm isTest />,
   );
 
   // Render Elements
@@ -29,20 +26,22 @@ function setupComponent() {
   const accountNameField = screen.getByLabelText('Account Name (optional)', {
     exact: false,
     selector: 'input',
-  });
+  }) as HTMLInputElement;
   const passwordField = screen.getByLabelText('Password', {
     exact: true,
     selector: 'input',
-  });
+  }) as HTMLInputElement;
   const passwordConfirmationField = screen.getByLabelText(
     'Password Confirmation',
     {
       exact: true,
       selector: 'input',
     },
-  );
-  const checkTermsField = screen.getByRole('checkbox');
-  const termsLink = screen.getByText('Terms of Use');
+  ) as HTMLInputElement;
+  const checkTermsField = screen.getByRole('checkbox') as HTMLInputElement;
+  const specialTermsButton = screen.getByRole('button', {
+    name: 'TEST BUTTON',
+  });
   const submitButton = screen.getByRole('button', { name: 'Create Account' });
 
   return {
@@ -52,12 +51,11 @@ function setupComponent() {
     form,
     invalidAccountName65,
     invalidPasswordShort,
-    mockOnSubmit,
     mockUseMobileCoinDValues,
     passwordConfirmationField,
     passwordField,
+    specialTermsButton,
     submitButton,
-    termsLink,
     validAccountName64,
     validPassword99,
   };
@@ -138,36 +136,32 @@ describe('CreateAccountForm', () => {
         });
       });
 
-      // TODO: Need to test the checkedTerms value
       // this code doesn't work (wishful thinking)
-      // test('checkbox is disabled until reading terms', async () => {
-      //   const {
-      //     checkTermsField,
-      //     termsLink,
-      //   } = setupComponent();
-      //   const expectedTermsMessage =
-      //     'You must read the Terms of Use before using the wallet.';
+      test('checkbox is disabled until reading terms', async () => {
+        const {
+          checkTermsField,
+          specialTermsButton,
+        } = setupComponent();
+        const expectedTermsMessage = 'You must read the Terms of Use before using the wallet.';
 
-      //   // The checkbox is diabled until user has read terms
-      //   userEvent.click(checkTermsField);
+        // The checkbox is diabled until user has read terms
+        expect(checkTermsField.value).toBe('false');
+        userEvent.click(checkTermsField);
+        expect(checkTermsField.value).toBe('false');
 
-      //   const termsMessage = await screen.findByText(expectedTermsMessage);
-      //   await waitFor(() => {
-      //     expect(termsMessage).toBeInTheDocument();
-      //   });
+        const termsMessage = await screen.findByText(expectedTermsMessage);
+        await waitFor(() => {
+          expect(termsMessage).toBeInTheDocument();
+        });
 
-      //   // Reading the terms removes message and allows you to click terms
-      //   userEvent.click(termsLink);
-      //   const closeTermsDialog = await screen.findByRole('button', {
-      //     name: 'closeTerms',
-      //   });
-      //   userEvent.click(closeTermsDialog);
-      //   await waitFor(() => {
-      //     expect(termsMessage).not.toBeInTheDocument();
-      //   });
-      //   userEvent.click(termsLink);
-      //   expect(termsLink.value).toBe(true);
-      // });
+        // Reading the terms removes message and allows you to click terms
+        userEvent.click(specialTermsButton);
+        await waitFor(() => {
+          expect(termsMessage).not.toBeInTheDocument();
+        });
+        userEvent.click(checkTermsField);
+        expect(checkTermsField.value).toBe('true');
+      });
 
       test('password is required and must be between 8 and 99 characters', async () => {
         const {
@@ -277,38 +271,52 @@ describe('CreateAccountForm', () => {
       });
     });
 
-    // TODO: Need to test the checkedTerms value
-    // this code is imcomplete
-    // I think we should pull our the dialog and checkbox state in a higher level
-    // and we can pass it's value down as a prop. But this is a TODO
-    // describe('submit', () => {
-    //   test('calls createAccount hook with a password and accountName', async () => {
-    //     const {
-    //       mockCreateAccount,
-    //       accountNameField,
-    //       passwordField,
-    //       passwordConfirmationField,
-    //       submitButton,
-    //       validAccountName64,
-    //       validPassword99,
-    //     } = setupComponent();
-    //     // First tests that the button is disabled
-    //     userEvent.click(submitButton);
-    //     expect(mockCreateAccount).not.toBeCalled();
-    //     await waitFor(() => {
-    //       expect(mockCreateAccount).not.toBeCalled();
-    //     });
+    describe('submit', () => {
+      test('calls createAccount hook with a password and accountName', async () => {
+        const {
+          accountNameField,
+          checkTermsField,
+          mockUseMobileCoinDValues,
+          passwordConfirmationField,
+          passwordField,
+          specialTermsButton,
+          submitButton,
+          validAccountName64,
+          validPassword99,
+        } = setupComponent();
 
-    //     // Enter valid form information
-    //     userEvent.type(accountNameField, validAccountName64);
-    //     userEvent.type(passwordField, validPassword99);
-    //     userEvent.type(passwordConfirmationField, validPassword99);
-    //     userEvent.click(submitButton);
-    //     await waitFor(() => {
-    //       expect(mockCreateAccount).toBeCalledWith(validPassword99);
-    //     });
-    //   });
-    // });
+        // First tests that the button is disabled
+        expect(submitButton).toBeDisabled();
+        userEvent.click(submitButton);
+        await waitFor(() => {
+          expect(mockUseMobileCoinDValues.createAccount).not.toBeCalled();
+        });
+
+        // Enter valid form information
+        userEvent.type(accountNameField, validAccountName64);
+        userEvent.type(passwordField, validPassword99);
+        userEvent.type(passwordConfirmationField, validPassword99);
+        userEvent.click(specialTermsButton);
+        userEvent.click(checkTermsField);
+        expect(accountNameField.value).toBe(validAccountName64);
+        expect(passwordField.value).toBe(validPassword99);
+        expect(passwordConfirmationField.value).toBe(validPassword99);
+        expect(checkTermsField.value).toBe('true');
+
+        // Submit
+        await waitFor(() => {
+          expect(submitButton).not.toBeDisabled();
+        });
+        userEvent.click(submitButton);
+
+        await waitFor(() => {
+          expect(mockUseMobileCoinDValues.createAccount).toBeCalledWith(
+            validAccountName64,
+            validPassword99,
+          );
+        });
+      });
+    });
 
     describe('render', () => {
       test('it renders correctly', async () => {
@@ -319,7 +327,7 @@ describe('CreateAccountForm', () => {
   });
 
   describe('functions', () => {
-    // CBB -- I don't like this. But I want to make sure that the correct
+    // CBB: I don't like this. But I want to make sure that the correct
     // hooks are being set with the different scenarios.
     describe('createAccountFormOnSubmit', () => {
       test('calls CreateAccount and helpers when mounted', async () => {

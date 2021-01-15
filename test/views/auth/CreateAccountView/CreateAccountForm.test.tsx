@@ -135,7 +135,6 @@ describe('CreateAccountForm', () => {
         });
       });
 
-      // this code doesn't work (wishful thinking)
       test('checkbox is disabled until reading terms', async () => {
         const {
           checkTermsField,

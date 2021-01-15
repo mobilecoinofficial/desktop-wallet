@@ -39,7 +39,7 @@ function setupComponent(contextOverides?: MobileCoinDContextValue) {
 
 describe('CreateAccountView', () => {
   describe('component', () => {
-    test('it navigates to ImportAccountView with button click', async () => {
+    test('it navigates to ImportAccountView with button click', () => {
       const { importButton } = setupComponent();
 
       expect(importButton).toBeInTheDocument();
@@ -82,7 +82,7 @@ describe('CreateAccountView', () => {
     });
 
     describe('render', () => {
-      test('it renders correctly', async () => {
+      test('it renders correctly', () => {
         const { asFragment } = setupComponent();
         expect(asFragment()).toMatchSnapshot();
       });

@@ -18,7 +18,7 @@ function setupComponent() {
   const validPassword99 = 'longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglon';
 
   const { mockUseMobileCoinDValues } = renderSnapshot(
-    <CreateAccountForm isTest />,
+    <CreateAccountForm onSubmit={createAccountFormOnSubmit} isTest />,
   );
 
   // Render Elements

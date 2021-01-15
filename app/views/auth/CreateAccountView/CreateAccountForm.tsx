@@ -53,13 +53,13 @@ export const createAccountFormOnSubmit = async (
 };
 
 interface CreateAccountFormProps {
-  isTest: boolean;
+  isTest: boolean | undefined;
   onSubmit: typeof createAccountFormOnSubmit;
 }
 
 const CreateAccountForm: FC<CreateAccountFormProps> = ({
   isTest,
-  onSubmit = createAccountFormOnSubmit,
+  onSubmit,
 }: CreateAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
   const { createAccount } = useMobileCoinD();

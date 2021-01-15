@@ -127,14 +127,14 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
         return (
           <Form name="CreateAccountFormName">
             <Field
-              id="accountNameField"
+              id="CreateAccountForm-accountNameField"
               component={TextField}
               fullWidth
               label="Account Name (optional)"
               name="accountName"
             />
             <Field
-              id="passwordField"
+              id="CreateAccountForm-passwordField"
               component={TextField}
               fullWidth
               label="Password"
@@ -143,7 +143,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
               type="password"
             />
             <Field
-              id="passwordConfirmationField"
+              id="CreateAccountForm-passwordConfirmationField"
               component={TextField}
               fullWidth
               label="Password Confirmation"

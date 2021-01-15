@@ -76,8 +76,8 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
             <label
               class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
               data-shrink="false"
-              for="accountNameField"
-              id="accountNameField-label"
+              for="CreateAccountForm-accountNameField"
+              id="CreateAccountForm-accountNameField-label"
             >
               Account Name (optional)
             </label>
@@ -87,7 +87,7 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiInput-input"
-                id="accountNameField"
+                id="CreateAccountForm-accountNameField"
                 name="accountName"
                 type="text"
                 value=""
@@ -100,8 +100,8 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
             <label
               class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense"
               data-shrink="false"
-              for="passwordField"
-              id="passwordField-label"
+              for="CreateAccountForm-passwordField"
+              id="CreateAccountForm-passwordField-label"
             >
               Password
             </label>
@@ -111,7 +111,7 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
-                id="passwordField"
+                id="CreateAccountForm-passwordField"
                 name="password"
                 type="password"
                 value=""
@@ -124,8 +124,8 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
             <label
               class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense"
               data-shrink="false"
-              for="passwordConfirmationField"
-              id="passwordConfirmationField-label"
+              for="CreateAccountForm-passwordConfirmationField"
+              id="CreateAccountForm-passwordConfirmationField-label"
             >
               Password Confirmation
             </label>
@@ -135,7 +135,7 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
-                id="passwordConfirmationField"
+                id="CreateAccountForm-passwordConfirmationField"
                 name="passwordConfirmation"
                 type="password"
                 value=""

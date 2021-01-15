@@ -3,10 +3,10 @@ import type { FC } from 'react';
 
 import {
   Box,
+  Button,
   Card,
   Container,
   Divider,
-  Link,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -17,6 +17,10 @@ import routePaths from '../../../constants/routePaths';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
 import CreateAccountForm from './CreateAccountForm';
+
+interface CreateAccountViewProps {
+  isTest?: boolean;
+}
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -46,7 +50,7 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
-const CreateAccountView: FC = () => {
+const CreateAccountView: FC<CreateAccountViewProps> = ({ isTest }: CreateAccountViewProps) => {
   const classes = useStyles();
   const { encryptedEntropy } = useMobileCoinD();
 
@@ -67,33 +71,41 @@ const CreateAccountView: FC = () => {
             an existing account instead.
           </Typography>
           {encryptedEntropy && (
-            <>
+            <Box data-testid="overwrite-warning">
               <Typography variant="body2" paragraph>
                 It appears that this wallet is locked with an encrypted Entropy.
                 Creating an account will override the wallet. Please ensure that
                 you have secured your Entropy if you wish to change accounts.
               </Typography>
-              <Link
+              <Button
+                color="secondary"
                 component={RouterLink}
                 to={routePaths.ROOT}
-                variant="body2"
-                paragraph
               >
                 Unlock this wallet
-              </Link>
-            </>
+              </Button>
+            </Box>
           )}
-          <CreateAccountForm />
+          <CreateAccountForm isTest={isTest || false} />
           <Box my={3}>
             <Divider />
           </Box>
-          <Link component={RouterLink} to={routePaths.IMPORT} variant="body2">
+          <Button
+            color="secondary"
+            component={RouterLink}
+            to={routePaths.IMPORT}
+            variant="outlined"
+          >
             Import account instead
-          </Link>
+          </Button>
         </Card>
       </Container>
     </Box>
   );
+};
+
+CreateAccountView.defaultProps = {
+  isTest: false,
 };
 
 export default CreateAccountView;

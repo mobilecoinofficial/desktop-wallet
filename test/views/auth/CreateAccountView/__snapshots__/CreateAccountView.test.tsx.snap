@@ -1,0 +1,267 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreateAccountView component render it renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiBox-root MuiBox-root makeStyles-root"
+  >
+    <div
+      class="MuiContainer-root makeStyles-viewContainer MuiContainer-maxWidthSm"
+    >
+      <svg
+        class="makeStyles-logoIcon"
+        color="#A6AAB4"
+        fill="none"
+        height="35"
+        viewBox="0 0 141 35"
+        width="141"
+      >
+        <path
+          d="M44.887 18.642l-4.397-6.15V23.74h-2.245V7.837h1.38l5.59 7.858 5.308-7.858h1.403V23.74h-2.268V12.702l-3.953 5.823-.818.117zM64.929 21.191a5.058 5.058 0 01-2 2.105c-.865.499-1.875.749-3.028.749-1.138 0-2.133-.25-2.982-.749-.85-.499-1.5-1.2-1.953-2.105-.452-.904-.678-1.949-.678-3.133 0-1.17.234-2.206.702-3.11a5.083 5.083 0 011.987-2.106c.858-.499 1.863-.748 3.017-.748 1.138 0 2.132.25 2.982.748.85.5 1.504 1.2 1.965 2.105.46.905.69 1.95.69 3.134 0 1.169-.235 2.206-.702 3.11zm-2.538-.21c.616-.764.932-1.723.947-2.877 0-1.216-.296-2.202-.888-2.958-.593-.756-1.412-1.135-2.456-1.135-1.029 0-1.851.383-2.467 1.146-.616.765-.932 1.723-.947 2.877 0 1.216.296 2.202.888 2.958.593.757 1.411 1.134 2.456 1.134 1.029 0 1.851-.381 2.467-1.146zM75.144 12.842c.85.5 1.5 1.205 1.953 2.117.452.912.678 1.976.678 3.192 0 1.17-.234 2.199-.702 3.087a5.046 5.046 0 01-1.988 2.07c-.857.491-1.847.737-2.97.737-.39 0-.846-.082-1.368-.246a5.39 5.39 0 01-1.485-.736l-.445.678h-1.262V7.488L69.8 7.23v5.566c.42-.218.837-.39 1.251-.514.412-.125.775-.188 1.087-.188 1.154 0 2.155.25 3.005.748zm-.55 8.174c.592-.74.889-1.688.889-2.842 0-1.247-.293-2.252-.877-3.016-.585-.764-1.408-1.146-2.468-1.146-.92 0-1.699.272-2.338.818v6.525c.655.515 1.434.772 2.338.772 1.045 0 1.863-.37 2.456-1.111zM80.61 10.364c-.39 0-.718-.137-.983-.41a1.371 1.371 0 01-.397-.994c0-.39.132-.72.397-.994.265-.272.593-.409.982-.409.39 0 .725.137 1.006.41.28.272.42.604.42.993 0 .39-.14.722-.42.994-.281.273-.616.41-1.006.41zm-1.1 13.376V12.398h2.269V23.74H79.51zM84.335 23.74V7.487l2.245-.258V23.74h-2.245zM98.927 18.572h-8.044c.093 1.108.448 1.98 1.064 2.62.615.639 1.531.958 2.747.958.592 0 1.11-.074 1.555-.222.445-.148 1.064-.41 1.86-.784l.702 1.638c-1.373.826-2.745 1.239-4.116 1.239-1.98 0-3.5-.538-4.56-1.614-1.061-1.075-1.591-2.525-1.591-4.35 0-1.169.218-2.205.655-3.11.436-.904 1.064-1.606 1.883-2.105.818-.499 1.78-.748 2.888-.748 1.637 0 2.872.55 3.707 1.649.834 1.099 1.25 2.506 1.25 4.22v.609zm-7.998-1.52h5.823c-.296-2.026-1.247-3.04-2.853-3.04-.858 0-1.54.269-2.047.806-.506.539-.814 1.283-.923 2.234zM112.023 8.47l-.701 1.613c-.702-.25-1.271-.421-1.708-.515-.436-.093-.998-.14-1.684-.14-.967 0-1.844.269-2.63.807-.788.538-1.408 1.297-1.86 2.28-.452.982-.678 2.097-.678 3.344 0 1.154.198 2.21.596 3.169.398.959.975 1.719 1.731 2.28.756.561 1.641.842 2.654.842 1.31 0 2.471-.234 3.485-.702l.865 1.684c-.515.265-1.185.487-2.012.666-.826.18-1.574.27-2.244.27-1.575 0-2.92-.363-4.034-1.088a6.84 6.84 0 01-2.526-2.947c-.569-1.24-.853-2.623-.853-4.15 0-1.591.307-3.021.923-4.292.616-1.27 1.497-2.268 2.643-2.994 1.146-.725 2.475-1.087 3.987-1.087.562 0 1.247.082 2.058.246.811.164 1.474.402 1.988.713zM123.108 21.191a5.069 5.069 0 01-2 2.105c-.865.499-1.875.749-3.029.749-1.138 0-2.132-.25-2.982-.749a4.941 4.941 0 01-1.952-2.105c-.453-.904-.679-1.949-.679-3.133 0-1.17.234-2.206.702-3.11a5.076 5.076 0 011.988-2.106c.857-.499 1.862-.748 3.016-.748 1.139 0 2.132.25 2.982.748.85.5 1.505 1.2 1.965 2.105.459.905.69 1.95.69 3.134 0 1.169-.234 2.206-.701 3.11zm-2.538-.21c.616-.764.932-1.723.947-2.877 0-1.216-.296-2.202-.888-2.958-.593-.756-1.411-1.135-2.456-1.135-1.028 0-1.851.383-2.467 1.146-.616.765-.932 1.723-.947 2.877 0 1.216.296 2.202.889 2.958.592.757 1.41 1.134 2.455 1.134 1.029 0 1.851-.381 2.467-1.146zM126.644 10.364c-.389 0-.717-.137-.982-.41a1.372 1.372 0 01-.397-.994c0-.39.132-.72.397-.994.265-.272.593-.409.982-.409s.725.137 1.005.41c.282.272.422.604.422.993 0 .39-.14.722-.422.994-.28.273-.615.41-1.005.41zm-1.099 13.376V12.398h2.268V23.74h-2.268zM132.508 23.74h-2.244V12.398h1.567l.397 1.496a8.144 8.144 0 012.059-1.344c.763-.351 1.52-.527 2.268-.527 1.231 0 2.147.383 2.747 1.146.6.764.901 1.793.901 3.087v7.484h-2.245v-7.273c0-.826-.137-1.454-.41-1.883-.272-.428-.76-.643-1.461-.643-.53 0-1.108.168-1.731.503-.623.335-1.239.768-1.848 1.298v7.998zM17.5 35C7.85 35 0 27.15 0 17.5S7.85 0 17.5 0 35 7.85 35 17.5 27.15 35 17.5 35zm8.473-21.16a2.28 2.28 0 01-4.112 1.36H2.9c-.118.75-.179 1.518-.179 2.3 0 8.15 6.63 14.78 14.78 14.78 5.968 0 11.121-3.556 13.452-8.66H13.495a2.28 2.28 0 11-.077-2.719h18.467c.259-1.093.395-2.23.395-3.4 0-8.15-6.63-14.78-14.78-14.78-6.388 0-11.842 4.073-13.902 9.758h18.263a2.28 2.28 0 014.112 1.36z"
+          fill="#A6AAB4"
+        />
+      </svg>
+      <div
+        class="MuiPaper-root MuiCard-root makeStyles-cardContainer MuiPaper-elevation1 MuiPaper-rounded"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-h2 MuiTypography-colorTextPrimary MuiTypography-paragraph"
+        >
+          Create Account
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-paragraph"
+        >
+          Create a new account for this desktop wallet.
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-paragraph"
+        >
+          This option is best for individuals who do not have an existing account. If you have an account you would like to use, please import an existing account instead.
+        </p>
+        <div
+          class="MuiBox-root MuiBox-root"
+          data-testid="overwrite-warning"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body2 MuiTypography-paragraph"
+          >
+            It appears that this wallet is locked with an encrypted Entropy. Creating an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.
+          </p>
+          <a
+            aria-disabled="false"
+            class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textSecondary"
+            href="/"
+            role="button"
+            tabindex="0"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              Unlock this wallet
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </a>
+        </div>
+        <form
+          action="#"
+          name="CreateAccountFormName"
+        >
+          <div
+            class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
+          >
+            <label
+              class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
+              data-shrink="false"
+              for="accountNameField"
+              id="accountNameField-label"
+            >
+              Account Name (optional)
+            </label>
+            <div
+              class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl"
+            >
+              <input
+                aria-invalid="false"
+                class="MuiInputBase-input MuiInput-input"
+                id="accountNameField"
+                name="accountName"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+          >
+            <label
+              class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense"
+              data-shrink="false"
+              for="passwordField"
+              id="passwordField-label"
+            >
+              Password
+            </label>
+            <div
+              class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+            >
+              <input
+                aria-invalid="false"
+                class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+                id="passwordField"
+                name="password"
+                type="password"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+          >
+            <label
+              class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense"
+              data-shrink="false"
+              for="passwordConfirmationField"
+              id="passwordConfirmationField-label"
+            >
+              Password Confirmation
+            </label>
+            <div
+              class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+            >
+              <input
+                aria-invalid="false"
+                class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+                id="passwordConfirmationField"
+                name="passwordConfirmation"
+                type="password"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="MuiBox-root MuiBox-root"
+          >
+            <div
+              class="MuiBox-root MuiBox-root"
+            >
+              <div
+                class="MuiBox-root MuiBox-root"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 MuiTypography-displayInline"
+                >
+                  I have read and accept the
+                </p>
+                <button
+                  class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary"
+                  tabindex="0"
+                  type="button"
+                >
+                  <span
+                    class="MuiButton-label"
+                  >
+                    Terms of Use
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </button>
+              </div>
+              <span
+                aria-disabled="true"
+                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorSecondary MuiCheckbox-indeterminate PrivateSwitchBase-disabled MuiCheckbox-disabled MuiIconButton-colorSecondary MuiIconButton-disabled MuiButtonBase-disabled"
+                tabindex="-1"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <input
+                    class="PrivateSwitchBase-input"
+                    data-indeterminate="true"
+                    disabled=""
+                    name="checkedTerms"
+                    type="checkbox"
+                    value="false"
+                  />
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"
+                    />
+                  </svg>
+                </span>
+              </span>
+            </div>
+          </div>
+          <p
+            class="MuiFormHelperText-root MuiFormHelperText-focused"
+          >
+            You must read the Terms of Use before using the wallet.
+          </p>
+          <div
+            class="MuiBox-root MuiBox-root makeStyles-root"
+          >
+            <button
+              class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedSecondary MuiButton-containedSizeLarge MuiButton-sizeLarge MuiButton-disabled MuiButton-fullWidth MuiButtonBase-disabled"
+              data-testid="submit-button"
+              disabled=""
+              tabindex="-1"
+              type="button"
+            >
+              <span
+                class="MuiButton-label"
+              >
+                Create Account
+              </span>
+            </button>
+          </div>
+          <button
+            class="MuiButtonBase-root MuiButton-root MuiButton-text"
+            tabindex="0"
+            type="button"
+          >
+            <span
+              class="MuiButton-label"
+            >
+              TEST BUTTON
+            </span>
+            <span
+              class="MuiTouchRipple-root"
+            />
+          </button>
+        </form>
+        <div
+          class="MuiBox-root MuiBox-root"
+        >
+          <hr
+            class="MuiDivider-root"
+          />
+        </div>
+        <a
+          aria-disabled="false"
+          class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedSecondary"
+          href="/import"
+          role="button"
+          tabindex="0"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Import account instead
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

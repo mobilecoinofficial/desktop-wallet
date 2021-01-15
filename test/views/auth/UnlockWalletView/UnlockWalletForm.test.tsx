@@ -23,7 +23,7 @@ function setupComponent() {
   const passwordField = screen.getByLabelText('Password', {
     exact: false,
     selector: 'input',
-  });
+  }) as HTMLInputElement;
   const submitButton = screen.getByRole('button', { name: 'Unlock Wallet' });
 
   return {
@@ -77,7 +77,7 @@ describe('UnlockWalletForm', () => {
     });
 
     describe('submit', () => {
-      test('calls unlockWallet hook with a password', async () => {
+      test('calls unlockWallet hook with the password', async () => {
         const {
           mockUseMobileCoinDValues,
           password,

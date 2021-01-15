@@ -17,7 +17,7 @@ function setupComponent() {
   const invalidPasswordShort = 'shooort';
   const validPassword99 = 'longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglon';
 
-  const { asFragment, mockUseMobileCoinDValues } = renderSnapshot(
+  const { mockUseMobileCoinDValues } = renderSnapshot(
     <CreateAccountForm isTest />,
   );
 
@@ -46,7 +46,6 @@ function setupComponent() {
 
   return {
     accountNameField,
-    asFragment,
     checkTermsField,
     form,
     invalidAccountName65,
@@ -315,13 +314,6 @@ describe('CreateAccountForm', () => {
             validPassword99,
           );
         });
-      });
-    });
-
-    describe('render', () => {
-      test('it renders correctly', async () => {
-        const { asFragment } = setupComponent();
-        expect(asFragment()).toMatchSnapshot();
       });
     });
   });

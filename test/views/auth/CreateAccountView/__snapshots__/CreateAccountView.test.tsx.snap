@@ -4,6 +4,7 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
 <DocumentFragment>
   <div
     class="MuiBox-root MuiBox-root makeStyles-root"
+    data-testid="CreateAccountView"
   >
     <div
       class="MuiContainer-root makeStyles-viewContainer MuiContainer-maxWidthSm"

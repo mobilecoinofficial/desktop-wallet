@@ -39,8 +39,8 @@ function setupComponent() {
     },
   ) as HTMLInputElement;
   const checkTermsField = screen.getByRole('checkbox') as HTMLInputElement;
-  const specialTermsButton = screen.getByRole('button', {
-    name: 'TEST BUTTON',
+  const termsButton = screen.getByRole('button', {
+    name: 'Terms of Use',
   });
   const submitButton = screen.getByRole('button', { name: 'Create Account' });
 
@@ -53,8 +53,8 @@ function setupComponent() {
     mockUseMobileCoinDValues,
     passwordConfirmationField,
     passwordField,
-    specialTermsButton,
     submitButton,
+    termsButton,
     validAccountName64,
     validPassword99,
   };
@@ -138,7 +138,7 @@ describe('CreateAccountForm', () => {
       test('checkbox is disabled until reading terms', async () => {
         const {
           checkTermsField,
-          specialTermsButton,
+          termsButton,
         } = setupComponent();
         const expectedTermsMessage = 'You must read the Terms of Use before using the wallet.';
 
@@ -153,7 +153,7 @@ describe('CreateAccountForm', () => {
         });
 
         // Reading the terms removes message and allows you to click terms
-        userEvent.click(specialTermsButton);
+        userEvent.click(termsButton);
         await waitFor(() => {
           expect(termsMessage).not.toBeInTheDocument();
         });
@@ -277,7 +277,7 @@ describe('CreateAccountForm', () => {
           mockUseMobileCoinDValues,
           passwordConfirmationField,
           passwordField,
-          specialTermsButton,
+          termsButton,
           submitButton,
           validAccountName64,
           validPassword99,
@@ -294,7 +294,7 @@ describe('CreateAccountForm', () => {
         userEvent.type(accountNameField, validAccountName64);
         userEvent.type(passwordField, validPassword99);
         userEvent.type(passwordConfirmationField, validPassword99);
-        userEvent.click(specialTermsButton);
+        userEvent.click(termsButton);
         userEvent.click(checkTermsField);
         expect(accountNameField.value).toBe(validAccountName64);
         expect(passwordField.value).toBe(validPassword99);

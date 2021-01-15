@@ -67,13 +67,15 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
   const [canCheck, setCanCheck] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleCloseTerms = () => {
     setCanCheck(true);
     setOpen(false);
+  };
+
+  // FIX-ME: This hack is to avoid opening the Dialog -- which is causing some
+  // headaches in testing.
+  const handleClickOpen = () => {
+    return isTest ? handleCloseTerms() : setOpen(true);
   };
 
   const handleOnSubmit = async (
@@ -189,7 +191,6 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
             >
               Create Account
             </SubmitButton>
-            {isTest && <Button onClick={handleCloseTerms}>TEST BUTTON</Button>}
             <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
           </Form>
         );

@@ -54,12 +54,12 @@ export const createAccountFormOnSubmit = async (
 
 interface CreateAccountFormProps {
   isTest: boolean;
-  onSubmit?: typeof createAccountFormOnSubmit;
+  onSubmit: typeof createAccountFormOnSubmit;
 }
 
 const CreateAccountForm: FC<CreateAccountFormProps> = ({
   isTest,
-  onSubmit,
+  onSubmit = createAccountFormOnSubmit,
 }: CreateAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
   const { createAccount } = useMobileCoinD();
@@ -82,8 +82,6 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
     values: CreateAccountFormValues,
     helpers: FormikHelpers<CreateAccountFormValues>,
   ) => {
-    if (typeof onSubmit !== 'function') throw new Error('Cannot find onSubmit');
-
     const pseduoProps = { createAccount, isMountedRef };
     onSubmit(pseduoProps, values, helpers);
   };
@@ -102,8 +100,10 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
       'Account Name cannot be more than 64 characters.',
     ),
     // CBB: It appears that the checkedTerms error message is not working properly.
-    checkedTerms:
-      Yup.bool().oneOf([true], 'You must accept Terms of Use to use wallet.'),
+    checkedTerms: Yup.bool().oneOf(
+      [true],
+      'You must accept Terms of Use to use wallet.',
+    ),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters in length.')
       .max(99, 'Passwords cannot be more than 99 characters.')
@@ -197,10 +197,6 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
       }}
     </Formik>
   );
-};
-
-CreateAccountForm.defaultProps = {
-  onSubmit: createAccountFormOnSubmit,
 };
 
 export default CreateAccountForm;

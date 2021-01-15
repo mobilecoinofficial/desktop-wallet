@@ -314,6 +314,37 @@ describe('CreateAccountForm', () => {
           );
         });
       });
+
+      test('displays error when thrown', async () => {
+        const expectedErrorMessage = 'I am an error!';
+        const {
+          accountNameField,
+          checkTermsField,
+          mockUseMobileCoinDValues,
+          passwordConfirmationField,
+          passwordField,
+          termsButton,
+          submitButton,
+          validAccountName64,
+          validPassword99,
+        } = setupComponent();
+        // @ts-ignore mock
+        mockUseMobileCoinDValues.createAccount.mockImplementation(() => {
+          throw new Error(expectedErrorMessage);
+        });
+
+        // Enter valid form information & Submit
+        userEvent.type(accountNameField, validAccountName64);
+        userEvent.type(passwordField, validPassword99);
+        userEvent.type(passwordConfirmationField, validPassword99);
+        userEvent.click(termsButton);
+        userEvent.click(checkTermsField);
+        userEvent.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument();
+        });
+      });
     });
   });
 

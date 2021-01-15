@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CreateAccountView component render it renders correctly 1`] = `
+exports[`ImportAccountView component render it renders correctly 1`] = `
 <DocumentFragment>
   <div
     class="MuiBox-root MuiBox-root makeStyles-root"
-    data-testid="CreateAccountView"
+    data-testid="ImportAccountView"
   >
     <div
       class="MuiContainer-root makeStyles-viewContainer MuiContainer-maxWidthSm"
@@ -26,19 +26,19 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
         class="MuiPaper-root MuiCard-root makeStyles-cardContainer MuiPaper-elevation1 MuiPaper-rounded"
       >
         <p
-          class="MuiTypography-root MuiTypography-h2 MuiTypography-colorTextPrimary MuiTypography-paragraph"
+          class="MuiTypography-root MuiTypography-h2 MuiTypography-paragraph"
         >
-          Create Account
+          Import Account
         </p>
         <p
           class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-paragraph"
         >
-          Create a new account for this desktop wallet.
+          Import an existing account for this desktop wallet.
         </p>
         <p
           class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-paragraph"
         >
-          This option is best for individuals who do not have an existing account. If you have an account you would like to use, please import an existing account instead.
+          This option is best for individuals who already have MobileCoin accounts. If you do not have an account, please create a new account instead.
         </p>
         <div
           class="MuiBox-root MuiBox-root"
@@ -47,7 +47,7 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
           <p
             class="MuiTypography-root MuiTypography-body2 MuiTypography-paragraph"
           >
-            It appears that this wallet is locked with an encrypted Entropy. Creating an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.
+            It appears that this wallet is locked with an encrypted Entropy. Importing an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.
           </p>
           <a
             aria-disabled="false"
@@ -68,7 +68,7 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
         </div>
         <form
           action="#"
-          name="CreateAccountFormName"
+          name="ImportAccountFormName"
         >
           <div
             class="MuiFormControl-root MuiTextField-root MuiFormControl-fullWidth"
@@ -76,8 +76,8 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
             <label
               class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated"
               data-shrink="false"
-              for="CreateAccountForm-accountNameField"
-              id="CreateAccountForm-accountNameField-label"
+              for="ImportAccountForm-accountNameField"
+              id="ImportAccountForm-accountNameField-label"
             >
               Account Name (optional)
             </label>
@@ -87,7 +87,7 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiInput-input"
-                id="CreateAccountForm-accountNameField"
+                id="ImportAccountForm-accountNameField"
                 name="accountName"
                 type="text"
                 value=""
@@ -100,8 +100,32 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
             <label
               class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense"
               data-shrink="false"
-              for="CreateAccountForm-passwordField"
-              id="CreateAccountForm-passwordField-label"
+              for="ImportAccountForm-entropyField"
+              id="ImportAccountForm-entropyField-label"
+            >
+              Entropy
+            </label>
+            <div
+              class="MuiInputBase-root MuiInput-root MuiInput-underline MuiInputBase-fullWidth MuiInput-fullWidth MuiInputBase-formControl MuiInput-formControl MuiInputBase-marginDense MuiInput-marginDense"
+            >
+              <input
+                aria-invalid="false"
+                class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
+                id="ImportAccountForm-entropyField"
+                name="entropy"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="MuiFormControl-root MuiTextField-root MuiFormControl-marginDense MuiFormControl-fullWidth"
+          >
+            <label
+              class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense"
+              data-shrink="false"
+              for="ImportAccountForm-passwordField"
+              id="ImportAccountForm-passwordField-label"
             >
               Password
             </label>
@@ -111,7 +135,7 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
-                id="CreateAccountForm-passwordField"
+                id="ImportAccountForm-passwordField"
                 name="password"
                 type="password"
                 value=""
@@ -124,8 +148,8 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
             <label
               class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-marginDense"
               data-shrink="false"
-              for="CreateAccountForm-passwordConfirmationField"
-              id="CreateAccountForm-passwordConfirmationField-label"
+              for="ImportAccountForm-passwordConfirmationField"
+              id="ImportAccountForm-passwordConfirmationField-label"
             >
               Password Confirmation
             </label>
@@ -135,7 +159,7 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
               <input
                 aria-invalid="false"
                 class="MuiInputBase-input MuiInput-input MuiInputBase-inputMarginDense MuiInput-inputMarginDense"
-                id="CreateAccountForm-passwordConfirmationField"
+                id="ImportAccountForm-passwordConfirmationField"
                 name="passwordConfirmation"
                 type="password"
                 value=""
@@ -219,7 +243,7 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
               <span
                 class="MuiButton-label"
               >
-                Create Account
+                Import Account
               </span>
             </button>
           </div>
@@ -234,14 +258,14 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
         <a
           aria-disabled="false"
           class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedSecondary"
-          href="/import"
+          href="/create"
           role="button"
           tabindex="0"
         >
           <span
             class="MuiButton-label"
           >
-            Import account instead
+            Create account instead
           </span>
           <span
             class="MuiTouchRipple-root"

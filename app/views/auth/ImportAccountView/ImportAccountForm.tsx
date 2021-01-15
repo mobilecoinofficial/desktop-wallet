@@ -5,96 +5,141 @@ import {
   Box, Button, FormHelperText, Typography,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
+import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
+import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 
-const ImportAccountForm: FC = () => {
+export interface ImportAccountFormValues {
+  accountName: string;
+  checkedTerms: boolean;
+  entropy: string;
+  password: string;
+  passwordConfirmation: string;
+  submit: null;
+}
+
+interface ImportAccountFormPseudoProps {
+  isMountedRef: { current: boolean };
+  importAccount: MobileCoinDContextValue['importAccount'];
+}
+
+export const importAccountFormOnSubmit = async (
+  pseudoProps: ImportAccountFormPseudoProps,
+  values: ImportAccountFormValues,
+  helpers: FormikHelpers<ImportAccountFormValues>,
+) => {
+  const { isMountedRef, importAccount } = pseudoProps;
+  const { accountName, entropy, password } = values;
+  const { setStatus, setErrors, setSubmitting } = helpers;
+
+  try {
+    await importAccount(accountName, entropy, password);
+
+    if (isMountedRef.current) {
+      setStatus({ success: true });
+      setSubmitting(false);
+    }
+  } catch (err) {
+    if (isMountedRef.current) {
+      setStatus({ success: false });
+      setErrors({ submit: err.message });
+      setSubmitting(false);
+    }
+  }
+};
+
+interface ImportAccountFormProps {
+  isTest: boolean | undefined;
+  onSubmit: typeof importAccountFormOnSubmit;
+}
+
+const ImportAccountForm: FC<ImportAccountFormProps> = ({
+  isTest,
+  onSubmit,
+}: ImportAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
-  const mobileCoinD = useMobileCoinD();
+  const { importAccount } = useMobileCoinD();
 
   const [canCheck, setCanCheck] = React.useState(false);
   const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
 
   const handleCloseTerms = () => {
     setCanCheck(true);
     setOpen(false);
   };
 
+  // FIX-ME: This hack is to avoid opening the Dialog -- which is causing some
+  // headaches in testing.
+  const handleClickOpen = () => {
+    return isTest ? handleCloseTerms() : setOpen(true);
+  };
+
+  const handleOnSubmit = async (
+    values: ImportAccountFormValues,
+    helpers: FormikHelpers<ImportAccountFormValues>,
+  ) => {
+    const pseduoProps = { importAccount, isMountedRef };
+    onSubmit(pseduoProps, values, helpers);
+  };
+
+  const initalValues = {
+    accountName: '',
+    checkedTerms: false,
+    entropy: '',
+    password: '',
+    passwordConfirmation: '',
+    submit: null,
+  };
+
+  const validationSchema = Yup.object().shape({
+    accountName: Yup.string().max(
+      64,
+      'Account Name cannot be more than 64 characters.',
+    ),
+    // CBB: It appears that the checkedTerms error message is not working properly.
+    checkedTerms: Yup.bool().oneOf(
+      [true],
+      'You must accept Terms of Use to use wallet.',
+    ),
+    entropy: Yup.string()
+      .matches(/^[0-9a-f]{64}$/i, 'A valid entropy is 64 hexadecimals.')
+      .required('Entropy is required'),
+    password: Yup.string()
+      .min(8, 'Password must be at least 8 characters in length.')
+      .max(99, 'Passwords cannot be more than 99 characters.')
+      .required('Password is required'),
+    passwordConfirmation: Yup.string()
+      .oneOf([Yup.ref('password')], 'Must match Password')
+      .required('Password Confirmation is required'),
+  });
+
   return (
     <Formik
       isInitialValid={false}
-      initialValues={{
-        accountName: '',
-        checkedTerms: false,
-        entropy: '',
-        password: '',
-        passwordConfirmation: '',
-        submit: null,
-      }}
-      onSubmit={async (
-        { accountName, entropy, password },
-        {
-          resetForm, setErrors, setStatus, setSubmitting,
-        },
-      ) => {
-        try {
-          await mobileCoinD.importAccount(accountName, entropy, password);
-
-          if (isMountedRef.current) {
-            setStatus({ success: true });
-            setSubmitting(false);
-            resetForm();
-          }
-        } catch (err) {
-          if (isMountedRef.current) {
-            setStatus({ success: false });
-            setErrors({ submit: err.message });
-            setSubmitting(false);
-          }
-        }
-      }}
-      validationSchema={Yup.object().shape({
-        accountName: Yup.string().max(
-          64,
-          'Account Name cannot be more than 64 characters.',
-        ),
-        checkedTerms: Yup.bool().oneOf(
-          [true],
-          'You must accept Terms of Use to use wallet.',
-        ),
-        entropy: Yup.string()
-          .matches(/^[0-9a-f]{64}$/i, 'A valid entropy is 64 hexadecimals.')
-          .required('Entropy is required'),
-        password: Yup.string()
-          .min(8, 'Password must be at least 8 characters in length.')
-          .max(99, 'Passwords cannot be more than 99 characters.')
-          .required('Password is required'),
-        passwordConfirmation: Yup.string()
-          .oneOf([Yup.ref('password')], 'Must match Password')
-          .required('Password Confirmation is required'),
-      })}
+      initialValues={initalValues}
+      onSubmit={handleOnSubmit}
+      validationSchema={validationSchema}
       validateOnMount
     >
       {({
         errors, isSubmitting, isValid, submitForm,
       }) => {
         return (
-          <Form>
+          <Form name="ImportAccountFormName">
             <Field
+              id="ImportAccountForm-accountNameField"
               component={TextField}
               fullWidth
               label="Account Name (optional)"
               name="accountName"
             />
             <Field
+              id="ImportAccountForm-entropyField"
               component={TextField}
               fullWidth
               label="Entropy"
@@ -102,6 +147,7 @@ const ImportAccountForm: FC = () => {
               name="entropy"
             />
             <Field
+              id="ImportAccountForm-passwordField"
               component={TextField}
               fullWidth
               label="Password"
@@ -110,6 +156,7 @@ const ImportAccountForm: FC = () => {
               type="password"
             />
             <Field
+              id="ImportAccountForm-passwordConfirmationField"
               component={TextField}
               fullWidth
               label="Password Confirmation"

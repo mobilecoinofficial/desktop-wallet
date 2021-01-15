@@ -16,7 +16,9 @@ import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
-import CreateAccountForm from './CreateAccountForm';
+import CreateAccountForm, {
+  createAccountFormOnSubmit,
+} from './CreateAccountForm';
 
 interface CreateAccountViewProps {
   isTest?: boolean;
@@ -86,7 +88,10 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({ isTest }: CreateAccount
               </Button>
             </Box>
           )}
-          <CreateAccountForm isTest={isTest || false} />
+          <CreateAccountForm
+            isTest={isTest}
+            onSubmit={createAccountFormOnSubmit}
+          />
           <Box my={3}>
             <Divider />
           </Box>

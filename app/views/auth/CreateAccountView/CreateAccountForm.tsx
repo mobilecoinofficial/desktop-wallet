@@ -53,8 +53,8 @@ export const createAccountFormOnSubmit = async (
 };
 
 interface CreateAccountFormProps {
-  isTest: boolean;
-  onSubmit?: typeof createAccountFormOnSubmit;
+  isTest: boolean | undefined;
+  onSubmit: typeof createAccountFormOnSubmit;
 }
 
 const CreateAccountForm: FC<CreateAccountFormProps> = ({
@@ -67,26 +67,26 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
   const [canCheck, setCanCheck] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleCloseTerms = () => {
     setCanCheck(true);
     setOpen(false);
+  };
+
+  // FIX-ME: This hack is to avoid opening the Dialog -- which is causing some
+  // headaches in testing.
+  const handleClickOpen = () => {
+    return isTest ? handleCloseTerms() : setOpen(true);
   };
 
   const handleOnSubmit = async (
     values: CreateAccountFormValues,
     helpers: FormikHelpers<CreateAccountFormValues>,
   ) => {
-    if (typeof onSubmit !== 'function') throw new Error('Cannot find onSubmit');
-
     const pseduoProps = { createAccount, isMountedRef };
     onSubmit(pseduoProps, values, helpers);
   };
 
-  const isInitialValues = {
+  const initialValues = {
     accountName: '',
     checkedTerms: false,
     password: '',
@@ -100,8 +100,10 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
       'Account Name cannot be more than 64 characters.',
     ),
     // CBB: It appears that the checkedTerms error message is not working properly.
-    checkedTerms:
-      Yup.bool().oneOf([true], 'You must accept Terms of Use to use wallet.'),
+    checkedTerms: Yup.bool().oneOf(
+      [true],
+      'You must accept Terms of Use to use wallet.',
+    ),
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters in length.')
       .max(99, 'Passwords cannot be more than 99 characters.')
@@ -114,7 +116,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
   return (
     <Formik
       isInitialValid={false}
-      initialValues={isInitialValues}
+      initialValues={initialValues}
       onSubmit={handleOnSubmit}
       validationSchema={validationSchema}
       validateOnMount
@@ -125,14 +127,14 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
         return (
           <Form name="CreateAccountFormName">
             <Field
-              id="accountNameField"
+              id="CreateAccountForm-accountNameField"
               component={TextField}
               fullWidth
               label="Account Name (optional)"
               name="accountName"
             />
             <Field
-              id="passwordField"
+              id="CreateAccountForm-passwordField"
               component={TextField}
               fullWidth
               label="Password"
@@ -141,7 +143,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
               type="password"
             />
             <Field
-              id="passwordConfirmationField"
+              id="CreateAccountForm-passwordConfirmationField"
               component={TextField}
               fullWidth
               label="Password Confirmation"
@@ -189,17 +191,12 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
             >
               Create Account
             </SubmitButton>
-            {isTest && <Button onClick={handleCloseTerms}>TEST BUTTON</Button>}
             <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
           </Form>
         );
       }}
     </Formik>
   );
-};
-
-CreateAccountForm.defaultProps = {
-  onSubmit: createAccountFormOnSubmit,
 };
 
 export default CreateAccountForm;

@@ -41,6 +41,7 @@ const renderSnapshot = (
 
   const mockUseMobileCoinDFunctions = {
     createAccount: jest.fn(),
+    importAccount: jest.fn(),
     unlockWallet: jest.fn(),
   };
 

@@ -48,7 +48,7 @@ const UnlockWalletView: FC = () => {
   const classes = useStyles();
 
   return (
-    <Box className={classes.root}>
+    <Box data-testid="UnlockWalletView" className={classes.root}>
       <Container className={classes.viewContainer} maxWidth="sm">
         <LogoIcon className={classes.logoIcon} />
         <Card className={classes.cardContainer}>

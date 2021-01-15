@@ -11,9 +11,6 @@ import renderSnapshot from '../../../renderSnapshot';
 jest.mock('../../../../app/hooks/useMobileCoinD');
 
 function setupComponent() {
-  // Mocks
-  const mockOnSubmit = jest.fn();
-
   // Variables
   const password = 'password';
 
@@ -26,13 +23,12 @@ function setupComponent() {
   const passwordField = screen.getByLabelText('Password', {
     exact: false,
     selector: 'input',
-  });
+  }) as HTMLInputElement;
   const submitButton = screen.getByRole('button', { name: 'Unlock Wallet' });
 
   return {
     asFragment,
     form,
-    mockOnSubmit,
     mockUseMobileCoinDValues,
     password,
     passwordField,
@@ -81,7 +77,7 @@ describe('UnlockWalletForm', () => {
     });
 
     describe('submit', () => {
-      test('calls unlockWallet hook with a password', async () => {
+      test('calls unlockWallet hook with the password', async () => {
         const {
           mockUseMobileCoinDValues,
           password,

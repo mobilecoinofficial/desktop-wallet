@@ -50,7 +50,7 @@ const ImportAccountView: FC = () => {
   const { encryptedEntropy } = useMobileCoinD();
 
   return (
-    <Box className={classes.root}>
+    <Box data-testid="ImportAccountView" className={classes.root}>
       <Container className={classes.viewContainer} maxWidth="sm">
         <LogoIcon className={classes.logoIcon} />
         <Card className={classes.cardContainer}>

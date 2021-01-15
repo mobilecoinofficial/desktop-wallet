@@ -24,17 +24,14 @@ function setupComponent() {
   // Render Elements
   const form = screen.getByRole('form');
   const accountNameField = screen.getByLabelText('Account Name (optional)', {
-    exact: false,
     selector: 'input',
   }) as HTMLInputElement;
   const passwordField = screen.getByLabelText('Password', {
-    exact: true,
     selector: 'input',
   }) as HTMLInputElement;
   const passwordConfirmationField = screen.getByLabelText(
     'Password Confirmation',
     {
-      exact: true,
       selector: 'input',
     },
   ) as HTMLInputElement;

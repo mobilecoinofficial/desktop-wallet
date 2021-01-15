@@ -86,7 +86,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
     onSubmit(pseduoProps, values, helpers);
   };
 
-  const isInitialValues = {
+  const initialValues = {
     accountName: '',
     checkedTerms: false,
     password: '',
@@ -116,7 +116,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
   return (
     <Formik
       isInitialValid={false}
-      initialValues={isInitialValues}
+      initialValues={initialValues}
       onSubmit={handleOnSubmit}
       validationSchema={validationSchema}
       validateOnMount

@@ -28,7 +28,7 @@ function setupComponent(contextOverides?: MobileCoinDContextValue) {
   const createButton = screen.getByRole('button', {
     name: 'Create account instead',
   });
-  const overwriteWarningQuery = screen.queryAllByTestId('overwrite-warning');
+  const overwriteWarningQuery = screen.queryByTestId('overwrite-warning');
 
   return {
     asFragment,
@@ -56,7 +56,7 @@ describe('ImportAccountView', () => {
       test('when there is an existing user, it renders the warning', () => {
         const { overwriteWarningQuery } = setupComponent();
 
-        expect(overwriteWarningQuery.length).toBe(1);
+        expect(overwriteWarningQuery).toBeInTheDocument();
       });
 
       test('warning allow you to navigate to unlock wallet', () => {
@@ -77,7 +77,7 @@ describe('ImportAccountView', () => {
         // @ts-ignore mock
         const { overwriteWarningQuery } = setupComponent({ encryptedEntropy: undefined });
 
-        expect(overwriteWarningQuery.length).toBe(0);
+        expect(overwriteWarningQuery).not.toBeInTheDocument();
       });
     });
 

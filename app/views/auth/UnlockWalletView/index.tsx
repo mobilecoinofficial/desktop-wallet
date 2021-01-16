@@ -3,10 +3,10 @@ import type { FC } from 'react';
 
 import {
   Box,
+  Button,
   Card,
   Container,
   Divider,
-  Link,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -15,7 +15,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
 import type { Theme } from '../../../theme';
-import UnlockWalletForm from './UnlockWalletForm';
+import UnlockWalletForm, { unlockWalletFormOnSubmit } from './UnlockWalletForm';
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -60,13 +60,18 @@ const UnlockWalletView: FC = () => {
             cannot recall your passphrase, you may re-import the account into
             your wallet using their Entropy seed.
           </Typography>
-          <UnlockWalletForm />
+          <UnlockWalletForm onSubmit={unlockWalletFormOnSubmit} />
           <Box my={3}>
             <Divider />
           </Box>
-          <Link component={RouterLink} to={routePaths.IMPORT} variant="body2">
-            Import account from Entropy seed instead
-          </Link>
+          <Button
+            color="secondary"
+            component={RouterLink}
+            to={routePaths.IMPORT}
+            variant="outlined"
+          >
+            Import account from Entropy instead
+          </Button>
         </Card>
       </Container>
     </Box>

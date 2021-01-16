@@ -15,7 +15,7 @@ function setupComponent() {
   const password = 'password';
 
   const { asFragment, mockUseMobileCoinDValues } = renderSnapshot(
-    <UnlockWalletForm />,
+    <UnlockWalletForm onSubmit={unlockWalletFormOnSubmit} />,
   );
 
   // Render Elements
@@ -97,12 +97,29 @@ describe('UnlockWalletForm', () => {
           );
         });
       });
-    });
 
-    describe('render', () => {
-      test('it renders correctly', async () => {
-        const { asFragment } = setupComponent();
-        expect(asFragment()).toMatchSnapshot();
+      test('displays error when thrown', async () => {
+        const expectedErrorMessage = 'I am an error!';
+        const {
+          mockUseMobileCoinDValues,
+          password,
+          passwordField,
+          submitButton,
+        } = setupComponent();
+        // @ts-ignore mock
+        mockUseMobileCoinDValues.unlockWallet.mockImplementation(() => {
+          throw new Error(expectedErrorMessage);
+        });
+
+        // Enter valid form information & Submit
+        userEvent.type(passwordField, password);
+        userEvent.click(submitButton);
+
+        await waitFor(() => {
+          expect(
+            screen.getByText(expectedErrorMessage),
+          ).toBeInTheDocument();
+        });
       });
     });
   });

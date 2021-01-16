@@ -8,6 +8,7 @@ import { SnackbarProvider } from 'notistack';
 import { MemoryRouter } from 'react-router-dom';
 
 import { MobileCoinDProvider } from '../app/contexts/MobileCoinDContext';
+import type { MobileCoinDContextValue } from '../app/contexts/MobileCoinDContext';
 import useMobileCoinD from '../app/hooks/useMobileCoinD';
 import client from '../app/mobilecoind/client';
 import routes, { renderRoutes } from '../app/routes';
@@ -25,7 +26,10 @@ const generateClassName: StylesOptions['generateClassName'] = (
 
 // CBB: This function is starting to be gnarly as its use has evolved with time.
 // We should consider setting up the testing environment in an easier, unified way.
-const renderSnapshot = (testComponent: ReactElement) => {
+const renderSnapshot = (
+  testComponent: ReactElement,
+  mobilecoindContextOverides?: MobileCoinDContextValue,
+) => {
   const theme = setTheme({
     responsiveFontSizes: true,
     theme: 'MOBILE_COIN_DARK',
@@ -37,26 +41,28 @@ const renderSnapshot = (testComponent: ReactElement) => {
 
   const mockUseMobileCoinDFunctions = {
     createAccount: jest.fn(),
+    importAccount: jest.fn(),
     unlockWallet: jest.fn(),
   };
 
-  const mockUseMobileCoinDValues = {
+  const mockUseMobileCoinDValues: MobileCoinDContextValue = {
     accountName: 'account name',
     b58Code: 'b58 code',
     balance: BigInt(88888888),
     encryptedEntropy: 'encrypted entropy',
-    entropy: null,
-    giftCodes: null,
+    entropy: Buffer.from('1', 'hex'),
+    giftCodes: [],
     isAuthenticated: true,
     isEntropyKnown: true,
     isInitialised: true,
-    localBlockIndex: 1234,
+    localBlockIndex: '1234',
     mobUrl: 'string',
-    monitorId: null,
-    networkHighestBlockIndex: 1234,
-    nextBlock: 1235,
+    monitorId: Uint8Array.from([1, 2, 3]),
+    networkHighestBlockIndex: '1234',
+    nextBlock: '1235',
     receiver: null,
     ...mockUseMobileCoinDFunctions,
+    ...mobilecoindContextOverides,
   };
 
   // @ts-ignore mock

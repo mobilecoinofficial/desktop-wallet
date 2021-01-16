@@ -3,9 +3,9 @@ import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import CreateAccountForm, {
-  createAccountFormOnSubmit,
-} from '../../../../app/views/auth/CreateAccountView/CreateAccountForm';
+import ImportAccountForm, {
+  importAccountFormOnSubmit,
+} from '../../../../app/views/auth/ImportAccountView/ImportAccountForm';
 import renderSnapshot from '../../../renderSnapshot';
 
 jest.mock('../../../../app/hooks/useMobileCoinD');
@@ -14,16 +14,21 @@ function setupComponent() {
   // Variables
   const validAccountName64 = '64llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll';
   const invalidAccountName65 = '65lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll';
+  const validEntropy = '0000000000000000000000000000000000000000000000000000000000000000';
+  const invalidEntropy = 'invalid';
   const invalidPasswordShort = 'shooort';
   const validPassword99 = 'longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglon';
 
   const { mockUseMobileCoinDValues } = renderSnapshot(
-    <CreateAccountForm onSubmit={createAccountFormOnSubmit} isTest />,
+    <ImportAccountForm onSubmit={importAccountFormOnSubmit} isTest />,
   );
 
   // Render Elements
   const form = screen.getByRole('form');
   const accountNameField = screen.getByLabelText('Account Name (optional)', {
+    selector: 'input',
+  }) as HTMLInputElement;
+  const entropyField = screen.getByLabelText('Entropy', {
     selector: 'input',
   }) as HTMLInputElement;
   const passwordField = screen.getByLabelText('Password', {
@@ -39,13 +44,15 @@ function setupComponent() {
   const termsButton = screen.getByRole('button', {
     name: 'Terms of Use',
   });
-  const submitButton = screen.getByRole('button', { name: 'Create Account' });
+  const submitButton = screen.getByRole('button', { name: 'Import Account' });
 
   return {
     accountNameField,
     checkTermsField,
+    entropyField,
     form,
     invalidAccountName65,
+    invalidEntropy,
     invalidPasswordShort,
     mockUseMobileCoinDValues,
     passwordConfirmationField,
@@ -53,6 +60,7 @@ function setupComponent() {
     submitButton,
     termsButton,
     validAccountName64,
+    validEntropy,
     validPassword99,
   };
 }
@@ -62,10 +70,11 @@ function setupOnSubmit() {
   const mockSetStatus = jest.fn();
   const mockSetSubmitting = jest.fn();
   const mockSetErrors = jest.fn();
-  const mockCreateAccount = jest.fn();
+  const mockImportAccount = jest.fn();
 
   // Variables
   const accountName = 'account name';
+  const entropy = '1111111111111111111111111111111111111111111111111111111111111111';
   const password = 'password';
   const isMountedRefTrue = { current: true };
   const isMountedRefFalse = { current: false };
@@ -77,10 +86,11 @@ function setupOnSubmit() {
 
   return {
     accountName,
+    entropy,
     helpers,
     isMountedRefFalse,
     isMountedRefTrue,
-    mockCreateAccount,
+    mockImportAccount,
     mockSetErrors,
     mockSetStatus,
     mockSetSubmitting,
@@ -88,7 +98,7 @@ function setupOnSubmit() {
   };
 }
 
-describe('CreateAccountForm', () => {
+describe('ImportAccountForm', () => {
   describe('component', () => {
     describe('initalValues', () => {
       test('sets correct initial values', async () => {
@@ -96,6 +106,7 @@ describe('CreateAccountForm', () => {
         const expectedInitialValues = {
           accountName: '',
           checkedTerms: false,
+          entropy: '',
           password: '',
           passwordConfirmation: '',
         };
@@ -129,6 +140,40 @@ describe('CreateAccountForm', () => {
         userEvent.tab(); // Tab to trigger validations
         await waitFor(() => {
           expect(errorMessage).not.toBeInTheDocument();
+        });
+      });
+
+      test('requires a valid entropy of 64 hexadecimals', async () => {
+        const { entropyField, invalidEntropy, validEntropy } = setupComponent();
+        const expectedHexErrorMessage = 'A valid entropy is 64 hexadecimals.';
+        const expectedRequiredErrorMessage = 'Entropy is required';
+        // Fill out with too long account name
+        userEvent.type(entropyField, invalidEntropy);
+        userEvent.tab(); // Tab to trigger validations
+
+        // Await because validations are async
+        const errorHexMessage = await screen.findByText(
+          expectedHexErrorMessage,
+        );
+        await waitFor(() => {
+          expect(errorHexMessage).toBeInTheDocument();
+        });
+
+        // Clear to show required error
+        userEvent.clear(entropyField);
+        // Await because validations are async
+        const requiredErrorMessage = await screen.findByText(
+          expectedRequiredErrorMessage,
+        );
+        await waitFor(() => {
+          expect(requiredErrorMessage).toBeInTheDocument();
+        });
+
+        // Write valid entropy
+        userEvent.type(entropyField, validEntropy);
+        await waitFor(() => {
+          expect(errorHexMessage).not.toBeInTheDocument();
+          expect(requiredErrorMessage).not.toBeInTheDocument();
         });
       });
 
@@ -267,16 +312,18 @@ describe('CreateAccountForm', () => {
     });
 
     describe('submit', () => {
-      test('calls createAccount hook with a password and accountName', async () => {
+      test('calls importAccount hook with a password and accountName', async () => {
         const {
           accountNameField,
           checkTermsField,
+          entropyField,
           mockUseMobileCoinDValues,
           passwordConfirmationField,
           passwordField,
           termsButton,
           submitButton,
           validAccountName64,
+          validEntropy,
           validPassword99,
         } = setupComponent();
 
@@ -284,11 +331,12 @@ describe('CreateAccountForm', () => {
         expect(submitButton).toBeDisabled();
         userEvent.click(submitButton);
         await waitFor(() => {
-          expect(mockUseMobileCoinDValues.createAccount).not.toBeCalled();
+          expect(mockUseMobileCoinDValues.importAccount).not.toBeCalled();
         });
 
         // Enter valid form information
         userEvent.type(accountNameField, validAccountName64);
+        userEvent.type(entropyField, validEntropy);
         userEvent.type(passwordField, validPassword99);
         userEvent.type(passwordConfirmationField, validPassword99);
         userEvent.click(termsButton);
@@ -305,8 +353,9 @@ describe('CreateAccountForm', () => {
         userEvent.click(submitButton);
 
         await waitFor(() => {
-          expect(mockUseMobileCoinDValues.createAccount).toBeCalledWith(
+          expect(mockUseMobileCoinDValues.importAccount).toBeCalledWith(
             validAccountName64,
+            validEntropy,
             validPassword99,
           );
         });
@@ -317,21 +366,24 @@ describe('CreateAccountForm', () => {
         const {
           accountNameField,
           checkTermsField,
+          entropyField,
           mockUseMobileCoinDValues,
           passwordConfirmationField,
           passwordField,
           termsButton,
           submitButton,
           validAccountName64,
+          validEntropy,
           validPassword99,
         } = setupComponent();
         // @ts-ignore mock
-        mockUseMobileCoinDValues.createAccount.mockImplementation(() => {
+        mockUseMobileCoinDValues.importAccount.mockImplementation(() => {
           throw new Error(expectedErrorMessage);
         });
 
         // Enter valid form information & Submit
         userEvent.type(accountNameField, validAccountName64);
+        userEvent.type(entropyField, validEntropy);
         userEvent.type(passwordField, validPassword99);
         userEvent.type(passwordConfirmationField, validPassword99);
         userEvent.click(termsButton);
@@ -348,47 +400,49 @@ describe('CreateAccountForm', () => {
   describe('functions', () => {
     // CBB: I don't like this. But I want to make sure that the correct
     // hooks are being set with the different scenarios.
-    describe('createAccountFormOnSubmit', () => {
-      test('calls CreateAccount and helpers when mounted', async () => {
+    describe('importAccountFormOnSubmit', () => {
+      test('calls importAccount and helpers when mounted', async () => {
         const {
           accountName,
+          entropy,
           helpers,
           isMountedRefTrue,
-          mockCreateAccount,
+          mockImportAccount,
           password,
         } = setupOnSubmit();
 
         const pseudoProps = {
-          createAccount: mockCreateAccount,
+          importAccount: mockImportAccount,
           isMountedRef: isMountedRefTrue,
         };
-        const values = { accountName, password };
+        const values = { accountName, entropy, password };
         // @ts-ignore mock
-        await createAccountFormOnSubmit(pseudoProps, values, helpers);
+        await importAccountFormOnSubmit(pseudoProps, values, helpers);
 
-        expect(mockCreateAccount).toBeCalledWith(accountName, password);
+        expect(mockImportAccount).toBeCalledWith(accountName, entropy, password);
         expect(helpers.setStatus).toBeCalledWith({ success: true });
         expect(helpers.setSubmitting).toBeCalledWith(false);
         expect(helpers.setErrors).not.toBeCalled();
       });
 
-      test('calls CreateAccount and but not helpers when unmounted', async () => {
+      test('calls importAccount and but not helpers when unmounted', async () => {
         const {
           accountName,
+          entropy,
           helpers,
           isMountedRefFalse,
-          mockCreateAccount,
+          mockImportAccount,
           password,
         } = setupOnSubmit();
 
         const pseudoProps = {
-          createAccount: mockCreateAccount,
+          importAccount: mockImportAccount,
           isMountedRef: isMountedRefFalse,
         };
-        const values = { accountName, password };
+        const values = { accountName, entropy, password };
 
         // @ts-ignore mock
-        await createAccountFormOnSubmit(pseudoProps, values, helpers);
+        await importAccountFormOnSubmit(pseudoProps, values, helpers);
 
         expect(helpers.setStatus).not.toBeCalled();
         expect(helpers.setSubmitting).not.toBeCalled();
@@ -397,23 +451,24 @@ describe('CreateAccountForm', () => {
       test('correctly sets helpers when call fails whem mounted', async () => {
         const {
           accountName,
+          entropy,
           helpers,
           isMountedRefTrue,
-          mockCreateAccount,
+          mockImportAccount,
           password,
         } = setupOnSubmit();
 
         const errorMessage = 'error message.';
-        mockCreateAccount.mockRejectedValueOnce(new Error(errorMessage));
+        mockImportAccount.mockRejectedValueOnce(new Error(errorMessage));
         const pseudoProps = {
-          createAccount: mockCreateAccount,
+          importAccount: mockImportAccount,
           isMountedRef: isMountedRefTrue,
         };
-        const values = { accountName, password };
+        const values = { accountName, entropy, password };
 
         // @ts-ignore mock
-        await createAccountFormOnSubmit(pseudoProps, values, helpers);
-        expect(mockCreateAccount).toBeCalled();
+        await importAccountFormOnSubmit(pseudoProps, values, helpers);
+        expect(mockImportAccount).toBeCalled();
 
         expect(helpers.setStatus).toBeCalledWith({ success: false });
         expect(helpers.setSubmitting).toBeCalledWith(false);
@@ -423,22 +478,23 @@ describe('CreateAccountForm', () => {
       test('does not call helpers when call fails when unmounted', async () => {
         const {
           accountName,
+          entropy,
           helpers,
           isMountedRefFalse,
-          mockCreateAccount,
+          mockImportAccount,
           password,
         } = setupOnSubmit();
 
         const errorMessage = 'error message.';
-        mockCreateAccount.mockRejectedValueOnce(new Error(errorMessage));
+        mockImportAccount.mockRejectedValueOnce(new Error(errorMessage));
         const pseudoProps = {
-          createAccount: mockCreateAccount,
+          importAccount: mockImportAccount,
           isMountedRef: isMountedRefFalse,
         };
-        const values = { accountName, password };
+        const values = { accountName, entropy, password };
 
         // @ts-ignore mock
-        await createAccountFormOnSubmit(pseudoProps, values, helpers);
+        await importAccountFormOnSubmit(pseudoProps, values, helpers);
 
         expect(helpers.setStatus).not.toBeCalled();
         expect(helpers.setSubmitting).not.toBeCalled();

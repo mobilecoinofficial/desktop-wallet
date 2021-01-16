@@ -3,10 +3,10 @@ import type { FC } from 'react';
 
 import {
   Box,
+  Button,
   Card,
   Container,
   Divider,
-  Link,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -16,7 +16,12 @@ import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
-import ImportAccountForm from './ImportAccountForm';
+import ImportAccountForm, { importAccountFormOnSubmit } from './ImportAccountForm';
+
+// CBB: this isTest pattern would be better managed with context and hooks.
+interface ImportAccountViewProps {
+  isTest?: boolean;
+}
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -45,12 +50,14 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
-const ImportAccountView: FC = () => {
+const ImportAccountView: FC<ImportAccountViewProps> = ({
+  isTest,
+}: ImportAccountViewProps) => {
   const classes = useStyles();
   const { encryptedEntropy } = useMobileCoinD();
 
   return (
-    <Box className={classes.root}>
+    <Box data-testid="ImportAccountView" className={classes.root}>
       <Container className={classes.viewContainer} maxWidth="sm">
         <LogoIcon className={classes.logoIcon} />
         <Card className={classes.cardContainer}>
@@ -66,34 +73,45 @@ const ImportAccountView: FC = () => {
             instead.
           </Typography>
           {encryptedEntropy && (
-            <>
+            <Box data-testid="overwrite-warning">
               <Typography variant="body2" paragraph>
                 It appears that this wallet is locked with an encrypted Entropy.
                 Importing an account will override the wallet. Please ensure
                 that you have secured your Entropy if you wish to change
                 accounts.
               </Typography>
-              <Link
+              <Button
+                color="secondary"
                 component={RouterLink}
                 to={routePaths.ROOT}
-                variant="body2"
-                paragraph
               >
                 Unlock this wallet
-              </Link>
-            </>
+              </Button>
+            </Box>
           )}
-          <ImportAccountForm />
+          <ImportAccountForm
+            isTest={isTest}
+            onSubmit={importAccountFormOnSubmit}
+          />
           <Box my={3}>
             <Divider />
           </Box>
-          <Link component={RouterLink} to={routePaths.CREATE} variant="body2">
+          <Button
+            color="secondary"
+            component={RouterLink}
+            to={routePaths.CREATE}
+            variant="outlined"
+          >
             Create account instead
-          </Link>
+          </Button>
         </Card>
       </Container>
     </Box>
   );
+};
+
+ImportAccountView.defaultProps = {
+  isTest: false,
 };
 
 export default ImportAccountView;

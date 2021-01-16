@@ -11,14 +11,11 @@ import renderSnapshot from '../../../renderSnapshot';
 jest.mock('../../../../app/hooks/useMobileCoinD');
 
 function setupComponent() {
-  // Mocks
-  const mockOnSubmit = jest.fn();
-
   // Variables
   const password = 'password';
 
   const { asFragment, mockUseMobileCoinDValues } = renderSnapshot(
-    <UnlockWalletForm />,
+    <UnlockWalletForm onSubmit={unlockWalletFormOnSubmit} />,
   );
 
   // Render Elements
@@ -26,13 +23,12 @@ function setupComponent() {
   const passwordField = screen.getByLabelText('Password', {
     exact: false,
     selector: 'input',
-  });
+  }) as HTMLInputElement;
   const submitButton = screen.getByRole('button', { name: 'Unlock Wallet' });
 
   return {
     asFragment,
     form,
-    mockOnSubmit,
     mockUseMobileCoinDValues,
     password,
     passwordField,
@@ -81,7 +77,7 @@ describe('UnlockWalletForm', () => {
     });
 
     describe('submit', () => {
-      test('calls unlockWallet hook with a password', async () => {
+      test('calls unlockWallet hook with the password', async () => {
         const {
           mockUseMobileCoinDValues,
           password,
@@ -101,12 +97,29 @@ describe('UnlockWalletForm', () => {
           );
         });
       });
-    });
 
-    describe('render', () => {
-      test('it renders correctly', async () => {
-        const { asFragment } = setupComponent();
-        expect(asFragment()).toMatchSnapshot();
+      test('displays error when thrown', async () => {
+        const expectedErrorMessage = 'I am an error!';
+        const {
+          mockUseMobileCoinDValues,
+          password,
+          passwordField,
+          submitButton,
+        } = setupComponent();
+        // @ts-ignore mock
+        mockUseMobileCoinDValues.unlockWallet.mockImplementation(() => {
+          throw new Error(expectedErrorMessage);
+        });
+
+        // Enter valid form information & Submit
+        userEvent.type(passwordField, password);
+        userEvent.click(submitButton);
+
+        await waitFor(() => {
+          expect(
+            screen.getByText(expectedErrorMessage),
+          ).toBeInTheDocument();
+        });
       });
     });
   });

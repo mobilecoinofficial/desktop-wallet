@@ -47,7 +47,7 @@ export const unlockWalletFormOnSubmit = async (
 };
 
 interface UnlockWalletFormProps {
-  onSubmit?: typeof unlockWalletFormOnSubmit;
+  onSubmit: typeof unlockWalletFormOnSubmit;
 }
 
 const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
@@ -60,8 +60,6 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
     values: UnlockWalletFormValues,
     helpers: FormikHelpers<UnlockWalletFormValues>,
   ) => {
-    if (typeof onSubmit !== 'function') throw new Error('Cannot find onSubmit');
-
     const pseduoProps = { isMountedRef, unlockWallet };
     onSubmit(pseduoProps, values, helpers);
   };
@@ -112,10 +110,6 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
       }}
     </Formik>
   );
-};
-
-UnlockWalletForm.defaultProps = {
-  onSubmit: unlockWalletFormOnSubmit,
 };
 
 export default UnlockWalletForm;

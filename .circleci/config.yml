@@ -5,6 +5,7 @@ jobs:
   build:
     # Reuse Docker container specification given by the node Orb
     executor: node/default
+    resource_class: large
     steps:
       - checkout
       - node/install:
@@ -24,6 +25,9 @@ jobs:
   test:
     docker:
       - image: cimg/node:current
+    resource_class: large
+    environment:
+      NODE_OPTIONS: --max_old_space_size=4096
     steps:
       # Reuse the workspace from the build job
       - attach_workspace:

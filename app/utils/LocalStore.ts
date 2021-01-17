@@ -7,10 +7,12 @@ interface LocalStoreSchema {
 
 export const schemaKeys = {
   ENCRYPTED_ENTROPY: 'encryptedEntropy',
+  FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
+  FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   GIFT_CODES: 'giftCodes',
   LEAVE_MOBILECOIND_RUNNING: 'leaveMobilecoindRunning',
-  LEDGER_DB_PATH: 'ledgerDbPath',
   MOBILECOIND_DB_PATH: 'mobilecoindDbPath',
+  MOBILECOIND_LEDGER_DB_PATH: 'mobilecoindLedgerDbPath',
   NAME: 'name',
   SALT: 'salt',
 };
@@ -19,13 +21,19 @@ export const schema: LocalStoreSchema = {
   [schemaKeys.ENCRYPTED_ENTROPY]: {
     type: 'string',
   },
+  [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: {
+    type: 'string',
+  },
+  [schemaKeys.FULL_SERVICE_DB_PATH]: {
+    type: 'string',
+  },
   [schemaKeys.GIFT_CODES]: {
     type: 'array',
   },
   [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: {
     type: 'boolean',
   },
-  [schemaKeys.LEDGER_DB_PATH]: {
+  [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: {
     type: 'string',
   },
   [schemaKeys.MOBILECOIND_DB_PATH]: {
@@ -59,6 +67,14 @@ class LocalStore {
     });
   }
 
+  getFullServiceLedgerDbPath() {
+    return this.store.get(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
+  }
+
+  getFullServiceDbPath() {
+    return this.store.get(schemaKeys.FULL_SERVICE_DB_PATH);
+  }
+
   getGiftCodes() {
     return this.store.get(schemaKeys.GIFT_CODES);
   }
@@ -79,18 +95,25 @@ class LocalStore {
     });
   }
 
-  getLedgerDbPath() {
-    return this.store.get(schemaKeys.LEDGER_DB_PATH);
+  getMobilecoindLedgerDbPath() {
+    return this.store.get(schemaKeys.MOBILECOIND_LEDGER_DB_PATH);
   }
 
   getMobilecoindDbPath() {
     return this.store.get(schemaKeys.MOBILECOIND_DB_PATH);
   }
 
-  setDbPaths(ledgerDbPath: string, mobilecoindDbPath: string) {
+  setDbPaths(
+    mobilecoindLedgerDbPath: string,
+    mobilecoindDbPath: string,
+    fullServiceLedgerDbPath: string,
+    fullServiceDbPath: string,
+  ) {
     this.store.set({
-      [schemaKeys.LEDGER_DB_PATH]: ledgerDbPath,
+      [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: mobilecoindLedgerDbPath,
       [schemaKeys.MOBILECOIND_DB_PATH]: mobilecoindDbPath,
+      [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fullServiceLedgerDbPath,
+      [schemaKeys.FULL_SERVICE_DB_PATH]: fullServiceDbPath,
     });
   }
 

@@ -49,6 +49,12 @@ npm-debug.log.*
 *.sass.d.ts
 *.scss.d.ts
 
-# MobileCoinD Binary
+# MobileCoinD & Full Service Binary
 mobilecoind-bin/mac/mobilecoind
 mobilecoind-bin/linux/mobilecoind
+mobilecoind-bin/mac/Support/*
+mobilecoind-bin/linux/Support/*
+full-service-bin/mac/full-service-testnet
+full-service-bin/linux/full-service-testnet
+full-service-bin/mac/Support/*
+full-service-bin/linux/Support/*

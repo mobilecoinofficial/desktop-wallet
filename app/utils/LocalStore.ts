@@ -9,23 +9,26 @@ const STORE_NAME = 'mobilecoin_config';
 
 export const schemaKeys = {
   ENCRYPTED_ENTROPY: 'encryptedEntropy',
+  FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
+  FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   GIFT_CODES: 'giftCodes',
   HASHED_PIN: 'hashedPin',
   LEAVE_MOBILECOIND_RUNNING: 'leaveMobilecoindRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
   MINIMUM_FOR_PIN: 'minimumPin',
   MOBILECOIND_DB_PATH: 'mobilecoindDbPath',
+  MOBILECOIND_LEDGER_DB_PATH: 'mobilecoindLedgerDbPath',
   NAME: 'name',
   SALT: 'salt',
 };
 
 export const schema: LocalStoreSchema = {
   [schemaKeys.ENCRYPTED_ENTROPY]: { type: 'string' },
+  [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
+  [schemaKeys.FULL_SERVICE_DB_PATH]: { type: 'string' },
   [schemaKeys.GIFT_CODES]: { type: 'array' },
-  [schemaKeys.HASHED_PIN]: { type: 'string' },
   [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: { type: 'boolean' },
-  [schemaKeys.LEDGER_DB_PATH]: { type: 'string' },
-  [schemaKeys.MINIMUM_FOR_PIN]: { type: 'string' },
+  [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.MOBILECOIND_DB_PATH]: { type: 'string' },
   [schemaKeys.NAME]: { type: 'string' },
   [schemaKeys.SALT]: { type: 'string' },
@@ -73,6 +76,14 @@ class LocalStore {
     this.store.set(schemaKeys.LEAVE_MOBILECOIND_RUNNING, leaveMobilecoindRunning);
   }
 
+  getFullServiceLedgerDbPath() {
+    return this.store.get(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
+  }
+
+  getFullServiceDbPath() {
+    return this.store.get(schemaKeys.FULL_SERVICE_DB_PATH);
+  }
+
   getMinimumForPin(): number {
     return Number(this.store.get(schemaKeys.MINIMUM_FOR_PIN));
   }
@@ -93,12 +104,30 @@ class LocalStore {
     return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
   }
 
+  getMobilecoindLedgerDbPath() {
+    return this.store.get(schemaKeys.MOBILECOIND_LEDGER_DB_PATH);
+  }
+
   setLedgerDbPath(name: string): void {
     this.store.set(schemaKeys.LEDGER_DB_PATH, name);
   }
 
   setMobilecoindDbPath(name: string): void {
     this.store.set(schemaKeys.MOBILECOIND_DB_PATH, name);
+  }
+
+  setDbPaths(
+    mobilecoindLedgerDbPath: string,
+    mobilecoindDbPath: string,
+    fullServiceLedgerDbPath: string,
+    fullServiceDbPath: string,
+  ) {
+    this.store.set({
+      [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: mobilecoindLedgerDbPath,
+      [schemaKeys.MOBILECOIND_DB_PATH]: mobilecoindDbPath,
+      [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fullServiceLedgerDbPath,
+      [schemaKeys.FULL_SERVICE_DB_PATH]: fullServiceDbPath,
+    });
   }
 
   getName(): string {

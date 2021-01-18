@@ -76,10 +76,11 @@ const spawnAPIBinaries = () => {
     ? path.join(process.resourcesPath, '..', 'full-service-bin', platform)
     : path.join(root, 'full-service-bin', platform);
 
-  console.log('Looking for mobilecoind binary in', mobilecoindBinariesPath);
+  // console.log('Looking for mobilecoind binary in', mobilecoindBinariesPath);
   const mobilecoindExecPath = path.resolve(
     path.join(mobilecoindBinariesPath, './start-mobilecoind.sh'),
   );
+  console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   const fullServiceExecPath = path.resolve(
     path.join(fullServiceBinariesPath, './start-full-service.sh'),
   );
@@ -100,8 +101,8 @@ const spawnAPIBinaries = () => {
   ); // escape spaces in mac and linux (change logic for windows)
 
   // TODO - delete the console logs
-  console.log('ledgerMobilecoindDbPath', ledgerMobilecoindDbPath);
-  console.log('mobilecoindDbPath', mobilecoindDbPath);
+  // console.log('ledgerMobilecoindDbPath', ledgerMobilecoindDbPath);
+  // console.log('mobilecoindDbPath', mobilecoindDbPath);
   console.log('ledgerFullServiceDbPath', ledgerFullServiceDbPath);
   console.log('fullServiceDbPath', fullServiceDbPath);
   LocalStoreInstance.setDbPaths(
@@ -113,7 +114,7 @@ const spawnAPIBinaries = () => {
   spawn(mobilecoindExecPath, [ledgerMobilecoindDbPath, mobilecoindDbPath], {});
   spawn(
     fullServiceExecPath,
-    [ledgerFullServiceDbPath, [fullServiceDbPath, 'wallet.db'].join()],
+    [ledgerFullServiceDbPath, fullServiceDbPath, [fullServiceDbPath, 'wallet.db'].join('/')],
     {},
   );
 };

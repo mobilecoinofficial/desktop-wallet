@@ -12,24 +12,26 @@ trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
 pushd "$(dirname "$0")"
 
-killall mobilecoind || true
+killall full-service-testnet || true
 
-LEDGER_DB="$1"
-TRANSACTION_DB="$2"
+LEDGER_DB_DIR="$1"
+WALLET_DB_DIR="$2"
+WALLET_DB_FILE_DIR="$3"
 
-mkdir -p ${LEDGER_DB}
-mkdir -p ${TRANSACTION_DB}
+mkdir -p "${LEDGER_DB_DIR}"
+mkdir -p "${WALLET_DB_DIR}"
 
-echo "Starting mobilecoid with ${LEDGER_DB} and ${TRANSACTION_DB}" > /tmp/mylog
+echo "Starting full-service-testnet with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR} and ${WALLET_DB_FILE_DIR}" > /tmp/mylog
 
-./mobilecoind \
-        --ledger-db "${LEDGER_DB}" \
-        --wallet-db "${TRANSACTION_DB}" \
+./full-service-testnet \
+        --ledger-db "${LEDGER_DB_DIR}" \
+        --wallet-db "${WALLET_DB_FILE_DIR}" \
         --poll-interval 1 \
         --peer mc://node1.test.mobilecoin.com/ \
         --peer mc://node2.test.mobilecoin.com/ \
         --tx-source-url https://s3-us-west-1.amazonaws.com/mobilecoin.chain/node1.test.mobilecoin.com/ \
         --tx-source-url https://s3-us-west-1.amazonaws.com/mobilecoin.chain/node2.test.mobilecoin.com/ \
+        &> /tmp/full-service-$(date '+%Y-%m-%d-%H:%M:%S').log &
 
 pid=$!
 

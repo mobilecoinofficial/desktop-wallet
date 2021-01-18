@@ -7,9 +7,11 @@
       content="default-src 'none';
                    img-src 'self';
                    connect-src ws://localhost:1212/
-                               http://localhost:1212/;
+                               http://localhost:1212/
+                               http://localhost:9090;
                    script-src 'self'
                                http://localhost:1212/
+                               http://localhost:9090
                               'unsafe-eval'
                               'sha256-f7gMtshsVI7mmPkQlBpl9zRvFqFSagSGF35HpPJWVN0='
                               'sha256-8Erw+VkyoBtxUXLGntciz6A33qQwpM3PTVab6ZFO2hk='
@@ -19,8 +21,11 @@
                               'sha256-L73jLH5FARHleV3XNmb9wLiyIJkKreR14xeA78di8ec=';
                    style-src 'self'
                              http://localhost:1212/
+                             http://localhost:9090
                              'unsafe-inline';
-                   font-src 'self' http://localhost:1212/;
+                   font-src 'self'
+                            http://localhost:1212/
+                            http://localhost:9090;
                    object-src 'none';"
     />
     <title>MobileCoin Desktop Wallet</title>

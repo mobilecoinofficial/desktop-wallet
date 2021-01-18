@@ -77,6 +77,32 @@ describe('LocalStore', () => {
       });
     });
 
+    describe('.getFullServiceLedgerDbPath', () => {
+      test('return store.get for ledgerDbPath', () => {
+        const { MockLocalStoreInstance, mockStoreGet } = setup();
+
+        expect(MockLocalStoreInstance.getFullServiceLedgerDbPath()).toBe(
+          schemaKeys.FULL_SERVICE_LEDGER_DB_PATH,
+        );
+        expect(mockStoreGet).toHaveBeenCalledWith(
+          schemaKeys.FULL_SERVICE_LEDGER_DB_PATH,
+        );
+      });
+    });
+
+    describe('.getFullServiceDbPath', () => {
+      test('return store.get for mobilecoindDbPath', () => {
+        const { MockLocalStoreInstance, mockStoreGet } = setup();
+
+        expect(MockLocalStoreInstance.getFullServiceDbPath()).toBe(
+          schemaKeys.FULL_SERVICE_DB_PATH,
+        );
+        expect(mockStoreGet).toHaveBeenCalledWith(
+          schemaKeys.FULL_SERVICE_DB_PATH,
+        );
+      });
+    });
+
     describe('.getGiftCodes', () => {
       test('return store.get for giftCodes', () => {
         const { MockLocalStoreInstance, mockStoreGet } = setup();
@@ -126,14 +152,15 @@ describe('LocalStore', () => {
         });
       });
     });
-    describe('.getLedgerDbPath', () => {
+
+    describe('.getMobilecoindLedgerDbPath', () => {
       test('return store.get for ledgerDbPath', () => {
         const { MockLocalStoreInstance, mockStoreGet } = setup();
 
-        expect(MockLocalStoreInstance.getLedgerDbPath()).toBe(
-          schemaKeys.LEDGER_DB_PATH,
+        expect(MockLocalStoreInstance.getMobilecoindLedgerDbPath()).toBe(
+          schemaKeys.MOBILECOIND_LEDGER_DB_PATH,
         );
-        expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.LEDGER_DB_PATH);
+        expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.MOBILECOIND_LEDGER_DB_PATH);
       });
     });
 
@@ -153,16 +180,22 @@ describe('LocalStore', () => {
     describe('.setDbPaths', () => {
       test('return store.set for setDbPaths', () => {
         const { MockLocalStoreInstance, mockStoreSet } = setup();
-        const fakeLedgerDbPath = '/fake/path/to';
-        const fakeMobilecoindDbPath = '/fake/path/to';
+        const fakeMobilecoindLedgerDbPath = '/fake/mobilecoind/ledger/';
+        const fakeMobilecoindDbPath = '/fake/path/mobilecoind/db';
+        const fakeFullServiceLedgerDbPath = '/fake/full-service/ledger/';
+        const fakeFullServiceDbPath = '/fake/path/full-servide/db';
 
         MockLocalStoreInstance.setDbPaths(
-          fakeLedgerDbPath,
+          fakeMobilecoindLedgerDbPath,
           fakeMobilecoindDbPath,
+          fakeFullServiceLedgerDbPath,
+          fakeFullServiceDbPath,
         );
         expect(mockStoreSet).toHaveBeenCalledWith({
-          [schemaKeys.LEDGER_DB_PATH]: fakeLedgerDbPath,
+          [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: fakeMobilecoindLedgerDbPath,
           [schemaKeys.MOBILECOIND_DB_PATH]: fakeMobilecoindDbPath,
+          [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fakeFullServiceLedgerDbPath,
+          [schemaKeys.FULL_SERVICE_DB_PATH]: fakeFullServiceDbPath,
         });
       });
     });

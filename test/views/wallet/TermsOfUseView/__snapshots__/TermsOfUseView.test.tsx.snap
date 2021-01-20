@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Terms Of Use View component render it renders correctly 1`] = `
+exports[`TermsOfUseView component render it renders correctly 1`] = `
 <DocumentFragment>
   <div
     class="MuiContainer-root makeStyles-cardContainer MuiContainer-maxWidthMd"

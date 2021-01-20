@@ -20,14 +20,14 @@ describe('ConfigureMobilecoindView', () => {
         renderSnapshot(<ConfigureMobilecoindView />);
         expect(
           screen.queryByText(
-            /This panel allows you to customize the behavior of MobileCoinD/i
-          )
+            /This panel allows you to customize the behavior of MobileCoinD/i,
+          ),
         ).toBeInTheDocument();
         userEvent.click(screen.getByText('Settings'));
         expect(
           screen.queryByText(
-            /This panel allows you to customize the behavior of MobileCoinD/i
-          )
+            /This panel allows you to customize the behavior of MobileCoinD/i,
+          ),
         ).not.toBeInTheDocument();
       });
     });

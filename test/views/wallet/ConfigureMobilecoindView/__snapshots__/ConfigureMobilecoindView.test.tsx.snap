@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Configure Mobilecoind View component render it renders correctly 1`] = `
+exports[`ConfigureMobilecoindView component render ConfigureMobilecoindView renders correctly 1`] = `
 <DocumentFragment>
   <div
     class="MuiContainer-root makeStyles-cardContainer MuiContainer-maxWidthSm"
@@ -49,7 +49,7 @@ exports[`Configure Mobilecoind View component render it renders correctly 1`] = 
       <p
         class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayInline"
       >
-        This is panel allows you to customize the behavior of MobileCoinD as well as perform some basic resets.
+        This panel allows you to customize the behavior of MobileCoinD as well as perform some basic resets.
       </p>
       <div
         class="MuiBox-root MuiBox-root"
@@ -90,7 +90,7 @@ exports[`Configure Mobilecoind View component render it renders correctly 1`] = 
         <p
           class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary MuiTypography-displayInline"
         >
-          The ledger is synced.
+          The ledger is syncing. This may take awhile.
         </p>
       </div>
       <div
@@ -156,7 +156,7 @@ exports[`Configure Mobilecoind View component render it renders correctly 1`] = 
                 <td
                   class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
                 >
-                  1234
+                  0
                 </td>
                 <td
                   class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
@@ -175,17 +175,17 @@ exports[`Configure Mobilecoind View component render it renders correctly 1`] = 
                 <td
                   class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
                 >
-                  1234
+                  0
                 </td>
                 <td
                   class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
                 >
-                  1234
+                  0
                 </td>
                 <td
                   class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
                 >
-                  100
+                  0
                 </td>
               </tr>
               <tr
@@ -201,17 +201,17 @@ exports[`Configure Mobilecoind View component render it renders correctly 1`] = 
                 <td
                   class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
                 >
-                  1234
+                  0
                 </td>
                 <td
                   class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
                 >
-                  1234
+                  0
                 </td>
                 <td
                   class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
                 >
-                  100
+                  0
                 </td>
               </tr>
             </tbody>

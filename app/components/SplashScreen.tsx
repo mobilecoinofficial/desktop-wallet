@@ -37,7 +37,7 @@ const SplashScreen: FC = () => {
   // scales (either 'size' or 'height'; height may be better for estimating)
   // in-line styling
   return (
-    <Box className={classes.root}>
+    <Box className={classes.root} data-testid="splash-screen">
       <Box position="relative">
         <Box>
           <LogoIcon height={35 * 3} width={141 * 3} />

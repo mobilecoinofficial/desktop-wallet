@@ -67,8 +67,8 @@ const ConfigureMobilecoindView: FC = () => {
         flexDirection="column"
       >
         <Typography variant="body2" display="inline" color="textSecondary">
-          This is panel allows you to customize the behavior of MobileCoinD as
-          well as perform some basic resets.
+          This panel allows you to customize the behavior of MobileCoinD as well
+          as perform some basic resets.
         </Typography>
         <Box py={1} />
         <Typography variant="body2" color="textSecondary">

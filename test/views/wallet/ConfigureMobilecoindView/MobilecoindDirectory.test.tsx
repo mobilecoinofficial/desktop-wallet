@@ -19,6 +19,7 @@ describe('MobilecoindDirectory', () => {
       mobilecoindDbPath: 'mobilecoin/db/path',
     };
   });
+
   test('MobilecoindDirectory renders view and displays correct ledgerDbPath', () => {
     render(<MobilecoindDirectory />);
     expect(screen.getByText('ledger/db/path')).toBeInTheDocument();

@@ -12,9 +12,9 @@ interface AuthFlowGuardProps {
 }
 
 const AuthFlowGuard: FC<AuthFlowGuardProps> = ({ children }) => {
-  const { isAuthenticated } = useMobileCoinD();
+  const { encryptedEntropy, isAuthenticated } = useMobileCoinD();
 
-  if (isAuthenticated) {
+  if (encryptedEntropy && isAuthenticated) {
     return <Redirect to={routePaths.APP_DASHBOARD} />;
   }
 

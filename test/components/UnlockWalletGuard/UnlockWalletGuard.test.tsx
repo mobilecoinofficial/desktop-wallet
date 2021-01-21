@@ -5,7 +5,6 @@ import { screen } from '@testing-library/react';
 import { UnlockWalletGuard } from '../../../app/components';
 import { MobileCoinDContextValue } from '../../../app/contexts/MobileCoinDContext';
 import renderSnapshot from '../../renderSnapshot';
-// import useMobileCoinD from '../../../app/hooks/useMobileCoinD';
 
 jest.mock('../../../app/hooks/useMobileCoinD');
 
@@ -14,14 +13,6 @@ function setupComponent(contextOverides?: MobileCoinDContextValue) {
     encryptedEntropy: null,
     isAuthenticated: false,
   };
-
-  // const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<
-  //   typeof useMobileCoinD
-  // >;
-  //  // @ts-ignore mock
-  //  mockUseMobileCoinD.mockImplementation(() => {
-  //   return defaultContext;
-  // });
 
   renderSnapshot(
     <UnlockWalletGuard>children</UnlockWalletGuard>,
@@ -50,15 +41,22 @@ describe('UnlockWalletGuard', () => {
   // @ts-ignore mock
     const { children } = setupComponent({ encryptedEntropy: null, isAuthenticated: true });
 
-    expect(screen.queryByTestId('DashboardOverview')).toBeInTheDocument();
+    expect(screen.queryByTestId('DashboardOverview')).not.toBeInTheDocument();
     expect(children).not.toBeInTheDocument();
   });
 
   test('authenticated with entropy string', () => {
   // @ts-ignore mock
+    const { children } = setupComponent({ encryptedEntropy: 'entropy', isAuthenticated: true });
+
+    expect(screen.queryByTestId('DashboardOverview')).toBeInTheDocument();
+    expect(children).not.toBeInTheDocument();
+  });
+
+  test('unauthenticated with entropy string', () => {
+  // @ts-ignore mock
     const { children } = setupComponent({ encryptedEntropy: 'entropy' });
 
-    expect(screen.queryByTestId('DashboardOverview')).not.toBeInTheDocument();
     expect(children).toBeInTheDocument();
   });
 });

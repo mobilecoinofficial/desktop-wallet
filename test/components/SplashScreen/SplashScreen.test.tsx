@@ -1,13 +1,11 @@
 import React from 'react';
 
-import { render, screen } from '@testing-library/react';
-
 import { SplashScreen } from '../../../app/components';
+import renderSnapshot from '../../renderSnapshot';
 
 describe('SplashScreen', () => {
   test('renders to screen when called', () => {
-    render(<SplashScreen />);
-
-    expect(screen.queryByTestId('splash-screen')).not.toBeNull();
+    const { asFragment } = renderSnapshot(<SplashScreen />);
+    expect(asFragment()).toMatchSnapshot();
   });
 });

@@ -29,7 +29,7 @@ const DashboardOverview: FC<OverviewProps> = () => {
     : networkHighestBlockIndex - nextBlock < 2;
 
   return (
-    <Box>
+    <Box data-testid="DashboardOverview">
       <Box alignItems="center">
         <BalanceIndicator
           balance={balance?.toString() || ''}

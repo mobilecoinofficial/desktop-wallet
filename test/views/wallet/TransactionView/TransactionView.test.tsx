@@ -1,16 +1,13 @@
 import React from 'react';
 
-import { cleanup, screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import useMobileCoinD from '../../../../app/hooks/useMobileCoinD';
-import useMobilecoindConfigs from '../../../../app/hooks/useMobilecoindConfigs';
 import { TransactionView } from '../../../../app/views/wallet';
 import renderSnapshot from '../../../renderSnapshot';
-// import ReceiveMobPanel from '../../../../app/views/wallet/TransactionView/ReceiveMobPanel';
 
 jest.mock('../../../../app/hooks/useMobileCoinD');
-jest.mock('../../../../app/hooks/useMobilecoindConfigs');
 
 function setupComponent() {
   const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<
@@ -53,16 +50,13 @@ describe('TransactionView', () => {
         userEvent.click(screen.getByText('Send MOB'));
         expect(sendQuery).toBeInTheDocument();
         expect(receiveQuery).not.toBeInTheDocument();
-        cleanup();
       });
 
-      test('ReceiveMobPanel renders correctly', async () => {
-        const { sendQuery, receiveQuery } = setupComponent();
+      test('ReceiveMobPanel renders correctly', () => {
+        const { sendQuery } = setupComponent();
         userEvent.click(screen.getByText('Receive MOB'));
-        await waitFor(() => { return expect(receiveQuery).toBeInTheDocument(); });
+        expect(screen.queryByText(/To receive MOB, you must share your public address code to the sender./i)).toBeInTheDocument();
         expect(sendQuery).not.toBeInTheDocument();
-        // expect(screen.queryByText(/To receive MOB, you must share your public address code to the sender./i)).toBeInTheDocument();
-        //     expect(screen.queryByText(/Please enter the amount of MOB you want to send and the public address of the recipient./i)).not.toBeInTheDocument();
       });
     });
   });

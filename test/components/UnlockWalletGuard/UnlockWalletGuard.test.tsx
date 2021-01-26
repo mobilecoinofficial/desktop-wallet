@@ -57,6 +57,7 @@ describe('UnlockWalletGuard', () => {
   // @ts-ignore mock
     const { children } = setupComponent({ encryptedEntropy: 'entropy' });
 
-    expect(children).toBeInTheDocument();
+    expect(screen.queryByText('Create a new account for this desktop wallet.')).toBeInTheDocument();
+    expect(children).not.toBeInTheDocument();
   });
 });

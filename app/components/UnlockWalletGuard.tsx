@@ -14,7 +14,7 @@ interface UnlockWalletGuardProps {
 const UnlockWalletGuard: FC<UnlockWalletGuardProps> = ({ children }) => {
   const { encryptedEntropy, isAuthenticated } = useMobileCoinD();
 
-  if (!encryptedEntropy) {
+  if (!encryptedEntropy || !isAuthenticated) {
     return <Redirect to={routePaths.CREATE} />;
   }
 

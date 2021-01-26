@@ -12,9 +12,9 @@ interface WalletGuardProps {
 }
 
 const WalletGuard: FC<WalletGuardProps> = ({ children }) => {
-  const { isAuthenticated } = useMobileCoinD();
+  const { isAuthenticated, encryptedEntropy } = useMobileCoinD();
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !encryptedEntropy) {
     return <Redirect to={routePaths.ROOT} />;
   }
 

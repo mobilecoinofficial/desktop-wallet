@@ -39,50 +39,30 @@ describe('WalletGuard', () => {
     expect(success).toBeInTheDocument();
   });
 
-  test('unauthenticated users are redirected to UnlockWalletView', () => {
+  test('unauthenticated users are redirected to CreateAccountView', () => {
     const { success } = setupComponent();
     expect(success).not.toBeInTheDocument();
-    // expect(screen.queryByTestId('DashboardOverview')).toBeInTheDocument(); ???
-    // expect(screen.queryByTestId('UnlockWalletView')).toBeInTheDocument(); ???
-    // IF ROUTEPATHS.ROOT GOES TO UNLOCKWALLETVIEW WHICH HAS UNLOCKWALLETGUARD
-    // THEN HAVING NO ENTROPY TAKES PRESCEDENCE OVER BEING UNAUTHENTICATED
-    // USER WILL BE REDIRECTED TO ROUTEPATHS.CREATE, NOT UNLOCKWALLETVIEW OR DASHBOARD OVERVIEW
 
-    // 2 DIFF ROUTEPATHS.ROOT ---> DASHBOARD AND UNLOCKWALLETVIEW
+    expect(screen.queryByText('Create a new account for this desktop wallet.')).toBeInTheDocument();
+  });
+
+  test('authenticated users with no encryptedEntropy are redirected to CreateAccountView', () => {
+    // @ts-ignore mock
+    const { success } = setupComponent({
+      isAuthenticated: true,
+    });
+    expect(success).not.toBeInTheDocument();
+
+    expect(screen.queryByText('Create a new account for this desktop wallet.')).toBeInTheDocument();
+  });
+
+  test('unauthenticated users with encyrptedEntropy are redirected to CreateAccountView', () => {
+    // @ts-ignore mock
+    const { success } = setupComponent({
+      encryptedEntropy: 'entropy',
+    });
+    expect(success).not.toBeInTheDocument();
+
+    expect(screen.queryByText('Create a new account for this desktop wallet.')).toBeInTheDocument();
   });
 });
-
-// if you are authenticated you should always also have an encrypted entropy),
-// ------------
-
-
-// test('unauthenticated with no entropy string', () => {
-//   const { children } = setupComponent();
-
-//   expect(screen.queryByText('Create a new account for this desktop wallet.')).toBeInTheDocument();
-//   expect(children).not.toBeInTheDocument();
-// });
-
-// test('authenticated with no entropy string', () => {
-// // @ts-ignore mock
-//   const { children } = setupComponent({ encryptedEntropy: null, isAuthenticated: true });
-
-//   expect(screen.queryByTestId('DashboardOverview')).not.toBeInTheDocument();
-//   expect(children).not.toBeInTheDocument();
-// });
-
-// test('authenticated with entropy string', () => {
-// // @ts-ignore mock
-//   const { children } = setupComponent({ encryptedEntropy: 'entropy', isAuthenticated: true });
-
-//   expect(screen.queryByTestId('DashboardOverview')).toBeInTheDocument();
-//   expect(children).not.toBeInTheDocument();
-// });
-
-// test('unauthenticated with entropy string', () => {
-// // @ts-ignore mock
-//   const { children } = setupComponent({ encryptedEntropy: 'entropy' });
-
-//   expect(children).toBeInTheDocument();
-// });
-// });

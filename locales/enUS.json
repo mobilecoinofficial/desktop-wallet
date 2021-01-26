@@ -1,0 +1,7 @@
+{
+  "UnlockWalletView": {
+    "description": "Please enter the passphrase you used to secure your wallet. If you cannot recall your passphrase, you may re-import the account into your wallet using their Entropy seed.",
+    "importInstead": "Import account from Entropy instead",
+    "title": "Unlock Wallet"
+  }
+}

@@ -22,7 +22,7 @@ i18n
       wait: false,
     },
     resources,
-    whitelist: ['enUS'],
+    supportedLngs: ['enUS'],
   });
 
 export default i18n;

@@ -9,5 +9,14 @@
     "pwRequired": "Password is required",
     "pwLabel": "Password",
     "unlockWalletButton": "Unlock Wallet"
+  },
+
+  "ImportAccountView": {
+    "title": "Import Account",
+    "header": "Import an existing account for this desktop wallet.",
+    "description": "This option is best for individuals who already have MobileCoin accounts. If you do not have an account, please create a new account instead.",
+    "overwriteWarning": "It appears that this wallet is locked with an encrypted Entropy. Importing an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.",
+    "unlockWalletButton": "Unlock this wallet",
+    "createInstead": "Create account instead"
   }
 }

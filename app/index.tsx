@@ -4,8 +4,7 @@ import { render } from 'react-dom';
 import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
 
 import './app.global.css';
-
-// const store = configuredStore();
+import './i18n';
 
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 

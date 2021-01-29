@@ -227,5 +227,30 @@
     "balance": "Balance",
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger.",
     "description": "You may use this form to collect gift codes. Simply enter the Gift Code and confirm you want to consume the gift into your wallet."
+  },
+
+  "ConsumeGiftForm": {
+    "giftCanceled": "Gift Canceled",
+    "confirmationNotFound": "Could not find confirmation",
+    "confirmation": "Gift Received! Your balance will update shortly.",
+    "error13": "13 INTERNAL: transactions_manager.submit_tx_proposal: Connection(Operation { error: TransactionValidation(ContainsSpentKeyImage), total_delay: 0ns, tries: 1 })",
+    "giftClaimed": "This gift has already been claimed!",
+    "error": "Hmm, something went wrong.",
+    "unnamed": "Unnamed Account",
+    "select": "Select Account",
+    "accountName": "Account Name",
+    "accountBalance": "Account Balance",
+    "giftB58Validation": "You need a valid gift code to open a gift.",
+    "giftB58Error": "Could not find gift with code.",
+    "giftDetails": "Gift Details",
+    "giftCode": "Gift Code",
+    "openGift": "Open Gift",
+    "giftConfirmation": "Gift Confirmation",
+    "total": "Total",
+    "fee": "Fee",
+    "giftValue": "Gift Value",
+    "newBalance": "New Balance",
+    "cancel": "Cancel",
+    "claimGift": "Claim Gift"
   }
 }

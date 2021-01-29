@@ -10,6 +10,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
 import LogoIcon from '../../../components/icons/LogoIcon';
@@ -55,6 +56,7 @@ const useStyles = makeStyles((theme: Theme) => {
 const CreateAccountView: FC<CreateAccountViewProps> = ({ isTest }: CreateAccountViewProps) => {
   const classes = useStyles();
   const { encryptedEntropy } = useMobileCoinD();
+  const { t } = useTranslation('CreateAccountView');
 
   return (
     <Box data-testid="CreateAccountView" className={classes.root}>
@@ -62,29 +64,25 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({ isTest }: CreateAccount
         <LogoIcon className={classes.logoIcon} />
         <Card className={classes.cardContainer}>
           <Typography color="textPrimary" variant="h2" paragraph>
-            Create Account
+            {t('title')}
           </Typography>
           <Typography variant="body2" color="textSecondary" paragraph>
-            Create a new account for this desktop wallet.
+            {t('header')}
           </Typography>
           <Typography variant="body2" color="textSecondary" paragraph>
-            This option is best for individuals who do not have an existing
-            account. If you have an account you would like to use, please import
-            an existing account instead.
+            {t('description')}
           </Typography>
           {encryptedEntropy && (
             <Box data-testid="overwrite-warning">
               <Typography variant="body2" paragraph>
-                It appears that this wallet is locked with an encrypted Entropy.
-                Creating an account will override the wallet. Please ensure that
-                you have secured your Entropy if you wish to change accounts.
+                {t('overwriteWarning')}
               </Typography>
               <Button
                 color="secondary"
                 component={RouterLink}
                 to={routePaths.ROOT}
               >
-                Unlock this wallet
+                {t('unlockWalletButton')}
               </Button>
             </Box>
           )}
@@ -101,7 +99,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({ isTest }: CreateAccount
             to={routePaths.IMPORT}
             variant="outlined"
           >
-            Import account instead
+            {t('importInstead')}
           </Button>
         </Card>
       </Container>

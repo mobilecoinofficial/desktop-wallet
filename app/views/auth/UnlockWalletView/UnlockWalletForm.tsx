@@ -5,6 +5,7 @@ import { Box, FormHelperText } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { TextField } from 'formik-material-ui';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton } from '../../../components';
@@ -55,6 +56,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
 }: UnlockWalletFormProps) => {
   const isMountedRef = useIsMountedRef();
   const { unlockWallet } = useMobileCoinD();
+  const [t] = useTranslation('UnlockWalletForm');
 
   const handleOnSubmit = async (
     values: UnlockWalletFormValues,
@@ -70,7 +72,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
   };
 
   const validationSchema = Yup.object().shape({
-    password: Yup.string().required('Password is required'),
+    password: Yup.string().required(t('pwRequired')),
   });
 
   return (
@@ -89,7 +91,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
               id="passwordField"
               component={TextField}
               fullWidth
-              label="Password"
+              label={t('pwLabel')}
               name="password"
               type="password"
             />
@@ -103,7 +105,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
               isSubmitting={isSubmitting}
               onClick={submitForm}
             >
-              Unlock Wallet
+              {t('unlockWalletButton')}
             </SubmitButton>
           </Form>
         );

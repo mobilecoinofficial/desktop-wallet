@@ -3,5 +3,66 @@
     "description": "Please enter the passphrase you used to secure your wallet. If you cannot recall your passphrase, you may re-import the account into your wallet using their Entropy seed.",
     "importInstead": "Import account from Entropy instead",
     "title": "Unlock Wallet"
+  },
+
+  "UnlockWalletForm": {
+    "pwRequired": "Password is required",
+    "pwLabel": "Password",
+    "unlockWalletButton": "Unlock Wallet"
+  },
+
+  "ImportAccountView": {
+    "title": "Import Account",
+    "header": "Import an existing account for this desktop wallet.",
+    "description": "This option is best for individuals who already have MobileCoin accounts. If you do not have an account, please create a new account instead.",
+    "overwriteWarning": "It appears that this wallet is locked with an encrypted Entropy. Importing an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.",
+    "unlockWalletButton": "Unlock this wallet",
+    "createInstead": "Create account instead"
+  },
+
+  "ImportAccountForm": {
+    "accountNameValidation": "Account Name cannot be more than 64 characters.",
+    "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
+    "entropyMatches": "A valid entropy is 64 hexadecimals.",
+    "entropyRequired": "Entropy is required",
+    "passwordMin": "Password must be at least 8 characters in length.",
+    "passwordMax": "Passwords cannot be more than 99 characters.",
+    "passwordRequired": "Password is required",
+    "passwordConfirmationRef": "Must match Password",
+    "passwordConfirmationRequired": "Password Confirmation is required",
+    "nameLabel": "Account Name (optional)",
+    "entropyLabel": "Entropy",
+    "passwordLabel": "Password",
+    "passwordConfirmationLabel": "Password Confirmation",
+    "acceptTerms": "I have read and accept the",
+    "acceptTermsButton": "Terms of Use",
+    "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
+    "importAccountButton": "Import Account"
+  },
+
+  "CreateAccountView": {
+    "title": "Create Account",
+    "header": "Create a new account for this desktop wallet.",
+    "description": "This option is best for individuals who do not have an existing account. If you have an account you would like to use, please import an existing account instead.",
+    "overwriteWarning": "It appears that this wallet is locked with an encrypted Entropy. Creating an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.",
+    "unlockWalletButton": "Unlock this wallet",
+    "importInstead": "Import account instead"
+  },
+
+  "CreateAccountForm": {
+    "accountNameValidation": "Account Name cannot be more than 64 characters.",
+    "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
+    "passwordMin": "Password must be at least 8 characters in length.",
+    "passwordMax": "Passwords cannot be more than 99 characters.",
+    "passwordRequired": "Password is required",
+    "passwordConfirmationRef": "Must match Password",
+    "passwordConfirmationRequired": "Password Confirmation is required",
+    "nameLabel": "Account Name (optional)",
+    "passwordLabel": "Password",
+    "passwordConfirmationLabel": "Password Confirmation",
+    "acceptTerms": "I have read and accept the",
+    "acceptTermsButton": "Terms of Use",
+    "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
+    "createAccountButton": "Create Account"
   }
 }

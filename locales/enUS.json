@@ -96,5 +96,14 @@
     "panelDescription": "This panel allows you to customize the behavior of MobileCoinD as well as perform some basic resets.",
     "daemonDescription": "The MobileCoin Daemon, or MobileCoinD, is a standalone executable which provides blockchain synchronization and wallet services.",
     "daemonDescriptionContinued": "It creates encrypted, attested connections to validator nodes who are participating in federated voting in order to get the current block height, block headers, and to submit transactions. These validator nodes are considered highly trusted due to their use of SGX, and they are used as a reliable source for block information as well as to validate and process the proposed transactions from MobileCoinD."
+  },
+
+  "LeaveMobilecoindRunning": {
+    "formLabel": "MobileCoinD Background Process",
+    "ternaryOn": "Leave MobileCoinD Active is on",
+    "ternaryOff": "Leave MobileCoinD Active is off",
+    "ternaryWillSync": "MobileCoinD will continue to sync when you exit the wallet.",
+    "ternaryWillNotSync": "MobileCoinD will not continue to sync when you exit the wallet.",
+    "defaultDescription": "By default, MobileCoinD terminates when you exit the wallet. This setting allows you to leave MobileCoinD syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches."
   }
 }

@@ -144,5 +144,18 @@
   "BalanceIndicator": {
     "title": "Balance",
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
+  },
+
+  "AccountCard": {
+    "clipboardGift": "Gift Code copied to clipboard!",
+    "clipboardAddress": "Address Code copied to clipboard!",
+    "giftQR": "Gift QR Code",
+    "accountQR": "Account QR Code",
+    "giftHeader": "Gift Code",
+    "accountHeader": "Account Address Code",
+    "accountTooltip": "Show Account Address Code",
+    "mobUrlTooltip": "Show MobURL QR Code",
+    "copyTooltip": "Click to copy to clipboard.",
+    "unnamed": "Unnamed Account"
   }
 }

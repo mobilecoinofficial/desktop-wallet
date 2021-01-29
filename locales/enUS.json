@@ -129,5 +129,15 @@
     "formLabel": "MobileCoinD Directory",
     "ledgerDbPathHeader": "Ledger Database Path:",
     "mobilecoindDbPathHeader": "MobileCoinD Database Path:"
+  },
+
+  "ResetLedger": {
+    "formLabel": "Reset Your Ledger",
+    "description": "In rare cases, your local database may become corrupted and permanently out-of-sync with the ledger. If this occurs, please manually reset your ledger.",
+    "resetButton": "Reset Ledger",
+    "resetLedgerModal": "Reset the ledger?",
+    "resetLedgerModalDescription": "Resetting the ledger will restart the wallet. You will need to re-sync the ledger from 0. The app will refresh, and you will need to re-enter your password.",
+    "cancelButton": "Cancel",
+    "confirmButton": "Confirm"
   }
 }

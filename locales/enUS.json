@@ -6,8 +6,8 @@
   },
 
   "UnlockWalletForm": {
-    "pwRequired": "Password is required",
-    "pwLabel": "Password",
+    "passwordRequired": "Password is required",
+    "passwordLabel": "Password",
     "unlockWalletButton": "Unlock Wallet"
   },
 
@@ -64,5 +64,80 @@
     "acceptTermsButton": "Terms of Use",
     "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
     "createAccountButton": "Create Account"
+  },
+
+  "NotFoundView": {
+    "header": "404: The page you are looking for isn’t here",
+    "description": "You should never see this page. If you do, an engineer messed up.",
+    "backButton": "Back to home"
+  },
+
+  "ChangePasswordView": {
+    "settingsBreadcrumb": "Settings",
+    "changePasswordBreadcrumb": "Change Password",
+    "description": "Changing your password will change how we encrypt your secret Entropy. You should always use strong (unguessable) passwords and change them regularly.",
+    "instructions": "To change your current password, please enter your current password and your new password.",
+    "passwordMin": "New Password must be at least 8 characters in length.",
+    "passwordMax": "Passwords cannot be more than 99 characters.",
+    "passwordRequired": "New Password is required",
+    "passwordConfirmationRef": "Must match New Password",
+    "passwordConfirmationRequired": "New Password Confirmation is required",
+    "enqueue": "Successfully change password!",
+    "formLabel": "Change Password",
+    "oldPasswordLabel": "Old Password",
+    "newPasswordLabel": "New Password",
+    "passwordConfirmationLabel": "Confirm New Password",
+    "changePasswordButton": "Change Password"
+  },
+
+  "ConfigureMobilecoindView": {
+    "settingsBreadcrumb": "Settings",
+    "configureMobilecoindBreadcrumb": "Configure MobileCoinD",
+    "panelDescription": "This panel allows you to customize the behavior of MobileCoinD as well as perform some basic resets.",
+    "daemonDescription": "The MobileCoin Daemon, or MobileCoinD, is a standalone executable which provides blockchain synchronization and wallet services.",
+    "daemonDescriptionContinued": "It creates encrypted, attested connections to validator nodes who are participating in federated voting in order to get the current block height, block headers, and to submit transactions. These validator nodes are considered highly trusted due to their use of SGX, and they are used as a reliable source for block information as well as to validate and process the proposed transactions from MobileCoinD."
+  },
+
+  "LeaveMobilecoindRunning": {
+    "formLabel": "MobileCoinD Background Process",
+    "ternaryOn": "Leave MobileCoinD Active is on",
+    "ternaryOff": "Leave MobileCoinD Active is off",
+    "ternaryWillSync": "MobileCoinD will continue to sync when you exit the wallet.",
+    "ternaryWillNotSync": "MobileCoinD will not continue to sync when you exit the wallet.",
+    "defaultDescription": "By default, MobileCoinD terminates when you exit the wallet. This setting allows you to leave MobileCoinD syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches."
+  },
+
+  "LedgerStatus": {
+    "networkBlocks": "Network Blocks",
+    "networkBlocksDescription": "Network Blocks represent the total blocks within the MobileCoin network. This is the value your Local and Monitor Blocks needs to hit to be 100% synced.",
+    "localBlocks": "Local Blocks",
+    "localBlocksDescription": "Local Blocks shows the blocks your mobilecoind has synced the ledger.",
+    "monitorBlocks": "Monitor Blocks",
+    "monitorBlocksDescription": "Monitor Blocks shows the blocks that a specific monitor has synced. Each account has its own Monitor Blocks count. Once this value is synced, you will immediately see the effects of transactions.",
+    "statusCopyError": "There's been an error in the ledger. Please reset the ledger at the bottom of this page.",
+    "statusCopyBelow90": "The ledger is syncing. This may take awhile.",
+    "statusCopyAbove90": "The ledger is syncing.",
+    "statusCopy100": "The ledger is synced.",
+    "blockType": "Block Type",
+    "formLabel": "Ledger Status",
+    "height": "Current Height",
+    "maxHeight": "Maximum Height",
+    "synced": "% Synced"
+  },
+
+  "MobilecoindDirectory": {
+    "formLabel": "MobileCoinD Directory",
+    "ledgerDbPathHeader": "Ledger Database Path:",
+    "mobilecoindDbPathHeader": "MobileCoinD Database Path:"
+  },
+
+  "ResetLedger": {
+    "formLabel": "Reset Your Ledger",
+    "description": "In rare cases, your local database may become corrupted and permanently out-of-sync with the ledger. If this occurs, please manually reset your ledger.",
+    "resetButton": "Reset Ledger",
+    "resetLedgerModal": "Reset the ledger?",
+    "resetLedgerModalDescription": "Resetting the ledger will restart the wallet. You will need to re-sync the ledger from 0. The app will refresh, and you will need to re-enter your password.",
+    "cancelButton": "Cancel",
+    "confirmButton": "Confirm"
   }
 }

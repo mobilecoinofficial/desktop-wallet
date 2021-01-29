@@ -72,7 +72,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
   };
 
   const validationSchema = Yup.object().shape({
-    password: Yup.string().required(t('pwRequired')),
+    password: Yup.string().required(t('passwordRequired')),
   });
 
   return (
@@ -91,7 +91,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
               id="passwordField"
               component={TextField}
               fullWidth
-              label={t('pwLabel')}
+              label={t('passwordLabel')}
               name="password"
               type="password"
             />

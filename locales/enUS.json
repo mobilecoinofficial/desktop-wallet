@@ -170,5 +170,24 @@
   "GiftingView": {
     "giftMOB": "Gift MOB",
     "openGift": "Open Gift"
+  },
+
+  "BuildGiftPanel": {
+    "giftCodeCopied": "Gift Code copied to clipboard!",
+    "deleted": "Deleted!",
+    "title": "You can package and gift your MOB!",
+    "description": "Use this form to create redeemable gift codes with MOB inside. To create a gift code, you simply need to input the value you would like to gift. You will then be asked to confirm the contents of the gift and secure the gifts secret code.",
+    "manageGiftCodes": "Manage Gift Codes",
+    "manageGiftCodesDescription": "When you create a gift, this wallet will store its code and value. You can click to copy at any time. If you do not wish to store the gift code anymore, you can click the trashcan icon to delete.",
+    "shortened": "Shortened Gift Code",
+    "value": "Value",
+    "clickToCopy": "Click to copy to clipboard.",
+    "clickToDelete": "Click to delete gift code.",
+    "deleteDialogTitle": "Delete Gift Code?",
+    "deleteDialogDescription": "If this gift has been claimed, or if you do not want to store the code and value anymore, you can delete code here.",
+    "giftValue": "Gift Value:",
+    "deleteDialogText": "Deleting will not cancel the gift, and a user must claim the gift with the code.",
+    "cancelButton": "Cancel",
+    "deleteButton": "Delete"
   }
 }

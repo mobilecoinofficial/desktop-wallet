@@ -23,6 +23,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 
 import { AccountCard, MOBNumberFormat } from '../../../../components';
 import ShortCode from '../../../../components/ShortCode';
@@ -60,6 +61,8 @@ const BuildGiftPanel: FC = () => {
     EMPTY_PENDING_DELETE_CODE,
   );
 
+  const { t } = useTranslation('BuildGiftPanel');
+
   const handleDialogOpen = (giftCode: string, giftValue: string) => {
     return () => {
       setDialogOpen(true);
@@ -75,7 +78,7 @@ const BuildGiftPanel: FC = () => {
   const handleCopyClick = (code: string) => {
     return () => {
       clipboard.writeText(code);
-      enqueueSnackbar('Gift Code copied to clipboard!', {
+      enqueueSnackbar(t('giftCodeCopied'), {
         variant: 'success',
       });
     };
@@ -85,7 +88,7 @@ const BuildGiftPanel: FC = () => {
     handleDialogClose();
     try {
       deleteStoredGiftB58Code(pendingDeleteCode[0]);
-      enqueueSnackbar('Deleted!', {
+      enqueueSnackbar(t('deleted'), {
         variant: 'success',
       });
     } catch (err) {
@@ -107,14 +110,11 @@ const BuildGiftPanel: FC = () => {
       >
         <Box>
           <Typography variant="body2" color="textPrimary">
-            You can package and gift your MOB!
+            {t('title')}
           </Typography>
           <Box p={1} />
           <Typography variant="body2" color="textSecondary">
-            Use this form to create redeemable gift codes with MOB inside. To
-            create a gift code, you simply need to input the value you would
-            like to gift. You will then be asked to confirm the contents of the
-            gift and secure the gift&apos;s secret code.
+            {t('description')}
           </Typography>
         </Box>
       </Box>
@@ -125,13 +125,11 @@ const BuildGiftPanel: FC = () => {
         <>
           <Box pt={4}>
             <Typography variant="body2" color="textPrimary">
-              Manage Gift Codes
+              {t('manageGiftCodes')}
             </Typography>
             <Box p={1} />
             <Typography variant="body2" color="textSecondary">
-              When you create a gift, this wallet will store its code and value.
-              You can click to copy at any time. If you do not wish to store the
-              gift code anymore, you can click the trashcan icon to delete.
+              {t('manageGiftCodesDescription')}
             </Typography>
           </Box>
           <Box py={2}>
@@ -139,8 +137,8 @@ const BuildGiftPanel: FC = () => {
               <Table size="small" aria-label="block status">
                 <TableHead component={Paper}>
                   <TableRow>
-                    <TableCell>Shortened Gift Code</TableCell>
-                    <TableCell>Value</TableCell>
+                    <TableCell>{t('shortened')}</TableCell>
+                    <TableCell>{t('value')}</TableCell>
                     <TableCell />
                   </TableRow>
                 </TableHead>
@@ -160,7 +158,7 @@ const BuildGiftPanel: FC = () => {
                         <TableCell align="right">
                           <Box display="flex" justifyContent="flex-end">
                             <Tooltip
-                              title="Click to copy to clipboard."
+                              title={t('clickToCopy')}
                               placement="right"
                               arrow
                             >
@@ -175,7 +173,7 @@ const BuildGiftPanel: FC = () => {
                               </div>
                             </Tooltip>
                             <Tooltip
-                              title="Click to delete gift code."
+                              title={t('clickToDelete')}
                               placement="right"
                               arrow
                             >
@@ -207,11 +205,10 @@ const BuildGiftPanel: FC = () => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">Delete Gift Code?</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{t('deleteDialogTitle')}</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                If this gift has been claimed, or if you do not want to store
-                the code and value anymore, you can delete code here.
+                {t('deleteDialogDescription')}
               </DialogContentText>
               <AccountCard
                 isGift
@@ -222,7 +219,7 @@ const BuildGiftPanel: FC = () => {
                 }}
               />
               <Box py={2} display="flex" justifyContent="space-between">
-                <Typography color="textPrimary">Gift Value:</Typography>
+                <Typography color="textPrimary">{t('giftValue')}</Typography>
                 <MOBNumberFormat
                   value={pendingDeleteCode[1]}
                   valueUnit="pMOB"
@@ -230,16 +227,15 @@ const BuildGiftPanel: FC = () => {
                 />
               </Box>
               <DialogContentText color="textPrimary">
-                Deleting will not cancel the gift, and a user must claim the
-                gift with the code.
+                {t('deleteDialogText')}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleDialogClose} color="primary" autoFocus>
-                Cancel
+                {t('cancelButton')}
               </Button>
               <Button onClick={handleConfirmDelete} color="primary">
-                Delete
+                {t('deleteButton')}
               </Button>
             </DialogActions>
           </Dialog>

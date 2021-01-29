@@ -221,6 +221,11 @@
     "cancel": "Cancel",
     "confirmGift": "Confirm Gift",
     "secureCode": "Please Secure Code"
-  }
+  },
 
+  "ConsumeGiftPanel": {
+    "balance": "Balance",
+    "syncMessage": "Balance may be out-of-date while wallet syncs with ledger.",
+    "description": "You may use this form to collect gift codes. Simply enter the Gift Code and confirm you want to consume the gift into your wallet."
+  }
 }

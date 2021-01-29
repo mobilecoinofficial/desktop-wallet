@@ -123,5 +123,11 @@
     "height": "Current Height",
     "maxHeight": "Maximum Height",
     "synced": "% Synced"
+  },
+
+  "MobilecoindDirectory": {
+    "formLabel": "MobileCoinD Directory",
+    "ledgerDbPathHeader": "Ledger Database Path:",
+    "mobilecoindDbPathHeader": "MobileCoinD Database Path:"
   }
 }

@@ -139,5 +139,10 @@
     "resetLedgerModalDescription": "Resetting the ledger will restart the wallet. You will need to re-sync the ledger from 0. The app will refresh, and you will need to re-enter your password.",
     "cancelButton": "Cancel",
     "confirmButton": "Confirm"
+  },
+
+  "BalanceIndicator": {
+    "title": "Balance",
+    "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
   }
 }

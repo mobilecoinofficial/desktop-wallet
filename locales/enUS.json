@@ -88,5 +88,13 @@
     "newPasswordLabel": "New Password",
     "passwordConfirmationLabel": "Confirm New Password",
     "changePasswordButton": "Change Password"
+  },
+
+  "ConfigureMobilecoindView": {
+    "settingsBreadcrumb": "Settings",
+    "configureMobilecoindBreadcrumb": "Configure MobileCoinD",
+    "panelDescription": "This panel allows you to customize the behavior of MobileCoinD as well as perform some basic resets.",
+    "daemonDescription": "The MobileCoin Daemon, or MobileCoinD, is a standalone executable which provides blockchain synchronization and wallet services.",
+    "daemonDescriptionContinued": "It creates encrypted, attested connections to validator nodes who are participating in federated voting in order to get the current block height, block headers, and to submit transactions. These validator nodes are considered highly trusted due to their use of SGX, and they are used as a reliable source for block information as well as to validate and process the proposed transactions from MobileCoinD."
   }
 }

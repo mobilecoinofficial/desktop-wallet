@@ -157,5 +157,18 @@
     "mobUrlTooltip": "Show MobURL QR Code",
     "copyTooltip": "Click to copy to clipboard.",
     "unnamed": "Unnamed Account"
+  },
+
+  "CloseWalletModal": {
+    "closeWalletButton": "Close Wallet",
+    "closeVerifyHeader": "Close and Secure Wallet?",
+    "closeVerifyBody": "Are you sure you want to close and secure the wallet?",
+    "closeVerifyDeny": "No, Keep Wallet Open",
+    "closeVerifyConfirm": "Yes, Close Wallet"
+  },
+
+  "GiftingView": {
+    "giftMOB": "Gift MOB",
+    "openGift": "Open Gift"
   }
 }

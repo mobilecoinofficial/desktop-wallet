@@ -105,5 +105,23 @@
     "ternaryWillSync": "MobileCoinD will continue to sync when you exit the wallet.",
     "ternaryWillNotSync": "MobileCoinD will not continue to sync when you exit the wallet.",
     "defaultDescription": "By default, MobileCoinD terminates when you exit the wallet. This setting allows you to leave MobileCoinD syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches."
+  },
+
+  "LedgerStatus": {
+    "networkBlocks": "Network Blocks",
+    "networkBlocksDescription": "Network Blocks represent the total blocks within the MobileCoin network. This is the value your Local and Monitor Blocks needs to hit to be 100% synced.",
+    "localBlocks": "Local Blocks",
+    "localBlocksDescription": "Local Blocks shows the blocks your mobilecoind has synced the ledger.",
+    "monitorBlocks": "Monitor Blocks",
+    "monitorBlocksDescription": "Monitor Blocks shows the blocks that a specific monitor has synced. Each account has its own Monitor Blocks count. Once this value is synced, you will immediately see the effects of transactions.",
+    "statusCopyError": "There's been an error in the ledger. Please reset the ledger at the bottom of this page.",
+    "statusCopyBelow90": "The ledger is syncing. This may take awhile.",
+    "statusCopyAbove90": "The ledger is syncing.",
+    "statusCopy100": "The ledger is synced.",
+    "blockType": "Block Type",
+    "formLabel": "Ledger Status",
+    "height": "Current Height",
+    "maxHeight": "Maximum Height",
+    "synced": "% Synced"
   }
 }

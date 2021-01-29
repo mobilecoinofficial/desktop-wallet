@@ -70,5 +70,23 @@
     "header": "404: The page you are looking for isn’t here",
     "description": "You should never see this page. If you do, an engineer messed up.",
     "backButton": "Back to home"
+  },
+
+  "ChangePasswordView": {
+    "settingsBreadcrumb": "Settings",
+    "changePasswordBreadcrumb": "Change Password",
+    "description": "Changing your password will change how we encrypt your secret Entropy. You should always use strong (unguessable) passwords and change them regularly.",
+    "instructions": "To change your current password, please enter your current password and your new password.",
+    "passwordMin": "New Password must be at least 8 characters in length.",
+    "passwordMax": "Passwords cannot be more than 99 characters.",
+    "passwordRequired": "New Password is required",
+    "passwordConfirmationRef": "Must match New Password",
+    "passwordConfirmationRequired": "New Password Confirmation is required",
+    "enqueue": "Successfully change password!",
+    "formLabel": "Change Password",
+    "oldPasswordLabel": "Old Password",
+    "newPasswordLabel": "New Password",
+    "passwordConfirmationLabel": "Confirm New Password",
+    "changePasswordButton": "Change Password"
   }
 }

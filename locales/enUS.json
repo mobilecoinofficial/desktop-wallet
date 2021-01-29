@@ -189,5 +189,38 @@
     "deleteDialogText": "Deleting will not cancel the gift, and a user must claim the gift with the code.",
     "cancelButton": "Cancel",
     "deleteButton": "Delete"
+  },
+
+  "BuildGiftForm": {
+    "giftCanceled": "Gift Canceled",
+    "confirmationNotFound": "Could not find confirmation",
+    "giftCreated": "Gift Created! Your balance will update shortly.",
+    "error": "Hmm, something went wrong.",
+    "unnamed": "Unnamed Account",
+    "select": "Select Account",
+    "accountName": "Account Name",
+    "accountBalance": "Account Balance",
+    "errorFee": "Please reserve 0.01 MOB for transaction fee.",
+    "positiveValidation": "A positive, non-zero amount is required to gift MOB.",
+    "positiveValidationRequired": "A positive, non-zero amount is required to gift MOB.",
+    "errorBuild": "Could not build gift code.",
+    "giftDetails": "Gift Details",
+    "mobLabel": "MOB Amount",
+    "errorSyncBeforeSending": "Wallet must sync with ledger before sending gifts.",
+    "createGift": "Create Gift",
+    "walletSyncing": "Wallet syncing",
+    "giftConfirmation": "Gift Confirmation",
+    "giftConfirmationDescription": "Please check and confirm your gift intent",
+    "giftValue": "Gift Value",
+    "fee": "Fee",
+    "total": "Total",
+    "remaining": "Remaining Balance",
+    "mobWillBeSent": "MOB will be sent to this gift card after you confirm.",
+    "pending": "Gift Code (Pending)",
+    "showCode": "Show Gift Code",
+    "cancel": "Cancel",
+    "confirmGift": "Confirm Gift",
+    "secureCode": "Please Secure Code"
   }
+
 }

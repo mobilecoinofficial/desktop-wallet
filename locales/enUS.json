@@ -257,5 +257,18 @@
   "PrivacyPolicyView": {
     "settings": "Settings",
     "privacyPolicy": "Privacy Policy"
+  },
+
+  "RetrieveEntropyView": {
+    "settings": "Settings",
+    "retrieveSecret": "Retrieve Secret Entropy",
+    "header": "Your Entropy is the",
+    "description": "that unlocks your wallet and allows you to use MobileCoin. It is unique to your account. It is important that you never share this code. You may wish to use this code in a secure, safe manner. This wallet uses your password to store an encrypted Entropy.",
+    "entropyCanBeUsed": "The Entropy can be used to import your wallet in case your device is damaged or lost. It allows you to add your account to other wallets.",
+    "misplacedYourEntropy": "If you have forgotten or misplaced your Entropy, you may retrieve here with your password.",
+    "passwordRequired": "Password is required",
+    "error": "Hmm, something went wrong.",
+    "retrieveEntropy": "Retrieve Entropy",
+    "password": "Password"
   }
 }

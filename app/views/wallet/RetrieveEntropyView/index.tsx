@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 
@@ -84,6 +85,7 @@ const RetrieveEntropyView: FC = () => {
   const handleCloseModal = () => {
     setEntropy(null);
   };
+  const { t } = useTranslation('RetrieveEntropyView');
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -93,9 +95,9 @@ const RetrieveEntropyView: FC = () => {
           to={routePaths.APP_SETTINGS}
           component={RouterLink}
         >
-          <Typography color="textSecondary">Settings</Typography>
+          <Typography color="textSecondary">{t('settings')}</Typography>
         </Link>
-        <Typography color="textPrimary">Retrieve Secret Entropy</Typography>
+        <Typography color="textPrimary">{t('retrieveSecret')}</Typography>
       </Breadcrumbs>
       <Box
         alignItems="center"
@@ -106,28 +108,23 @@ const RetrieveEntropyView: FC = () => {
       >
         <Box>
           <Typography variant="body2" display="inline" color="textSecondary">
-            Your Entropy is the
+            {t('header')}
           </Typography>
           <Typography variant="body2" display="inline" color="primary">
             {' SECRET KEY '}
           </Typography>
           <Typography variant="body2" display="inline" color="textSecondary">
-            that unlocks your wallet and allows you to use MobileCoin. It is
-            unique to your account. It is important that you never share this
-            code. You may wish to use this code in a secure, safe manner. This
-            wallet uses your password to store an encrypted Entropy.
+            {t('description')}
           </Typography>
         </Box>
         <br />
         <Typography variant="body2" color="textSecondary">
-          The Entropy can be used to import your wallet in case your device is
-          damaged or lost. It allows you to add your account to other wallets.
+          {t('entropyCanBeUsed')}
         </Typography>
         <br />
 
         <Typography variant="body2" color="textSecondary">
-          If you have forgotten or misplaced your Entropy, you may retrieve here
-          with your password.
+          {t('misplacedYourEntropy')}
         </Typography>
       </Box>
       <Box flexGrow={1} mt={3}>
@@ -138,7 +135,7 @@ const RetrieveEntropyView: FC = () => {
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-            password: Yup.string().required('Password is required'),
+            password: Yup.string().required(t('passwordRequired')),
           })}
           validateOnMount
           onSubmit={async (
@@ -152,7 +149,7 @@ const RetrieveEntropyView: FC = () => {
 
               const entropyString = await retrieveEntropy(values.password);
 
-              if (typeof entropyString !== 'string') throw new Error('Something went wrong.');
+              if (typeof entropyString !== 'string') throw new Error(t('error'));
               if (isMountedRef.current) {
                 setStatus({ success: true });
                 setSubmitting(false);
@@ -175,12 +172,12 @@ const RetrieveEntropyView: FC = () => {
               <Form>
                 <Box pt={4}>
                   <FormLabel component="legend">
-                    <Typography color="primary">Retrieve Entropy</Typography>
+                    <Typography color="primary">{t('retrieveEntropy')}</Typography>
                   </FormLabel>
                   <Field
                     component={TextField}
                     fullWidth
-                    label="Password"
+                    label={t('password')}
                     margin="normal"
                     name="password"
                     type="password"
@@ -196,7 +193,7 @@ const RetrieveEntropyView: FC = () => {
                   onClick={submitForm}
                   isSubmitting={isSubmitting}
                 >
-                  Retrieve Entropy
+                  {t('retrieveEntropy')}
                 </SubmitButton>
               </Form>
             );

@@ -278,5 +278,13 @@
     "hide": "Hide Secret Entropy",
     "show": "Show Secret Entropy",
     "secured": "I have secured my Entropy"
+  },
+
+  "SettingsOptionsItem": {
+    "changePassword": "Change Password",
+    "retrieveEntropy": "Retrieve Secret Entropy",
+    "terms": "Terms of Use",
+    "privacyPolicy": "Privacy Policy",
+    "configureMobileCoinD": "Configure MobileCoinD"
   }
 }

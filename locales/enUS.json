@@ -286,5 +286,10 @@
     "terms": "Terms of Use",
     "privacyPolicy": "Privacy Policy",
     "configureMobileCoinD": "Configure MobileCoinD"
+  },
+
+  "TermsOfUseView": {
+    "settings": "Settings",
+    "terms": "Terms of Use"
   }
 }

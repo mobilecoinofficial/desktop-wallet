@@ -13,6 +13,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../theme';
 import type Account from '../types/Account';
@@ -64,6 +65,7 @@ const AccountCard: FC<AccountCardProps> = ({
   const [isQRCode, setIsQRCode] = useState(false);
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation('AccountCard');
 
   const { b58Code, mobUrl, name } = account;
 
@@ -72,8 +74,8 @@ const AccountCard: FC<AccountCardProps> = ({
       clipboard.writeText(code);
       enqueueSnackbar(
         isGift
-          ? 'Gift Code copied to clipboard!'
-          : 'Address Code copied to clipboard!',
+          ? t('clipboardGift')
+          : t('clipboardAddress'),
         {
           variant: 'success',
         },
@@ -87,9 +89,9 @@ const AccountCard: FC<AccountCardProps> = ({
 
   let headerString = '';
   if (isQRCode) {
-    headerString = isGift ? 'Gift QR Code' : 'Account QR Code';
+    headerString = isGift ? t('giftQR') : t('accountQR');
   } else {
-    headerString = isGift ? 'Gift Code' : 'Account Address Code';
+    headerString = isGift ? t('giftHeader') : t('accountHeader');
   }
 
   return (
@@ -110,7 +112,7 @@ const AccountCard: FC<AccountCardProps> = ({
               <LogoIcon />
               <Tooltip
                 title={
-                  isQRCode ? 'Show Account Address Code' : 'Show MobURL QR Code'
+                  isQRCode ? t('accountTooltip') : t('mobUrlTooltip')
                 }
                 placement="right"
                 arrow
@@ -140,7 +142,7 @@ const AccountCard: FC<AccountCardProps> = ({
                 />
               ) : (
                 <Tooltip
-                  title="Click to copy to clipboard."
+                  title={t('copyTooltip')}
                   placement="right"
                   arrow
                 >
@@ -163,7 +165,7 @@ const AccountCard: FC<AccountCardProps> = ({
                 color="textSecondary"
                 variant="h4"
               >
-                {name || 'Unnamed Account'}
+                {name || t('unnamed')}
               </Typography>
               <Typography
                 data-testid="account-card-short-code"

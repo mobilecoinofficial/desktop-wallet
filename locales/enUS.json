@@ -291,5 +291,10 @@
   "TermsOfUseView": {
     "settings": "Settings",
     "terms": "Terms of Use"
+  },
+
+  "TransactionView": {
+    "send": "Send MOB",
+    "receive": "Receive MOB"
   }
 }

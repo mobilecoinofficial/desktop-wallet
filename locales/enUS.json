@@ -300,5 +300,36 @@
 
   "SendMobPanel": {
     "header": "Please enter the amount of MOB you want to send and the public address of the recipient."
+  },
+
+  "SendMobForm": {
+    "error": "Could not build transaction.",
+    "transactionCanceled": "Transaction Canceled",
+    "unnamed": "Unnamed Account",
+    "select": "Select Account",
+    "accountName": "Account Name",
+    "accountBalance": "Account Balance",
+    "errorFee": "Please reserve 0.01 MOB for transaction fee.",
+    "positiveValidation": "A positive, non-zero amount is required to send MOB.",
+    "positiveValidationRequired": "A positive, non-zero amount is required to send MOB.",
+    "addressRequired": "A Public Address is required to send MOB.",
+    "success": "Successfully sent ",
+    "mob": "MOB",
+    "transaction": "Transaction Details",
+    "recipient": "Recipient Public Address",
+    "mobAmount": "MOB Amount",
+    "mustSync": "Wallet must sync with ledger before sending MOB.",
+    "send": "Send Payment",
+    "syncing": "Wallet syncing...",
+    "confirm": "Send MOB Confirmation",
+    "intent": "Please check and confirm your payment intent",
+    "amount": "Amount",
+    "fee": "Fee",
+    "total": "Total",
+    "remaining": "Remaining Balance",
+    "recipientPlus": "Recipient Address (Their Address)",
+    "senderPlus": "Sender Address (Your Address)",
+    "cancel": "Cancel",
+    "confirmSend": "Confirm Send"
   }
 }

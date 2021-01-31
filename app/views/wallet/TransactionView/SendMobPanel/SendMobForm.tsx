@@ -20,6 +20,7 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { RadioGroup, TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
@@ -115,6 +116,7 @@ function commafy(num: string) {
 const SendMobForm: FC = () => {
   const classes = useStyles();
   const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
+  const { t } = useTranslation('SendMobForm');
 
   const [open, setOpen] = useState(false);
   const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
@@ -150,6 +152,7 @@ const SendMobForm: FC = () => {
   const mockMultipleAccounts: Array<Account> = [
     {
       b58Code: b58Code || '', // TODO -- This hack is to bypass the null state hack on initailization
+      // eslint-disable-next-line max-len
       balance: balance || BigInt(0), // once we move to multiple accounts, we won't have to null the values of an account (better typing!)
       name: accountName,
     },
@@ -164,7 +167,7 @@ const SendMobForm: FC = () => {
           convertMobStringToPicoMobBigInt(values.feeAmount),
           values.recipientPublicAddress,
         );
-        if (result === null || result === undefined) throw new Error('Could not build transaction.');
+        if (result === null || result === undefined) throw new Error(t('error'));
 
         const {
           feeConfirmation,
@@ -195,7 +198,7 @@ const SendMobForm: FC = () => {
   ) => {
     return () => {
       setSlideExitSpeed(0);
-      enqueueSnackbar('Transaction Canceled', {
+      enqueueSnackbar(t('transactionCanceled'), {
         variant: 'warning',
       });
       setOpen(false);
@@ -209,7 +212,7 @@ const SendMobForm: FC = () => {
   const createAccountLabel = (account: Account) => {
     const name = account.name && account.name.length > 0
       ? `${account.name}: `
-      : 'Unnamed Account: ';
+      : `${t('unnamed')}:`;
     return (
       <Box display="flex" justifyContent="space-between">
         <Typography>
@@ -233,12 +236,12 @@ const SendMobForm: FC = () => {
     return (
       <Box pt={2}>
         <FormLabel className={classes.form} component="legend">
-          <Typography color="primary">Select Account</Typography>
+          <Typography color="primary">{t('select')}</Typography>
         </FormLabel>
         <Field component={RadioGroup} name="senderPublicAddress">
           <Box display="flex" justifyContent="space-between">
-            <Typography>Account Name</Typography>
-            <Typography>Account Balance</Typography>
+            <Typography>{t('accountName')}</Typography>
+            <Typography>{t('accountBalance')}</Typography>
           </Box>
           {accounts.map((account: Account) => {
             return (
@@ -264,7 +267,7 @@ const SendMobForm: FC = () => {
       const valueAsPicoMob = BigInt(valueString.replace('.', ''));
       if (valueAsPicoMob + fee > selectedBalance) {
         // TODO - probably want to replace this before launch
-        error = 'Please reserve 0.01 MOB for transaction fee.';
+        error = t('errorFee');
       }
       return error;
     };
@@ -289,10 +292,10 @@ const SendMobForm: FC = () => {
       }}
       validationSchema={Yup.object().shape({
         mobAmount: Yup.number()
-          .positive('A positive, non-zero amount is required to send MOB.')
-          .required('A positive, non-zero amount is required to send MOB.'),
+          .positive(t('positiveValidation'))
+          .required(t('positiveValidationRequired')),
         recipientPublicAddress: Yup.string().required(
-          'A Public Address is required to send MOB.',
+          t('addressRequired'),
         ),
       })}
       validateOnMount
@@ -325,7 +328,7 @@ const SendMobForm: FC = () => {
             );
 
             enqueueSnackbar(
-              `Successfully sent ${totalValueConfirmationAsMobComma} MOB!`,
+              `${t('success')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`,
               {
                 variant: 'success',
               },
@@ -365,6 +368,7 @@ const SendMobForm: FC = () => {
         // NOTE: because this is just a display for the value up to 3 dec mob,
         // We do not need the precision to be BigInt
 
+        // eslint-disable-next-line operator-linebreak
         const selectedBalance =
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
@@ -394,12 +398,12 @@ const SendMobForm: FC = () => {
             )}
             <Box pt={4}>
               <FormLabel component="legend">
-                <Typography color="primary">Transaction Details</Typography>
+                <Typography color="primary">{t('transaction')}</Typography>
               </FormLabel>
               <Field
                 component={TextField}
                 fullWidth
-                label="Recipient Public Address"
+                label={t('recipient')}
                 margin="normal"
                 name="recipientPublicAddress"
                 type="text"
@@ -407,7 +411,7 @@ const SendMobForm: FC = () => {
               <Field
                 component={TextField}
                 fullWidth
-                label="MOB Amount"
+                label={t('mobAmount')}
                 margin="normal"
                 name="mobAmount"
                 id="mobAmount"
@@ -435,7 +439,7 @@ const SendMobForm: FC = () => {
             {!isSynced && (
               <Box mt={3}>
                 <FormHelperText error>
-                  Wallet must sync with ledger before sending MOB.
+                  {t('mustSync')}
                 </FormHelperText>
               </Box>
             )}
@@ -444,7 +448,7 @@ const SendMobForm: FC = () => {
               onClick={handleOpen(values, setStatus, setErrors)}
               isSubmitting={isAwaitingConformation || isSubmitting}
             >
-              {isSynced ? 'Send Payment' : 'Wallet syncing...'}
+              {isSynced ? t('send') : t('syncing')}
             </SubmitButton>
             {/* TODO - disable model if invalid */}
             <Modal
@@ -463,14 +467,18 @@ const SendMobForm: FC = () => {
             >
               <Slide in={open} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <div className={classes.paper}>
-                  <h2 id="transition-modal-title">Send MOB Confirmation</h2>
+                  <h2 id="transition-modal-title">{t('confirm')}</h2>
                   <p id="transition-modal-description">
-                    Please check and confirm your payment intent:
+                    {t('intent')}
+                    :
                   </p>
                   <br />
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Account Balance:</Typography>
+                    <Typography>
+                      {t('accountBalance')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -485,7 +493,10 @@ const SendMobForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="primary">Amount:</Typography>
+                    <Typography color="primary">
+                      {t('amount')}
+                      :
+                    </Typography>
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -496,7 +507,10 @@ const SendMobForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Fee:</Typography>
+                    <Typography>
+                      {t('fee')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -507,7 +521,10 @@ const SendMobForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Total:</Typography>
+                    <Typography>
+                      {t('total')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -521,7 +538,10 @@ const SendMobForm: FC = () => {
                     <Typography>---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Remaining Balance:</Typography>
+                    <Typography>
+                      {t('remaining')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -533,7 +553,7 @@ const SendMobForm: FC = () => {
                   <br />
 
                   <p className={classes.center}>
-                    Recipient Address (Their Address)
+                    {t('recipientPlus')}
                   </p>
                   <LongCode
                     code={confirmation?.txProposalReceiverB58Code}
@@ -543,7 +563,7 @@ const SendMobForm: FC = () => {
                   <br />
 
                   <p className={classes.center}>
-                    Sender Address (Your Address)
+                    {t('senderPlus')}
                   </p>
                   <LongCode
                     code={values.senderPublicAddress}
@@ -562,7 +582,7 @@ const SendMobForm: FC = () => {
                       type="submit"
                       variant="contained"
                     >
-                      Cancel
+                      {t('cancel')}
                     </Button>
                     <Button
                       className={classes.button}
@@ -574,7 +594,7 @@ const SendMobForm: FC = () => {
                       type="submit"
                       variant="contained"
                     >
-                      Confirm Send
+                      {t('confirmSend')}
                     </Button>
                   </Box>
                 </div>

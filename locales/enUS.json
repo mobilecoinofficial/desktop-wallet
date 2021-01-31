@@ -270,5 +270,13 @@
     "error": "Hmm, something went wrong.",
     "retrieveEntropy": "Retrieve Entropy",
     "password": "Password"
+  },
+
+  "ShowRetrievedEntropyModal": {
+    "header": "This is your secret Entropy!",
+    "description": "We decrypted your Entropy and will now show you the code on your screen. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.",
+    "hide": "Hide Secret Entropy",
+    "show": "Show Secret Entropy",
+    "secured": "I have secured my Entropy"
   }
 }

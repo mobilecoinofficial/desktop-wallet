@@ -296,5 +296,9 @@
   "TransactionView": {
     "send": "Send MOB",
     "receive": "Receive MOB"
+  },
+
+  "SendMobPanel": {
+    "header": "Please enter the amount of MOB you want to send and the public address of the recipient."
   }
 }

@@ -252,5 +252,10 @@
     "newBalance": "New Balance",
     "cancel": "Cancel",
     "claimGift": "Claim Gift"
+  },
+
+  "PrivacyPolicyView": {
+    "settings": "Settings",
+    "privacyPolicy": "Privacy Policy"
   }
 }

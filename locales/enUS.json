@@ -331,5 +331,35 @@
     "senderPlus": "Sender Address (Your Address)",
     "cancel": "Cancel",
     "confirmSend": "Confirm Send"
+  },
+
+  "TermsOfUseDialog": {
+    "close": "Close Terms of Use"
+  },
+
+  "NavBar": {
+    "home": "Home",
+    "transaction": "Send/Receive",
+    "gift": "Gifting",
+    "settings": "Settings"
+  },
+
+  "SyncStatus": {
+    "synced": "100%: synced with the ledger",
+    "syncing": "Syncing with the ledger",
+    "error": "Please see Admin Panel in Settings."
+  },
+
+  "ShowEntropyModal": {
+    "header": "Welcome to the MobileCoin Desktop Wallet!",
+    "description": "We generated a random Entropy to create your new account. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.",
+    "hide": "Hide Secret Entropy",
+    "show": "Show Secret Entropy",
+    "secured": "I have secured my Entropy",
+    "confirm": "Confirm you have secured Entropy",
+    "retrieve": "If you need to see your entropy again, you may retrieve it from the Settings tab with your password. However, if you forget your password or lose this device, you will need to know your Entropy.",
+    "recommend": "We recommend storing your entropy in a secure manner.",
+    "back": "Go back...",
+    "yes": "Yes, I have secured my Entropy"
   }
 }

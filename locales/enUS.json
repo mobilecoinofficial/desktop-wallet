@@ -331,5 +331,9 @@
     "senderPlus": "Sender Address (Your Address)",
     "cancel": "Cancel",
     "confirmSend": "Confirm Send"
+  },
+
+  "TermsOfUseDialog": {
+    "close": "Close Terms of Use"
   }
 }

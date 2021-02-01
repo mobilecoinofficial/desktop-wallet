@@ -342,5 +342,11 @@
     "transaction": "Send/Receive",
     "gift": "Gifting",
     "settings": "Settings"
+  },
+
+  "SyncStatus": {
+    "synced": "100%: synced with the ledger",
+    "syncing": "Syncing with the ledger",
+    "error": "Please see Admin Panel in Settings."
   }
 }

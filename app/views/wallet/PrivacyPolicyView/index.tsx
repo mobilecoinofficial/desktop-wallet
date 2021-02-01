@@ -9,6 +9,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { PrivacyPolicy } from '../../../components';
@@ -70,6 +71,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 const PrivacyPolicyView: FC = () => {
   const classes = useStyles();
+  const { t } = useTranslation('PrivacyPolicyView');
 
   return (
     <Container className={classes.cardContainer} maxWidth="md">
@@ -79,9 +81,9 @@ const PrivacyPolicyView: FC = () => {
           to={routePaths.APP_SETTINGS}
           component={RouterLink}
         >
-          <Typography color="textSecondary">Settings</Typography>
+          <Typography color="textSecondary">{t('settings')}</Typography>
         </Link>
-        <Typography color="textPrimary">Privacy Policy</Typography>
+        <Typography color="textPrimary">{t('privacyPolicy')}</Typography>
       </Breadcrumbs>
       <Box my={3}>
         <PrivacyPolicy />

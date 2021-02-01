@@ -252,5 +252,84 @@
     "newBalance": "New Balance",
     "cancel": "Cancel",
     "claimGift": "Claim Gift"
+  },
+
+  "PrivacyPolicyView": {
+    "settings": "Settings",
+    "privacyPolicy": "Privacy Policy"
+  },
+
+  "RetrieveEntropyView": {
+    "settings": "Settings",
+    "retrieveSecret": "Retrieve Secret Entropy",
+    "header": "Your Entropy is the",
+    "description": "that unlocks your wallet and allows you to use MobileCoin. It is unique to your account. It is important that you never share this code. You may wish to use this code in a secure, safe manner. This wallet uses your password to store an encrypted Entropy.",
+    "entropyCanBeUsed": "The Entropy can be used to import your wallet in case your device is damaged or lost. It allows you to add your account to other wallets.",
+    "misplacedYourEntropy": "If you have forgotten or misplaced your Entropy, you may retrieve here with your password.",
+    "passwordRequired": "Password is required",
+    "error": "Hmm, something went wrong.",
+    "retrieveEntropy": "Retrieve Entropy",
+    "password": "Password"
+  },
+
+  "ShowRetrievedEntropyModal": {
+    "header": "This is your secret Entropy!",
+    "description": "We decrypted your Entropy and will now show you the code on your screen. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.",
+    "hide": "Hide Secret Entropy",
+    "show": "Show Secret Entropy",
+    "secured": "I have secured my Entropy"
+  },
+
+  "SettingsOptionsItem": {
+    "changePassword": "Change Password",
+    "retrieveEntropy": "Retrieve Secret Entropy",
+    "terms": "Terms of Use",
+    "privacyPolicy": "Privacy Policy",
+    "configureMobileCoinD": "Configure MobileCoinD"
+  },
+
+  "TermsOfUseView": {
+    "settings": "Settings",
+    "terms": "Terms of Use"
+  },
+
+  "TransactionView": {
+    "send": "Send MOB",
+    "receive": "Receive MOB"
+  },
+
+  "SendMobPanel": {
+    "header": "Please enter the amount of MOB you want to send and the public address of the recipient."
+  },
+
+  "SendMobForm": {
+    "error": "Could not build transaction.",
+    "transactionCanceled": "Transaction Canceled",
+    "unnamed": "Unnamed Account",
+    "select": "Select Account",
+    "accountName": "Account Name",
+    "accountBalance": "Account Balance",
+    "errorFee": "Please reserve 0.01 MOB for transaction fee.",
+    "positiveValidation": "A positive, non-zero amount is required to send MOB.",
+    "positiveValidationRequired": "A positive, non-zero amount is required to send MOB.",
+    "addressRequired": "A Public Address is required to send MOB.",
+    "success": "Successfully sent ",
+    "mob": "MOB",
+    "transaction": "Transaction Details",
+    "recipient": "Recipient Public Address",
+    "mobAmount": "MOB Amount",
+    "mustSync": "Wallet must sync with ledger before sending MOB.",
+    "send": "Send Payment",
+    "syncing": "Wallet syncing...",
+    "confirm": "Send MOB Confirmation",
+    "intent": "Please check and confirm your payment intent",
+    "amount": "Amount",
+    "fee": "Fee",
+    "total": "Total",
+    "remaining": "Remaining Balance",
+    "recipientPlus": "Recipient Address (Their Address)",
+    "senderPlus": "Sender Address (Your Address)",
+    "cancel": "Cancel",
+    "confirmSend": "Confirm Send"
   }
 }

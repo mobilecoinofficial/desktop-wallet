@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import {
   Box, Grid, makeStyles, Tab, Tabs,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import TabPanel from '../../../components/TabPanel';
 import type { Theme } from '../../../theme';
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => {
 const TransactionView: FC = () => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const { t } = useTranslation('TransactionView');
 
   const handleChange = (
     _event: React.ChangeEvent<Record<string, unknown>>,
@@ -42,8 +44,8 @@ const TransactionView: FC = () => {
             textColor="secondary"
             onChange={handleChange}
           >
-            <Tab label="Send MOB" />
-            <Tab label="Receive MOB" />
+            <Tab label={t('send')} />
+            <Tab label={t('receive')} />
           </Tabs>
           <TabPanel
             panels={[SendMobPanel, ReceiveMobPanel]}

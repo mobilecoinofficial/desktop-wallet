@@ -9,6 +9,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { TermsOfUse } from '../../../components';
@@ -70,6 +71,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 const TermsOfUseView: FC = () => {
   const classes = useStyles();
+  const { t } = useTranslation('TermsOfUseView');
 
   return (
     <Container className={classes.cardContainer} maxWidth="md">
@@ -79,9 +81,9 @@ const TermsOfUseView: FC = () => {
           to={routePaths.APP_SETTINGS}
           component={RouterLink}
         >
-          <Typography color="textSecondary">Settings</Typography>
+          <Typography color="textSecondary">{t('settings')}</Typography>
         </Link>
-        <Typography color="textPrimary">Terms of Use</Typography>
+        <Typography color="textPrimary">{t('terms')}</Typography>
       </Breadcrumbs>
       <Box
         alignItems="center"

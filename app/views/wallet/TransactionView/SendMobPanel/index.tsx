@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import {
   Box, Container, Typography, makeStyles,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import SendMobForm from './SendMobForm';
 
@@ -19,6 +20,7 @@ const useStyles = makeStyles(() => {
 // TODO -- we need PENDING STATUS for payments in MobileCoinD
 const SendMobPanel: FC = () => {
   const classes = useStyles();
+  const { t } = useTranslation('SendMobPanel');
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -30,8 +32,7 @@ const SendMobPanel: FC = () => {
       >
         <Box>
           <Typography variant="body2" color="textSecondary">
-            Please enter the amount of MOB you want to send and the public
-            address of the recipient.
+            {t('header')}
           </Typography>
         </Box>
       </Box>

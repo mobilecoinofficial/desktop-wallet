@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import {
   Box, Grid, makeStyles, Tab, Tabs,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import TabPanel from '../../../components/TabPanel';
 import type { Theme } from '../../../theme';
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => {
 const GiftingView: FC = () => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
+  const { t } = useTranslation('GiftingView');
 
   const handleChange = (
     _event: React.ChangeEvent<Record<string, unknown>>,
@@ -42,8 +44,8 @@ const GiftingView: FC = () => {
             textColor="secondary"
             onChange={handleChange}
           >
-            <Tab label="Gift MOB" />
-            <Tab label="Open Gift" />
+            <Tab label={t('giftMOB')} />
+            <Tab label={t('openGift')} />
           </Tabs>
           <TabPanel
             panels={[BuildGiftPanel, ConsumeGiftPanel]}

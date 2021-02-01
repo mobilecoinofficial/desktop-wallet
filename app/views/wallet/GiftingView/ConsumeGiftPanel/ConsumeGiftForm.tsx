@@ -20,6 +20,7 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { RadioGroup, TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
@@ -99,6 +100,7 @@ const ConsumeGiftForm: FC = () => {
     b58Code,
     submitTransaction,
   } = useMobileCoinD();
+  const { t } = useTranslation('ConsumeGiftForm');
 
   // We'll use this array in prep for future patterns with multiple accounts
   const mockMultipleAccounts: Array<Account> = [
@@ -113,7 +115,7 @@ const ConsumeGiftForm: FC = () => {
     setShowModal(false);
     setIsAwaitingConformation(false);
     setConfirmation(EMPTY_CONFIRMATION);
-    enqueueSnackbar('Gift Canceled', {
+    enqueueSnackbar(t('giftCanceled'), {
       variant: 'warning',
     });
   };
@@ -126,7 +128,7 @@ const ConsumeGiftForm: FC = () => {
         if (
           confirmation.txProposal === null
           || confirmation.txProposal === undefined
-        ) throw new Error('Could not find confirmation');
+        ) throw new Error(t('confirmationNotFound'));
 
         await submitTransaction(confirmation.txProposal);
         if (isMountedRef.current) {
@@ -134,22 +136,22 @@ const ConsumeGiftForm: FC = () => {
           setSubmittingConfirmedGift(false);
           setIsAwaitingConformation(false);
           setConfirmation(EMPTY_CONFIRMATION);
-          enqueueSnackbar('Gift Received! Your balance will update shortly.', {
+          enqueueSnackbar(t('confirmation'), {
             variant: 'success',
           });
         }
       } catch (err) {
         if (isMountedRef.current) {
           const santitizedError = err.message
-            === '13 INTERNAL: transactions_manager.submit_tx_proposal: Connection(Operation { error: TransactionValidation(ContainsSpentKeyImage), total_delay: 0ns, tries: 1 })'
-            ? 'This gift has already been claimed!'
+            === t('error13')
+            ? t('giftClaimed')
             : err.message;
           setStatus({ success: false });
           setErrors({ submit: santitizedError });
           setSubmittingConfirmedGift(false);
           setIsAwaitingConformation(false);
           setConfirmation(EMPTY_CONFIRMATION);
-          enqueueSnackbar('Hmm, something went wrong.', {
+          enqueueSnackbar(t('error'), {
             variant: 'error',
           });
         }
@@ -160,7 +162,7 @@ const ConsumeGiftForm: FC = () => {
   const createAccountLabel = (account: Account) => {
     const name = account.name && account.name.length > 0
       ? `${account.name}: `
-      : 'Unnamed Account: ';
+      : `${t('unnamed')}: `;
     return (
       <Box display="flex" justifyContent="space-between">
         <Typography>
@@ -184,12 +186,12 @@ const ConsumeGiftForm: FC = () => {
     return (
       <Box pt={2}>
         <FormLabel className={classes.form} component="legend">
-          <Typography color="primary">Select Account</Typography>
+          <Typography color="primary">{t('select')}</Typography>
         </FormLabel>
         <Field component={RadioGroup} name="senderPublicAddress">
           <Box display="flex" justifyContent="space-between">
-            <Typography>Account Name</Typography>
-            <Typography>Account Balance</Typography>
+            <Typography>{t('accountName')}</Typography>
+            <Typography>{t('accountBalance')}</Typography>
           </Box>
           {accounts.map((account: Account) => {
             return (
@@ -222,7 +224,7 @@ const ConsumeGiftForm: FC = () => {
       }}
       validationSchema={Yup.object().shape({
         giftB58Code: Yup.string().required(
-          'You need a valid gift code to open a gift.',
+          t('giftB58Validation'),
         ),
       })}
       validateOnMount
@@ -235,7 +237,7 @@ const ConsumeGiftForm: FC = () => {
         try {
           setIsAwaitingConformation(true);
           const result = await openGiftCode(values.giftB58Code);
-          if (result === null || result === undefined) throw new Error('Could not find gift with code.');
+          if (result === null || result === undefined) throw new Error(t('giftB58Error'));
 
           const {
             feeConfirmation,
@@ -299,12 +301,12 @@ const ConsumeGiftForm: FC = () => {
             )}
             <Box pt={4}>
               <FormLabel component="legend">
-                <Typography color="primary">Gift Details</Typography>
+                <Typography color="primary">{t('giftDetails')}</Typography>
               </FormLabel>
               <Field
                 component={TextField}
                 fullWidth
-                label="Gift Code"
+                label={t('giftCode')}
                 margin="normal"
                 name="giftB58Code"
                 id="giftB58Code"
@@ -321,7 +323,7 @@ const ConsumeGiftForm: FC = () => {
               onClick={submitForm}
               isSubmitting={isAwaitingConformation || isSubmitting}
             >
-              Open Gift
+              {t('openGift')}
             </SubmitButton>
             <Modal
               aria-labelledby="transition-modal-title"
@@ -340,11 +342,14 @@ const ConsumeGiftForm: FC = () => {
               <Slide in={showModal} timeout={{ enter: 0, exit: 0 }}>
                 <Container className={classes.paper}>
                   <Typography variant="h1" id="transition-modal-title">
-                    Gift Confirmation
+                    {t('giftConfirmation')}
                   </Typography>
                   <Box py={2} />
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Account Balance:</Typography>
+                    <Typography>
+                      {t('accountBalance')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -358,7 +363,10 @@ const ConsumeGiftForm: FC = () => {
                     <Typography>---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Total:</Typography>
+                    <Typography>
+                      {t('total')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -368,7 +376,10 @@ const ConsumeGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Fee:</Typography>
+                    <Typography>
+                      {t('fee')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -378,7 +389,10 @@ const ConsumeGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="primary">Gift Value:</Typography>
+                    <Typography color="primary">
+                      {t('giftValue')}
+                      :
+                    </Typography>
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -392,7 +406,10 @@ const ConsumeGiftForm: FC = () => {
                     <Typography>---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="primary">New Balance:</Typography>
+                    <Typography color="primary">
+                      {t('newBalance')}
+                      :
+                    </Typography>
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -411,7 +428,7 @@ const ConsumeGiftForm: FC = () => {
                       fullWidth
                       variant="contained"
                     >
-                      Cancel
+                      {t('cancel')}
                     </Button>
                     <Box px={2} />
                     <Button
@@ -421,7 +438,7 @@ const ConsumeGiftForm: FC = () => {
                       onClick={handleConfirm(setErrors, setStatus)}
                       variant="contained"
                     >
-                      Claim Gift
+                      {t('claimGift')}
                     </Button>
                   </Box>
                 </Container>

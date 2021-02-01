@@ -13,6 +13,7 @@ import {
   Modal,
   Typography,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import useMobileCoinD from '../../hooks/useMobileCoinD';
 import type { Theme } from '../../theme';
@@ -46,6 +47,7 @@ const ShowEntropyModal: FC = () => {
   const [canGoForward, setCanGoForward] = useState(false);
   const [showEntropy, setShowEntropy] = useState(false);
   const { entropy, isEntropyKnown, confirmEntropyKnown } = useMobileCoinD();
+  const { t } = useTranslation('ShowEntropyModal');
   const handleCloseModal = () => {
     confirmEntropyKnown();
   };
@@ -91,13 +93,11 @@ const ShowEntropyModal: FC = () => {
         {!alertOpen ? (
           <Box className={classes.paper} display="flex" flexDirection="column">
             <Typography color="textPrimary" gutterBottom variant="h2">
-              Welcome to the MobileCoin Desktop Wallet!
+              {t('header')}
             </Typography>
             <br />
             <Typography variant="body2" color="textSecondary">
-              We generated a random Entropy to create your new account. Please
-              store this code in a secure, private manner. You will need your
-              Entropy to import this account into other wallets.
+              {t('description')}
             </Typography>
             <br />
 
@@ -117,8 +117,8 @@ const ShowEntropyModal: FC = () => {
                       size="small"
                     >
                       {showEntropy
-                        ? 'Hide Secret Entropy'
-                        : 'Show Secret Entropy'}
+                        ? t('hide')
+                        : t('show')}
                     </Fab>
                   </Box>
                   {showEntropy ? (
@@ -151,23 +151,21 @@ const ShowEntropyModal: FC = () => {
               type="submit"
               variant="contained"
             >
-              I have secured my Entropy
+              {t('secured')}
             </Button>
           </Box>
         ) : (
           <Box className={classes.paper}>
             <Typography color="textPrimary" gutterBottom variant="h2">
-              Confirm you have secured Entropy
+              {t('confirm')}
             </Typography>
             <br />
             <Typography variant="body2" color="textSecondary">
-              If you need to see your entropy again, you may retrieve it from
-              the Settings tab with your password. However, if you forget your
-              password or lose this device, you will need to know your Entropy.
+              {t('retrieve')}
             </Typography>
             <br />
             <Typography variant="body2" color="textSecondary">
-              We recommend storing your entropy in a secure manner.
+              {t('recommend')}
             </Typography>
             <br />
 
@@ -180,7 +178,7 @@ const ShowEntropyModal: FC = () => {
                 type="submit"
                 variant="contained"
               >
-                Go back...
+                {t('back')}
               </Button>
               <Box paddingX={2} />
               <Button
@@ -191,7 +189,7 @@ const ShowEntropyModal: FC = () => {
                 type="submit"
                 variant="contained"
               >
-                Yes, I have secured my Entropy
+                {t('yes')}
               </Button>
             </Box>
           </Box>

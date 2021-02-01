@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import {
   Box, makeStyles, Tooltip, CircularProgress,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import { CircleMOBIcon } from '../../../components/icons';
 import { GREEN, GOLD_LIGHT, RED } from '../../../constants/colors';
@@ -49,6 +50,7 @@ const useStyles = makeStyles(() => {
 const SyncStatus: FC = () => {
   const classes = useStyles();
   const { networkHighestBlockIndex, nextBlock } = useMobileCoinD();
+  const { t } = useTranslation('SyncStatus');
 
   let percentSynced;
   let isSynced;
@@ -78,17 +80,17 @@ const SyncStatus: FC = () => {
   switch (statusCode) {
     case SYNCED: {
       backgroundColor = GREEN;
-      title = '100%: synced with the ledger';
+      title = t('synced');
       break;
     }
     case SYNCING: {
       backgroundColor = GOLD_LIGHT;
-      title = `${percentSynced}%: Syncing with the ledger`;
+      title = `${percentSynced}%: ${t('syncing')}`;
       break;
     }
     default: {
       backgroundColor = RED;
-      title = 'Please see Admin Panel in Settings.';
+      title = t('error');
     }
   }
 

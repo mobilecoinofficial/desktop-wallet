@@ -335,5 +335,12 @@
 
   "TermsOfUseDialog": {
     "close": "Close Terms of Use"
+  },
+
+  "NavBar": {
+    "home": "Home",
+    "transaction": "Send/Receive",
+    "gift": "Gifting",
+    "settings": "Settings"
   }
 }

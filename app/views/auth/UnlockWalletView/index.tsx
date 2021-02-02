@@ -10,6 +10,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
 import LogoIcon from '../../../components/icons/LogoIcon';
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 const UnlockWalletView: FC = () => {
   const classes = useStyles();
+  const [t] = useTranslation('UnlockWalletView');
 
   return (
     <Box data-testid="UnlockWalletView" className={classes.root}>
@@ -53,12 +55,10 @@ const UnlockWalletView: FC = () => {
         <LogoIcon className={classes.logoIcon} />
         <Card className={classes.cardContainer}>
           <Typography variant="h2" paragraph>
-            Unlock Wallet
+            {t('title')}
           </Typography>
           <Typography variant="body2" color="textSecondary" paragraph>
-            Please enter the passphrase you used to secure your wallet. If you
-            cannot recall your passphrase, you may re-import the account into
-            your wallet using their Entropy seed.
+            {t('description')}
           </Typography>
           <UnlockWalletForm onSubmit={unlockWalletFormOnSubmit} />
           <Box my={3}>
@@ -70,7 +70,7 @@ const UnlockWalletView: FC = () => {
             to={routePaths.IMPORT}
             variant="outlined"
           >
-            Import account from Entropy instead
+            {t('importInstead')}
           </Button>
         </Card>
       </Container>

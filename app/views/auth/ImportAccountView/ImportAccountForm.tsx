@@ -7,6 +7,7 @@ import {
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
@@ -64,6 +65,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
 }: ImportAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
   const { importAccount } = useMobileCoinD();
+  const { t } = useTranslation('ImportAccountForm');
 
   const [canCheck, setCanCheck] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -99,23 +101,23 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
   const validationSchema = Yup.object().shape({
     accountName: Yup.string().max(
       64,
-      'Account Name cannot be more than 64 characters.',
+      t('accountNameValidation'),
     ),
     // CBB: It appears that the checkedTerms error message is not working properly.
     checkedTerms: Yup.bool().oneOf(
       [true],
-      'You must accept Terms of Use to use wallet.',
+      t('checkedTermsValidation'),
     ),
     entropy: Yup.string()
-      .matches(/^[0-9a-f]{64}$/i, 'A valid entropy is 64 hexadecimals.')
-      .required('Entropy is required'),
+      .matches(/^[0-9a-f]{64}$/i, t('entropyMatches'))
+      .required(t('entropyRequired')),
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters in length.')
-      .max(99, 'Passwords cannot be more than 99 characters.')
-      .required('Password is required'),
+      .min(8, t('passwordMin'))
+      .max(99, t('passwordMax'))
+      .required(t('passwordRequired')),
     passwordConfirmation: Yup.string()
-      .oneOf([Yup.ref('password')], 'Must match Password')
-      .required('Password Confirmation is required'),
+      .oneOf([Yup.ref('password')], t('passwordConfirmationRef'))
+      .required(t('passwordConfirmationRequired')),
   });
 
   return (
@@ -135,14 +137,14 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
               id="ImportAccountForm-accountNameField"
               component={TextField}
               fullWidth
-              label="Account Name (optional)"
+              label={t('nameLabel')}
               name="accountName"
             />
             <Field
               id="ImportAccountForm-entropyField"
               component={TextField}
               fullWidth
-              label="Entropy"
+              label={t('entropyLabel')}
               margin="dense"
               name="entropy"
             />
@@ -150,7 +152,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
               id="ImportAccountForm-passwordField"
               component={TextField}
               fullWidth
-              label="Password"
+              label={t('passwordLabel')}
               margin="dense"
               name="password"
               type="password"
@@ -159,7 +161,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
               id="ImportAccountForm-passwordConfirmationField"
               component={TextField}
               fullWidth
-              label="Password Confirmation"
+              label={t('passwordConfirmationLabel')}
               margin="dense"
               name="passwordConfirmation"
               type="password"
@@ -172,10 +174,10 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
               >
                 <Box>
                   <Typography display="inline">
-                    I have read and accept the
+                    {t('acceptTerms')}
                   </Typography>
                   <Button color="primary" onClick={handleClickOpen}>
-                    Terms of Use
+                    {t('acceptTermsButton')}
                   </Button>
                 </Box>
                 <Field
@@ -189,7 +191,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
             </Box>
             {!canCheck && (
               <FormHelperText focused>
-                You must read the Terms of Use before using the wallet.
+                {t('acceptTermsFormHelper')}
               </FormHelperText>
             )}
             {errors.submit && (
@@ -202,7 +204,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
               onClick={submitForm}
               isSubmitting={isSubmitting}
             >
-              Import Account
+              {t('importAccountButton')}
             </SubmitButton>
             <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
           </Form>

@@ -14,6 +14,7 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 
@@ -81,6 +82,7 @@ const ChangePasswordView: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const { changePassword } = useMobileCoinD();
+  const { t } = useTranslation('ChangePasswordView');
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -90,9 +92,9 @@ const ChangePasswordView: FC = () => {
           to={routePaths.APP_SETTINGS}
           component={RouterLink}
         >
-          <Typography color="textSecondary">Settings</Typography>
+          <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
         </Link>
-        <Typography color="textPrimary">Change Password</Typography>
+        <Typography color="textPrimary">{t('changePasswordBreadcrumb')}</Typography>
       </Breadcrumbs>
       <Box
         alignItems="center"
@@ -102,14 +104,11 @@ const ChangePasswordView: FC = () => {
         flexDirection="column"
       >
         <Typography variant="body2" color="textSecondary">
-          Changing your password will change how we encrypt your secret Entropy.
-          You should always use strong (unguessable) passwords and change them
-          regularly.
+          {t('description')}
         </Typography>
         <br />
         <Typography variant="body2" color="textSecondary">
-          To change your current password, please enter your current password
-          and your new password.
+          {t('instructions')}
         </Typography>
       </Box>
       <Box flexGrow={1} mt={3}>
@@ -122,12 +121,12 @@ const ChangePasswordView: FC = () => {
           }}
           validationSchema={Yup.object().shape({
             newPassword: Yup.string()
-              .min(8, 'New Password must be at least 8 characters in length.')
-              .max(99, 'Passwords cannot be more than 99 characters.')
-              .required('New Password is required'),
+              .min(8, t('passwordMin'))
+              .max(99, t('passwordMax'))
+              .required(t('passwordRequired')),
             newPasswordConfirmation: Yup.string()
-              .oneOf([Yup.ref('newPassword')], 'Must match New Password')
-              .required('New Password Confirmation is required'),
+              .oneOf([Yup.ref('newPassword')], t('passwordConfirmationRef'))
+              .required(t('passwordConfirmationRequired')),
           })}
           isInitialValid={false}
           onSubmit={async (
@@ -140,7 +139,7 @@ const ChangePasswordView: FC = () => {
               setSubmitting(true);
               await changePassword(values.oldPassword, values.newPassword);
               if (isMountedRef.current) {
-                enqueueSnackbar('Successfully change password!', {
+                enqueueSnackbar(t('enqueue'), {
                   variant: 'success',
                 });
                 setStatus({ success: true });
@@ -163,12 +162,12 @@ const ChangePasswordView: FC = () => {
               <Form>
                 <Box pt={4}>
                   <FormLabel component="legend">
-                    <Typography color="primary">Change Password</Typography>
+                    <Typography color="primary">{t('formLabel')}</Typography>
                   </FormLabel>
                   <Field
                     component={TextField}
                     fullWidth
-                    label="Old Password"
+                    label={t('oldPasswordLabel')}
                     margin="normal"
                     name="oldPassword"
                     type="password"
@@ -176,7 +175,7 @@ const ChangePasswordView: FC = () => {
                   <Field
                     component={TextField}
                     fullWidth
-                    label="New Password"
+                    label={t('newPasswordLabel')}
                     margin="normal"
                     name="newPassword"
                     type="password"
@@ -184,7 +183,7 @@ const ChangePasswordView: FC = () => {
                   <Field
                     component={TextField}
                     fullWidth
-                    label="Confirm New Password"
+                    label={t('passwordConfirmationLabel')}
                     margin="normal"
                     name="newPasswordConfirmation"
                     type="password"
@@ -200,7 +199,7 @@ const ChangePasswordView: FC = () => {
                   onClick={submitForm}
                   isSubmitting={isSubmitting}
                 >
-                  Change Password
+                  {t('changePasswordButton')}
                 </SubmitButton>
               </Form>
             );

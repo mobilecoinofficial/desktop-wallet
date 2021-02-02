@@ -7,6 +7,7 @@ import {
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
@@ -63,6 +64,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
 }: CreateAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
   const { createAccount } = useMobileCoinD();
+  const { t } = useTranslation('CreateAccountForm');
 
   const [canCheck, setCanCheck] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -97,20 +99,20 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
   const validationSchema = Yup.object().shape({
     accountName: Yup.string().max(
       64,
-      'Account Name cannot be more than 64 characters.',
+      t('accountNameValidation'),
     ),
     // CBB: It appears that the checkedTerms error message is not working properly.
     checkedTerms: Yup.bool().oneOf(
       [true],
-      'You must accept Terms of Use to use wallet.',
+      t('checkedTermsValidation'),
     ),
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters in length.')
-      .max(99, 'Passwords cannot be more than 99 characters.')
-      .required('Password is required'),
+      .min(8, t('passwordMin'))
+      .max(99, t('passwordMax'))
+      .required(t('passwordRequired')),
     passwordConfirmation: Yup.string()
-      .oneOf([Yup.ref('password')], 'Must match Password')
-      .required('Password Confirmation is required'),
+      .oneOf([Yup.ref('password')], t('passwordConfirmationRef'))
+      .required(t('passwordConfirmationRequired')),
   });
 
   return (
@@ -130,14 +132,14 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
               id="CreateAccountForm-accountNameField"
               component={TextField}
               fullWidth
-              label="Account Name (optional)"
+              label={t('nameLabel')}
               name="accountName"
             />
             <Field
               id="CreateAccountForm-passwordField"
               component={TextField}
               fullWidth
-              label="Password"
+              label={t('passwordLabel')}
               margin="dense"
               name="password"
               type="password"
@@ -146,7 +148,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
               id="CreateAccountForm-passwordConfirmationField"
               component={TextField}
               fullWidth
-              label="Password Confirmation"
+              label={t('passwordConfirmationLabel')}
               margin="dense"
               name="passwordConfirmation"
               type="password"
@@ -159,10 +161,10 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
               >
                 <Box>
                   <Typography display="inline">
-                    I have read and accept the
+                    {t('acceptTerms')}
                   </Typography>
                   <Button color="primary" onClick={handleClickOpen}>
-                    Terms of Use
+                    {t('acceptTermsButton')}
                   </Button>
                 </Box>
                 <Field
@@ -176,7 +178,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
             </Box>
             {!canCheck && (
               <FormHelperText focused>
-                You must read the Terms of Use before using the wallet.
+                {t('acceptTermsFormHelper')}
               </FormHelperText>
             )}
             {errors.submit && (
@@ -189,7 +191,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
               onClick={submitForm}
               isSubmitting={isSubmitting}
             >
-              Create Account
+              {t('createAccountButton')}
             </SubmitButton>
             <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
           </Form>

@@ -9,6 +9,7 @@ import {
   Modal,
   Typography,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import { SubmitButton } from '../../../components';
 import { Theme } from '../../../theme';
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) => {
 const CloseWalletModal: FC = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const { t } = useTranslation('CloseWalletModal');
 
   const handleOpenModal = () => {
     setOpen(true);
@@ -60,7 +62,7 @@ const CloseWalletModal: FC = () => {
           isSubmitting={false}
           onClick={handleOpenModal}
         >
-          Close Wallet
+          {t('closeWalletButton')}
         </SubmitButton>
       </Container>
       <Modal
@@ -75,10 +77,10 @@ const CloseWalletModal: FC = () => {
         <Fade in={open}>
           <Box className={classes.paper}>
             <Typography variant="h2" gutterBottom>
-              Close and Secure Wallet?
+              {t('closeVerifyHeader')}
             </Typography>
             <Typography variant="body2" gutterBottom>
-              Are you sure you want to close and secure the wallet?
+              {t('closeVerifyBody')}
             </Typography>
             <Box display="flex">
               <SubmitButton
@@ -88,7 +90,7 @@ const CloseWalletModal: FC = () => {
                 isSubmitting={false}
                 disabled={!open}
               >
-                No, Keep Wallet Open
+                {t('closeVerifyDeny')}
               </SubmitButton>
               <Box p={1} />
               <SubmitButton
@@ -98,7 +100,7 @@ const CloseWalletModal: FC = () => {
                 isSubmitting={false}
                 disabled={!open}
               >
-                Yes, Close Wallet
+                {t('closeVerifyConfirm')}
               </SubmitButton>
             </Box>
           </Box>

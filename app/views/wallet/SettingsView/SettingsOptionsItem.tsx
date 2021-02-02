@@ -9,6 +9,7 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 
 import { IconProps } from '../../../components/icons/IconProps';
@@ -40,6 +41,7 @@ const SettingsOptionsItem: FC<SettingsOptionsItemProps> = ({
 }: SettingsOptionsItemProps) => {
   const classes = useStyles();
   const history = useHistory();
+  const { t } = useTranslation('SettingsOptionsItem');
 
   const handleOnClick = () => {
     history.push(path);
@@ -52,7 +54,7 @@ const SettingsOptionsItem: FC<SettingsOptionsItemProps> = ({
           <CardContent>
             <Icon height={34} width={34} />
             <Typography variant="body2" color="textSecondary" component="p">
-              {label}
+              {t(label)}
             </Typography>
           </CardContent>
         </CardActionArea>

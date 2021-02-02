@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import {
   Box, FormLabel, Typography, Switch,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import useMobilecoindConfigs from '../../../hooks/useMobilecoindConfigs';
 
@@ -12,13 +13,14 @@ const LeaveMobilecoindRunning: FC = () => {
     leaveMobilecoindRunning,
     toggleLeaveMobilecoindRunning,
   } = useMobilecoindConfigs();
+  const { t } = useTranslation('LeaveMobilecoindRunning');
 
   return (
     <Box flexGrow={1} mt={3}>
       <Box pt={2}>
         <FormLabel component="legend">
           <Typography color="primary">
-            MobileCoinD Background Process
+            {t('formLabel')}
           </Typography>
         </FormLabel>
       </Box>
@@ -29,8 +31,8 @@ const LeaveMobilecoindRunning: FC = () => {
             color={leaveMobilecoindRunning ? 'textPrimary' : 'textSecondary'}
           >
             {leaveMobilecoindRunning
-              ? 'Leave MobileCoinD Active is on'
-              : 'Leave MobileCoinD Active is off'}
+              ? t('ternaryOn')
+              : t('ternaryOff')}
           </Typography>
           <Box>
             <Switch
@@ -46,15 +48,12 @@ const LeaveMobilecoindRunning: FC = () => {
           color={leaveMobilecoindRunning ? 'textPrimary' : 'textSecondary'}
         >
           {leaveMobilecoindRunning
-            ? 'MobileCoinD will continue to sync when you exit the wallet.'
-            : 'MobileCoinD will not continue to sync when you exit the wallet.'}
+            ? t('ternaryWillSync')
+            : t('ternaryWillNotSync')}
         </Typography>
         <Box py={1} />
         <Typography variant="body2" color="textSecondary">
-          By default, MobileCoinD terminates when you exit the wallet. This
-          setting allows you to leave MobileCoinD syncing as a background
-          process. It is best to keep the ledger synced to avoid delays in
-          transactions or balance fetches.
+          {t('defaultDescription')}
         </Typography>
       </Box>
     </Box>

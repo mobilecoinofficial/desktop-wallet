@@ -8,6 +8,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
 import routePaths from '../../constants/routePaths';
@@ -35,15 +36,16 @@ const useStyles = makeStyles((theme: Theme) => {
 
 const NotFoundView: FC = () => {
   const classes = useStyles();
+  const { t } = useTranslation('NotFoundView');
 
   return (
     <Box className={classes.root}>
       <Container maxWidth="lg">
         <Typography align="center" variant="h1" color="textPrimary">
-          404: The page you are looking for isn’t here
+          {t('header')}
         </Typography>
         <Typography align="center" variant="subtitle2" color="textSecondary">
-          You should never see this page. If you do, an engineer messed up.
+          {t('description')}
         </Typography>
         <Box mt={6} display="flex" justifyContent="center">
           <Button
@@ -52,7 +54,7 @@ const NotFoundView: FC = () => {
             to={routePaths.ROOT}
             variant="outlined"
           >
-            Back to home
+            {t('backButton')}
           </Button>
         </Box>
       </Container>

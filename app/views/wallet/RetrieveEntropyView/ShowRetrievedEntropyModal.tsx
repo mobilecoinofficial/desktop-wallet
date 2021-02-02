@@ -13,6 +13,7 @@ import {
   Modal,
   Typography,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../../../theme';
 
@@ -52,6 +53,7 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
 }: ShowRetrievedEntropyModalProps) => {
   const classes = useStyles();
   const [showEntropy, setShowEntropy] = useState(false);
+  const { t } = useTranslation('ShowRetrievedEntropyModal');
 
   // TODO, i should start making a single util for all of this coercing logic
   const toggleEntropy = () => {
@@ -81,13 +83,11 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
       <Fade in={open}>
         <Box className={classes.paper} display="flex" flexDirection="column">
           <Typography color="textPrimary" gutterBottom variant="h2">
-            This is your secret Entropy!
+            {t('header')}
           </Typography>
           <br />
           <Typography variant="body2" color="textSecondary">
-            We decrypted your Entropy and will now show you the code on your
-            screen. Please store this code in a secure, private manner. You will
-            need your Entropy to import this account into other wallets.
+            {t('description')}
           </Typography>
           <br />
 
@@ -107,8 +107,8 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
                     size="small"
                   >
                     {showEntropy
-                      ? 'Hide Secret Entropy'
-                      : 'Show Secret Entropy'}
+                      ? t('hide')
+                      : t('show')}
                   </Fab>
                 </Box>
                 {showEntropy ? (
@@ -140,7 +140,7 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
             type="submit"
             variant="contained"
           >
-            I have secured my Entropy
+            {t('secured')}
           </Button>
         </Box>
       </Fade>

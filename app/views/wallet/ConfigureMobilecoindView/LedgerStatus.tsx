@@ -13,6 +13,7 @@ import {
   TableHead,
   TableRow,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import getPercentSynced from '../../../utils/getPercentSynced';
@@ -23,6 +24,8 @@ const LedgerStatus: FC = () => {
     networkHighestBlockIndex,
     nextBlock,
   } = useMobileCoinD();
+
+  const { t } = useTranslation('LedgerStatus');
 
   const localBlockIndexInt = parseInt(localBlockIndex || '0', 10);
   const networkHighestBlockIndexInt = parseInt(
@@ -67,15 +70,15 @@ const LedgerStatus: FC = () => {
     );
 
   const rows = [
-    createData('Network Blocks', '', networkHighestBlockIndexInt, ''),
+    createData(t('networkBlocks'), '', networkHighestBlockIndexInt, ''),
     createData(
-      'Local Blocks',
+      t('localBlocks'),
       localBlockIndexInt,
       networkHighestBlockIndexInt,
       percentLocalSynced,
     ),
     createData(
-      'Monitor Blocks',
+      t('monitorBlocks'),
       localBlockIndexInt,
       networkHighestBlockIndexInt,
       percentMonitorSynced,
@@ -84,19 +87,19 @@ const LedgerStatus: FC = () => {
 
   let statusCopy;
   if (percentMonitorSynced === 'Error' || percentLocalSynced === 'Error') {
-    statusCopy = "There's been an error in the ledger. Please reset the ledger at the bottom of this page.";
+    statusCopy = t('statusCopyError');
   } else if (percentMonitorSynced < 90) {
-    statusCopy = 'The ledger is syncing. This may take awhile.';
+    statusCopy = t('statusCopyBelow90');
   } else if (percentMonitorSynced < 100) {
-    statusCopy = 'The ledger is syncing.';
+    statusCopy = t('statusCopyAbove90');
   } else {
-    statusCopy = 'The ledger is synced.';
+    statusCopy = t('statusCopy100');
   }
   return (
     <Box flexGrow={1} mt={3}>
       <Box pt={3}>
         <FormLabel component="legend">
-          <Typography color="primary">Ledger Status</Typography>
+          <Typography color="primary">{t('formLabel')}</Typography>
         </FormLabel>
       </Box>
       <Box pt={2}>
@@ -109,10 +112,10 @@ const LedgerStatus: FC = () => {
           <Table size="small" aria-label="block status">
             <TableHead component={Paper}>
               <TableRow>
-                <TableCell>Block Type</TableCell>
-                <TableCell align="right">Current Height</TableCell>
-                <TableCell align="right">Maximum Height</TableCell>
-                <TableCell align="right">% Synced</TableCell>
+                <TableCell>{t('blockType')}</TableCell>
+                <TableCell align="right">{t('height')}</TableCell>
+                <TableCell align="right">{t('maxHeight')}</TableCell>
+                <TableCell align="right">{t('synced')}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -133,19 +136,15 @@ const LedgerStatus: FC = () => {
         </TableContainer>
       </Box>
       <Typography variant="body2" color="textSecondary">
-        Network Blocks represent the total blocks within the MobileCoin network.
-        This is the value your Local and Monitor Blocks needs to hit to be 100%
-        synced.
+        {t('networkBlocksDescription')}
       </Typography>
       <Box py={1} />
       <Typography variant="body2" color="textSecondary">
-        Local Blocks shows the blocks your mobilecoind has synced the ledger.
+        {t('localBlocksDescription')}
       </Typography>
       <Box py={1} />
       <Typography variant="body2" color="textSecondary">
-        Monitor Blocks shows the blocks that a specific monitor has synced. Each
-        account has its own Monitor Blocks count. Once this value is synced, you
-        will immediately see the effects of transactions.
+        {t('monitorBlocksDescription')}
       </Typography>
     </Box>
   );

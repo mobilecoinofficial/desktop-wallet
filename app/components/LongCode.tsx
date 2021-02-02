@@ -5,8 +5,8 @@ import { Box } from '@material-ui/core';
 
 import { GOLD_DARK, GOLD_LIGHT } from '../constants/colors';
 
-const LUCKY_ARRAY_INDEX = [1, 9, 89, 97];
-const SUPER_LUCKY_ARRAY_INDEX = [0, 10, 88, 98];
+const LUCKY_ARRAY_INDEX = [1, 2, 104, 105];
+const SUPER_LUCKY_ARRAY_INDEX = [0, 3, 103, 106];
 
 interface LongCodeProps {
   code: string;
@@ -50,11 +50,22 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
   return (
     <Box data-testid="long-code-code" className={codeClass} aria-hidden="true">
       {codeLines.map((line, i) => {
-        return (
-          <Box component="span" key={[line, i].join('|')}>
+        return (i === codeLines.length - 1) ? (
+          <Box
+            component="span"
+            key={[line, i].join('|')}
+            style={{
+              alignSelf: 'flex-end',
+            }}
+          >
             {line}
           </Box>
-        );
+        )
+          : (
+            <Box component="span" key={[line, i].join('|')}>
+              {line}
+            </Box>
+          );
       })}
     </Box>
   );

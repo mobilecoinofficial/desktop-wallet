@@ -6,8 +6,9 @@ import { Box } from '@material-ui/core';
 import { GOLD_DARK, GOLD_LIGHT } from '../constants/colors';
 
 // Main diagonal
-const LUCKY_ARRAY_INDEX = [1, 9, 89, 97];
-const SUPER_LUCKY_ARRAY_INDEX = [0, 10, 88, 98];
+const LUCKY_ARRAY_INDEX = [1, 2, 104, 105];
+const SUPER_LUCKY_ARRAY_INDEX = [0, 3, 103, 106];
+
 const REQUIRED_LENGTH = 99;
 
 interface ShortCodeProps {

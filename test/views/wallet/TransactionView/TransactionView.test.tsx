@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import useMobileCoinD from '../../../../app/hooks/useMobileCoinD';
@@ -27,8 +27,8 @@ function setupComponent() {
     <TransactionView />,
   );
 
-  const sendQuery = screen.queryByText(/Please enter the amount of MOB you want to send and the public address of the recipient./i);
-  const receiveQuery = screen.queryByText(/To receive MOB, you must share your public address code to the sender./i);
+  const sendQuery = screen.queryByText('Please enter the amount of MOB you want to send and the public address of the recipient.');
+  const receiveQuery = screen.queryByText('To receive MOB, you must share your public address code to the sender.');
 
   return {
     asFragment,
@@ -52,10 +52,10 @@ describe('TransactionView', () => {
         expect(receiveQuery).not.toBeInTheDocument();
       });
 
-      test('ReceiveMobPanel renders correctly', () => {
+      test('ReceiveMobPanel renders correctly', async () => {
         const { sendQuery } = setupComponent();
         userEvent.click(screen.getByText('Receive MOB'));
-        expect(screen.queryByText(/To receive MOB, you must share your public address code to the sender./i)).toBeInTheDocument();
+        await waitFor(() => { return expect(screen.queryByText(/To receive MOB, you must share your public address code to the sender./i)).toBeInTheDocument(); });
         expect(sendQuery).not.toBeInTheDocument();
       });
     });

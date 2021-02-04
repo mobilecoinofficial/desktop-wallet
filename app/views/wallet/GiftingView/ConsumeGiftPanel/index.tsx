@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import {
   Box, Container, Typography, makeStyles,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import { MOBNumberFormat } from '../../../../components';
 import { MOBIcon } from '../../../../components/icons';
@@ -29,6 +30,7 @@ const useStyles = makeStyles(() => {
 const BuildGiftPanel: FC = () => {
   const classes = useStyles();
   const { balance, networkHighestBlockIndex, nextBlock } = useMobileCoinD();
+  const { t } = useTranslation('ConsumeGiftPanel');
   // TODO consolidate the isSynced logic throughout app to one location.
   // consider using a specifc context when we split the MobileCoinDContext
   const isSynced = nextBlock === null || networkHighestBlockIndex === null
@@ -56,7 +58,7 @@ const BuildGiftPanel: FC = () => {
               variant="overline"
               color="textSecondary"
             >
-              Balance
+              {t('balance')}
             </Typography>
             <Box className={classes.valueContainer}>
               <Box className={classes.mobContainer}>
@@ -71,14 +73,13 @@ const BuildGiftPanel: FC = () => {
             </Box>
             {!isSynced && (
               <Typography variant="h6" color="primary">
-                Balance may be out-of-date while wallet syncs with ledger.
+                {t('syncMessage')}
               </Typography>
             )}
           </Box>
           <Box>
             <Typography variant="body2" color="textSecondary">
-              You may use this form to collect gift codes. Simply enter the Gift
-              Code and confirm you want to consume the gift into your wallet.
+              {t('description')}
             </Typography>
           </Box>
         </Box>

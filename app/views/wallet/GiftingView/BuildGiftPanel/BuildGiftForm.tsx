@@ -21,6 +21,7 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { RadioGroup, TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import {
@@ -115,6 +116,7 @@ const BuildGiftForm: FC = () => {
     nextBlock,
     submitGiftCode,
   } = useMobileCoinD();
+  const { t } = useTranslation('BuildGiftForm');
 
   // TODO - this isSynced stuff should live in 1 location -- maybe as context state
   let isSynced = false;
@@ -151,7 +153,7 @@ const BuildGiftForm: FC = () => {
     setShowModal(false);
     setIsAwaitingConformation(false);
     setConfirmation(EMPTY_CONFIRMATION);
-    enqueueSnackbar('Gift Canceled', {
+    enqueueSnackbar(t('giftCanceled'), {
       variant: 'warning',
     });
   };
@@ -164,14 +166,14 @@ const BuildGiftForm: FC = () => {
         if (
           confirmation.txProposal === null
           || confirmation.txProposal === undefined
-        ) throw new Error('Could not find confirmation');
+        ) throw new Error(t('confirmationNotFound'));
         await submitGiftCode(confirmation.txProposal, confirmation.giftB58Code);
         if (isMountedRef.current) {
           setStatus({ success: true });
           setSubmittingConfirmedGift(false);
           setIsAwaitingConformation(false);
           setConfirmation(EMPTY_CONFIRMATION);
-          enqueueSnackbar('Gift Created! Your balance will update shortly.', {
+          enqueueSnackbar(t('giftCreated'), {
             variant: 'success',
           });
         }
@@ -182,7 +184,7 @@ const BuildGiftForm: FC = () => {
           setSubmittingConfirmedGift(false);
           setIsAwaitingConformation(false);
           setConfirmation(EMPTY_CONFIRMATION);
-          enqueueSnackbar('Hmm, something went wrong.', {
+          enqueueSnackbar(t('error'), {
             variant: 'error',
           });
         }
@@ -193,7 +195,7 @@ const BuildGiftForm: FC = () => {
   const createAccountLabel = (account: Account) => {
     const name = account.name && account.name.length > 0
       ? `${account.name}: `
-      : 'Unnamed Account: ';
+      : `${t('unnamed')}: `;
     return (
       <Box display="flex" justifyContent="space-between">
         <Typography>
@@ -217,12 +219,12 @@ const BuildGiftForm: FC = () => {
     return (
       <Box pt={2}>
         <FormLabel className={classes.form} component="legend">
-          <Typography color="primary">Select Account</Typography>
+          <Typography color="primary">{t('select')}</Typography>
         </FormLabel>
         <Field component={RadioGroup} name="senderPublicAddress">
           <Box display="flex" justifyContent="space-between">
-            <Typography>Account Name</Typography>
-            <Typography>Account Balance</Typography>
+            <Typography>{t('accountName')}</Typography>
+            <Typography>{t('accountBalance')}</Typography>
           </Box>
           {accounts.map((account: Account) => {
             return (
@@ -251,7 +253,7 @@ const BuildGiftForm: FC = () => {
       const valueAsPicoMob = BigInt(valueString.replace('.', ''));
       if (valueAsPicoMob + fee > selectedBalance) {
         // TODO - probably want to replace this before launch
-        error = 'Please reserve 0.01 MOB for transaction fee.';
+        error = t('errorFee');
       }
       return error;
     };
@@ -275,8 +277,8 @@ const BuildGiftForm: FC = () => {
       }}
       validationSchema={Yup.object().shape({
         mobValue: Yup.number()
-          .positive('A positive, non-zero amount is required to gift MOB.')
-          .required('A positive, non-zero amount is required to gift MOB.'),
+          .positive(t('positiveValidation'))
+          .required(t('positiveValidationRequired')),
       })}
       validateOnMount
       onSubmit={async (
@@ -297,7 +299,7 @@ const BuildGiftForm: FC = () => {
             convertMobStringToPicoMobBigInt(values.mobValue),
             convertMobStringToPicoMobBigInt(values.feeAmount),
           );
-          if (result === null || result === undefined) throw new Error('Could not build gift code.');
+          if (result === null || result === undefined) throw new Error(t('errorBuild'));
 
           const {
             feeConfirmation,
@@ -366,12 +368,12 @@ const BuildGiftForm: FC = () => {
             )}
             <Box pt={4}>
               <FormLabel component="legend">
-                <Typography color="primary">Gift Details</Typography>
+                <Typography color="primary">{t('giftDetails')}</Typography>
               </FormLabel>
               <Field
                 component={TextField}
                 fullWidth
-                label="MOB Amount"
+                label={t('mobLabel')}
                 margin="normal"
                 name="mobValue"
                 id="mobValue"
@@ -399,7 +401,7 @@ const BuildGiftForm: FC = () => {
             {!isSynced && (
               <Box mt={3}>
                 <FormHelperText error>
-                  Wallet must sync with ledger before sending gifts.
+                  {t('errorSyncBeforeSending')}
                 </FormHelperText>
               </Box>
             )}
@@ -408,7 +410,7 @@ const BuildGiftForm: FC = () => {
               onClick={submitForm}
               isSubmitting={isAwaitingConformation || isSubmitting}
             >
-              {isSynced ? 'Create Gift' : 'Wallet syncing...'}
+              {isSynced ? t('createGift') : `${t('walletSyncing')}...`}
             </SubmitButton>
             <Modal
               aria-labelledby="transition-modal-title"
@@ -430,14 +432,18 @@ const BuildGiftForm: FC = () => {
               >
                 <Container className={classes.paper}>
                   <Box py={2}>
-                    <h2 id="transition-modal-title">Gift Confirmation</h2>
+                    <h2 id="transition-modal-title">{t('')}</h2>
                     <p id="transition-modal-description">
-                      Please check and confirm your gift intent:
+                      {t('giftConfirmationDescription')}
+                      :
                     </p>
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Account Balance:</Typography>
+                    <Typography>
+                      {t('accountBalance')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -452,7 +458,10 @@ const BuildGiftForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="primary">Gift Value:</Typography>
+                    <Typography color="primary">
+                      {t('giftValue')}
+                      :
+                    </Typography>
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -463,7 +472,10 @@ const BuildGiftForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Fee:</Typography>
+                    <Typography>
+                      {t('fee')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -474,7 +486,10 @@ const BuildGiftForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Total:</Typography>
+                    <Typography>
+                      {t('total')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -488,7 +503,10 @@ const BuildGiftForm: FC = () => {
                     <Typography>---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>Remaining Balance:</Typography>
+                    <Typography>
+                      {t('remaining')}
+                      :
+                    </Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -500,7 +518,7 @@ const BuildGiftForm: FC = () => {
                   <Box py={1} />
                   {/* TODO - after multiple accounts, we should actually store these gift codes. please check jira for full explation */}
                   <Typography variant="body2" color="textPrimary">
-                    MOB will be sent to this gift card after you confirm.
+                    {t('mobWillBeSent')}
                   </Typography>
                   <Box py={1} />
                   {showCode ? (
@@ -509,7 +527,7 @@ const BuildGiftForm: FC = () => {
                       account={{
                         b58Code: confirmation?.giftB58Code,
                         mobUrl: `https://mobileocoin.com/mob58/${confirmation?.giftB58Code}`,
-                        name: 'Gift Code (Pending)',
+                        name: t('pending'),
                       }}
                     />
                   ) : (
@@ -519,7 +537,7 @@ const BuildGiftForm: FC = () => {
                         size="large"
                         onClick={handleShowCode}
                       >
-                        Show Gift Code
+                        {t('showCode')}
                       </Button>
                     </Box>
                   )}
@@ -533,7 +551,7 @@ const BuildGiftForm: FC = () => {
                       fullWidth
                       variant="contained"
                     >
-                      Cancel
+                      {t('cancel')}
                     </Button>
                     <Box px={2} />
                     <Button
@@ -544,7 +562,7 @@ const BuildGiftForm: FC = () => {
                       onClick={handleConfirm(setErrors, setStatus)}
                       variant="contained"
                     >
-                      {showCode ? 'Confirm Gift' : 'Please Secure Code'}
+                      {showCode ? t('confirmGift') : t('secureCode')}
                     </Button>
                   </Box>
                 </Container>

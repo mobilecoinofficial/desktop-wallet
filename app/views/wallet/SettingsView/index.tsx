@@ -17,27 +17,27 @@ import SettingsOptionsList from './SettingsOptionsList';
 const settingsOptionsList = [
   {
     Icon: LockIcon,
-    label: 'Change Password',
+    label: 'changePassword',
     path: routePaths.APP_SETTINGS_CHANGE_PASSWORD,
   },
   {
     Icon: KeyIcon,
-    label: 'Retrieve Secret Entropy',
+    label: 'retrieveEntropy',
     path: routePaths.APP_SETTINGS_RETRIEVE_ENTROPY,
   },
   {
     Icon: OfficialDocumentIcon,
-    label: 'Terms of Use',
+    label: 'terms',
     path: routePaths.APP_SETTINGS_TERMS_OF_USE,
   },
   {
     Icon: PrivateDocumentIcon,
-    label: 'Privacy Policy',
+    label: 'privacyPolicy',
     path: routePaths.APP_SETTINGS_PRIVACY_POLICY,
   },
   {
     Icon: ToolsIcon,
-    label: 'Configure MobileCoinD',
+    label: 'configureMobileCoinD',
     path: routePaths.APP_SETTINGS_CONFIGURE_MOBILECOIND,
   },
 ];

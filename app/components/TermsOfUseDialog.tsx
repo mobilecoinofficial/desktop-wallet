@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Box, Button, Container, Dialog,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import TermsOfUse from './TermsOfUse';
 
@@ -13,6 +14,7 @@ interface TermsOfUseDialogProps {
 
 const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
   const { open, handleCloseTerms } = props;
+  const { t } = useTranslation('TermsOfUseDialog');
 
   return (
     <Dialog fullScreen open={open} disableEscapeKeyDown disableBackdropClick>
@@ -25,7 +27,7 @@ const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
             variant="contained"
             fullWidth
           >
-            Close Terms of Use
+            {t('close')}
           </Button>
         </Box>
         <Box p={2} />

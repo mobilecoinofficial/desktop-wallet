@@ -9,6 +9,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
 import routePaths from '../../../constants/routePaths';
@@ -46,6 +47,7 @@ const useStyles = makeStyles((theme: Theme) => {
 
 const ConfigureMobilecoindView: FC = () => {
   const classes = useStyles();
+  const { t } = useTranslation('ConfigureMobilecoindView');
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -55,9 +57,9 @@ const ConfigureMobilecoindView: FC = () => {
           to={routePaths.APP_SETTINGS}
           component={RouterLink}
         >
-          <Typography color="textSecondary">Settings</Typography>
+          <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
         </Link>
-        <Typography color="textPrimary">Configure MobileCoinD</Typography>
+        <Typography color="textPrimary">{t('configureMobilecoindBreadcrumb')}</Typography>
       </Breadcrumbs>
       <Box
         alignItems="center"
@@ -67,22 +69,15 @@ const ConfigureMobilecoindView: FC = () => {
         flexDirection="column"
       >
         <Typography variant="body2" display="inline" color="textSecondary">
-          This panel allows you to customize the behavior of MobileCoinD as well
-          as perform some basic resets.
+          {t('panelDescription')}
         </Typography>
         <Box py={1} />
         <Typography variant="body2" color="textSecondary">
-          The MobileCoin Daemon, or MobileCoinD, is a standalone executable
-          which provides blockchain synchronization and wallet services.
+          {t('daemonDescription')}
         </Typography>
         <Box py={1} />
         <Typography variant="body2" color="textSecondary">
-          It creates encrypted, attested connections to validator nodes who are
-          participating in federated voting in order to get the current block
-          height, block headers, and to submit transactions. These validator
-          nodes are considered highly trusted due to their use of SGX, and they
-          are used as a reliable source for block information as well as to
-          validate and process the proposed transactions from MobileCoinD.
+          {t('daemonDescriptionContinued')}
         </Typography>
       </Box>
       <LedgerStatus />

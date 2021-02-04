@@ -2,6 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, makeStyles, Typography } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 import { MOBNumberFormat } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
@@ -36,11 +37,12 @@ const BalanceIndicator: FC<BalanceProps> = ({
   isSynced,
 }: BalanceProps) => {
   const classes = useStyles();
+  const { t } = useTranslation('BalanceIndicator');
 
   return (
     <Box className={classes.item}>
       <Typography variant="h3" color="textSecondary" gutterBottom>
-        Balance
+        {t('title')}
       </Typography>
       <Box className={classes.valueContainer}>
         <MOBIcon className={classes.icon} />
@@ -58,7 +60,7 @@ const BalanceIndicator: FC<BalanceProps> = ({
           variant="h6"
           color="primary"
         >
-          Balance may be out-of-date while wallet syncs with ledger.
+          {t('syncMessage')}
         </Typography>
       )}
     </Box>

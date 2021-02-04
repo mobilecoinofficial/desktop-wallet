@@ -2,6 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Tab, Tabs } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import {
   NavLink as RouterLink,
   matchPath,
@@ -31,28 +32,29 @@ interface Section {
 const sections: Section[] = [
   {
     Icon: WalletHomeIcon,
-    label: 'Home',
+    label: 'home',
     path: routePaths.APP_DASHBOARD,
   },
   {
     Icon: TransactionIcon,
-    label: 'Send/Receive',
+    label: 'transaction',
     path: routePaths.APP_TRANSACTION,
   },
   {
     Icon: GiftIcon,
-    label: 'Gifting',
+    label: 'gift',
     path: routePaths.APP_GIFTING,
   },
   {
     Icon: CogIcon,
-    label: 'Settings',
+    label: 'settings',
     path: routePaths.APP_SETTINGS,
   },
 ];
 
 const NavBar: FC<NavBarProps> = () => {
   const location = useLocation();
+  const { t } = useTranslation('NavBar');
   const value = sections.findIndex((section) => {
     return matchPath(location.pathname, {
       exact: false,
@@ -71,7 +73,7 @@ const NavBar: FC<NavBarProps> = () => {
             component={RouterLink}
             to={path}
             icon={<Icon height={32} width={32} color={color} />}
-            label={label}
+            label={t(label)}
             key={label}
           />
         );

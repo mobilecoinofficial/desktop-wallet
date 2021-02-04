@@ -5,11 +5,13 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import { StylesProvider, StylesOptions } from '@material-ui/styles/';
 import { render } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
+import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
 
 import { MobileCoinDProvider } from '../app/contexts/MobileCoinDContext';
 import type { MobileCoinDContextValue } from '../app/contexts/MobileCoinDContext';
 import useMobileCoinD from '../app/hooks/useMobileCoinD';
+import i18n from '../app/i18n';
 import client from '../app/mobilecoind/client';
 import routes, { renderRoutes } from '../app/routes';
 import { setTheme } from '../app/theme';
@@ -73,17 +75,19 @@ const renderSnapshot = (
   // CBB: we may want to just import a test version of App.tsx
   const renderedScreen = render(
     <MemoryRouter initialEntries={['/test']} initialIndex={0}>
-      <ThemeProvider theme={theme}>
-        <SnackbarProvider dense maxSnack={5}>
-          <MobileCoinDProvider client={client}>
-            <StylesProvider generateClassName={generateClassName}>
-              <MuiThemeProvider theme={theme}>
-                {renderRoutes(routes, testComponent)}
-              </MuiThemeProvider>
-            </StylesProvider>
-          </MobileCoinDProvider>
-        </SnackbarProvider>
-      </ThemeProvider>
+      <I18nextProvider i18n={i18n}>
+        <ThemeProvider theme={theme}>
+          <SnackbarProvider dense maxSnack={5}>
+            <MobileCoinDProvider client={client}>
+              <StylesProvider generateClassName={generateClassName}>
+                <MuiThemeProvider theme={theme}>
+                  {renderRoutes(routes, testComponent)}
+                </MuiThemeProvider>
+              </StylesProvider>
+            </MobileCoinDProvider>
+          </SnackbarProvider>
+        </ThemeProvider>
+      </I18nextProvider>
     </MemoryRouter>,
   );
 

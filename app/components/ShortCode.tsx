@@ -4,15 +4,9 @@ import type { FC } from 'react';
 import { Box } from '@material-ui/core';
 
 import { GOLD_DARK, GOLD_LIGHT } from '../constants/colors';
-
-const LUCKY_ARRAY_INDEX = [1, 2];
-const SUPER_LUCKY_ARRAY_INDEX = [0, 3];
-
-const LUCKY_ARRAY_END_INDEX = [-3, -2];
-const SUPER_LUCKY_ARRAY_END_INDEX = [-4, -1];
-
-const REQUIRED_LENGTH = 99;
-const MAX_LENGTH = 199;
+import {
+  LUCKY_ARRAY_INDEX, LUCKY_ARRAY_END_INDEX, SUPER_LUCKY_ARRAY_INDEX, SUPER_LUCKY_ARRAY_END_INDEX,
+} from '../constants/indicies';
 
 interface ShortCodeProps {
   code: string;
@@ -28,18 +22,16 @@ const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
 
   const colorPairs: string[][] = [];
 
-  if (code.length >= REQUIRED_LENGTH && code.length <= MAX_LENGTH) {
-    darkGoldCharIndicies.forEach((luck, i) => {
-      if (colorPairs.length % 3 === 2) {
-        colorPairs.push(['-', 'inherit']);
-      }
-      const sup: number = lightGoldCharIndicies[i];
-      const luckyPair: string[] = [code.charAt(luck), GOLD_DARK];
-      const superPair: string[] = [code.charAt(sup), GOLD_LIGHT];
-      colorPairs.push(luck < sup ? luckyPair : superPair);
-      colorPairs.push(luck < sup ? superPair : luckyPair);
-    });
-  }
+  darkGoldCharIndicies.forEach((luck, i) => {
+    if (colorPairs.length % 3 === 2) {
+      colorPairs.push(['-', 'inherit']);
+    }
+    const sup: number = lightGoldCharIndicies[i];
+    const luckyPair: string[] = [code.charAt(luck), GOLD_DARK];
+    const superPair: string[] = [code.charAt(sup), GOLD_LIGHT];
+    colorPairs.push(luck < sup ? luckyPair : superPair);
+    colorPairs.push(luck < sup ? superPair : luckyPair);
+  });
 
   return (
     <Box component="span" data-testid="short-code">

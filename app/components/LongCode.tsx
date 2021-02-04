@@ -4,12 +4,9 @@ import type { FC } from 'react';
 import { Box } from '@material-ui/core';
 
 import { GOLD_DARK, GOLD_LIGHT } from '../constants/colors';
-
-const LUCKY_ARRAY_INDEX = [1, 2];
-const SUPER_LUCKY_ARRAY_INDEX = [0, 3];
-
-const LUCKY_ARRAY_END_INDEX = [-3, -2];
-const SUPER_LUCKY_ARRAY_END_INDEX = [-4, -1];
+import {
+  LUCKY_ARRAY_INDEX, LUCKY_ARRAY_END_INDEX, SUPER_LUCKY_ARRAY_INDEX, SUPER_LUCKY_ARRAY_END_INDEX,
+} from '../constants/indicies';
 
 interface LongCodeProps {
   code: string;

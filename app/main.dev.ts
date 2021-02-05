@@ -31,6 +31,12 @@ export default class AppUpdater {
   }
 }
 
+// ESLint will warn about any use of eval()
+// eslint-disable-next-line
+global.eval = function () {
+  throw new Error('Sorry, this app does not support window.eval().');
+};
+
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
@@ -138,7 +144,7 @@ const createWindow = async () => {
   );
 
   mainWindow.webContents.session.setPermissionCheckHandler(
-    (_webContents, _permission) => {
+    () => {
       return false;
     },
   );
@@ -191,7 +197,9 @@ app.on('window-all-closed', () => {
 });
 
 if (process.env.E2E_BUILD === 'true') {
+  /*
   // eslint-disable-next-line promise/catch-or-return
+  */
   app.whenReady().then(createWindow);
 } else {
   app.on('ready', () => {
@@ -264,11 +272,11 @@ app.on('remote-get-global', (event, _webContents, globalName) => {
   }
 });
 
-app.on('remote-get-current-window', (event, _webContents) => {
+app.on('remote-get-current-window', (event) => {
   event.preventDefault();
 });
 
-app.on('remote-get-current-web-contents', (event, _webContents) => {
+app.on('remote-get-current-web-contents', (event) => {
   event.preventDefault();
 });
 
@@ -276,10 +284,13 @@ app.on('remote-get-current-web-contents', (event, _webContents) => {
 app.on('web-contents-created', (_event, contents) => {
   contents.on('will-attach-webview', (event, webPreferences, params) => {
     // Strip away preload scripts if unused or verify their location is legitimate
+    // eslint-disable-next-line no-param-reassign
     delete webPreferences.preload;
+    // eslint-disable-next-line no-param-reassign
     delete webPreferences.preloadURL;
 
     // Disable Node.js integration
+    // eslint-disable-next-line no-param-reassign
     webPreferences.nodeIntegration = false;
 
     // Verify URL being loaded

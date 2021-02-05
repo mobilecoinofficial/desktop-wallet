@@ -1,365 +1,333 @@
 {
-  "UnlockWalletView": {
-    "description": "Please enter the passphrase you used to secure your wallet. If you cannot recall your passphrase, you may re-import the account into your wallet using their Entropy seed.",
-    "importInstead": "Import account from Entropy instead",
-    "title": "Unlock Wallet"
+  "AccountCard": {
+    "accountHeader": "Account Address Code",
+    "accountQR": "Account QR Code",
+    "accountTooltip": "Show Account Address Code",
+    "clipboardAddress": "Address Code copied to clipboard!",
+    "clipboardGift": "Gift Code copied to clipboard!",
+    "copyTooltip": "Click to copy to clipboard.",
+    "giftHeader": "Gift Code",
+    "giftQR": "Gift QR Code",
+    "mobUrlTooltip": "Show MobURL QR Code",
+    "unnamed": "Unnamed Account"
   },
-
-  "UnlockWalletForm": {
-    "passwordRequired": "Password is required",
-    "passwordLabel": "Password",
-    "unlockWalletButton": "Unlock Wallet"
+  "BalanceIndicator": {
+    "syncMessage": "Balance may be out-of-date while wallet syncs with ledger.",
+    "title": "Balance"
   },
-
-  "ImportAccountView": {
-    "title": "Import Account",
-    "header": "Import an existing account for this desktop wallet.",
-    "description": "This option is best for individuals who already have MobileCoin accounts. If you do not have an account, please create a new account instead.",
-    "overwriteWarning": "It appears that this wallet is locked with an encrypted Entropy. Importing an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.",
-    "unlockWalletButton": "Unlock this wallet",
-    "createInstead": "Create account instead"
+  "BuildGiftForm": {
+    "accountBalance": "Account Balance",
+    "accountName": "Account Name",
+    "cancel": "Cancel",
+    "confirmationNotFound": "Could not find confirmation",
+    "confirmGift": "Confirm Gift",
+    "createGift": "Create Gift",
+    "error": "Hmm, something went wrong.",
+    "errorBuild": "Could not build gift code.",
+    "errorFee": "Please reserve 0.01 MOB for transaction fee.",
+    "errorSyncBeforeSending": "Wallet must sync with ledger before sending gifts.",
+    "fee": "Fee",
+    "giftCanceled": "Gift Canceled",
+    "giftConfirmation": "Gift Confirmation",
+    "giftConfirmationDescription": "Please check and confirm your gift intent",
+    "giftCreated": "Gift Created! Your balance will update shortly.",
+    "giftDetails": "Gift Details",
+    "giftValue": "Gift Value",
+    "mobLabel": "MOB Amount",
+    "mobWillBeSent": "MOB will be sent to this gift card after you confirm.",
+    "pending": "Gift Code (Pending)",
+    "positiveValidation": "A positive, non-zero amount is required to gift MOB.",
+    "positiveValidationRequired": "A positive, non-zero amount is required to gift MOB.",
+    "remaining": "Remaining Balance",
+    "secureCode": "Please Secure Code",
+    "select": "Select Account",
+    "showCode": "Show Gift Code",
+    "total": "Total",
+    "unnamed": "Unnamed Account",
+    "walletSyncing": "Wallet syncing"
   },
-
-  "ImportAccountForm": {
-    "accountNameValidation": "Account Name cannot be more than 64 characters.",
-    "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
-    "entropyMatches": "A valid entropy is 64 hexadecimals.",
-    "entropyRequired": "Entropy is required",
-    "passwordMin": "Password must be at least 8 characters in length.",
-    "passwordMax": "Passwords cannot be more than 99 characters.",
-    "passwordRequired": "Password is required",
-    "passwordConfirmationRef": "Must match Password",
-    "passwordConfirmationRequired": "Password Confirmation is required",
-    "nameLabel": "Account Name (optional)",
-    "entropyLabel": "Entropy",
-    "passwordLabel": "Password",
-    "passwordConfirmationLabel": "Password Confirmation",
-    "acceptTerms": "I have read and accept the",
-    "acceptTermsButton": "Terms of Use",
-    "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
-    "importAccountButton": "Import Account"
+  "BuildGiftPanel": {
+    "cancelButton": "Cancel",
+    "clickToCopy": "Click to copy to clipboard.",
+    "clickToDelete": "Click to delete gift code.",
+    "deleteButton": "Delete",
+    "deleted": "Deleted!",
+    "deleteDialogDescription": "If this gift has been claimed, or if you do not want to store the code and value anymore, you can delete code here.",
+    "deleteDialogText": "Deleting will not cancel the gift, and a user must claim the gift with the code.",
+    "deleteDialogTitle": "Delete Gift Code?",
+    "description": "Use this form to create redeemable gift codes with MOB inside. To create a gift code, you simply need to input the value you would like to gift. You will then be asked to confirm the contents of the gift and secure the gifts secret code.",
+    "giftCodeCopied": "Gift Code copied to clipboard!",
+    "giftValue": "Gift Value:",
+    "manageGiftCodes": "Manage Gift Codes",
+    "manageGiftCodesDescription": "When you create a gift, this wallet will store its code and value. You can click to copy at any time. If you do not wish to store the gift code anymore, you can click the trashcan icon to delete.",
+    "shortened": "Shortened Gift Code",
+    "title": "You can package and gift your MOB!",
+    "value": "Value"
   },
-
-  "CreateAccountView": {
-    "title": "Create Account",
-    "header": "Create a new account for this desktop wallet.",
-    "description": "This option is best for individuals who do not have an existing account. If you have an account you would like to use, please import an existing account instead.",
-    "overwriteWarning": "It appears that this wallet is locked with an encrypted Entropy. Creating an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.",
-    "unlockWalletButton": "Unlock this wallet",
-    "importInstead": "Import account instead"
-  },
-
-  "CreateAccountForm": {
-    "accountNameValidation": "Account Name cannot be more than 64 characters.",
-    "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
-    "passwordMin": "Password must be at least 8 characters in length.",
-    "passwordMax": "Passwords cannot be more than 99 characters.",
-    "passwordRequired": "Password is required",
-    "passwordConfirmationRef": "Must match Password",
-    "passwordConfirmationRequired": "Password Confirmation is required",
-    "nameLabel": "Account Name (optional)",
-    "passwordLabel": "Password",
-    "passwordConfirmationLabel": "Password Confirmation",
-    "acceptTerms": "I have read and accept the",
-    "acceptTermsButton": "Terms of Use",
-    "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
-    "createAccountButton": "Create Account"
-  },
-
-  "NotFoundView": {
-    "header": "404: The page you are looking for isn’t here",
-    "description": "You should never see this page. If you do, an engineer messed up.",
-    "backButton": "Back to home"
-  },
-
   "ChangePasswordView": {
-    "settingsBreadcrumb": "Settings",
     "changePasswordBreadcrumb": "Change Password",
+    "changePasswordButton": "Change Password",
     "description": "Changing your password will change how we encrypt your secret Entropy. You should always use strong (unguessable) passwords and change them regularly.",
-    "instructions": "To change your current password, please enter your current password and your new password.",
-    "passwordMin": "New Password must be at least 8 characters in length.",
-    "passwordMax": "Passwords cannot be more than 99 characters.",
-    "passwordRequired": "New Password is required",
-    "passwordConfirmationRef": "Must match New Password",
-    "passwordConfirmationRequired": "New Password Confirmation is required",
     "enqueue": "Successfully change password!",
     "formLabel": "Change Password",
-    "oldPasswordLabel": "Old Password",
+    "instructions": "To change your current password, please enter your current password and your new password.",
     "newPasswordLabel": "New Password",
+    "oldPasswordLabel": "Old Password",
     "passwordConfirmationLabel": "Confirm New Password",
-    "changePasswordButton": "Change Password"
+    "passwordConfirmationRef": "Must match New Password",
+    "passwordConfirmationRequired": "New Password Confirmation is required",
+    "passwordMax": "Passwords cannot be more than 99 characters.",
+    "passwordMin": "New Password must be at least 8 characters in length.",
+    "passwordRequired": "New Password is required",
+    "settingsBreadcrumb": "Settings"
   },
-
+  "CloseWalletModal": {
+    "closeVerifyBody": "Are you sure you want to close and secure the wallet?",
+    "closeVerifyConfirm": "Yes, Close Wallet",
+    "closeVerifyDeny": "No, Keep Wallet Open",
+    "closeVerifyHeader": "Close and Secure Wallet?",
+    "closeWalletButton": "Close Wallet"
+  },
   "ConfigureMobilecoindView": {
-    "settingsBreadcrumb": "Settings",
     "configureMobilecoindBreadcrumb": "Configure MobileCoinD",
-    "panelDescription": "This panel allows you to customize the behavior of MobileCoinD as well as perform some basic resets.",
     "daemonDescription": "The MobileCoin Daemon, or MobileCoinD, is a standalone executable which provides blockchain synchronization and wallet services.",
-    "daemonDescriptionContinued": "It creates encrypted, attested connections to validator nodes who are participating in federated voting in order to get the current block height, block headers, and to submit transactions. These validator nodes are considered highly trusted due to their use of SGX, and they are used as a reliable source for block information as well as to validate and process the proposed transactions from MobileCoinD."
+    "daemonDescriptionContinued": "It creates encrypted, attested connections to validator nodes who are participating in federated voting in order to get the current block height, block headers, and to submit transactions. These validator nodes are considered highly trusted due to their use of SGX, and they are used as a reliable source for block information as well as to validate and process the proposed transactions from MobileCoinD.",
+    "panelDescription": "This panel allows you to customize the behavior of MobileCoinD as well as perform some basic resets.",
+    "settingsBreadcrumb": "Settings"
   },
-
+  "ConsumeGiftForm": {
+    "accountBalance": "Account Balance",
+    "accountName": "Account Name",
+    "cancel": "Cancel",
+    "claimGift": "Claim Gift",
+    "confirmation": "Gift Received! Your balance will update shortly.",
+    "confirmationNotFound": "Could not find confirmation",
+    "error": "Hmm, something went wrong.",
+    "error13": "13 INTERNAL: transactions_manager.submit_tx_proposal: Connection(Operation { error: TransactionValidation(ContainsSpentKeyImage), total_delay: 0ns, tries: 1 })",
+    "fee": "Fee",
+    "giftB58Error": "Could not find gift with code.",
+    "giftB58Validation": "You need a valid gift code to open a gift.",
+    "giftCanceled": "Gift Canceled",
+    "giftClaimed": "This gift has already been claimed!",
+    "giftCode": "Gift Code",
+    "giftConfirmation": "Gift Confirmation",
+    "giftDetails": "Gift Details",
+    "giftValue": "Gift Value",
+    "newBalance": "New Balance",
+    "openGift": "Open Gift",
+    "select": "Select Account",
+    "total": "Total",
+    "unnamed": "Unnamed Account"
+  },
+  "ConsumeGiftPanel": {
+    "balance": "Balance",
+    "description": "You may use this form to collect gift codes. Simply enter the Gift Code and confirm you want to consume the gift into your wallet.",
+    "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
+  },
+  "CreateAccountForm": {
+    "acceptTerms": "I have read and accept the",
+    "acceptTermsButton": "Terms of Use",
+    "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
+    "accountNameValidation": "Account Name cannot be more than 64 characters.",
+    "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
+    "createAccountButton": "Create Account",
+    "nameLabel": "Account Name (optional)",
+    "passwordConfirmationLabel": "Password Confirmation",
+    "passwordConfirmationRef": "Must match Password",
+    "passwordConfirmationRequired": "Password Confirmation is required",
+    "passwordLabel": "Password",
+    "passwordMax": "Passwords cannot be more than 99 characters.",
+    "passwordMin": "Password must be at least 8 characters in length.",
+    "passwordRequired": "Password is required"
+  },
+  "CreateAccountView": {
+    "description": "This option is best for individuals who do not have an existing account. If you have an account you would like to use, please import an existing account instead.",
+    "header": "Create a new account for this desktop wallet.",
+    "importInstead": "Import account instead",
+    "overwriteWarning": "It appears that this wallet is locked with an encrypted Entropy. Creating an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.",
+    "title": "Create Account",
+    "unlockWalletButton": "Unlock this wallet"
+  },
+  "GiftingView": {
+    "giftMOB": "Gift MOB",
+    "openGift": "Open Gift"
+  },
+  "ImportAccountForm": {
+    "acceptTerms": "I have read and accept the",
+    "acceptTermsButton": "Terms of Use",
+    "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
+    "accountNameValidation": "Account Name cannot be more than 64 characters.",
+    "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
+    "entropyLabel": "Entropy",
+    "entropyMatches": "A valid entropy is 64 hexadecimals.",
+    "entropyRequired": "Entropy is required",
+    "importAccountButton": "Import Account",
+    "nameLabel": "Account Name (optional)",
+    "passwordConfirmationLabel": "Password Confirmation",
+    "passwordConfirmationRef": "Must match Password",
+    "passwordConfirmationRequired": "Password Confirmation is required",
+    "passwordLabel": "Password",
+    "passwordMax": "Passwords cannot be more than 99 characters.",
+    "passwordMin": "Password must be at least 8 characters in length.",
+    "passwordRequired": "Password is required"
+  },
+  "ImportAccountView": {
+    "createInstead": "Create account instead",
+    "description": "This option is best for individuals who already have MobileCoin accounts. If you do not have an account, please create a new account instead.",
+    "header": "Import an existing account for this desktop wallet.",
+    "overwriteWarning": "It appears that this wallet is locked with an encrypted Entropy. Importing an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.",
+    "title": "Import Account",
+    "unlockWalletButton": "Unlock this wallet"
+  },
   "LeaveMobilecoindRunning": {
+    "defaultDescription": "By default, MobileCoinD terminates when you exit the wallet. This setting allows you to leave MobileCoinD syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches.",
     "formLabel": "MobileCoinD Background Process",
-    "ternaryOn": "Leave MobileCoinD Active is on",
     "ternaryOff": "Leave MobileCoinD Active is off",
-    "ternaryWillSync": "MobileCoinD will continue to sync when you exit the wallet.",
+    "ternaryOn": "Leave MobileCoinD Active is on",
     "ternaryWillNotSync": "MobileCoinD will not continue to sync when you exit the wallet.",
-    "defaultDescription": "By default, MobileCoinD terminates when you exit the wallet. This setting allows you to leave MobileCoinD syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches."
+    "ternaryWillSync": "MobileCoinD will continue to sync when you exit the wallet."
   },
-
   "LedgerStatus": {
-    "networkBlocks": "Network Blocks",
-    "networkBlocksDescription": "Network Blocks represent the total blocks within the MobileCoin network. This is the value your Local and Monitor Blocks needs to hit to be 100% synced.",
-    "localBlocks": "Local Blocks",
-    "localBlocksDescription": "Local Blocks shows the blocks your mobilecoind has synced the ledger.",
-    "monitorBlocks": "Monitor Blocks",
-    "monitorBlocksDescription": "Monitor Blocks shows the blocks that a specific monitor has synced. Each account has its own Monitor Blocks count. Once this value is synced, you will immediately see the effects of transactions.",
-    "statusCopyError": "There's been an error in the ledger. Please reset the ledger at the bottom of this page.",
-    "statusCopyBelow90": "The ledger is syncing. This may take awhile.",
-    "statusCopyAbove90": "The ledger is syncing.",
-    "statusCopy100": "The ledger is synced.",
     "blockType": "Block Type",
     "formLabel": "Ledger Status",
     "height": "Current Height",
+    "localBlocks": "Local Blocks",
+    "localBlocksDescription": "Local Blocks shows the blocks your mobilecoind has synced the ledger.",
     "maxHeight": "Maximum Height",
+    "monitorBlocks": "Monitor Blocks",
+    "monitorBlocksDescription": "Monitor Blocks shows the blocks that a specific monitor has synced. Each account has its own Monitor Blocks count. Once this value is synced, you will immediately see the effects of transactions.",
+    "networkBlocks": "Network Blocks",
+    "networkBlocksDescription": "Network Blocks represent the total blocks within the MobileCoin network. This is the value your Local and Monitor Blocks needs to hit to be 100% synced.",
+    "statusCopy100": "The ledger is synced.",
+    "statusCopyAbove90": "The ledger is syncing.",
+    "statusCopyBelow90": "The ledger is syncing. This may take awhile.",
+    "statusCopyError": "There's been an error in the ledger. Please reset the ledger at the bottom of this page.",
     "synced": "% Synced"
   },
-
   "MobilecoindDirectory": {
     "formLabel": "MobileCoinD Directory",
     "ledgerDbPathHeader": "Ledger Database Path:",
     "mobilecoindDbPathHeader": "MobileCoinD Database Path:"
   },
-
+  "NavBar": {
+    "gift": "Gifting",
+    "home": "Home",
+    "settings": "Settings",
+    "transaction": "Send/Receive"
+  },
+  "NotFoundView": {
+    "backButton": "Back to home",
+    "description": "You should never see this page. If you do, an engineer messed up.",
+    "header": "404: The page you are looking for isn’t here"
+  },
+  "PrivacyPolicyView": {
+    "privacyPolicy": "Privacy Policy",
+    "settings": "Settings"
+  },
   "ResetLedger": {
-    "formLabel": "Reset Your Ledger",
+    "cancelButton": "Cancel",
+    "confirmButton": "Confirm",
     "description": "In rare cases, your local database may become corrupted and permanently out-of-sync with the ledger. If this occurs, please manually reset your ledger.",
+    "formLabel": "Reset Your Ledger",
     "resetButton": "Reset Ledger",
     "resetLedgerModal": "Reset the ledger?",
-    "resetLedgerModalDescription": "Resetting the ledger will restart the wallet. You will need to re-sync the ledger from 0. The app will refresh, and you will need to re-enter your password.",
-    "cancelButton": "Cancel",
-    "confirmButton": "Confirm"
+    "resetLedgerModalDescription": "Resetting the ledger will restart the wallet. You will need to re-sync the ledger from 0. The app will refresh, and you will need to re-enter your password."
   },
-
-  "BalanceIndicator": {
-    "title": "Balance",
-    "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
-  },
-
-  "AccountCard": {
-    "clipboardGift": "Gift Code copied to clipboard!",
-    "clipboardAddress": "Address Code copied to clipboard!",
-    "giftQR": "Gift QR Code",
-    "accountQR": "Account QR Code",
-    "giftHeader": "Gift Code",
-    "accountHeader": "Account Address Code",
-    "accountTooltip": "Show Account Address Code",
-    "mobUrlTooltip": "Show MobURL QR Code",
-    "copyTooltip": "Click to copy to clipboard.",
-    "unnamed": "Unnamed Account"
-  },
-
-  "CloseWalletModal": {
-    "closeWalletButton": "Close Wallet",
-    "closeVerifyHeader": "Close and Secure Wallet?",
-    "closeVerifyBody": "Are you sure you want to close and secure the wallet?",
-    "closeVerifyDeny": "No, Keep Wallet Open",
-    "closeVerifyConfirm": "Yes, Close Wallet"
-  },
-
-  "GiftingView": {
-    "giftMOB": "Gift MOB",
-    "openGift": "Open Gift"
-  },
-
-  "BuildGiftPanel": {
-    "giftCodeCopied": "Gift Code copied to clipboard!",
-    "deleted": "Deleted!",
-    "title": "You can package and gift your MOB!",
-    "description": "Use this form to create redeemable gift codes with MOB inside. To create a gift code, you simply need to input the value you would like to gift. You will then be asked to confirm the contents of the gift and secure the gifts secret code.",
-    "manageGiftCodes": "Manage Gift Codes",
-    "manageGiftCodesDescription": "When you create a gift, this wallet will store its code and value. You can click to copy at any time. If you do not wish to store the gift code anymore, you can click the trashcan icon to delete.",
-    "shortened": "Shortened Gift Code",
-    "value": "Value",
-    "clickToCopy": "Click to copy to clipboard.",
-    "clickToDelete": "Click to delete gift code.",
-    "deleteDialogTitle": "Delete Gift Code?",
-    "deleteDialogDescription": "If this gift has been claimed, or if you do not want to store the code and value anymore, you can delete code here.",
-    "giftValue": "Gift Value:",
-    "deleteDialogText": "Deleting will not cancel the gift, and a user must claim the gift with the code.",
-    "cancelButton": "Cancel",
-    "deleteButton": "Delete"
-  },
-
-  "BuildGiftForm": {
-    "giftCanceled": "Gift Canceled",
-    "confirmationNotFound": "Could not find confirmation",
-    "giftCreated": "Gift Created! Your balance will update shortly.",
-    "error": "Hmm, something went wrong.",
-    "unnamed": "Unnamed Account",
-    "select": "Select Account",
-    "accountName": "Account Name",
-    "accountBalance": "Account Balance",
-    "errorFee": "Please reserve 0.01 MOB for transaction fee.",
-    "positiveValidation": "A positive, non-zero amount is required to gift MOB.",
-    "positiveValidationRequired": "A positive, non-zero amount is required to gift MOB.",
-    "errorBuild": "Could not build gift code.",
-    "giftDetails": "Gift Details",
-    "mobLabel": "MOB Amount",
-    "errorSyncBeforeSending": "Wallet must sync with ledger before sending gifts.",
-    "createGift": "Create Gift",
-    "walletSyncing": "Wallet syncing",
-    "giftConfirmation": "Gift Confirmation",
-    "giftConfirmationDescription": "Please check and confirm your gift intent",
-    "giftValue": "Gift Value",
-    "fee": "Fee",
-    "total": "Total",
-    "remaining": "Remaining Balance",
-    "mobWillBeSent": "MOB will be sent to this gift card after you confirm.",
-    "pending": "Gift Code (Pending)",
-    "showCode": "Show Gift Code",
-    "cancel": "Cancel",
-    "confirmGift": "Confirm Gift",
-    "secureCode": "Please Secure Code"
-  },
-
-  "ConsumeGiftPanel": {
-    "balance": "Balance",
-    "syncMessage": "Balance may be out-of-date while wallet syncs with ledger.",
-    "description": "You may use this form to collect gift codes. Simply enter the Gift Code and confirm you want to consume the gift into your wallet."
-  },
-
-  "ConsumeGiftForm": {
-    "giftCanceled": "Gift Canceled",
-    "confirmationNotFound": "Could not find confirmation",
-    "confirmation": "Gift Received! Your balance will update shortly.",
-    "error13": "13 INTERNAL: transactions_manager.submit_tx_proposal: Connection(Operation { error: TransactionValidation(ContainsSpentKeyImage), total_delay: 0ns, tries: 1 })",
-    "giftClaimed": "This gift has already been claimed!",
-    "error": "Hmm, something went wrong.",
-    "unnamed": "Unnamed Account",
-    "select": "Select Account",
-    "accountName": "Account Name",
-    "accountBalance": "Account Balance",
-    "giftB58Validation": "You need a valid gift code to open a gift.",
-    "giftB58Error": "Could not find gift with code.",
-    "giftDetails": "Gift Details",
-    "giftCode": "Gift Code",
-    "openGift": "Open Gift",
-    "giftConfirmation": "Gift Confirmation",
-    "total": "Total",
-    "fee": "Fee",
-    "giftValue": "Gift Value",
-    "newBalance": "New Balance",
-    "cancel": "Cancel",
-    "claimGift": "Claim Gift"
-  },
-
-  "PrivacyPolicyView": {
-    "settings": "Settings",
-    "privacyPolicy": "Privacy Policy"
-  },
-
   "RetrieveEntropyView": {
-    "settings": "Settings",
-    "retrieveSecret": "Retrieve Secret Entropy",
-    "header": "Your Entropy is the",
     "description": "that unlocks your wallet and allows you to use MobileCoin. It is unique to your account. It is important that you never share this code. You may wish to use this code in a secure, safe manner. This wallet uses your password to store an encrypted Entropy.",
     "entropyCanBeUsed": "The Entropy can be used to import your wallet in case your device is damaged or lost. It allows you to add your account to other wallets.",
-    "misplacedYourEntropy": "If you have forgotten or misplaced your Entropy, you may retrieve here with your password.",
-    "passwordRequired": "Password is required",
     "error": "Hmm, something went wrong.",
+    "header": "Your Entropy is the",
+    "misplacedYourEntropy": "If you have forgotten or misplaced your Entropy, you may retrieve here with your password.",
+    "password": "Password",
+    "passwordRequired": "Password is required",
     "retrieveEntropy": "Retrieve Entropy",
-    "password": "Password"
+    "retrieveSecret": "Retrieve Secret Entropy",
+    "settings": "Settings"
   },
-
-  "ShowRetrievedEntropyModal": {
-    "header": "This is your secret Entropy!",
-    "description": "We decrypted your Entropy and will now show you the code on your screen. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.",
-    "hide": "Hide Secret Entropy",
-    "show": "Show Secret Entropy",
-    "secured": "I have secured my Entropy"
+  "SendMobForm": {
+    "accountBalance": "Account Balance",
+    "accountName": "Account Name",
+    "addressRequired": "A Public Address is required to send MOB.",
+    "amount": "Amount",
+    "cancel": "Cancel",
+    "confirm": "Send MOB Confirmation",
+    "confirmSend": "Confirm Send",
+    "error": "Could not build transaction.",
+    "errorFee": "Please reserve 0.01 MOB for transaction fee.",
+    "fee": "Fee",
+    "intent": "Please check and confirm your payment intent",
+    "mob": "MOB",
+    "mobAmount": "MOB Amount",
+    "mustSync": "Wallet must sync with ledger before sending MOB.",
+    "positiveValidation": "A positive, non-zero amount is required to send MOB.",
+    "positiveValidationRequired": "A positive, non-zero amount is required to send MOB.",
+    "recipient": "Recipient Public Address",
+    "recipientPlus": "Recipient Address (Their Address)",
+    "remaining": "Remaining Balance",
+    "select": "Select Account",
+    "send": "Send Payment",
+    "senderPlus": "Sender Address (Your Address)",
+    "success": "Successfully sent ",
+    "syncing": "Wallet syncing...",
+    "total": "Total",
+    "transaction": "Transaction Details",
+    "transactionCanceled": "Transaction Canceled",
+    "unnamed": "Unnamed Account"
   },
-
+  "SendMobPanel": {
+    "header": "Please enter the amount of MOB you want to send and the public address of the recipient."
+  },
   "SettingsOptionsItem": {
     "changePassword": "Change Password",
-    "retrieveEntropy": "Retrieve Secret Entropy",
-    "terms": "Terms of Use",
+    "configureMobileCoinD": "Configure MobileCoinD",
     "privacyPolicy": "Privacy Policy",
-    "configureMobileCoinD": "Configure MobileCoinD"
+    "retrieveEntropy": "Retrieve Secret Entropy",
+    "terms": "Terms of Use"
   },
-
+  "ShowEntropyModal": {
+    "back": "Go back...",
+    "confirm": "Confirm you have secured Entropy",
+    "description": "We generated a random Entropy to create your new account. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.",
+    "header": "Welcome to the MobileCoin Desktop Wallet!",
+    "hide": "Hide Secret Entropy",
+    "recommend": "We recommend storing your entropy in a secure manner.",
+    "retrieve": "If you need to see your entropy again, you may retrieve it from the Settings tab with your password. However, if you forget your password or lose this device, you will need to know your Entropy.",
+    "secured": "I have secured my Entropy",
+    "show": "Show Secret Entropy",
+    "yes": "Yes, I have secured my Entropy"
+  },
+  "ShowRetrievedEntropyModal": {
+    "description": "We decrypted your Entropy and will now show you the code on your screen. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.",
+    "header": "This is your secret Entropy!",
+    "hide": "Hide Secret Entropy",
+    "secured": "I have secured my Entropy",
+    "show": "Show Secret Entropy"
+  },
+  "SyncStatus": {
+    "error": "Please see Admin Panel in Settings.",
+    "synced": "100%: synced with the ledger",
+    "syncing": "Syncing with the ledger"
+  },
+  "TermsOfUseDialog": {
+    "close": "Close Terms of Use"
+  },
   "TermsOfUseView": {
     "settings": "Settings",
     "terms": "Terms of Use"
   },
-
   "TransactionView": {
-    "send": "Send MOB",
-    "receive": "Receive MOB"
+    "receive": "Receive MOB",
+    "send": "Send MOB"
   },
-
-  "SendMobPanel": {
-    "header": "Please enter the amount of MOB you want to send and the public address of the recipient."
+  "UnlockWalletForm": {
+    "passwordLabel": "Password",
+    "passwordRequired": "Password is required",
+    "unlockWalletButton": "Unlock Wallet"
   },
-
-  "SendMobForm": {
-    "error": "Could not build transaction.",
-    "transactionCanceled": "Transaction Canceled",
-    "unnamed": "Unnamed Account",
-    "select": "Select Account",
-    "accountName": "Account Name",
-    "accountBalance": "Account Balance",
-    "errorFee": "Please reserve 0.01 MOB for transaction fee.",
-    "positiveValidation": "A positive, non-zero amount is required to send MOB.",
-    "positiveValidationRequired": "A positive, non-zero amount is required to send MOB.",
-    "addressRequired": "A Public Address is required to send MOB.",
-    "success": "Successfully sent ",
-    "mob": "MOB",
-    "transaction": "Transaction Details",
-    "recipient": "Recipient Public Address",
-    "mobAmount": "MOB Amount",
-    "mustSync": "Wallet must sync with ledger before sending MOB.",
-    "send": "Send Payment",
-    "syncing": "Wallet syncing...",
-    "confirm": "Send MOB Confirmation",
-    "intent": "Please check and confirm your payment intent",
-    "amount": "Amount",
-    "fee": "Fee",
-    "total": "Total",
-    "remaining": "Remaining Balance",
-    "recipientPlus": "Recipient Address (Their Address)",
-    "senderPlus": "Sender Address (Your Address)",
-    "cancel": "Cancel",
-    "confirmSend": "Confirm Send"
-  },
-
-  "TermsOfUseDialog": {
-    "close": "Close Terms of Use"
-  },
-
-  "NavBar": {
-    "home": "Home",
-    "transaction": "Send/Receive",
-    "gift": "Gifting",
-    "settings": "Settings"
-  },
-
-  "SyncStatus": {
-    "synced": "100%: synced with the ledger",
-    "syncing": "Syncing with the ledger",
-    "error": "Please see Admin Panel in Settings."
-  },
-
-  "ShowEntropyModal": {
-    "header": "Welcome to the MobileCoin Desktop Wallet!",
-    "description": "We generated a random Entropy to create your new account. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.",
-    "hide": "Hide Secret Entropy",
-    "show": "Show Secret Entropy",
-    "secured": "I have secured my Entropy",
-    "confirm": "Confirm you have secured Entropy",
-    "retrieve": "If you need to see your entropy again, you may retrieve it from the Settings tab with your password. However, if you forget your password or lose this device, you will need to know your Entropy.",
-    "recommend": "We recommend storing your entropy in a secure manner.",
-    "back": "Go back...",
-    "yes": "Yes, I have secured my Entropy"
+  "UnlockWalletView": {
+    "description": "Please enter the passphrase you used to secure your wallet. If you cannot recall your passphrase, you may re-import the account into your wallet using their Entropy seed.",
+    "importInstead": "Import account from Entropy instead",
+    "title": "Unlock Wallet"
   }
 }

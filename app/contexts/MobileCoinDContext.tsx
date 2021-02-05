@@ -134,6 +134,7 @@ type GenerateEntropyAction = {
     accountName: string | null;
     b58Code: string;
     balance: bigint;
+    encryptedEntropy: string;
     entropy: Buffer;
     monitorId: Buffer;
     receiver: PublicAddress;
@@ -291,6 +292,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         accountName,
         b58Code,
         balance,
+        encryptedEntropy,
         entropy,
         monitorId,
         receiver,
@@ -300,6 +302,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         accountName,
         b58Code,
         balance,
+        encryptedEntropy,
         entropy,
         isAuthenticated: true,
         isEntropyKnown: false,

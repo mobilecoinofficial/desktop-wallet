@@ -128,7 +128,7 @@ type FetchBalanceAction = {
   };
 };
 
-type GenerateEntropyAction = {
+type CreateAccountAction = {
   type: 'CREATE_ACCOUNT';
   payload: {
     accountName: string | null;
@@ -195,7 +195,7 @@ type Action =
   | UpdateGiftCodesAction
   | ConfirmEntropyKnownAction
   | FetchBalanceAction
-  | GenerateEntropyAction
+  | CreateAccountAction
   | ImportAccountAction
   | InitialiseAction
   | PayAddressCodeAction

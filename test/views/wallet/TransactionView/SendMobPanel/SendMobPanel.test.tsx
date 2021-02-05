@@ -23,7 +23,6 @@ describe('SendMobPanel', () => {
       test('SendMobPanel renders correctly with appropriate header', () => {
         const { sendQuery } = setupComponent();
         expect(sendQuery).toBeInTheDocument();
-        expect(sendQuery).not.toBeNull();
       });
     });
   });

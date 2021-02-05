@@ -131,7 +131,9 @@ const createWindow = async () => {
           disableBlinkFeatures: 'Auxclick',
           enableRemoteModule: true,
           nodeIntegration: false,
+          nodeIntegrationInWorker: false,
           preload: path.join(__dirname, 'dist/renderer.prod.js'),
+          sandbox: true,
         },
     width: 700,
   });

@@ -146,6 +146,7 @@ type ImportAccountAction = {
     accountName: string | null;
     b58Code: string;
     balance: bigint;
+    encryptedEntropy: string;
     monitorId: Buffer;
     receiver: PublicAddress;
   };
@@ -268,6 +269,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         accountName,
         b58Code,
         balance,
+        encryptedEntropy,
         monitorId,
         receiver,
       } = action.payload;
@@ -276,6 +278,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         accountName,
         b58Code,
         balance,
+        encryptedEntropy,
         isAuthenticated: true,
         isEntropyKnown: true,
         mobUrl: `https://mobileocoin.com/mob58/${b58Code}`,

@@ -5,7 +5,7 @@ jobs:
   build:
     # Reuse Docker container specification given by the node Orb
     executor: node/default
-    resource_class: large
+    resource_class: xlarge
     steps:
       - checkout
       - node/install:
@@ -25,9 +25,9 @@ jobs:
   test:
     docker:
       - image: circleci/node:latest-browsers
-    resource_class: large
+    resource_class: xlarge
     environment:
-      NODE_OPTIONS: --max-old-space-size=4096
+      NODE_OPTIONS: --max-old-space-size=8192
     steps:
       # Reuse the workspace from the build job
       - attach_workspace:

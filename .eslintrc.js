@@ -8,11 +8,11 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   rules: {
-    '@typescript-eslint/ban-ts-comment': [
-      'error',
-      { 'ts-ignore': 'allow-with-description' },
-    ],
+    '@typescript-eslint/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }],
+    '@typescript-eslint/comma-dangle': 'off',
+    '@typescript-eslint/indent': 'off',
     'arrow-body-style': ['error', 'always'],
+    'comma-dangle': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/order': [
       'error',
@@ -33,12 +33,17 @@ module.exports = {
         pathGroupsExcludedImportTypes: ['react'],
       },
     ],
+    indent: 'off',
+    'max-len': 'off',
     'no-unused-vars': [
       'error',
       {
         argsIgnorePattern: '^_',
       },
     ],
+    'object-curly-newline': 'off',
+    'operator-linebreak': 'off',
+    'react/jsx-one-expression-per-line': 'off',
     'react/jsx-props-no-spreading': 0,
     'sort-keys': [
       'error',

@@ -24,6 +24,7 @@ jobs:
   test:
     docker:
       - image: circleci/node:latest-browsers
+    resource_class: large
     steps:
       # Reuse the workspace from the build job
       - attach_workspace:

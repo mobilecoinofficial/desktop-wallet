@@ -846,9 +846,10 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
     };
   }, [state, client]);
 
-  // if (!state.isInitialised) {
-  //   return <SplashScreen />;
-  // }
+  if (!state.isInitialised) {
+    return <SplashScreen />;
+  }
+
   return (
     <MobileCoinDContext.Provider
       value={{

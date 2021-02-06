@@ -128,12 +128,13 @@ type FetchBalanceAction = {
   };
 };
 
-type GenerateEntropyAction = {
+type CreateAccountAction = {
   type: 'CREATE_ACCOUNT';
   payload: {
     accountName: string | null;
     b58Code: string;
     balance: bigint;
+    encryptedEntropy: string;
     entropy: Buffer;
     monitorId: Buffer;
     receiver: PublicAddress;
@@ -146,6 +147,7 @@ type ImportAccountAction = {
     accountName: string | null;
     b58Code: string;
     balance: bigint;
+    encryptedEntropy: string;
     monitorId: Buffer;
     receiver: PublicAddress;
   };
@@ -193,7 +195,7 @@ type Action =
   | UpdateGiftCodesAction
   | ConfirmEntropyKnownAction
   | FetchBalanceAction
-  | GenerateEntropyAction
+  | CreateAccountAction
   | ImportAccountAction
   | InitialiseAction
   | PayAddressCodeAction
@@ -268,6 +270,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         accountName,
         b58Code,
         balance,
+        encryptedEntropy,
         monitorId,
         receiver,
       } = action.payload;
@@ -276,6 +279,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         accountName,
         b58Code,
         balance,
+        encryptedEntropy,
         isAuthenticated: true,
         isEntropyKnown: true,
         mobUrl: `https://mobilecoin.com/mob58/${b58Code}`,
@@ -288,6 +292,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         accountName,
         b58Code,
         balance,
+        encryptedEntropy,
         entropy,
         monitorId,
         receiver,
@@ -297,6 +302,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         accountName,
         b58Code,
         balance,
+        encryptedEntropy,
         entropy,
         isAuthenticated: true,
         isEntropyKnown: false,
@@ -843,6 +849,7 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
   if (!state.isInitialised) {
     return <SplashScreen />;
   }
+
   return (
     <MobileCoinDContext.Provider
       value={{

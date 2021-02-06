@@ -56,7 +56,7 @@ class EncryptEntropyService extends BaseService<EncryptEntropyServiceArgs> {
       LocalStoreInstance.setSalt(publicSaltString);
       LocalStoreInstance.setName(name);
 
-      return this.handleSuccess({});
+      return this.handleSuccess({ encryptedEntropy });
     } catch (err) {
       return this.handleError(err);
     }

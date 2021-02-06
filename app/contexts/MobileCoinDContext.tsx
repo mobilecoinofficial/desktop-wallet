@@ -282,7 +282,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         encryptedEntropy,
         isAuthenticated: true,
         isEntropyKnown: true,
-        mobUrl: `https://mobileocoin.com/mob58/${b58Code}`,
+        mobUrl: `https://mobilecoin.com/mob58/${b58Code}`,
         monitorId,
         receiver,
       };
@@ -306,7 +306,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         entropy,
         isAuthenticated: true,
         isEntropyKnown: false,
-        mobUrl: `https://mobileocoin.com/mob58/${b58Code}`,
+        mobUrl: `https://mobilecoin.com/mob58/${b58Code}`,
         monitorId,
         receiver,
       };
@@ -354,7 +354,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
         balance,
         isAuthenticated: true,
         isEntropyKnown: true,
-        mobUrl: `https://mobileocoin.com/mob58/${b58Code}`,
+        mobUrl: `https://mobilecoin.com/mob58/${b58Code}`,
         monitorId,
         receiver,
       };

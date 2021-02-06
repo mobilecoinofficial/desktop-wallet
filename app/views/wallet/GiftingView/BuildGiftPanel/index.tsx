@@ -214,7 +214,7 @@ const BuildGiftPanel: FC = () => {
                 isGift
                 account={{
                   b58Code: pendingDeleteCode[0],
-                  mobUrl: `https://mobileocoin.com/mob58/${pendingDeleteCode[0]}`,
+                  mobUrl: `https://mobilecoin.com/mob58/${pendingDeleteCode[0]}`,
                   name: 'Gift Code',
                 }}
               />

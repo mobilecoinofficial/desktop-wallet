@@ -5,7 +5,6 @@ jobs:
   build:
     # Reuse Docker container specification given by the node Orb
     executor: node/default
-    resource_class: xlarge
     steps:
       - checkout
       - node/install:
@@ -25,9 +24,7 @@ jobs:
   test:
     docker:
       - image: circleci/node:latest-browsers
-    resource_class: xlarge
-    environment:
-      NODE_OPTIONS: --max-old-space-size=8192
+    resource_class: large
     steps:
       # Reuse the workspace from the build job
       - attach_workspace:
@@ -37,13 +34,7 @@ jobs:
           pkg-manager: yarn
       - run:
           command: |
-            # sudo apt-get update && sudo apt-get install rpm
-            # yarn package-ci
-            cd app
-            yarn install
-            cd ..
-            yarn build-main
-            yarn build-renderer
+            yarn build
             yarn test-ci
           name: Run YARN tests
 workflows:

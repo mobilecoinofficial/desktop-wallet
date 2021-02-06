@@ -37,13 +37,7 @@ jobs:
           pkg-manager: yarn
       - run:
           command: |
-            # sudo apt-get update && sudo apt-get install rpm
-            # yarn package-ci
-            cd app
-            yarn install
-            cd ..
-            yarn build-main
-            yarn build-renderer
+            yarn build
             yarn test-ci
           name: Run YARN tests
 workflows:

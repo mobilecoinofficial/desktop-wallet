@@ -37,6 +37,16 @@ describe('UnlockWalletGuard', () => {
     expect(children).not.toBeInTheDocument();
   });
 
+  test('returns SplashScreen if app is not initalized', () => {
+    // @ts-ignore mock
+    const { children } = setupComponent({
+      isInitialised: false,
+    });
+
+    expect(screen.queryByTestId('SplashScreen')).toBeInTheDocument();
+    expect(children).not.toBeInTheDocument();
+  });
+
   test('authenticated with no entropy string', () => {
   // @ts-ignore mock
     const { children } = setupComponent({ encryptedEntropy: null, isAuthenticated: true });

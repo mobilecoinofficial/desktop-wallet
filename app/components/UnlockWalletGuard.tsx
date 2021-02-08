@@ -6,13 +6,18 @@ import { Redirect } from 'react-router-dom';
 
 import routePaths from '../constants/routePaths';
 import useMobileCoinD from '../hooks/useMobileCoinD';
+import SplashScreen from './SplashScreen';
 
 interface UnlockWalletGuardProps {
   children?: ReactNode;
 }
 
 const UnlockWalletGuard: FC<UnlockWalletGuardProps> = ({ children }) => {
-  const { encryptedEntropy, isAuthenticated } = useMobileCoinD();
+  const { encryptedEntropy, isAuthenticated, isInitialised } = useMobileCoinD();
+
+  if (!isInitialised) {
+    return <SplashScreen />;
+  }
 
   if (!encryptedEntropy) {
     return <Redirect to={routePaths.CREATE} />;

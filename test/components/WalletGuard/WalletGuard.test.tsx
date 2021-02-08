@@ -8,7 +8,7 @@ import renderSnapshot from '../../renderSnapshot';
 
 jest.mock('../../../app/hooks/useMobileCoinD');
 
-function setupComponent(contextOverides?: MobileCoinDContextValue) {
+function setupComponent(contextOverrides?: MobileCoinDContextValue) {
   const defaultContext = {
     encryptedEntropy: null,
     isAuthenticated: false,
@@ -18,7 +18,7 @@ function setupComponent(contextOverides?: MobileCoinDContextValue) {
     <WalletGuard>success</WalletGuard>,
     {
       ...defaultContext,
-      ...contextOverides,
+      ...contextOverrides,
     },
   );
 

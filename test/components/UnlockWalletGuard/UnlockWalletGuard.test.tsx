@@ -22,7 +22,7 @@ function setupComponent(contextOverrides?: MobileCoinDContextValue) {
     },
   );
 
-  const children = screen.queryByText(/children/i);
+  const children = screen.queryByText('children');
 
   return {
     children,

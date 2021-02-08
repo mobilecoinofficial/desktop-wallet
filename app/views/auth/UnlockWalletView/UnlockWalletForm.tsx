@@ -26,7 +26,7 @@ interface UnlockWalletFormPseudoProps {
 export const unlockWalletFormOnSubmit = async (
   pseudoProps: UnlockWalletFormPseudoProps,
   values: UnlockWalletFormValues,
-  helpers: FormikHelpers<UnlockWalletFormValues>,
+  helpers: FormikHelpers<UnlockWalletFormValues>
 ) => {
   const { isMountedRef, unlockWallet } = pseudoProps;
   const { password } = values;
@@ -60,7 +60,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
 
   const handleOnSubmit = async (
     values: UnlockWalletFormValues,
-    helpers: FormikHelpers<UnlockWalletFormValues>,
+    helpers: FormikHelpers<UnlockWalletFormValues>
   ) => {
     const pseduoProps = { isMountedRef, unlockWallet };
     onSubmit(pseduoProps, values, helpers);
@@ -82,9 +82,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
       validationSchema={validationSchema}
       onSubmit={handleOnSubmit}
     >
-      {({
-        errors, isSubmitting, isValid, submitForm,
-      }) => {
+      {({ errors, isSubmitting, isValid, submitForm }) => {
         return (
           <Form name="UnlockWalletInnerForm">
             <Field

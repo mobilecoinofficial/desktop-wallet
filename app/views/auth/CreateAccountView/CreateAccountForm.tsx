@@ -1,9 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box, Button, FormHelperText, Typography,
-} from '@material-ui/core';
+import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
@@ -31,7 +29,7 @@ interface CreateAccountFormPseudoProps {
 export const createAccountFormOnSubmit = async (
   pseudoProps: CreateAccountFormPseudoProps,
   values: CreateAccountFormValues,
-  helpers: FormikHelpers<CreateAccountFormValues>,
+  helpers: FormikHelpers<CreateAccountFormValues>
 ) => {
   const { isMountedRef, createAccount } = pseudoProps;
   const { accountName, password } = values;
@@ -82,7 +80,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
 
   const handleOnSubmit = async (
     values: CreateAccountFormValues,
-    helpers: FormikHelpers<CreateAccountFormValues>,
+    helpers: FormikHelpers<CreateAccountFormValues>
   ) => {
     const pseduoProps = { createAccount, isMountedRef };
     onSubmit(pseduoProps, values, helpers);
@@ -97,15 +95,9 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
   };
 
   const validationSchema = Yup.object().shape({
-    accountName: Yup.string().max(
-      64,
-      t('accountNameValidation'),
-    ),
+    accountName: Yup.string().max(64, t('accountNameValidation')),
     // CBB: It appears that the checkedTerms error message is not working properly.
-    checkedTerms: Yup.bool().oneOf(
-      [true],
-      t('checkedTermsValidation'),
-    ),
+    checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
     password: Yup.string()
       .min(8, t('passwordMin'))
       .max(99, t('passwordMax'))
@@ -123,9 +115,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
       validationSchema={validationSchema}
       validateOnMount
     >
-      {({
-        errors, isSubmitting, isValid, submitForm,
-      }) => {
+      {({ errors, isSubmitting, isValid, submitForm }) => {
         return (
           <Form name="CreateAccountFormName">
             <Field
@@ -160,9 +150,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
                 flexDirection="row-reverse"
               >
                 <Box>
-                  <Typography display="inline">
-                    {t('acceptTerms')}
-                  </Typography>
+                  <Typography display="inline">{t('acceptTerms')}</Typography>
                   <Button color="primary" onClick={handleClickOpen}>
                     {t('acceptTermsButton')}
                   </Button>

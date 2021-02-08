@@ -12,9 +12,7 @@ interface SendPaymentServiceArgs {
 class SendPaymentService extends BaseService<SendPaymentServiceArgs> {
   async call() {
     try {
-      const {
-        amount, fee, senderMonitorId, receiverB58Code,
-      } = this.argsObj;
+      const { amount, fee, senderMonitorId, receiverB58Code } = this.argsObj;
       await payAddressCode(this.client, {
         amount,
         fee,

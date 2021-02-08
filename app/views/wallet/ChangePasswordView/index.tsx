@@ -92,9 +92,13 @@ const ChangePasswordView: FC = () => {
           to={routePaths.APP_SETTINGS}
           component={RouterLink}
         >
-          <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
+          <Typography color="textSecondary">
+            {t('settingsBreadcrumb')}
+          </Typography>
         </Link>
-        <Typography color="textPrimary">{t('changePasswordBreadcrumb')}</Typography>
+        <Typography color="textPrimary">
+          {t('changePasswordBreadcrumb')}
+        </Typography>
       </Breadcrumbs>
       <Box
         alignItems="center"
@@ -131,9 +135,7 @@ const ChangePasswordView: FC = () => {
           isInitialValid={false}
           onSubmit={async (
             values,
-            {
-              setErrors, setStatus, setSubmitting, resetForm,
-            },
+            { setErrors, setStatus, setSubmitting, resetForm }
           ) => {
             try {
               setSubmitting(true);
@@ -155,9 +157,7 @@ const ChangePasswordView: FC = () => {
             }
           }}
         >
-          {({
-            errors, isSubmitting, isValid, submitForm,
-          }) => {
+          {({ errors, isSubmitting, isValid, submitForm }) => {
             return (
               <Form>
                 <Box pt={4}>

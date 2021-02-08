@@ -1,9 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box, Button, CircularProgress, makeStyles,
-} from '@material-ui/core';
+import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
 
 interface SubmitButtonProps {
   buttonClass?: string;

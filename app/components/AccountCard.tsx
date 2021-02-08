@@ -72,14 +72,9 @@ const AccountCard: FC<AccountCardProps> = ({
   const handleCodeClick = (code: string) => {
     return () => {
       clipboard.writeText(code);
-      enqueueSnackbar(
-        isGift
-          ? t('clipboardGift')
-          : t('clipboardAddress'),
-        {
-          variant: 'success',
-        },
-      );
+      enqueueSnackbar(isGift ? t('clipboardGift') : t('clipboardAddress'), {
+        variant: 'success',
+      });
     };
   };
 
@@ -111,9 +106,7 @@ const AccountCard: FC<AccountCardProps> = ({
             <Box className={classes.corners}>
               <LogoIcon />
               <Tooltip
-                title={
-                  isQRCode ? t('accountTooltip') : t('mobUrlTooltip')
-                }
+                title={isQRCode ? t('accountTooltip') : t('mobUrlTooltip')}
                 placement="right"
                 arrow
               >
@@ -141,11 +134,7 @@ const AccountCard: FC<AccountCardProps> = ({
                   value={mobUrl}
                 />
               ) : (
-                <Tooltip
-                  title={t('copyTooltip')}
-                  placement="right"
-                  arrow
-                >
+                <Tooltip title={t('copyTooltip')} placement="right" arrow>
                   <Box
                     data-testid="account-card-tooltip"
                     onClick={handleCodeClick(b58Code)}

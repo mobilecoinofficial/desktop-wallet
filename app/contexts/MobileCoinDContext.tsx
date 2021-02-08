@@ -55,10 +55,7 @@ interface MobileCoinDState {
 
 // TODO - context can be broken down into seperate files
 export interface MobileCoinDContextValue extends MobileCoinDState {
-  buildGiftCode: (
-    value: bigint,
-    fee: bigint
-  ) => Promise<BuildGiftCodeServiceSuccessData | void>; // include object
+  buildGiftCode: (value: bigint, fee: bigint) => Promise<BuildGiftCodeServiceSuccessData | void>; // include object
   buildTransaction: (
     amount: bigint,
     fee: bigint,
@@ -67,28 +64,12 @@ export interface MobileCoinDContextValue extends MobileCoinDState {
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
   confirmEntropyKnown: () => void;
   deleteStoredGiftB58Code: (storedGiftB58Code: string) => void;
-  openGiftCode: (
-    giftB58Code: string
-  ) => Promise<OpenGiftCodeServiceSuccessData | void>;
-  createAccount: (
-    accountName: string | null,
-    password: string
-  ) => Promise<void>;
-  importAccount: (
-    accountName: string | null,
-    entropy: string,
-    password: string
-  ) => Promise<void>;
-  payAddressCode: (
-    amount: bigint,
-    fee: bigint,
-    receiverB58Code: string
-  ) => Promise<void>;
+  openGiftCode: (giftB58Code: string) => Promise<OpenGiftCodeServiceSuccessData | void>;
+  createAccount: (accountName: string | null, password: string) => Promise<void>;
+  importAccount: (accountName: string | null, entropy: string, password: string) => Promise<void>;
+  payAddressCode: (amount: bigint, fee: bigint, receiverB58Code: string) => Promise<void>;
   retrieveEntropy: (password: string) => Promise<string | void>;
-  submitGiftCode: (
-    txProposal: TxProposal,
-    giftB58Code: string
-  ) => Promise<void>;
+  submitGiftCode: (txProposal: TxProposal, giftB58Code: string) => Promise<void>;
   submitTransaction: (txPropsal: TxProposal) => Promise<void>;
   unlockWallet: (password: string) => Promise<void>;
 }
@@ -228,12 +209,7 @@ const initialMobileCoinDState: MobileCoinDState = {
 const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
   switch (action.type) {
     case 'INITIALISE': {
-      const {
-        account,
-        encryptedEntropy,
-        giftCodes,
-        isAuthenticated,
-      } = action.payload;
+      const { account, encryptedEntropy, giftCodes, isAuthenticated } = action.payload;
 
       return {
         ...state,
@@ -245,11 +221,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
       };
     }
     case 'SYNC_LEDGER': {
-      const {
-        localBlockIndex,
-        networkHighestBlockIndex,
-        nextBlock,
-      } = action.payload;
+      const { localBlockIndex, networkHighestBlockIndex, nextBlock } = action.payload;
       return {
         ...state,
         localBlockIndex,
@@ -265,14 +237,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
       };
     }
     case 'IMPORT_ACCOUNT': {
-      const {
-        accountName,
-        b58Code,
-        balance,
-        encryptedEntropy,
-        monitorId,
-        receiver,
-      } = action.payload;
+      const { accountName, b58Code, balance, encryptedEntropy, monitorId, receiver } = action.payload;
       return {
         ...state,
         accountName,
@@ -287,15 +252,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
       };
     }
     case 'CREATE_ACCOUNT': {
-      const {
-        accountName,
-        b58Code,
-        balance,
-        encryptedEntropy,
-        entropy,
-        monitorId,
-        receiver,
-      } = action.payload;
+      const { accountName, b58Code, balance, encryptedEntropy, entropy, monitorId, receiver } = action.payload;
       return {
         ...state,
         accountName,
@@ -311,11 +268,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
       };
     }
     case 'PAY_ADDRESS_CODE': {
-      const {
-        localBlockIndex,
-        networkHighestBlockIndex,
-        nextBlock,
-      } = action.payload;
+      const { localBlockIndex, networkHighestBlockIndex, nextBlock } = action.payload;
       return {
         ...state,
         localBlockIndex,
@@ -338,13 +291,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
       };
     }
     case 'UNLOCK_WALLET': {
-      const {
-        accountName,
-        b58Code,
-        balance,
-        monitorId,
-        receiver,
-      } = action.payload;
+      const { accountName, b58Code, balance, monitorId, receiver } = action.payload;
       return {
         ...state,
         ...action.payload,
@@ -359,11 +306,7 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
       };
     }
     case 'UPDATE_STATUS': {
-      const {
-        localBlockIndex,
-        networkHighestBlockIndex,
-        nextBlock,
-      } = action.payload;
+      const { localBlockIndex, networkHighestBlockIndex, nextBlock } = action.payload;
       return {
         ...state,
         localBlockIndex,
@@ -416,25 +359,20 @@ const MobileCoinDContext = createContext<MobileCoinDContextValue>({
   },
 });
 
-export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
-  client,
-  children,
-}: MobileCoinDProviderProps) => {
+export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({ client, children }: MobileCoinDProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialMobileCoinDState);
 
   const buildGiftCode = async (value: bigint, fee: bigint) => {
-    if (state.monitorId === null) throw new Error('TODO - need better message - This should never happen');
+    if (state.monitorId === null) {
+      throw new Error('TODO - need better message - This should never happen');
+    }
     const BuildGiftCodeServiceInstance = new BuildGiftCodeService(client, {
       fee,
       senderMonitorId: state.monitorId, // TODO, on multiple accounts we need to select from form
       value,
     });
 
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = await BuildGiftCodeServiceInstance.call();
+    const { isSuccess, data, errorMessage } = await BuildGiftCodeServiceInstance.call();
 
     if (isSuccess) {
       return data;
@@ -442,28 +380,19 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
     throw new Error(errorMessage);
   };
 
-  const buildTransaction = async (
-    amount: bigint,
-    fee: bigint,
-    receiverB58Code: string,
-  ) => {
-    if (state.monitorId === null) throw new Error('TODO - need better message - This should never happen');
+  const buildTransaction = async (amount: bigint, fee: bigint, receiverB58Code: string) => {
+    if (state.monitorId === null) {
+      throw new Error('TODO - need better message - This should never happen');
+    }
 
-    const BuildTransactionServiceInstance = new BuildTransactionService(
-      client,
-      {
-        amount,
-        fee,
-        receiverB58Code,
-        senderMonitorId: state.monitorId, // TODO, on multiple accounts we need to select from form
-      },
-    );
+    const BuildTransactionServiceInstance = new BuildTransactionService(client, {
+      amount,
+      fee,
+      receiverB58Code,
+      senderMonitorId: state.monitorId, // TODO, on multiple accounts we need to select from form
+    });
 
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = await BuildTransactionServiceInstance.call();
+    const { isSuccess, data, errorMessage } = await BuildTransactionServiceInstance.call();
     if (isSuccess) {
       return data;
     }
@@ -476,10 +405,7 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
       oldPassword,
     });
 
-    const {
-      isSuccess,
-      errorMessage,
-    } = await ChangePasswordServiceInstance.call();
+    const { isSuccess, errorMessage } = await ChangePasswordServiceInstance.call();
 
     if (!isSuccess) {
       throw new Error(errorMessage);
@@ -497,11 +423,7 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
       storedGiftB58Code,
     });
 
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = DeleteGiftCodeServiceInstance.call();
+    const { isSuccess, data, errorMessage } = DeleteGiftCodeServiceInstance.call();
     if (isSuccess) {
       dispatch({
         payload: {
@@ -522,11 +444,7 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
       receiver: state.receiver,
     });
 
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = await OpenGiftCodeServiceInstance.call();
+    const { isSuccess, data, errorMessage } = await OpenGiftCodeServiceInstance.call();
     if (isSuccess) {
       return data;
     }
@@ -539,11 +457,7 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
       password,
     });
 
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = await CreateAccountServiceInstance.call();
+    const { isSuccess, data, errorMessage } = await CreateAccountServiceInstance.call();
     if (isSuccess) {
       dispatch({
         payload: {
@@ -556,22 +470,14 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
     }
   };
 
-  const importAccount = async (
-    accountName: string | null,
-    entropy: string,
-    password: string,
-  ) => {
+  const importAccount = async (accountName: string | null, entropy: string, password: string) => {
     const ImportAccountServiceInstance = new ImportAccountService(client, {
       entropy,
       name: accountName,
       password,
     });
 
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = await ImportAccountServiceInstance.call();
+    const { isSuccess, data, errorMessage } = await ImportAccountServiceInstance.call();
 
     if (isSuccess) {
       dispatch({
@@ -591,12 +497,10 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
     // ...but this is an MVP
   };
 
-  const payAddressCode = async (
-    amount: bigint,
-    fee: bigint,
-    receiverB58Code: string,
-  ) => {
-    if (state.monitorId === null) throw new Error('TODO - need better message - This should never happen');
+  const payAddressCode = async (amount: bigint, fee: bigint, receiverB58Code: string) => {
+    if (state.monitorId === null) {
+      throw new Error('TODO - need better message - This should never happen');
+    }
 
     const SendPaymentServiceInstance = new SendPaymentService(client, {
       amount,
@@ -605,11 +509,7 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
       senderMonitorId: state.monitorId,
     });
 
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = await SendPaymentServiceInstance.call();
+    const { isSuccess, data, errorMessage } = await SendPaymentServiceInstance.call();
 
     if (isSuccess) {
       dispatch({
@@ -628,33 +528,24 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
       password,
     });
 
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = await DecryptEntropyServiceInstance.call();
+    const { isSuccess, data, errorMessage } = await DecryptEntropyServiceInstance.call();
     if (isSuccess) {
       return data.entropy;
     }
     throw new Error(errorMessage);
   };
 
-  const submitGiftCode = async (
-    txProposal: TxProposal,
-    giftB58Code: string,
-  ) => {
-    if (state.monitorId === null) throw new Error('TODO - need better message - This should never happen');
+  const submitGiftCode = async (txProposal: TxProposal, giftB58Code: string) => {
+    if (state.monitorId === null) {
+      throw new Error('TODO - need better message - This should never happen');
+    }
 
     const SubmitGiftCodeServiceInstance = new SubmitGiftCodeService(client, {
       giftB58Code,
       senderMonitorId: state.monitorId, // TODO, on multiple accounts we need to select from form
       txProposal,
     });
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = await SubmitGiftCodeServiceInstance.call();
+    const { isSuccess, data, errorMessage } = await SubmitGiftCodeServiceInstance.call();
     if (isSuccess) {
       dispatch({
         payload: {
@@ -667,20 +558,15 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
   };
 
   const submitTransaction = async (txProposal: TxProposal) => {
-    if (state.monitorId === null) throw new Error('TODO - need better message - This should never happen');
+    if (state.monitorId === null) {
+      throw new Error('TODO - need better message - This should never happen');
+    }
 
-    const SubmitTransactionServiceInstance = new SubmitTransactionService(
-      client,
-      {
-        senderMonitorId: state.monitorId, // TODO, on multiple accounts we need to select from form
-        txProposal,
-      },
-    );
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = await SubmitTransactionServiceInstance.call();
+    const SubmitTransactionServiceInstance = new SubmitTransactionService(client, {
+      senderMonitorId: state.monitorId, // TODO, on multiple accounts we need to select from form
+      txProposal,
+    });
+    const { isSuccess, data, errorMessage } = await SubmitTransactionServiceInstance.call();
 
     if (isSuccess) {
       dispatch({
@@ -702,11 +588,7 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
       password,
     });
 
-    const {
-      isSuccess,
-      data,
-      errorMessage,
-    } = await UnlockWalletServiceInstance.call();
+    const { isSuccess, data, errorMessage } = await UnlockWalletServiceInstance.call();
     if (isSuccess) {
       dispatch({
         payload: {
@@ -810,20 +692,16 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
       const GetStatusServiceInstance = new GetStatusService(client, {
         monitorId,
       });
-      const {
-        isSuccess,
-        data,
-        errorMessage,
-      } = await GetStatusServiceInstance.call();
+      const { isSuccess, data, errorMessage } = await GetStatusServiceInstance.call();
       if (isSuccess) {
         const { localBlockIndex, networkHighestBlockIndex, nextBlock } = data;
         if (
-          state.localBlockIndex === null
-          || state.networkHighestBlockIndex === null
-          || state.nextBlock === null
-          || localBlockIndex !== state.localBlockIndex
-          || networkHighestBlockIndex !== state.networkHighestBlockIndex
-          || nextBlock !== state.nextBlock
+          state.localBlockIndex === null ||
+          state.networkHighestBlockIndex === null ||
+          state.nextBlock === null ||
+          localBlockIndex !== state.localBlockIndex ||
+          networkHighestBlockIndex !== state.networkHighestBlockIndex ||
+          nextBlock !== state.nextBlock
         ) {
           dispatch({
             payload: {

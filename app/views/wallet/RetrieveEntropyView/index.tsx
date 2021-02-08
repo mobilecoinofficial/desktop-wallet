@@ -140,16 +140,16 @@ const RetrieveEntropyView: FC = () => {
           validateOnMount
           onSubmit={async (
             values,
-            {
-              setErrors, setStatus, setSubmitting, resetForm,
-            },
+            { setErrors, setStatus, setSubmitting, resetForm }
           ) => {
             try {
               setSubmitting(true);
 
               const entropyString = await retrieveEntropy(values.password);
 
-              if (typeof entropyString !== 'string') throw new Error(t('error'));
+              if (typeof entropyString !== 'string') {
+                throw new Error(t('error'));
+              }
               if (isMountedRef.current) {
                 setStatus({ success: true });
                 setSubmitting(false);
@@ -165,14 +165,14 @@ const RetrieveEntropyView: FC = () => {
             }
           }}
         >
-          {({
-            errors, isSubmitting, isValid, submitForm,
-          }) => {
+          {({ errors, isSubmitting, isValid, submitForm }) => {
             return (
               <Form>
                 <Box pt={4}>
                   <FormLabel component="legend">
-                    <Typography color="primary">{t('retrieveEntropy')}</Typography>
+                    <Typography color="primary">
+                      {t('retrieveEntropy')}
+                    </Typography>
                   </FormLabel>
                   <Field
                     component={TextField}

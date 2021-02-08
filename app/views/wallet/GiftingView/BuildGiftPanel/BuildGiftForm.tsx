@@ -24,11 +24,7 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import {
-  AccountCard,
-  SubmitButton,
-  MOBNumberFormat,
-} from '../../../../components';
+import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
 import ShortCode from '../../../../components/ShortCode';
 import { MOBIcon } from '../../../../components/icons';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
@@ -121,11 +117,11 @@ const BuildGiftForm: FC = () => {
   // TODO - this isSynced stuff should live in 1 location -- maybe as context state
   let isSynced = false;
   if (
-    networkHighestBlockIndex === null
-    || nextBlock === null
-    || networkHighestBlockIndex < 0
-    || nextBlock < 0
-    || nextBlock - 1 > networkHighestBlockIndex
+    networkHighestBlockIndex === null ||
+    nextBlock === null ||
+    Number(networkHighestBlockIndex) < 0 ||
+    Number(nextBlock) < 0 ||
+    Number(nextBlock) - 1 > Number(networkHighestBlockIndex)
   ) {
     isSynced = false;
   } else {
@@ -163,10 +159,9 @@ const BuildGiftForm: FC = () => {
       setSubmittingConfirmedGift(true);
       setShowModal(false);
       try {
-        if (
-          confirmation.txProposal === null
-          || confirmation.txProposal === undefined
-        ) throw new Error(t('confirmationNotFound'));
+        if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
+          throw new Error(t('confirmationNotFound'));
+        }
         await submitGiftCode(confirmation.txProposal, confirmation.giftB58Code);
         if (isMountedRef.current) {
           setStatus({ success: true });
@@ -193,9 +188,7 @@ const BuildGiftForm: FC = () => {
   };
 
   const createAccountLabel = (account: Account) => {
-    const name = account.name && account.name.length > 0
-      ? `${account.name}: `
-      : `${t('unnamed')}: `;
+    const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
     return (
       <Box display="flex" justifyContent="space-between">
         <Typography>
@@ -212,10 +205,7 @@ const BuildGiftForm: FC = () => {
     );
   };
 
-  const renderSenderPublicAddressOptions = (
-    accounts: Account[],
-    isSubmitting: boolean,
-  ) => {
+  const renderSenderPublicAddressOptions = (accounts: Account[], isSubmitting: boolean) => {
     return (
       <Box pt={2}>
         <FormLabel className={classes.form} component="legend">
@@ -276,17 +266,10 @@ const BuildGiftForm: FC = () => {
         submit: null,
       }}
       validationSchema={Yup.object().shape({
-        mobValue: Yup.number()
-          .positive(t('positiveValidation'))
-          .required(t('positiveValidationRequired')),
+        mobValue: Yup.number().positive(t('positiveValidation')).required(t('positiveValidationRequired')),
       })}
       validateOnMount
-      onSubmit={async (
-        values,
-        {
-          setErrors, setStatus, setSubmitting, resetForm,
-        },
-      ) => {
+      onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
         // On submit, let's build the TxProposal.
         // On success, we set the TxProposal in state.
         // That triggers the confirmation modal.
@@ -297,16 +280,11 @@ const BuildGiftForm: FC = () => {
           setIsAwaitingConformation(true);
           const result = await buildGiftCode(
             convertMobStringToPicoMobBigInt(values.mobValue),
-            convertMobStringToPicoMobBigInt(values.feeAmount),
+            convertMobStringToPicoMobBigInt(values.feeAmount)
           );
           if (result === null || result === undefined) throw new Error(t('errorBuild'));
 
-          const {
-            feeConfirmation,
-            giftB58Code,
-            totalValueConfirmation,
-            txProposal,
-          } = result;
+          const { feeConfirmation, giftB58Code, totalValueConfirmation, txProposal } = result;
 
           setConfirmation({
             feeConfirmation,
@@ -330,15 +308,7 @@ const BuildGiftForm: FC = () => {
         }
       }}
     >
-      {({
-        errors,
-        isSubmitting,
-        isValid,
-        submitForm,
-        values,
-        setErrors,
-        setStatus,
-      }) => {
+      {({ errors, isSubmitting, isValid, submitForm, values, setErrors, setStatus }) => {
         const selectedBalance =
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
@@ -349,23 +319,14 @@ const BuildGiftForm: FC = () => {
 
         let remainingBalance;
         let totalSent;
-        if (
-          confirmation?.totalValueConfirmation
-          && confirmation?.feeConfirmation
-        ) {
-          remainingBalance = selectedBalance
-            - (confirmation?.totalValueConfirmation
-              + confirmation?.feeConfirmation);
-          totalSent = confirmation?.totalValueConfirmation
-            + confirmation?.feeConfirmation;
+        if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
+          remainingBalance = selectedBalance - (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
+          totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
         return (
           <Form>
-            {renderSenderPublicAddressOptions(
-              mockMultipleAccounts,
-              isSubmitting,
-            )}
+            {renderSenderPublicAddressOptions(mockMultipleAccounts, isSubmitting)}
             <Box pt={4}>
               <FormLabel component="legend">
                 <Typography color="primary">{t('giftDetails')}</Typography>
@@ -379,10 +340,7 @@ const BuildGiftForm: FC = () => {
                 id="mobValue"
                 type="text"
                 onFocus={handleSelect}
-                validate={validateAmount(
-                  selectedBalance,
-                  BigInt(values.feeAmount * 1_000_000_000_000),
-                )}
+                validate={validateAmount(selectedBalance, BigInt(values.feeAmount * 1_000_000_000_000))}
                 InputProps={{
                   inputComponent: MOBNumberFormat,
                   startAdornment: (
@@ -400,9 +358,7 @@ const BuildGiftForm: FC = () => {
             )}
             {!isSynced && (
               <Box mt={3}>
-                <FormHelperText error>
-                  {t('errorSyncBeforeSending')}
-                </FormHelperText>
+                <FormHelperText error>{t('errorSyncBeforeSending')}</FormHelperText>
               </Box>
             )}
             <SubmitButton
@@ -426,30 +382,17 @@ const BuildGiftForm: FC = () => {
               disableAutoFocus
               disableEnforceFocus
             >
-              <Slide
-                in={showModal}
-                timeout={{ enter: 0, exit: slideExitSpeed }}
-              >
+              <Slide in={showModal} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <Container className={classes.paper}>
                   <Box py={2}>
                     <h2 id="transition-modal-title">{t('')}</h2>
-                    <p id="transition-modal-description">
-                      {t('giftConfirmationDescription')}
-                      :
-                    </p>
+                    <p id="transition-modal-description">{t('giftConfirmationDescription')}:</p>
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
+                    <Typography>{t('accountBalance')}:</Typography>
                     <Typography>
-                      {t('accountBalance')}
-                      :
-                    </Typography>
-                    <Typography>
-                      <MOBNumberFormat
-                        suffix=" MOB"
-                        valueUnit="pMOB"
-                        value={selectedBalance?.toString()}
-                      />
+                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={selectedBalance?.toString()} />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -458,10 +401,7 @@ const BuildGiftForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="primary">
-                      {t('giftValue')}
-                      :
-                    </Typography>
+                    <Typography color="primary">{t('giftValue')}:</Typography>
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -472,10 +412,7 @@ const BuildGiftForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>
-                      {t('fee')}
-                      :
-                    </Typography>
+                    <Typography>{t('fee')}:</Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -486,16 +423,9 @@ const BuildGiftForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
+                    <Typography>{t('total')}:</Typography>
                     <Typography>
-                      {t('total')}
-                      :
-                    </Typography>
-                    <Typography>
-                      <MOBNumberFormat
-                        suffix=" MOB"
-                        valueUnit="pMOB"
-                        value={totalSent?.toString()}
-                      />
+                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={totalSent?.toString()} />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -503,16 +433,9 @@ const BuildGiftForm: FC = () => {
                     <Typography>---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
+                    <Typography>{t('remaining')}:</Typography>
                     <Typography>
-                      {t('remaining')}
-                      :
-                    </Typography>
-                    <Typography>
-                      <MOBNumberFormat
-                        suffix=" MOB"
-                        valueUnit="pMOB"
-                        value={remainingBalance?.toString()}
-                      />
+                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={remainingBalance?.toString()} />
                     </Typography>
                   </Box>
                   <Box py={1} />
@@ -532,11 +455,7 @@ const BuildGiftForm: FC = () => {
                     />
                   ) : (
                     <Box display="flex" justifyContent="center" py={27}>
-                      <Button
-                        color="secondary"
-                        size="large"
-                        onClick={handleShowCode}
-                      >
+                      <Button color="secondary" size="large" onClick={handleShowCode}>
                         {t('showCode')}
                       </Button>
                     </Box>
@@ -580,10 +499,7 @@ const BuildGiftForm: FC = () => {
                 timeout: 1000,
               }}
             >
-              <Fade
-                in={submittingConfimedGift}
-                timeout={{ enter: 15000, exit: 0 }}
-              >
+              <Fade in={submittingConfimedGift} timeout={{ enter: 15000, exit: 0 }}>
                 <Box width="100%" p={3}>
                   <LinearProgress />
                 </Box>

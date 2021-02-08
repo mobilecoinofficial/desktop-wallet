@@ -34,23 +34,22 @@ const convertPicoMobStringToMob = (picoMobString: string): string => {
 // the calculated value. This would simplify the matter). So, until we have
 // standardized all values are pico-mob with flex display, this is what we got.
 const MOBNumberFormat = (props: MOBNumberFormatProps): JSX.Element => {
-  const {
-    inputRef, onChange, name, value, valueUnit, ...rest
-  } = props;
+  const { inputRef, onChange, name, value, valueUnit, ...rest } = props;
 
-  const parsedValue = valueUnit === 'pMOB' && typeof value === 'string'
-    ? convertPicoMobStringToMob(value)
-    : value;
+  const parsedValue =
+    valueUnit === 'pMOB' && typeof value === 'string'
+      ? convertPicoMobStringToMob(value)
+      : value;
   const displayType = onChange ? 'input' : 'text';
   const handleOnChange = onChange
     ? (values: NumberFormatValues) => {
-      onChange({
-        target: {
-          name: name || '',
-          value: values.value,
-        },
-      });
-    }
+        onChange({
+          target: {
+            name: name || '',
+            value: values.value,
+          },
+        });
+      }
     : () => {};
   return (
     <NumberFormat

@@ -1,9 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box, Container, makeStyles, Typography,
-} from '@material-ui/core';
+import { Box, Container, makeStyles, Typography } from '@material-ui/core';
 
 import AccountCard from '../../../components/AccountCard';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';

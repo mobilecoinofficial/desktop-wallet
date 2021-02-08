@@ -41,7 +41,7 @@ RedirectToNotFound.displayName = 'RedirectToNotFound';
 
 export const renderRoutes = (
   routes: Routes = [],
-  testComponent?: JSX.Element,
+  testComponent?: JSX.Element
 ): JSX.Element => {
   return (
     <Switch>

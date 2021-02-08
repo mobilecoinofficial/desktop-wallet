@@ -106,9 +106,7 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
                     onClick={toggleEntropy}
                     size="small"
                   >
-                    {showEntropy
-                      ? t('hide')
-                      : t('show')}
+                    {showEntropy ? t('hide') : t('show')}
                   </Fab>
                 </Box>
                 {showEntropy ? (

@@ -3,7 +3,7 @@ import { GetBalanceRequest } from '../protos/mobilecoind_api_pb';
 
 const getBalance = async (
   client: MobilecoindClient,
-  requestObject: GetBalanceRequest.AsObject,
+  requestObject: GetBalanceRequest.AsObject
 ) => {
   const { monitorId, subaddressIndex } = requestObject;
   const GetBalanceRequestInstance = new GetBalanceRequest();

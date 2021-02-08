@@ -20,7 +20,7 @@ class CreateAccountService extends BaseService<CreateAccountServiceArgs> {
           entropy,
           name,
           password,
-        },
+        }
       );
 
       const {

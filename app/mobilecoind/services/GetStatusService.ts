@@ -20,7 +20,7 @@ class GetStatusService extends BaseService<GetStatusServiceArgs> {
       const status = GetMonitorStatusResponse.getStatus();
       if (status === undefined) {
         throw new Error(
-          'TODO - have a better error for when status is undefined',
+          'TODO - have a better error for when status is undefined'
         );
       }
 

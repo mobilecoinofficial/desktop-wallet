@@ -97,11 +97,9 @@ const convertPicoMobStringToMob = (picoMobString: string): string => {
     return `0.${'0'.repeat(12 - picoMobString.length)}${picoMobString}`;
   }
 
-  return [
-    picoMobString.slice(0, picoMobString.length - 12),
-    '.',
-    picoMobString.slice(picoMobString.length - 12),
-  ].join('');
+  return [picoMobString.slice(0, picoMobString.length - 12), '.', picoMobString.slice(picoMobString.length - 12)].join(
+    ''
+  );
 };
 
 // MOVE LATER
@@ -137,15 +135,15 @@ const SendMobForm: FC = () => {
   // TODO - this isSynced stuff should live in 1 location -- maybe as context state
   let isSynced = false;
   if (
-    networkHighestBlockIndex === null
-    || nextBlock === null
-    || networkHighestBlockIndex < 0
-    || nextBlock < 0
-    || nextBlock - 1 > networkHighestBlockIndex
+    networkHighestBlockIndex === null ||
+    nextBlock === null ||
+    Number(networkHighestBlockIndex) < 0 ||
+    Number(nextBlock) < 0 ||
+    Number(nextBlock) - 1 > Number(networkHighestBlockIndex)
   ) {
     isSynced = false;
   } else {
-    isSynced = networkHighestBlockIndex - nextBlock < 2; // Let's say a diff of 1 is fine.
+    isSynced = Number(networkHighestBlockIndex) - Number(nextBlock) < 2; // Let's say a diff of 1 is fine.
   }
 
   // We'll use this array in prep for future patterns with multiple accounts
@@ -165,16 +163,13 @@ const SendMobForm: FC = () => {
         const result = await buildTransaction(
           convertMobStringToPicoMobBigInt(values.mobAmount),
           convertMobStringToPicoMobBigInt(values.feeAmount),
-          values.recipientPublicAddress,
+          values.recipientPublicAddress
         );
-        if (result === null || result === undefined) throw new Error(t('error'));
+        if (result === null || result === undefined) {
+          throw new Error(t('error'));
+        }
 
-        const {
-          feeConfirmation,
-          totalValueConfirmation,
-          txProposal,
-          txProposalReceiverB58Code,
-        } = result;
+        const { feeConfirmation, totalValueConfirmation, txProposal, txProposalReceiverB58Code } = result;
         setConfirmation({
           feeConfirmation,
           totalValueConfirmation,
@@ -192,10 +187,7 @@ const SendMobForm: FC = () => {
     };
   };
 
-  const handleClose = (
-    setSubmitting: (boolean: boolean) => void,
-    resetForm: () => void,
-  ) => {
+  const handleClose = (setSubmitting: (boolean: boolean) => void, resetForm: () => void) => {
     return () => {
       setSlideExitSpeed(0);
       enqueueSnackbar(t('transactionCanceled'), {
@@ -210,9 +202,7 @@ const SendMobForm: FC = () => {
   };
 
   const createAccountLabel = (account: Account) => {
-    const name = account.name && account.name.length > 0
-      ? `${account.name}: `
-      : `${t('unnamed')}:`;
+    const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}:`;
     return (
       <Box display="flex" justifyContent="space-between">
         <Typography>
@@ -220,19 +210,13 @@ const SendMobForm: FC = () => {
           <ShortCode code={account.b58Code} />
         </Typography>
         <Typography>
-          <MOBNumberFormat
-            value={account.balance.toString()}
-            valueUnit="pMOB"
-          />
+          <MOBNumberFormat value={account.balance.toString()} valueUnit="pMOB" />
         </Typography>
       </Box>
     );
   };
 
-  const renderSenderPublicAdddressOptions = (
-    accounts: Account[],
-    isSubmitting: boolean,
-  ) => {
+  const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => {
     return (
       <Box pt={2}>
         <FormLabel className={classes.form} component="legend">
@@ -291,20 +275,11 @@ const SendMobForm: FC = () => {
         submit: null,
       }}
       validationSchema={Yup.object().shape({
-        mobAmount: Yup.number()
-          .positive(t('positiveValidation'))
-          .required(t('positiveValidationRequired')),
-        recipientPublicAddress: Yup.string().required(
-          t('addressRequired'),
-        ),
+        mobAmount: Yup.number().positive(t('positiveValidation')).required(t('positiveValidationRequired')),
+        recipientPublicAddress: Yup.string().required(t('addressRequired')),
       })}
       validateOnMount
-      onSubmit={async (
-        values,
-        {
-          setErrors, setStatus, setSubmitting, resetForm,
-        },
-      ) => {
+      onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
         // TODO -- I don't like this flow. The cnvenience call skips verification.
         // That means that we are "verifying" based on the front-end UI state --
         // this is pretty horrendous for a verification step in any payment flow.
@@ -321,18 +296,13 @@ const SendMobForm: FC = () => {
 
           if (isMountedRef.current) {
             const totalValueConfirmationAsMob = convertPicoMobStringToMob(
-              confirmation?.totalValueConfirmation?.toString(),
+              confirmation?.totalValueConfirmation?.toString()
             );
-            const totalValueConfirmationAsMobComma = commafy(
-              totalValueConfirmationAsMob,
-            );
+            const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
 
-            enqueueSnackbar(
-              `${t('success')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`,
-              {
-                variant: 'success',
-              },
-            );
+            enqueueSnackbar(`${t('success')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`, {
+              variant: 'success',
+            });
             setStatus({ success: true });
             setSendingOpen(false);
             setSubmitting(false);
@@ -354,17 +324,7 @@ const SendMobForm: FC = () => {
         }
       }}
     >
-      {({
-        errors,
-        isSubmitting,
-        isValid,
-        resetForm,
-        submitForm,
-        setSubmitting,
-        setStatus,
-        setErrors,
-        values,
-      }) => {
+      {({ errors, isSubmitting, isValid, resetForm, submitForm, setSubmitting, setStatus, setErrors, values }) => {
         // NOTE: because this is just a display for the value up to 3 dec mob,
         // We do not need the precision to be BigInt
 
@@ -379,23 +339,14 @@ const SendMobForm: FC = () => {
 
         let remainingBalance;
         let totalSent;
-        if (
-          confirmation?.totalValueConfirmation
-          && confirmation?.feeConfirmation
-        ) {
-          remainingBalance = selectedBalance
-            - (confirmation?.totalValueConfirmation
-              + confirmation?.feeConfirmation);
-          totalSent = confirmation?.totalValueConfirmation
-            + confirmation?.feeConfirmation;
+        if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
+          remainingBalance = selectedBalance - (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
+          totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
         return (
           <Form>
-            {renderSenderPublicAdddressOptions(
-              mockMultipleAccounts,
-              isSubmitting,
-            )}
+            {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)}
             <Box pt={4}>
               <FormLabel component="legend">
                 <Typography color="primary">{t('transaction')}</Typography>
@@ -417,10 +368,7 @@ const SendMobForm: FC = () => {
                 id="mobAmount"
                 type="text"
                 onFocus={handleSelect}
-                validate={validateAmount(
-                  selectedBalance,
-                  BigInt(values.feeAmount * 1_000_000_000_000),
-                )}
+                validate={validateAmount(selectedBalance, BigInt(values.feeAmount * 1_000_000_000_000))}
                 InputProps={{
                   inputComponent: MOBNumberFormat,
                   startAdornment: (
@@ -438,9 +386,7 @@ const SendMobForm: FC = () => {
             )}
             {!isSynced && (
               <Box mt={3}>
-                <FormHelperText error>
-                  {t('mustSync')}
-                </FormHelperText>
+                <FormHelperText error>{t('mustSync')}</FormHelperText>
               </Box>
             )}
             <SubmitButton
@@ -468,23 +414,13 @@ const SendMobForm: FC = () => {
               <Slide in={open} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <div className={classes.paper}>
                   <h2 id="transition-modal-title">{t('confirm')}</h2>
-                  <p id="transition-modal-description">
-                    {t('intent')}
-                    :
-                  </p>
+                  <p id="transition-modal-description">{t('intent')}:</p>
                   <br />
 
                   <Box display="flex" justifyContent="space-between">
+                    <Typography>{t('accountBalance')}:</Typography>
                     <Typography>
-                      {t('accountBalance')}
-                      :
-                    </Typography>
-                    <Typography>
-                      <MOBNumberFormat
-                        suffix=" MOB"
-                        valueUnit="pMOB"
-                        value={selectedBalance?.toString()}
-                      />
+                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={selectedBalance?.toString()} />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -493,10 +429,7 @@ const SendMobForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="primary">
-                      {t('amount')}
-                      :
-                    </Typography>
+                    <Typography color="primary">{t('amount')}:</Typography>
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -507,10 +440,7 @@ const SendMobForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>
-                      {t('fee')}
-                      :
-                    </Typography>
+                    <Typography>{t('fee')}:</Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -521,16 +451,9 @@ const SendMobForm: FC = () => {
                   </Box>
 
                   <Box display="flex" justifyContent="space-between">
+                    <Typography>{t('total')}:</Typography>
                     <Typography>
-                      {t('total')}
-                      :
-                    </Typography>
-                    <Typography>
-                      <MOBNumberFormat
-                        suffix=" MOB"
-                        valueUnit="pMOB"
-                        value={totalSent?.toString()}
-                      />
+                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={totalSent?.toString()} />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -538,38 +461,19 @@ const SendMobForm: FC = () => {
                     <Typography>---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
+                    <Typography>{t('remaining')}:</Typography>
                     <Typography>
-                      {t('remaining')}
-                      :
-                    </Typography>
-                    <Typography>
-                      <MOBNumberFormat
-                        suffix=" MOB"
-                        valueUnit="pMOB"
-                        value={remainingBalance?.toString()}
-                      />
+                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={remainingBalance?.toString()} />
                     </Typography>
                   </Box>
                   <br />
 
-                  <p className={classes.center}>
-                    {t('recipientPlus')}
-                  </p>
-                  <LongCode
-                    code={confirmation?.txProposalReceiverB58Code}
-                    codeClass={classes.code}
-                    tip=""
-                  />
+                  <p className={classes.center}>{t('recipientPlus')}</p>
+                  <LongCode code={confirmation?.txProposalReceiverB58Code} codeClass={classes.code} tip="" />
                   <br />
 
-                  <p className={classes.center}>
-                    {t('senderPlus')}
-                  </p>
-                  <LongCode
-                    code={values.senderPublicAddress}
-                    codeClass={classes.code}
-                    tip=""
-                  />
+                  <p className={classes.center}>{t('senderPlus')}</p>
+                  <LongCode code={values.senderPublicAddress} codeClass={classes.code} tip="" />
                   <br />
                   <Box display="flex" justifyContent="space-between">
                     <Button

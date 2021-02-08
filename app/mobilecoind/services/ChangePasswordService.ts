@@ -24,7 +24,9 @@ class ChangePasswordService extends BaseService<ChangePasswordServiceArgs> {
       if (!isSuccessDecrypt) throw new Error(errorMessageDecrypt);
 
       const { entropy, name } = dataDecrypt;
-      if (typeof entropy !== 'string') throw new Error('Cannot find existing wallet');
+      if (typeof entropy !== 'string') {
+        throw new Error('Cannot find existing wallet');
+      }
 
       const entropyBuffer = Buffer.from(entropy, 'hex');
       const EncryptEntropyServiceInstance = new EncryptEntropyService(null, {
@@ -41,9 +43,10 @@ class ChangePasswordService extends BaseService<ChangePasswordServiceArgs> {
       }
       throw new Error(errorMessage);
     } catch (err) {
-      const error = err.message === "ccm: tag doesn't match"
-        ? new Error('Incorrect Password')
-        : err;
+      const error =
+        err.message === "ccm: tag doesn't match"
+          ? new Error('Incorrect Password')
+          : err;
       return this.handleError(error);
     }
   }

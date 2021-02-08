@@ -30,7 +30,7 @@ const LedgerStatus: FC = () => {
   const localBlockIndexInt = parseInt(localBlockIndex || '0', 10);
   const networkHighestBlockIndexInt = parseInt(
     networkHighestBlockIndex || '0',
-    10,
+    10
   );
   const nextBlockInt = parseInt(nextBlock || '0', 10);
 
@@ -38,36 +38,41 @@ const LedgerStatus: FC = () => {
     blockType: string,
     currentHeight: number | string | null,
     maxHeight: number | null,
-    percentSynced: number | string | null,
+    percentSynced: number | string | null
   ) => {
     return {
-      blockType, currentHeight, maxHeight, percentSynced,
+      blockType,
+      currentHeight,
+      maxHeight,
+      percentSynced,
     };
   };
 
-  const percentMonitorSynced = networkHighestBlockIndexInt === null
-    || nextBlockInt === null
-    || networkHighestBlockIndexInt < 0
-    || nextBlockInt < 0
-    || nextBlockInt - 1 > networkHighestBlockIndexInt
-    ? 'Error'
-    : getPercentSynced(
-      networkHighestBlockIndexInt,
-      nextBlockInt,
-      'nextBlock',
-    );
+  const percentMonitorSynced =
+    networkHighestBlockIndexInt === null ||
+    nextBlockInt === null ||
+    networkHighestBlockIndexInt < 0 ||
+    nextBlockInt < 0 ||
+    nextBlockInt - 1 > networkHighestBlockIndexInt
+      ? 'Error'
+      : getPercentSynced(
+          networkHighestBlockIndexInt,
+          nextBlockInt,
+          'nextBlock'
+        );
 
-  const percentLocalSynced = networkHighestBlockIndexInt === null
-    || localBlockIndexInt === null
-    || networkHighestBlockIndexInt < 0
-    || localBlockIndexInt < 0
-    || localBlockIndexInt > networkHighestBlockIndexInt
-    ? 'Error'
-    : getPercentSynced(
-      networkHighestBlockIndexInt,
-      localBlockIndexInt,
-      'localBlockIndex',
-    );
+  const percentLocalSynced =
+    networkHighestBlockIndexInt === null ||
+    localBlockIndexInt === null ||
+    networkHighestBlockIndexInt < 0 ||
+    localBlockIndexInt < 0 ||
+    localBlockIndexInt > networkHighestBlockIndexInt
+      ? 'Error'
+      : getPercentSynced(
+          networkHighestBlockIndexInt,
+          localBlockIndexInt,
+          'localBlockIndex'
+        );
 
   const rows = [
     createData(t('networkBlocks'), '', networkHighestBlockIndexInt, ''),
@@ -75,13 +80,13 @@ const LedgerStatus: FC = () => {
       t('localBlocks'),
       localBlockIndexInt,
       networkHighestBlockIndexInt,
-      percentLocalSynced,
+      percentLocalSynced
     ),
     createData(
       t('monitorBlocks'),
       localBlockIndexInt,
       networkHighestBlockIndexInt,
-      percentMonitorSynced,
+      percentMonitorSynced
     ),
   ];
 

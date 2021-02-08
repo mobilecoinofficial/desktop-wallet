@@ -45,8 +45,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 if (
-  process.env.NODE_ENV === 'development'
-  || process.env.DEBUG_PROD === 'true'
+  process.env.NODE_ENV === 'development' ||
+  process.env.DEBUG_PROD === 'true'
 ) {
   require('electron-debug')();
 }
@@ -61,7 +61,7 @@ const installExtensions = async () => {
   return Promise.all(
     extensions.map((name) => {
       return installer.default(installer[name], forceDownload);
-    }),
+    })
   ).catch(console.log);
 };
 
@@ -72,21 +72,22 @@ const spawnMobilecoind = () => {
   const { isPackaged } = app;
 
   const platform = getPlatform() || '';
-  const binariesPath = IS_PROD && isPackaged
-    ? path.join(process.resourcesPath, '..', 'mobilecoind-bin', platform)
-    : path.join(root, 'mobilecoind-bin', platform);
+  const binariesPath =
+    IS_PROD && isPackaged
+      ? path.join(process.resourcesPath, '..', 'mobilecoind-bin', platform)
+      : path.join(root, 'mobilecoind-bin', platform);
 
   console.log('Looking for binary in', binariesPath);
   const execPath = path.resolve(
-    path.join(binariesPath, './start-mobilecoind.sh'),
+    path.join(binariesPath, './start-mobilecoind.sh')
   );
   // Determine mobilecoind path and store for config view
   const userDataPath = app.getPath('userData');
   const ledgerDbPath = path.normalize(
-    path.join(userDataPath, 'mobilecoind', 'ledger-db'),
+    path.join(userDataPath, 'mobilecoind', 'ledger-db')
   ); // escape spaces in mac and linux (change logic for windows)
   const mobilecoindDbPath = path.normalize(
-    path.join(userDataPath, 'mobilecoind', 'transaction-db'),
+    path.join(userDataPath, 'mobilecoind', 'transaction-db')
   ); // escape spaces in mac and linux (change logic for windows)
 
   console.log('ledgerDbPath', ledgerDbPath);
@@ -97,8 +98,8 @@ const spawnMobilecoind = () => {
 
 const createWindow = async () => {
   if (
-    process.env.NODE_ENV === 'development'
-    || process.env.DEBUG_PROD === 'true'
+    process.env.NODE_ENV === 'development' ||
+    process.env.DEBUG_PROD === 'true'
   ) {
     await installExtensions();
   }
@@ -118,22 +119,22 @@ const createWindow = async () => {
     minWidth: MIN_WINDOW_WIDTH,
     show: false,
     webPreferences:
-      (process.env.NODE_ENV === 'development'
-        || process.env.E2E_BUILD === 'true')
-      && process.env.ERB_SECURE !== 'true'
+      (process.env.NODE_ENV === 'development' ||
+        process.env.E2E_BUILD === 'true') &&
+      process.env.ERB_SECURE !== 'true'
         ? {
-          disableBlinkFeatures: 'Auxclick',
-          enableRemoteModule: true,
-          nodeIntegration: true,
-        }
+            disableBlinkFeatures: 'Auxclick',
+            enableRemoteModule: true,
+            nodeIntegration: true,
+          }
         : {
-          contextIsolation: true,
-          disableBlinkFeatures: 'Auxclick',
-          enableRemoteModule: true,
-          nodeIntegration: false,
-          nodeIntegrationInWorker: false,
-          preload: path.join(__dirname, 'dist/renderer.prod.js'),
-        },
+            contextIsolation: true,
+            disableBlinkFeatures: 'Auxclick',
+            enableRemoteModule: true,
+            nodeIntegration: false,
+            nodeIntegrationInWorker: false,
+            preload: path.join(__dirname, 'dist/renderer.prod.js'),
+          },
     width: 700,
   });
 
@@ -141,14 +142,12 @@ const createWindow = async () => {
   mainWindow.webContents.session.setPermissionRequestHandler(
     (_webContents, _permission, callback) => {
       return callback(false);
-    },
+    }
   );
 
-  mainWindow.webContents.session.setPermissionCheckHandler(
-    () => {
-      return false;
-    },
-  );
+  mainWindow.webContents.session.setPermissionCheckHandler(() => {
+    return false;
+  });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 

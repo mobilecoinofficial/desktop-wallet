@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import {
-  Box, Grid, makeStyles, Tab, Tabs,
-} from '@material-ui/core';
+import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import TabPanel from '../../../components/TabPanel';
@@ -28,7 +26,7 @@ const TransactionView: FC = () => {
 
   const handleChange = (
     _event: React.ChangeEvent<Record<string, unknown>>,
-    newSelectedTabIndex: number,
+    newSelectedTabIndex: number
   ) => {
     setSelectedTabIndex(newSelectedTabIndex);
   };

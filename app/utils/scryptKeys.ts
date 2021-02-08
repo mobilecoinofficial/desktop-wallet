@@ -14,7 +14,7 @@ interface Results {
 
 const scryptKeys = async (
   password: string,
-  previousSalt?: string,
+  previousSalt?: string
 ): Promise<Results> => {
   const options = {
     N: MEMORY_COST,
@@ -30,7 +30,7 @@ const scryptKeys = async (
     password,
     publicSaltBuffer,
     KEY_LENGTH,
-    options,
+    options
   );
 
   const publicSaltString = publicSaltBuffer.toString('hex');

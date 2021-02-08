@@ -58,7 +58,7 @@ const BuildGiftPanel: FC = () => {
   const isMountedRef = useIsMountedRef();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pendingDeleteCode, setPendingDeleteCode] = useState(
-    EMPTY_PENDING_DELETE_CODE,
+    EMPTY_PENDING_DELETE_CODE
   );
 
   const { t } = useTranslation('BuildGiftPanel');
@@ -121,7 +121,7 @@ const BuildGiftPanel: FC = () => {
       <Box flexGrow={1} mt={3}>
         <BuildGiftForm />
       </Box>
-      {giftCodes.length > 0 && (
+      {giftCodes && giftCodes.length > 0 && (
         <>
           <Box pt={4}>
             <Typography variant="body2" color="textPrimary">
@@ -181,7 +181,7 @@ const BuildGiftPanel: FC = () => {
                                 className={classes.clickable}
                                 onClick={handleDialogOpen(
                                   giftB58Code,
-                                  giftValueString,
+                                  giftValueString
                                 )}
                                 aria-hidden="true"
                               >
@@ -205,7 +205,9 @@ const BuildGiftPanel: FC = () => {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title">{t('deleteDialogTitle')}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">
+              {t('deleteDialogTitle')}
+            </DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
                 {t('deleteDialogDescription')}

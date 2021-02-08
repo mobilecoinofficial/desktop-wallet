@@ -6,8 +6,8 @@ import { AddMonitorRequest } from '../protos/mobilecoind_api_pb';
 // accountKey type (which would be AccountKey.AsObject) to the expected
 // AccountKey grpc-object. While we're here, let's officially make name optional.
 type ExcludeAccountKeyAndName<T> = Pick<
-T,
-Exclude<keyof T, 'accountKey' | 'name'>
+  T,
+  Exclude<keyof T, 'accountKey' | 'name'>
 >;
 interface AddMonitorArgumentOverridenType
   extends ExcludeAccountKeyAndName<AddMonitorRequest.AsObject> {
@@ -17,7 +17,7 @@ interface AddMonitorArgumentOverridenType
 
 const addMonitor = async (
   client: MobilecoindClient,
-  requestObject: AddMonitorArgumentOverridenType,
+  requestObject: AddMonitorArgumentOverridenType
 ) => {
   const {
     accountKey,

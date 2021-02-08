@@ -1,9 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box, Container, Typography, makeStyles,
-} from '@material-ui/core';
+import { Box, Container, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import SendMobForm from './SendMobForm';

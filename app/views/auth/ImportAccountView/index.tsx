@@ -17,7 +17,9 @@ import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
-import ImportAccountForm, { importAccountFormOnSubmit } from './ImportAccountForm';
+import ImportAccountForm, {
+  importAccountFormOnSubmit,
+} from './ImportAccountForm';
 
 // CBB: this isTest pattern would be better managed with context and hooks.
 interface ImportAccountViewProps {

@@ -19,27 +19,23 @@ class BuildGiftCodeService extends BaseService<BuildGiftCodeServiceArgs> {
   async call() {
     try {
       const { senderMonitorId, value, fee } = this.argsObj;
-      const GetUnspentTxOutListResponse = await getUnspentTxOutList(
-        this.client,
-        {
-          monitorId: senderMonitorId,
-          subaddressIndex: 0,
-        },
-      );
+      const GetUnspentTxOutListResponse = await getUnspentTxOutList(this.client, {
+        monitorId: senderMonitorId,
+        subaddressIndex: 0,
+      });
       const inputListList = GetUnspentTxOutListResponse.getOutputListList();
-      const GenerateTransferCodeTxResponse = await generateTransferCodeTx(
-        this.client,
-        {
-          changeSubaddress: 0,
-          fee,
-          inputListList,
-          senderMonitorId,
-          tombstone: 0,
-          value,
-        },
-      );
+      const GenerateTransferCodeTxResponse = await generateTransferCodeTx(this.client, {
+        changeSubaddress: 0,
+        fee,
+        inputListList,
+        senderMonitorId,
+        tombstone: 0,
+        value,
+      });
       const txProposal = GenerateTransferCodeTxResponse.getTxProposal();
-      if (txProposal === undefined) throw new Error('Could not make gift. No proposal found.');
+      if (txProposal === undefined) {
+        throw new Error('Could not make gift. No proposal found.');
+      }
 
       const giftB58Code = GenerateTransferCodeTxResponse.getB58Code();
       // TODO - this logic should probably live in a util, we'll need it again

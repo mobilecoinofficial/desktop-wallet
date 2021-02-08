@@ -3,7 +3,7 @@ import { GenerateTxRequest } from '../protos/mobilecoind_api_pb';
 
 const generateTx = async (
   client: MobilecoindClient,
-  requestObject: GenerateTxRequest.AsObject,
+  requestObject: GenerateTxRequest.AsObject
 ) => {
   const {
     senderMonitorId,

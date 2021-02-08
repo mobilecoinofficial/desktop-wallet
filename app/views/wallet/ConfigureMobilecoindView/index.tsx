@@ -57,9 +57,13 @@ const ConfigureMobilecoindView: FC = () => {
           to={routePaths.APP_SETTINGS}
           component={RouterLink}
         >
-          <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
+          <Typography color="textSecondary">
+            {t('settingsBreadcrumb')}
+          </Typography>
         </Link>
-        <Typography color="textPrimary">{t('configureMobilecoindBreadcrumb')}</Typography>
+        <Typography color="textPrimary">
+          {t('configureMobilecoindBreadcrumb')}
+        </Typography>
       </Breadcrumbs>
       <Box
         alignItems="center"

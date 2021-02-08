@@ -3,14 +3,14 @@ import { GetMonitorStatusRequest } from '../protos/mobilecoind_api_pb';
 
 const getMonitorStatus = async (
   client: MobilecoindClient,
-  requestObject: GetMonitorStatusRequest.AsObject,
+  requestObject: GetMonitorStatusRequest.AsObject
 ) => {
   const { monitorId } = requestObject;
   const GetMonitorStatusRequestInstance = new GetMonitorStatusRequest();
   GetMonitorStatusRequestInstance.setMonitorId(monitorId);
 
   const GetMonitorStatusResponse = await client.getMonitorStatus(
-    GetMonitorStatusRequestInstance,
+    GetMonitorStatusRequestInstance
   );
   return GetMonitorStatusResponse;
 };

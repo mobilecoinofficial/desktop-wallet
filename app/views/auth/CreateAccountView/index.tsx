@@ -53,7 +53,9 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
-const CreateAccountView: FC<CreateAccountViewProps> = ({ isTest }: CreateAccountViewProps) => {
+const CreateAccountView: FC<CreateAccountViewProps> = ({
+  isTest,
+}: CreateAccountViewProps) => {
   const classes = useStyles();
   const { encryptedEntropy } = useMobileCoinD();
   const { t } = useTranslation('CreateAccountView');

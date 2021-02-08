@@ -1,9 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box, makeStyles, Tooltip, CircularProgress,
-} from '@material-ui/core';
+import { Box, makeStyles, Tooltip, CircularProgress } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { CircleMOBIcon } from '../../../components/icons';
@@ -58,22 +56,18 @@ const SyncStatus: FC = () => {
   let title;
   let backgroundColor;
   if (
-    networkHighestBlockIndex === null
-    || nextBlock === null
-    || networkHighestBlockIndex < 0
-    || nextBlock < 0
-    || nextBlock - 1 > networkHighestBlockIndex
+    networkHighestBlockIndex === null ||
+    nextBlock === null ||
+    Number(networkHighestBlockIndex) < 0 ||
+    Number(nextBlock) < 0 ||
+    Number(nextBlock) - 1 > Number(networkHighestBlockIndex)
   ) {
     isSynced = false;
     percentSynced = 0;
     statusCode = ERROR;
   } else {
-    isSynced = networkHighestBlockIndex - nextBlock < 2; // Let's say a diff of 1 is fine.
-    percentSynced = getPercentSynced(
-      networkHighestBlockIndex,
-      nextBlock,
-      'nextBlock',
-    );
+    isSynced = Number(networkHighestBlockIndex) - Number(nextBlock) < 2; // Let's say a diff of 1 is fine.
+    percentSynced = getPercentSynced(Number(networkHighestBlockIndex), Number(nextBlock), 'nextBlock');
     statusCode = isSynced ? SYNCED : SYNCING;
   }
 

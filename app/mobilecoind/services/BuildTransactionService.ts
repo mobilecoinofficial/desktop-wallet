@@ -1,9 +1,4 @@
-import {
-  createAddressCode,
-  generateTx,
-  getUnspentTxOutList,
-  parseAddressCode,
-} from '../api';
+import { createAddressCode, generateTx, getUnspentTxOutList, parseAddressCode } from '../api';
 import type { TxProposal } from '../protos/mobilecoind_api_pb';
 import { Outlay } from '../protos/mobilecoind_api_pb';
 import BaseService from './BaseService';
@@ -25,22 +20,18 @@ export interface BuildTransactionServiceSuccessData {
 class BuildTransactionService extends BaseService<BuildTransactionServiceArgs> {
   async call() {
     try {
-      const {
-        amount, fee, senderMonitorId, receiverB58Code,
-      } = this.argsObj;
+      const { amount, fee, senderMonitorId, receiverB58Code } = this.argsObj;
 
       // export defqault generateTx;
       //   target_address = self.client.read_request_code(recipient_address_code)[0]
       //   tx_list = self.client.get_unspent_tx_output_list(self.monitor_id, DEFAULT_SUBADDRESS)
       //   outlays =
-      //   tx_proposal = self.client.generate_tx(self.monitor_id, DEFAULT_SUBADDRESS, tx_list, outlays)
-      const GetUnspentTxOutListResponse = await getUnspentTxOutList(
-        this.client,
-        {
-          monitorId: senderMonitorId,
-          subaddressIndex: 0,
-        },
-      );
+      //   tx_proposal =
+      //       self.client.generate_tx(self.monitor_id, DEFAULT_SUBADDRESS, tx_list, outlays)
+      const GetUnspentTxOutListResponse = await getUnspentTxOutList(this.client, {
+        monitorId: senderMonitorId,
+        subaddressIndex: 0,
+      });
       const inputListList = GetUnspentTxOutListResponse.getOutputListList();
       // TODO -- i will probably need to construct this object
 
@@ -49,7 +40,9 @@ class BuildTransactionService extends BaseService<BuildTransactionServiceArgs> {
       });
 
       const receiver = ParseAddressCodeResponse.getReceiver();
-      if (receiver === undefined) throw new Error('Could not find receiver from public address.');
+      if (receiver === undefined) {
+        throw new Error('Could not find receiver from public address.');
+      }
 
       const outlayInstance = new Outlay();
       outlayInstance.setValue(amount.toString());
@@ -67,11 +60,11 @@ class BuildTransactionService extends BaseService<BuildTransactionServiceArgs> {
       });
 
       const txProposal = GenerateTxResponse.getTxProposal();
-      if (txProposal === undefined) throw new Error('Could not make gift. No proposal found.');
+      if (txProposal === undefined) {
+        throw new Error('Could not make gift. No proposal found.');
+      }
 
-      const txProposalReceiver = txProposal
-        .getOutlayListList()[0]
-        .getReceiver();
+      const txProposalReceiver = txProposal.getOutlayListList()[0].getReceiver();
 
       const CreateAddressCodeResponse = await createAddressCode(this.client, {
         receiver: txProposalReceiver,

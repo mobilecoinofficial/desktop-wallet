@@ -30,7 +30,7 @@ class UnlockWalletService extends BaseService<UnlockWalletServiceArgs> {
           name,
           password,
           unlockingWallet: true,
-        },
+        }
       );
 
       const {

@@ -3,7 +3,7 @@ import { PayAddressCodeRequest } from '../protos/mobilecoind_api_pb';
 
 const payAddressCode = async (
   client: MobilecoindClient,
-  requestObject: PayAddressCodeRequest.AsObject,
+  requestObject: PayAddressCodeRequest.AsObject
 ) => {
   const {
     amount,
@@ -24,7 +24,7 @@ const payAddressCode = async (
   PayAddressCodeRequestInstance.setTombstone(tombstone);
 
   const PayAddressCodeResponse = await client.payAddressCode(
-    PayAddressCodeRequestInstance,
+    PayAddressCodeRequestInstance
   );
   return PayAddressCodeResponse;
 };

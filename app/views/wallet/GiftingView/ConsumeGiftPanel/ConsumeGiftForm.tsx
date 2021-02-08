@@ -126,9 +126,11 @@ const ConsumeGiftForm: FC = () => {
       setShowModal(false);
       try {
         if (
-          confirmation.txProposal === null
-          || confirmation.txProposal === undefined
-        ) throw new Error(t('confirmationNotFound'));
+          confirmation.txProposal === null ||
+          confirmation.txProposal === undefined
+        ) {
+          throw new Error(t('confirmationNotFound'));
+        }
 
         await submitTransaction(confirmation.txProposal);
         if (isMountedRef.current) {
@@ -142,10 +144,8 @@ const ConsumeGiftForm: FC = () => {
         }
       } catch (err) {
         if (isMountedRef.current) {
-          const santitizedError = err.message
-            === t('error13')
-            ? t('giftClaimed')
-            : err.message;
+          const santitizedError =
+            err.message === t('error13') ? t('giftClaimed') : err.message;
           setStatus({ success: false });
           setErrors({ submit: santitizedError });
           setSubmittingConfirmedGift(false);
@@ -160,9 +160,10 @@ const ConsumeGiftForm: FC = () => {
   };
 
   const createAccountLabel = (account: Account) => {
-    const name = account.name && account.name.length > 0
-      ? `${account.name}: `
-      : `${t('unnamed')}: `;
+    const name =
+      account.name && account.name.length > 0
+        ? `${account.name}: `
+        : `${t('unnamed')}: `;
     return (
       <Box display="flex" justifyContent="space-between">
         <Typography>
@@ -181,7 +182,7 @@ const ConsumeGiftForm: FC = () => {
 
   const renderSenderPublicAdddressOptions = (
     accounts: Account[],
-    isSubmitting: boolean,
+    isSubmitting: boolean
   ) => {
     return (
       <Box pt={2}>
@@ -223,21 +224,19 @@ const ConsumeGiftForm: FC = () => {
         submit: null,
       }}
       validationSchema={Yup.object().shape({
-        giftB58Code: Yup.string().required(
-          t('giftB58Validation'),
-        ),
+        giftB58Code: Yup.string().required(t('giftB58Validation')),
       })}
       validateOnMount
       onSubmit={async (
         values,
-        {
-          setErrors, setStatus, setSubmitting, resetForm,
-        },
+        { setErrors, setStatus, setSubmitting, resetForm }
       ) => {
         try {
           setIsAwaitingConformation(true);
           const result = await openGiftCode(values.giftB58Code);
-          if (result === null || result === undefined) throw new Error(t('giftB58Error'));
+          if (result === null || result === undefined) {
+            throw new Error(t('giftB58Error'));
+          }
 
           const {
             feeConfirmation,
@@ -285,19 +284,21 @@ const ConsumeGiftForm: FC = () => {
         let increasedBalance;
         let totalSent;
         if (
-          confirmation?.totalValueConfirmation
-          && confirmation?.feeConfirmation
+          confirmation?.totalValueConfirmation &&
+          confirmation?.feeConfirmation
         ) {
-          increasedBalance = selectedBalance + confirmation?.totalValueConfirmation;
+          increasedBalance =
+            selectedBalance + confirmation?.totalValueConfirmation;
           // TODO - wtf is totalsent? rename or recalc
-          totalSent = confirmation?.totalValueConfirmation
-            + confirmation?.feeConfirmation;
+          totalSent =
+            confirmation?.totalValueConfirmation +
+            confirmation?.feeConfirmation;
         }
         return (
           <Form>
             {renderSenderPublicAdddressOptions(
               mockMultipleAccounts,
-              isSubmitting,
+              isSubmitting
             )}
             <Box pt={4}>
               <FormLabel component="legend">
@@ -346,10 +347,7 @@ const ConsumeGiftForm: FC = () => {
                   </Typography>
                   <Box py={2} />
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>
-                      {t('accountBalance')}
-                      :
-                    </Typography>
+                    <Typography>{t('accountBalance')}:</Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -363,10 +361,7 @@ const ConsumeGiftForm: FC = () => {
                     <Typography>---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>
-                      {t('total')}
-                      :
-                    </Typography>
+                    <Typography>{t('total')}:</Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -376,10 +371,7 @@ const ConsumeGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>
-                      {t('fee')}
-                      :
-                    </Typography>
+                    <Typography>{t('fee')}:</Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -389,10 +381,7 @@ const ConsumeGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="primary">
-                      {t('giftValue')}
-                      :
-                    </Typography>
+                    <Typography color="primary">{t('giftValue')}:</Typography>
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -406,10 +395,7 @@ const ConsumeGiftForm: FC = () => {
                     <Typography>---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="primary">
-                      {t('newBalance')}
-                      :
-                    </Typography>
+                    <Typography color="primary">{t('newBalance')}:</Typography>
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"

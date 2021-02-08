@@ -119,9 +119,7 @@ describe('CreateAccountForm', () => {
 
         // Await because validations are async
         const errorMessage = await screen.findByText(expectedErrorMessage);
-        await waitFor(() => {
-          expect(errorMessage).toBeInTheDocument();
-        });
+        expect(errorMessage).toBeInTheDocument();
 
         // Clear and use name under the limit
         userEvent.clear(accountNameField);
@@ -145,9 +143,7 @@ describe('CreateAccountForm', () => {
         expect(checkTermsField.value).toBe('false');
 
         const termsMessage = await screen.findByText(expectedTermsMessage);
-        await waitFor(() => {
-          expect(termsMessage).toBeInTheDocument();
-        });
+        expect(termsMessage).toBeInTheDocument();
 
         // Reading the terms removes message and allows you to click terms
         userEvent.click(termsButton);
@@ -176,9 +172,7 @@ describe('CreateAccountForm', () => {
         const shortErrorMessage = await screen.findByText(
           expectedShortErrorMessage,
         );
-        await waitFor(() => {
-          expect(shortErrorMessage).toBeInTheDocument();
-        });
+        expect(shortErrorMessage).toBeInTheDocument();
 
         // Add a character to become valid
         userEvent.type(passwordField, '1');
@@ -193,10 +187,8 @@ describe('CreateAccountForm', () => {
         const requiredErrorMessage = await screen.findByText(
           expectedRequiredErrorMessage,
         );
-        await waitFor(() => {
-          expect(requiredErrorMessage).toBeInTheDocument();
-          expect(shortErrorMessage).not.toBeInTheDocument();
-        });
+        expect(requiredErrorMessage).toBeInTheDocument();
+        expect(shortErrorMessage).not.toBeInTheDocument();
 
         // Write a password at maximum valid length + 1
         userEvent.type(passwordField, validPassword99);
@@ -206,11 +198,9 @@ describe('CreateAccountForm', () => {
         const longErrorMessage = await screen.findByText(
           expectedLongErrorMessage,
         );
-        await waitFor(() => {
-          expect(longErrorMessage).toBeInTheDocument();
-          expect(shortErrorMessage).not.toBeInTheDocument();
-          expect(requiredErrorMessage).not.toBeInTheDocument();
-        });
+        expect(longErrorMessage).toBeInTheDocument();
+        expect(shortErrorMessage).not.toBeInTheDocument();
+        expect(requiredErrorMessage).not.toBeInTheDocument();
 
         // Finally, backspace to become valid again
         userEvent.type(passwordField, '{backspace}1');
@@ -241,9 +231,7 @@ describe('CreateAccountForm', () => {
         const mustMatchErrorMessage = await screen.findByText(
           expectedMustMatchMessage,
         );
-        await waitFor(() => {
-          expect(mustMatchErrorMessage).toBeInTheDocument();
-        });
+        expect(mustMatchErrorMessage).toBeInTheDocument();
 
         // Clear password confirmation to get error
         userEvent.clear(passwordConfirmationField);
@@ -252,9 +240,7 @@ describe('CreateAccountForm', () => {
         const requiredErrorMessage = await screen.findByText(
           expectedRequiredErrorMessage,
         );
-        await waitFor(() => {
-          expect(requiredErrorMessage).toBeInTheDocument();
-        });
+        expect(requiredErrorMessage).toBeInTheDocument();
 
         // Type matching confirmation to dismiss errors
         userEvent.type(passwordConfirmationField, validPassword99);

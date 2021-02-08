@@ -130,9 +130,7 @@ describe('ImportAccountForm', () => {
 
         // Await because validations are async
         const errorMessage = await screen.findByText(expectedErrorMessage);
-        await waitFor(() => {
-          expect(errorMessage).toBeInTheDocument();
-        });
+        expect(errorMessage).toBeInTheDocument();
 
         // Clear and use name under the limit
         userEvent.clear(accountNameField);
@@ -155,9 +153,7 @@ describe('ImportAccountForm', () => {
         const errorHexMessage = await screen.findByText(
           expectedHexErrorMessage,
         );
-        await waitFor(() => {
-          expect(errorHexMessage).toBeInTheDocument();
-        });
+        expect(errorHexMessage).toBeInTheDocument();
 
         // Clear to show required error
         userEvent.clear(entropyField);
@@ -165,9 +161,7 @@ describe('ImportAccountForm', () => {
         const requiredErrorMessage = await screen.findByText(
           expectedRequiredErrorMessage,
         );
-        await waitFor(() => {
-          expect(requiredErrorMessage).toBeInTheDocument();
-        });
+        expect(requiredErrorMessage).toBeInTheDocument();
 
         // Write valid entropy
         userEvent.type(entropyField, validEntropy);
@@ -190,9 +184,7 @@ describe('ImportAccountForm', () => {
         expect(checkTermsField.value).toBe('false');
 
         const termsMessage = await screen.findByText(expectedTermsMessage);
-        await waitFor(() => {
-          expect(termsMessage).toBeInTheDocument();
-        });
+        expect(termsMessage).toBeInTheDocument();
 
         // Reading the terms removes message and allows you to click terms
         userEvent.click(termsButton);
@@ -221,9 +213,7 @@ describe('ImportAccountForm', () => {
         const shortErrorMessage = await screen.findByText(
           expectedShortErrorMessage,
         );
-        await waitFor(() => {
-          expect(shortErrorMessage).toBeInTheDocument();
-        });
+        expect(shortErrorMessage).toBeInTheDocument();
 
         // Add a character to become valid
         userEvent.type(passwordField, '1');
@@ -238,10 +228,8 @@ describe('ImportAccountForm', () => {
         const requiredErrorMessage = await screen.findByText(
           expectedRequiredErrorMessage,
         );
-        await waitFor(() => {
-          expect(requiredErrorMessage).toBeInTheDocument();
-          expect(shortErrorMessage).not.toBeInTheDocument();
-        });
+        expect(requiredErrorMessage).toBeInTheDocument();
+        expect(shortErrorMessage).not.toBeInTheDocument();
 
         // Write a password at maximum valid length + 1
         userEvent.type(passwordField, validPassword99);
@@ -251,11 +239,9 @@ describe('ImportAccountForm', () => {
         const longErrorMessage = await screen.findByText(
           expectedLongErrorMessage,
         );
-        await waitFor(() => {
-          expect(longErrorMessage).toBeInTheDocument();
-          expect(shortErrorMessage).not.toBeInTheDocument();
-          expect(requiredErrorMessage).not.toBeInTheDocument();
-        });
+        expect(longErrorMessage).toBeInTheDocument();
+        expect(shortErrorMessage).not.toBeInTheDocument();
+        expect(requiredErrorMessage).not.toBeInTheDocument();
 
         // Finally, backspace to become valid again
         userEvent.type(passwordField, '{backspace}1');
@@ -297,9 +283,7 @@ describe('ImportAccountForm', () => {
         const requiredErrorMessage = await screen.findByText(
           expectedRequiredErrorMessage,
         );
-        await waitFor(() => {
-          expect(requiredErrorMessage).toBeInTheDocument();
-        });
+        expect(requiredErrorMessage).toBeInTheDocument();
 
         // Type matching confirmation to dismiss errors
         userEvent.type(passwordConfirmationField, validPassword99);

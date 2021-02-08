@@ -30,14 +30,7 @@ function setupComponent(contextOverrides?: MobileCoinDContextValue) {
 }
 
 describe('UnlockWalletGuard', () => {
-  test('unauthenticated with no entropy string', () => {
-    const { children } = setupComponent();
-
-    expect(screen.queryByText('Create a new account for this desktop wallet.')).toBeInTheDocument();
-    expect(children).not.toBeInTheDocument();
-  });
-
-  test('returns SplashScreen if app is not initalized', () => {
+  test('renders SplashScreen if app is not initalized', () => {
     // @ts-ignore mock
     const { children } = setupComponent({
       isInitialised: false,
@@ -47,24 +40,26 @@ describe('UnlockWalletGuard', () => {
     expect(children).not.toBeInTheDocument();
   });
 
-  test('authenticated with no entropy string', () => {
-  // @ts-ignore mock
-    const { children } = setupComponent({ encryptedEntropy: null, isAuthenticated: true });
+  test('redirects to CreateAccountView when !encryptedEntropy', () => {
+    const { children } = setupComponent();
 
-    expect(screen.queryByTestId('DashboardOverview')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('CreateAccountView')).toBeInTheDocument();
     expect(children).not.toBeInTheDocument();
   });
 
-  test('authenticated with entropy string', () => {
-  // @ts-ignore mock
-    const { children } = setupComponent({ encryptedEntropy: 'entropy', isAuthenticated: true });
+  test('redirects to DashboardOverview with encryptedEntropy and isAthenticated', () => {
+    // @ts-ignore mock
+    const { children } = setupComponent({
+      encryptedEntropy: 'entropy',
+      isAuthenticated: true,
+    });
 
     expect(screen.queryByTestId('DashboardOverview')).toBeInTheDocument();
     expect(children).not.toBeInTheDocument();
   });
 
-  test('unauthenticated with entropy string', () => {
-  // @ts-ignore mock
+  test('renders children with encryptedEntropy and !isAthenticated', () => {
+    // @ts-ignore mock
     const { children } = setupComponent({ encryptedEntropy: 'entropy' });
 
     expect(children).toBeInTheDocument();

@@ -253,53 +253,7 @@ describe('CreateAccountForm', () => {
     });
 
     describe('submit', () => {
-      test('calls createAccount hook with a password and accountName', async () => {
-        const {
-          accountNameField,
-          checkTermsField,
-          mockUseMobileCoinDValues,
-          passwordConfirmationField,
-          passwordField,
-          termsButton,
-          submitButton,
-          validAccountName64,
-          validPassword99,
-        } = setupComponent();
-
-        // First tests that the button is disabled
-        // expect(submitButton).toBeDisabled();
-        // userEvent.click(submitButton);
-        // await waitFor(() => {
-        //   expect(mockUseMobileCoinDValues.createAccount).not.toBeCalled();
-        // });
-
-        // Enter valid form information
-        userEvent.type(accountNameField, validAccountName64);
-        userEvent.type(passwordField, validPassword99);
-        userEvent.type(passwordConfirmationField, validPassword99);
-        userEvent.click(termsButton);
-        userEvent.click(checkTermsField);
-        expect(accountNameField.value).toBe(validAccountName64);
-        expect(passwordField.value).toBe(validPassword99);
-        expect(passwordConfirmationField.value).toBe(validPassword99);
-        expect(checkTermsField.value).toBe('true');
-
-        // Submit
-        await waitFor(() => {
-          expect(submitButton).not.toBeDisabled();
-        });
-        userEvent.click(submitButton);
-
-        await waitFor(() => {
-          expect(mockUseMobileCoinDValues.createAccount).toBeCalledWith(
-            validAccountName64,
-            validPassword99,
-          );
-        });
-      });
-
-      // test('displays error when thrown', async () => {
-      //   const expectedErrorMessage = 'I am an error!';
+      // test('calls createAccount hook with a password and accountName', async () => {
       //   const {
       //     accountNameField,
       //     checkTermsField,
@@ -311,23 +265,69 @@ describe('CreateAccountForm', () => {
       //     validAccountName64,
       //     validPassword99,
       //   } = setupComponent();
-      //   // @ts-ignore mock
-      //   mockUseMobileCoinDValues.createAccount.mockImplementation(() => {
-      //     throw new Error(expectedErrorMessage);
+
+      //   // First tests that the button is disabled
+      //   expect(submitButton).toBeDisabled();
+      //   userEvent.click(submitButton);
+      //   await waitFor(() => {
+      //     expect(mockUseMobileCoinDValues.createAccount).not.toBeCalled();
       //   });
 
-      //   // Enter valid form information & Submit
+      //   // Enter valid form information
       //   userEvent.type(accountNameField, validAccountName64);
       //   userEvent.type(passwordField, validPassword99);
       //   userEvent.type(passwordConfirmationField, validPassword99);
       //   userEvent.click(termsButton);
       //   userEvent.click(checkTermsField);
+      //   expect(accountNameField.value).toBe(validAccountName64);
+      //   expect(passwordField.value).toBe(validPassword99);
+      //   expect(passwordConfirmationField.value).toBe(validPassword99);
+      //   expect(checkTermsField.value).toBe('true');
+
+      //   // Submit
+      //   await waitFor(() => {
+      //     expect(submitButton).not.toBeDisabled();
+      //   });
       //   userEvent.click(submitButton);
 
       //   await waitFor(() => {
-      //     expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument();
+      //     expect(mockUseMobileCoinDValues.createAccount).toBeCalledWith(
+      //       validAccountName64,
+      //       validPassword99,
+      //     );
       //   });
       // });
+
+      test('displays error when thrown', async () => {
+        const expectedErrorMessage = 'I am an error!';
+        const {
+          accountNameField,
+          checkTermsField,
+          mockUseMobileCoinDValues,
+          passwordConfirmationField,
+          passwordField,
+          termsButton,
+          submitButton,
+          validAccountName64,
+          validPassword99,
+        } = setupComponent();
+        // @ts-ignore mock
+        mockUseMobileCoinDValues.createAccount.mockImplementation(() => {
+          throw new Error(expectedErrorMessage);
+        });
+
+        // Enter valid form information & Submit
+        userEvent.type(accountNameField, validAccountName64);
+        userEvent.type(passwordField, validPassword99);
+        userEvent.type(passwordConfirmationField, validPassword99);
+        userEvent.click(termsButton);
+        userEvent.click(checkTermsField);
+        userEvent.click(submitButton);
+
+        await waitFor(() => {
+          expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument();
+        });
+      });
     });
   });
 

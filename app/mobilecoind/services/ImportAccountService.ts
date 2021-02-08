@@ -70,6 +70,7 @@ class ImportAccountService extends BaseService<ImportAccountServiceArgs> {
           password,
         });
         const {
+          data: encryptedEntropy,
           isSuccess,
           errorMessage,
         } = await EncryptEntropyServiceInstance.call();
@@ -79,6 +80,7 @@ class ImportAccountService extends BaseService<ImportAccountServiceArgs> {
             accountName: name, // this is hacking using the input. something is wrong with mob d
             b58Code,
             balance,
+            encryptedEntropy,
             entropy,
             monitorId,
             receiver,

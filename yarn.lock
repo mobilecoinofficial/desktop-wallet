@@ -5898,13 +5898,6 @@ eslint-config-airbnb@^18.2.0:
     object.assign "^4.1.2"
     object.entries "^1.1.2"
 
-eslint-config-erb@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-erb/-/eslint-config-erb-2.0.0.tgz#ebb47368a3e0d8dd573a09b389603a938bc28eac"
-  integrity sha512-woXO5ZfsC90ryedq5bBZDt6Iw1JB7FUNxD7EDKZ/WVRDOvR3liMUpOhRi7Mt/bP3HdI2A5PMJZRf0q9rTglxBg==
-  dependencies:
-    babel-eslint "^10.1.0"
-
 eslint-config-prettier@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-7.1.0.tgz#5402eb559aa94b894effd6bddfa0b1ca051c858f"
@@ -12045,6 +12038,11 @@ rc@^1.2.7, rc@^1.2.8:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-devtools-electron@^4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/react-devtools-electron/-/react-devtools-electron-4.7.0.tgz#c1d793c470da3950e62738e26fa7624a68388d5b"
+  integrity sha512-/B1Hc0GbZw1CDRvC5hl2sEH0Mry2VY6FEEryyDoDO5lcMgFKt2FKmu2Hwf9RLERWKsuclcYOrIOuRbk2neh9dQ==
 
 react-dom@^17.0.1:
   version "17.0.1"

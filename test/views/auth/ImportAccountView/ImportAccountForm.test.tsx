@@ -312,11 +312,11 @@ describe('ImportAccountForm', () => {
         } = setupComponent();
 
         // First tests that the button is disabled
-        // expect(submitButton).toBeDisabled();
-        // userEvent.click(submitButton);
-        // await waitFor(() => {
-        //   expect(mockUseMobileCoinDValues.importAccount).not.toBeCalled();
-        // });
+        expect(submitButton).toBeDisabled();
+        userEvent.click(submitButton);
+        await waitFor(() => {
+          expect(mockUseMobileCoinDValues.importAccount).not.toBeCalled();
+        });
 
         // Enter valid form information
         userEvent.type(accountNameField, validAccountName64);

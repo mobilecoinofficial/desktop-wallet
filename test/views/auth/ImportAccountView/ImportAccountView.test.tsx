@@ -9,7 +9,7 @@ import renderSnapshot from '../../../renderSnapshot';
 
 jest.mock('../../../../app/hooks/useMobileCoinD');
 
-function setupComponent(contextOverides?: MobileCoinDContextValue) {
+function setupComponent(contextOverrides?: MobileCoinDContextValue) {
   // Default Context
   const defaultContext = {
     encryptedEntropy: 'existing encrypted entropy',
@@ -20,7 +20,7 @@ function setupComponent(contextOverides?: MobileCoinDContextValue) {
     <ImportAccountView isTest />,
     {
       ...defaultContext,
-      ...contextOverides,
+      ...contextOverrides,
     },
   );
 

@@ -30,7 +30,7 @@ const generateClassName: StylesOptions['generateClassName'] = (
 // We should consider setting up the testing environment in an easier, unified way.
 const renderSnapshot = (
   testComponent: ReactElement,
-  mobilecoindContextOverides?: MobileCoinDContextValue,
+  mobilecoindContextOverrides?: MobileCoinDContextValue,
 ) => {
   const theme = setTheme({
     responsiveFontSizes: true,
@@ -64,7 +64,7 @@ const renderSnapshot = (
     nextBlock: '1235',
     receiver: null,
     ...mockUseMobileCoinDFunctions,
-    ...mobilecoindContextOverides,
+    ...mobilecoindContextOverrides,
   };
 
   // @ts-ignore mock

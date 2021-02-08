@@ -2,11 +2,11 @@ import React from 'react';
 
 import { screen } from '@testing-library/react';
 
-import { UnlockWalletGuard } from '../../../app/components';
-import { MobileCoinDContextValue } from '../../../app/contexts/MobileCoinDContext';
-import renderSnapshot from '../../renderSnapshot';
+import { UnlockWalletGuard } from '../../app/components';
+import { MobileCoinDContextValue } from '../../app/contexts/MobileCoinDContext';
+import renderSnapshot from '../renderSnapshot';
 
-jest.mock('../../../app/hooks/useMobileCoinD');
+jest.mock('../../app/hooks/useMobileCoinD');
 
 function setupComponent(contextOverrides?: MobileCoinDContextValue) {
   const defaultContext = {

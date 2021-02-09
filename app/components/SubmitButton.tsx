@@ -49,9 +49,7 @@ const SubmitButton: FC<SubmitButtonProps> = ({
       >
         {children}
       </Button>
-      {isSubmitting && (
-        <CircularProgress size={24} className={classes.buttonProgress} />
-      )}
+      {isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} />}
     </Box>
   );
 };

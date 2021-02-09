@@ -5,9 +5,7 @@ import type { NumberFormatValues } from 'react-number-format';
 
 interface MOBNumberFormatProps {
   inputRef?: (instance: NumberFormat | null) => void | null;
-  onChange?: (event: {
-    target: { name: string; value: string };
-  }) => void | null;
+  onChange?: (event: { target: { name: string; value: string } }) => void | null;
   name?: string;
   prefix?: string;
   suffix?: string;
@@ -37,9 +35,7 @@ const MOBNumberFormat = (props: MOBNumberFormatProps): JSX.Element => {
   const { inputRef, onChange, name, value, valueUnit, ...rest } = props;
 
   const parsedValue =
-    valueUnit === 'pMOB' && typeof value === 'string'
-      ? convertPicoMobStringToMob(value)
-      : value;
+    valueUnit === 'pMOB' && typeof value === 'string' ? convertPicoMobStringToMob(value) : value;
   const displayType = onChange ? 'input' : 'text';
   const handleOnChange = onChange
     ? (values: NumberFormatValues) => {

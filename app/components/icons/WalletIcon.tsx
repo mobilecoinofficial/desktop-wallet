@@ -12,15 +12,7 @@ function WalletIcon(props: IconProps): JSX.Element {
         fill="#fff"
         stroke={color}
       />
-      <rect
-        x={1}
-        y={7}
-        width={22}
-        height={16}
-        rx={3}
-        fill="#fff"
-        stroke={color}
-      />
+      <rect x={1} y={7} width={22} height={16} rx={3} fill="#fff" stroke={color} />
       <circle cx={19.5} cy={15.5} r={1.5} fill={color} />
       <path fill="#fff" d="M18 5.5h1v1h-1z" />
     </svg>

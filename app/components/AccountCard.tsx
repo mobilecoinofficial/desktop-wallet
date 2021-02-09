@@ -12,6 +12,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import clsx from 'clsx';
+import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
@@ -21,8 +22,6 @@ import LongCode from './LongCode';
 import QRMob from './QRMob';
 import ShortCode from './ShortCode';
 import { CodeTextIcon, LogoIcon, QRCodeIcon } from './icons';
-
-const { clipboard } = require('electron');
 
 interface AccountCardProps {
   account: Account;
@@ -91,18 +90,9 @@ const AccountCard: FC<AccountCardProps> = ({
 
   return (
     <Container className={classes.container} fixed maxWidth="sm">
-      <Card
-        data-testid="account-card"
-        className={clsx(classes.root, className)}
-        {...rest}
-      >
+      <Card data-testid="account-card" className={clsx(classes.root, className)} {...rest}>
         <CardContent>
-          <Box
-            display="flex"
-            alignItems="center"
-            flexDirection="column"
-            textAlign="center"
-          >
+          <Box display="flex" alignItems="center" flexDirection="column" textAlign="center">
             <Box className={classes.corners}>
               <LogoIcon />
               <Tooltip
@@ -128,17 +118,10 @@ const AccountCard: FC<AccountCardProps> = ({
               variant="h3"
             >
               {isQRCode ? (
-                <QRMob
-                  data-testid="account-card-qr-code"
-                  size={280}
-                  value={mobUrl}
-                />
+                <QRMob data-testid="account-card-qr-code" size={280} value={mobUrl} />
               ) : (
                 <Tooltip title={t('copyTooltip')} placement="right" arrow>
-                  <Box
-                    data-testid="account-card-tooltip"
-                    onClick={handleCodeClick(b58Code)}
-                  >
+                  <Box data-testid="account-card-tooltip" onClick={handleCodeClick(b58Code)}>
                     <LongCode
                       data-testid="account-card-long-code"
                       codeClass={classes.code}
@@ -149,18 +132,10 @@ const AccountCard: FC<AccountCardProps> = ({
               )}
             </Typography>
             <Box className={classes.corners}>
-              <Typography
-                data-testid="account-card-name"
-                color="textSecondary"
-                variant="h4"
-              >
+              <Typography data-testid="account-card-name" color="textSecondary" variant="h4">
                 {name || t('unnamed')}
               </Typography>
-              <Typography
-                data-testid="account-card-short-code"
-                color="textSecondary"
-                variant="h4"
-              >
+              <Typography data-testid="account-card-short-code" color="textSecondary" variant="h4">
                 <ShortCode code={b58Code} />
               </Typography>
             </Box>

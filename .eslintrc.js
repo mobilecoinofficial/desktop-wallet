@@ -1,5 +1,22 @@
 module.exports = {
-  extends: ['airbnb-typescript'],
+  env: {
+    browser: true,
+    node: true,
+  },
+  extends: [
+    'airbnb-typescript',
+    'plugin:react/recommended',
+    'plugin:import/typescript',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:jest/recommended',
+    'plugin:promise/recommended',
+    'plugin:compat/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:prettier/recommended',
+    'prettier/@typescript-eslint',
+    'prettier/react',
+  ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     createDefaultProgram: true,
     ecmaVersion: 2020,
@@ -8,11 +25,13 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   rules: {
-    '@typescript-eslint/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }],
-    '@typescript-eslint/comma-dangle': 'off',
-    '@typescript-eslint/indent': 'off',
+    '@typescript-eslint/ban-ts-comment': [
+      'error',
+      {
+        'ts-ignore': 'allow-with-description',
+      },
+    ],
     'arrow-body-style': ['error', 'always'],
-    'comma-dangle': 'off',
     'import/no-extraneous-dependencies': 'off',
     'import/order': [
       'error',
@@ -33,17 +52,12 @@ module.exports = {
         pathGroupsExcludedImportTypes: ['react'],
       },
     ],
-    indent: 'off',
-    'max-len': 'off',
     'no-unused-vars': [
       'error',
       {
         argsIgnorePattern: '^_',
       },
     ],
-    'object-curly-newline': 'off',
-    'operator-linebreak': 'off',
-    'react/jsx-one-expression-per-line': 'off',
     'react/jsx-props-no-spreading': 0,
     'sort-keys': [
       'error',

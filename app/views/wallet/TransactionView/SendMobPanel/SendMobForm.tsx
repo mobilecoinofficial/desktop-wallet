@@ -273,7 +273,6 @@ const SendMobForm: FC = () => {
 
   return (
     <Formik
-      isInitialValid={false}
       initialValues={{
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
         mobAmount: '0', // mobs

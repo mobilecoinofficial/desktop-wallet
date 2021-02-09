@@ -109,7 +109,6 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
 
   return (
     <Formik
-      isInitialValid={false}
       initialValues={initialValues}
       onSubmit={handleOnSubmit}
       validationSchema={validationSchema}

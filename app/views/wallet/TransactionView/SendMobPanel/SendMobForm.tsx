@@ -167,7 +167,9 @@ const SendMobForm: FC = () => {
           convertMobStringToPicoMobBigInt(values.feeAmount),
           values.recipientPublicAddress
         );
-        if (result === null || result === undefined) throw new Error(t('error'));
+        if (result === null || result === undefined) {
+          throw new Error(t('error'));
+        }
 
         const {
           feeConfirmation,

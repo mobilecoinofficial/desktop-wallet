@@ -159,8 +159,9 @@ const BuildGiftForm: FC = () => {
       setSubmittingConfirmedGift(true);
       setShowModal(false);
       try {
-        if (confirmation.txProposal === null || confirmation.txProposal === undefined)
+        if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
           throw new Error(t('confirmationNotFound'));
+        }
         await submitGiftCode(confirmation.txProposal, confirmation.giftB58Code);
         if (isMountedRef.current) {
           setStatus({ success: true });

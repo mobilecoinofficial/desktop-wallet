@@ -119,8 +119,9 @@ const ConsumeGiftForm: FC = () => {
       setSubmittingConfirmedGift(true);
       setShowModal(false);
       try {
-        if (confirmation.txProposal === null || confirmation.txProposal === undefined)
+        if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
           throw new Error(t('confirmationNotFound'));
+        }
 
         await submitTransaction(confirmation.txProposal);
         if (isMountedRef.current) {

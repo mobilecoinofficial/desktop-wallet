@@ -9,9 +9,7 @@ const parseAddressCode = async (
   const ParseAddressCodeRequestInstance = new ParseAddressCodeRequest();
   ParseAddressCodeRequestInstance.setB58Code(b58Code);
 
-  const ParseAddressCodeResponse = await client.parseAddressCode(
-    ParseAddressCodeRequestInstance
-  );
+  const ParseAddressCodeResponse = await client.parseAddressCode(ParseAddressCodeRequestInstance);
   return ParseAddressCodeResponse;
 };
 

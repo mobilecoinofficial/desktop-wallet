@@ -19,9 +19,7 @@ class GetStatusService extends BaseService<GetStatusServiceArgs> {
       const GetNetworkStatusResponse = await getNetworkStatus(this.client);
       const status = GetMonitorStatusResponse.getStatus();
       if (status === undefined) {
-        throw new Error(
-          'TODO - have a better error for when status is undefined'
-        );
+        throw new Error('TODO - have a better error for when status is undefined');
       }
 
       const localBlockIndex = GetNetworkStatusResponse.getLocalBlockIndex();

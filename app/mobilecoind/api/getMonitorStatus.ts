@@ -9,9 +9,7 @@ const getMonitorStatus = async (
   const GetMonitorStatusRequestInstance = new GetMonitorStatusRequest();
   GetMonitorStatusRequestInstance.setMonitorId(monitorId);
 
-  const GetMonitorStatusResponse = await client.getMonitorStatus(
-    GetMonitorStatusRequestInstance
-  );
+  const GetMonitorStatusResponse = await client.getMonitorStatus(GetMonitorStatusRequestInstance);
   return GetMonitorStatusResponse;
 };
 

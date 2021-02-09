@@ -23,21 +23,14 @@ class UnlockWalletService extends BaseService<UnlockWalletServiceArgs> {
 
       const { entropy, name } = dataDecrypt;
 
-      const ImportAccountServiceInstance = new ImportAccountService(
-        this.client,
-        {
-          entropy,
-          name,
-          password,
-          unlockingWallet: true,
-        }
-      );
+      const ImportAccountServiceInstance = new ImportAccountService(this.client, {
+        entropy,
+        name,
+        password,
+        unlockingWallet: true,
+      });
 
-      const {
-        isSuccess,
-        data,
-        errorMessage,
-      } = await ImportAccountServiceInstance.call();
+      const { isSuccess, data, errorMessage } = await ImportAccountServiceInstance.call();
 
       if (isSuccess) {
         return this.handleSuccess(data);

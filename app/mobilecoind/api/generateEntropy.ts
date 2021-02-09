@@ -5,9 +5,7 @@ import type { MobilecoindClient } from '../client';
 const generateEntropy = async (client: MobilecoindClient) => {
   const GenerateEntropyRequestInstance = new Empty();
 
-  const GenerateEntropyResponse = await client.generateEntropy(
-    GenerateEntropyRequestInstance
-  );
+  const GenerateEntropyResponse = await client.generateEntropy(GenerateEntropyRequestInstance);
   return GenerateEntropyResponse;
 };
 

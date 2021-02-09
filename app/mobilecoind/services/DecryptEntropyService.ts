@@ -33,7 +33,8 @@ class DecryptEntropyService extends BaseService<DecryptEntropyServiceArgs> {
 
       return this.handleSuccess({ entropy, name });
     } catch (err) {
-      const error = err.message === "ccm: tag doesn't match" ? new Error('Incorrect Password') : err;
+      const error =
+        err.message === "ccm: tag doesn't match" ? new Error('Incorrect Password') : err;
       return this.handleError(error);
     }
   }

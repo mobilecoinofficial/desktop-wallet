@@ -8,9 +8,7 @@ const getAccountKey = async (
   const { entropy } = requestObject;
   const GetAccountKeyRequestInstance = new GetAccountKeyRequest();
   GetAccountKeyRequestInstance.setEntropy(entropy);
-  const GetAccountKeyResponse = await client.getAccountKey(
-    GetAccountKeyRequestInstance
-  );
+  const GetAccountKeyResponse = await client.getAccountKey(GetAccountKeyRequestInstance);
   return GetAccountKeyResponse;
 };
 

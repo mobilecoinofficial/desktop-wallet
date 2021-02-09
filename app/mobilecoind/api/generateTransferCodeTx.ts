@@ -5,14 +5,7 @@ const generateTransferCodeTx = async (
   client: MobilecoindClient,
   requestObject: GenerateTransferCodeTxRequest.AsObject
 ) => {
-  const {
-    senderMonitorId,
-    changeSubaddress,
-    inputListList,
-    value,
-    fee,
-    tombstone,
-  } = requestObject;
+  const { senderMonitorId, changeSubaddress, inputListList, value, fee, tombstone } = requestObject;
   const GenerateTransferCodeTxRequestInstance = new GenerateTransferCodeTxRequest();
   GenerateTransferCodeTxRequestInstance.setSenderMonitorId(senderMonitorId);
   GenerateTransferCodeTxRequestInstance.setChangeSubaddress(changeSubaddress);

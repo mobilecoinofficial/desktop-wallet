@@ -50,7 +50,9 @@ const grpc = require('@grpc/grpc-js');
 export interface MobilecoindClient {
   addMonitor: (AddMonitorRequest: AddMonitorRequest) => Promise<AddMonitorResponse>;
   constructGiftCode: () => Promise<void>;
-  createAddressCode: (CreateAddressCodeRequest: CreateAddressCodeRequest) => Promise<CreateTransferCodeResponse>;
+  createAddressCode: (
+    CreateAddressCodeRequest: CreateAddressCodeRequest
+  ) => Promise<CreateTransferCodeResponse>;
   createRequestCode: () => Promise<void>;
   createTransferCode: () => Promise<void>;
   generateEntropy: (GenerateEntropyRequest: Empty) => Promise<GenerateEntropyResponse>;
@@ -69,16 +71,26 @@ export interface MobilecoindClient {
   getBlockInfo: () => Promise<void>;
   getLedgerInfo: () => Promise<void>;
   getMonitorList: () => Promise<void>;
-  getMonitorStatus: (GetMonitorStatusRequest: GetMonitorStatusRequest) => Promise<GetMonitorStatusResponse>;
+  getMonitorStatus: (
+    GetMonitorStatusRequest: GetMonitorStatusRequest
+  ) => Promise<GetMonitorStatusResponse>;
   getNetworkStatus: (GetNetworkStatusRequest: Empty) => Promise<GetNetworkStatusResponse>;
   getProcessedBlock: () => Promise<void>;
-  getPublicAddress: (GetPublicAddressRequest: GetPublicAddressRequest) => Promise<GetPublicAddressResponse>;
+  getPublicAddress: (
+    GetPublicAddressRequest: GetPublicAddressRequest
+  ) => Promise<GetPublicAddressResponse>;
   getTxStatusAsReceiver: () => Promise<void>;
   getTxStatusAsSender: () => Promise<void>;
-  getUnspentTxOutList: (GetUnspentTxOutListRequest: GetUnspentTxOutListRequest) => Promise<GetUnspentTxOutListResponse>;
-  parseAddressCode: (ParseAddressCodeRequest: ParseAddressCodeRequest) => Promise<ParseAddressCodeResponse>;
+  getUnspentTxOutList: (
+    GetUnspentTxOutListRequest: GetUnspentTxOutListRequest
+  ) => Promise<GetUnspentTxOutListResponse>;
+  parseAddressCode: (
+    ParseAddressCodeRequest: ParseAddressCodeRequest
+  ) => Promise<ParseAddressCodeResponse>;
   parseRequestCode: () => Promise<void>;
-  parseTransferCode: (ParseTransferCodeRequest: ParseTransferCodeRequest) => Promise<ParseTransferCodeResponse>;
+  parseTransferCode: (
+    ParseTransferCodeRequest: ParseTransferCodeRequest
+  ) => Promise<ParseTransferCodeResponse>;
   payAddressCode: (PayAddressCodeRequest: PayAddressCodeRequest) => Promise<SendPaymentResponse>;
   removeMonitor: () => Promise<void>;
   sendPayment: () => Promise<void>;

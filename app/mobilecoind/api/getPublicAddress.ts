@@ -10,9 +10,7 @@ const getPublicAddress = async (
   GetPublicAddressRequestInstance.setMonitorId(monitorId);
   GetPublicAddressRequestInstance.setSubaddressIndex(subaddressIndex);
 
-  const GetPublicAddressResponse = await client.getPublicAddress(
-    GetPublicAddressRequestInstance
-  );
+  const GetPublicAddressResponse = await client.getPublicAddress(GetPublicAddressRequestInstance);
   return GetPublicAddressResponse;
 };
 

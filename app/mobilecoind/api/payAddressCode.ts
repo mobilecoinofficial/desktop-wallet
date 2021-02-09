@@ -23,9 +23,7 @@ const payAddressCode = async (
   PayAddressCodeRequestInstance.setSenderSubaddress(senderSubaddress);
   PayAddressCodeRequestInstance.setTombstone(tombstone);
 
-  const PayAddressCodeResponse = await client.payAddressCode(
-    PayAddressCodeRequestInstance
-  );
+  const PayAddressCodeResponse = await client.payAddressCode(PayAddressCodeRequestInstance);
   return PayAddressCodeResponse;
 };
 

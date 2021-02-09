@@ -34,19 +34,14 @@ class ChangePasswordService extends BaseService<ChangePasswordServiceArgs> {
         name,
         password: newPassword,
       });
-      const {
-        isSuccess,
-        errorMessage,
-      } = await EncryptEntropyServiceInstance.call();
+      const { isSuccess, errorMessage } = await EncryptEntropyServiceInstance.call();
       if (isSuccess) {
         return this.handleSuccess({});
       }
       throw new Error(errorMessage);
     } catch (err) {
       const error =
-        err.message === "ccm: tag doesn't match"
-          ? new Error('Incorrect Password')
-          : err;
+        err.message === "ccm: tag doesn't match" ? new Error('Incorrect Password') : err;
       return this.handleError(error);
     }
   }

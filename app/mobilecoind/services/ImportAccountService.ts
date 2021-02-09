@@ -16,7 +16,8 @@ class ImportAccountService extends BaseService<ImportAccountServiceArgs> {
   async call() {
     try {
       const { name, entropy, password, unlockingWallet } = this.argsObj;
-      const entropyBuffer = typeof entropy === 'string' ? Buffer.from(entropy, 'hex') : Buffer.from(entropy); // lets normalize Uint8Arrays to Buffers
+      const entropyBuffer =
+        typeof entropy === 'string' ? Buffer.from(entropy, 'hex') : Buffer.from(entropy); // lets normalize Uint8Arrays to Buffers
       const GetAccountKeyResponse = await getAccountKey(this.client, {
         entropy: entropyBuffer,
       });
@@ -61,7 +62,11 @@ class ImportAccountService extends BaseService<ImportAccountServiceArgs> {
           name,
           password,
         });
-        const { data: encryptedEntropy, isSuccess, errorMessage } = await EncryptEntropyServiceInstance.call();
+        const {
+          data: encryptedEntropy,
+          isSuccess,
+          errorMessage,
+        } = await EncryptEntropyServiceInstance.call();
 
         if (isSuccess) {
           return this.handleSuccess({

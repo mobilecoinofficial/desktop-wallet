@@ -1,8 +1,4 @@
-import {
-  generateTxFromTxOutList,
-  getAccountKey,
-  parseTransferCode,
-} from '../api';
+import { generateTxFromTxOutList, getAccountKey, parseTransferCode } from '../api';
 import { PublicAddress } from '../protos/external_pb';
 import type { TxProposal } from '../protos/mobilecoind_api_pb';
 import BaseService from './BaseService';
@@ -33,22 +29,23 @@ class OpenGiftCodeService extends BaseService<OpenGiftCodeServiceArgs> {
 
       const giftEntropy = ParseTransferCodeResponse.getEntropy();
       const giftUtxo = ParseTransferCodeResponse.getUtxo();
-      if (giftUtxo === undefined) throw new Error("Could not find Gift's utxo.");
+      if (giftUtxo === undefined) {
+        throw new Error("Could not find Gift's utxo.");
+      }
       const GetAccountKeyResponse = await getAccountKey(this.client, {
         entropy: giftEntropy,
       });
       const giftAccountKey = GetAccountKeyResponse.getAccountKey();
-      if (giftAccountKey === undefined) throw new Error('Could not find Account Key.');
+      if (giftAccountKey === undefined) {
+        throw new Error('Could not find Account Key.');
+      }
 
-      const GenerateTxFromTxOutListResponse = await generateTxFromTxOutList(
-        this.client,
-        {
-          accountKey: giftAccountKey,
-          fee: 0, // TODO - where is this fee coming from? We charge twice?
-          inputListList: [giftUtxo],
-          receiver,
-        },
-      );
+      const GenerateTxFromTxOutListResponse = await generateTxFromTxOutList(this.client, {
+        accountKey: giftAccountKey,
+        fee: 0, // TODO - where is this fee coming from? We charge twice?
+        inputListList: [giftUtxo],
+        receiver,
+      });
 
       const txProposal = GenerateTxFromTxOutListResponse.getTxProposal();
       if (txProposal === undefined) throw new Error('Could not make TxProposal.');

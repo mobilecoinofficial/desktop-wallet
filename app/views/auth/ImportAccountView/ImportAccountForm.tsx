@@ -1,9 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box, Button, FormHelperText, Typography,
-} from '@material-ui/core';
+import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
@@ -32,8 +30,8 @@ interface ImportAccountFormPseudoProps {
 export const importAccountFormOnSubmit = async (
   pseudoProps: ImportAccountFormPseudoProps,
   values: ImportAccountFormValues,
-  helpers: FormikHelpers<ImportAccountFormValues>,
-) => {
+  helpers: FormikHelpers<ImportAccountFormValues>
+): Promise<void> => {
   const { isMountedRef, importAccount } = pseudoProps;
   const { accountName, entropy, password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
@@ -83,7 +81,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
 
   const handleOnSubmit = async (
     values: ImportAccountFormValues,
-    helpers: FormikHelpers<ImportAccountFormValues>,
+    helpers: FormikHelpers<ImportAccountFormValues>
   ) => {
     const pseduoProps = { importAccount, isMountedRef };
     onSubmit(pseduoProps, values, helpers);
@@ -99,15 +97,9 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
   };
 
   const validationSchema = Yup.object().shape({
-    accountName: Yup.string().max(
-      64,
-      t('accountNameValidation'),
-    ),
+    accountName: Yup.string().max(64, t('accountNameValidation')),
     // CBB: It appears that the checkedTerms error message is not working properly.
-    checkedTerms: Yup.bool().oneOf(
-      [true],
-      t('checkedTermsValidation'),
-    ),
+    checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
     entropy: Yup.string()
       .matches(/^[0-9a-f]{64}$/i, t('entropyMatches'))
       .required(t('entropyRequired')),
@@ -128,9 +120,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
       validationSchema={validationSchema}
       validateOnMount
     >
-      {({
-        errors, isSubmitting, isValid, submitForm,
-      }) => {
+      {({ errors, isSubmitting, isValid, submitForm }) => {
         return (
           <Form name="ImportAccountFormName">
             <Field
@@ -167,15 +157,9 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
               type="password"
             />
             <Box pt={1} display="flex">
-              <Box
-                display="flex"
-                alignItems="center"
-                flexDirection="row-reverse"
-              >
+              <Box display="flex" alignItems="center" flexDirection="row-reverse">
                 <Box>
-                  <Typography display="inline">
-                    {t('acceptTerms')}
-                  </Typography>
+                  <Typography display="inline">{t('acceptTerms')}</Typography>
                   <Button color="primary" onClick={handleClickOpen}>
                     {t('acceptTermsButton')}
                   </Button>
@@ -189,11 +173,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
                 />
               </Box>
             </Box>
-            {!canCheck && (
-              <FormHelperText focused>
-                {t('acceptTermsFormHelper')}
-              </FormHelperText>
-            )}
+            {!canCheck && <FormHelperText focused>{t('acceptTermsFormHelper')}</FormHelperText>}
             {errors.submit && (
               <Box mt={3}>
                 <FormHelperText error>{errors.submit}</FormHelperText>

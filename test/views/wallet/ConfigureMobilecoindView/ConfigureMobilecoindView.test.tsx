@@ -18,7 +18,9 @@ describe('ConfigureMobilecoindView', () => {
     describe('breadcrumb navigation', () => {
       test('Settings breadcrumb navigates away from current view', () => {
         renderSnapshot(<ConfigureMobilecoindView />);
-        const configPanel = screen.queryByText(/This panel allows you to customize the behavior of MobileCoinD/i);
+        const configPanel = screen.queryByText(
+          /This panel allows you to customize the behavior of MobileCoinD/i
+        );
         expect(configPanel).toBeInTheDocument();
         userEvent.click(screen.getByText('Settings'));
         expect(configPanel).not.toBeInTheDocument();

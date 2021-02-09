@@ -12,9 +12,7 @@ jest.mock('../../../app/hooks/useMobileCoinD');
 function setupComponent() {
   const mockIsAuthenticated = false;
   const mockEncryptedEntropy = 'a entropy string';
-  const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<
-    typeof useMobileCoinD
-  >;
+  const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<typeof useMobileCoinD>;
 
   // @ts-ignore mock
   mockUseMobileCoinD.mockImplementation(() => {
@@ -41,17 +39,13 @@ describe('Unlock Wallet Guard', () => {
     test('unauthenticated with entropy string', async () => {
       setupComponent();
 
-      expect(
-        screen.getByText('404: The page you are looking for isn’t here'),
-      ).toBeInTheDocument();
+      expect(screen.getByText('404: The page you are looking for isn’t here')).toBeInTheDocument();
     });
 
     test('authenticated and entropy string', async () => {
       const { homeButton } = setupComponent();
 
-      const firstScreen = screen.getByText(
-        '404: The page you are looking for isn’t here',
-      );
+      const firstScreen = screen.getByText('404: The page you are looking for isn’t here');
       expect(firstScreen).toBeInTheDocument();
 
       userEvent.click(homeButton);

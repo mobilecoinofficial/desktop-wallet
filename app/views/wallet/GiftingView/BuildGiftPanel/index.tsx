@@ -22,6 +22,7 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
@@ -33,8 +34,6 @@ import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import BuildGiftForm from './BuildGiftForm';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
-
-const { clipboard } = require('electron');
 
 const useStyles = makeStyles(() => {
   return {
@@ -57,9 +56,7 @@ const BuildGiftPanel: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [pendingDeleteCode, setPendingDeleteCode] = useState(
-    EMPTY_PENDING_DELETE_CODE,
-  );
+  const [pendingDeleteCode, setPendingDeleteCode] = useState(EMPTY_PENDING_DELETE_CODE);
 
   const { t } = useTranslation('BuildGiftPanel');
 
@@ -102,12 +99,7 @@ const BuildGiftPanel: FC = () => {
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
-      <Box
-        alignItems="center"
-        display="flex"
-        justifyContent="space-between"
-        mb={3}
-      >
+      <Box alignItems="center" display="flex" justifyContent="space-between" mb={3}>
         <Box>
           <Typography variant="body2" color="textPrimary">
             {t('title')}
@@ -121,7 +113,7 @@ const BuildGiftPanel: FC = () => {
       <Box flexGrow={1} mt={3}>
         <BuildGiftForm />
       </Box>
-      {giftCodes.length > 0 && (
+      {giftCodes && giftCodes.length > 0 && (
         <>
           <Box pt={4}>
             <Typography variant="body2" color="textPrimary">
@@ -150,18 +142,11 @@ const BuildGiftPanel: FC = () => {
                           <ShortCode code={giftB58Code} />
                         </TableCell>
                         <TableCell>
-                          <MOBNumberFormat
-                            value={giftValueString}
-                            valueUnit="pMOB"
-                          />
+                          <MOBNumberFormat value={giftValueString} valueUnit="pMOB" />
                         </TableCell>
                         <TableCell align="right">
                           <Box display="flex" justifyContent="flex-end">
-                            <Tooltip
-                              title={t('clickToCopy')}
-                              placement="right"
-                              arrow
-                            >
+                            <Tooltip title={t('clickToCopy')} placement="right" arrow>
                               <div
                                 className={classes.clickable}
                                 onClick={handleCopyClick(giftB58Code)}
@@ -172,17 +157,10 @@ const BuildGiftPanel: FC = () => {
                                 </IconButton>
                               </div>
                             </Tooltip>
-                            <Tooltip
-                              title={t('clickToDelete')}
-                              placement="right"
-                              arrow
-                            >
+                            <Tooltip title={t('clickToDelete')} placement="right" arrow>
                               <div
                                 className={classes.clickable}
-                                onClick={handleDialogOpen(
-                                  giftB58Code,
-                                  giftValueString,
-                                )}
+                                onClick={handleDialogOpen(giftB58Code, giftValueString)}
                                 aria-hidden="true"
                               >
                                 <IconButton>
@@ -220,15 +198,9 @@ const BuildGiftPanel: FC = () => {
               />
               <Box py={2} display="flex" justifyContent="space-between">
                 <Typography color="textPrimary">{t('giftValue')}</Typography>
-                <MOBNumberFormat
-                  value={pendingDeleteCode[1]}
-                  valueUnit="pMOB"
-                  suffix=" MOB"
-                />
+                <MOBNumberFormat value={pendingDeleteCode[1]} valueUnit="pMOB" suffix=" MOB" />
               </Box>
-              <DialogContentText color="textPrimary">
-                {t('deleteDialogText')}
-              </DialogContentText>
+              <DialogContentText color="textPrimary">{t('deleteDialogText')}</DialogContentText>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleDialogClose} color="primary" autoFocus>

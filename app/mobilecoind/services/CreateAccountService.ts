@@ -14,20 +14,13 @@ class CreateAccountService extends BaseService<CreateAccountServiceArgs> {
       const { name, password } = this.argsObj;
       const GenerateEntropyResponse = await generateEntropy(this.client);
       const entropy = GenerateEntropyResponse.getEntropy();
-      const ImportAccountServiceInstance = new ImportAccountService(
-        this.client,
-        {
-          entropy,
-          name,
-          password,
-        },
-      );
+      const ImportAccountServiceInstance = new ImportAccountService(this.client, {
+        entropy,
+        name,
+        password,
+      });
 
-      const {
-        isSuccess,
-        data,
-        errorMessage,
-      } = await ImportAccountServiceInstance.call();
+      const { isSuccess, data, errorMessage } = await ImportAccountServiceInstance.call();
 
       if (isSuccess) {
         return this.handleSuccess(data);

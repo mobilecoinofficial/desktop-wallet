@@ -3,16 +3,9 @@ import { GenerateTransferCodeTxRequest } from '../protos/mobilecoind_api_pb';
 
 const generateTransferCodeTx = async (
   client: MobilecoindClient,
-  requestObject: GenerateTransferCodeTxRequest.AsObject,
+  requestObject: GenerateTransferCodeTxRequest.AsObject
 ) => {
-  const {
-    senderMonitorId,
-    changeSubaddress,
-    inputListList,
-    value,
-    fee,
-    tombstone,
-  } = requestObject;
+  const { senderMonitorId, changeSubaddress, inputListList, value, fee, tombstone } = requestObject;
   const GenerateTransferCodeTxRequestInstance = new GenerateTransferCodeTxRequest();
   GenerateTransferCodeTxRequestInstance.setSenderMonitorId(senderMonitorId);
   GenerateTransferCodeTxRequestInstance.setChangeSubaddress(changeSubaddress);
@@ -21,7 +14,7 @@ const generateTransferCodeTx = async (
   GenerateTransferCodeTxRequestInstance.setFee(fee.toString()); // convert BigInt to string
   GenerateTransferCodeTxRequestInstance.setTombstone(tombstone);
   const GenerateTransferCodeTxResponse = await client.generateTransferCodeTx(
-    GenerateTransferCodeTxRequestInstance,
+    GenerateTransferCodeTxRequestInstance
   );
   return GenerateTransferCodeTxResponse;
 };

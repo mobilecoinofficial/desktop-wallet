@@ -1,9 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box, Button, CircularProgress, makeStyles,
-} from '@material-ui/core';
+import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
 
 interface SubmitButtonProps {
   buttonClass?: string;
@@ -51,9 +49,7 @@ const SubmitButton: FC<SubmitButtonProps> = ({
       >
         {children}
       </Button>
-      {isSubmitting && (
-        <CircularProgress size={24} className={classes.buttonProgress} />
-      )}
+      {isSubmitting && <CircularProgress size={24} className={classes.buttonProgress} />}
     </Box>
   );
 };

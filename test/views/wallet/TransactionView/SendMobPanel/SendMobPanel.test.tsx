@@ -6,11 +6,11 @@ import SendMobPanel from '../../../../../app/views/wallet/TransactionView/SendMo
 import renderSnapshot from '../../../../renderSnapshot';
 
 function setupComponent() {
-  renderSnapshot(
-    <SendMobPanel />,
-  );
+  renderSnapshot(<SendMobPanel />);
 
-  const sendQuery = screen.queryByText('Please enter the amount of MOB you want to send and the public address of the recipient.');
+  const sendQuery = screen.queryByText(
+    'Please enter the amount of MOB you want to send and the public address of the recipient.'
+  );
 
   return {
     sendQuery,

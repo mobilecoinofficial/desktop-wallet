@@ -16,13 +16,10 @@ function setupComponent(contextOverrides?: MobileCoinDContextValue) {
     isAuthenticated: false,
   };
 
-  const { asFragment } = renderSnapshot(
-    <CreateAccountView isTest />,
-    {
-      ...defaultContext,
-      ...contextOverrides,
-    },
-  );
+  const { asFragment } = renderSnapshot(<CreateAccountView isTest />, {
+    ...defaultContext,
+    ...contextOverrides,
+  });
 
   // Render Elements
   const importButton = screen.getByRole('button', {
@@ -47,9 +44,7 @@ describe('CreateAccountView', () => {
       userEvent.click(importButton);
 
       expect(importButton).not.toBeInTheDocument();
-      expect(
-        screen.getByTestId('ImportAccountView'),
-      ).toBeInTheDocument();
+      expect(screen.getByTestId('ImportAccountView')).toBeInTheDocument();
     });
 
     describe('unlock warning', () => {
@@ -68,9 +63,7 @@ describe('CreateAccountView', () => {
         userEvent.click(unlockButton);
 
         expect(unlockButton).not.toBeInTheDocument();
-        expect(
-          screen.getByTestId('UnlockWalletView'),
-        ).toBeInTheDocument();
+        expect(screen.getByTestId('UnlockWalletView')).toBeInTheDocument();
       });
 
       test('it does not render warning without existing user', () => {

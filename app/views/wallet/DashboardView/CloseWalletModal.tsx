@@ -1,20 +1,12 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box,
-  Container,
-  Fade,
-  makeStyles,
-  Modal,
-  Typography,
-} from '@material-ui/core';
+import { Box, Container, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 
 import { SubmitButton } from '../../../components';
 import { Theme } from '../../../theme';
-
-const { ipcRenderer } = require('electron');
 
 const useStyles = makeStyles((theme: Theme) => {
   return {

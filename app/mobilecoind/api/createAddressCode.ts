@@ -3,13 +3,13 @@ import { CreateAddressCodeRequest } from '../protos/mobilecoind_api_pb';
 
 const createAddressCode = async (
   client: MobilecoindClient,
-  requestObject: CreateAddressCodeRequest.AsObject,
+  requestObject: CreateAddressCodeRequest.AsObject
 ) => {
   const { receiver } = requestObject;
   const CreateAddressCodeRequestInstance = new CreateAddressCodeRequest();
   CreateAddressCodeRequestInstance.setReceiver(receiver);
   const CreateAddressCodeResponse = await client.createAddressCode(
-    CreateAddressCodeRequestInstance,
+    CreateAddressCodeRequestInstance
   );
   return CreateAddressCodeResponse;
 };

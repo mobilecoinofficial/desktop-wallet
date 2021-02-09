@@ -4,6 +4,7 @@ import { ThemeProvider } from '@material-ui/core';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import { StylesProvider, StylesOptions } from '@material-ui/styles/';
 import { render } from '@testing-library/react';
+import type { RenderResult } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
 import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
@@ -19,10 +20,7 @@ import { setTheme } from '../app/theme';
 jest.mock('../app/hooks/useMobileCoinD');
 
 // This hack overrides random CSS naming
-const generateClassName: StylesOptions['generateClassName'] = (
-  rule,
-  sheet,
-): string => {
+const generateClassName: StylesOptions['generateClassName'] = (rule, sheet): string => {
   return `${sheet.options.classNamePrefix}-${rule.key}`;
 };
 
@@ -30,16 +28,14 @@ const generateClassName: StylesOptions['generateClassName'] = (
 // We should consider setting up the testing environment in an easier, unified way.
 const renderSnapshot = (
   testComponent: ReactElement,
-  mobilecoindContextOverrides?: MobileCoinDContextValue,
-) => {
+  mobilecoindContextOverrides?: MobileCoinDContextValue
+): RenderResult => {
   const theme = setTheme({
     responsiveFontSizes: true,
     theme: 'MOBILE_COIN_DARK',
   });
 
-  const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<
-    typeof useMobileCoinD
-  >;
+  const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<typeof useMobileCoinD>;
 
   const mockUseMobileCoinDFunctions = {
     createAccount: jest.fn(),
@@ -88,7 +84,7 @@ const renderSnapshot = (
           </SnackbarProvider>
         </ThemeProvider>
       </I18nextProvider>
-    </MemoryRouter>,
+    </MemoryRouter>
   );
 
   return { ...renderedScreen, mockUseMobileCoinDValues };

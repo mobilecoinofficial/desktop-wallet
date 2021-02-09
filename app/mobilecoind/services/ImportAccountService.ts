@@ -1,11 +1,5 @@
 // import * as mobileCoinDAPI from '../protos/mobilecoind_api_pb';
-import {
-  getAccountKey,
-  getPublicAddress,
-  addMonitor,
-  getBalance,
-  parseAddressCode,
-} from '../api';
+import { getAccountKey, getPublicAddress, addMonitor, getBalance, parseAddressCode } from '../api';
 import BaseService from './BaseService';
 import EncryptEntropyService from './EncryptEntropyService';
 
@@ -21,12 +15,9 @@ interface ImportAccountServiceArgs {
 class ImportAccountService extends BaseService<ImportAccountServiceArgs> {
   async call() {
     try {
-      const {
-        name, entropy, password, unlockingWallet,
-      } = this.argsObj;
-      const entropyBuffer = typeof entropy === 'string'
-        ? Buffer.from(entropy, 'hex')
-        : Buffer.from(entropy); // lets normalize Uint8Arrays to Buffers
+      const { name, entropy, password, unlockingWallet } = this.argsObj;
+      const entropyBuffer =
+        typeof entropy === 'string' ? Buffer.from(entropy, 'hex') : Buffer.from(entropy); // lets normalize Uint8Arrays to Buffers
       const GetAccountKeyResponse = await getAccountKey(this.client, {
         entropy: entropyBuffer,
       });
@@ -50,7 +41,9 @@ class ImportAccountService extends BaseService<ImportAccountServiceArgs> {
         b58Code,
       });
       const receiver = ParseAddressCodeResponse.getReceiver();
-      if (receiver === undefined) throw new Error('Could not find receiver from public address.');
+      if (receiver === undefined) {
+        throw new Error('Could not find receiver from public address.');
+      }
 
       const GetBalanceResponse = await getBalance(this.client, {
         monitorId,

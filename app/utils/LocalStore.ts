@@ -79,12 +79,16 @@ class LocalStore {
     });
   }
 
-  getLedgerDbPath() {
-    return this.store.get(schemaKeys.LEDGER_DB_PATH);
+  // TODO - add type guards to app
+  // https://www.typescriptlang.org/docs/handbook/advanced-types.html#typeof-type-guards
+  getLedgerDbPath(): string {
+    const ledgerDbPath = this.store.get(schemaKeys.LEDGER_DB_PATH);
+    return typeof ledgerDbPath === 'string' ? ledgerDbPath : '';
   }
 
   getMobilecoindDbPath() {
-    return this.store.get(schemaKeys.MOBILECOIND_DB_PATH);
+    const mobilecoindDbPath = this.store.get(schemaKeys.MOBILECOIND_DB_PATH);
+    return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
   }
 
   setDbPaths(ledgerDbPath: string, mobilecoindDbPath: string) {

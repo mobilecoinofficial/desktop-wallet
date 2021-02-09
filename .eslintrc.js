@@ -1,5 +1,23 @@
 module.exports = {
-  extends: ['airbnb-typescript'],
+  env: {
+    browser: true,
+    node: true,
+  },
+  extends: [
+    'airbnb-typescript',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:compat/recommended',
+    'plugin:import/typescript',
+    'plugin:jest/recommended',
+    'plugin:promise/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:react/recommended',
+    'plugin:testing-library/react',
+    'plugin:prettier/recommended',
+    'prettier/@typescript-eslint',
+    'prettier/react',
+  ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     createDefaultProgram: true,
     ecmaVersion: 2020,
@@ -10,7 +28,9 @@ module.exports = {
   rules: {
     '@typescript-eslint/ban-ts-comment': [
       'error',
-      { 'ts-ignore': 'allow-with-description' },
+      {
+        'ts-ignore': 'allow-with-description',
+      },
     ],
     'arrow-body-style': ['error', 'always'],
     'import/no-extraneous-dependencies': 'off',

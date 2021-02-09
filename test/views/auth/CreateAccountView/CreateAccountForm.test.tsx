@@ -15,10 +15,11 @@ function setupComponent() {
   const validAccountName64 = '64llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll';
   const invalidAccountName65 = '65lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll';
   const invalidPasswordShort = 'shooort';
-  const validPassword99 = 'longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglon';
+  const validPassword99 =
+    'longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglon';
 
   const { mockUseMobileCoinDValues } = renderSnapshot(
-    <CreateAccountForm onSubmit={createAccountFormOnSubmit} isTest />,
+    <CreateAccountForm onSubmit={createAccountFormOnSubmit} isTest />
   );
 
   // Render Elements
@@ -29,12 +30,9 @@ function setupComponent() {
   const passwordField = screen.getByLabelText('Password', {
     selector: 'input',
   }) as HTMLInputElement;
-  const passwordConfirmationField = screen.getByLabelText(
-    'Password Confirmation',
-    {
-      selector: 'input',
-    },
-  ) as HTMLInputElement;
+  const passwordConfirmationField = screen.getByLabelText('Password Confirmation', {
+    selector: 'input',
+  }) as HTMLInputElement;
   const checkTermsField = screen.getByRole('checkbox') as HTMLInputElement;
   const termsButton = screen.getByRole('button', {
     name: 'Terms of Use',
@@ -106,11 +104,7 @@ describe('CreateAccountForm', () => {
 
     describe('validations', () => {
       test('limits account name to 64 characters.', async () => {
-        const {
-          accountNameField,
-          invalidAccountName65,
-          validAccountName64,
-        } = setupComponent();
+        const { accountNameField, invalidAccountName65, validAccountName64 } = setupComponent();
         const expectedErrorMessage = 'Account Name cannot be more than 64 characters.';
 
         // Fill out with too long account name
@@ -131,10 +125,7 @@ describe('CreateAccountForm', () => {
       });
 
       test('checkbox is disabled until reading terms', async () => {
-        const {
-          checkTermsField,
-          termsButton,
-        } = setupComponent();
+        const { checkTermsField, termsButton } = setupComponent();
         const expectedTermsMessage = 'You must read the Terms of Use before using the wallet.';
 
         // The checkbox is diabled until user has read terms
@@ -155,11 +146,7 @@ describe('CreateAccountForm', () => {
       });
 
       test('password is required and must be between 8 and 99 characters', async () => {
-        const {
-          passwordField,
-          validPassword99,
-          invalidPasswordShort,
-        } = setupComponent();
+        const { passwordField, validPassword99, invalidPasswordShort } = setupComponent();
         const expectedShortErrorMessage = 'Password must be at least 8 characters in length.';
         const expectedRequiredErrorMessage = 'Password is required';
         const expectedLongErrorMessage = 'Passwords cannot be more than 99 characters.';
@@ -169,9 +156,7 @@ describe('CreateAccountForm', () => {
         userEvent.tab(); // Tab to trigger validations
 
         // Await because validations are async
-        const shortErrorMessage = await screen.findByText(
-          expectedShortErrorMessage,
-        );
+        const shortErrorMessage = await screen.findByText(expectedShortErrorMessage);
         expect(shortErrorMessage).toBeInTheDocument();
 
         // Add a character to become valid
@@ -184,9 +169,7 @@ describe('CreateAccountForm', () => {
         // Clear to show required error
         userEvent.clear(passwordField);
         // Await because validations are async
-        const requiredErrorMessage = await screen.findByText(
-          expectedRequiredErrorMessage,
-        );
+        const requiredErrorMessage = await screen.findByText(expectedRequiredErrorMessage);
         expect(requiredErrorMessage).toBeInTheDocument();
         expect(shortErrorMessage).not.toBeInTheDocument();
 
@@ -194,10 +177,9 @@ describe('CreateAccountForm', () => {
         userEvent.type(passwordField, validPassword99);
         userEvent.type(passwordField, '1');
         userEvent.tab(); // Tab to trigger validations
+
         // Await because validations are async
-        const longErrorMessage = await screen.findByText(
-          expectedLongErrorMessage,
-        );
+        const longErrorMessage = await screen.findByText(expectedLongErrorMessage);
         expect(longErrorMessage).toBeInTheDocument();
         expect(shortErrorMessage).not.toBeInTheDocument();
         expect(requiredErrorMessage).not.toBeInTheDocument();
@@ -212,34 +194,25 @@ describe('CreateAccountForm', () => {
       });
 
       test('password confirmation is required and must match password', async () => {
-        const {
-          passwordConfirmationField,
-          passwordField,
-          validPassword99,
-        } = setupComponent();
+        const { passwordConfirmationField, passwordField, validPassword99 } = setupComponent();
         const expectedMustMatchMessage = 'Must match Password';
         const expectedRequiredErrorMessage = 'Password Confirmation is required';
 
         // Type different passwords and password confirmations
         userEvent.type(passwordField, validPassword99);
-        userEvent.type(
-          passwordConfirmationField,
-          'something completely different',
-        );
+        userEvent.type(passwordConfirmationField, 'something completely different');
         userEvent.tab(); // Tab to trigger validations
         // Await because validations are async
-        const mustMatchErrorMessage = await screen.findByText(
-          expectedMustMatchMessage,
-        );
+
+        const mustMatchErrorMessage = await screen.findByText(expectedMustMatchMessage);
         expect(mustMatchErrorMessage).toBeInTheDocument();
 
         // Clear password confirmation to get error
         userEvent.clear(passwordConfirmationField);
         userEvent.tab(); // Tab to trigger validations
         // Await because validations are async
-        const requiredErrorMessage = await screen.findByText(
-          expectedRequiredErrorMessage,
-        );
+
+        const requiredErrorMessage = await screen.findByText(expectedRequiredErrorMessage);
         expect(requiredErrorMessage).toBeInTheDocument();
 
         // Type matching confirmation to dismiss errors
@@ -293,7 +266,7 @@ describe('CreateAccountForm', () => {
       //   await waitFor(() => {
       //     expect(mockUseMobileCoinDValues.createAccount).toBeCalledWith(
       //       validAccountName64,
-      //       validPassword99,
+      //       validPassword99
       //     );
       //   });
       // });

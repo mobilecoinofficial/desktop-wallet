@@ -15,7 +15,7 @@ function setupComponent() {
   const password = 'password';
 
   const { asFragment, mockUseMobileCoinDValues } = renderSnapshot(
-    <UnlockWalletForm onSubmit={unlockWalletFormOnSubmit} />,
+    <UnlockWalletForm onSubmit={unlockWalletFormOnSubmit} />
   );
 
   // Render Elements
@@ -92,9 +92,7 @@ describe('UnlockWalletForm', () => {
         userEvent.type(passwordField, password);
         userEvent.click(submitButton);
         await waitFor(() => {
-          expect(mockUseMobileCoinDValues.unlockWallet).toBeCalledWith(
-            password,
-          );
+          expect(mockUseMobileCoinDValues.unlockWallet).toBeCalledWith(password);
         });
       });
 
@@ -116,9 +114,7 @@ describe('UnlockWalletForm', () => {
         userEvent.click(submitButton);
 
         await waitFor(() => {
-          expect(
-            screen.getByText(expectedErrorMessage),
-          ).toBeInTheDocument();
+          expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument();
         });
       });
     });
@@ -129,12 +125,7 @@ describe('UnlockWalletForm', () => {
     // hooks are being set with the different scenarios.
     describe('unlockWalletFormOnSubmit', () => {
       test('it calls unlockWallet and helpers when mounted', async () => {
-        const {
-          helpers,
-          isMountedRefTrue,
-          mockUnlockWallet,
-          password,
-        } = setupOnSubmit();
+        const { helpers, isMountedRefTrue, mockUnlockWallet, password } = setupOnSubmit();
 
         const pseudoProps = {
           isMountedRef: isMountedRefTrue,
@@ -151,12 +142,7 @@ describe('UnlockWalletForm', () => {
       });
 
       test('it calls unlockWallet and but not helpers when unmounted', async () => {
-        const {
-          helpers,
-          isMountedRefFalse,
-          mockUnlockWallet,
-          password,
-        } = setupOnSubmit();
+        const { helpers, isMountedRefFalse, mockUnlockWallet, password } = setupOnSubmit();
 
         const pseudoProps = {
           isMountedRef: isMountedRefFalse,
@@ -171,12 +157,7 @@ describe('UnlockWalletForm', () => {
       });
 
       test('correctly sets helpers when call fails whem mounted', async () => {
-        const {
-          helpers,
-          isMountedRefTrue,
-          mockUnlockWallet,
-          password,
-        } = setupOnSubmit();
+        const { helpers, isMountedRefTrue, mockUnlockWallet, password } = setupOnSubmit();
 
         const errorMessage = 'error message.';
         mockUnlockWallet.mockRejectedValueOnce(new Error(errorMessage));
@@ -196,12 +177,7 @@ describe('UnlockWalletForm', () => {
       });
 
       test('does not call helpers when call fails when unmounted', async () => {
-        const {
-          helpers,
-          isMountedRefFalse,
-          mockUnlockWallet,
-          password,
-        } = setupOnSubmit();
+        const { helpers, isMountedRefFalse, mockUnlockWallet, password } = setupOnSubmit();
 
         const errorMessage = 'error message.';
         mockUnlockWallet.mockRejectedValueOnce(new Error(errorMessage));

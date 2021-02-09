@@ -13,23 +13,19 @@ class SubmitGiftCodeService extends BaseService<SubmitGiftCodeServiceArgs> {
   async call() {
     try {
       const { giftB58Code, senderMonitorId, txProposal } = this.argsObj;
-      const SubmitTransactionServiceInstance = new SubmitTransactionService(
-        this.client,
-        {
-          senderMonitorId,
-          txProposal,
-        },
-      );
-      const {
-        errorMessage,
-        isSuccess,
-      } = await SubmitTransactionServiceInstance.call();
+      const SubmitTransactionServiceInstance = new SubmitTransactionService(this.client, {
+        senderMonitorId,
+        txProposal,
+      });
+      const { errorMessage, isSuccess } = await SubmitTransactionServiceInstance.call();
 
       if (isSuccess) {
         const LocalStoreInstance = new LocalStore();
         const giftCodes = LocalStoreInstance.getGiftCodes() || [];
         // const giftCodes = [];
-        if (!Array.isArray(giftCodes)) throw new Error('Cannot find gift codes');
+        if (!Array.isArray(giftCodes)) {
+          throw new Error('Cannot find gift codes');
+        }
 
         // TODO - this should definitely be in a util
         const giftValue = txProposal

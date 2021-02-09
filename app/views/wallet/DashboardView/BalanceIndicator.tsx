@@ -32,10 +32,7 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
-const BalanceIndicator: FC<BalanceProps> = ({
-  balance,
-  isSynced,
-}: BalanceProps) => {
+const BalanceIndicator: FC<BalanceProps> = ({ balance, isSynced }: BalanceProps) => {
   const classes = useStyles();
   const { t } = useTranslation('BalanceIndicator');
 
@@ -46,20 +43,12 @@ const BalanceIndicator: FC<BalanceProps> = ({
       </Typography>
       <Box className={classes.valueContainer}>
         <MOBIcon className={classes.icon} />
-        <Typography
-          data-testid="balance-figure"
-          variant="h3"
-          color="textPrimary"
-        >
+        <Typography data-testid="balance-figure" variant="h3" color="textPrimary">
           <MOBNumberFormat valueUnit="pMOB" value={balance} />
         </Typography>
       </Box>
       {!isSynced && (
-        <Typography
-          data-testid="balance-sync-message"
-          variant="h6"
-          color="primary"
-        >
+        <Typography data-testid="balance-sync-message" variant="h6" color="primary">
           {t('syncMessage')}
         </Typography>
       )}

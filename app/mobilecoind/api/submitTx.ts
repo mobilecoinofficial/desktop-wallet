@@ -4,7 +4,7 @@ import type { TxProposal } from '../protos/mobilecoind_api_pb';
 
 const submitTx = async (
   client: MobilecoindClient,
-  requestObject: { txProposal: TxProposal }, // fix this later
+  requestObject: { txProposal: TxProposal } // fix this later
 ) => {
   const { txProposal } = requestObject;
   if (txProposal === undefined) throw new Error('txProposal undefined'); // TODO - better errors

@@ -1,13 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box,
-  Button,
-  Container,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Button, Container, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -48,12 +42,7 @@ const NotFoundView: FC = () => {
           {t('description')}
         </Typography>
         <Box mt={6} display="flex" justifyContent="center">
-          <Button
-            color="secondary"
-            component={RouterLink}
-            to={routePaths.ROOT}
-            variant="outlined"
-          >
+          <Button color="secondary" component={RouterLink} to={routePaths.ROOT} variant="outlined">
             {t('backButton')}
           </Button>
         </Box>

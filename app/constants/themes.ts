@@ -1,6 +1,4 @@
-import {
-  BLACK, BLACK_DARK, GOLD, GREY, GREY_LIGHT,
-} from './colors';
+import { BLACK, BLACK_DARK, GOLD, GREY, GREY_LIGHT } from './colors';
 
 export const MOBILE_COIN_DARK = 'MOBILE_COIN_DARK';
 export const MOBILE_COIN_LIGHT = 'MOBILE_COIN_LIGHT';

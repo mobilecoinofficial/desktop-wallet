@@ -1,15 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Button, Card, Container, Divider, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -17,9 +9,7 @@ import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
-import CreateAccountForm, {
-  createAccountFormOnSubmit,
-} from './CreateAccountForm';
+import CreateAccountForm, { createAccountFormOnSubmit } from './CreateAccountForm';
 
 interface CreateAccountViewProps {
   isTest?: boolean;
@@ -77,19 +67,12 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({ isTest }: CreateAccount
               <Typography variant="body2" paragraph>
                 {t('overwriteWarning')}
               </Typography>
-              <Button
-                color="secondary"
-                component={RouterLink}
-                to={routePaths.ROOT}
-              >
+              <Button color="secondary" component={RouterLink} to={routePaths.ROOT}>
                 {t('unlockWalletButton')}
               </Button>
             </Box>
           )}
-          <CreateAccountForm
-            isTest={isTest}
-            onSubmit={createAccountFormOnSubmit}
-          />
+          <CreateAccountForm isTest={isTest} onSubmit={createAccountFormOnSubmit} />
           <Box my={3}>
             <Divider />
           </Box>

@@ -14,13 +14,10 @@ function setupComponent(contextOverrides?: MobileCoinDContextValue) {
     isAuthenticated: false,
   };
 
-  renderSnapshot(
-    <UnlockWalletGuard>children</UnlockWalletGuard>,
-    {
-      ...defaultContext,
-      ...contextOverrides,
-    },
-  );
+  renderSnapshot(<UnlockWalletGuard>children</UnlockWalletGuard>, {
+    ...defaultContext,
+    ...contextOverrides,
+  });
 
   const children = screen.queryByText('children');
 

@@ -93,13 +93,7 @@ const ConsumeGiftForm: FC = () => {
   const [submittingConfimedGift, setSubmittingConfirmedGift] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const {
-    accountName,
-    balance,
-    openGiftCode,
-    b58Code,
-    submitTransaction,
-  } = useMobileCoinD();
+  const { accountName, balance, openGiftCode, b58Code, submitTransaction } = useMobileCoinD();
   const { t } = useTranslation('ConsumeGiftForm');
 
   // We'll use this array in prep for future patterns with multiple accounts
@@ -125,10 +119,9 @@ const ConsumeGiftForm: FC = () => {
       setSubmittingConfirmedGift(true);
       setShowModal(false);
       try {
-        if (
-          confirmation.txProposal === null
-          || confirmation.txProposal === undefined
-        ) throw new Error(t('confirmationNotFound'));
+        if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
+          throw new Error(t('confirmationNotFound'));
+        }
 
         await submitTransaction(confirmation.txProposal);
         if (isMountedRef.current) {
@@ -142,10 +135,7 @@ const ConsumeGiftForm: FC = () => {
         }
       } catch (err) {
         if (isMountedRef.current) {
-          const santitizedError = err.message
-            === t('error13')
-            ? t('giftClaimed')
-            : err.message;
+          const santitizedError = err.message === t('error13') ? t('giftClaimed') : err.message;
           setStatus({ success: false });
           setErrors({ submit: santitizedError });
           setSubmittingConfirmedGift(false);
@@ -160,9 +150,8 @@ const ConsumeGiftForm: FC = () => {
   };
 
   const createAccountLabel = (account: Account) => {
-    const name = account.name && account.name.length > 0
-      ? `${account.name}: `
-      : `${t('unnamed')}: `;
+    const name =
+      account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
     return (
       <Box display="flex" justifyContent="space-between">
         <Typography>
@@ -179,10 +168,7 @@ const ConsumeGiftForm: FC = () => {
     );
   };
 
-  const renderSenderPublicAdddressOptions = (
-    accounts: Account[],
-    isSubmitting: boolean,
-  ) => {
+  const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => {
     return (
       <Box pt={2}>
         <FormLabel className={classes.form} component="legend">
@@ -223,27 +209,18 @@ const ConsumeGiftForm: FC = () => {
         submit: null,
       }}
       validationSchema={Yup.object().shape({
-        giftB58Code: Yup.string().required(
-          t('giftB58Validation'),
-        ),
+        giftB58Code: Yup.string().required(t('giftB58Validation')),
       })}
       validateOnMount
-      onSubmit={async (
-        values,
-        {
-          setErrors, setStatus, setSubmitting, resetForm,
-        },
-      ) => {
+      onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
         try {
           setIsAwaitingConformation(true);
           const result = await openGiftCode(values.giftB58Code);
-          if (result === null || result === undefined) throw new Error(t('giftB58Error'));
+          if (result === null || result === undefined) {
+            throw new Error(t('giftB58Error'));
+          }
 
-          const {
-            feeConfirmation,
-            totalValueConfirmation,
-            txProposal,
-          } = result;
+          const { feeConfirmation, totalValueConfirmation, txProposal } = result;
 
           setConfirmation({
             feeConfirmation,
@@ -266,15 +243,7 @@ const ConsumeGiftForm: FC = () => {
         }
       }}
     >
-      {({
-        errors,
-        isSubmitting,
-        isValid,
-        submitForm,
-        setErrors,
-        setStatus,
-        values,
-      }) => {
+      {({ errors, isSubmitting, isValid, submitForm, setErrors, setStatus, values }) => {
         const selectedBalance =
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
@@ -284,21 +253,14 @@ const ConsumeGiftForm: FC = () => {
           }).balance;
         let increasedBalance;
         let totalSent;
-        if (
-          confirmation?.totalValueConfirmation
-          && confirmation?.feeConfirmation
-        ) {
+        if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
           increasedBalance = selectedBalance + confirmation?.totalValueConfirmation;
           // TODO - wtf is totalsent? rename or recalc
-          totalSent = confirmation?.totalValueConfirmation
-            + confirmation?.feeConfirmation;
+          totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
         return (
           <Form>
-            {renderSenderPublicAdddressOptions(
-              mockMultipleAccounts,
-              isSubmitting,
-            )}
+            {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)}
             <Box pt={4}>
               <FormLabel component="legend">
                 <Typography color="primary">{t('giftDetails')}</Typography>
@@ -346,10 +308,7 @@ const ConsumeGiftForm: FC = () => {
                   </Typography>
                   <Box py={2} />
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>
-                      {t('accountBalance')}
-                      :
-                    </Typography>
+                    <Typography>{t('accountBalance')}:</Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -363,10 +322,7 @@ const ConsumeGiftForm: FC = () => {
                     <Typography>---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>
-                      {t('total')}
-                      :
-                    </Typography>
+                    <Typography>{t('total')}:</Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -376,10 +332,7 @@ const ConsumeGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>
-                      {t('fee')}
-                      :
-                    </Typography>
+                    <Typography>{t('fee')}:</Typography>
                     <Typography>
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -389,10 +342,7 @@ const ConsumeGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="primary">
-                      {t('giftValue')}
-                      :
-                    </Typography>
+                    <Typography color="primary">{t('giftValue')}:</Typography>
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -406,10 +356,7 @@ const ConsumeGiftForm: FC = () => {
                     <Typography>---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="primary">
-                      {t('newBalance')}
-                      :
-                    </Typography>
+                    <Typography color="primary">{t('newBalance')}:</Typography>
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
@@ -456,10 +403,7 @@ const ConsumeGiftForm: FC = () => {
                 timeout: 1000,
               }}
             >
-              <Fade
-                in={submittingConfimedGift}
-                timeout={{ enter: 15000, exit: 0 }}
-              >
+              <Fade in={submittingConfimedGift} timeout={{ enter: 15000, exit: 0 }}>
                 <Box width="100%" p={3}>
                   <LinearProgress />
                 </Box>

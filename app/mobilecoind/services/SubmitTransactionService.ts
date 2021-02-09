@@ -19,11 +19,7 @@ class SubmitTransactionService extends BaseService<SubmitTransactionServiceArgs>
       const GetStatusServiceInstance = new GetStatusService(this.client, {
         monitorId: senderMonitorId,
       });
-      const {
-        isSuccess,
-        data,
-        errorMessage,
-      } = await GetStatusServiceInstance.call();
+      const { isSuccess, data, errorMessage } = await GetStatusServiceInstance.call();
 
       if (isSuccess) {
         return this.handleSuccess(data);

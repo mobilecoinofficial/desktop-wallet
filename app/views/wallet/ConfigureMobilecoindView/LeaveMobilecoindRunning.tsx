@@ -1,27 +1,20 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box, FormLabel, Typography, Switch,
-} from '@material-ui/core';
+import { Box, FormLabel, Typography, Switch } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import useMobilecoindConfigs from '../../../hooks/useMobilecoindConfigs';
 
 const LeaveMobilecoindRunning: FC = () => {
-  const {
-    leaveMobilecoindRunning,
-    toggleLeaveMobilecoindRunning,
-  } = useMobilecoindConfigs();
+  const { leaveMobilecoindRunning, toggleLeaveMobilecoindRunning } = useMobilecoindConfigs();
   const { t } = useTranslation('LeaveMobilecoindRunning');
 
   return (
     <Box flexGrow={1} mt={3}>
       <Box pt={2}>
         <FormLabel component="legend">
-          <Typography color="primary">
-            {t('formLabel')}
-          </Typography>
+          <Typography color="primary">{t('formLabel')}</Typography>
         </FormLabel>
       </Box>
       <Box pt={2}>
@@ -30,9 +23,7 @@ const LeaveMobilecoindRunning: FC = () => {
             variant="body2"
             color={leaveMobilecoindRunning ? 'textPrimary' : 'textSecondary'}
           >
-            {leaveMobilecoindRunning
-              ? t('ternaryOn')
-              : t('ternaryOff')}
+            {leaveMobilecoindRunning ? t('ternaryOn') : t('ternaryOff')}
           </Typography>
           <Box>
             <Switch
@@ -47,9 +38,7 @@ const LeaveMobilecoindRunning: FC = () => {
           display="inline"
           color={leaveMobilecoindRunning ? 'textPrimary' : 'textSecondary'}
         >
-          {leaveMobilecoindRunning
-            ? t('ternaryWillSync')
-            : t('ternaryWillNotSync')}
+          {leaveMobilecoindRunning ? t('ternaryWillSync') : t('ternaryWillNotSync')}
         </Typography>
         <Box py={1} />
         <Typography variant="body2" color="textSecondary">

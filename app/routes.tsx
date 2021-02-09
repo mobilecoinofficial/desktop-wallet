@@ -7,11 +7,7 @@ import UnlockWalletGuard from './components/UnlockWalletGuard';
 import WalletGuard from './components/WalletGuard';
 import routePaths from './constants/routePaths';
 import DashboardLayout from './layouts/DashboardLayout';
-import {
-  CreateAccountView,
-  ImportAccountView,
-  UnlockWalletView,
-} from './views/auth';
+import { CreateAccountView, ImportAccountView, UnlockWalletView } from './views/auth';
 import NotFoundView from './views/errors/NotFoundView';
 import {
   ChangePasswordView,
@@ -34,15 +30,12 @@ type Routes = {
   routes?: Routes;
 }[];
 
-const RedirectToNotFound = () => {
+const RedirectToNotFound = (): JSX.Element => {
   return <Redirect to={routePaths.NOT_FOUND} />;
 };
 RedirectToNotFound.displayName = 'RedirectToNotFound';
 
-export const renderRoutes = (
-  routes: Routes = [],
-  testComponent?: JSX.Element,
-): JSX.Element => {
+export const renderRoutes = (routes: Routes = [], testComponent?: JSX.Element): JSX.Element => {
   return (
     <Switch>
       {testComponent && (
@@ -56,14 +49,7 @@ export const renderRoutes = (
         />
       )}
       {routes.map((route, i) => {
-        const {
-          Component,
-          guard,
-          layout,
-          exact,
-          path,
-          routes: nestedRoutes,
-        } = route;
+        const { Component, guard, layout, exact, path, routes: nestedRoutes } = route;
 
         const Guard = guard || Fragment;
         const Layout = layout || Fragment;
@@ -77,11 +63,7 @@ export const renderRoutes = (
               return (
                 <Guard>
                   <Layout>
-                    {nestedRoutes ? (
-                      renderRoutes(nestedRoutes)
-                    ) : (
-                      <Component {...props} />
-                    )}
+                    {nestedRoutes ? renderRoutes(nestedRoutes) : <Component {...props} />}
                   </Layout>
                 </Guard>
               );

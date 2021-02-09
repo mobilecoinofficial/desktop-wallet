@@ -14,13 +14,10 @@ function setupComponent(contextOverides?: MobileCoinDContextValue) {
     isAuthenticated: false,
   };
 
-  renderSnapshot(
-    <AuthFlowGuard>children</AuthFlowGuard>,
-    {
-      ...defaultContext,
-      ...contextOverides,
-    },
-  );
+  renderSnapshot(<AuthFlowGuard>children</AuthFlowGuard>, {
+    ...defaultContext,
+    ...contextOverides,
+  });
 
   const children = screen.queryByText('children');
 

@@ -16,6 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     <AppContainer>
       <App />
     </AppContainer>,
-    document.getElementById('root'),
+    document.getElementById('root')
   );
 });

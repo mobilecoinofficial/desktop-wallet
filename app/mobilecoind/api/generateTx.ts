@@ -1,10 +1,7 @@
 import type { MobilecoindClient } from '../client';
 import { GenerateTxRequest } from '../protos/mobilecoind_api_pb';
 
-const generateTx = async (
-  client: MobilecoindClient,
-  requestObject: GenerateTxRequest.AsObject,
-) => {
+const generateTx = async (client: MobilecoindClient, requestObject: GenerateTxRequest.AsObject) => {
   const {
     senderMonitorId,
     changeSubaddress,

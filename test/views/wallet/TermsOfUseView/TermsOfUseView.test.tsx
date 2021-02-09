@@ -18,7 +18,9 @@ describe('TermsOfUseView', () => {
     describe('breadcrumb navigation', () => {
       test('Settings breadcrumb navigates away from current view', () => {
         renderSnapshot(<TermsOfUseView />);
-        const termsPanel = screen.queryByText('MOBILECOIN TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS');
+        const termsPanel = screen.queryByText(
+          'MOBILECOIN TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS'
+        );
         expect(termsPanel).toBeInTheDocument();
         userEvent.click(screen.getByText('Settings'));
         expect(termsPanel).not.toBeInTheDocument();

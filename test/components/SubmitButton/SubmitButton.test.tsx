@@ -8,13 +8,7 @@ describe('SubmitButton', () => {
   test('calls provided function when clicked', () => {
     const mockFunction = jest.fn();
 
-    render(
-      <SubmitButton
-        isSubmitting={false}
-        onClick={mockFunction}
-        disabled={false}
-      />,
-    );
+    render(<SubmitButton isSubmitting={false} onClick={mockFunction} disabled={false} />);
 
     expect(mockFunction).toHaveBeenCalledTimes(0);
 
@@ -26,9 +20,7 @@ describe('SubmitButton', () => {
   test('does not call function when disabled', () => {
     const mockFunction = jest.fn();
 
-    render(
-      <SubmitButton isSubmitting={false} onClick={mockFunction} disabled />,
-    );
+    render(<SubmitButton isSubmitting={false} onClick={mockFunction} disabled />);
 
     expect(mockFunction).toHaveBeenCalledTimes(0);
 
@@ -40,9 +32,7 @@ describe('SubmitButton', () => {
   test('does not call function when submitting', () => {
     const mockFunction = jest.fn();
 
-    render(
-      <SubmitButton isSubmitting={false} onClick={mockFunction} disabled />,
-    );
+    render(<SubmitButton isSubmitting={false} onClick={mockFunction} disabled />);
 
     expect(mockFunction).toHaveBeenCalledTimes(0);
 

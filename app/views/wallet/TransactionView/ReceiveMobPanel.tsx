@@ -1,9 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box, Container, makeStyles, Typography,
-} from '@material-ui/core';
+import { Box, Container, makeStyles, Typography } from '@material-ui/core';
 
 import AccountCard from '../../../components/AccountCard';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
@@ -34,18 +32,12 @@ const ReceiveMobPanel: FC = () => {
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
-      <Box
-        alignItems="center"
-        display="flex"
-        justifyContent="space-between"
-        mb={3}
-      >
+      <Box alignItems="center" display="flex" justifyContent="space-between" mb={3}>
         <div>
           <Typography variant="body2" color="textSecondary">
-            To receive MOB, you must share your public address code to the
-            sender. The code is the text you see on your account card. Simply
-            click the code to copy it to your clipboard. Alternatively, the
-            sender can scan your account QR code. Press the QR code icon to
+            To receive MOB, you must share your public address code to the sender. The code is the
+            text you see on your account card. Simply click the code to copy it to your clipboard.
+            Alternatively, the sender can scan your account QR code. Press the QR code icon to
             switch views.
           </Typography>
         </div>

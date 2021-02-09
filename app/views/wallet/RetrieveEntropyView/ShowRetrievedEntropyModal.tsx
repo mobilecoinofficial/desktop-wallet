@@ -93,38 +93,18 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
 
           <Card>
             <CardContent>
-              <Box
-                py={3}
-                display="flex"
-                alignItems="center"
-                flexDirection="column"
-              >
+              <Box py={3} display="flex" alignItems="center" flexDirection="column">
                 <Box p={2}>
-                  <Fab
-                    variant="extended"
-                    color="primary"
-                    onClick={toggleEntropy}
-                    size="small"
-                  >
-                    {showEntropy
-                      ? t('hide')
-                      : t('show')}
+                  <Fab variant="extended" color="primary" onClick={toggleEntropy} size="small">
+                    {showEntropy ? t('hide') : t('show')}
                   </Fab>
                 </Box>
                 {showEntropy ? (
-                  <Typography
-                    className={classes.shownEntropy}
-                    variant="body2"
-                    color="textPrimary"
-                  >
+                  <Typography className={classes.shownEntropy} variant="body2" color="textPrimary">
                     {entropy}
                   </Typography>
                 ) : (
-                  <Typography
-                    className={classes.hiddenEntropy}
-                    variant="body2"
-                    color="textPrimary"
-                  >
+                  <Typography className={classes.hiddenEntropy} variant="body2" color="textPrimary">
                     ****************************************************************
                   </Typography>
                 )}

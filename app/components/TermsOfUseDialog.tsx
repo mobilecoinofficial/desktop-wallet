@@ -1,8 +1,6 @@
 import React from 'react';
 
-import {
-  Box, Button, Container, Dialog,
-} from '@material-ui/core';
+import { Box, Button, Container, Dialog } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import TermsOfUse from './TermsOfUse';
@@ -21,12 +19,7 @@ const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
       <Container maxWidth="md">
         <TermsOfUse />
         <Box p={2}>
-          <Button
-            color="secondary"
-            onClick={handleCloseTerms}
-            variant="contained"
-            fullWidth
-          >
+          <Button color="secondary" onClick={handleCloseTerms} variant="contained" fullWidth>
             {t('close')}
           </Button>
         </Box>

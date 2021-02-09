@@ -14,13 +14,10 @@ function setupComponent(contextOverrides?: MobileCoinDContextValue) {
     isAuthenticated: false,
   };
 
-  renderSnapshot(
-    <WalletGuard>success</WalletGuard>,
-    {
-      ...defaultContext,
-      ...contextOverrides,
-    },
-  );
+  renderSnapshot(<WalletGuard>success</WalletGuard>, {
+    ...defaultContext,
+    ...contextOverrides,
+  });
 
   const success = screen.queryByText('success');
 
@@ -45,7 +42,7 @@ describe('WalletGuard', () => {
     expect(screen.queryByTestId('CreateAccountView')).toBeInTheDocument();
   });
 
-  test('unauthenticated users with entropy are redirected to UnlockWalletView ', () => {
+  test('unauthenticated users with entropy are redirected to UnlockWalletView', () => {
     // @ts-ignore mock
     setupComponent({
       encryptedEntropy: 'string',

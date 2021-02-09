@@ -123,8 +123,8 @@ const ChangePasswordView: FC = () => {
             newPasswordConfirmation: Yup.string()
               .oneOf([Yup.ref('newPassword')], t('passwordConfirmationRef'))
               .required(t('passwordConfirmationRequired')),
+            oldPassword: Yup.string().required(t('oldPasswordRequired')),
           })}
-          isInitialValid={false}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
               setSubmitting(true);
@@ -146,7 +146,7 @@ const ChangePasswordView: FC = () => {
             }
           }}
         >
-          {({ errors, isSubmitting, isValid, submitForm }) => {
+          {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
             return (
               <Form>
                 <Box pt={4}>
@@ -184,7 +184,7 @@ const ChangePasswordView: FC = () => {
                   </Box>
                 )}
                 <SubmitButton
-                  disabled={!isValid || isSubmitting}
+                  disabled={!dirty || !isValid || isSubmitting}
                   onClick={submitForm}
                   isSubmitting={isSubmitting}
                 >

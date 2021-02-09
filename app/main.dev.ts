@@ -56,7 +56,10 @@ const installExtensions = async () => {
   // eslint-disable-next-line
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
+  const extensions = [
+    'REACT_DEVELOPER_TOOLS',
+    /* , 'REDUX_DEVTOOLS' */
+  ];
 
   return Promise.all(
     extensions.map((name) => {
@@ -192,7 +195,12 @@ if (process.env.E2E_BUILD === 'true') {
   /*
   // eslint-disable-next-line promise/catch-or-return
   */
-  app.whenReady().then(createWindow);
+  app
+    .whenReady()
+    .then(createWindow)
+    .catch(() => {
+      return null;
+    });
 } else {
   app.on('ready', () => {
     spawnMobilecoind();

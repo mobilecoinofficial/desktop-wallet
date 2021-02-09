@@ -119,9 +119,8 @@ const ConsumeGiftForm: FC = () => {
       setSubmittingConfirmedGift(true);
       setShowModal(false);
       try {
-        if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
+        if (confirmation.txProposal === null || confirmation.txProposal === undefined)
           throw new Error(t('confirmationNotFound'));
-        }
 
         await submitTransaction(confirmation.txProposal);
         if (isMountedRef.current) {
@@ -202,7 +201,6 @@ const ConsumeGiftForm: FC = () => {
 
   return (
     <Formik
-      isInitialValid={false}
       initialValues={{
         giftB58Code: '', // mobs
         senderPublicAddress: mockMultipleAccounts[0].b58Code,
@@ -211,14 +209,11 @@ const ConsumeGiftForm: FC = () => {
       validationSchema={Yup.object().shape({
         giftB58Code: Yup.string().required(t('giftB58Validation')),
       })}
-      validateOnMount
       onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
         try {
           setIsAwaitingConformation(true);
           const result = await openGiftCode(values.giftB58Code);
-          if (result === null || result === undefined) {
-            throw new Error(t('giftB58Error'));
-          }
+          if (result === null || result === undefined) throw new Error(t('giftB58Error'));
 
           const { feeConfirmation, totalValueConfirmation, txProposal } = result;
 
@@ -243,7 +238,7 @@ const ConsumeGiftForm: FC = () => {
         }
       }}
     >
-      {({ errors, isSubmitting, isValid, submitForm, setErrors, setStatus, values }) => {
+      {({ errors, isSubmitting, dirty, isValid, submitForm, setErrors, setStatus, values }) => {
         const selectedBalance =
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
@@ -281,7 +276,7 @@ const ConsumeGiftForm: FC = () => {
               </Box>
             )}
             <SubmitButton
-              disabled={!isValid || isSubmitting}
+              disabled={!dirty || !isValid || isSubmitting}
               onClick={submitForm}
               isSubmitting={isAwaitingConformation || isSubmitting}
             >

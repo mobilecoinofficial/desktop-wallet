@@ -6,9 +6,7 @@ const getPercentSynced = (
   const sanitizedBlocks = blockType === 'nextBlock' ? block - 1 : block;
   return networkHighestBlockIndex === 0
     ? 0
-    : parseFloat(
-        ((sanitizedBlocks / networkHighestBlockIndex) * 100).toFixed(1)
-      );
+    : parseFloat(((sanitizedBlocks / networkHighestBlockIndex) * 100).toFixed(1));
 };
 
 export default getPercentSynced;

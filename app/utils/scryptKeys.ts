@@ -12,10 +12,7 @@ interface Results {
   secretKeyString: string;
 }
 
-const scryptKeys = async (
-  password: string,
-  previousSalt?: string
-): Promise<Results> => {
+const scryptKeys = async (password: string, previousSalt?: string): Promise<Results> => {
   const options = {
     N: MEMORY_COST,
     maxmem: MEMORY_LIMIT,
@@ -26,12 +23,7 @@ const scryptKeys = async (
     ? Buffer.from(previousSalt, 'hex')
     : await crypto.randomBytes(SALT_LENGTH);
 
-  const secretKeyBuffer = crypto.scryptSync(
-    password,
-    publicSaltBuffer,
-    KEY_LENGTH,
-    options
-  );
+  const secretKeyBuffer = crypto.scryptSync(password, publicSaltBuffer, KEY_LENGTH, options);
 
   const publicSaltString = publicSaltBuffer.toString('hex');
   const secretKeyString = secretKeyBuffer.toString('hex');

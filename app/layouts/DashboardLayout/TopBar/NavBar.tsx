@@ -3,18 +3,9 @@ import type { FC } from 'react';
 
 import { Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import {
-  NavLink as RouterLink,
-  matchPath,
-  useLocation,
-} from 'react-router-dom';
+import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 
-import {
-  CogIcon,
-  GiftIcon,
-  TransactionIcon,
-  WalletHomeIcon,
-} from '../../../components/icons';
+import { CogIcon, GiftIcon, TransactionIcon, WalletHomeIcon } from '../../../components/icons';
 import { IconProps } from '../../../components/icons/IconProps';
 import { GOLD, GREY_DARK } from '../../../constants/colors';
 import routePaths from '../../../constants/routePaths';

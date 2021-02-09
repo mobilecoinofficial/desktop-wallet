@@ -1,7 +1,18 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Backdrop, Box, Button, Card, CardContent, Fab, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
+import {
+  Backdrop,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Fab,
+  Fade,
+  makeStyles,
+  Modal,
+  Typography,
+} from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import useMobileCoinD from '../../hooks/useMobileCoinD';
@@ -99,11 +110,19 @@ const ShowEntropyModal: FC = () => {
                     </Fab>
                   </Box>
                   {showEntropy ? (
-                    <Typography className={classes.shownEntropy} variant="body2" color="textPrimary">
+                    <Typography
+                      className={classes.shownEntropy}
+                      variant="body2"
+                      color="textPrimary"
+                    >
                       {entropyString}
                     </Typography>
                   ) : (
-                    <Typography className={classes.hiddenEntropy} variant="body2" color="textPrimary">
+                    <Typography
+                      className={classes.hiddenEntropy}
+                      variant="body2"
+                      color="textPrimary"
+                    >
                       ****************************************************************
                     </Typography>
                   )}
@@ -139,7 +158,14 @@ const ShowEntropyModal: FC = () => {
             <br />
 
             <Box display="flex" justifyContent="space-between">
-              <Button color="secondary" onClick={handleGoBack} size="large" fullWidth type="submit" variant="contained">
+              <Button
+                color="secondary"
+                onClick={handleGoBack}
+                size="large"
+                fullWidth
+                type="submit"
+                variant="contained"
+              >
                 {t('back')}
               </Button>
               <Box paddingX={2} />

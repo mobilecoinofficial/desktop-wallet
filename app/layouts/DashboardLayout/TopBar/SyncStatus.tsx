@@ -67,7 +67,11 @@ const SyncStatus: FC = () => {
     statusCode = ERROR;
   } else {
     isSynced = Number(networkHighestBlockIndex) - Number(nextBlock) < 2; // Let's say a diff of 1 is fine.
-    percentSynced = getPercentSynced(Number(networkHighestBlockIndex), Number(nextBlock), 'nextBlock');
+    percentSynced = getPercentSynced(
+      Number(networkHighestBlockIndex),
+      Number(nextBlock),
+      'nextBlock'
+    );
     statusCode = isSynced ? SYNCED : SYNCING;
   }
 

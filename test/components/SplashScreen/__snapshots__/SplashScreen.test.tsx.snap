@@ -4,6 +4,7 @@ exports[`SplashScreen renders to screen when called 1`] = `
 <DocumentFragment>
   <div
     class="MuiBox-root MuiBox-root makeStyles-root"
+    data-testid="SplashScreen"
   >
     <div
       class="MuiBox-root MuiBox-root"

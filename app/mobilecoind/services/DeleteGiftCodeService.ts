@@ -12,7 +12,9 @@ class DeleteGiftCodeService extends BaseService<DeleteGiftCodeServiceArgs> {
 
       const LocalStoreInstance = new LocalStore();
       const giftCodes = LocalStoreInstance.getGiftCodes();
-      if (!Array.isArray(giftCodes)) throw new Error('Cannot find gift codes');
+      if (!Array.isArray(giftCodes)) {
+        throw new Error('Cannot find gift codes');
+      }
 
       let giftCodeIndex;
       // eslint-disable-next-line no-plusplus

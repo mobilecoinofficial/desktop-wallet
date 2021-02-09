@@ -22,12 +22,5 @@
     "resolveJsonModule": true,
     "allowJs": true
   },
-  "exclude": [
-    "test",
-    "release",
-    "app/main.prod.js",
-    "app/renderer.prod.js",
-    "app/dist",
-    "dll"
-  ]
+  "exclude": ["test", "release", "app/main.prod.js", "app/renderer.prod.js", "app/dist", "dll"]
 }

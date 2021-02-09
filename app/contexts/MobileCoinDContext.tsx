@@ -237,7 +237,14 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
       };
     }
     case 'IMPORT_ACCOUNT': {
-      const { accountName, b58Code, balance, encryptedEntropy, monitorId, receiver } = action.payload;
+      const {
+        accountName,
+        b58Code,
+        balance,
+        encryptedEntropy,
+        monitorId,
+        receiver,
+      } = action.payload;
       return {
         ...state,
         accountName,
@@ -252,7 +259,15 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
       };
     }
     case 'CREATE_ACCOUNT': {
-      const { accountName, b58Code, balance, encryptedEntropy, entropy, monitorId, receiver } = action.payload;
+      const {
+        accountName,
+        b58Code,
+        balance,
+        encryptedEntropy,
+        entropy,
+        monitorId,
+        receiver,
+      } = action.payload;
       return {
         ...state,
         accountName,
@@ -359,7 +374,10 @@ const MobileCoinDContext = createContext<MobileCoinDContextValue>({
   },
 });
 
-export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({ client, children }: MobileCoinDProviderProps) => {
+export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
+  client,
+  children,
+}: MobileCoinDProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialMobileCoinDState);
 
   const buildGiftCode = async (value: bigint, fee: bigint) => {
@@ -609,7 +627,8 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({ client, chil
         const LocalStoreInstance = new LocalStore();
         // TODO - fix typescript
         const encryptedEntropy = LocalStoreInstance.getEncryptedEntropy();
-        const assertedEncryptedEntropy = typeof encryptedEntropy === 'string' ? encryptedEntropy : null;
+        const assertedEncryptedEntropy =
+          typeof encryptedEntropy === 'string' ? encryptedEntropy : null;
 
         const giftCodes = LocalStoreInstance.getGiftCodes();
         const assertedGiftCodes = Array.isArray(giftCodes) ? giftCodes : [];

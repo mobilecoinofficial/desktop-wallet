@@ -40,20 +40,20 @@ global.eval = function () {
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
+  // eslint-disable-next-line
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
 }
 
-if (
-  process.env.NODE_ENV === 'development' ||
-  process.env.DEBUG_PROD === 'true'
-) {
+if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
+  // eslint-disable-next-line
   require('electron-debug')();
 }
 
 const LocalStoreInstance = new LocalStore();
 
 const installExtensions = async () => {
+  // eslint-disable-next-line
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
@@ -78,14 +78,10 @@ const spawnMobilecoind = () => {
       : path.join(root, 'mobilecoind-bin', platform);
 
   console.log('Looking for binary in', binariesPath);
-  const execPath = path.resolve(
-    path.join(binariesPath, './start-mobilecoind.sh')
-  );
+  const execPath = path.resolve(path.join(binariesPath, './start-mobilecoind.sh'));
   // Determine mobilecoind path and store for config view
   const userDataPath = app.getPath('userData');
-  const ledgerDbPath = path.normalize(
-    path.join(userDataPath, 'mobilecoind', 'ledger-db')
-  ); // escape spaces in mac and linux (change logic for windows)
+  const ledgerDbPath = path.normalize(path.join(userDataPath, 'mobilecoind', 'ledger-db')); // escape spaces in mac and linux (change logic for windows)
   const mobilecoindDbPath = path.normalize(
     path.join(userDataPath, 'mobilecoind', 'transaction-db')
   ); // escape spaces in mac and linux (change logic for windows)
@@ -97,10 +93,7 @@ const spawnMobilecoind = () => {
 };
 
 const createWindow = async () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
+  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     await installExtensions();
   }
 
@@ -119,8 +112,7 @@ const createWindow = async () => {
     minWidth: MIN_WINDOW_WIDTH,
     show: false,
     webPreferences:
-      (process.env.NODE_ENV === 'development' ||
-        process.env.E2E_BUILD === 'true') &&
+      (process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true') &&
       process.env.ERB_SECURE !== 'true'
         ? {
             disableBlinkFeatures: 'Auxclick',

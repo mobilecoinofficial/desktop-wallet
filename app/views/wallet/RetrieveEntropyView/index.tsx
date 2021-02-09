@@ -90,11 +90,7 @@ const RetrieveEntropyView: FC = () => {
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
       <Breadcrumbs separator=">" aria-label="breadcrumb">
-        <Link
-          color="inherit"
-          to={routePaths.APP_SETTINGS}
-          component={RouterLink}
-        >
+        <Link color="inherit" to={routePaths.APP_SETTINGS} component={RouterLink}>
           <Typography color="textSecondary">{t('settings')}</Typography>
         </Link>
         <Typography color="textPrimary">{t('retrieveSecret')}</Typography>
@@ -138,10 +134,7 @@ const RetrieveEntropyView: FC = () => {
             password: Yup.string().required(t('passwordRequired')),
           })}
           validateOnMount
-          onSubmit={async (
-            values,
-            { setErrors, setStatus, setSubmitting, resetForm }
-          ) => {
+          onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
               setSubmitting(true);
 
@@ -170,9 +163,7 @@ const RetrieveEntropyView: FC = () => {
               <Form>
                 <Box pt={4}>
                   <FormLabel component="legend">
-                    <Typography color="primary">
-                      {t('retrieveEntropy')}
-                    </Typography>
+                    <Typography color="primary">{t('retrieveEntropy')}</Typography>
                   </FormLabel>
                   <Field
                     component={TextField}

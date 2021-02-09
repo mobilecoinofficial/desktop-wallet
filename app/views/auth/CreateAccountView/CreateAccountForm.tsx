@@ -30,7 +30,7 @@ export const createAccountFormOnSubmit = async (
   pseudoProps: CreateAccountFormPseudoProps,
   values: CreateAccountFormValues,
   helpers: FormikHelpers<CreateAccountFormValues>
-) => {
+): Promise<void> => {
   const { isMountedRef, createAccount } = pseudoProps;
   const { accountName, password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
@@ -144,11 +144,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
               type="password"
             />
             <Box pt={1} display="flex">
-              <Box
-                display="flex"
-                alignItems="center"
-                flexDirection="row-reverse"
-              >
+              <Box display="flex" alignItems="center" flexDirection="row-reverse">
                 <Box>
                   <Typography display="inline">{t('acceptTerms')}</Typography>
                   <Button color="primary" onClick={handleClickOpen}>
@@ -164,11 +160,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
                 />
               </Box>
             </Box>
-            {!canCheck && (
-              <FormHelperText focused>
-                {t('acceptTermsFormHelper')}
-              </FormHelperText>
-            )}
+            {!canCheck && <FormHelperText focused>{t('acceptTermsFormHelper')}</FormHelperText>}
             {errors.submit && (
               <Box mt={3}>
                 <FormHelperText error>{errors.submit}</FormHelperText>

@@ -1,14 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box,
-  Breadcrumbs,
-  Container,
-  Link,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Breadcrumbs, Container, Link, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -76,11 +69,7 @@ const TermsOfUseView: FC = () => {
   return (
     <Container className={classes.cardContainer} maxWidth="md">
       <Breadcrumbs separator=">" aria-label="breadcrumb">
-        <Link
-          color="inherit"
-          to={routePaths.APP_SETTINGS}
-          component={RouterLink}
-        >
+        <Link color="inherit" to={routePaths.APP_SETTINGS} component={RouterLink}>
           <Typography color="textSecondary">{t('settings')}</Typography>
         </Link>
         <Typography color="textPrimary">{t('terms')}</Typography>

@@ -97,9 +97,11 @@ const convertPicoMobStringToMob = (picoMobString: string): string => {
     return `0.${'0'.repeat(12 - picoMobString.length)}${picoMobString}`;
   }
 
-  return [picoMobString.slice(0, picoMobString.length - 12), '.', picoMobString.slice(picoMobString.length - 12)].join(
-    ''
-  );
+  return [
+    picoMobString.slice(0, picoMobString.length - 12),
+    '.',
+    picoMobString.slice(picoMobString.length - 12),
+  ].join('');
 };
 
 // MOVE LATER
@@ -169,7 +171,12 @@ const SendMobForm: FC = () => {
           throw new Error(t('error'));
         }
 
-        const { feeConfirmation, totalValueConfirmation, txProposal, txProposalReceiverB58Code } = result;
+        const {
+          feeConfirmation,
+          totalValueConfirmation,
+          txProposal,
+          txProposalReceiverB58Code,
+        } = result;
         setConfirmation({
           feeConfirmation,
           totalValueConfirmation,
@@ -275,7 +282,9 @@ const SendMobForm: FC = () => {
         submit: null,
       }}
       validationSchema={Yup.object().shape({
-        mobAmount: Yup.number().positive(t('positiveValidation')).required(t('positiveValidationRequired')),
+        mobAmount: Yup.number()
+          .positive(t('positiveValidation'))
+          .required(t('positiveValidationRequired')),
         recipientPublicAddress: Yup.string().required(t('addressRequired')),
       })}
       validateOnMount
@@ -324,7 +333,17 @@ const SendMobForm: FC = () => {
         }
       }}
     >
-      {({ errors, isSubmitting, isValid, resetForm, submitForm, setSubmitting, setStatus, setErrors, values }) => {
+      {({
+        errors,
+        isSubmitting,
+        isValid,
+        resetForm,
+        submitForm,
+        setSubmitting,
+        setStatus,
+        setErrors,
+        values,
+      }) => {
         // NOTE: because this is just a display for the value up to 3 dec mob,
         // We do not need the precision to be BigInt
 
@@ -340,7 +359,9 @@ const SendMobForm: FC = () => {
         let remainingBalance;
         let totalSent;
         if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
-          remainingBalance = selectedBalance - (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
+          remainingBalance =
+            selectedBalance -
+            (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
           totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
@@ -368,7 +389,10 @@ const SendMobForm: FC = () => {
                 id="mobAmount"
                 type="text"
                 onFocus={handleSelect}
-                validate={validateAmount(selectedBalance, BigInt(values.feeAmount * 1_000_000_000_000))}
+                validate={validateAmount(
+                  selectedBalance,
+                  BigInt(values.feeAmount * 1_000_000_000_000)
+                )}
                 InputProps={{
                   inputComponent: MOBNumberFormat,
                   startAdornment: (
@@ -420,7 +444,11 @@ const SendMobForm: FC = () => {
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('accountBalance')}:</Typography>
                     <Typography>
-                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={selectedBalance?.toString()} />
+                      <MOBNumberFormat
+                        suffix=" MOB"
+                        valueUnit="pMOB"
+                        value={selectedBalance?.toString()}
+                      />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -453,7 +481,11 @@ const SendMobForm: FC = () => {
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('total')}:</Typography>
                     <Typography>
-                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={totalSent?.toString()} />
+                      <MOBNumberFormat
+                        suffix=" MOB"
+                        valueUnit="pMOB"
+                        value={totalSent?.toString()}
+                      />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -463,13 +495,21 @@ const SendMobForm: FC = () => {
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('remaining')}:</Typography>
                     <Typography>
-                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={remainingBalance?.toString()} />
+                      <MOBNumberFormat
+                        suffix=" MOB"
+                        valueUnit="pMOB"
+                        value={remainingBalance?.toString()}
+                      />
                     </Typography>
                   </Box>
                   <br />
 
                   <p className={classes.center}>{t('recipientPlus')}</p>
-                  <LongCode code={confirmation?.txProposalReceiverB58Code} codeClass={classes.code} tip="" />
+                  <LongCode
+                    code={confirmation?.txProposalReceiverB58Code}
+                    codeClass={classes.code}
+                    tip=""
+                  />
                   <br />
 
                   <p className={classes.center}>{t('senderPlus')}</p>

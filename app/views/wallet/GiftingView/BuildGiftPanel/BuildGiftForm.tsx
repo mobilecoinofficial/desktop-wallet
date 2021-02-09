@@ -188,7 +188,8 @@ const BuildGiftForm: FC = () => {
   };
 
   const createAccountLabel = (account: Account) => {
-    const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
+    const name =
+      account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
     return (
       <Box display="flex" justifyContent="space-between">
         <Typography>
@@ -266,7 +267,9 @@ const BuildGiftForm: FC = () => {
         submit: null,
       }}
       validationSchema={Yup.object().shape({
-        mobValue: Yup.number().positive(t('positiveValidation')).required(t('positiveValidationRequired')),
+        mobValue: Yup.number()
+          .positive(t('positiveValidation'))
+          .required(t('positiveValidationRequired')),
       })}
       validateOnMount
       onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
@@ -320,7 +323,9 @@ const BuildGiftForm: FC = () => {
         let remainingBalance;
         let totalSent;
         if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
-          remainingBalance = selectedBalance - (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
+          remainingBalance =
+            selectedBalance -
+            (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
           totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
@@ -340,7 +345,10 @@ const BuildGiftForm: FC = () => {
                 id="mobValue"
                 type="text"
                 onFocus={handleSelect}
-                validate={validateAmount(selectedBalance, BigInt(values.feeAmount * 1_000_000_000_000))}
+                validate={validateAmount(
+                  selectedBalance,
+                  BigInt(values.feeAmount * 1_000_000_000_000)
+                )}
                 InputProps={{
                   inputComponent: MOBNumberFormat,
                   startAdornment: (
@@ -392,7 +400,11 @@ const BuildGiftForm: FC = () => {
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('accountBalance')}:</Typography>
                     <Typography>
-                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={selectedBalance?.toString()} />
+                      <MOBNumberFormat
+                        suffix=" MOB"
+                        valueUnit="pMOB"
+                        value={selectedBalance?.toString()}
+                      />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -425,7 +437,11 @@ const BuildGiftForm: FC = () => {
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('total')}:</Typography>
                     <Typography>
-                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={totalSent?.toString()} />
+                      <MOBNumberFormat
+                        suffix=" MOB"
+                        valueUnit="pMOB"
+                        value={totalSent?.toString()}
+                      />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -435,7 +451,11 @@ const BuildGiftForm: FC = () => {
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('remaining')}:</Typography>
                     <Typography>
-                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={remainingBalance?.toString()} />
+                      <MOBNumberFormat
+                        suffix=" MOB"
+                        valueUnit="pMOB"
+                        value={remainingBalance?.toString()}
+                      />
                     </Typography>
                   </Box>
                   <Box py={1} />

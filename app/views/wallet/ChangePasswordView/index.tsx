@@ -87,18 +87,10 @@ const ChangePasswordView: FC = () => {
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
       <Breadcrumbs separator=">" aria-label="breadcrumb">
-        <Link
-          color="inherit"
-          to={routePaths.APP_SETTINGS}
-          component={RouterLink}
-        >
-          <Typography color="textSecondary">
-            {t('settingsBreadcrumb')}
-          </Typography>
+        <Link color="inherit" to={routePaths.APP_SETTINGS} component={RouterLink}>
+          <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
         </Link>
-        <Typography color="textPrimary">
-          {t('changePasswordBreadcrumb')}
-        </Typography>
+        <Typography color="textPrimary">{t('changePasswordBreadcrumb')}</Typography>
       </Breadcrumbs>
       <Box
         alignItems="center"
@@ -133,10 +125,7 @@ const ChangePasswordView: FC = () => {
               .required(t('passwordConfirmationRequired')),
           })}
           isInitialValid={false}
-          onSubmit={async (
-            values,
-            { setErrors, setStatus, setSubmitting, resetForm }
-          ) => {
+          onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
               setSubmitting(true);
               await changePassword(values.oldPassword, values.newPassword);

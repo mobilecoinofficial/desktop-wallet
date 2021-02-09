@@ -18,14 +18,7 @@ const SettingsOptionsList: FC<SettingsOptionsListProps> = ({
       <Grid item sm={12}>
         <Grid container justify="center" spacing={3}>
           {settingOptionsList.map(({ Icon, label, path }) => {
-            return (
-              <SettingsOptionsItem
-                Icon={Icon}
-                key={label}
-                label={label}
-                path={path}
-              />
-            );
+            return <SettingsOptionsItem Icon={Icon} key={label} label={label} path={path} />;
           })}
         </Grid>
       </Grid>

@@ -13,7 +13,14 @@ interface OverviewProps {
 }
 
 const DashboardOverview: FC<OverviewProps> = () => {
-  const { accountName, b58Code, balance, mobUrl, networkHighestBlockIndex, nextBlock } = useMobileCoinD();
+  const {
+    accountName,
+    b58Code,
+    balance,
+    mobUrl,
+    networkHighestBlockIndex,
+    nextBlock,
+  } = useMobileCoinD();
 
   // TODO consolidate the isSynced logic throughout app to one location.
   // consider using a specific context when we split the MobileCoinDContext

@@ -31,7 +31,7 @@ export const importAccountFormOnSubmit = async (
   pseudoProps: ImportAccountFormPseudoProps,
   values: ImportAccountFormValues,
   helpers: FormikHelpers<ImportAccountFormValues>
-) => {
+): Promise<void> => {
   const { isMountedRef, importAccount } = pseudoProps;
   const { accountName, entropy, password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
@@ -157,11 +157,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
               type="password"
             />
             <Box pt={1} display="flex">
-              <Box
-                display="flex"
-                alignItems="center"
-                flexDirection="row-reverse"
-              >
+              <Box display="flex" alignItems="center" flexDirection="row-reverse">
                 <Box>
                   <Typography display="inline">{t('acceptTerms')}</Typography>
                   <Button color="primary" onClick={handleClickOpen}>
@@ -177,11 +173,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
                 />
               </Box>
             </Box>
-            {!canCheck && (
-              <FormHelperText focused>
-                {t('acceptTermsFormHelper')}
-              </FormHelperText>
-            )}
+            {!canCheck && <FormHelperText focused>{t('acceptTermsFormHelper')}</FormHelperText>}
             {errors.submit && (
               <Box mt={3}>
                 <FormHelperText error>{errors.submit}</FormHelperText>

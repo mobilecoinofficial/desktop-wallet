@@ -1,14 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box,
-  Breadcrumbs,
-  Container,
-  Link,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Breadcrumbs, Container, Link, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -52,18 +45,10 @@ const ConfigureMobilecoindView: FC = () => {
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
       <Breadcrumbs separator=">" aria-label="breadcrumb">
-        <Link
-          color="inherit"
-          to={routePaths.APP_SETTINGS}
-          component={RouterLink}
-        >
-          <Typography color="textSecondary">
-            {t('settingsBreadcrumb')}
-          </Typography>
+        <Link color="inherit" to={routePaths.APP_SETTINGS} component={RouterLink}>
+          <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
         </Link>
-        <Typography color="textPrimary">
-          {t('configureMobilecoindBreadcrumb')}
-        </Typography>
+        <Typography color="textPrimary">{t('configureMobilecoindBreadcrumb')}</Typography>
       </Breadcrumbs>
       <Box
         alignItems="center"

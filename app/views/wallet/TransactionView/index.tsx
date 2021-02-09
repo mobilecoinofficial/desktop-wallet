@@ -45,10 +45,7 @@ const TransactionView: FC = () => {
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
           </Tabs>
-          <TabPanel
-            panels={[SendMobPanel, ReceiveMobPanel]}
-            selectedTabIndex={selectedTabIndex}
-          />
+          <TabPanel panels={[SendMobPanel, ReceiveMobPanel]} selectedTabIndex={selectedTabIndex} />
         </Grid>
       </Grid>
     </Box>

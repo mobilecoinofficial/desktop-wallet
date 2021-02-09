@@ -22,12 +22,7 @@ const SendMobPanel: FC = () => {
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
-      <Box
-        alignItems="center"
-        display="flex"
-        justifyContent="space-between"
-        mb={3}
-      >
+      <Box alignItems="center" display="flex" justifyContent="space-between" mb={3}>
         <Box>
           <Typography variant="body2" color="textSecondary">
             {t('header')}

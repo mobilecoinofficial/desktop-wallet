@@ -1,14 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  Grid,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Card, CardActionArea, CardContent, Grid, makeStyles, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 

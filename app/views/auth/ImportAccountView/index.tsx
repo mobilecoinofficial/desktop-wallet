@@ -1,15 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Button, Card, Container, Divider, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -17,9 +9,7 @@ import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
-import ImportAccountForm, {
-  importAccountFormOnSubmit,
-} from './ImportAccountForm';
+import ImportAccountForm, { importAccountFormOnSubmit } from './ImportAccountForm';
 
 // CBB: this isTest pattern would be better managed with context and hooks.
 interface ImportAccountViewProps {
@@ -53,9 +43,7 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
-const ImportAccountView: FC<ImportAccountViewProps> = ({
-  isTest,
-}: ImportAccountViewProps) => {
+const ImportAccountView: FC<ImportAccountViewProps> = ({ isTest }: ImportAccountViewProps) => {
   const classes = useStyles();
   const { encryptedEntropy } = useMobileCoinD();
   const { t } = useTranslation('ImportAccountView');
@@ -79,19 +67,12 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
               <Typography variant="body2" paragraph>
                 {t('overwriteWarning')}
               </Typography>
-              <Button
-                color="secondary"
-                component={RouterLink}
-                to={routePaths.ROOT}
-              >
+              <Button color="secondary" component={RouterLink} to={routePaths.ROOT}>
                 {t('unlockWalletButton')}
               </Button>
             </Box>
           )}
-          <ImportAccountForm
-            isTest={isTest}
-            onSubmit={importAccountFormOnSubmit}
-          />
+          <ImportAccountForm isTest={isTest} onSubmit={importAccountFormOnSubmit} />
           <Box my={3}>
             <Divider />
           </Box>

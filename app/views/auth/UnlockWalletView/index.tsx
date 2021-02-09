@@ -1,15 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Divider,
-  Typography,
-  makeStyles,
-} from '@material-ui/core';
+import { Box, Button, Card, Container, Divider, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 

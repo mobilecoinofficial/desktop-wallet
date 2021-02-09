@@ -7,10 +7,7 @@ import { useTranslation } from 'react-i18next';
 import useMobilecoindConfigs from '../../../hooks/useMobilecoindConfigs';
 
 const LeaveMobilecoindRunning: FC = () => {
-  const {
-    leaveMobilecoindRunning,
-    toggleLeaveMobilecoindRunning,
-  } = useMobilecoindConfigs();
+  const { leaveMobilecoindRunning, toggleLeaveMobilecoindRunning } = useMobilecoindConfigs();
   const { t } = useTranslation('LeaveMobilecoindRunning');
 
   return (
@@ -41,9 +38,7 @@ const LeaveMobilecoindRunning: FC = () => {
           display="inline"
           color={leaveMobilecoindRunning ? 'textPrimary' : 'textSecondary'}
         >
-          {leaveMobilecoindRunning
-            ? t('ternaryWillSync')
-            : t('ternaryWillNotSync')}
+          {leaveMobilecoindRunning ? t('ternaryWillSync') : t('ternaryWillNotSync')}
         </Typography>
         <Box py={1} />
         <Typography variant="body2" color="textSecondary">

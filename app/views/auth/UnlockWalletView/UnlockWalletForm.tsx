@@ -27,7 +27,7 @@ export const unlockWalletFormOnSubmit = async (
   pseudoProps: UnlockWalletFormPseudoProps,
   values: UnlockWalletFormValues,
   helpers: FormikHelpers<UnlockWalletFormValues>
-) => {
+): Promise<void> => {
   const { isMountedRef, unlockWallet } = pseudoProps;
   const { password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
@@ -51,9 +51,7 @@ interface UnlockWalletFormProps {
   onSubmit: typeof unlockWalletFormOnSubmit;
 }
 
-const UnlockWalletForm: FC<UnlockWalletFormProps> = ({
-  onSubmit,
-}: UnlockWalletFormProps) => {
+const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletFormProps) => {
   const isMountedRef = useIsMountedRef();
   const { unlockWallet } = useMobileCoinD();
   const [t] = useTranslation('UnlockWalletForm');

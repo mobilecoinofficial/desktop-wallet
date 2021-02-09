@@ -19,19 +19,12 @@ import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import getPercentSynced from '../../../utils/getPercentSynced';
 
 const LedgerStatus: FC = () => {
-  const {
-    localBlockIndex,
-    networkHighestBlockIndex,
-    nextBlock,
-  } = useMobileCoinD();
+  const { localBlockIndex, networkHighestBlockIndex, nextBlock } = useMobileCoinD();
 
   const { t } = useTranslation('LedgerStatus');
 
   const localBlockIndexInt = parseInt(localBlockIndex || '0', 10);
-  const networkHighestBlockIndexInt = parseInt(
-    networkHighestBlockIndex || '0',
-    10
-  );
+  const networkHighestBlockIndexInt = parseInt(networkHighestBlockIndex || '0', 10);
   const nextBlockInt = parseInt(nextBlock || '0', 10);
 
   const createData = (
@@ -55,11 +48,7 @@ const LedgerStatus: FC = () => {
     nextBlockInt < 0 ||
     nextBlockInt - 1 > networkHighestBlockIndexInt
       ? 'Error'
-      : getPercentSynced(
-          networkHighestBlockIndexInt,
-          nextBlockInt,
-          'nextBlock'
-        );
+      : getPercentSynced(networkHighestBlockIndexInt, nextBlockInt, 'nextBlock');
 
   const percentLocalSynced =
     networkHighestBlockIndexInt === null ||
@@ -68,11 +57,7 @@ const LedgerStatus: FC = () => {
     localBlockIndexInt < 0 ||
     localBlockIndexInt > networkHighestBlockIndexInt
       ? 'Error'
-      : getPercentSynced(
-          networkHighestBlockIndexInt,
-          localBlockIndexInt,
-          'localBlockIndex'
-        );
+      : getPercentSynced(networkHighestBlockIndexInt, localBlockIndexInt, 'localBlockIndex');
 
   const rows = [
     createData(t('networkBlocks'), '', networkHighestBlockIndexInt, ''),

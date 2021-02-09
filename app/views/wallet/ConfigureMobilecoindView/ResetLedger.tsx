@@ -64,11 +64,7 @@ const ResetLedger: FC = () => {
         <Typography variant="body2" color="textSecondary">
           {t('description')}
         </Typography>
-        <SubmitButton
-          disabled={false}
-          isSubmitting={false}
-          onClick={handleResetLedger}
-        >
+        <SubmitButton disabled={false} isSubmitting={false} onClick={handleResetLedger}>
           {t('resetButton')}
         </SubmitButton>
       </Box>

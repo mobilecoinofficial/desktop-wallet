@@ -45,8 +45,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Account &nbsp;
-                </Typography>
+                  Account
+                </Typography>{' '}
                 means a unique account created for You to access our Service or parts of our
                 Service.
               </Box>
@@ -56,11 +56,11 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Company &nbsp;
-                </Typography>
-                (referred to as either &quote;the Company&quote;, &quote;We&quote;, &quote;Us&quote;
-                or &quote;Our&quote; in this Agreement) refers to MobileCoin TS Ltd, Floor 4, Banco
-                Popular Building, Road Town, Tortola VG1110, British Virgin Islands.
+                  Company
+                </Typography>{' '}
+                (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers
+                to MobileCoin TS Ltd, Floor 4, Banco Popular Building, Road Town, Tortola VG1110,
+                British Virgin Islands.
               </Box>
               <Box p={2} component={Typography} textAlign="justify">
                 For the purpose of the GDPR, the Company is the Data Controller.
@@ -71,8 +71,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Cookies &nbsp;
-                </Typography>
+                  Cookies
+                </Typography>{' '}
                 are small files that are placed on Your computer, mobile device or any other device
                 by a website, containing the details of Your browsing history on that website among
                 its many uses.
@@ -83,8 +83,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Country &nbsp;
-                </Typography>
+                  Country
+                </Typography>{' '}
                 refers to: British Virgin Islands
               </Box>
             </Box>
@@ -105,8 +105,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Device &nbsp;
-                </Typography>
+                  Device
+                </Typography>{' '}
                 means any device that can access the Service such as a computer, a cellphone or a
                 digital tablet.
               </Box>
@@ -116,8 +116,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Personal Data &nbsp;
-                </Typography>
+                  Personal Data
+                </Typography>{' '}
                 is any information that relates to an identified or identifiable individual.
               </Box>
               <Box p={2} component={Typography} textAlign="justify">
@@ -132,8 +132,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Service &nbsp;
-                </Typography>
+                  Service
+                </Typography>{' '}
                 refers to the Website.
               </Box>
             </Box>
@@ -142,8 +142,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Service Provider &nbsp;
-                </Typography>
+                  Service Provider
+                </Typography>{' '}
                 means any natural or legal person who processes the data on behalf of the Company.
                 It refers to third-party companies or individuals employed by the Company to
                 facilitate the Service, to provide the Service on behalf of the Company, to perform
@@ -157,8 +157,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Third-party Social Media Service &nbsp;
-                </Typography>
+                  Third-party Social Media Service
+                </Typography>{' '}
                 refers to any website or any social network website through which a User can log in
                 or create an account to use the Service.
               </Box>
@@ -168,8 +168,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Usage Data &nbsp;
-                </Typography>
+                  Usage Data
+                </Typography>{' '}
                 refers to data collected automatically, either generated by the use of the Service
                 or from the Service infrastructure itself (for example, the duration of a page
                 visit).
@@ -180,8 +180,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  Website &nbsp;
-                </Typography>
+                  Website
+                </Typography>{' '}
                 refers to buymobilecoin, accessible from www.buymobilecoin.com
               </Box>
             </Box>
@@ -190,8 +190,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  You &nbsp;
-                </Typography>
+                  You
+                </Typography>{' '}
                 means the individual accessing or using the Service, or the company, or other legal
                 entity on behalf of which such individual is accessing or using the Service, as
                 applicable.
@@ -264,10 +264,10 @@ const PrivacyPolicy = (): JSX.Element => {
         Usage Data is collected automatically when using the Service.
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
-        Usage Data may include information such as Your Device&apos;s Internet Protocol address
-        (e.g. IP address), browser type, browser version, the pages of our Service that You visit,
-        the time and date of Your visit, the time spent on those pages, unique device identifiers
-        and other diagnostic data.
+        Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP
+        address), browser type, browser version, the pages of our Service that You visit, the time
+        and date of Your visit, the time spent on those pages, unique device identifiers and other
+        diagnostic data.
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
         When You access the Service by or through a mobile device, We may collect certain
@@ -309,14 +309,14 @@ const PrivacyPolicy = (): JSX.Element => {
       <Box p={2} component={Typography} textAlign="justify">
         If You decide to register through or otherwise grant us access to a Third-Party Social Media
         Service, We may collect Personal data that is already associated with Your Third-Party
-        Social Media Service&apos; account, such as Your name, Your email address, Your activities
-        or Your contact list associated with that account.
+        Social Media Service's account, such as Your name, Your email address, Your activities or
+        Your contact list associated with that account.
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
         You may also have the option of sharing additional information with the Company through Your
-        Third-Party Social Media Service&apos; account. If You choose to provide such information
-        and Personal Data, during registration or otherwise, You are giving the Company permission
-        to use, share, and store it in a manner consistent with this Privacy Policy.
+        Third-Party Social Media Service's account. If You choose to provide such information and
+        Personal Data, during registration or otherwise, You are giving the Company permission to
+        use, share, and store it in a manner consistent with this Privacy Policy.
       </Box>
       <Box p={2} component={Typography} textAlign="justify" style={{ textDecoration: 'underline' }}>
         Tracking Technologies and Cookies
@@ -332,8 +332,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Cookies or Browser Cookies. &nbsp;
-              </Typography>
+                Cookies or Browser Cookies.
+              </Typography>{' '}
               A cookie is a small file placed on Your Device. You can instruct Your browser to
               refuse all Cookies or to indicate when a Cookie is being sent. However, if You do not
               accept Cookies, You may not be able to use some parts of our Service. Unless you have
@@ -344,22 +344,22 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Flash Cookies. &nbsp;
-              </Typography>
+                Flash Cookies.
+              </Typography>{' '}
               Certain features of our Service may use local stored objects (or Flash Cookies) to
               collect and store information about Your preferences or Your activity on our Service.
               Flash Cookies are not managed by the same browser settings as those used for Browser
-              Cookies. For more information on how You can delete Flash Cookies, please read
-              &quote;Where can I change the settings for disabling, or deleting local shared
-              objects?&quote; available at
+              Cookies. For more information on how You can delete Flash Cookies, please read "Where
+              can I change the settings for disabling, or deleting local shared objects?" available
+              at{' '}
               https://helpx.adobe.com/flash-player/kb/disable-local-shared-objects-flash.html#main_Where_can_I_change_the_settings_for_disabling__or_deleting_local_shared_objects_
             </Box>
           </li>
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Web Beacons. &nbsp;
-              </Typography>
+                Web Beacons.
+              </Typography>{' '}
               Certain sections of our Service and our emails may contain small electronic files
               known as web beacons (also referred to as clear gifs, pixel tags, and single-pixel
               gifs) that permit the Company, for example, to count users who have visited those
@@ -371,9 +371,9 @@ const PrivacyPolicy = (): JSX.Element => {
         </ul>
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
-        Cookies can be &quote;Persistent&quote; or &quote;Session&quote; Cookies. Persistent Cookies
-        remain on Your personal computer or mobile device when You go offline, while Session Cookies
-        are deleted as soon as You close Your web browser. Learn more about cookies:
+        Cookies can be "Persistent" or "Session" Cookies. Persistent Cookies remain on Your personal
+        computer or mobile device when You go offline, while Session Cookies are deleted as soon as
+        You close Your web browser. Learn more about cookies:
         https://www.privacypolicies.com/blog/cookies/ .
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
@@ -477,8 +477,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  To manage Your Account: &nbsp;
-                </Typography>
+                  To manage Your Account:
+                </Typography>{' '}
                 to manage Your registration as a user of the Service. The Personal Data You provide
                 can give You access to different functionalities of the Service that are available
                 to You as a registered user.
@@ -489,8 +489,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  For the performance of a contract: &nbsp;
-                </Typography>
+                  For the performance of a contract:
+                </Typography>{' '}
                 the development, compliance and undertaking of the purchase contract for the
                 products, items or services You have purchased or of any other contract with Us
                 through the Service.
@@ -501,10 +501,10 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  To contact You: &nbsp;
-                </Typography>
+                  To contact You:
+                </Typography>{' '}
                 To contact You by email, telephone calls, SMS, or other equivalent forms of
-                electronic communication, such as a mobile application&apos; push notifications
+                electronic communication, such as a mobile application's push notifications
                 regarding updates or informative communications related to the functionalities,
                 products or contracted services, including the security updates, when necessary or
                 reasonable for their implementation.
@@ -515,8 +515,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  To provide You &nbsp;
-                </Typography>
+                  To provide You
+                </Typography>{' '}
                 with news, special offers and general information about other goods, services and
                 events which we offer that are similar to those that you have already purchased or
                 enquired about unless You have opted not to receive such information.
@@ -527,8 +527,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  To manage Your requests: &nbsp;
-                </Typography>
+                  To manage Your requests:
+                </Typography>{' '}
                 To attend and manage Your requests to Us.
               </Box>
             </Box>
@@ -537,8 +537,8 @@ const PrivacyPolicy = (): JSX.Element => {
             <Box p={1} component={Typography} textAlign="justify">
               <Box p={2} component={Typography} textAlign="justify">
                 <Typography display="inline" color="primary">
-                  For business transfers: &nbsp;
-                </Typography>
+                  For business transfers:
+                </Typography>{' '}
                 We may use Your information to evaluate or conduct a merger, divestiture,
                 restructuring, reorganization, dissolution, or other sale or transfer of some or all
                 of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or
@@ -569,8 +569,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                With Service Providers: &nbsp;
-              </Typography>
+                With Service Providers:
+              </Typography>{' '}
               We may share Your personal information with Service Providers to monitor and analyze
               the use of our Service, to contact You.
             </Box>
@@ -578,8 +578,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                For business transfers: &nbsp;
-              </Typography>
+                For business transfers:
+              </Typography>{' '}
               We may share or transfer Your personal information in connection with, or during
               negotiations of, any merger, sale of Company assets, financing, or acquisition of all
               or a portion of Our business to another company.
@@ -588,8 +588,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                With Affiliates: &nbsp;
-              </Typography>
+                With Affiliates:
+              </Typography>{' '}
               We may share Your information with Our affiliates, in which case we will require those
               affiliates to honor this Privacy Policy. Affiliates include Our parent company and any
               other subsidiaries, joint venture partners or other companies that We control or that
@@ -599,8 +599,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                With business partners: &nbsp;
-              </Typography>
+                With business partners:
+              </Typography>{' '}
               We may share Your information with Our business partners to offer You certain
               products, services or promotions.
             </Box>
@@ -608,8 +608,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                With other users: &nbsp;
-              </Typography>
+                With other users:
+              </Typography>{' '}
               when You share personal information or otherwise interact in the public areas with
               other users, such information may be viewed by all users and may be publicly
               distributed outside. If You interact with other users or register through a
@@ -649,10 +649,10 @@ const PrivacyPolicy = (): JSX.Element => {
         Transfer of Your Personal Data
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
-        Your information, including Personal Data, is processed at the Company&apos; operating
-        offices and in any other places where the parties involved in the processing are located. It
-        means that this information may be transferred to — and maintained on — computers located
-        outside of Your state, province, country or other governmental jurisdiction where the data
+        Your information, including Personal Data, is processed at the Company's operating offices
+        and in any other places where the parties involved in the processing are located. It means
+        that this information may be transferred to — and maintained on — computers located outside
+        of Your state, province, country or other governmental jurisdiction where the data
         protection laws may differ than those from Your jurisdiction.
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
@@ -743,8 +743,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Consent: &nbsp;
-              </Typography>
+                Consent:
+              </Typography>{' '}
               You have given Your consent for processing Personal Data for one or more specific
               purposes.
             </Box>
@@ -752,8 +752,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Performance of a contract: &nbsp;
-              </Typography>
+                Performance of a contract:
+              </Typography>{' '}
               Provision of Personal Data is necessary for the performance of an agreement with You
               and/or for any pre-contractual obligations thereof.
             </Box>
@@ -761,8 +761,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Legal obligations: &nbsp;
-              </Typography>
+                Legal obligations:
+              </Typography>{' '}
               Processing Personal Data is necessary for compliance with a legal obligation to which
               the Company is subject.
             </Box>
@@ -770,8 +770,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Vital interests: &nbsp;
-              </Typography>
+                Vital interests:
+              </Typography>{' '}
               Processing Personal Data is necessary in order to protect Your vital interests or of
               another natural person.
             </Box>
@@ -779,8 +779,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Public interests: &nbsp;
-              </Typography>
+                Public interests:
+              </Typography>{' '}
               Processing Personal Data is related to a task that is carried out in the public
               interest or in the exercise of official authority vested in the Company.
             </Box>
@@ -788,8 +788,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Legitimate interests: &nbsp;
-              </Typography>
+                Legitimate interests:
+              </Typography>{' '}
               Processing Personal Data is necessary for the purposes of the legitimate interests
               pursued by the Company.
             </Box>
@@ -816,8 +816,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Request access to Your Personal Data. &nbsp;
-              </Typography>
+                Request access to Your Personal Data.
+              </Typography>{' '}
               The right to access, update or delete the information We have on You. Whenever made
               possible, you can access, update or request deletion of Your Personal Data directly
               within Your account settings section. If you are unable to perform these actions
@@ -828,8 +828,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Request correction of the Personal Data that We hold about You. &nbsp;
-              </Typography>
+                Request correction of the Personal Data that We hold about You.
+              </Typography>{' '}
               You have the right to to have any incomplete or inaccurate information We hold about
               You corrected.
             </Box>
@@ -837,8 +837,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Object to processing of Your Personal Data. &nbsp;
-              </Typography>
+                Object to processing of Your Personal Data.
+              </Typography>{' '}
               This right exists where We are relying on a legitimate interest as the legal basis for
               Our processing and there is something about Your particular situation, which makes You
               want to object to our processing of Your Personal Data on this ground. You also have
@@ -849,8 +849,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Request erasure of Your Personal Data. &nbsp;
-              </Typography>
+                Request erasure of Your Personal Data.
+              </Typography>{' '}
               You have the right to ask Us to delete or remove Personal Data when there is no good
               reason for Us to continue processing it.
             </Box>
@@ -858,8 +858,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Request the transfer of Your Personal Data. &nbsp;
-              </Typography>
+                Request the transfer of Your Personal Data.
+              </Typography>{' '}
               We will provide to You, or to a third-party You have chosen, Your Personal Data in a
               structured, commonly used, machine-readable format. Please note that this right only
               applies to automated information which You initially provided consent for Us to use or
@@ -869,8 +869,8 @@ const PrivacyPolicy = (): JSX.Element => {
           <li>
             <Box p={1} component={Typography} textAlign="justify">
               <Typography display="inline" color="primary">
-                Withdraw Your consent. &nbsp;
-              </Typography>
+                Withdraw Your consent.
+              </Typography>{' '}
               You have the right to withdraw Your consent on using your Personal Data. If You
               withdraw Your consent, We may not be able to provide You with access to certain
               specific functionalities of the Service.
@@ -897,8 +897,8 @@ const PrivacyPolicy = (): JSX.Element => {
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
         Our Service may contain links to other websites that are not operated by Us. If You click on
-        a third party link, You will be directed to that third party&apos; site. We strongly advise
-        You to review the Privacy Policy of every site You visit.
+        a third party link, You will be directed to that third party's site. We strongly advise You
+        to review the Privacy Policy of every site You visit.
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
         We have no control over and assume no responsibility for the content, privacy policies or
@@ -913,8 +913,7 @@ const PrivacyPolicy = (): JSX.Element => {
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
         We will let You know via email and/or a prominent notice on Our Service, prior to the change
-        becoming effective and update the &quote;Last updated&quote; date at the top of this Privacy
-        Policy.
+        becoming effective and update the "Last updated" date at the top of this Privacy Policy.
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
         You are advised to review this Privacy Policy periodically for any changes. Changes to this

@@ -6,13 +6,18 @@ import { Redirect } from 'react-router-dom';
 
 import routePaths from '../constants/routePaths';
 import useMobileCoinD from '../hooks/useMobileCoinD';
+import SplashScreen from './SplashScreen';
 
 interface AuthFlowGuardProps {
   children?: ReactNode;
 }
 
 const AuthFlowGuard: FC<AuthFlowGuardProps> = ({ children }) => {
-  const { encryptedEntropy, isAuthenticated } = useMobileCoinD();
+  const { encryptedEntropy, isAuthenticated, isInitialised } = useMobileCoinD();
+
+  if (!isInitialised) {
+    return <SplashScreen />;
+  }
 
   if (encryptedEntropy && isAuthenticated) {
     return <Redirect to={routePaths.APP_DASHBOARD} />;

@@ -1,7 +1,6 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import type { FC, ReactNode } from 'react';
 
-import SplashScreen from '../components/SplashScreen';
 import { getBalance } from '../mobilecoind/api';
 import type { MobilecoindClient } from '../mobilecoind/client';
 import type { PublicAddress } from '../mobilecoind/protos/external_pb';
@@ -845,10 +844,6 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
       return clearInterval(fetchLedgerInfoForever);
     };
   }, [state, client]);
-
-  if (!state.isInitialised) {
-    return <SplashScreen />;
-  }
 
   return (
     <MobileCoinDContext.Provider

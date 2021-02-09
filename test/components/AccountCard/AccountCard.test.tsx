@@ -23,7 +23,7 @@ function setupComponent(props?) {
         },
         ...props,
       }}
-    />,
+    />
   );
 }
 
@@ -35,7 +35,7 @@ describe('AccountCard', () => {
     expect(screen.queryByTestId('long-code-code')).not.toBeNull();
     expect(screen.queryByTestId('account-card-tooltip')).toHaveAttribute(
       'title',
-      'Click to copy to clipboard.',
+      'Click to copy to clipboard.'
     );
     expect(screen.queryByTestId('account-card-qr-code')).toBeNull();
 
@@ -50,17 +50,13 @@ describe('AccountCard', () => {
     const mockName = 'timmy';
     setupComponent({ name: mockName });
 
-    expect(screen.getByTestId('account-card-name').textContent).toEqual(
-      mockName,
-    );
+    expect(screen.getByTestId('account-card-name').textContent).toEqual(mockName);
   });
 
   test('renders correct placeholder for unnamed account', () => {
     setupComponent();
 
-    expect(screen.getByTestId('account-card-name').textContent).toEqual(
-      'Unnamed Account',
-    );
+    expect(screen.getByTestId('account-card-name').textContent).toEqual('Unnamed Account');
   });
 
   test('renders correct toggle tooltip', () => {

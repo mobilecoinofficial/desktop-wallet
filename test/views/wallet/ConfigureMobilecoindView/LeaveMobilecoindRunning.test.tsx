@@ -27,10 +27,10 @@ function setupComponent(isLeaveMobilecoindRunning: boolean) {
   const offQuery = screen.queryByText('Leave MobileCoinD Active is off');
   const onQuery = screen.queryByText('Leave MobileCoinD Active is on');
   const offDescriptionQuery = screen.queryByText(
-    'MobileCoinD will not continue to sync when you exit the wallet.',
+    'MobileCoinD will not continue to sync when you exit the wallet.'
   );
   const onDescriptionQuery = screen.queryByText(
-    'MobileCoinD will continue to sync when you exit the wallet.',
+    'MobileCoinD will continue to sync when you exit the wallet.'
   );
   const toggleSwitch = screen.getByRole('checkbox') as HTMLInputElement;
   return {
@@ -85,10 +85,7 @@ describe('LeaveMobilecoindRunning', () => {
 
   describe('toggle switch', () => {
     test('it calls toggleLeaveMobilecoindRunning on click', () => {
-      const {
-        mockToggleLeaveMobilecoindRunning,
-        toggleSwitch,
-      } = setupComponent(true);
+      const { mockToggleLeaveMobilecoindRunning, toggleSwitch } = setupComponent(true);
       userEvent.click(toggleSwitch);
       expect(mockToggleLeaveMobilecoindRunning).toBeCalled();
     });

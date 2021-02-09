@@ -38,9 +38,7 @@ describe('UnlockWalletView', () => {
       userEvent.click(importButton);
 
       expect(importButton).not.toBeInTheDocument();
-      expect(
-        screen.getByTestId('ImportAccountView'),
-      ).toBeInTheDocument();
+      expect(screen.getByTestId('ImportAccountView')).toBeInTheDocument();
     });
 
     describe('render', () => {

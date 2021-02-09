@@ -9,23 +9,19 @@ describe('PrivacyPolicy', () => {
     // @ts-ignore mock
     render(<PrivacyPolicy />);
 
-    expect(screen.getByTestId('privacy-header').textContent).toEqual(
-      'Privacy Policy',
-    );
+    expect(screen.getByTestId('privacy-header').textContent).toEqual('Privacy Policy');
   });
   test('renders middle of privacy policy', () => {
     render(<PrivacyPolicy />);
 
     expect(screen.getByTestId('privacy-personal-data-use').textContent).toEqual(
-      'Use of Your Personal Data',
+      'Use of Your Personal Data'
     );
   });
 
   test('renders end of privacy policy', () => {
     render(<PrivacyPolicy />);
 
-    expect(screen.getByTestId('privacy-contact').textContent).toEqual(
-      'Contact Us',
-    );
+    expect(screen.getByTestId('privacy-contact').textContent).toEqual('Contact Us');
   });
 });

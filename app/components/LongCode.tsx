@@ -1,26 +1,41 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 
 import { GOLD_DARK, GOLD_LIGHT } from '../constants/colors';
 import {
-  LUCKY_ARRAY_INDEX, LUCKY_ARRAY_END_INDEX, SUPER_LUCKY_ARRAY_INDEX, SUPER_LUCKY_ARRAY_END_INDEX,
+  LUCKY_ARRAY_INDEX,
+  LUCKY_ARRAY_END_INDEX,
+  SUPER_LUCKY_ARRAY_INDEX,
+  SUPER_LUCKY_ARRAY_END_INDEX,
 } from '../constants/indicies';
 
 interface LongCodeProps {
   code: string;
   codeClass?: string;
-  lastLine?: string;
 }
 
-const LongCode: FC<LongCodeProps> = ({ code, codeClass, lastLine }: LongCodeProps) => {
-  const darkGoldCharIndicies = LUCKY_ARRAY_INDEX.concat(
-    [code.length + LUCKY_ARRAY_END_INDEX[0], code.length + LUCKY_ARRAY_END_INDEX[1]],
-  );
-  const lightGoldCharIndicies = SUPER_LUCKY_ARRAY_INDEX.concat(
-    [code.length + SUPER_LUCKY_ARRAY_END_INDEX[0], code.length + SUPER_LUCKY_ARRAY_END_INDEX[1]],
-  );
+const useStyles = makeStyles(() => {
+  return {
+    lastLine: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    root: {},
+  };
+});
+
+const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
+  const classes = useStyles();
+  const darkGoldCharIndicies = LUCKY_ARRAY_INDEX.concat([
+    code.length + LUCKY_ARRAY_END_INDEX[0],
+    code.length + LUCKY_ARRAY_END_INDEX[1],
+  ]);
+  const lightGoldCharIndicies = SUPER_LUCKY_ARRAY_INDEX.concat([
+    code.length + SUPER_LUCKY_ARRAY_END_INDEX[0],
+    code.length + SUPER_LUCKY_ARRAY_END_INDEX[1],
+  ]);
 
   const colorCode = code.split('').map((char, i) => {
     let charColor = 'inherit';
@@ -62,7 +77,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass, lastLine }: LongCodeProp
           <Box
             component="span"
             key={[line, i].join('|')}
-            className={(i === codeLines.length - 1) ? lastLine : ''}
+            className={i === codeLines.length - 1 ? classes.lastLine : ''}
           >
             {line}
           </Box>
@@ -74,7 +89,6 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass, lastLine }: LongCodeProp
 
 LongCode.defaultProps = {
   codeClass: '',
-  lastLine: '',
 };
 
 export default LongCode;

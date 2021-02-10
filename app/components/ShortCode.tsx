@@ -5,7 +5,10 @@ import { Box } from '@material-ui/core';
 
 import { GOLD_DARK, GOLD_LIGHT } from '../constants/colors';
 import {
-  LUCKY_ARRAY_INDEX, LUCKY_ARRAY_END_INDEX, SUPER_LUCKY_ARRAY_INDEX, SUPER_LUCKY_ARRAY_END_INDEX,
+  LUCKY_ARRAY_INDEX,
+  LUCKY_ARRAY_END_INDEX,
+  SUPER_LUCKY_ARRAY_INDEX,
+  SUPER_LUCKY_ARRAY_END_INDEX,
 } from '../constants/indicies';
 
 interface ShortCodeProps {
@@ -13,12 +16,14 @@ interface ShortCodeProps {
 }
 
 const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
-  const darkGoldCharIndicies = LUCKY_ARRAY_INDEX.concat(
-    [code.length + LUCKY_ARRAY_END_INDEX[0], code.length + LUCKY_ARRAY_END_INDEX[1]],
-  );
-  const lightGoldCharIndicies = SUPER_LUCKY_ARRAY_INDEX.concat(
-    [code.length + SUPER_LUCKY_ARRAY_END_INDEX[0], code.length + SUPER_LUCKY_ARRAY_END_INDEX[1]],
-  );
+  const darkGoldCharIndicies = LUCKY_ARRAY_INDEX.concat([
+    code.length + LUCKY_ARRAY_END_INDEX[0],
+    code.length + LUCKY_ARRAY_END_INDEX[1],
+  ]);
+  const lightGoldCharIndicies = SUPER_LUCKY_ARRAY_INDEX.concat([
+    code.length + SUPER_LUCKY_ARRAY_END_INDEX[0],
+    code.length + SUPER_LUCKY_ARRAY_END_INDEX[1],
+  ]);
 
   const colorPairs: string[][] = [];
 

@@ -175,7 +175,71 @@ exports[`TransactionView component render TransactionView renders correctly 1`] 
                             <span
                               class="MuiBox-root MuiBox-root"
                               data-testid="short-code"
-                            />
+                            >
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                                style="color: rgb(250, 207, 85);"
+                              >
+                                b
+                              </span>
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                                style="color: rgb(186, 146, 54);"
+                              >
+                                5
+                              </span>
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                              >
+                                -
+                              </span>
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                                style="color: rgb(186, 146, 54);"
+                              >
+                                8
+                              </span>
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                                style="color: rgb(250, 207, 85);"
+                              >
+                                 
+                              </span>
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                              >
+                                -
+                              </span>
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                                style="color: rgb(250, 207, 85);"
+                              >
+                                c
+                              </span>
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                                style="color: rgb(186, 146, 54);"
+                              >
+                                o
+                              </span>
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                              >
+                                -
+                              </span>
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                                style="color: rgb(186, 146, 54);"
+                              >
+                                d
+                              </span>
+                              <span
+                                class="MuiBox-root MuiBox-root"
+                                style="color: rgb(250, 207, 85);"
+                              >
+                                e
+                              </span>
+                            </span>
                           </p>
                           <p
                             class="MuiTypography-root MuiTypography-body1"

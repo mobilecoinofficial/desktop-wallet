@@ -393,7 +393,7 @@ const BuildGiftForm: FC = () => {
               <Slide in={showModal} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <Container className={classes.paper}>
                   <Box py={2}>
-                    <h2 id="transition-modal-title">{t('')}</h2>
+                    <h2 id="transition-modal-title">{t('giftConfirmation')}</h2>
                     <p id="transition-modal-description">{t('giftConfirmationDescription')}:</p>
                   </Box>
 

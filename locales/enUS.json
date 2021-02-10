@@ -73,6 +73,7 @@
     "instructions": "To change your current password, please enter your current password and your new password.",
     "newPasswordLabel": "New Password",
     "oldPasswordLabel": "Old Password",
+    "oldPasswordRequired": "Old Password is required",
     "passwordConfirmationLabel": "Confirm New Password",
     "passwordConfirmationRef": "Must match New Password",
     "passwordConfirmationRequired": "New Password Confirmation is required",

@@ -109,13 +109,11 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
 
   return (
     <Formik
-      isInitialValid={false}
       initialValues={initialValues}
       onSubmit={handleOnSubmit}
       validationSchema={validationSchema}
-      validateOnMount
     >
-      {({ errors, isSubmitting, isValid, submitForm }) => {
+      {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
         return (
           <Form name="CreateAccountFormName">
             <Field
@@ -167,7 +165,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
               </Box>
             )}
             <SubmitButton
-              disabled={!isValid || isSubmitting}
+              disabled={!dirty || !isValid || isSubmitting}
               onClick={submitForm}
               isSubmitting={isSubmitting}
             >

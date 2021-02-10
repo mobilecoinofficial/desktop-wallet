@@ -389,9 +389,7 @@ exports[`ConfigureMobilecoindView component render ConfigureMobilecoindView rend
         </p>
         <p
           class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
-        >
-          undefined
-        </p>
+        />
         <div
           class="MuiBox-root MuiBox-root"
         />
@@ -402,9 +400,7 @@ exports[`ConfigureMobilecoindView component render ConfigureMobilecoindView rend
         </p>
         <p
           class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
-        >
-          undefined
-        </p>
+        />
       </div>
     </div>
   </div>

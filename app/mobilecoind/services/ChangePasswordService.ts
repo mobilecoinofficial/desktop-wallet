@@ -21,7 +21,9 @@ class ChangePasswordService extends BaseService<ChangePasswordServiceArgs> {
         errorMessage: errorMessageDecrypt,
         isSuccess: isSuccessDecrypt,
       } = await DecryptEntropyServiceInstance.call();
-      if (!isSuccessDecrypt) throw new Error(errorMessageDecrypt);
+      if (!isSuccessDecrypt) {
+        throw new Error(errorMessageDecrypt);
+      }
 
       const { entropy, name } = dataDecrypt;
       if (typeof entropy !== 'string') {

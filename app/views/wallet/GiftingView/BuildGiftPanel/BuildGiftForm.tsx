@@ -119,9 +119,9 @@ const BuildGiftForm: FC = () => {
   if (
     networkHighestBlockIndex === null ||
     nextBlock === null ||
-    Number(networkHighestBlockIndex) < 0 ||
-    Number(nextBlock) < 0 ||
-    Number(nextBlock) - 1 > Number(networkHighestBlockIndex)
+    networkHighestBlockIndex < 0 ||
+    nextBlock < 0 ||
+    nextBlock - 1 > networkHighestBlockIndex
   ) {
     isSynced = false;
   } else {
@@ -259,7 +259,6 @@ const BuildGiftForm: FC = () => {
 
   return (
     <Formik
-      isInitialValid={false}
       initialValues={{
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
         mobValue: '0', // mobs
@@ -271,7 +270,6 @@ const BuildGiftForm: FC = () => {
           .positive(t('positiveValidation'))
           .required(t('positiveValidationRequired')),
       })}
-      validateOnMount
       onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
         // On submit, let's build the TxProposal.
         // On success, we set the TxProposal in state.
@@ -285,7 +283,9 @@ const BuildGiftForm: FC = () => {
             convertMobStringToPicoMobBigInt(values.mobValue),
             convertMobStringToPicoMobBigInt(values.feeAmount)
           );
-          if (result === null || result === undefined) throw new Error(t('errorBuild'));
+          if (result === null || result === undefined) {
+            throw new Error(t('errorBuild'));
+          }
 
           const { feeConfirmation, giftB58Code, totalValueConfirmation, txProposal } = result;
 
@@ -311,7 +311,7 @@ const BuildGiftForm: FC = () => {
         }
       }}
     >
-      {({ errors, isSubmitting, isValid, submitForm, values, setErrors, setStatus }) => {
+      {({ errors, isSubmitting, isValid, dirty, submitForm, values, setErrors, setStatus }) => {
         const selectedBalance =
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
@@ -370,7 +370,7 @@ const BuildGiftForm: FC = () => {
               </Box>
             )}
             <SubmitButton
-              disabled={!isSynced || !isValid || isSubmitting}
+              disabled={!dirty || !isSynced || !isValid || isSubmitting}
               onClick={submitForm}
               isSubmitting={isAwaitingConformation || isSubmitting}
             >
@@ -393,7 +393,7 @@ const BuildGiftForm: FC = () => {
               <Slide in={showModal} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <Container className={classes.paper}>
                   <Box py={2}>
-                    <h2 id="transition-modal-title">{t('')}</h2>
+                    <h2 id="transition-modal-title">{t('giftConfirmation')}</h2>
                     <p id="transition-modal-description">{t('giftConfirmationDescription')}:</p>
                   </Box>
 

@@ -114,13 +114,11 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
 
   return (
     <Formik
-      isInitialValid={false}
       initialValues={initalValues}
       onSubmit={handleOnSubmit}
       validationSchema={validationSchema}
-      validateOnMount
     >
-      {({ errors, isSubmitting, isValid, submitForm }) => {
+      {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
         return (
           <Form name="ImportAccountFormName">
             <Field
@@ -180,7 +178,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
               </Box>
             )}
             <SubmitButton
-              disabled={!isValid || isSubmitting}
+              disabled={!dirty || !isValid || isSubmitting}
               onClick={submitForm}
               isSubmitting={isSubmitting}
             >

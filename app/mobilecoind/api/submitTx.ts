@@ -7,7 +7,9 @@ const submitTx = async (
   requestObject: { txProposal: TxProposal } // fix this later
 ) => {
   const { txProposal } = requestObject;
-  if (txProposal === undefined) throw new Error('txProposal undefined'); // TODO - better errors
+  if (txProposal === undefined) {
+    throw new Error('txProposal undefined');
+  } // TODO - better errors
 
   const SubmitTxRequestInstance = new SubmitTxRequest();
   SubmitTxRequestInstance.setTxProposal(txProposal);

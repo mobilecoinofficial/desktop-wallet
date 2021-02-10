@@ -24,7 +24,9 @@ class DecryptEntropyService extends BaseService<DecryptEntropyServiceArgs> {
       }
 
       const salt = LocalStoreInstance.getSalt();
-      if (typeof salt !== 'string') throw new Error('Cannot find existing wallet');
+      if (typeof salt !== 'string') {
+        throw new Error('Cannot find existing wallet');
+      }
 
       const { secretKeyString } = await scryptKeys(password, salt);
 

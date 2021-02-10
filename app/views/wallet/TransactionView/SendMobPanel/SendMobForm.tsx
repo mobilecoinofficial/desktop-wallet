@@ -139,9 +139,9 @@ const SendMobForm: FC = () => {
   if (
     networkHighestBlockIndex === null ||
     nextBlock === null ||
-    Number(networkHighestBlockIndex) < 0 ||
-    Number(nextBlock) < 0 ||
-    Number(nextBlock) - 1 > Number(networkHighestBlockIndex)
+    networkHighestBlockIndex < 0 ||
+    nextBlock < 0 ||
+    nextBlock - 1 > networkHighestBlockIndex
   ) {
     isSynced = false;
   } else {
@@ -273,7 +273,6 @@ const SendMobForm: FC = () => {
 
   return (
     <Formik
-      isInitialValid={false}
       initialValues={{
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
         mobAmount: '0', // mobs
@@ -287,7 +286,6 @@ const SendMobForm: FC = () => {
           .required(t('positiveValidationRequired')),
         recipientPublicAddress: Yup.string().required(t('addressRequired')),
       })}
-      validateOnMount
       onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
         // TODO -- I don't like this flow. The cnvenience call skips verification.
         // That means that we are "verifying" based on the front-end UI state --
@@ -336,6 +334,7 @@ const SendMobForm: FC = () => {
       {({
         errors,
         isSubmitting,
+        dirty,
         isValid,
         resetForm,
         submitForm,
@@ -414,7 +413,7 @@ const SendMobForm: FC = () => {
               </Box>
             )}
             <SubmitButton
-              disabled={!isSynced || !isValid || isSubmitting}
+              disabled={!dirty || !isSynced || !isValid || isSubmitting}
               onClick={handleOpen(values, setStatus, setErrors)}
               isSubmitting={isAwaitingConformation || isSubmitting}
             >

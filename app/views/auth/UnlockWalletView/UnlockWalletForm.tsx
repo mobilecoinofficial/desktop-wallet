@@ -75,12 +75,11 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
 
   return (
     <Formik
-      isInitialValid={false}
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleOnSubmit}
     >
-      {({ errors, isSubmitting, isValid, submitForm }) => {
+      {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
         return (
           <Form name="UnlockWalletInnerForm">
             <Field
@@ -97,7 +96,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
               </Box>
             )}
             <SubmitButton
-              disabled={!isValid || isSubmitting}
+              disabled={!dirty || !isValid || isSubmitting}
               isSubmitting={isSubmitting}
               onClick={submitForm}
             >

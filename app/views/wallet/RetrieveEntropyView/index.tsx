@@ -125,7 +125,6 @@ const RetrieveEntropyView: FC = () => {
       </Box>
       <Box flexGrow={1} mt={3}>
         <Formik
-          isInitialValid={false}
           initialValues={{
             password: '',
             submit: null,
@@ -133,7 +132,6 @@ const RetrieveEntropyView: FC = () => {
           validationSchema={Yup.object().shape({
             password: Yup.string().required(t('passwordRequired')),
           })}
-          validateOnMount
           onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
               setSubmitting(true);
@@ -158,7 +156,7 @@ const RetrieveEntropyView: FC = () => {
             }
           }}
         >
-          {({ errors, isSubmitting, isValid, submitForm }) => {
+          {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
             return (
               <Form>
                 <Box pt={4}>
@@ -180,7 +178,7 @@ const RetrieveEntropyView: FC = () => {
                   </Box>
                 )}
                 <SubmitButton
-                  disabled={!isValid || isSubmitting}
+                  disabled={!dirty || !isValid || isSubmitting}
                   onClick={submitForm}
                   isSubmitting={isSubmitting}
                 >

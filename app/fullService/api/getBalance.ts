@@ -1,4 +1,4 @@
-import type FullServiceAccount from '../../types/FullServiceAccount';
+import type BalanceStatus from '../../types/BalanceStatus';
 import type { StringHex } from '../../types/SpecialStrings';
 import axiosFullService from '../axiosFullService';
 
@@ -9,7 +9,7 @@ type GetBalanceParams = {
 };
 
 type GetBalanceResult = {
-  account: FullServiceAccount;
+  status: BalanceStatus;
 };
 
 const getBalance = async ({

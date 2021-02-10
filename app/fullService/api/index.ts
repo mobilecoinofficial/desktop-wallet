@@ -1,4 +1,5 @@
 export { default as changePassword } from './changePassword';
+export { default as createAccount } from './createAccount';
 export { default as createAddress } from './createAddress';
 export { default as getAccount } from './getAccount';
 export { default as getAllAccounts } from './getAllAccounts';

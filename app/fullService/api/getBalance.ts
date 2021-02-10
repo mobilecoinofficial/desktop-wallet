@@ -31,13 +31,3 @@ const getBalance = async ({
 };
 
 export default getBalance;
-
-// local_block_count: '152914';
-// orphaned: '0';
-// pending: '0';
-// secreted: '0';
-// spent: '91825334196510356762';
-// synced_blocks: '46015';
-// unspent: '97580.449_900_010_991';
-
-// 23.13999999999;

@@ -55,7 +55,9 @@ const ShowEntropyModal: FC = () => {
   const entropyString = entropy ? Buffer.from(entropy).toString('hex') : '';
 
   const toggleEntropy = () => {
-    if (!canGoForward) setCanGoForward(true);
+    if (!canGoForward) {
+      setCanGoForward(true);
+    }
     setShowEntropy(!showEntropy);
   };
 

@@ -52,19 +52,20 @@ if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true')
 
 const LocalStoreInstance = new LocalStore();
 
+/*
+  TODO: Check https://discuss.atom.io/t/solved-unable-to-load-react-devtools-in-a-webview/42607/2
+*/
 const installExtensions = async () => {
   // eslint-disable-next-line
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   const extensions = [
     'REACT_DEVELOPER_TOOLS',
-    /* , 'REDUX_DEVTOOLS' */
+    // 'REDUX_DEVTOOLS'
   ];
 
   return Promise.all(
-    extensions.map((name) => {
-      return installer.default(installer[name], forceDownload);
-    })
+    extensions.map((name) => installer.default(installer[name], forceDownload))
   ).catch(console.log);
 };
 
@@ -212,7 +213,9 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   // NOTE: we do not want to respawn mobilecoind in this case.
-  if (mainWindow === null) createWindow();
+  if (mainWindow === null) {
+    createWindow();
+  }
 });
 
 /**
@@ -242,7 +245,9 @@ ipcMain.on('reset-ledger', () => {
 const shutDownMobilecoind = () => {
   const leaveMobilecoindRunning = LocalStoreInstance.getLeaveMobilecoindRunning();
   console.log('Leave mobilecoind running:', leaveMobilecoindRunning);
-  if (!leaveMobilecoindRunning) exec('pkill -f mobilecoind');
+  if (!leaveMobilecoindRunning) {
+    exec('pkill -f mobilecoind');
+  }
 };
 
 app.on('will-quit', () => {

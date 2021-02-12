@@ -12,6 +12,7 @@
                                http://localhost:1212/
                               'unsafe-eval'
                               'sha256-1IUHPNXweUJ6kDru06FXRLzQKpg7vV9HfCeHGSX1D7A='
+                              'sha256-grEHPttMsXDnZJViMBxS1xjpMiLuKpSZm+pxXsFyyQI='
                               'sha256-f7gMtshsVI7mmPkQlBpl9zRvFqFSagSGF35HpPJWVN0=';
                    style-src 'self'
                              http://localhost:1212/
@@ -22,10 +23,7 @@
     <title>MobileCoin Desktop Wallet</title>
     <script>
       (() => {
-        if (
-          typeof process !== 'object' ||
-          (typeof process === 'object' && !process.env.START_HOT)
-        ) {
+        if (typeof process !== 'object' || !process.env.START_HOT) {
           const link = document.createElement('link');
           link.rel = 'stylesheet';
           link.href = './dist/style.css';

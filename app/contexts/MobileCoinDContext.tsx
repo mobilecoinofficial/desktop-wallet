@@ -456,7 +456,9 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
 
   const openGiftCode = async (giftB58Code: string) => {
     // TODO - for multiple accounts, we'll need to change this select logic
-    if (!state.receiver) throw new Error('No Receiver found.');
+    if (!state.receiver) {
+      throw new Error('No Receiver found.');
+    }
     const OpenGiftCodeServiceInstance = new OpenGiftCodeService(client, {
       giftB58Code,
       receiver: state.receiver,
@@ -572,7 +574,9 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
         type: 'UPDATE_GIFT_CODES',
       });
     }
-    if (!isSuccess) throw new Error(errorMessage);
+    if (!isSuccess) {
+      throw new Error(errorMessage);
+    }
   };
 
   const submitTransaction = async (txProposal: TxProposal) => {
@@ -600,7 +604,9 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
 
   const unlockWallet = async (password: string) => {
     const { encryptedEntropy } = state;
-    if (!encryptedEntropy) return;
+    if (!encryptedEntropy) {
+      return;
+    }
 
     const UnlockWalletServiceInstance = new UnlockWalletService(client, {
       password,
@@ -665,7 +671,9 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
   useEffect(() => {
     const { balance, monitorId } = state;
     // TODO - check this early exit
-    if (balance === undefined || monitorId === null) return () => {};
+    if (balance === undefined || monitorId === null) {
+      return () => {};
+    }
 
     const fetchBalance = async () => {
       // TODO - consider making a GetBalanceService
@@ -703,10 +711,14 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
   useEffect(() => {
     const { monitorId } = state;
     // TODO -- am i doing this right? triple check
-    if (monitorId === null) return () => {};
+    if (monitorId === null) {
+      return () => {};
+    }
 
     const fetchLedgerInfo = async () => {
-      if (monitorId === undefined) return;
+      if (monitorId === undefined) {
+        return;
+      }
 
       const GetStatusServiceInstance = new GetStatusService(client, {
         monitorId,

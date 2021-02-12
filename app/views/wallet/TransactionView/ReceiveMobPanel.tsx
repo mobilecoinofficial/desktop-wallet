@@ -28,7 +28,9 @@ const ReceiveMobPanel: FC = () => {
 
   // TODO - we should add a global modal request for bug reporting.
   // Esp for unexpected states like this. (unless I am misundering mobilecoind)
-  if (b58Code === null || mobUrl === null) return <></>;
+  if (b58Code === null || mobUrl === null) {
+    return <></>;
+  }
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">

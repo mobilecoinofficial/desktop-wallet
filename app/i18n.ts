@@ -1,28 +1,26 @@
-import i18n from 'i18next';
+import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import enUS from '../locales/enUS.json';
+import enUS from '../locales/en-US.json';
 
-const resources = {
-  enUS,
-};
+const newInstance = i18next.createInstance();
 
-i18n
-  // pass the i18n instance to react-i18next.
+newInstance // pass the i18n instance to react-i18next.
   .use(initReactI18next)
-  // init i18next
   .init({
     debug: true,
-    fallbackLng: 'enUS',
+    fallbackLng: 'en-US',
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
-    lng: 'enUS',
+    lng: 'en-US',
     react: {
       wait: false,
     },
-    resources,
-    supportedLngs: ['enUS'],
+    resources: {
+      'en-US': enUS,
+    },
+    supportedLngs: ['en-US', 'en'],
   });
 
-export default i18n;
+export default newInstance;

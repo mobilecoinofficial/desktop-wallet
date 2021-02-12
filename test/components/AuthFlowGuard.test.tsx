@@ -8,7 +8,7 @@ import renderSnapshot from '../renderSnapshot';
 
 jest.mock('../../app/hooks/useMobileCoinD');
 
-function setupComponent(contextOverides?: MobileCoinDContextValue) {
+function setupComponent(contextOverrides?: MobileCoinDContextValue) {
   const defaultContext = {
     encryptedEntropy: null,
     isAuthenticated: false,
@@ -16,7 +16,7 @@ function setupComponent(contextOverides?: MobileCoinDContextValue) {
 
   renderSnapshot(<AuthFlowGuard>children</AuthFlowGuard>, {
     ...defaultContext,
-    ...contextOverides,
+    ...contextOverrides,
   });
 
   const children = screen.queryByText('children');

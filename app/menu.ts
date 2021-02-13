@@ -1,16 +1,15 @@
 import { app, Menu, shell, BrowserWindow, MenuItemConstructorOptions } from 'electron';
 
-/* TO DO: Enable this
-import i18n from './i18n-main';
+import i18n from './i18n-node';
 
-const t = (x: string) => i18n.t(`Menu.${x}`);
-*/
-/* TO DO: remove this
-console.log('*********************');
-console.log('Should end with !!', t('toggleDevelopersTools'));
-console.log('*********************');
-*/
+// eslint-disable-next-line no-underscore-dangle
+const t = (x: string) => i18n.__(`Menu.${x}`);
 
+/* TO DO: remove this when everything's final
+console.log('*************************************************************************');
+console.log('MENU : Should end with !!', t('toggleDeveloperTools'));
+console.log('*************************************************************************');
+*/
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
   submenu?: DarwinMenuItemConstructorOptions[] | Menu;
@@ -46,19 +45,19 @@ export default class MenuBuilder {
       Menu.buildFromTemplate([
         {
           click: () => this.mainWindow.webContents.inspectElement(x, y),
-          label: 'Inspect Element',
+          label: t('inspectElement'),
         },
         {
           click: () => this.mainWindow.webContents.cut(),
-          label: 'Cut',
+          label: t('cut'),
         },
         {
           click: () => this.mainWindow.webContents.copy(),
-          label: 'Copy',
+          label: t('copy'),
         },
         {
           click: () => this.mainWindow.webContents.paste(),
-          label: 'Paste',
+          label: t('paste'),
         },
       ]).popup({ window: this.mainWindow });
     });
@@ -69,15 +68,15 @@ export default class MenuBuilder {
       Menu.buildFromTemplate([
         {
           click: () => this.mainWindow.webContents.cut(),
-          label: 'Cut',
+          label: t('cut'),
         },
         {
           click: () => this.mainWindow.webContents.copy(),
-          label: 'Copy',
+          label: t('copy'),
         },
         {
           click: () => this.mainWindow.webContents.paste(),
-          label: 'Paste',
+          label: t('paste'),
         },
       ]).popup({ window: this.mainWindow });
     });
@@ -85,106 +84,106 @@ export default class MenuBuilder {
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {
-      label: 'MobileCoin',
+      label: t('mobileCoin'),
       submenu: [
         {
-          label: 'About MobileCoin Desktop Wallet',
+          label: t('about'),
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         {
           accelerator: 'Command+H',
-          label: 'Hide MobileCoin Desktop Wallet',
+          label: t('hideWallet'),
           selector: 'hide:',
         },
         {
           accelerator: 'Command+Shift+H',
-          label: 'Hide Others',
+          label: t('hideOthers'),
           selector: 'hideOtherApplications:',
         },
-        { label: 'Show All', selector: 'unhideAllApplications:' },
+        { label: t('showAll'), selector: 'unhideAllApplications:' },
         { type: 'separator' },
         {
           accelerator: 'Command+Q',
           click: () => app.quit(),
-          label: 'Quit',
+          label: t('quit'),
         },
       ],
     };
 
     const subMenuEdit: DarwinMenuItemConstructorOptions = {
-      label: 'Edit',
+      label: t('edit'),
       submenu: [
-        { accelerator: 'Command+Z', label: 'Undo', selector: 'undo:' },
-        { accelerator: 'Shift+Command+Z', label: 'Redo', selector: 'redo:' },
+        { accelerator: 'Command+Z', label: t('undo'), selector: 'undo:' },
+        { accelerator: 'Shift+Command+Z', label: t('redo'), selector: 'redo:' },
         { type: 'separator' },
-        { accelerator: 'Command+X', label: 'Cut', selector: 'cut:' },
-        { accelerator: 'Command+C', label: 'Copy', selector: 'copy:' },
-        { accelerator: 'Command+V', label: 'Paste', selector: 'paste:' },
-        { accelerator: 'Command+A', label: 'Select All', selector: 'selectAll:' },
+        { accelerator: 'Command+X', label: t('cut'), selector: 'cut:' },
+        { accelerator: 'Command+C', label: t('copy'), selector: 'copy:' },
+        { accelerator: 'Command+V', label: t('paste'), selector: 'paste:' },
+        { accelerator: 'Command+A', label: t('selectAll'), selector: 'selectAll:' },
       ],
     };
 
     const subMenuViewDev: MenuItemConstructorOptions = {
-      label: 'View',
+      label: t('view'),
       submenu: [
         {
           accelerator: 'Command+R',
           click: () => this.mainWindow.webContents.reload(),
-          label: 'Reload',
+          label: t('reload'),
         },
         {
           accelerator: 'Ctrl+Command+F',
           click: () => this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen()),
-          label: 'Toggle Full Screen',
+          label: t('toggleFullScreen'),
         },
         {
           accelerator: 'Alt+Command+I',
           click: () => this.mainWindow.webContents.toggleDevTools(),
-          label: 'Toggle Developer Tools',
+          label: t('toggleDeveloperTools'),
         },
       ],
     };
 
     const subMenuViewProd: MenuItemConstructorOptions = {
-      label: 'View',
+      label: t('view'),
       submenu: [
         {
           accelerator: 'Ctrl+Command+F',
           click: () => this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen()),
-          label: 'Toggle Full Screen',
+          label: t('toggleFullScreen'),
         },
       ],
     };
 
     const subMenuWindow: DarwinMenuItemConstructorOptions = {
-      label: 'Window',
+      label: t('window'),
       submenu: [
-        { accelerator: 'Command+M', label: 'Minimize', selector: 'performMiniaturize:' },
-        { accelerator: 'Command+W', label: 'Close', selector: 'performClose:' },
+        { accelerator: 'Command+M', label: t('minimize'), selector: 'performMiniaturize:' },
+        { accelerator: 'Command+W', label: t('close'), selector: 'performClose:' },
         { type: 'separator' },
-        { label: 'Bring All to Front', selector: 'arrangeInFront:' },
+        { label: t('bringToFront'), selector: 'arrangeInFront:' },
       ],
     };
 
-    const subMenuLearnMore: MenuItemConstructorOptions = {
-      label: 'Learn More',
+    const subMenulearnMore: MenuItemConstructorOptions = {
+      label: t('learnMore'),
       submenu: [
         {
           click: () => shell.openExternal('https://github.com/mobilecoinofficial'),
-          label: 'MobileCoin Github',
+          label: t('learnMoreGithub'),
         },
         {
           click: () => shell.openExternal('https://github.com/mobilecoinfoundation/mobilecoin'),
-          label: 'MobileCoin Foundation Github',
+          label: t('learnMoreFoundationGithub'),
         },
         {
           click: () => shell.openExternal('https://community.mobilecoin.foundation/'),
-          label: 'Community Forum',
+          label: t('learnMoreCommunityForum'),
         },
         {
           click: () => shell.openExternal('https://mobilecoin.foundation/get-involved'),
-          label: 'MobileCoin Foundation',
+          label: t('learnMoreMobileCoinFoundation'),
         },
       ],
     };
@@ -194,72 +193,72 @@ export default class MenuBuilder {
         ? subMenuViewDev
         : subMenuViewProd;
 
-    return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenuLearnMore];
+    return [subMenuAbout, subMenuEdit, subMenuView, subMenuWindow, subMenulearnMore];
   }
 
   buildDefaultTemplate(): MenuItemConstructorOptions[] {
     const templateDefault = [
       {
-        label: '&File',
+        label: t('file'),
         submenu: [
           {
             accelerator: 'Ctrl+O',
-            label: '&Open',
+            label: t('open'),
           },
           {
             accelerator: 'Ctrl+W',
             click: () => this.mainWindow.close(),
-            label: '&Close',
+            label: t('close'),
           },
         ],
       },
       {
-        label: '&View',
+        label: t('view'),
         submenu:
           process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true'
             ? [
                 {
                   accelerator: 'Ctrl+R',
                   click: () => this.mainWindow.webContents.reload(),
-                  label: '&Reload',
+                  label: t('reload'),
                 },
                 {
                   accelerator: 'F11',
                   click: () => this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen()),
-                  label: 'Toggle &Full Screen',
+                  label: t('toggleFullScreen'),
                 },
                 {
                   accelerator: 'Alt+Ctrl+I',
                   click: () => this.mainWindow.webContents.toggleDevTools(),
-                  label: 'Toggle &Developer Tools',
+                  label: t('toggleDeveloperTools'),
                 },
               ]
             : [
                 {
                   accelerator: 'F11',
                   click: () => this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen()),
-                  label: 'Toggle &Full Screen',
+                  label: t('toggleFullScreen'),
                 },
               ],
       },
       {
-        label: 'Learn More',
+        label: t('learnMore'),
         submenu: [
           {
             click: () => shell.openExternal('https://github.com/mobilecoinofficial'),
-            label: 'MobileCoin Github',
+            label: t('learnMoreGithub'),
           },
           {
             click: () => shell.openExternal('https://github.com/mobilecoinfoundation/mobilecoin'),
-            label: 'MobileCoin Foundation Github',
+            label: t('learnMoreFoundationGithub'),
           },
           {
             click: () => shell.openExternal('https://community.mobilecoin.foundation/'),
-            label: 'Community Forum',
+            label: t('learnMoreCommunityForum'),
           },
           {
             click: () => shell.openExternal('https://mobilecoin.foundation/get-involved'),
-            label: 'MobileCoin Foundation',
+            label: t('learnMoreMobileCoinFoundation'),
           },
         ],
       },

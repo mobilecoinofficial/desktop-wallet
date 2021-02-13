@@ -227,17 +227,18 @@
     "close": "Close",
     "copy": "Copy",
     "cut": "Cut",
+    "edit": "Edit",
     "file": "File",
     "hideOthers": "Hide Others",
     "hideWallet": "Hide MobileCoin Desktop Wallet",
     "inspectElement": "Inspect element",
-    "learnMore": {
-      "communityForum": "Community Forum",
-      "foundationGithub": "MobileCoin Foundation Github",
-      "github": "MobileCoin Github",
-      "mobileCoinFoundation": "MobileCoin Foundation"
-    },
+    "learnMore": "Learn More",
+    "learnMoreCommunityForum": "Community Forum",
+    "learnMoreFoundationGithub": "MobileCoin Foundation Github",
+    "learnMoreGithub": "MobileCoin Github",
+    "learnMoreMobileCoinFoundation": "MobileCoin Foundation",
     "minimize": "Minimize",
+    "mobileCoin": "MobileCoin",
     "open": "Open",
     "paste": "Paste",
     "quit": "Quit",
@@ -245,10 +246,11 @@
     "reload": "Reload",
     "selectAll": "Select All",
     "showAll": "Show All",
-    "toggleDeveloperTools": "Toggle Developer Tools!",
+    "toggleDeveloperTools": "Toggle Developer Tools",
     "toggleFullScreen": "Toggle Full Screen",
     "undo": "Undo",
-    "view": "View"
+    "view": "View",
+    "window": "Window"
   },
 
   "MobilecoindDirectory": {

@@ -222,33 +222,8 @@
   },
 
   "Menu": {
-    "about": "About MobileCoin Desktop Wallet",
-    "bringToFront": "Show All",
-    "close": "Close",
-    "copy": "Copy",
-    "cut": "Cut",
-    "file": "File",
-    "hideOthers": "Hide Others",
-    "hideWallet": "Hide MobileCoin Desktop Wallet",
     "inspectElement": "Inspect element",
-    "learnMore": {
-      "communityForum": "Community Forum",
-      "foundationGithub": "MobileCoin Foundation Github",
-      "github": "MobileCoin Github",
-      "mobileCoinFoundation": "MobileCoin Foundation"
-    },
-    "minimize": "Minimize",
-    "open": "Open",
-    "paste": "Paste",
-    "quit": "Quit",
-    "redo": "Redo",
-    "reload": "Reload",
-    "selectAll": "Select All",
-    "showAll": "Show All",
-    "toggleDeveloperTools": "Toggle Developer Tools!",
-    "toggleFullScreen": "Toggle Full Screen",
-    "undo": "Undo",
-    "view": "View"
+    "toggleDeveloperTools": "Toggle Developer Tools!"
   },
 
   "MobilecoindDirectory": {

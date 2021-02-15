@@ -82,6 +82,22 @@
     "passwordRequired": "New Password is required",
     "settingsBreadcrumb": "Settings"
   },
+  "ChangePinView": {
+    "changePinBreadcrumb": "Set or Change PIN",
+    "changePinButton": "Set PIN",
+    "description": "The PIN number is used as an extra safety confirmation for operations.",
+    "enqueue": "Successfully set PIN!",
+    "formLabel": "PIN to use",
+    "instructions": "To change your PIN or to set one, just enter the desired value below.",
+    "newPinLabel": "New PIN to use",
+    "PinConfirmationLabel": "Confirm PIN to use",
+    "PinConfirmationRef": "Must match PIN",
+    "PinConfirmationRequired": "PIN Confirmation is required",
+    "PinMax": "PIN must be no more than 12 characters long.",
+    "PinMin": "PIN must be at least 6 characters long.",
+    "PinRequired": "PIN is required",
+    "settingsBreadcrumb": "Settings"
+  },
   "CloseWalletModal": {
     "closeVerifyBody": "Are you sure you want to close and secure the wallet?",
     "closeVerifyConfirm": "Yes, Close Wallet",
@@ -281,6 +297,7 @@
   },
   "SettingsOptionsItem": {
     "changePassword": "Change Password",
+    "changePin": "Set or Change PIN",
     "configureMobileCoinD": "Configure MobileCoinD",
     "privacyPolicy": "Privacy Policy",
     "retrieveEntropy": "Retrieve Secret Entropy",

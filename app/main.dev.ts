@@ -89,6 +89,7 @@ const spawnMobilecoind = () => {
     path.join(userDataPath, 'mobilecoind', 'transaction-db')
   ); // escape spaces in mac and linux (change logic for windows)
 
+  console.log('userDataPath', userDataPath);
   console.log('ledgerDbPath', ledgerDbPath);
   console.log('mobilecoindDbPath', mobilecoindDbPath);
   LocalStoreInstance.setDbPaths(ledgerDbPath, mobilecoindDbPath);
@@ -212,7 +213,9 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   // NOTE: we do not want to respawn mobilecoind in this case.
-  if (mainWindow === null) createWindow();
+  if (mainWindow === null) {
+    createWindow();
+  }
 });
 
 /**
@@ -242,7 +245,9 @@ ipcMain.on('reset-ledger', () => {
 const shutDownMobilecoind = () => {
   const leaveMobilecoindRunning = LocalStoreInstance.getLeaveMobilecoindRunning();
   console.log('Leave mobilecoind running:', leaveMobilecoindRunning);
-  if (!leaveMobilecoindRunning) exec('pkill -f mobilecoind');
+  if (!leaveMobilecoindRunning) {
+    exec('pkill -f mobilecoind');
+  }
 };
 
 app.on('will-quit', () => {

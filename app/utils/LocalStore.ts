@@ -8,6 +8,7 @@ interface LocalStoreSchema {
 export const schemaKeys = {
   ENCRYPTED_ENTROPY: 'encryptedEntropy',
   GIFT_CODES: 'giftCodes',
+  HASHED_PIN: 'hashedPin',
   LEAVE_MOBILECOIND_RUNNING: 'leaveMobilecoindRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
   MOBILECOIND_DB_PATH: 'mobilecoindDbPath',
@@ -16,27 +17,14 @@ export const schemaKeys = {
 };
 
 export const schema: LocalStoreSchema = {
-  [schemaKeys.ENCRYPTED_ENTROPY]: {
-    type: 'string',
-  },
-  [schemaKeys.GIFT_CODES]: {
-    type: 'array',
-  },
-  [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: {
-    type: 'boolean',
-  },
-  [schemaKeys.LEDGER_DB_PATH]: {
-    type: 'string',
-  },
-  [schemaKeys.MOBILECOIND_DB_PATH]: {
-    type: 'string',
-  },
-  [schemaKeys.NAME]: {
-    type: 'string',
-  },
-  [schemaKeys.SALT]: {
-    type: 'string',
-  },
+  [schemaKeys.ENCRYPTED_ENTROPY]: { type: 'string' },
+  [schemaKeys.GIFT_CODES]: { type: 'array' },
+  [schemaKeys.HASHED_PIN]: { type: 'string' },
+  [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: { type: 'boolean' },
+  [schemaKeys.LEDGER_DB_PATH]: { type: 'string' },
+  [schemaKeys.MOBILECOIND_DB_PATH]: { type: 'string' },
+  [schemaKeys.NAME]: { type: 'string' },
+  [schemaKeys.SALT]: { type: 'string' },
 };
 
 class LocalStore {
@@ -69,6 +57,16 @@ class LocalStore {
     });
   }
 
+  getHashedPin() {
+    return this.store.get(schemaKeys.HASHED_PIN) || '';
+  }
+
+  setHashedPin(hashedPin: string | null): void {
+    this.store.set({
+      [schemaKeys.HASHED_PIN]: hashedPin || '',
+    });
+  }
+
   getLeaveMobilecoindRunning() {
     return this.store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING);
   }
@@ -91,7 +89,7 @@ class LocalStore {
     return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
   }
 
-  setDbPaths(ledgerDbPath: string, mobilecoindDbPath: string) {
+  setDbPaths(ledgerDbPath: string, mobilecoindDbPath: string): void {
     this.store.set({
       [schemaKeys.LEDGER_DB_PATH]: ledgerDbPath,
       [schemaKeys.MOBILECOIND_DB_PATH]: mobilecoindDbPath,
@@ -102,7 +100,7 @@ class LocalStore {
     return this.store.get(schemaKeys.NAME);
   }
 
-  setName(name: string | null) {
+  setName(name: string | null): void {
     this.store.set({
       [schemaKeys.NAME]: name,
     });
@@ -112,7 +110,7 @@ class LocalStore {
     return this.store.get(schemaKeys.SALT);
   }
 
-  setSalt(salt: string) {
+  setSalt(salt: string): void {
     this.store.set({
       [schemaKeys.SALT]: salt,
     });

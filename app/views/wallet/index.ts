@@ -1,4 +1,5 @@
 export { default as ChangePasswordView } from './ChangePasswordView';
+export { default as ChangePinView } from './ChangePinView';
 export { default as ConfigureMobilecoindView } from './ConfigureMobilecoindView';
 export { default as DashboardView } from './DashboardView';
 export { default as GiftingView } from './GiftingView';

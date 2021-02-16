@@ -5,11 +5,6 @@ import i18n from './i18n-node';
 // eslint-disable-next-line no-underscore-dangle
 const t = (x: string) => i18n.__(`Menu.${x}`);
 
-/* TO DO: remove this when everything's final
-console.log('*************************************************************************');
-console.log('MENU : Should end with !!', t('toggleDeveloperTools'));
-console.log('*************************************************************************');
-*/
 interface DarwinMenuItemConstructorOptions extends MenuItemConstructorOptions {
   selector?: string;
   submenu?: DarwinMenuItemConstructorOptions[] | Menu;

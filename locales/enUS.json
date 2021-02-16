@@ -87,6 +87,7 @@
     "changePinButton": "Set PIN",
     "description": "The PIN number is used as an extra safety confirmation for operations. It's required if the MOB amount is greater than a minimum value.",
     "enqueue": "Successfully set PIN!",
+    "errorPin": "PIN must be all digits",
     "formLabel": "PIN to use",
     "instructions": "To change your PIN or to set one, just enter the desired value below, and the minimum it applies to as well.",
     "minimumForPin": "Minimum amount that requires a PIN",

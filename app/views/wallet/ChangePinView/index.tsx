@@ -1,12 +1,12 @@
 import React from 'react';
-import type { FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
 
 import {
   Box,
   Breadcrumbs,
   Container,
   FormHelperText,
-  FormLabel,
+  InputAdornment,
   Link,
   Typography,
   makeStyles,
@@ -18,12 +18,14 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
+import { SubmitButton, MOBNumberFormat } from '../../../components';
+import { MOBIcon } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import LocalStore from '../../../utils/LocalStore';
 import { makeHash } from '../../../utils/hashing';
+import isValidPin from '../../../utils/isValidPin';
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -84,6 +86,12 @@ const ChangePinView: FC = () => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ChangePinView');
 
+  const validatePin = (st: string) => (isValidPin(st) ? '' : t('errorPin'));
+
+  const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.select();
+  };
+
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
       <Breadcrumbs separator=">" aria-label="breadcrumb">
@@ -110,22 +118,24 @@ const ChangePinView: FC = () => {
       <Box flexGrow={1} mt={3}>
         <Formik
           initialValues={{
+            minimumForPin: '0.0',
             newPin: '',
             newPinConfirmation: '',
             submit: null,
           }}
           validationSchema={Yup.object().shape({
             newPin: Yup.string()
-              .min(6, t('PinMin'))
-              .max(12, t('PinMax'))
-              .required(t('PinRequired')),
+              .min(6, t('pinMin'))
+              .max(12, t('pinMax'))
+              .required(t('pinRequired')),
             newPinConfirmation: Yup.string()
-              .oneOf([Yup.ref('newPin')], t('PinConfirmationRef'))
-              .required(t('PinConfirmationRequired')),
+              .oneOf([Yup.ref('newPin')], t('pinConfirmationRef'))
+              .required(t('pinConfirmationRequired')),
           })}
           onSubmit={(values, { setStatus, resetForm }) => {
             const hashedPin = makeHash(values.newPin);
             const localStore = new LocalStore();
+            localStore.setMinimumForPin(Number(values.minimumForPin));
             localStore.setHashedPin(String(hashedPin));
             if (isMountedRef.current) {
               enqueueSnackbar(t('enqueue'), {
@@ -140,9 +150,6 @@ const ChangePinView: FC = () => {
             return (
               <Form>
                 <Box pt={4}>
-                  <FormLabel component="legend">
-                    <Typography color="primary">{t('formLabel')}</Typography>
-                  </FormLabel>
                   <Field
                     component={TextField}
                     fullWidth
@@ -150,14 +157,34 @@ const ChangePinView: FC = () => {
                     margin="normal"
                     name="newPin"
                     type="Pin"
+                    validate={validatePin}
                   />
                   <Field
                     component={TextField}
                     fullWidth
-                    label={t('PinConfirmationLabel')}
+                    label={t('pinConfirmationLabel')}
                     margin="normal"
                     name="newPinConfirmation"
                     type="Pin"
+                    validate={validatePin}
+                  />
+                  <Field
+                    component={TextField}
+                    fullWidth
+                    label={t('minimumForPin')}
+                    margin="normal"
+                    name="minimumForPin"
+                    id="minimumForPin"
+                    type="text"
+                    onFocus={handleSelect}
+                    InputProps={{
+                      inputComponent: MOBNumberFormat,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <MOBIcon height={20} width={20} />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Box>
                 {errors.submit && (

@@ -11,6 +11,7 @@ export const schemaKeys = {
   HASHED_PIN: 'hashedPin',
   LEAVE_MOBILECOIND_RUNNING: 'leaveMobilecoindRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
+  MINIMUM_FOR_PIN: 'minimumPin',
   MOBILECOIND_DB_PATH: 'mobilecoindDbPath',
   NAME: 'name',
   SALT: 'salt',
@@ -22,6 +23,7 @@ export const schema: LocalStoreSchema = {
   [schemaKeys.HASHED_PIN]: { type: 'string' },
   [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: { type: 'boolean' },
   [schemaKeys.LEDGER_DB_PATH]: { type: 'string' },
+  [schemaKeys.MINIMUM_FOR_PIN]: { type: 'string' },
   [schemaKeys.MOBILECOIND_DB_PATH]: { type: 'string' },
   [schemaKeys.NAME]: { type: 'string' },
   [schemaKeys.SALT]: { type: 'string' },
@@ -74,6 +76,16 @@ class LocalStore {
   setLeaveMobilecoindRunning(leaveMobilecoindRunning: boolean) {
     this.store.set({
       [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: leaveMobilecoindRunning,
+    });
+  }
+
+  getMinimumForPin() {
+    return Number(this.store.get(schemaKeys.MINIMUM_FOR_PIN));
+  }
+
+  setMinimumForPin(minimumForPin: number | null): void {
+    this.store.set({
+      [schemaKeys.MINIMUM_FOR_PIN]: String(minimumForPin) || 0,
     });
   }
 

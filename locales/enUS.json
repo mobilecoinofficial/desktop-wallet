@@ -22,6 +22,7 @@
     "confirmationNotFound": "Could not find confirmation",
     "confirmGift": "Confirm Gift",
     "createGift": "Create Gift",
+    "enterPin": "For this amount your PIN is needed",
     "error": "Hmm, something went wrong.",
     "errorBuild": "Could not build gift code.",
     "errorFee": "Please reserve 0.01 MOB for transaction fee.",

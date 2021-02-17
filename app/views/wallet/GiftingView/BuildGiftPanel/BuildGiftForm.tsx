@@ -31,6 +31,8 @@ import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
+import LocalStore from '../../../../utils/LocalStore';
+import { makeHash } from '../../../../utils/hashing';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
@@ -119,13 +121,13 @@ const BuildGiftForm: FC = () => {
   if (
     networkHighestBlockIndex === null ||
     nextBlock === null ||
-    networkHighestBlockIndex < 0 ||
-    nextBlock < 0 ||
-    nextBlock - 1 > networkHighestBlockIndex
+    Number(networkHighestBlockIndex) < 0 ||
+    Number(nextBlock) < 0 ||
+    Number(nextBlock) - 1 > Number(networkHighestBlockIndex)
   ) {
     isSynced = false;
   } else {
-    isSynced = networkHighestBlockIndex - nextBlock < 2; // Let's say a diff of 1 is fine.
+    isSynced = Number(networkHighestBlockIndex) - Number(nextBlock) < 2; // Let's say a diff of 1 is fine.
   }
 
   // TODO - consider adding minimum gift ~ 1 MOB
@@ -257,11 +259,18 @@ const BuildGiftForm: FC = () => {
     event.target.select();
   };
 
+  const localStore = new LocalStore();
+  const minimumForPin = String(localStore.getMinimumForPin());
+  const hashedPin = localStore.getHashedPin();
+
   return (
     <Formik
       initialValues={{
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
+        hashedPin,
+        minimumForPin,
         mobValue: '0', // mobs
+        pin: '',
         senderPublicAddress: mockMultipleAccounts[0].b58Code,
         submit: null,
       }}
@@ -396,7 +405,6 @@ const BuildGiftForm: FC = () => {
                     <h2 id="transition-modal-title">{t('giftConfirmation')}</h2>
                     <p id="transition-modal-description">{t('giftConfirmationDescription')}:</p>
                   </Box>
-
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('accountBalance')}:</Typography>
                     <Typography>
@@ -411,7 +419,6 @@ const BuildGiftForm: FC = () => {
                     <Typography>---</Typography>
                     <Typography>---</Typography>
                   </Box>
-
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="primary">{t('giftValue')}:</Typography>
                     <Typography color="primary">
@@ -422,7 +429,6 @@ const BuildGiftForm: FC = () => {
                       />
                     </Typography>
                   </Box>
-
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('fee')}:</Typography>
                     <Typography>
@@ -433,7 +439,6 @@ const BuildGiftForm: FC = () => {
                       />
                     </Typography>
                   </Box>
-
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('total')}:</Typography>
                     <Typography>
@@ -480,7 +485,17 @@ const BuildGiftForm: FC = () => {
                       </Button>
                     </Box>
                   )}
-
+                  {Number(confirmation.totalValueConfirmation) / 1_000_000_000_000 >
+                    Number(values.minimumForPin) && (
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      label={t('enterPin')}
+                      margin="normal"
+                      name="pin"
+                      type="text"
+                    />
+                  )}
                   <Box display="flex" justifyContent="space-between">
                     <Button
                       className={classes.button}
@@ -496,7 +511,12 @@ const BuildGiftForm: FC = () => {
                     <Button
                       className={classes.button}
                       color="secondary"
-                      disabled={!showCode}
+                      disabled={
+                        !showCode ||
+                        (Number(confirmation.totalValueConfirmation) / 1_000_000_000_000 >
+                          Number(values.minimumForPin) &&
+                          makeHash(values.pin) !== values.hashedPin)
+                      }
                       fullWidth
                       onClick={handleConfirm(setErrors, setStatus)}
                       variant="contained"

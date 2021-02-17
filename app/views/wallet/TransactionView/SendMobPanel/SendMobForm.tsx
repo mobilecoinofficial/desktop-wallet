@@ -31,6 +31,8 @@ import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
+import LocalStore from '../../../../utils/LocalStore';
+import { makeHash } from '../../../../utils/hashing';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
@@ -42,13 +44,8 @@ const EMPTY_CONFIRMATION = {
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
-    button: {
-      width: 200,
-    },
-    center: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
+    button: { width: 200 },
+    center: { display: 'flex', justifyContent: 'center' },
     code: {
       alignItems: 'center',
       display: 'flex',
@@ -57,15 +54,9 @@ const useStyles = makeStyles((theme: Theme) => {
       marginRight: '-.70rem',
       padding: theme.spacing(1),
     },
-    form: {
-      paddingBottom: theme.spacing(2),
-    },
-    formControlLabelRoot: {
-      marginRight: 0,
-    },
-    label: {
-      width: '100%',
-    },
+    form: { paddingBottom: theme.spacing(2) },
+    formControlLabelRoot: { marginRight: 0 },
+    label: { width: '100%' },
     modal: {
       alignItems: 'center',
       display: 'flex',
@@ -139,9 +130,9 @@ const SendMobForm: FC = () => {
   if (
     networkHighestBlockIndex === null ||
     nextBlock === null ||
-    networkHighestBlockIndex < 0 ||
-    nextBlock < 0 ||
-    nextBlock - 1 > networkHighestBlockIndex
+    Number(networkHighestBlockIndex) < 0 ||
+    Number(nextBlock) < 0 ||
+    Number(nextBlock) - 1 > Number(networkHighestBlockIndex)
   ) {
     isSynced = false;
   } else {
@@ -213,6 +204,7 @@ const SendMobForm: FC = () => {
     return (
       <Box display="flex" justifyContent="space-between">
         <Typography>
+          {' '}
           {name}
           <ShortCode code={account.b58Code} />
         </Typography>
@@ -271,11 +263,18 @@ const SendMobForm: FC = () => {
     event.target.select();
   };
 
+  const localStore = new LocalStore();
+  const minimumForPin = String(localStore.getMinimumForPin());
+  const hashedPin = localStore.getHashedPin();
+
   return (
     <Formik
       initialValues={{
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
+        hashedPin,
+        minimumForPin,
         mobAmount: '0', // mobs
+        pin: '',
         recipientPublicAddress: '',
         senderPublicAddress: mockMultipleAccounts[0].b58Code,
         submit: null,
@@ -439,7 +438,6 @@ const SendMobForm: FC = () => {
                   <h2 id="transition-modal-title">{t('confirm')}</h2>
                   <p id="transition-modal-description">{t('intent')}:</p>
                   <br />
-
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('accountBalance')}:</Typography>
                     <Typography>
@@ -454,7 +452,6 @@ const SendMobForm: FC = () => {
                     <Typography>---</Typography>
                     <Typography>---</Typography>
                   </Box>
-
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="primary">{t('amount')}:</Typography>
                     <Typography color="primary">
@@ -465,7 +462,6 @@ const SendMobForm: FC = () => {
                       />
                     </Typography>
                   </Box>
-
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('fee')}:</Typography>
                     <Typography>
@@ -476,7 +472,6 @@ const SendMobForm: FC = () => {
                       />
                     </Typography>
                   </Box>
-
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('total')}:</Typography>
                     <Typography>
@@ -502,18 +497,35 @@ const SendMobForm: FC = () => {
                     </Typography>
                   </Box>
                   <br />
-
-                  <p className={classes.center}>{t('recipientPlus')}</p>
-                  <LongCode
-                    code={confirmation?.txProposalReceiverB58Code}
-                    codeClass={classes.code}
-                    tip=""
-                  />
-                  <br />
-
-                  <p className={classes.center}>{t('senderPlus')}</p>
-                  <LongCode code={values.senderPublicAddress} codeClass={classes.code} tip="" />
-                  <br />
+                  <Box display="flex">
+                    <Box width="50%">
+                      <Box>
+                        <p className={classes.center}>{t('recipientPlus1')}</p>
+                        <p className={classes.center}>{t('recipientPlus2')}</p>
+                        <LongCode
+                          code={confirmation?.txProposalReceiverB58Code}
+                          codeClass={classes.code}
+                        />
+                      </Box>
+                    </Box>
+                    <Box width="50%">
+                      <Box>
+                        <p className={classes.center}>{t('senderPlus1')}</p>
+                        <p className={classes.center}>{t('senderPlus2')}</p>
+                        <LongCode code={values.senderPublicAddress} codeClass={classes.code} />
+                      </Box>
+                    </Box>
+                  </Box>
+                  {Number(values.mobAmount) > Number(values.minimumForPin) && (
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      label={t('enterPin')}
+                      margin="normal"
+                      name="pin"
+                      type="text"
+                    />
+                  )}
                   <Box display="flex" justifyContent="space-between">
                     <Button
                       className={classes.button}
@@ -530,7 +542,12 @@ const SendMobForm: FC = () => {
                     <Button
                       className={classes.button}
                       color="secondary"
-                      disabled={!isValid || isSubmitting}
+                      disabled={
+                        !isValid ||
+                        isSubmitting ||
+                        (Number(values.mobAmount) > Number(values.minimumForPin) &&
+                          makeHash(values.pin) !== values.hashedPin)
+                      }
                       fullWidth
                       onClick={submitForm}
                       size="large"

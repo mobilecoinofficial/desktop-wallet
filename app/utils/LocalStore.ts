@@ -39,54 +39,44 @@ class LocalStore {
     this.schema = schema;
   }
 
-  getEncryptedEntropy() {
-    return this.store.get(schemaKeys.ENCRYPTED_ENTROPY);
+  getEncryptedEntropy(): SjclCipherEncrypted {
+    return this.store.get(schemaKeys.ENCRYPTED_ENTROPY) as SjclCipherEncrypted;
   }
 
-  setEncryptedEntropy(encryptedEntropy: SjclCipherEncrypted) {
-    this.store.set({
-      [schemaKeys.ENCRYPTED_ENTROPY]: encryptedEntropy,
-    });
+  setEncryptedEntropy(encryptedEntropy: SjclCipherEncrypted): void {
+    this.store.set({ [schemaKeys.ENCRYPTED_ENTROPY]: encryptedEntropy });
   }
 
-  getGiftCodes() {
-    return this.store.get(schemaKeys.GIFT_CODES);
+  getGiftCodes(): Array<string> {
+    return this.store.get(schemaKeys.GIFT_CODES) as Array<string>;
   }
 
-  setGiftCodes(giftCodes: Array<string>) {
-    this.store.set({
-      [schemaKeys.GIFT_CODES]: giftCodes,
-    });
+  setGiftCodes(giftCodes: Array<string>): void {
+    this.store.set({ [schemaKeys.GIFT_CODES]: giftCodes });
   }
 
-  getHashedPin() {
-    return this.store.get(schemaKeys.HASHED_PIN) || '';
+  getHashedPin(): string {
+    return (this.store.get(schemaKeys.HASHED_PIN) as string) || '';
   }
 
   setHashedPin(hashedPin: string | null): void {
-    this.store.set({
-      [schemaKeys.HASHED_PIN]: hashedPin || '',
-    });
+    this.store.set({ [schemaKeys.HASHED_PIN]: hashedPin || '' });
   }
 
-  getLeaveMobilecoindRunning() {
-    return this.store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING);
+  getLeaveMobilecoindRunning(): boolean {
+    return this.store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING) as boolean;
   }
 
-  setLeaveMobilecoindRunning(leaveMobilecoindRunning: boolean) {
-    this.store.set({
-      [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: leaveMobilecoindRunning,
-    });
+  setLeaveMobilecoindRunning(leaveMobilecoindRunning: boolean): void {
+    this.store.set({ [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: leaveMobilecoindRunning });
   }
 
-  getMinimumForPin() {
+  getMinimumForPin(): number {
     return Number(this.store.get(schemaKeys.MINIMUM_FOR_PIN));
   }
 
   setMinimumForPin(minimumForPin: number | null): void {
-    this.store.set({
-      [schemaKeys.MINIMUM_FOR_PIN]: String(minimumForPin) || 0,
-    });
+    this.store.set({ [schemaKeys.MINIMUM_FOR_PIN]: String(minimumForPin) || 0 });
   }
 
   // TODO - add type guards to app
@@ -96,7 +86,7 @@ class LocalStore {
     return typeof ledgerDbPath === 'string' ? ledgerDbPath : '';
   }
 
-  getMobilecoindDbPath() {
+  getMobilecoindDbPath(): string {
     const mobilecoindDbPath = this.store.get(schemaKeys.MOBILECOIND_DB_PATH);
     return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
   }
@@ -108,24 +98,20 @@ class LocalStore {
     });
   }
 
-  getName() {
-    return this.store.get(schemaKeys.NAME);
+  getName(): string {
+    return this.store.get(schemaKeys.NAME) as string;
   }
 
   setName(name: string | null): void {
-    this.store.set({
-      [schemaKeys.NAME]: name,
-    });
+    this.store.set({ [schemaKeys.NAME]: name });
   }
 
-  getSalt() {
-    return this.store.get(schemaKeys.SALT);
+  getSalt(): string {
+    return this.store.get(schemaKeys.SALT) as string;
   }
 
   setSalt(salt: string): void {
-    this.store.set({
-      [schemaKeys.SALT]: salt,
-    });
+    this.store.set({ [schemaKeys.SALT]: salt });
   }
 }
 

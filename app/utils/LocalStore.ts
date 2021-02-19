@@ -5,6 +5,8 @@ interface LocalStoreSchema {
   [key: string]: { type: 'string' | 'array' | 'boolean' };
 }
 
+const STORE_NAME = 'mobilecoind'; // TO DO: move to a constants file
+
 export const schemaKeys = {
   ENCRYPTED_ENTROPY: 'encryptedEntropy',
   GIFT_CODES: 'giftCodes',
@@ -35,7 +37,7 @@ class LocalStore {
   schema: LocalStoreSchema;
 
   constructor(store?: Store) {
-    this.store = store || new Store({ schema });
+    this.store = store || new Store({ name: STORE_NAME, schema });
     this.schema = schema;
   }
 
@@ -44,7 +46,7 @@ class LocalStore {
   }
 
   setEncryptedEntropy(encryptedEntropy: SjclCipherEncrypted): void {
-    this.store.set({ [schemaKeys.ENCRYPTED_ENTROPY]: encryptedEntropy });
+    this.store.set(schemaKeys.ENCRYPTED_ENTROPY, encryptedEntropy);
   }
 
   getGiftCodes(): Array<string> {
@@ -52,7 +54,7 @@ class LocalStore {
   }
 
   setGiftCodes(giftCodes: Array<string>): void {
-    this.store.set({ [schemaKeys.GIFT_CODES]: giftCodes });
+    this.store.set(schemaKeys.GIFT_CODES, giftCodes);
   }
 
   getHashedPin(): string {
@@ -60,7 +62,7 @@ class LocalStore {
   }
 
   setHashedPin(hashedPin: string | null): void {
-    this.store.set({ [schemaKeys.HASHED_PIN]: hashedPin || '' });
+    this.store.set(schemaKeys.HASHED_PIN, hashedPin || '');
   }
 
   getLeaveMobilecoindRunning(): boolean {
@@ -68,7 +70,7 @@ class LocalStore {
   }
 
   setLeaveMobilecoindRunning(leaveMobilecoindRunning: boolean): void {
-    this.store.set({ [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: leaveMobilecoindRunning });
+    this.store.set(schemaKeys.LEAVE_MOBILECOIND_RUNNING, leaveMobilecoindRunning);
   }
 
   getMinimumForPin(): number {
@@ -76,7 +78,7 @@ class LocalStore {
   }
 
   setMinimumForPin(minimumForPin: number | null): void {
-    this.store.set({ [schemaKeys.MINIMUM_FOR_PIN]: String(minimumForPin) || 0 });
+    this.store.set(schemaKeys.MINIMUM_FOR_PIN, String(minimumForPin) || '0');
   }
 
   // TODO - add type guards to app
@@ -91,11 +93,12 @@ class LocalStore {
     return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
   }
 
-  setDbPaths(ledgerDbPath: string, mobilecoindDbPath: string): void {
-    this.store.set({
-      [schemaKeys.LEDGER_DB_PATH]: ledgerDbPath,
-      [schemaKeys.MOBILECOIND_DB_PATH]: mobilecoindDbPath,
-    });
+  setLedgerDbPath(name: string): void {
+    this.store.set(schemaKeys.LEDGER_DB_PATH, name);
+  }
+
+  setMobilecoindDbPath(name: string): void {
+    this.store.set(schemaKeys.MOBILECOIND_DB_PATH, name);
   }
 
   getName(): string {
@@ -103,7 +106,7 @@ class LocalStore {
   }
 
   setName(name: string | null): void {
-    this.store.set({ [schemaKeys.NAME]: name });
+    this.store.set(schemaKeys.NAME, name);
   }
 
   getSalt(): string {
@@ -111,7 +114,7 @@ class LocalStore {
   }
 
   setSalt(salt: string): void {
-    this.store.set({ [schemaKeys.SALT]: salt });
+    this.store.set(schemaKeys.SALT, salt);
   }
 }
 

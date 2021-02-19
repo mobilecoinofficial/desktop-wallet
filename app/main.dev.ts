@@ -92,7 +92,8 @@ const spawnMobilecoind = () => {
   console.log('userDataPath', userDataPath);
   console.log('ledgerDbPath', ledgerDbPath);
   console.log('mobilecoindDbPath', mobilecoindDbPath);
-  LocalStoreInstance.setDbPaths(ledgerDbPath, mobilecoindDbPath);
+  LocalStoreInstance.setLedgerDbPath(ledgerDbPath);
+  LocalStoreInstance.setMobilecoindDbPath(mobilecoindDbPath);
   spawn(execPath, [ledgerDbPath, mobilecoindDbPath], {});
 };
 

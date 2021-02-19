@@ -1,7 +1,7 @@
 {
   "name": "mobile-coin-purse-beta",
-  "productName": "MobileCoin Desktop Wallet beta-0.2.0",
-  "version": "0.2.0",
+  "productName": "MobileCoin-Desktop-Wallet-beta",
+  "version": "v0.2.5",
   "description": "Desktop hot wallet for your MobileCoin needs.",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
@@ -51,7 +51,7 @@
     ]
   },
   "build": {
-    "productName": "MobileCoin Desktop Wallet beta-0.2.0",
+    "productName": "MobileCoin-Desktop-Wallet-beta",
     "appId": "",
     "files": [
       "dist/",
@@ -92,8 +92,6 @@
     },
     "linux": {
       "target": [
-        "deb",
-        "rpm",
         "AppImage"
       ],
       "category": "Development"
@@ -107,7 +105,8 @@
     ],
     "publish": {
       "provider": "github",
-      "repo": "coin-purse",
+      "repo": "desktop-wallet",
+      "owner": "mobilecoinofficial",
       "private": true
     }
   },

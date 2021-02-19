@@ -23,6 +23,8 @@ import getPlatform from './get-platform';
 import MenuBuilder from './menu';
 import LocalStore from './utils/LocalStore';
 
+import './utils/autoupdate';
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -57,7 +59,7 @@ const installExtensions = async () => {
   const installer = require('electron-devtools-installer');
   const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
   const extensions = [
-    'REACT_DEVELOPER_TOOLS',
+    /* 'REACT_DEVELOPER_TOOLS', */
     /* , 'REDUX_DEVTOOLS' */
   ];
 
@@ -212,7 +214,9 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   // NOTE: we do not want to respawn mobilecoind in this case.
-  if (mainWindow === null) createWindow();
+  if (mainWindow === null) {
+    createWindow();
+  }
 });
 
 /**
@@ -242,7 +246,9 @@ ipcMain.on('reset-ledger', () => {
 const shutDownMobilecoind = () => {
   const leaveMobilecoindRunning = LocalStoreInstance.getLeaveMobilecoindRunning();
   console.log('Leave mobilecoind running:', leaveMobilecoindRunning);
-  if (!leaveMobilecoindRunning) exec('pkill -f mobilecoind');
+  if (!leaveMobilecoindRunning) {
+    exec('pkill -f mobilecoind');
+  }
 };
 
 app.on('will-quit', () => {

@@ -69,9 +69,10 @@ describe('LocalStore', () => {
         const fakeEncryptedEntropy = 'fakeEncryptedEntropy';
         // @ts-ignore mock
         MockLocalStoreInstance.setEncryptedEntropy(fakeEncryptedEntropy);
-        expect(mockStoreSet).toHaveBeenCalledWith({
-          [schemaKeys.ENCRYPTED_ENTROPY]: fakeEncryptedEntropy,
-        });
+        expect(mockStoreSet).toHaveBeenCalledWith(
+          schemaKeys.ENCRYPTED_ENTROPY,
+          fakeEncryptedEntropy
+        );
       });
     });
 
@@ -90,9 +91,7 @@ describe('LocalStore', () => {
         const fakeGiftCodes = ['fakeGiftCodes'];
 
         MockLocalStoreInstance.setGiftCodes(fakeGiftCodes);
-        expect(mockStoreSet).toHaveBeenCalledWith({
-          [schemaKeys.GIFT_CODES]: fakeGiftCodes,
-        });
+        expect(mockStoreSet).toHaveBeenCalledWith(schemaKeys.GIFT_CODES, fakeGiftCodes);
       });
     });
 
@@ -113,9 +112,10 @@ describe('LocalStore', () => {
         const fakeLeaveMobilecoindRunning = false;
 
         MockLocalStoreInstance.setLeaveMobilecoindRunning(fakeLeaveMobilecoindRunning);
-        expect(mockStoreSet).toHaveBeenCalledWith({
-          [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: fakeLeaveMobilecoindRunning,
-        });
+        expect(mockStoreSet).toHaveBeenCalledWith(
+          schemaKeys.LEAVE_MOBILECOIND_RUNNING,
+          fakeLeaveMobilecoindRunning
+        );
       });
     });
     describe('.getLedgerDbPath', () => {
@@ -136,17 +136,26 @@ describe('LocalStore', () => {
       });
     });
 
-    describe('.setDbPaths', () => {
-      test('return store.set for setDbPaths', () => {
+    describe('.setLedgerDbPath', () => {
+      test('return store.set for setLedgerDbPath', () => {
         const { MockLocalStoreInstance, mockStoreSet } = setup();
         const fakeLedgerDbPath = '/fake/path/to';
+
+        MockLocalStoreInstance.setLedgerDbPath(fakeLedgerDbPath);
+        expect(mockStoreSet).toHaveBeenCalledWith(schemaKeys.LEDGER_DB_PATH, fakeLedgerDbPath);
+      });
+    });
+
+    describe('.setMobilecoindDbPath', () => {
+      test('return store.set for setMobilecoindDbPath', () => {
+        const { MockLocalStoreInstance, mockStoreSet } = setup();
         const fakeMobilecoindDbPath = '/fake/path/to';
 
-        MockLocalStoreInstance.setDbPaths(fakeLedgerDbPath, fakeMobilecoindDbPath);
-        expect(mockStoreSet).toHaveBeenCalledWith({
-          [schemaKeys.LEDGER_DB_PATH]: fakeLedgerDbPath,
-          [schemaKeys.MOBILECOIND_DB_PATH]: fakeMobilecoindDbPath,
-        });
+        MockLocalStoreInstance.setMobilecoindDbPath(fakeMobilecoindDbPath);
+        expect(mockStoreSet).toHaveBeenCalledWith(
+          schemaKeys.MOBILECOIND_DB_PATH,
+          fakeMobilecoindDbPath
+        );
       });
     });
 
@@ -165,9 +174,7 @@ describe('LocalStore', () => {
         const fakeName = 'Tom Fakery';
 
         MockLocalStoreInstance.setName(fakeName);
-        expect(mockStoreSet).toHaveBeenCalledWith({
-          [schemaKeys.NAME]: fakeName,
-        });
+        expect(mockStoreSet).toHaveBeenCalledWith(schemaKeys.NAME, fakeName);
       });
     });
 
@@ -186,9 +193,7 @@ describe('LocalStore', () => {
         const fakeSalt = 'salt/fakery';
 
         MockLocalStoreInstance.setSalt(fakeSalt);
-        expect(mockStoreSet).toHaveBeenCalledWith({
-          [schemaKeys.SALT]: fakeSalt,
-        });
+        expect(mockStoreSet).toHaveBeenCalledWith(schemaKeys.SALT, fakeSalt);
       });
     });
   });

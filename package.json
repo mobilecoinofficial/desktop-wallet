@@ -1,7 +1,7 @@
 {
   "name": "mobile-coin-purse-beta",
-  "productName": "MobileCoin Desktop Wallet beta-0.2.0",
-  "version": "0.2.0",
+  "productName": "MobileCoin-Desktop-Wallet-beta",
+  "version": "v0.2.5",
   "description": "Desktop hot wallet for your MobileCoin needs.",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
@@ -18,6 +18,7 @@
     "package-ci": "yarn postinstall && yarn build && electron-builder --publish always",
     "package-mac": "yarn build && electron-builder build --mac",
     "package-linux": "yarn build && electron-builder build --linux",
+    "package-linux-for-updater": "yarn build && electron-builder build --linux AppImage",
     "package-win": "yarn build && electron-builder build --win --x64",
     "postinstall": "node -r @babel/register internals/scripts/CheckNativeDep.js && electron-builder install-app-deps && yarn build-dll && opencollective-postinstall",
     "postlint-fix": "prettier --ignore-path .eslintignore --single-quote --write '**/*.{js,jsx,json,html,css,less,scss,yml}'",
@@ -50,7 +51,7 @@
     ]
   },
   "build": {
-    "productName": "MobileCoin Desktop Wallet beta-0.2.0",
+    "productName": "MobileCoin-Desktop-Wallet-beta",
     "appId": "",
     "files": [
       "dist/",
@@ -91,8 +92,6 @@
     },
     "linux": {
       "target": [
-        "deb",
-        "rpm",
         "AppImage"
       ],
       "category": "Development"
@@ -106,7 +105,8 @@
     ],
     "publish": {
       "provider": "github",
-      "repo": "coin-purse",
+      "repo": "desktop-wallet",
+      "owner": "mobilecoinofficial",
       "private": true
     }
   },
@@ -274,7 +274,7 @@
     "electron-debug": "^3.1.0",
     "electron-log": "^4.2.4",
     "electron-store": "^6.0.1",
-    "electron-updater": "^4.3.4",
+    "electron-updater": "^4.3.5",
     "formik": "^2.1.7",
     "formik-material-ui": "^3.0.0",
     "google-protobuf": "^3.13.0",

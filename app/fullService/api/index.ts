@@ -13,5 +13,6 @@ export { default as getTransaction } from './getTransaction';
 export { default as getTxo } from './getTxo';
 export { default as importAccount } from './importAccount';
 // export { default as setPassword } from './setPassword';
+export { default as submitTransaction } from './submitTransaction';
 // export { default as unlock } from './unlock';
 export { default as updateAccountName } from './updateAccountName';

@@ -4,7 +4,6 @@ import axiosFullService from '../axiosFullService';
 const CREATE_ACCOUNT_METHOD = 'create_account';
 
 type CreateAccountParams = {
-  entropy: string,
   firstBlock?: string,
   name?: string,
 };

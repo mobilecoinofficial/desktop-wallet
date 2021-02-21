@@ -8,7 +8,7 @@ export { default as getAllAddressesByAccount } from './getAllAddressesByAccount'
 export { default as getAllTransactionsByAccount } from './getAllTransactionsByAccount';
 export { default as getAllTxosByAccount } from './getAllTxosByAccount';
 export { default as getBalance } from './getBalance';
-export { default as getLockedStatus } from './getLockedStatus';
+// export { default as getLockedStatus } from './getLockedStatus';
 export { default as getTransaction } from './getTransaction';
 export { default as getTxo } from './getTxo';
 export { default as importAccount } from './importAccount';

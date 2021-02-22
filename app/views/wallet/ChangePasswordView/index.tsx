@@ -19,6 +19,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { SubmitButton } from '../../../components';
+import { PASSWORD_MIN_SIZE, PASSWORD_MAX_SIZE } from '../../../constants/codes';
 import routePaths from '../../../constants/routePaths';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
@@ -117,8 +118,8 @@ const ChangePasswordView: FC = () => {
           }}
           validationSchema={Yup.object().shape({
             newPassword: Yup.string()
-              .min(8, t('passwordMin'))
-              .max(99, t('passwordMax'))
+              .min(PASSWORD_MIN_SIZE, t('passwordMin'))
+              .max(PASSWORD_MAX_SIZE, t('passwordMax'))
               .required(t('passwordRequired')),
             newPasswordConfirmation: Yup.string()
               .oneOf([Yup.ref('newPassword')], t('passwordConfirmationRef'))

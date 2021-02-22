@@ -485,7 +485,7 @@ const BuildGiftForm: FC = () => {
                       </Button>
                     </Box>
                   )}
-                  {Number(confirmation.totalValueConfirmation) / 1_000_000_000_000 >
+                  {Number(confirmation.totalValueConfirmation) / 1_000_000_000_000 >=
                     Number(values.minimumForPin) && (
                     <Field
                       component={TextField}
@@ -513,7 +513,7 @@ const BuildGiftForm: FC = () => {
                       color="secondary"
                       disabled={
                         !showCode ||
-                        (Number(confirmation.totalValueConfirmation) / 1_000_000_000_000 >
+                        (Number(confirmation.totalValueConfirmation) / 1_000_000_000_000 >=
                           Number(values.minimumForPin) &&
                           makeHash(values.pin) !== values.hashedPin)
                       }

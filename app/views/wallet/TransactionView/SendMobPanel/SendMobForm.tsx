@@ -516,7 +516,7 @@ const SendMobForm: FC = () => {
                       </Box>
                     </Box>
                   </Box>
-                  {Number(values.mobAmount) > Number(values.minimumForPin) && (
+                  {Number(values.mobAmount) >= Number(values.minimumForPin) && (
                     <Field
                       component={TextField}
                       fullWidth
@@ -545,7 +545,7 @@ const SendMobForm: FC = () => {
                       disabled={
                         !isValid ||
                         isSubmitting ||
-                        (Number(values.mobAmount) > Number(values.minimumForPin) &&
+                        (Number(values.mobAmount) >= Number(values.minimumForPin) &&
                           makeHash(values.pin) !== values.hashedPin)
                       }
                       fullWidth

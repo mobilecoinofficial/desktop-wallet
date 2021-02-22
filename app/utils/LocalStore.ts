@@ -5,7 +5,7 @@ interface LocalStoreSchema {
   [key: string]: { type: 'string' | 'array' | 'boolean' };
 }
 
-const STORE_NAME = 'mobilecoind'; // TO DO: move to a constants file
+const STORE_NAME = 'mobilecoin_config';
 
 export const schemaKeys = {
   ENCRYPTED_ENTROPY: 'encryptedEntropy',

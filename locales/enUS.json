@@ -86,6 +86,8 @@
   "ChangePinView": {
     "changePinBreadcrumb": "Set or Change PIN",
     "changePinButton": "Set PIN",
+    "currentPasswordLabel": "Current Password",
+    "currentPasswordRequired": "Your current password is required to set or change your PIN",
     "description": "The PIN number is used as an extra safety confirmation for operations. It's required if the MOB amount is greater than a minimum value.",
     "enqueue": "Successfully set PIN!",
     "errorPin": "PIN must be all digits",
@@ -96,9 +98,8 @@
     "pinConfirmationLabel": "Confirm PIN to use",
     "pinConfirmationRef": "Must match PIN",
     "pinConfirmationRequired": "PIN Confirmation is required",
-    "pinMax": "PIN must be no more than 12 characters long.",
-    "pinMin": "PIN must be at least 6 characters long.",
     "pinRequired": "PIN is required",
+    "pinSize": "PIN must be 6 characters long.",
     "settingsBreadcrumb": "Settings"
   },
   "CloseWalletModal": {

@@ -20,12 +20,16 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
+import { PIN_SIZE } from '../../../constants/codes';
 import routePaths from '../../../constants/routePaths';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
 import LocalStore from '../../../utils/LocalStore';
 import { makeHash } from '../../../utils/hashing';
 import isValidPin from '../../../utils/isValidPin';
+
+const localStore = new LocalStore();
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -84,6 +88,8 @@ const ChangePinView: FC = () => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
+  const { retrieveEntropy } = useMobileCoinD();
+
   const { t } = useTranslation('ChangePinView');
 
   const validatePin = (st: string) => (isValidPin(st) ? '' : t('errorPin'));
@@ -118,38 +124,60 @@ const ChangePinView: FC = () => {
       <Box flexGrow={1} mt={3}>
         <Formik
           initialValues={{
-            minimumForPin: '0.0',
+            currentPassword: '',
+            minimumForPin: String(localStore.getMinimumForPin()),
             newPin: '',
             newPinConfirmation: '',
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-            newPin: Yup.string()
-              .min(6, t('pinMin'))
-              .max(12, t('pinMax'))
-              .required(t('pinRequired')),
+            currentPassword: Yup.string().required(t('currentPasswordRequired')),
+            newPin: Yup.string().length(PIN_SIZE, t('pinSize')).required(t('pinRequired')),
             newPinConfirmation: Yup.string()
               .oneOf([Yup.ref('newPin')], t('pinConfirmationRef'))
               .required(t('pinConfirmationRequired')),
           })}
-          onSubmit={(values, { setStatus, resetForm }) => {
-            const hashedPin = makeHash(values.newPin);
-            const localStore = new LocalStore();
-            localStore.setMinimumForPin(Number(values.minimumForPin));
-            localStore.setHashedPin(String(hashedPin));
-            if (isMountedRef.current) {
-              enqueueSnackbar(t('enqueue'), {
-                variant: 'success',
-              });
+          onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+            try {
+              setSubmitting(true);
+              const ignoreResult = await retrieveEntropy(values.currentPassword);
+              if (typeof ignoreResult !== 'string') {
+                throw new Error(t('error'));
+              }
+              if (isMountedRef.current) {
+                setSubmitting(false);
+
+                const hashedPin = makeHash(values.newPin);
+                localStore.setMinimumForPin(Number(values.minimumForPin));
+                localStore.setHashedPin(String(hashedPin));
+                if (isMountedRef.current) {
+                  enqueueSnackbar(t('enqueue'), {
+                    variant: 'success',
+                  });
+                }
+                setStatus({ success: true });
+              }
+            } catch (err) {
+              if (isMountedRef.current) {
+                setStatus({ success: false });
+                setErrors({ submit: err.message });
+                setSubmitting(false);
+              }
             }
-            setStatus({ success: true });
-            resetForm();
           }}
         >
           {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
             return (
               <Form>
-                <Box pt={4}>
+                <Box>
+                  <Field
+                    component={TextField}
+                    fullWidth
+                    label={t('currentPasswordLabel')}
+                    margin="normal"
+                    name="currentPassword"
+                    type="password"
+                  />
                   <Field
                     component={TextField}
                     fullWidth

@@ -1,0 +1,33 @@
+import type FullServiceAccount from '../../types/FullServiceAccount';
+import type { StringHex } from '../../types/SpecialStrings';
+import axiosFullService from '../axiosFullService';
+
+const UPDATE_ACCOUNT_NAME = 'update_account_name';
+
+type UpdateAccountNameParams = {
+  accountId: StringHex;
+  name: string;
+};
+
+type UpdateAccountNameResult = {
+  account: FullServiceAccount;
+};
+
+const updateAccountName = async ({
+  accountId,
+  name,
+}: UpdateAccountNameParams): Promise<UpdateAccountNameResult> => {
+  const { result, error } = await axiosFullService(UPDATE_ACCOUNT_NAME, {
+    account_id: accountId,
+    name,
+  });
+
+  if (error) {
+    // TODO - I'll write up a better error handler
+    throw new Error(error);
+  } else {
+    return result;
+  }
+};
+
+export default updateAccountName;

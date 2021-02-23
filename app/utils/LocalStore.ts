@@ -5,38 +5,30 @@ interface LocalStoreSchema {
   [key: string]: { type: 'string' | 'array' | 'boolean' };
 }
 
+const STORE_NAME = 'mobilecoin_config';
+
 export const schemaKeys = {
   ENCRYPTED_ENTROPY: 'encryptedEntropy',
   GIFT_CODES: 'giftCodes',
+  HASHED_PIN: 'hashedPin',
   LEAVE_MOBILECOIND_RUNNING: 'leaveMobilecoindRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
+  MINIMUM_FOR_PIN: 'minimumPin',
   MOBILECOIND_DB_PATH: 'mobilecoindDbPath',
   NAME: 'name',
   SALT: 'salt',
 };
 
 export const schema: LocalStoreSchema = {
-  [schemaKeys.ENCRYPTED_ENTROPY]: {
-    type: 'string',
-  },
-  [schemaKeys.GIFT_CODES]: {
-    type: 'array',
-  },
-  [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: {
-    type: 'boolean',
-  },
-  [schemaKeys.LEDGER_DB_PATH]: {
-    type: 'string',
-  },
-  [schemaKeys.MOBILECOIND_DB_PATH]: {
-    type: 'string',
-  },
-  [schemaKeys.NAME]: {
-    type: 'string',
-  },
-  [schemaKeys.SALT]: {
-    type: 'string',
-  },
+  [schemaKeys.ENCRYPTED_ENTROPY]: { type: 'string' },
+  [schemaKeys.GIFT_CODES]: { type: 'array' },
+  [schemaKeys.HASHED_PIN]: { type: 'string' },
+  [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: { type: 'boolean' },
+  [schemaKeys.LEDGER_DB_PATH]: { type: 'string' },
+  [schemaKeys.MINIMUM_FOR_PIN]: { type: 'string' },
+  [schemaKeys.MOBILECOIND_DB_PATH]: { type: 'string' },
+  [schemaKeys.NAME]: { type: 'string' },
+  [schemaKeys.SALT]: { type: 'string' },
 };
 
 class LocalStore {
@@ -45,38 +37,48 @@ class LocalStore {
   schema: LocalStoreSchema;
 
   constructor(store?: Store) {
-    this.store = store || new Store({ schema });
+    this.store = store || new Store({ name: STORE_NAME, schema });
     this.schema = schema;
   }
 
-  getEncryptedEntropy() {
-    return this.store.get(schemaKeys.ENCRYPTED_ENTROPY);
+  getEncryptedEntropy(): SjclCipherEncrypted {
+    return this.store.get(schemaKeys.ENCRYPTED_ENTROPY) as SjclCipherEncrypted;
   }
 
-  setEncryptedEntropy(encryptedEntropy: SjclCipherEncrypted) {
-    this.store.set({
-      [schemaKeys.ENCRYPTED_ENTROPY]: encryptedEntropy,
-    });
+  setEncryptedEntropy(encryptedEntropy: SjclCipherEncrypted): void {
+    this.store.set(schemaKeys.ENCRYPTED_ENTROPY, encryptedEntropy);
   }
 
-  getGiftCodes() {
-    return this.store.get(schemaKeys.GIFT_CODES);
+  getGiftCodes(): Array<string> {
+    return this.store.get(schemaKeys.GIFT_CODES) as Array<string>;
   }
 
-  setGiftCodes(giftCodes: Array<string>) {
-    this.store.set({
-      [schemaKeys.GIFT_CODES]: giftCodes,
-    });
+  setGiftCodes(giftCodes: Array<string>): void {
+    this.store.set(schemaKeys.GIFT_CODES, giftCodes);
   }
 
-  getLeaveMobilecoindRunning() {
-    return this.store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING);
+  getHashedPin(): string {
+    return (this.store.get(schemaKeys.HASHED_PIN) as string) || '';
   }
 
-  setLeaveMobilecoindRunning(leaveMobilecoindRunning: boolean) {
-    this.store.set({
-      [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: leaveMobilecoindRunning,
-    });
+  setHashedPin(hashedPin: string | null): void {
+    this.store.set(schemaKeys.HASHED_PIN, hashedPin || '');
+  }
+
+  getLeaveMobilecoindRunning(): boolean {
+    return this.store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING) as boolean;
+  }
+
+  setLeaveMobilecoindRunning(leaveMobilecoindRunning: boolean): void {
+    this.store.set(schemaKeys.LEAVE_MOBILECOIND_RUNNING, leaveMobilecoindRunning);
+  }
+
+  getMinimumForPin(): number {
+    return Number(this.store.get(schemaKeys.MINIMUM_FOR_PIN));
+  }
+
+  setMinimumForPin(minimumForPin: number | null): void {
+    this.store.set(schemaKeys.MINIMUM_FOR_PIN, String(minimumForPin) || '0');
   }
 
   // TODO - add type guards to app
@@ -86,36 +88,33 @@ class LocalStore {
     return typeof ledgerDbPath === 'string' ? ledgerDbPath : '';
   }
 
-  getMobilecoindDbPath() {
+  getMobilecoindDbPath(): string {
     const mobilecoindDbPath = this.store.get(schemaKeys.MOBILECOIND_DB_PATH);
     return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
   }
 
-  setDbPaths(ledgerDbPath: string, mobilecoindDbPath: string) {
-    this.store.set({
-      [schemaKeys.LEDGER_DB_PATH]: ledgerDbPath,
-      [schemaKeys.MOBILECOIND_DB_PATH]: mobilecoindDbPath,
-    });
+  setLedgerDbPath(name: string): void {
+    this.store.set(schemaKeys.LEDGER_DB_PATH, name);
   }
 
-  getName() {
-    return this.store.get(schemaKeys.NAME);
+  setMobilecoindDbPath(name: string): void {
+    this.store.set(schemaKeys.MOBILECOIND_DB_PATH, name);
   }
 
-  setName(name: string | null) {
-    this.store.set({
-      [schemaKeys.NAME]: name,
-    });
+  getName(): string {
+    return this.store.get(schemaKeys.NAME) as string;
   }
 
-  getSalt() {
-    return this.store.get(schemaKeys.SALT);
+  setName(name: string | null): void {
+    this.store.set(schemaKeys.NAME, name);
   }
 
-  setSalt(salt: string) {
-    this.store.set({
-      [schemaKeys.SALT]: salt,
-    });
+  getSalt(): string {
+    return this.store.get(schemaKeys.SALT) as string;
+  }
+
+  setSalt(salt: string): void {
+    this.store.set(schemaKeys.SALT, salt);
   }
 }
 

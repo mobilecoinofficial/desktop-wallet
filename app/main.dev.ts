@@ -91,9 +91,11 @@ const spawnMobilecoind = () => {
     path.join(userDataPath, 'mobilecoind', 'transaction-db')
   ); // escape spaces in mac and linux (change logic for windows)
 
+  console.log('userDataPath', userDataPath);
   console.log('ledgerDbPath', ledgerDbPath);
   console.log('mobilecoindDbPath', mobilecoindDbPath);
-  LocalStoreInstance.setDbPaths(ledgerDbPath, mobilecoindDbPath);
+  LocalStoreInstance.setLedgerDbPath(ledgerDbPath);
+  LocalStoreInstance.setMobilecoindDbPath(mobilecoindDbPath);
   spawn(execPath, [ledgerDbPath, mobilecoindDbPath], {});
 };
 

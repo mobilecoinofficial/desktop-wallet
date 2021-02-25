@@ -10,6 +10,8 @@ export const schemaKeys = {
   FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
   FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   GIFT_CODES: 'giftCodes',
+  HASHED_PASSWORD: 'hashedPassword',
+  HASHED_PASSWORD_SALT: 'hashedPasswordSalt',
   LEAVE_MOBILECOIND_RUNNING: 'leaveMobilecoindRunning',
   MOBILECOIND_DB_PATH: 'mobilecoindDbPath',
   MOBILECOIND_LEDGER_DB_PATH: 'mobilecoindLedgerDbPath',
@@ -85,6 +87,32 @@ class LocalStore {
     });
   }
 
+  // TODO - add tests
+  getHashedPassword(): string | null {
+    const hashedPassword = this.store.get(schemaKeys.HASHED_PASSWORD);
+    return typeof hashedPassword === 'string' ? hashedPassword : null;
+  }
+
+  // TODO - add tests
+  setHashedPassword(hashedPassword: string) {
+    this.store.set({
+      [schemaKeys.HASHED_PASSWORD]: hashedPassword,
+    });
+  }
+
+  // TODO - add tests
+  getHashedPasswordSalt(): string | null {
+    const hashedPasswordSalt = this.store.get(schemaKeys.HASHED_PASSWORD_SALT);
+    return typeof hashedPasswordSalt === 'string' ? hashedPasswordSalt : null;
+  }
+
+  // TODO - add tests
+  setHashedPasswordSalt(hashedPasswordSalt: string) {
+    this.store.set({
+      [schemaKeys.HASHED_PASSWORD_SALT]: hashedPasswordSalt,
+    });
+  }
+
   getLeaveMobilecoindRunning() {
     return this.store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING);
   }
@@ -128,7 +156,10 @@ class LocalStore {
   }
 
   getSalt() {
-    return this.store.get(schemaKeys.SALT);
+    const salt = this.store.get(schemaKeys.SALT);
+    if (typeof salt !== 'string') throw new Error('No salt found.');
+
+    return salt;
   }
 
   setSalt(salt: string) {

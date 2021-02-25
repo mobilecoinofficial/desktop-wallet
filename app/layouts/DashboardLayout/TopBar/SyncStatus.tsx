@@ -7,8 +7,8 @@ import {
 
 import { CircleMOBIcon } from '../../../components/icons';
 import { GREEN, GOLD_LIGHT, RED } from '../../../constants/colors';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
-import getPercentSynced from '../../../utils/getPercentSynced';
+import useFullService from '../../../hooks/useFullService';
+import getPercentSyncedNew from '../../../utils/getPercentSyncedNew';
 
 const ERROR = 'ERROR';
 const SYNCED = 'SYNCED';
@@ -48,29 +48,35 @@ const useStyles = makeStyles(() => {
 
 const SyncStatus: FC = () => {
   const classes = useStyles();
-  const { networkHighestBlockIndex, nextBlock } = useMobileCoinD();
+  const { selectedAccount } = useFullService();
 
+  // Note: right now, we're only checking for the wallet and the selectedAccount.
+  // We'll need a redesign where we are syncing for each account.
+  // Maybe the top icon is for the entire wallet, but each account syncs with its own icon on the
+  // card.
   let percentSynced;
   let isSynced;
   let statusCode;
   let title;
   let backgroundColor;
+  const networkHeightBigInt = BigInt(selectedAccount.account.networkHeight);
+  const localHeightBigInt = BigInt(selectedAccount.account.localHeight);
+  const accountHeightBigInt = BigInt(selectedAccount.account.accountHeight);
+  const acceptableDiffBigInt = BigInt(2);
+
   if (
-    networkHighestBlockIndex === null
-    || nextBlock === null
-    || networkHighestBlockIndex < 0
-    || nextBlock < 0
-    || nextBlock - 1 > networkHighestBlockIndex
+    networkHeightBigInt < accountHeightBigInt
+    || networkHeightBigInt < localHeightBigInt
+    || localHeightBigInt < accountHeightBigInt
   ) {
     isSynced = false;
     percentSynced = 0;
     statusCode = ERROR;
   } else {
-    isSynced = networkHighestBlockIndex - nextBlock < 2; // Let's say a diff of 1 is fine.
-    percentSynced = getPercentSynced(
-      networkHighestBlockIndex,
-      nextBlock,
-      'nextBlock',
+    isSynced = networkHeightBigInt - accountHeightBigInt < acceptableDiffBigInt;
+    percentSynced = getPercentSyncedNew(
+      networkHeightBigInt,
+      accountHeightBigInt,
     );
     statusCode = isSynced ? SYNCED : SYNCING;
   }

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
-import camelCaseKeys from 'camelcase-keys';
 import snakeCaseKeys from 'snakecase-keys';
+
+import skipKeysCamelCase from './utils/skipKeysCamelCase';
 
 interface AxiosFullServiceResponse extends AxiosResponse<any> {
   data: {
@@ -48,7 +49,7 @@ const axiosFullService = async (
 
     // TODO: determine if we need to handle errors here or elsewhere
     // such as the API or services
-    return camelCaseKeys(response, { deep: true });
+    return skipKeysCamelCase(response);
   } catch (error) {
     return error || 'Unknown Rocket error';
   }

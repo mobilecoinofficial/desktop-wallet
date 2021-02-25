@@ -14,22 +14,15 @@ import {
   TableRow,
 } from '@material-ui/core';
 
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
-import getPercentSynced from '../../../utils/getPercentSynced';
+import useFullService from '../../../hooks/useFullService';
+import getPercentSyncedNew from '../../../utils/getPercentSyncedNew';
 
 const LedgerStatus: FC = () => {
-  const {
-    localBlockIndex,
-    networkHighestBlockIndex,
-    nextBlock,
-  } = useMobileCoinD();
+  const { selectedAccount } = useFullService();
 
-  const localBlockIndexInt = parseInt(localBlockIndex || '0', 10);
-  const networkHighestBlockIndexInt = parseInt(
-    networkHighestBlockIndex || '0',
-    10,
-  );
-  const nextBlockInt = parseInt(nextBlock || '0', 10);
+  const networkHeightBigInt = BigInt(selectedAccount.account.networkHeight);
+  const localHeightBigInt = BigInt(selectedAccount.account.localHeight);
+  const accountHeightBigInt = BigInt(selectedAccount.account.accountHeight);
 
   const createData = (
     blockType: string,
@@ -42,52 +35,43 @@ const LedgerStatus: FC = () => {
     };
   };
 
-  const percentMonitorSynced = networkHighestBlockIndexInt === null
-    || nextBlockInt === null
-    || networkHighestBlockIndexInt < 0
-    || nextBlockInt < 0
-    || nextBlockInt - 1 > networkHighestBlockIndexInt
+  const percentAccountSynced = networkHeightBigInt < accountHeightBigInt
     ? 'Error'
-    : getPercentSynced(
-      networkHighestBlockIndexInt,
-      nextBlockInt,
-      'nextBlock',
+    : getPercentSyncedNew(
+      networkHeightBigInt,
+      accountHeightBigInt,
     );
 
-  const percentLocalSynced = networkHighestBlockIndexInt === null
-    || localBlockIndexInt === null
-    || networkHighestBlockIndexInt < 0
-    || localBlockIndexInt < 0
-    || localBlockIndexInt > networkHighestBlockIndexInt
+  const percentLocalSynced = networkHeightBigInt < localHeightBigInt
+    || localHeightBigInt < accountHeightBigInt
     ? 'Error'
-    : getPercentSynced(
-      networkHighestBlockIndexInt,
-      localBlockIndexInt,
-      'localBlockIndex',
+    : getPercentSyncedNew(
+      networkHeightBigInt,
+      localHeightBigInt,
     );
 
   const rows = [
-    createData('Network Blocks', '', networkHighestBlockIndexInt, ''),
+    createData('Network Blocks', '', Number(networkHeightBigInt), ''),
     createData(
       'Local Blocks',
-      localBlockIndexInt,
-      networkHighestBlockIndexInt,
-      percentLocalSynced,
+      Number(localHeightBigInt),
+      Number(networkHeightBigInt),
+      percentLocalSynced === 'Error' ? 'Error' : 100 * percentLocalSynced,
     ),
     createData(
-      'Monitor Blocks',
-      localBlockIndexInt,
-      networkHighestBlockIndexInt,
-      percentMonitorSynced,
+      'Account Blocks',
+      Number(accountHeightBigInt),
+      Number(networkHeightBigInt),
+      percentAccountSynced === 'Error' ? 'Error' : 100 * percentAccountSynced,
     ),
   ];
 
   let statusCopy;
-  if (percentMonitorSynced === 'Error' || percentLocalSynced === 'Error') {
+  if (percentAccountSynced === 'Error' || percentLocalSynced === 'Error') {
     statusCopy = "There's been an error in the ledger. Please reset the ledger at the bottom of this page.";
-  } else if (percentMonitorSynced < 90) {
+  } else if (percentAccountSynced < 90) {
     statusCopy = 'The ledger is syncing. This may take awhile.';
-  } else if (percentMonitorSynced < 100) {
+  } else if (percentAccountSynced < 100) {
     statusCopy = 'The ledger is syncing.';
   } else {
     statusCopy = 'The ledger is synced.';
@@ -134,17 +118,17 @@ const LedgerStatus: FC = () => {
       </Box>
       <Typography variant="body2" color="textSecondary">
         Network Blocks represent the total blocks within the MobileCoin network.
-        This is the value your Local and Monitor Blocks needs to hit to be 100%
+        This is the value your Local and Account Blocks needs to hit to be 100%
         synced.
       </Typography>
       <Box py={1} />
       <Typography variant="body2" color="textSecondary">
-        Local Blocks shows the blocks your mobilecoind has synced the ledger.
+        Local Blocks shows the local blocks your downloaded from the ledger.
       </Typography>
       <Box py={1} />
       <Typography variant="body2" color="textSecondary">
-        Monitor Blocks shows the blocks that a specific monitor has synced. Each
-        account has its own Monitor Blocks count. Once this value is synced, you
+        Account Blocks shows the blocks that a specific Account has synced. Each
+        account has its own Account Blocks count. Once this value is synced, you
         will immediately see the effects of transactions.
       </Typography>
     </Box>

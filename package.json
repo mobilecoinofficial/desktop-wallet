@@ -300,6 +300,7 @@
     "react-transition-group": "^4.4.1",
     "regenerator-runtime": "^0.13.5",
     "sjcl": "^1.0.8",
+    "snakecase-keys": "^3.2.1",
     "source-map-support": "^0.5.19",
     "util.promisify": "^1.0.1",
     "yup": "^0.32.8"

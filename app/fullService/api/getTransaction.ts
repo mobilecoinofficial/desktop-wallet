@@ -16,7 +16,7 @@ const getTransaction = async ({
   transactionLogId,
 }: GetTransactionParams): Promise<GetTransactionResult> => {
   const { result, error } = await axiosFullService(GET_TRANSACTION_METHOD, {
-    transaction_log_id: transactionLogId,
+    transactionLogId,
   });
 
   if (error) {

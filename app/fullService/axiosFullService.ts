@@ -1,5 +1,7 @@
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
+import camelCaseKeys from 'camelcase-keys';
+import snakeCaseKeys from 'snakecase-keys';
 
 interface AxiosFullServiceResponse extends AxiosResponse<any> {
   data: {
@@ -30,23 +32,23 @@ const axiosFullService = async (
     headers: { 'Content-type': 'application/json' },
     method: 'post',
   });
-
   axiosInstance.interceptors.response.use(
     handleResponse,
     handleError,
   );
+  const snakeCaseParams = params === undefined ? undefined : snakeCaseKeys(params);
 
   try {
     const response = await axiosInstance({
       data: {
         method,
-        params,
+        params: snakeCaseParams,
       },
     });
 
     // TODO: determine if we need to handle errors here or elsewhere
     // such as the API or services
-    return response;
+    return camelCaseKeys(response, { deep: true });
   } catch (error) {
     return error || 'Unknown Rocket error';
   }

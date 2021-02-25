@@ -5,7 +5,7 @@ const CREATE_ACCOUNT_METHOD = 'create_account';
 
 type CreateAccountParams = {
   firstBlock?: string,
-  name?: string,
+  name: string | null,
 };
 
 type CreateAccountResult = {
@@ -17,7 +17,7 @@ const createAccount = async ({
   name,
 }: CreateAccountParams): Promise<CreateAccountResult> => {
   const { result, error } = await axiosFullService(CREATE_ACCOUNT_METHOD, {
-    first_block: firstBlock,
+    firstBlock,
     name,
   });
 

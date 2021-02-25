@@ -9,8 +9,8 @@ type GetAllAddressesByAccountParams = {
 };
 
 type GetAllAddressesByAccountResult = {
-  address_ids: StringHex[];
-  address_map: { [address_id: string]: Address };
+  addressIds: StringHex[];
+  addressMap: { [addressId: string]: Address };
 };
 
 const getAllAddressesByAccount = async ({
@@ -19,7 +19,7 @@ const getAllAddressesByAccount = async ({
   const { result, error } = await axiosFullService(
     GET_ALL_ADRESSES_BY_ACCOUNT_METHOD,
     {
-      account_id: accountId,
+      accountId,
     },
   );
 

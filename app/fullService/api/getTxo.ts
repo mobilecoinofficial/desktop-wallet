@@ -16,7 +16,7 @@ const getTxo = async ({
   txoId,
 }: GetTxoParams): Promise<GetTxoResult> => {
   const { result, error } = await axiosFullService(GET_TXO_METHOD, {
-    txo_id: txoId,
+    txoId,
   });
 
   if (error) {

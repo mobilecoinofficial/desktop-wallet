@@ -18,7 +18,7 @@ const getBalance = async ({
   const { result, error } = await axiosFullService(
     GET_BALANCE_METHOD,
     {
-      account_id: accountId,
+      accountId,
     },
   );
 

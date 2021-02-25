@@ -9,8 +9,8 @@ type GetAllTxosByAccountParams = {
 };
 
 type GetAllTxosByAccountResult = {
-  txo_ids: StringHex[];
-  txo_map: { [txo_id: string]: Txo };
+  txoIds: StringHex[];
+  txoMap: { [txoId: string]: Txo };
 };
 
 const getAllTxosByAccount = async ({
@@ -19,7 +19,7 @@ const getAllTxosByAccount = async ({
   const { result, error } = await axiosFullService(
     GET_ALL_TXOS_BY_ACCOUNT_METHOD,
     {
-      account_id: accountId,
+      accountId,
     },
   );
 

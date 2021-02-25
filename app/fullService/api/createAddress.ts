@@ -18,7 +18,7 @@ const createAddress = async ({
   comment,
 }: CreateAddressParams): Promise<CreateAddressResult> => {
   const { result, error } = await axiosFullService(CREATE_ADDRESS_METHOD, {
-    account_id: accountId,
+    accountId,
     comment,
   });
 

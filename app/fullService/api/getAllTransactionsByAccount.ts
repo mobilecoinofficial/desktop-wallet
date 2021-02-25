@@ -9,8 +9,8 @@ type GetAllTransactionsByAccountParams = {
 };
 
 type GetAllTransactionsByAccountResult = {
-  transaction_log_ids: StringHex[];
-  transaction_log_map: { [transactions_log_id: string]: TransactionLog };
+  transactionLogIds: StringHex[];
+  transactionLogMap: { [transactionsLogId: string]: TransactionLog };
 };
 
 const getAllTransactionsByAccount = async ({
@@ -19,7 +19,7 @@ const getAllTransactionsByAccount = async ({
   const { result, error } = await axiosFullService(
     GET_ALL_TRANSACTIONS_BY_ACCOUNT_METHOD,
     {
-      account_id: accountId,
+      accountId,
     },
   );
 

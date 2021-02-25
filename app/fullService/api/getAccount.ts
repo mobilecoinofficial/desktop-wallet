@@ -16,7 +16,7 @@ const getAccount = async ({
   accountId,
 }: GetAccountParams): Promise<GetAccountResult> => {
   const { result, error } = await axiosFullService(GET_ACCOUNT_METHOD, {
-    account_id: accountId,
+    accountId,
   });
 
   if (error) {

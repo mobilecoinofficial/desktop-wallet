@@ -15,7 +15,7 @@ type BuildTransactionParams = {
 };
 
 type BuildTransactionResult = {
-  tx_propsal: TxProposal;
+  txPropsal: TxProposal;
 };
 
 const buildTransaction = async ({
@@ -30,12 +30,12 @@ const buildTransaction = async ({
   const { result, error } = await axiosFullService(
     BUILD_TRANSACTION_METHOD,
     {
-      account_id: accountId,
+      accountId,
       fee,
-      input_txo_ids: inputTxoIds,
-      max_spendable_value: maxSpendableValue,
-      recipient_public_address: recipientPublicAddress,
-      tombstone_block: tombstoneBlock,
+      inputTxoIds,
+      maxSpendableValue,
+      recipientPublicAddress,
+      tombstoneBlock,
       value,
     },
   );

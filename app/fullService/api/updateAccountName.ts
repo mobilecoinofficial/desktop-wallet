@@ -18,7 +18,7 @@ const updateAccountName = async ({
   name,
 }: UpdateAccountNameParams): Promise<UpdateAccountNameResult> => {
   const { result, error } = await axiosFullService(UPDATE_ACCOUNT_NAME, {
-    account_id: accountId,
+    accountId,
     name,
   });
 

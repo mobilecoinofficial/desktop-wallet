@@ -2,17 +2,16 @@
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
 export default interface FullServiceAccount {
-  account_height: StringUInt64;
-  account_id: StringHex;
-  available_pmob: StringUInt64;
-  is_synced: boolean;
-  local_height: StringUInt64;
-  main_address: StringB58;
+  accountHeight: StringUInt64;
+  accountId: StringHex;
+  availablePmob: StringUInt64;
+  isSynced: boolean;
+  localHeight: StringUInt64;
+  mainAddress: StringB58;
   name: string | null;
-  network_height: StringUInt64;
-  next_subaddress_index: StringUInt64;
-  object: 'account';
-  offset_count: number;
-  pending_pmob: StringUInt64;
-  recovery_mode: boolean;
+  networkHeight: StringUInt64;
+  nextSubaddressIndex: StringUInt64;
+  offsetCount: number;
+  pendingPmob: StringUInt64;
+  recoveryMode: boolean;
 }

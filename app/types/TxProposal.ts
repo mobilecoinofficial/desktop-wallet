@@ -5,32 +5,32 @@ import type {
 
 type Amount = {
   commitment: StringHex;
-  masked_value: StringUInt64;
+  maskedValue: StringUInt64;
 };
 
 type TxOut = {
   amount: Amount;
-  e_fog_hint: StringHex;
-  public_key: StringHex;
-  target_key: StringHex;
+  eFogHint: StringHex;
+  publicKey: StringHex;
+  targetKey: StringHex;
 };
 
 type UnspentTxOut = {
-  attempted_spend_height: StringUInt64;
-  attempted_spend_tombstone: StringUInt64;
-  key_image: StringHex;
-  monitor_id: StringUInt64;
-  subaddress_index: StringUInt64;
-  tx_out: TxOut;
+  attemptedSpendHeight: StringUInt64;
+  attemptedSpendTombstone: StringUInt64;
+  keyImage: StringHex;
+  monitorId: StringUInt64;
+  subaddressIndex: StringUInt64;
+  txOut: TxOut;
   value: StringUInt64;
 };
 
 type PublicAddress = {
-  fog_authority_sig: StringHex;
-  fog_report_id: string;
-  fog_report_url: string;
-  spend_public_key: StringHex;
-  view_public_key: StringHex;
+  fogAuthoritySig: StringHex;
+  fogReportId: string;
+  fogReportUrl: string;
+  spendPublicKey: StringHex;
+  viewPublicKey: StringHex;
 };
 
 type Outlay = {
@@ -50,7 +50,7 @@ type TxOutMembershipElement = {
 
 type TxOutMembershipProof = {
   elements: TxOutMembershipElement[];
-  hightest_index: StringUInt64;
+  hightestIndex: StringUInt64;
   index: StringUInt64;
 };
 
@@ -63,19 +63,19 @@ type TxPrefix = {
   fee: StringUInt64;
   inputs: TxIn[];
   outputs: TxOut[];
-  tombstone_block: StringUInt64;
+  tombstoneBlock: StringUInt64;
 };
 
 type RingMLSAG = {
-  c_zero: StringHex;
-  key_image: StringHex;
+  cZero: StringHex;
+  keyImage: StringHex;
   responses: StringHex[];
 };
 
 type SignatureRctBulletproofs ={
-  pseudo_output_commitments: StringHex[];
-  range_proofs: StringHex;
-  ring_signatures: RingMLSAG;
+  pseudoOutputCommitments: StringHex[];
+  rangeProofs: StringHex;
+  ringSignatures: RingMLSAG;
 };
 
 type Tx = {
@@ -83,11 +83,12 @@ type Tx = {
   signature: SignatureRctBulletproofs;
 };
 
+// TODO decide if i want to conver to camelCase, or even ignore the unused type
 export default interface TxoPropsal {
   fee: StringUInt64;
-  input_list: UnspentTxOut[];
-  outlay_confirmation_numbers: number[][];
-  outlay_index_to_tx_out_index: StringUInt64[][];
-  outlay_list: Outlay[];
+  inputList: UnspentTxOut[];
+  outlayConfirmationNumbers: number[][];
+  outlayIndexToTxOutIndex: StringUInt64[][];
+  outlayList: Outlay[];
   tx: Tx;
 }

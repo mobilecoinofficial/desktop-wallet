@@ -84,7 +84,7 @@ type Tx = {
 };
 
 // TODO decide if i want to conver to camelCase, or even ignore the unused type
-export default interface TxoPropsal {
+export default interface TxPropsal {
   fee: StringUInt64;
   inputList: UnspentTxOut[];
   outlayConfirmationNumbers: number[][];

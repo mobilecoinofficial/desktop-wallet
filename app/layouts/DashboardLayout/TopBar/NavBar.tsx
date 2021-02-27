@@ -37,6 +37,11 @@ const sections: Section[] = [
     path: routePaths.APP_GIFTING,
   },
   {
+    Icon: GiftIcon,
+    label: 'history',
+    path: routePaths.APP_HISTORY,
+  },
+  {
     Icon: CogIcon,
     label: 'settings',
     path: routePaths.APP_SETTINGS,

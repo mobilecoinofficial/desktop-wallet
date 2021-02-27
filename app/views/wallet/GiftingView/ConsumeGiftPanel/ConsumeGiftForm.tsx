@@ -214,7 +214,9 @@ const ConsumeGiftForm: FC = () => {
         try {
           setIsAwaitingConformation(true);
           const result = await openGiftCode(values.giftB58Code);
-          if (result === null || result === undefined) throw new Error(t('giftB58Error'));
+          if (result === null || result === undefined) {
+            throw new Error(t('giftB58Error'));
+          }
 
           const { feeConfirmation, totalValueConfirmation, txProposal } = result;
 

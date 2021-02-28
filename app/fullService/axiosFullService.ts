@@ -12,6 +12,8 @@ interface AxiosFullServiceResponse extends AxiosResponse<any> {
   }
 }
 
+const FULL_SERVICE_API_VERSION = '2';
+
 export const handleResponse = (
   response: AxiosResponse<AxiosFullServiceResponse>,
 ): AxiosFullServiceResponse => {
@@ -42,6 +44,8 @@ const axiosFullService = async (
   try {
     const response = await axiosInstance({
       data: {
+        api_version: FULL_SERVICE_API_VERSION,
+        jsonrpc: '2.0',
         method,
         params: snakeCaseParams,
       },

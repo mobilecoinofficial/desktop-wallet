@@ -255,11 +255,13 @@
   },
 
   "NavBar": {
+    "contacts": "Contacts",
     "gift": "Gifting",
     "history": "History",
     "home": "Home",
     "settings": "Settings",
-    "transaction": "Send/Receive"
+    "transaction": "Send/Receive",
+    "wallet": "Wallet"
   },
 
   "NotFoundView": {

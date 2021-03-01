@@ -5,7 +5,14 @@ import { Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 
-import { CogIcon, GiftIcon, TransactionIcon, WalletHomeIcon } from '../../../components/icons';
+import {
+  AddressBookIcon,
+  CogIcon,
+  GiftIcon,
+  TransactionIcon,
+  WalletIcon,
+  WalletHomeIcon,
+} from '../../../components/icons';
 import { IconProps } from '../../../components/icons/IconProps';
 import { GOLD, GREY_DARK } from '../../../constants/colors';
 import routePaths from '../../../constants/routePaths';
@@ -37,9 +44,15 @@ const sections: Section[] = [
     path: routePaths.APP_GIFTING,
   },
   {
-    Icon: GiftIcon,
+    Icon: WalletIcon,
     label: 'history',
     path: routePaths.APP_HISTORY,
+  },
+
+  {
+    Icon: AddressBookIcon,
+    label: 'contacts',
+    path: routePaths.APP_CONTACTS,
   },
   {
     Icon: CogIcon,
@@ -60,7 +73,7 @@ const NavBar: FC<NavBarProps> = () => {
   });
 
   return (
-    <Tabs value={value} variant="fullWidth">
+    <Tabs value={value} variant="scrollable">
       {sections.map(({ Icon, label, path }, idx) => {
         const color = value === idx ? GOLD : GREY_DARK;
 
@@ -71,6 +84,7 @@ const NavBar: FC<NavBarProps> = () => {
             icon={<Icon height={32} width={32} color={color} />}
             label={t(label)}
             key={label}
+            wrapped // FK
           />
         );
       })}

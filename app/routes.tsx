@@ -11,6 +11,7 @@ import { CreateAccountView, ImportAccountView, UnlockWalletView } from './views/
 import NotFoundView from './views/errors/NotFoundView';
 import {
   ChangePasswordView,
+  ChangePinView,
   ConfigureMobilecoindView,
   DashboardView,
   GiftingView,
@@ -128,6 +129,11 @@ const routes: Routes = [
         Component: ChangePasswordView,
         exact: true,
         path: routePaths.APP_SETTINGS_CHANGE_PASSWORD,
+      },
+      {
+        Component: ChangePinView,
+        exact: true,
+        path: routePaths.APP_SETTINGS_CHANGE_PIN,
       },
       {
         Component: RetrieveEntropyView,

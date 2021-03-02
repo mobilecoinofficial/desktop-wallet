@@ -1,12 +1,12 @@
 import React from 'react';
-import type { FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
 
 import {
   Box,
   Breadcrumbs,
   Container,
   FormHelperText,
-  FormLabel,
+  InputAdornment,
   Link,
   Typography,
   makeStyles,
@@ -18,12 +18,18 @@ import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
-import { PASSWORD_MIN_SIZE, PASSWORD_MAX_SIZE } from '../../../constants/codes';
+import { SubmitButton, MOBNumberFormat } from '../../../components';
+import { MOBIcon } from '../../../components/icons';
+import { PIN_SIZE } from '../../../constants/codes';
 import routePaths from '../../../constants/routePaths';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
+import LocalStore from '../../../utils/LocalStore';
+import { makeHash } from '../../../utils/hashing';
+import isValidPin from '../../../utils/isValidPin';
+
+const localStore = new LocalStore();
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -78,12 +84,19 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
-const ChangePasswordView: FC = () => {
+const ChangePinView: FC = () => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const { changePassword } = useMobileCoinD();
-  const { t } = useTranslation('ChangePasswordView');
+  const { retrieveEntropy } = useMobileCoinD();
+
+  const { t } = useTranslation('ChangePinView');
+
+  const validatePin = (st: string) => (isValidPin(st) ? '' : t('errorPin'));
+
+  const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
+    event.target.select();
+  };
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -91,7 +104,7 @@ const ChangePasswordView: FC = () => {
         <Link color="inherit" to={routePaths.APP_SETTINGS} component={RouterLink}>
           <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
         </Link>
-        <Typography color="textPrimary">{t('changePasswordBreadcrumb')}</Typography>
+        <Typography color="textPrimary">{t('changePinBreadcrumb')}</Typography>
       </Breadcrumbs>
       <Box
         alignItems="center"
@@ -111,32 +124,38 @@ const ChangePasswordView: FC = () => {
       <Box flexGrow={1} mt={3}>
         <Formik
           initialValues={{
-            newPassword: '',
-            newPasswordConfirmation: '',
-            oldPassword: '',
+            currentPassword: '',
+            minimumForPin: String(localStore.getMinimumForPin()),
+            newPin: '',
+            newPinConfirmation: '',
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-            newPassword: Yup.string()
-              .min(PASSWORD_MIN_SIZE, t('passwordMin'))
-              .max(PASSWORD_MAX_SIZE, t('passwordMax'))
-              .required(t('passwordRequired')),
-            newPasswordConfirmation: Yup.string()
-              .oneOf([Yup.ref('newPassword')], t('passwordConfirmationRef'))
-              .required(t('passwordConfirmationRequired')),
-            oldPassword: Yup.string().required(t('oldPasswordRequired')),
+            currentPassword: Yup.string().required(t('currentPasswordRequired')),
+            newPin: Yup.string().length(PIN_SIZE, t('pinSize')).required(t('pinRequired')),
+            newPinConfirmation: Yup.string()
+              .oneOf([Yup.ref('newPin')], t('pinConfirmationRef'))
+              .required(t('pinConfirmationRequired')),
           })}
-          onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
+          onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             try {
               setSubmitting(true);
-              await changePassword(values.oldPassword, values.newPassword);
+              const ignoreResult = await retrieveEntropy(values.currentPassword);
+              if (typeof ignoreResult !== 'string') {
+                throw new Error(t('error'));
+              }
               if (isMountedRef.current) {
-                enqueueSnackbar(t('enqueue'), {
-                  variant: 'success',
-                });
-                setStatus({ success: true });
                 setSubmitting(false);
-                resetForm();
+
+                const hashedPin = makeHash(values.newPin);
+                localStore.setMinimumForPin(Number(values.minimumForPin));
+                localStore.setHashedPin(String(hashedPin));
+                if (isMountedRef.current) {
+                  enqueueSnackbar(t('enqueue'), {
+                    variant: 'success',
+                  });
+                }
+                setStatus({ success: true });
               }
             } catch (err) {
               if (isMountedRef.current) {
@@ -150,33 +169,50 @@ const ChangePasswordView: FC = () => {
           {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
             return (
               <Form>
-                <Box pt={4}>
-                  <FormLabel component="legend">
-                    <Typography color="primary">{t('formLabel')}</Typography>
-                  </FormLabel>
+                <Box>
                   <Field
                     component={TextField}
                     fullWidth
-                    label={t('oldPasswordLabel')}
+                    label={t('currentPasswordLabel')}
                     margin="normal"
-                    name="oldPassword"
+                    name="currentPassword"
                     type="password"
                   />
                   <Field
                     component={TextField}
                     fullWidth
-                    label={t('newPasswordLabel')}
+                    label={t('newPinLabel')}
                     margin="normal"
-                    name="newPassword"
-                    type="password"
+                    name="newPin"
+                    type="Pin"
+                    validate={validatePin}
                   />
                   <Field
                     component={TextField}
                     fullWidth
-                    label={t('passwordConfirmationLabel')}
+                    label={t('pinConfirmationLabel')}
                     margin="normal"
-                    name="newPasswordConfirmation"
-                    type="password"
+                    name="newPinConfirmation"
+                    type="Pin"
+                    validate={validatePin}
+                  />
+                  <Field
+                    component={TextField}
+                    fullWidth
+                    label={t('minimumForPin')}
+                    margin="normal"
+                    name="minimumForPin"
+                    id="minimumForPin"
+                    type="text"
+                    onFocus={handleSelect}
+                    InputProps={{
+                      inputComponent: MOBNumberFormat,
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <MOBIcon height={20} width={20} />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Box>
                 {errors.submit && (
@@ -189,7 +225,7 @@ const ChangePasswordView: FC = () => {
                   onClick={submitForm}
                   isSubmitting={isSubmitting}
                 >
-                  {t('changePasswordButton')}
+                  {t('changePinButton')}
                 </SubmitButton>
               </Form>
             );
@@ -200,4 +236,4 @@ const ChangePasswordView: FC = () => {
   );
 };
 
-export default ChangePasswordView;
+export default ChangePinView;

@@ -105,7 +105,7 @@ const SyncStatus: FC = () => {
           />
           {statusCode === SYNCING && (
             <CircularProgress
-              variant="static"
+              variant="determinate"
               size={60}
               thickness={3}
               className={classes.statusProgress}

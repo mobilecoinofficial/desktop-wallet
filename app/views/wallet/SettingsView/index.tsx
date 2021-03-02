@@ -21,6 +21,11 @@ const settingsOptionsList = [
     path: routePaths.APP_SETTINGS_CHANGE_PASSWORD,
   },
   {
+    Icon: LockIcon,
+    label: 'changePin',
+    path: routePaths.APP_SETTINGS_CHANGE_PIN,
+  },
+  {
     Icon: KeyIcon,
     label: 'retrieveEntropy',
     path: routePaths.APP_SETTINGS_RETRIEVE_ENTROPY,

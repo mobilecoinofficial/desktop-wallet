@@ -5,6 +5,7 @@ import { Box, Card, CardContent, Container, makeStyles, Typography } from '@mate
 import { useTranslation } from 'react-i18next';
 
 import SubmitButton from '../../../components/SubmitButton';
+import TransactionInfoLabel from '../../../components/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
 
 export interface TransactionDetailsViewProps {
@@ -28,12 +29,6 @@ const useStyles = makeStyles((theme: Theme) => {
       flexDirection: 'row',
       margin: '5px',
       padding: '5px',
-    },
-    negative: {
-      color: theme.palette.number.negative,
-    },
-    positive: {
-      color: theme.palette.number.positive,
     },
     root: {
       minHeight: '100%',
@@ -90,15 +85,7 @@ TransactionDetailsViewProps) => {
                 <Typography className={classes.textLeft} display="inline">
                   {`${t('amount')}:`}
                 </Typography>
-                <Typography
-                  className={`${classes.textRight} ${
-                    sign === '+' ? classes.positive : classes.negative
-                  }`}
-                  display="inline"
-                >
-                  {sign}
-                  {amount}&nbsp;MOB
-                </Typography>
+                <TransactionInfoLabel amount={amount} sign={sign} label="&nbsp;MOB" />
               </Box>
             </CardContent>
           </Card>
@@ -115,14 +102,7 @@ TransactionDetailsViewProps) => {
                   <Typography className={classes.textLeft} display="inline">
                     TXO&nbsp;#{x}
                   </Typography>
-                  <Typography
-                    className={`${classes.textRight} ${
-                      sign === '+' ? classes.positive : classes.negative
-                    }`}
-                    display="inline"
-                  >
-                    {sign} ??? MOB &gt;
-                  </Typography>
+                  <TransactionInfoLabel sign={sign} label=" MOB &gt;" />
                 </Box>
               ))}
             </CardContent>

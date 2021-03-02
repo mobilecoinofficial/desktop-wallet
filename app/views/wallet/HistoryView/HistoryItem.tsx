@@ -11,6 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import TransactionInfoLabel from '../../../components/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
 
 export interface HistoryItemProps {
@@ -65,18 +66,7 @@ const HistoryItem: FC<HistoryItemProps> = ({
               <Typography className={classes.textLeft} display="inline" color="textPrimary">
                 <b>{name}</b>
               </Typography>
-              <Typography
-                className={`${classes.textRight} ${
-                  sign === '+' ? classes.positive : classes.negative
-                }`}
-                display="inline"
-              >
-                <b>
-                  {sign}
-                  {amount}
-                </b>
-                &nbsp;MOB
-              </Typography>
+              <TransactionInfoLabel amount={amount} sign={sign} label="&nbsp;MOB" />
             </Box>
 
             <Box className={classes.internal}>

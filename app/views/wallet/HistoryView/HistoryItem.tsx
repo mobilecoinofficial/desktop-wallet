@@ -15,6 +15,7 @@ import type { Theme } from '../../../theme';
 
 export interface HistoryItemProps {
   amount: number;
+  comment: string;
   dateTime: Date;
   direction: string;
   name: string;

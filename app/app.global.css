@@ -13,3 +13,7 @@ body {
   overflow-y: hidden;
   letter-spacing: 4px;
 }
+
+.MuiTabs-flexContainer {
+  justify-content: space-between;
+}

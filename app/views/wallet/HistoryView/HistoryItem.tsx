@@ -35,12 +35,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'row',
   },
-  negative: {
-    color: theme.palette.number.negative,
-  },
-  positive: {
-    color: theme.palette.number.positive,
-  },
   root: {},
   textLeft: { textAlign: 'left', width: '100%' },
   textRight: { textAlign: 'right', width: '100%' },

@@ -130,17 +130,6 @@ const defaultTemplate = (app, mainWindow, i18n) => {
     };
   });
 
-  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    languageMenu.push({
-      checked: i18n.language === 'up',
-      click: () => {
-        i18n.changeLanguage('up');
-      },
-      label: i18n.t('Menu.languages.up'),
-      type: 'radio',
-    });
-  }
-
   menuView.push({
     label: i18n.t('Menu.language'),
     submenu: languageMenu,

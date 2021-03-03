@@ -10,9 +10,6 @@ import TransactionDetailsView from '../TransactionDetailsView';
 import HistoryDateSeparator from './HistoryDateSeparator';
 import HistoryItem from './HistoryItem';
 
-// import BuildGiftPanel from './BuildGiftPanel';
-// import ConsumeGiftPanel from './ConsumeGiftPanel';
-
 /* FAKE DATA ***************************************************** */
 type Direction = 'received' | 'sent';
 type Status = 'pending' | 'received' | 'succeeded';

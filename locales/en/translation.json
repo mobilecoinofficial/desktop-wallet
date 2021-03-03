@@ -248,6 +248,43 @@
     "synced": "% Synced"
   },
 
+  "Menu": {
+    "about": "About MobileCoin Desktop Wallet",
+    "bringToFront": "Show All",
+    "close": "Close",
+    "copy": "Copy",
+    "cut": "Cut",
+    "edit": "Edit",
+    "file": "File",
+    "hideOthers": "Hide Others",
+    "hideWallet": "Hide MobileCoin Desktop Wallet",
+    "inspectElement": "Inspect element",
+    "learnMore": "Learn More",
+    "learnMoreCommunityForum": "Community Forum",
+    "learnMoreFoundationGithub": "MobileCoin Foundation Github",
+    "learnMoreGithub": "MobileCoin Github",
+    "learnMoreMobileCoinFoundation": "MobileCoin Foundation",
+    "minimize": "Minimize",
+    "mobileCoin": "MobileCoin",
+    "open": "Open",
+    "paste": "Paste",
+    "quit": "Quit",
+    "redo": "Redo",
+    "reload": "Reload",
+    "selectAll": "Select All",
+    "showAll": "Show All",
+    "toggleDeveloperTools": "Toggle Developer Tools",
+    "toggleFullScreen": "Toggle Full Screen",
+    "undo": "Undo",
+    "view": "View",
+    "window": "Window",
+    "language": "Language",
+    "languages": {
+      "up": "UPPERCASED",
+      "en": "English"
+    }
+  },
+
   "MobilecoindDirectory": {
     "formLabel": "MobileCoinD Directory",
     "ledgerDbPathHeader": "Ledger Database Path:",

@@ -2,3 +2,28 @@
 # yarn lockfile v1
 
 
+"@babel/runtime@^7.12.0":
+  "integrity" "sha512-aY2kU+xgJ3dJ1eU6FMB9EH8dIe8dmusF1xEku52joLvw6eAFN0AI+WxCLDnpev2LEejWBAy2sBvBOBAjI3zmvA=="
+  "resolved" "https://registry.npmjs.org/@babel/runtime/-/runtime-7.13.9.tgz"
+  "version" "7.13.9"
+  dependencies:
+    "regenerator-runtime" "^0.13.4"
+
+"@types/i18next-node-fs-backend@^2.1.0":
+  "integrity" "sha512-bOOeT89UO/bYLJoQHdN5S3pggj7mMmFfQMBpDdUQOQIQkENGpnTwhNsIM/kjl1NE2HEihjlRZUNVV60Ze86UZA=="
+  "resolved" "https://registry.npmjs.org/@types/i18next-node-fs-backend/-/i18next-node-fs-backend-2.1.0.tgz"
+  "version" "2.1.0"
+  dependencies:
+    "i18next" ">=17.0.11"
+
+"i18next@>=17.0.11":
+  "integrity" "sha512-9Azzyb3DvMJUMd7sPhwVEs6PQcogvdHmLQTjMQ+P+h3XwW4O66/8lgZTmYShgkjPOCqTw4Fwl5LOp/VhZgPo5A=="
+  "resolved" "https://registry.npmjs.org/i18next/-/i18next-19.9.1.tgz"
+  "version" "19.9.1"
+  dependencies:
+    "@babel/runtime" "^7.12.0"
+
+"regenerator-runtime@^0.13.4":
+  "integrity" "sha512-a54FxoJDIr27pgf7IgeQGxmqUNYrcV338lf/6gH456HZ/PhX+5BcwHXG9ajESmwe6WRO0tAzRUrRmNONWgkrew=="
+  "resolved" "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.7.tgz"
+  "version" "0.13.7"

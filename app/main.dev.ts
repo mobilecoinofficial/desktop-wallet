@@ -18,9 +18,11 @@ import { app, BrowserWindow, ipcMain } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 
+import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
 import getPlatform from './get-platform';
-import MenuBuilder from './menu';
+import i18n from './i18next.config';
+import menuFactoryService from './menuFactory';
 import LocalStore from './utils/LocalStore';
 
 import './utils/autoupdate';
@@ -175,8 +177,19 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
+  i18n.on('loaded', () => {
+    i18n.changeLanguage('en');
+    i18n.off('loaded');
+  });
+
+  i18n.on('languageChanged', (language: string) => {
+    menuFactoryService.buildMenu(app, mainWindow, i18n);
+    mainWindow?.webContents.send('language-changed', {
+      language,
+      namespace: 'translation',
+      resource: i18n.getResourceBundle(language, config.namespace),
+    });
+  });
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
@@ -243,6 +256,19 @@ ipcMain.on('reset-ledger', () => {
   exec(`rm "${mobilecoindDbPath}/lock.mdb"`);
   app.relaunch(); // does not trigger until app quits or exits
   app.exit(); // exits without before-quit and will-quit
+});
+
+ipcMain.on('get-initial-translations', (event) => {
+  i18n.loadLanguages('en', () => {
+    const initial = {
+      en: {
+        translation: i18n.getResourceBundle('en', config.namespace),
+      },
+    };
+
+    // eslint-disable-next-line no-param-reassign
+    event.returnValue = initial;
+  });
 });
 
 const shutDownMobilecoind = () => {

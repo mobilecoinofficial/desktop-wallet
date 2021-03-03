@@ -87,6 +87,26 @@
     "settingsBreadcrumb": "Settings"
   },
 
+  "ChangePinView": {
+    "changePinBreadcrumb": "Set or Change PIN",
+    "changePinButton": "Set PIN",
+    "currentPasswordLabel": "Current Password",
+    "currentPasswordRequired": "Your current password is required to set or change your PIN",
+    "description": "The PIN number is used as an extra safety confirmation for operations. It's required if the MOB amount is greater than a minimum value.",
+    "enqueue": "Successfully set PIN!",
+    "errorPin": "PIN must be all digits",
+    "formLabel": "PIN to use",
+    "instructions": "To change your PIN or to set one, just enter the desired value below, and the minimum it applies to as well.",
+    "minimumForPin": "Minimum amount that requires a PIN",
+    "newPinLabel": "PIN to use",
+    "pinConfirmationLabel": "Confirm PIN to use",
+    "pinConfirmationRef": "Must match PIN",
+    "pinConfirmationRequired": "PIN Confirmation is required",
+    "pinRequired": "PIN is required",
+    "pinSize": "PIN must be 6 characters long.",
+    "settingsBreadcrumb": "Settings"
+  },
+
   "CloseWalletModal": {
     "closeVerifyBody": "Are you sure you want to close and secure the wallet?",
     "closeVerifyConfirm": "Yes, Close Wallet",

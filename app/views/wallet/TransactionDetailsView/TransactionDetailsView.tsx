@@ -2,6 +2,9 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Card, CardContent, Container, makeStyles, Typography } from '@material-ui/core';
+import { Formik, Form, Field } from 'formik';
+import { TextField } from 'formik-material-ui';
+import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import SubmitButton from '../../../components/SubmitButton';
@@ -10,9 +13,12 @@ import type { Theme } from '../../../theme';
 
 export interface TransactionDetailsViewProps {
   amount: number;
+  comment: string;
   dateTime: Date;
   direction: string;
+  id: string;
   name: string;
+  onChangedComment: any;
   onClickBack: any;
   sign: string;
   status: string;
@@ -41,15 +47,18 @@ const useStyles = makeStyles((theme: Theme) => {
 
 const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
   amount,
+  comment,
   dateTime,
-  // direction,
+  id,
+  // direction, status
   name,
+  onChangedComment,
   onClickBack,
   sign,
-}: // status,
-TransactionDetailsViewProps) => {
+}: TransactionDetailsViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('TransactionDetails');
+  const { enqueueSnackbar } = useSnackbar();
 
   return (
     <Container maxWidth="sm" style={{ padding: '0' }}>
@@ -114,14 +123,50 @@ TransactionDetailsViewProps) => {
             <Typography variant="body2" color="textPrimary">
               {t('addComment')}
             </Typography>
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
+
+            <Formik
+              initialValues={{
+                newComment: comment,
+                submit: null,
+              }}
+              onSubmit={(values, { setSubmitting, setStatus }) => {
+                setSubmitting(true);
+                onChangedComment(id, values.newComment);
+                setTimeout(() => {
+                  setSubmitting(false);
+                  enqueueSnackbar(t('savedComment'), { variant: 'success' });
+                  setStatus({ success: true });
+                }, 1500);
+              }}
+            >
+              {({ isSubmitting, dirty, isValid, submitForm }) => {
+                return (
+                  <Form>
+                    <Box>
+                      <Field
+                        component={TextField}
+                        fullWidth
+                        label={t('typeHere')}
+                        margin="normal"
+                        name="newComment"
+                        type="text"
+                      />
+                    </Box>{' '}
+                    <Box paddingLeft={10} paddingRight={10}>
+                      <SubmitButton
+                        disabled={!dirty || !isValid || isSubmitting}
+                        onClick={submitForm}
+                        isSubmitting={isSubmitting}
+                      >
+                        {t('changeComment')}
+                      </SubmitButton>
+                    </Box>
+                  </Form>
+                );
+              }}
+            </Formik>
           </Card>
         </Container>
-
         <SubmitButton disabled={false} isSubmitting={false} onClick={onClickBack}>
           {t('buttons.back')}
         </SubmitButton>

@@ -150,6 +150,7 @@ const HistoryView: FC = () => {
                 comment={trans.comment}
                 dateTime={trans.dateTime}
                 direction={trans.direction}
+                id={trans.id}
                 name={trans.name}
                 onClick={() => {
                   setCurrentTransaction(trans);
@@ -169,9 +170,16 @@ const HistoryView: FC = () => {
     <Grid item xs={12} hidden={showing !== DETAILS}>
       <TransactionDetailsView
         amount={currentTransaction.amount}
+        comment={currentTransaction.comment}
         dateTime={currentTransaction.dateTime}
         direction={currentTransaction.direction}
+        id={currentTransaction.id}
         name={currentTransaction.name}
+        onChangedComment={(i, v) => {
+          console.log('Supposedly changing comment to ', i, v);
+
+          FAKE_DATA.find((x) => x.id === i).comment = v;
+        }}
         onClickBack={() => setShowing(HISTORY)}
         sign={currentTransaction.direction === 'sent' ? '-' : '+'}
         status={currentTransaction.status}

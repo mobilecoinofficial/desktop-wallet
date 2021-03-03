@@ -391,8 +391,10 @@
       "cancel": "Cancel comment",
       "save": "Save comment"
     },
+    "changeComment": "Change comment",
     "date": "Date",
     "recipient": "Recipient",
+    "savedComment": "Comment saved",
     "sender": "Sender",
     "time": "Time",
     "txo": "TXO",

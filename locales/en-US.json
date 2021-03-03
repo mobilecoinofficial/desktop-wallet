@@ -357,6 +357,7 @@
 
   "SettingsOptionsItem": {
     "changePassword": "Change Password",
+    "changePin": "Set or Change PIN",
     "configureMobileCoinD": "Configure MobileCoinD",
     "privacyPolicy": "Privacy Policy",
     "retrieveEntropy": "Retrieve Secret Entropy",

@@ -337,41 +337,19 @@ const reducer = (state: MobileCoinDState, action: Action): MobileCoinDState => {
 
 const MobileCoinDContext = createContext<MobileCoinDContextValue>({
   ...initialMobileCoinDState,
-  buildGiftCode: () => {
-    return Promise.resolve();
-  },
-  buildTransaction: () => {
-    return Promise.resolve();
-  },
-  changePassword: () => {
-    return Promise.resolve();
-  },
+  buildGiftCode: () => Promise.resolve(),
+  buildTransaction: () => Promise.resolve(),
+  changePassword: () => Promise.resolve(),
   confirmEntropyKnown: () => {},
-  createAccount: () => {
-    return Promise.resolve();
-  },
+  createAccount: () => Promise.resolve(),
   deleteStoredGiftB58Code: () => {},
-  importAccount: () => {
-    return Promise.resolve();
-  },
-  openGiftCode: () => {
-    return Promise.resolve();
-  },
-  payAddressCode: () => {
-    return Promise.resolve();
-  },
-  retrieveEntropy: () => {
-    return Promise.resolve();
-  },
-  submitGiftCode: () => {
-    return Promise.resolve();
-  },
-  submitTransaction: () => {
-    return Promise.resolve();
-  },
-  unlockWallet: () => {
-    return Promise.resolve();
-  },
+  importAccount: () => Promise.resolve(),
+  openGiftCode: () => Promise.resolve(),
+  payAddressCode: () => Promise.resolve(),
+  retrieveEntropy: () => Promise.resolve(),
+  submitGiftCode: () => Promise.resolve(),
+  submitTransaction: () => Promise.resolve(),
+  unlockWallet: () => Promise.resolve(),
 });
 
 export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
@@ -456,7 +434,9 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
 
   const openGiftCode = async (giftB58Code: string) => {
     // TODO - for multiple accounts, we'll need to change this select logic
-    if (!state.receiver) throw new Error('No Receiver found.');
+    if (!state.receiver) {
+      throw new Error('No Receiver found.');
+    }
     const OpenGiftCodeServiceInstance = new OpenGiftCodeService(client, {
       giftB58Code,
       receiver: state.receiver,
@@ -572,7 +552,9 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
         type: 'UPDATE_GIFT_CODES',
       });
     }
-    if (!isSuccess) throw new Error(errorMessage);
+    if (!isSuccess) {
+      throw new Error(errorMessage);
+    }
   };
 
   const submitTransaction = async (txProposal: TxProposal) => {
@@ -600,7 +582,9 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
 
   const unlockWallet = async (password: string) => {
     const { encryptedEntropy } = state;
-    if (!encryptedEntropy) return;
+    if (!encryptedEntropy) {
+      return;
+    }
 
     const UnlockWalletServiceInstance = new UnlockWalletService(client, {
       password,
@@ -634,8 +618,8 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
         const assertedGiftCodes = Array.isArray(giftCodes) ? giftCodes : [];
         // try to get encryptedEntropy from file
         // const accessToken = window.localStorage.getItem('accessToken');
-        // TODO - clean up this initalize function in a way that makes sense
-        // on initalize, we should pull the encrypted entropy (if its there)
+        // TODO - clean up this initialize function in a way that makes sense
+        // on initalize, we should pull the encrypted entropy (if it's there)
         // the state in dispatch will control the Guards
         dispatch({
           payload: {
@@ -665,7 +649,9 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
   useEffect(() => {
     const { balance, monitorId } = state;
     // TODO - check this early exit
-    if (balance === undefined || monitorId === null) return () => {};
+    if (balance === undefined || monitorId === null) {
+      return () => {};
+    }
 
     const fetchBalance = async () => {
       // TODO - consider making a GetBalanceService
@@ -703,10 +689,14 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
   useEffect(() => {
     const { monitorId } = state;
     // TODO -- am i doing this right? triple check
-    if (monitorId === null) return () => {};
+    if (monitorId === null) {
+      return () => {};
+    }
 
     const fetchLedgerInfo = async () => {
-      if (monitorId === undefined) return;
+      if (monitorId === undefined) {
+        return;
+      }
 
       const GetStatusServiceInstance = new GetStatusService(client, {
         monitorId,

@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => {
   };
 });
 
-const BuildGiftPanel: FC = () => {
+const ConsumeGiftPanel: FC = () => {
   const classes = useStyles();
   const { balance, networkHighestBlockIndex, nextBlock } = useMobileCoinD();
   const { t } = useTranslation('ConsumeGiftPanel');
@@ -72,4 +72,4 @@ const BuildGiftPanel: FC = () => {
   );
 };
 
-export default BuildGiftPanel;
+export default ConsumeGiftPanel;

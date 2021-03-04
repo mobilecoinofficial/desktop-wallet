@@ -150,11 +150,7 @@ const ChangePinView: FC = () => {
                 const hashedPin = makeHash(values.newPin);
                 localStore.setMinimumForPin(Number(values.minimumForPin));
                 localStore.setHashedPin(String(hashedPin));
-                if (isMountedRef.current) {
-                  enqueueSnackbar(t('enqueue'), {
-                    variant: 'success',
-                  });
-                }
+                enqueueSnackbar(t('enqueue'), { variant: 'success' });
                 setStatus({ success: true });
               }
             } catch (err) {

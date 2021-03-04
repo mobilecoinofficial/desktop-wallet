@@ -1,26 +1,28 @@
 import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import i18nextBackend from 'i18next-node-fs-backend';
 
 import config from '../configs/app.config';
 
 const i18nextOptions = {
+  backend: {
+    addPath: './locales/{{lng}}/{{ns}}.missing.json',
+    jsonIndent: 2,
+    loadPath: './locales/{{lng}}/{{ns}}.json',
+  },
   fallbackLng: config.fallbackLng,
   interpolation: {
     escapeValue: false,
   },
-  lng: 'en',
   react: {
     wait: false,
   },
-  saveMissing: true,
-  whitelist: config.languages,
+  supportedLngs: config.languages,
 };
 
-i18n.use(initReactI18next);
+i18n.use(i18nextBackend);
 
-// initialize if not already initialized
 if (!i18n.isInitialized) {
   i18n.init(i18nextOptions);
 }
 
-// export default i18n;
+export default i18n;

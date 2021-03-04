@@ -1,31 +1,27 @@
 import i18n from 'i18next';
-// import i18nextBackend from 'i18next-node-fs-backend';
 import { initReactI18next } from 'react-i18next';
 
-import en from '../locales/en/translation.json';
-import up from '../locales/up/translation.json'; // this is uppercased and for dev only
+import config from '../configs/app.config';
+import enUS from '../locales/en-US/translation.json';
+import upDEV from '../locales/up-DEV/translation.json'; // this is uppercased and for dev only
 
-i18n
-  // pass the i18n instance to react-i18next.
-  // .use(i18nextBackend)
-  .use(initReactI18next);
+i18n.use(initReactI18next);
 
 if (!i18n.isInitialized) {
   i18n.init({
     debug: true,
-    fallbackLng: 'en',
+    fallbackLng: config.fallbackLng,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
-    lng: 'en',
     react: {
       wait: false,
     },
     resources: {
-      en,
-      up,
+      'en-US': enUS,
+      'up-DEV': upDEV,
     },
-    supportedLngs: ['en', 'up'],
+    supportedLngs: config.languages,
   });
 }
 

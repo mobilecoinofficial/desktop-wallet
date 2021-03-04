@@ -257,8 +257,8 @@
     "window": "WINDOW",
     "language": "LANGUAGE",
     "languages": {
-      "up": "UPPERCASED",
-      "en": "English"
+      "up-DEV": "UPPERCASED",
+      "en-US": "English"
     }
   },
   "MobilecoindDirectory": {

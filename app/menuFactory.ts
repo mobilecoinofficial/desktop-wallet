@@ -1,8 +1,8 @@
 import { Menu } from 'electron';
 
 import config from '../configs/app.config';
-import darwinTemplate from './menus/darwin-menu';
-import otherTemplate from './menus/other-menu';
+import darwinTemplate from './menus/darwinMenu';
+import otherTemplate from './menus/otherMenu';
 
 const menu = null;
 

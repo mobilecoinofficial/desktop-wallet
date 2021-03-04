@@ -1,5 +1,4 @@
 import i18n from 'i18next';
-// import i18nextBackend from 'i18next-node-fs-backend';
 import { initReactI18next } from 'react-i18next';
 
 import config from '../configs/app.config';

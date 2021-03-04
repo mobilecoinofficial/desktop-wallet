@@ -191,6 +191,16 @@ const createWindow = async () => {
     });
   });
 
+  if (!i18n.hasResourceBundle(config.fallbackLng, config.namespace)) {
+    i18n.addResourceBundle(
+      config.fallbackLng,
+      config.namespace,
+      i18n.getResourceBundle(config.fallbackLng, config.namespace)
+    );
+  }
+
+  menuFactoryService.buildMenu(app, mainWindow, i18n);
+
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();

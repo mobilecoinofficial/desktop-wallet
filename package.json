@@ -66,6 +66,10 @@
         "filter": [
           "**/*"
         ]
+      },
+      {
+        "from": "locales",
+        "to": "locales"
       }
     ],
     "dmg": {

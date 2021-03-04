@@ -26,9 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const App = require('./App.tsx').default;
 
   render(
+    // <I18nextProvider i18n={ i18n } >
     <AppContainer>
+      {/* <I18nextProvider i18n={ i18n } initialI18nStore={ initialI18nStore } initialLanguage="el"> */}
       <App />
+      {/* </I18nextProvider> */}
     </AppContainer>,
+    // </I18nextProvider>,
     document.getElementById('root')
   );
 });

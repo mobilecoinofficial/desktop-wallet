@@ -18,7 +18,7 @@ Primary.args = {
   dateTime: new Date(),
   direction: 'received',
   name: 'Bob Barker',
-  onClick: null,
+  onClick: () => {},
   sign: '+',
   status: 'succeeded',
 };

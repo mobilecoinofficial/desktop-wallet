@@ -20,7 +20,7 @@ export interface HistoryItemProps {
   dateTime: Date;
   direction: string;
   name: string;
-  onClick: any;
+  onClick: () => void;
   sign: '+' | '-';
   status: string;
 }

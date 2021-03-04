@@ -19,7 +19,7 @@ import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 
 import config from '../configs/app.config';
-import { MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
+import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
 import getPlatform from './get-platform';
 import i18n from './i18next.config';
 import menuFactoryService from './menuFactory';
@@ -115,7 +115,7 @@ const createWindow = async () => {
   };
 
   mainWindow = new BrowserWindow({
-    height: 950,
+    height: INITIAL_WINDOW_HEIGHT,
     icon: getAssetPath('icon.png'),
     minHeight: MIN_WINDOW_HEIGHT,
     minWidth: MIN_WINDOW_WIDTH,

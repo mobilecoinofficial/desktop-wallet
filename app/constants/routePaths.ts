@@ -1,7 +1,9 @@
 const routePaths = {
   APP: '/app',
+  APP_CONTACTS: '/app/contacts',
   APP_DASHBOARD: '/app/dashboard',
   APP_GIFTING: '/app/gifting',
+  APP_HISTORY: '/app/history',
   APP_SETTINGS: '/app/settings',
   APP_SETTINGS_CHANGE_PASSWORD: '/app/settings/change_password',
   APP_SETTINGS_CHANGE_PIN: '/app/settings/change_pin',

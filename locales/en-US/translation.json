@@ -11,10 +11,12 @@
     "mobUrlTooltip": "Show MobURL QR Code",
     "unnamed": "Unnamed Account"
   },
+
   "BalanceIndicator": {
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger.",
     "title": "Balance"
   },
+
   "BuildGiftForm": {
     "accountBalance": "Account Balance",
     "accountName": "Account Name",
@@ -47,6 +49,7 @@
     "unnamed": "Unnamed Account",
     "walletSyncing": "Wallet syncing"
   },
+
   "BuildGiftPanel": {
     "cancelButton": "Cancel",
     "clickToCopy": "Click to copy to clipboard.",
@@ -65,6 +68,7 @@
     "title": "You can package and gift your MOB!",
     "value": "Value"
   },
+
   "ChangePasswordView": {
     "changePasswordBreadcrumb": "Change Password",
     "changePasswordButton": "Change Password",
@@ -83,6 +87,7 @@
     "passwordRequired": "New Password is required",
     "settingsBreadcrumb": "Settings"
   },
+
   "ChangePinView": {
     "changePinBreadcrumb": "Set or Change PIN",
     "changePinButton": "Set PIN",
@@ -102,6 +107,7 @@
     "pinSize": "PIN must be 6 characters long.",
     "settingsBreadcrumb": "Settings"
   },
+
   "CloseWalletModal": {
     "closeVerifyBody": "Are you sure you want to close and secure the wallet?",
     "closeVerifyConfirm": "Yes, Close Wallet",
@@ -109,6 +115,7 @@
     "closeVerifyHeader": "Close and Secure Wallet?",
     "closeWalletButton": "Close Wallet"
   },
+
   "ConfigureMobilecoindView": {
     "configureMobilecoindBreadcrumb": "Configure MobileCoinD",
     "daemonDescription": "The MobileCoin Daemon, or MobileCoinD, is a standalone executable which provides blockchain synchronization and wallet services.",
@@ -116,6 +123,7 @@
     "panelDescription": "This panel allows you to customize the behavior of MobileCoinD as well as perform some basic resets.",
     "settingsBreadcrumb": "Settings"
   },
+
   "ConsumeGiftForm": {
     "accountBalance": "Account Balance",
     "accountName": "Account Name",
@@ -140,11 +148,13 @@
     "total": "Total",
     "unnamed": "Unnamed Account"
   },
+
   "ConsumeGiftPanel": {
     "balance": "Balance",
     "description": "You may use this form to collect gift codes. Simply enter the Gift Code and confirm you want to consume the gift into your wallet.",
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
   },
+
   "CreateAccountForm": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",
@@ -161,6 +171,7 @@
     "passwordMin": "Password must be at least 8 characters in length.",
     "passwordRequired": "Password is required"
   },
+
   "CreateAccountView": {
     "description": "This option is best for individuals who do not have an existing account. If you have an account you would like to use, please import an existing account instead.",
     "header": "Create a new account for this desktop wallet.",
@@ -169,10 +180,18 @@
     "title": "Create Account",
     "unlockWalletButton": "Unlock this wallet"
   },
+
   "GiftingView": {
     "giftMOB": "Gift MOB",
     "openGift": "Open Gift"
   },
+
+  "HistoryView": {
+    "showAllTransactions": "All",
+    "showReceivedTransactions": "Received",
+    "showSentTransactions": "Sent"
+  },
+
   "ImportAccountForm": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",
@@ -192,6 +211,7 @@
     "passwordMin": "Password must be at least 8 characters in length.",
     "passwordRequired": "Password is required"
   },
+
   "ImportAccountView": {
     "createInstead": "Create account instead",
     "description": "This option is best for individuals who already have MobileCoin accounts. If you do not have an account, please create a new account instead.",
@@ -200,6 +220,7 @@
     "title": "Import Account",
     "unlockWalletButton": "Unlock this wallet"
   },
+
   "LeaveMobilecoindRunning": {
     "defaultDescription": "By default, MobileCoinD terminates when you exit the wallet. This setting allows you to leave MobileCoinD syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches.",
     "formLabel": "MobileCoinD Background Process",
@@ -208,6 +229,7 @@
     "ternaryWillNotSync": "MobileCoinD will not continue to sync when you exit the wallet.",
     "ternaryWillSync": "MobileCoinD will continue to sync when you exit the wallet."
   },
+
   "LedgerStatus": {
     "blockType": "Block Type",
     "formLabel": "Ledger Status",
@@ -225,6 +247,7 @@
     "statusCopyError": "There's been an error in the ledger. Please reset the ledger at the bottom of this page.",
     "synced": "% Synced"
   },
+
   "Menu": {
     "about": "About MobileCoin Desktop Wallet",
     "bringToFront": "Show All",
@@ -261,26 +284,31 @@
       "en-US": "English"
     }
   },
+
   "MobilecoindDirectory": {
     "formLabel": "MobileCoinD Directory",
     "ledgerDbPathHeader": "Ledger Database Path:",
     "mobilecoindDbPathHeader": "MobileCoinD Database Path:"
   },
+
   "NavBar": {
     "gift": "Gifting",
     "home": "Home",
     "settings": "Settings",
     "transaction": "Send/Receive"
   },
+
   "NotFoundView": {
     "backButton": "Back to home",
     "description": "You should never see this page. If you do, an engineer messed up.",
     "header": "404: The page you are looking for isn’t here"
   },
+
   "PrivacyPolicyView": {
     "privacyPolicy": "Privacy Policy",
     "settings": "Settings"
   },
+
   "ResetLedger": {
     "cancelButton": "Cancel",
     "confirmButton": "Confirm",
@@ -290,6 +318,7 @@
     "resetLedgerModal": "Reset the ledger?",
     "resetLedgerModalDescription": "Resetting the ledger will restart the wallet. You will need to re-sync the ledger from 0. The app will refresh, and you will need to re-enter your password."
   },
+
   "RetrieveEntropyView": {
     "description": "that unlocks your wallet and allows you to use MobileCoin. It is unique to your account. It is important that you never share this code. You may wish to use this code in a secure, safe manner. This wallet uses your password to store an encrypted Entropy.",
     "entropyCanBeUsed": "The Entropy can be used to import your wallet in case your device is damaged or lost. It allows you to add your account to other wallets.",
@@ -302,6 +331,7 @@
     "retrieveSecret": "Retrieve Secret Entropy",
     "settings": "Settings"
   },
+
   "SendMobForm": {
     "accountBalance": "Account Balance",
     "accountName": "Account Name",
@@ -337,9 +367,11 @@
     "transactionCanceled": "Transaction Canceled",
     "unnamed": "Unnamed Account"
   },
+
   "SendMobPanel": {
     "header": "Please enter the amount of MOB you want to send and the public address of the recipient."
   },
+
   "SettingsOptionsItem": {
     "changePassword": "Change Password",
     "changePin": "Set or Change PIN",
@@ -348,6 +380,7 @@
     "retrieveEntropy": "Retrieve Secret Entropy",
     "terms": "Terms of Use"
   },
+
   "ShowEntropyModal": {
     "back": "Go back...",
     "confirm": "Confirm you have secured Entropy",
@@ -360,6 +393,7 @@
     "show": "Show Secret Entropy",
     "yes": "Yes, I have secured my Entropy"
   },
+
   "ShowRetrievedEntropyModal": {
     "description": "We decrypted your Entropy and will now show you the code on your screen. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.",
     "header": "This is your secret Entropy!",
@@ -367,27 +401,52 @@
     "secured": "I have secured my Entropy",
     "show": "Show Secret Entropy"
   },
+
   "SyncStatus": {
     "error": "Please see Admin Panel in Settings.",
     "synced": "100%: synced with the ledger",
     "syncing": "Syncing with the ledger"
   },
+
+  "TransactionDetails": {
+    "amount": "Amount",
+    "addComment": "Add comment",
+    "buttons": {
+      "back": "Go Back",
+      "cancel": "Cancel comment",
+      "save": "Save comment"
+    },
+    "changeComment": "Change comment",
+    "date": "Date",
+    "recipient": "Recipient",
+    "savedComment": "Comment saved",
+    "sender": "Sender",
+    "time": "Time",
+    "txo": "TXO",
+    "txoDetails": "TXO Details",
+    "typeHere": "Start typing here"
+  },
+
   "TermsOfUseDialog": {
     "close": "Close Terms of Use"
   },
+
   "TermsOfUseView": {
     "settings": "Settings",
     "terms": "Terms of Use"
   },
+
   "TransactionView": {
     "receive": "Receive MOB",
     "send": "Send MOB"
   },
+
   "UnlockWalletForm": {
     "passwordLabel": "Password",
     "passwordRequired": "Password is required",
     "unlockWalletButton": "Unlock Wallet"
   },
+
   "UnlockWalletView": {
     "description": "Please enter the passphrase you used to secure your wallet. If you cannot recall your passphrase, you may re-import the account into your wallet using their Entropy seed.",
     "importInstead": "Import account from Entropy instead",

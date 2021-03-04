@@ -15,6 +15,7 @@ import {
   ConfigureMobilecoindView,
   DashboardView,
   GiftingView,
+  HistoryView,
   RetrieveEntropyView,
   SettingsView,
   PrivacyPolicyView,
@@ -119,6 +120,11 @@ const routes: Routes = [
         Component: GiftingView,
         exact: true,
         path: routePaths.APP_GIFTING,
+      },
+      {
+        Component: HistoryView,
+        exact: true,
+        path: routePaths.APP_HISTORY,
       },
       {
         Component: SettingsView,

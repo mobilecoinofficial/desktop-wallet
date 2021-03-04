@@ -3,11 +3,11 @@ import type { FC } from 'react';
 
 import { makeStyles, Typography } from '@material-ui/core';
 
-import type { Theme } from '../theme';
+import type { Theme } from '../../theme';
 
-interface TransactionInfoLabelProps {
+export interface TransactionInfoLabelProps {
   amount?: number;
-  sign: string;
+  sign: '+' | '-';
   label: string;
 }
 

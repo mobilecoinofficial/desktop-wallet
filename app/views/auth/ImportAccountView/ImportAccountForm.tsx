@@ -2,7 +2,6 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
-import * as bip39 from 'bip39';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
@@ -13,6 +12,11 @@ import { SubmitButton, TermsOfUseDialog } from '../../../components';
 import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
+import {
+  convertMnemonicOrHexToEntropy,
+  isValidMnemonicOrHexFormat,
+  isValidMnemonicOrHexValue,
+} from '../../../utils/bip39Functions';
 
 export interface ImportAccountFormValues {
   accountName: string;
@@ -38,7 +42,7 @@ export const importAccountFormOnSubmit = async (
   const { setStatus, setErrors, setSubmitting } = helpers;
 
   try {
-    const decodedEntropy = bip39.mnemonicToEntropy(entropy);
+    const decodedEntropy = convertMnemonicOrHexToEntropy(entropy);
     await importAccount(accountName, decodedEntropy, password);
 
     if (isMountedRef.current) {
@@ -98,26 +102,13 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     submit: null,
   };
 
-  const validatePassPhrase = (pass: string | undefined): boolean => {
-    if (!pass) {
-      return false;
-    }
-
-    try {
-      bip39.mnemonicToEntropy(pass);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  };
-
   const validationSchema = Yup.object().shape({
     accountName: Yup.string().max(64, t('accountNameValidation')),
     // CBB: It appears that the checkedTerms error message is not working properly.
     checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
     entropy: Yup.string()
-      .matches(/^(\w+\s+){11,}\w+$/i, t('entropyMatches'))
-      .test('validPassPhrase', t('entropyIsWrong'), validatePassPhrase)
+      .test('format', t('entropyMatches'), isValidMnemonicOrHexFormat)
+      .test('validPassPhrase', t('entropyIsWrong'), isValidMnemonicOrHexValue)
       .required(t('entropyRequired')),
     password: Yup.string()
       .min(8, t('passwordMin'))

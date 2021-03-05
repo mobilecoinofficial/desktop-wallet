@@ -13,10 +13,10 @@ import {
   Modal,
   Typography,
 } from '@material-ui/core';
-import * as bip39 from 'bip39';
 import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../../../theme';
+import { entropyToMnemonic } from '../../../utils/bip39Functions';
 
 interface ShowRetrievedEntropyModalProps {
   entropy: string;
@@ -56,7 +56,7 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
   const [showEntropy, setShowEntropy] = useState(false);
   const { t } = useTranslation('ShowRetrievedEntropyModal');
 
-  const passPhrase = entropy ? bip39.entropyToMnemonic(entropy) : '';
+  const passPhrase = entropy ? entropyToMnemonic(entropy) : '';
 
   // TODO, i should start making a single util for all of this coercing logic
   const toggleEntropy = () => {

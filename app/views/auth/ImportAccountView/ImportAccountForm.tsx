@@ -2,6 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
+import * as bip39 from 'bip39';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
@@ -37,7 +38,8 @@ export const importAccountFormOnSubmit = async (
   const { setStatus, setErrors, setSubmitting } = helpers;
 
   try {
-    await importAccount(accountName, entropy, password);
+    const decodedEntropy = bip39.mnemonicToEntropy(entropy);
+    await importAccount(accountName, decodedEntropy, password);
 
     if (isMountedRef.current) {
       setStatus({ success: true });
@@ -83,11 +85,11 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     values: ImportAccountFormValues,
     helpers: FormikHelpers<ImportAccountFormValues>
   ) => {
-    const pseduoProps = { importAccount, isMountedRef };
-    onSubmit(pseduoProps, values, helpers);
+    const pseudoProps = { importAccount, isMountedRef };
+    onSubmit(pseudoProps, values, helpers);
   };
 
-  const initalValues = {
+  const initialValues = {
     accountName: '',
     checkedTerms: false,
     entropy: '',
@@ -96,12 +98,26 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     submit: null,
   };
 
+  const validatePassPhrase = (pass: string | undefined): boolean => {
+    if (!pass) {
+      return false;
+    }
+
+    try {
+      bip39.mnemonicToEntropy(pass);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
+
   const validationSchema = Yup.object().shape({
     accountName: Yup.string().max(64, t('accountNameValidation')),
     // CBB: It appears that the checkedTerms error message is not working properly.
     checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
     entropy: Yup.string()
-      .matches(/^[0-9a-f]{64}$/i, t('entropyMatches'))
+      .matches(/^(\w+\s+){11,}\w+$/i, t('entropyMatches'))
+      .test('validPassPhrase', t('entropyIsWrong'), validatePassPhrase)
       .required(t('entropyRequired')),
     password: Yup.string()
       .min(8, t('passwordMin'))
@@ -114,7 +130,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
 
   return (
     <Formik
-      initialValues={initalValues}
+      initialValues={initialValues}
       onSubmit={handleOnSubmit}
       validationSchema={validationSchema}
     >

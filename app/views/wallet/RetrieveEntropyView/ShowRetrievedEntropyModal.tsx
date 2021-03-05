@@ -13,7 +13,7 @@ import {
   Modal,
   Typography,
 } from '@material-ui/core';
-import * as bip39 from 'bip39'; // FK
+import * as bip39 from 'bip39';
 import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../../../theme';

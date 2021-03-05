@@ -84,7 +84,7 @@ const NavBar: FC<NavBarProps> = () => {
             icon={<Icon height={32} width={32} color={color} />}
             label={t(label)}
             key={label}
-            wrapped // FK
+            wrapped
           />
         );
       })}

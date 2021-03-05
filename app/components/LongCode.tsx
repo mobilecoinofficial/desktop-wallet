@@ -1,28 +1,17 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box, makeStyles } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 
 import { GOLD_DARK, GOLD_LIGHT } from '../constants/colors';
 
 interface LongCodeProps {
   code: string;
   codeClass?: string;
+  lastLineClass?: string;
 }
 
-const useStyles = makeStyles(() => {
-  return {
-    lastLine: {
-      display: 'flex',
-      justifyContent: 'space-between',
-    },
-    root: {},
-  };
-});
-
-const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
-  const classes = useStyles();
-
+const LongCode: FC<LongCodeProps> = ({ code, codeClass, lastLineClass }: LongCodeProps) => {
   const colorCode = code.split('').map((char, i) => {
     let charColor = 'inherit';
     if (!Number.isNaN(char * 1)) {
@@ -64,7 +53,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
           <Box
             component="span"
             key={[line, i].join('|')}
-            className={i === codeLines.length - 1 ? classes.lastLine : ''}
+            className={i === codeLines.length - 1 ? lastLineClass : ''}
           >
             {line}
           </Box>
@@ -76,6 +65,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
 
 LongCode.defaultProps = {
   codeClass: '',
+  lastLineClass: '',
 };
 
 export default LongCode;

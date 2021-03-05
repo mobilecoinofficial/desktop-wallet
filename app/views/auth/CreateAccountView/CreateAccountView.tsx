@@ -11,7 +11,7 @@ import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
 import CreateAccountForm, { createAccountFormOnSubmit } from './CreateAccountForm';
 
-interface CreateAccountViewProps {
+export interface CreateAccountViewProps {
   isTest?: boolean;
 }
 

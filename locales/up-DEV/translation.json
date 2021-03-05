@@ -1,15 +1,15 @@
 {
   "AccountCard": {
-    "accountHeader": "Account Address Code",
-    "accountQR": "Account QR Code",
-    "accountTooltip": "Show Account Address Code",
-    "clipboardAddress": "Address Code copied to clipboard!",
-    "clipboardGift": "Gift Code copied to clipboard!",
-    "copyTooltip": "Click to copy to clipboard.",
-    "giftHeader": "Gift Code",
-    "giftQR": "Gift QR Code",
-    "mobUrlTooltip": "Show MobURL QR Code",
-    "unnamed": "Unnamed Account"
+    "accountHeader": "ACCOUNT ADDRESS CODE",
+    "accountQR": "ACCOUNT QR CODE",
+    "accountTooltip": "SHOW ACCOUNT ADDRESS CODE",
+    "clipboardAddress": "ADDRESS CODE COPIED TO CLIPBOARD!",
+    "clipboardGift": "GIFT CODE COPIED TO CLIPBOARD!",
+    "copyTooltip": "CLICK TO COPY TO CLIPBOARD.",
+    "giftHeader": "GIFT CODE",
+    "giftQR": "GIFT QR CODE",
+    "mobUrlTooltip": "SHOW MOBURL QR CODE",
+    "unnamed": "UNNAMED ACCOUNT"
   },
 
   "BalanceIndicator": {
@@ -248,6 +248,43 @@
     "synced": "% Synced"
   },
 
+  "Menu": {
+    "about": "ABOUT MOBILECOIN DESKTOP WALLET",
+    "bringToFront": "SHOW ALL",
+    "close": "CLOSE",
+    "copy": "COPY",
+    "cut": "CUT",
+    "edit": "EDIT",
+    "file": "FILE",
+    "hideOthers": "HIDE OTHERS",
+    "hideWallet": "HIDE MOBILECOIN DESKTOP WALLET",
+    "inspectElement": "INSPECT ELEMENT",
+    "learnMore": "LEARN MORE",
+    "learnMoreCommunityForum": "COMMUNITY FORUM",
+    "learnMoreFoundationGithub": "MOBILECOIN FOUNDATION GITHUB",
+    "learnMoreGithub": "MOBILECOIN GITHUB",
+    "learnMoreMobileCoinFoundation": "MOBILECOIN FOUNDATION",
+    "minimize": "MINIMIZE",
+    "mobileCoin": "MOBILECOIN",
+    "open": "OPEN",
+    "paste": "PASTE",
+    "quit": "QUIT",
+    "redo": "REDO",
+    "reload": "RELOAD",
+    "selectAll": "SELECT ALL",
+    "showAll": "SHOW ALL",
+    "toggleDeveloperTools": "TOGGLE DEVELOPER TOOLS",
+    "toggleFullScreen": "TOGGLE FULL SCREEN",
+    "undo": "UNDO",
+    "view": "VIEW",
+    "window": "WINDOW",
+    "language": "LANGUAGE",
+    "languages": {
+      "up-DEV": "UPPERCASED",
+      "en-US": "English"
+    }
+  },
+
   "MobilecoindDirectory": {
     "formLabel": "MobileCoinD Directory",
     "ledgerDbPathHeader": "Ledger Database Path:",
@@ -255,13 +292,10 @@
   },
 
   "NavBar": {
-    "contacts": "Contacts",
     "gift": "Gifting",
-    "history": "History",
     "home": "Home",
     "settings": "Settings",
-    "transaction": "Send/Receive",
-    "wallet": "Wallet"
+    "transaction": "Send/Receive"
   },
 
   "NotFoundView": {
@@ -339,12 +373,12 @@
   },
 
   "SettingsOptionsItem": {
-    "changePassword": "Change Password",
-    "changePin": "Set or Change PIN",
-    "configureMobileCoinD": "Configure MobileCoinD",
-    "privacyPolicy": "Privacy Policy",
-    "retrieveEntropy": "Retrieve Secret Entropy",
-    "terms": "Terms of Use"
+    "changePassword": "CHANGE PASSWORD",
+    "changePin": "SET OR CHANGE PIN",
+    "configureMobileCoinD": "CONFIGURE MOBILECOIND",
+    "privacyPolicy": "PRIVACY POLICY",
+    "retrieveEntropy": "RETRIEVE SECRET ENTROPY",
+    "terms": "TERMS OF USE"
   },
 
   "ShowEntropyModal": {
@@ -374,15 +408,6 @@
     "syncing": "Syncing with the ledger"
   },
 
-  "TermsOfUseDialog": {
-    "close": "Close Terms of Use"
-  },
-
-  "TermsOfUseView": {
-    "settings": "Settings",
-    "terms": "Terms of Use"
-  },
-
   "TransactionDetails": {
     "amount": "Amount",
     "addComment": "Add comment",
@@ -402,20 +427,29 @@
     "typeHere": "Start typing here"
   },
 
+  "TermsOfUseDialog": {
+    "close": "Close Terms of Use"
+  },
+
+  "TermsOfUseView": {
+    "settings": "Settings",
+    "terms": "Terms of Use"
+  },
+
   "TransactionView": {
     "receive": "Receive MOB",
     "send": "Send MOB"
   },
 
   "UnlockWalletForm": {
-    "passwordLabel": "Password",
-    "passwordRequired": "Password is required",
-    "unlockWalletButton": "Unlock Wallet"
+    "passwordLabel": "PASSWORD",
+    "passwordRequired": "PASSWORD IS REQUIRED",
+    "unlockWalletButton": "UNLOCK WALLET"
   },
 
   "UnlockWalletView": {
-    "description": "Please enter the passphrase you used to secure your wallet. If you cannot recall your passphrase, you may re-import the account into your wallet using their Entropy seed.",
-    "importInstead": "Import account from Entropy instead",
-    "title": "Unlock Wallet"
+    "description": "PLEASE ENTER THE PASSPHRASE YOU USED TO SECURE YOUR WALLET. IF YOU CANNOT RECALL YOUR PASSPHRASE, YOU MAY RE-IMPORT THE ACCOUNT INTO YOUR WALLET USING THEIR ENTROPY SEED.",
+    "importInstead": "IMPORT ACCOUNT FROM ENTROPY INSTEAD",
+    "title": "UNLOCK WALLET"
   }
 }

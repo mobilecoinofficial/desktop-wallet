@@ -8,7 +8,7 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import SubmitButton from '../../../components/SubmitButton';
-import TransactionInfoLabel from '../../../components/TransactionInfoLabel';
+import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
 
 export interface TransactionDetailsViewProps {

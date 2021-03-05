@@ -199,8 +199,6 @@ const createWindow = async () => {
     );
   }
 
-  menuFactoryService.buildMenu(app, mainWindow, i18n);
-
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();

@@ -181,6 +181,21 @@
     "unlockWalletButton": "Unlock this wallet"
   },
 
+  "Dates": {
+    "m00": "January",
+    "m01": "February",
+    "m02": "March",
+    "m03": "April",
+    "m04": "May",
+    "m05": "June",
+    "m06": "July",
+    "m07": "August",
+    "m08": "September",
+    "m09": "October",
+    "m10": "November",
+    "m11": "December"
+  },
+
   "GiftingView": {
     "giftMOB": "Gift MOB",
     "openGift": "Open Gift"

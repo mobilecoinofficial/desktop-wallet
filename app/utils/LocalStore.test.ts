@@ -1,6 +1,6 @@
 import Store from 'electron-store';
 
-import LocalStore, { schema, schemaKeys } from '../../app/utils/LocalStore';
+import LocalStore, { schema, schemaKeys } from './LocalStore';
 
 const setup = () => {
   // Mocks

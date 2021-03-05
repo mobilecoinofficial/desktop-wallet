@@ -6,7 +6,7 @@ import HistoryItem from './HistoryItem';
 
 export default {
   component: HistoryItem,
-  title: 'History Item',
+  title: 'History/Item',
 };
 
 const Template: Story<ComponentProps<typeof HistoryItem>> = (args) => <HistoryItem {...args} />;

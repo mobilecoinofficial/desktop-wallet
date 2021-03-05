@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 
-import { GOLD_DARK, GOLD_LIGHT } from '../constants/colors';
+import { GOLD_DARK, GOLD_LIGHT, WHITE } from '../constants/colors';
 
 interface LongCodeProps {
   code: string;
@@ -24,7 +24,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
   const classes = useStyles();
 
   const colorCode = code.split('').map((char, i) => {
-    let charColor = 'inherit';
+    let charColor = WHITE;
     if (!Number.isNaN(char * 1)) {
       charColor = GOLD_LIGHT;
     } else if (char === char.toUpperCase()) {

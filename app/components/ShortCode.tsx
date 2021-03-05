@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import { Box } from '@material-ui/core';
 
-import { GOLD_DARK, GOLD_LIGHT } from '../constants/colors';
+import { GOLD_DARK, GOLD_LIGHT, WHITE } from '../constants/colors';
 import {
   LUCKY_ARRAY_INDEX,
   LUCKY_ARRAY_END_INDEX,
@@ -29,9 +29,9 @@ const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
 
   codeIndicies.forEach((luck) => {
     if (colorPairs.length === 4) {
-      colorPairs.push(['-', 'inherit']);
+      colorPairs.push(['-', WHITE]);
     }
-    let charColor = 'inherit';
+    let charColor = WHITE;
     if (!Number.isNaN(code.charAt(luck) * 1)) {
       charColor = GOLD_LIGHT;
     } else if (code.charAt(luck) === code.charAt(luck).toUpperCase()) {

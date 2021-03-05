@@ -1,7 +1,3 @@
-// eslint-disable-next-line jest/no-commented-out-tests
-/*
-  COMMENTED OUT UNTIL THE CHANGES ARE VALIDATED
-
 import React from 'react';
 
 import { screen, waitFor } from '@testing-library/react';
@@ -464,5 +460,3 @@ describe('ImportAccountForm', () => {
     });
   });
 });
-
-*/

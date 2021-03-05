@@ -11,6 +11,6 @@ describe('ShortCode', () => {
     render(<ShortCode code={mockCode} />);
 
     const shortCode = screen.getByTestId('short-code');
-    expect(shortCode.textContent).toEqual('dx-6H-vJ-9s');
+    expect(shortCode.textContent).toEqual('dx6H-vJ9s');
   });
 });

@@ -4,12 +4,6 @@ import type { FC } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 
 import { GOLD_DARK, GOLD_LIGHT } from '../constants/colors';
-import {
-  LUCKY_ARRAY_INDEX,
-  LUCKY_ARRAY_END_INDEX,
-  SUPER_LUCKY_ARRAY_INDEX,
-  SUPER_LUCKY_ARRAY_END_INDEX,
-} from '../constants/indicies';
 
 interface LongCodeProps {
   code: string;
@@ -28,22 +22,15 @@ const useStyles = makeStyles(() => {
 
 const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
   const classes = useStyles();
-  const darkGoldCharIndicies = LUCKY_ARRAY_INDEX.concat([
-    code.length + LUCKY_ARRAY_END_INDEX[0],
-    code.length + LUCKY_ARRAY_END_INDEX[1],
-  ]);
-  const lightGoldCharIndicies = SUPER_LUCKY_ARRAY_INDEX.concat([
-    code.length + SUPER_LUCKY_ARRAY_END_INDEX[0],
-    code.length + SUPER_LUCKY_ARRAY_END_INDEX[1],
-  ]);
 
   const colorCode = code.split('').map((char, i) => {
     let charColor = 'inherit';
-    if (darkGoldCharIndicies.includes(i)) {
-      charColor = GOLD_DARK;
-    } else if (lightGoldCharIndicies.includes(i)) {
+    if (!Number.isNaN(char * 1)) {
       charColor = GOLD_LIGHT;
+    } else if (char === char.toUpperCase()) {
+      charColor = GOLD_DARK;
     }
+
     return (
       <Box
         component="span"

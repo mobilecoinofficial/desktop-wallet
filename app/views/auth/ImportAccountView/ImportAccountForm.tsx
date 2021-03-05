@@ -150,6 +150,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
               fullWidth
               label={t('entropyLabel')}
               margin="dense"
+              multiline
               name="entropy"
             />
             <Field

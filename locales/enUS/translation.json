@@ -296,8 +296,8 @@
     "window": "Window",
     "language": "Language",
     "languages": {
-      "up-DEV": "UPPERCASED",
-      "en-US": "English"
+      "upDEV": "UPPERCASED",
+      "enUS": "English"
     }
   },
 

@@ -280,8 +280,8 @@
     "window": "WINDOW",
     "language": "LANGUAGE",
     "languages": {
-      "up-DEV": "UPPERCASED",
-      "en-US": "ENGLISH"
+      "upDEV": "UPPERCASED",
+      "enUS": "ENGLISH"
     }
   },
 

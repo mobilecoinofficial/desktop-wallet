@@ -2,8 +2,8 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import config from '../configs/app.config';
-import enUS from '../locales/en-US/translation.json';
-import upDEV from '../locales/up-DEV/translation.json'; // this is uppercased and for dev only
+import enUS from '../locales/enUS/translation.json';
+import upDEV from '../locales/upDEV/translation.json'; // this is uppercased and for dev only
 
 i18n.use(initReactI18next);
 
@@ -18,8 +18,8 @@ if (!i18n.isInitialized) {
       wait: false,
     },
     resources: {
-      'en-US': enUS,
-      'up-DEV': upDEV,
+      enUS,
+      upDEV,
     },
     supportedLngs: config.languages,
   });

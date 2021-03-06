@@ -1,10 +1,10 @@
-const languages = ['en-US'];
+const languages = ['enUS'];
 if (process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true') {
-  languages.push('up-DEV');
+  languages.push('upDEV');
 }
 
 export default {
-  fallbackLng: 'en-US',
+  fallbackLng: 'enUS',
   languages,
   namespace: 'translation',
   platform: process.platform,

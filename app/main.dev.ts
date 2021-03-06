@@ -178,7 +178,7 @@ const createWindow = async () => {
   });
 
   i18n.on('loaded', () => {
-    i18n.changeLanguage('en-US');
+    i18n.changeLanguage('enUS');
     i18n.off('loaded');
   });
 
@@ -269,10 +269,10 @@ ipcMain.on('reset-ledger', () => {
 });
 
 ipcMain.on('get-initial-translations', (event) => {
-  i18n.loadLanguages('en-US', () => {
+  i18n.loadLanguages('enUS', () => {
     const initial = {
       en: {
-        translation: i18n.getResourceBundle('en-US', config.namespace),
+        translation: i18n.getResourceBundle('enUS', config.namespace),
       },
     };
 

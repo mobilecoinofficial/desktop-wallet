@@ -20,6 +20,7 @@ import { autoUpdater } from 'electron-updater';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
+import languages from './constants/languages';
 import getPlatform from './get-platform';
 import i18n from './i18next.config';
 import menuFactoryService from './menuFactory';
@@ -178,7 +179,7 @@ const createWindow = async () => {
   });
 
   i18n.on('loaded', () => {
-    i18n.changeLanguage('en-US');
+    i18n.changeLanguage(languages.EN_US);
     i18n.off('loaded');
   });
 
@@ -269,10 +270,10 @@ ipcMain.on('reset-ledger', () => {
 });
 
 ipcMain.on('get-initial-translations', (event) => {
-  i18n.loadLanguages('en-US', () => {
+  i18n.loadLanguages(languages.EN_US, () => {
     const initial = {
-      en: {
-        translation: i18n.getResourceBundle('en-US', config.namespace),
+      enUS: {
+        translation: i18n.getResourceBundle(languages.EN_US, config.namespace),
       },
     };
 

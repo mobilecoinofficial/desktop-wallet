@@ -12,7 +12,6 @@ const { isPackaged } = app;
 
 const i18nextOptions = {
   backend: {
-    addPath: './locales/{{lng}}/{{ns}}.missing.json',
     jsonIndent: 2,
     loadPath:
       IS_PROD && isPackaged

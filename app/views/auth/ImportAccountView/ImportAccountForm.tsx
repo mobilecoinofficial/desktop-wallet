@@ -12,6 +12,11 @@ import { SubmitButton, TermsOfUseDialog } from '../../../components';
 import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
+import {
+  convertMnemonicOrHexToEntropy,
+  isValidMnemonicOrHexFormat,
+  isValidMnemonicOrHexValue,
+} from '../../../utils/bip39Functions';
 
 export interface ImportAccountFormValues {
   accountName: string;
@@ -37,7 +42,8 @@ export const importAccountFormOnSubmit = async (
   const { setStatus, setErrors, setSubmitting } = helpers;
 
   try {
-    await importAccount(accountName, entropy, password);
+    const decodedEntropy = convertMnemonicOrHexToEntropy(entropy);
+    await importAccount(accountName, decodedEntropy, password);
 
     if (isMountedRef.current) {
       setStatus({ success: true });
@@ -83,11 +89,11 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     values: ImportAccountFormValues,
     helpers: FormikHelpers<ImportAccountFormValues>
   ) => {
-    const pseduoProps = { importAccount, isMountedRef };
-    onSubmit(pseduoProps, values, helpers);
+    const pseudoProps = { importAccount, isMountedRef };
+    onSubmit(pseudoProps, values, helpers);
   };
 
-  const initalValues = {
+  const initialValues = {
     accountName: '',
     checkedTerms: false,
     entropy: '',
@@ -101,7 +107,8 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     // CBB: It appears that the checkedTerms error message is not working properly.
     checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
     entropy: Yup.string()
-      .matches(/^[0-9a-f]{64}$/i, t('entropyMatches'))
+      .test('format', t('entropyMatches'), isValidMnemonicOrHexFormat)
+      .test('validPassPhrase', t('entropyIsWrong'), isValidMnemonicOrHexValue)
       .required(t('entropyRequired')),
     password: Yup.string()
       .min(8, t('passwordMin'))
@@ -114,7 +121,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
 
   return (
     <Formik
-      initialValues={initalValues}
+      initialValues={initialValues}
       onSubmit={handleOnSubmit}
       validationSchema={validationSchema}
     >
@@ -134,6 +141,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
               fullWidth
               label={t('entropyLabel')}
               margin="dense"
+              multiline
               name="entropy"
             />
             <Field

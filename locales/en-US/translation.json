@@ -181,6 +181,21 @@
     "unlockWalletButton": "Unlock this wallet"
   },
 
+  "Dates": {
+    "m00": "January",
+    "m01": "February",
+    "m02": "March",
+    "m03": "April",
+    "m04": "May",
+    "m05": "June",
+    "m06": "July",
+    "m07": "August",
+    "m08": "September",
+    "m09": "October",
+    "m10": "November",
+    "m11": "December"
+  },
+
   "GiftingView": {
     "giftMOB": "Gift MOB",
     "openGift": "Open Gift"
@@ -199,7 +214,8 @@
     "accountNameValidation": "Account Name cannot be more than 64 characters.",
     "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
     "entropyLabel": "Entropy",
-    "entropyMatches": "A valid entropy is 64 hexadecimals.",
+    "entropyMatches": "A valid entropy is 12 or more words separated by spaces, or 64 hexadecimals.",
+    "entropyIsWrong": "That entropy is not correct",
     "entropyRequired": "Entropy is required",
     "importAccountButton": "Import Account",
     "nameLabel": "Account Name (optional)",

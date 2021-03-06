@@ -79,11 +79,11 @@ const useStyles = makeStyles((theme: Theme) => {
 
 const RetrieveEntropyView: FC = () => {
   const classes = useStyles();
-  const [entropy, setEntropy] = useState();
+  const [entropy, setEntropy] = useState('');
   const isMountedRef = useIsMountedRef();
   const { retrieveEntropy } = useMobileCoinD();
   const handleCloseModal = () => {
-    setEntropy(null);
+    setEntropy('');
   };
   const { t } = useTranslation('RetrieveEntropyView');
 
@@ -189,11 +189,7 @@ const RetrieveEntropyView: FC = () => {
           }}
         </Formik>
       </Box>
-      <ShowRetrievedEntropyModal
-        open={!!entropy}
-        entropy={entropy || ''}
-        onClose={handleCloseModal}
-      />
+      <ShowRetrievedEntropyModal open={!!entropy} entropy={entropy} onClose={handleCloseModal} />
     </Container>
   );
 };

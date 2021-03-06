@@ -37,7 +37,7 @@ const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
     } else if (code.charAt(luck) === code.charAt(luck).toUpperCase()) {
       charColor = GOLD_DARK;
     }
-    const currentChar : string[] = [code.charAt(luck), charColor];
+    const currentChar: string[] = [code.charAt(luck), charColor];
     colorPairs.push(currentChar);
   });
 

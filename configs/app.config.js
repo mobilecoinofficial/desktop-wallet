@@ -1,10 +1,12 @@
-const languages = ['enUS'];
+import languageConstants from '../app/constants/languages';
+
+const languages = [languageConstants.EN_US];
 if (process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true') {
-  languages.push('upDEV');
+  languages.push(languageConstants.UP_DEV);
 }
 
 export default {
-  fallbackLng: 'enUS',
+  fallbackLng: languageConstants.EN_US,
   languages,
   namespace: 'translation',
   platform: process.platform,

@@ -11,7 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import TransactionInfoLabel from '../../../components/TransactionInfoLabel';
+import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
 
 export interface HistoryItemProps {
@@ -20,7 +20,7 @@ export interface HistoryItemProps {
   dateTime: Date;
   direction: string;
   name: string;
-  onClick: any;
+  onClick: () => void;
   sign: '+' | '-';
   status: string;
 }

@@ -264,6 +264,43 @@
     "synced": "% Synced"
   },
 
+  "Menu": {
+    "about": "About MobileCoin Desktop Wallet",
+    "bringToFront": "Show All",
+    "close": "Close",
+    "copy": "Copy",
+    "cut": "Cut",
+    "edit": "Edit",
+    "file": "File",
+    "hideOthers": "Hide Others",
+    "hideWallet": "Hide MobileCoin Desktop Wallet",
+    "inspectElement": "Inspect element",
+    "learnMore": "Learn More",
+    "learnMoreCommunityForum": "Community Forum",
+    "learnMoreFoundationGithub": "MobileCoin Foundation Github",
+    "learnMoreGithub": "MobileCoin Github",
+    "learnMoreMobileCoinFoundation": "MobileCoin Foundation",
+    "minimize": "Minimize",
+    "mobileCoin": "MobileCoin",
+    "open": "Open",
+    "paste": "Paste",
+    "quit": "Quit",
+    "redo": "Redo",
+    "reload": "Reload",
+    "selectAll": "Select All",
+    "showAll": "Show All",
+    "toggleDeveloperTools": "Toggle Developer Tools",
+    "toggleFullScreen": "Toggle Full Screen",
+    "undo": "Undo",
+    "view": "View",
+    "window": "Window",
+    "language": "Language",
+    "languages": {
+      "up-DEV": "UPPERCASED",
+      "en-US": "English"
+    }
+  },
+
   "MobilecoindDirectory": {
     "formLabel": "MobileCoinD Directory",
     "ledgerDbPathHeader": "Ledger Database Path:",
@@ -271,13 +308,10 @@
   },
 
   "NavBar": {
-    "contacts": "Contacts",
     "gift": "Gifting",
-    "history": "History",
     "home": "Home",
     "settings": "Settings",
-    "transaction": "Send/Receive",
-    "wallet": "Wallet"
+    "transaction": "Send/Receive"
   },
 
   "NotFoundView": {
@@ -390,15 +424,6 @@
     "syncing": "Syncing with the ledger"
   },
 
-  "TermsOfUseDialog": {
-    "close": "Close Terms of Use"
-  },
-
-  "TermsOfUseView": {
-    "settings": "Settings",
-    "terms": "Terms of Use"
-  },
-
   "TransactionDetails": {
     "amount": "Amount",
     "addComment": "Add comment",
@@ -416,6 +441,15 @@
     "txo": "TXO",
     "txoDetails": "TXO Details",
     "typeHere": "Start typing here"
+  },
+
+  "TermsOfUseDialog": {
+    "close": "Close Terms of Use"
+  },
+
+  "TermsOfUseView": {
+    "settings": "Settings",
+    "terms": "Terms of Use"
   },
 
   "TransactionView": {

@@ -1,4 +1,3 @@
-// const platinum = '#ADB0BB'; // get rid of this
 export const BLACK = '#292A2D';
 export const BLACK_DARK = '#202124';
 export const GOLD_DARK = '#BA9236';

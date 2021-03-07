@@ -2,6 +2,7 @@ export { default as buildTransaction } from './buildTransaction';
 // export { default as changePassword } from './changePassword';
 export { default as createAccount } from './createAccount';
 export { default as createAddress } from './assignAddressForAccount';
+export { default as exportAccountSecrets } from './exportAccountSecrets';
 export { default as getAccount } from './getAccount';
 export { default as getAccountStatus } from './getAccountStatus';
 export { default as getAllAccounts } from './getAllAccounts';

@@ -403,18 +403,28 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     return fullServiceApi.buildTransaction(buildTransactionParams);
   };
 
-  // const changePassword = async (oldPassword: string, newPassword: string) => {
-  //   const ChangePasswordServiceInstance = new ChangePasswordService(null, {
-  //     newPassword,
-  //     oldPassword,
-  //   });
+  const changePassword = async (oldPassword: string, newPassword: string) => {
+    try {
+      const { hashedPassword } = state;
+      const LocalStoreInstance = new LocalStore();
+      const salt = LocalStoreInstance.getHashedPasswordSalt();
+      if (!hashedPassword || !salt) throw new Error('hashedPassword not found.');
 
-  //   const { isSuccess, errorMessage } = await ChangePasswordServiceInstance.call();
+      // Attempt to match password digest
+      const { secretKeyString } = await scryptKeys(oldPassword, salt);
+      if (secretKeyString !== hashedPassword) throw new Error('Incorrect Password'); // TODO: i18n
 
-  //   if (!isSuccess) {
-  //     throw new Error(errorMessage);
-  //   }
-  // };
+      // Set new password
+      const {
+        publicSaltString,
+        secretKeyString: newSecretKeyString,
+      } = await scryptKeys(newPassword);
+      LocalStoreInstance.setHashedPassword(newSecretKeyString);
+      LocalStoreInstance.setHashedPasswordSalt(publicSaltString);
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
 
   const confirmEntropyKnown = () => {
     dispatch({
@@ -829,7 +839,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         ...state,
         // buildGiftCode,
         buildTransaction,
-        // changePassword,
+        changePassword,
         confirmEntropyKnown,
         createAccount,
         // deleteStoredGiftB58Code,

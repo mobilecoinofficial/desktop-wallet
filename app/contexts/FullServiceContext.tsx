@@ -22,6 +22,10 @@ type Addresses = {
   addressMap: { [addressId: string]: Address };
 };
 
+type PendingSecrets = {
+  entropy: StringHex;
+};
+
 type SelectedAccount = {
   account: FullServiceAccount;
   balanceStatus: BalanceStatus;
@@ -37,6 +41,7 @@ interface FullServiceState {
   isInitialized: boolean;
   selectedAccount: SelectedAccount;
   walletStatus: WalletStatus;
+  pendingSecrets: PendingSecrets | null
 }
 
 // TODO - context can be broken down into seperate files
@@ -91,6 +96,7 @@ type CreateAccountAction = {
   payload: {
     accounts: Accounts;
     addresses: Addresses;
+    pendingSecrets: PendingSecrets;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
@@ -261,6 +267,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       const {
         accounts,
         addresses,
+        pendingSecrets,
         selectedAccount,
         walletStatus,
       } = action.payload;
@@ -270,6 +277,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         addresses,
         isAuthenticated: true,
         isEntropyKnown: false,
+        pendingSecrets,
         selectedAccount,
         walletStatus,
       };
@@ -293,8 +301,8 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     case 'CONFIRM_ENTROPY_KNOWN': {
       return {
         ...state,
-        entropy: null, // Clear entropy from in-memory
         isEntropyKnown: true,
+        pendingSecrets: null, // Clear secrets from in-memory
       };
     }
     case 'UNLOCK_WALLET': {
@@ -408,11 +416,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   //   }
   // };
 
-  // const confirmEntropyKnown = () => {
-  //   dispatch({
-  //     type: 'CONFIRM_ENTROPY_KNOWN',
-  //   });
-  // };
+  const confirmEntropyKnown = () => {
+    dispatch({
+      type: 'CONFIRM_ENTROPY_KNOWN',
+    });
+  };
 
   // const deleteStoredGiftB58Code = (storedGiftB58Code: string) => {
   //   const DeleteGiftCodeServiceInstance = new DeleteGiftCodeService(client, {
@@ -456,6 +464,9 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { accountId } = account;
 
       // Get basic wallet information
+      const { accountSecrets: pendingSecrets } = await fullServiceApi.exportAccountSecrets({
+        accountId,
+      });
       const { walletStatus } = await fullServiceApi.getWalletStatus();
       const { accountIds, accountMap } = walletStatus;
       const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
@@ -480,6 +491,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
+          pendingSecrets,
           selectedAccount: {
             account,
             balanceStatus,
@@ -812,7 +824,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         // buildGiftCode,
         buildTransaction,
         // changePassword,
-        // confirmEntropyKnown,
+        confirmEntropyKnown,
         createAccount,
         // deleteStoredGiftB58Code,
         importAccount,

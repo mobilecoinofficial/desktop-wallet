@@ -14,7 +14,8 @@ import {
   Typography,
 } from '@material-ui/core';
 
-import useMobileCoinD from '../../hooks/useMobileCoinD';
+import useFullService from '../../hooks/useFullService';
+// import useMobileCoinD from '../../hooks/useMobileCoinD';
 import type { Theme } from '../../theme';
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -45,12 +46,12 @@ const ShowEntropyModal: FC = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [showEntropy, setShowEntropy] = useState(false);
-  const { entropy, isEntropyKnown, confirmEntropyKnown } = useMobileCoinD();
+  const { pendingSecrets, isEntropyKnown, confirmEntropyKnown } = useFullService();
   const handleCloseModal = () => {
     confirmEntropyKnown();
   };
   // TODO, i should start making a single util for all of this coercing logic
-  const entropyString = entropy ? Buffer.from(entropy).toString('hex') : '';
+  const entropyString = pendingSecrets?.entropy || '';
 
   const toggleEntropy = () => {
     if (!canGoForward) setCanGoForward(true);

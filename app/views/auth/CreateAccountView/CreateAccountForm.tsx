@@ -10,10 +10,9 @@ import { Checkbox, TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
-import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
+import type { FullServiceContextValue } from '../../../contexts/FullServiceContext';
 import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
 
 export interface CreateAccountFormValues {
   accountName: string;
@@ -25,7 +24,7 @@ export interface CreateAccountFormValues {
 
 interface CreateAccountFormPseudoProps {
   isMountedRef: { current: boolean };
-  createAccount: MobileCoinDContextValue['createAccount'];
+  createAccount: FullServiceContextValue['createAccount'];
 }
 
 export const createAccountFormOnSubmit = async (
@@ -63,8 +62,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
   onSubmit,
 }: CreateAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
-  const { createAccount } = useMobileCoinD();
-  const { createAccount: fullServiceCreateAccount } = useFullService();
+  const { createAccount } = useFullService();
 
   const [canCheck, setCanCheck] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -84,11 +82,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
     values: CreateAccountFormValues,
     helpers: FormikHelpers<CreateAccountFormValues>,
   ) => {
-    await createAccount(
-      values.accountName, values.password,
-    );
-
-    const pseduoProps = { createAccount: fullServiceCreateAccount, isMountedRef };
+    const pseduoProps = { createAccount, isMountedRef };
     onSubmit(pseduoProps, values, helpers);
   };
 

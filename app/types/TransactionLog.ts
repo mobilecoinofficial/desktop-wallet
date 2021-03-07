@@ -5,11 +5,11 @@ export default interface TransactionLog {
   assignedAddressId: StringB58;
   changeTxoIds: StringHex[];
   comment: string;
-  direction: 'received' | 'sent';
+  direction: 'tx_direction_received' | 'tx_direction_sent';
   failureCode: number | null;
   failureMessage: string | null;
   feePmob: StringUInt64 | null;
-  finalizedBlockHeight: StringUInt64 | null;
+  finalizedBlockIndex: StringUInt64 | null;
   inputTxoIds: StringHex[];
   isSentRecovered: boolean | null;
   object: 'transaction_log';
@@ -17,8 +17,8 @@ export default interface TransactionLog {
   outputTxoIds: StringHex[];
   recipientAddressId: StringB58 | null;
   sentTime: string | null; // FIX-ME: Confirm type
-  status: 'built' | 'pending' | 'received' | 'succeded' | 'failed';
-  submittedBlockHeight: StringUInt64 | null;
+  status: 'tx_status_built' | 'tx_status_pending' | 'tx_status_received' | 'tx_status_succeded' | 'tx_status_failed';
+  submittedBlockIndex: StringUInt64 | null;
   transactionLogId: StringHex;
   valuePmob: StringUInt64;
 }

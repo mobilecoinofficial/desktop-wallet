@@ -12,12 +12,13 @@ export default interface Txo {
   isSpentRecovered: boolean;
   keyImage: StringHex | null;
   mintedAccountId: StringHex | null;
+  object: 'txo';
   offsetCount: number;
   proof: StringHex | null;
   publicKey: StringHex;
   receivedAccountId: StringHex;
-  receivedBlockHeight: StringUInt64;
-  spentBlockHeight: StringUInt64 | null;
+  receivedBlockIndex: StringUInt64;
+  spentBlockIndex: StringUInt64 | null;
   subaddressIndex: StringUInt64 | null;
   targetKey: StringHex;
   txoId: StringHex;

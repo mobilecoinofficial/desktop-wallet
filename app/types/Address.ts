@@ -4,7 +4,8 @@ export default interface Address {
   accountId: StringHex;
   addressBookEntryId: number | null;
   addressId: StringB58;
-  comment: string;
+  metadata: string;
+  object: 'address';
   offsetCount: number;
   publicAddress: StringB58;
   subaddressIndex: StringUInt64;

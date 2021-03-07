@@ -5,7 +5,7 @@ import { Box, makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import QRCode from 'qrcode.react';
 
-import { CircleStrokeMOBIcon } from './icons';
+import { CircleStrokeMOBIcon } from '../icons';
 
 interface QRMobProps {
   size: number;

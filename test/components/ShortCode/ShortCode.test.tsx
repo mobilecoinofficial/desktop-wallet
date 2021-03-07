@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 
-import ShortCode from '../../../app/components/ShortCode';
+import { ShortCode } from '../../../app/components';
 
 describe('ShortCode', () => {
   test('renders the correct short code', () => {

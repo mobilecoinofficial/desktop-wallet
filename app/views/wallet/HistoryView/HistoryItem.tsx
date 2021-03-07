@@ -11,7 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
+import { TransactionInfoLabel } from '../../../components';
 import type { Theme } from '../../../theme';
 
 export interface HistoryItemProps {

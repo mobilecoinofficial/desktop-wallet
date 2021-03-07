@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 
-import PrivacyPolicy from '../../../app/components/PrivacyPolicy';
+import { PrivacyPolicy } from '../../../app/components';
 
 describe('PrivacyPolicy', () => {
   test('renders top of privacy policy', () => {

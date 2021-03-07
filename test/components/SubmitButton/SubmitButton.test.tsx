@@ -2,7 +2,7 @@ import React from 'react';
 
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import SubmitButton from '../../../app/components/SubmitButton';
+import { SubmitButton } from '../../../app/components';
 
 describe('SubmitButton', () => {
   test('calls provided function when clicked', () => {

@@ -7,8 +7,7 @@ import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import SubmitButton from '../../../components/SubmitButton';
-import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
+import { SubmitButton, TransactionInfoLabel } from '../../../components';
 import type { Theme } from '../../../theme';
 
 export interface TransactionDetailsViewProps {

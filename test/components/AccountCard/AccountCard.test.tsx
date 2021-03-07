@@ -5,7 +5,7 @@ import 'jest-canvas-mock';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import AccountCard from '../../../app/components/AccountCard';
+import { AccountCard } from '../../../app/components';
 import renderSnapshot from '../../renderSnapshot';
 
 const MOCK_LONG_CODE = 'mockLongCode';

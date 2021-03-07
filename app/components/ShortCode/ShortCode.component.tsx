@@ -3,13 +3,13 @@ import type { FC } from 'react';
 
 import { Box } from '@material-ui/core';
 
-import { GOLD_DARK, GOLD_LIGHT, WHITE } from '../constants/colors';
+import { GOLD_DARK, GOLD_LIGHT, WHITE } from '../../constants/colors';
 import {
   LUCKY_ARRAY_INDEX,
   LUCKY_ARRAY_END_INDEX,
   SUPER_LUCKY_ARRAY_INDEX,
   SUPER_LUCKY_ARRAY_END_INDEX,
-} from '../constants/indicies';
+} from '../../constants/indicies';
 
 interface ShortCodeProps {
   code: string;

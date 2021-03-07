@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import TabPanel from '../../../components/TabPanel';
+import { TabPanel } from '../../../components';
 import type { Theme } from '../../../theme';
 import ReceiveMobPanel from './ReceiveMobPanel';
 import SendMobPanel from './SendMobPanel';

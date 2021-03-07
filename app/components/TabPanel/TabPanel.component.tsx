@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import { Box } from '@material-ui/core';
 
-interface TabPanelProps {
+export interface TabPanelProps {
   panels: FC[];
   selectedTabIndex: number;
 }

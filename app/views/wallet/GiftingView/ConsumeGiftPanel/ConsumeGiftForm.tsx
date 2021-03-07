@@ -23,8 +23,7 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton, MOBNumberFormat } from '../../../../components';
-import ShortCode from '../../../../components/ShortCode';
+import { SubmitButton, MOBNumberFormat, ShortCode } from '../../../../components';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../../theme';

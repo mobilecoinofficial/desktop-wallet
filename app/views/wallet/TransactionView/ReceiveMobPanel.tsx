@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import { Box, Container, makeStyles, Typography } from '@material-ui/core';
 
-import AccountCard from '../../../components/AccountCard';
+import { AccountCard } from '../../../components';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
 
@@ -28,7 +28,9 @@ const ReceiveMobPanel: FC = () => {
 
   // TODO - we should add a global modal request for bug reporting.
   // Esp for unexpected states like this. (unless I am misundering mobilecoind)
-  if (b58Code === null || mobUrl === null) return <></>;
+  if (b58Code === null || mobUrl === null) {
+    return <></>;
+  }
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">

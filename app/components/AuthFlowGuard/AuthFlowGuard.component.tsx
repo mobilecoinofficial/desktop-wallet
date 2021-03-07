@@ -4,9 +4,9 @@ import type { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-import routePaths from '../constants/routePaths';
-import useMobileCoinD from '../hooks/useMobileCoinD';
-import SplashScreen from './SplashScreen';
+import routePaths from '../../constants/routePaths';
+import useMobileCoinD from '../../hooks/useMobileCoinD';
+import SplashScreen from '../SplashScreen/SplashScreen.component';
 
 interface AuthFlowGuardProps {
   children?: ReactNode;

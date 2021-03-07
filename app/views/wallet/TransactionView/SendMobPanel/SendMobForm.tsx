@@ -23,9 +23,7 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton, MOBNumberFormat } from '../../../../components';
-import LongCode from '../../../../components/LongCode';
-import ShortCode from '../../../../components/ShortCode';
+import { SubmitButton, MOBNumberFormat, LongCode, ShortCode } from '../../../../components';
 import { MOBIcon } from '../../../../components/icons';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../../hooks/useMobileCoinD';

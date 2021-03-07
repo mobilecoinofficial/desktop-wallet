@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 
-import LongCode from '../../../app/components/LongCode';
+import { LongCode } from '../../../app/components';
 
 describe('LongCode', () => {
   test('renders the correct code', () => {

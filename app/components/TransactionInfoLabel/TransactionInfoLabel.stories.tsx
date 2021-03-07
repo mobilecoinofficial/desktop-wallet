@@ -2,11 +2,11 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import TransactionInfoLabel from './TransactionInfoLabel';
+import TransactionInfoLabel from './TransactionInfoLabel.component';
 
 export default {
   component: TransactionInfoLabel,
-  title: 'Transaction Info Label',
+  title: 'Components/Transaction Info Label',
 };
 
 const Template: Story<ComponentProps<typeof TransactionInfoLabel>> = (args) => (

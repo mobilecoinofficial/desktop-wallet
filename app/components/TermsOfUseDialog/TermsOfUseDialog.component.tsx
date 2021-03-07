@@ -3,9 +3,9 @@ import React from 'react';
 import { Box, Button, Container, Dialog } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import TermsOfUse from './TermsOfUse';
+import TermsOfUse from '../TermsOfUse/TermsOfUse.component';
 
-interface TermsOfUseDialogProps {
+export interface TermsOfUseDialogProps {
   open: boolean;
   handleCloseTerms: () => void;
 }

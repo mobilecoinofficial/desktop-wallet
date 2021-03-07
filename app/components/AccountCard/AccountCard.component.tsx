@@ -16,14 +16,14 @@ import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import type { Theme } from '../theme';
-import type Account from '../types/Account';
-import LongCode from './LongCode';
-import QRMob from './QRMob';
-import ShortCode from './ShortCode';
-import { CodeTextIcon, LogoIcon, QRCodeIcon } from './icons';
+import type { Theme } from '../../theme';
+import type Account from '../../types/Account';
+import LongCode from '../LongCode/LongCode.component';
+import QRMob from '../QRMob/QRMob.component';
+import ShortCode from '../ShortCode/ShortCode.component';
+import { CodeTextIcon, LogoIcon, QRCodeIcon } from '../icons';
 
-interface AccountCardProps {
+export interface AccountCardProps {
   account: Account;
   className?: string;
   isGift?: boolean;

@@ -1,150 +1,96 @@
+/* eslint-disable */
+
 import React from 'react';
 
 import { Box, Typography } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
 const TermsOfUse = (): JSX.Element => {
+  const { t } = useTranslation('TermsOfUse');
+
   return (
     <Box p={3}>
       <Box p={2} component={Typography} textAlign="center">
-        MOBILECOIN TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS
+        {t('p1')}
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
-        The MobileCoin Network operates utilizing an open source software
-        protocol commonly known as the MobileCoin protocol. The MobileCoin
-        protocol is designed to enable holders of digital tokens known as
-        MobileCoins to send and receive peer-to-peer payments securely and
-        privately through a digital wallet that is capable of sending and
-        receiving MobileCoins (MobileCoin Wallets). MobileCoins enable a simple,
-        secure, and private medium of exchange for consumers in countries of
-        operation to manage and move their money using personal mobile devices
-        and a currency of equivalent value across countries.
+        {t('p2')}
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
-        These Terms of Use for MobileCoins and MobileCoin Wallets (Terms)
-        govern:
+        {t('p3')}
       </Box>
       <Box pl={6}>
         <ul>
           <li>
             <Box p={1} component={Typography} textAlign="justify">
-              MobileCoins and their use and transfer; and
+              {t('p4')}
             </Box>
           </li>
           <li>
             <Box p={1} component={Typography} textAlign="justify">
-              MobileCoin Wallets and their access and use.
+              {t('p5')}
             </Box>
           </li>
         </ul>
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
-        Please read these Terms carefully before you start to use any
-        MobileCoins and any MobileCoin Wallet. By acquiring or otherwise
-        obtaining MobileCoins, using or transferring MobileCoins or obtaining,
-        accessing or using a MobileCoin Wallet, you acknowledge that you have
-        read, understand, and completely agree to be bound by these Terms. You
-        also agree to require any transferee of your MobileCoins and any holder
-        of a MobileCoin Wallet facilitated by you to be subject to these Terms.
-        These Terms may be enforced against you by MobileCoin TS Ltd. or other
-        authorized entities (which are collectively referred to in these Terms
-        as the Compliance Entities). These Terms may be amended, changed, or
-        updated by the Compliance Entities at any time and without prior notice
-        to you by posting at the MobileCoin TS Ltd. Website at
-        buymobilecoin.com. Your continued use of any MobileCoins and any
-        MobileCoin Wallets following the posting of any amendment, change, or
-        update means that you accept and agree to the amended, changed, or
-        updated Terms. These Terms are first effective as of November 23, 2020.
+        {t('p6')}
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
-        Access or use of any MobileCoin Wallets or use or transfer of any
-        MobileCoins is void where such access, use or transfer is prohibited by,
-        would constitute a violation of, or would be subject to penalties under
-        applicable laws, and will not be the basis for the assertion or
-        recognition of any interest, right, remedy, power, or privilege. Please
-        also consult the Terms of Sale and Access and Use of buymobilecoin.com.
-        Information on the way personal information is handled is included in
-        the Privacy Policy of buymobilecoin.com.
+        {t('p7')}
       </Box>
 
-      <Box
-        p={2}
-        component={Typography}
-        textAlign="justify"
-        style={{ textDecoration: 'underline' }}
-      >
-        Limitations on Access or Use of MobileCoin Wallets and Use and Transfer
-        of MobileCoins
+      <Box p={2} component={Typography} textAlign="justify" style={{ textDecoration: 'underline' }}>
+        {t('p8')}
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
-        The right to access or use MobileCoin Wallets and use or transfer
-        MobileCoins is a personal, restricted, non-exclusive, non-transferable,
-        non-sublicensable, revocable, limited license, and it is subject to the
-        limitations and obligations in these Terms. Every
+        {t('p9')}
         <Typography display="inline" color="primary">
-          {' Prohibited Person '}
+          {t('p10')}
         </Typography>
-        and
+        {t('p11')}
         <Typography display="inline" color="primary">
-          {' U.S. Person '}
+          {t('p12')}
         </Typography>
-        is strictly prohibited from directly or indirectly transacting,
-        transferring, holding, owning, accessing or using any MobileCoins and
-        any MobileCoin Wallets in any way.
+        {t('p13')}
       </Box>
       <Box p={2} component={Typography} textAlign="justify">
-        You are a
+        {t('p14')}
         <Typography display="inline" color="primary">
-          {' Prohibited Person '}
+          {t('p15')}
         </Typography>
-        if you are:
+        {t('p16')}
       </Box>
       <Box pl={6}>
         <ol start={1}>
           <li>
             <Box p={1} component={Typography} textAlign="justify">
-              an individual or entity present in or subject to the jurisdiction
-              of or any jurisdiction in which the distribution or offer of or
-              transaction in MobileCoins is unlawful or who is restricted or
-              prohibited by applicable law, including without limitation,
-              anti-money laundering laws, counter-terrorist financing laws,
-              anti-corruption laws, and economic sanctions laws, from purchasing
-              or otherwise obtaining MobileCoins or transacting in MobileCoins;
+              {t('p17')}
             </Box>
           </li>
           <li>
             <Box p={1} component={Typography} textAlign="justify">
-              an individual or entity present in or subject to the jurisdiction
-              of Cuba, Democratic People’s Republic of Korea (North Korea),
-              Iran, Syria or Crimea (a region of Ukraine annexed by the Russian
-              Federation) (a Prohibited Jurisdiction);
+              {t('p18')}
             </Box>
           </li>
           <li>
             <Box p={1} component={Typography} textAlign="justify">
-              a government or government official of any Prohibited Jurisdiction
-              or of Venezuela or any subdivision thereof;
+              {t('p19')}
             </Box>
           </li>
           <li>
             <Box p={1} component={Typography} textAlign="justify">
-              an individual or entity subject to asset freezing or blocking
-              sanctions imposed by the United Nations, British Virgin Islands,
-              United Kingdom, European Union, or United States or any entity
-              owned 50 percent or more by one or more such persons (a Sanctioned
-              Person);
+              {t('p20')}
             </Box>
           </li>
           <li>
             <Box p={1} component={Typography} textAlign="justify">
-              a person under 18 years of age; or
+              {t('p21')}
             </Box>
           </li>
           <li>
             <Box p={1} component={Typography} textAlign="justify">
-              any other individual or entity whose dealings in MobileCoins or
-              use of a MobileCoin Wallet could expose the Compliance Entities to
-              civil or criminal liability or cause the Compliance Entities to
-              engage in sanctionable conduct.
+              {t('p22')}
             </Box>
           </li>
         </ol>

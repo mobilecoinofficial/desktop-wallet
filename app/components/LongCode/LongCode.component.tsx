@@ -3,9 +3,9 @@ import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 
-import { GOLD_DARK, GOLD_LIGHT, WHITE } from '../constants/colors';
+import { GOLD_DARK, GOLD_LIGHT, WHITE } from '../../constants/colors';
 
-interface LongCodeProps {
+export interface LongCodeProps {
   code: string;
   codeClass?: string;
 }

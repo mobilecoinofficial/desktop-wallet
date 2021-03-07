@@ -4,8 +4,8 @@ import type { FC, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
-import routePaths from '../constants/routePaths';
-import useMobileCoinD from '../hooks/useMobileCoinD';
+import routePaths from '../../constants/routePaths';
+import useMobileCoinD from '../../hooks/useMobileCoinD';
 
 interface WalletGuardProps {
   children?: ReactNode;

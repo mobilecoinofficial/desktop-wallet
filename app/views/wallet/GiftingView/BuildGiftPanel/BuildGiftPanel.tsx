@@ -26,8 +26,7 @@ import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import { AccountCard, MOBNumberFormat } from '../../../../components';
-import ShortCode from '../../../../components/ShortCode';
+import { AccountCard, MOBNumberFormat, ShortCode } from '../../../../components';
 import { CopyIcon, TrashcanIcon } from '../../../../components/icons';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../../hooks/useMobileCoinD';

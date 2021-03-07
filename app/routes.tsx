@@ -2,9 +2,7 @@ import React, { Fragment } from 'react';
 
 import { Switch, Redirect, Route } from 'react-router-dom';
 
-import AuthFlowGuard from './components/AuthFlowGuard';
-import UnlockWalletGuard from './components/UnlockWalletGuard';
-import WalletGuard from './components/WalletGuard';
+import { AuthFlowGuard, UnlockWalletGuard, WalletGuard } from './components';
 import routePaths from './constants/routePaths';
 import DashboardLayout from './layouts/DashboardLayout';
 import { CreateAccountView, ImportAccountView, UnlockWalletView } from './views/auth';

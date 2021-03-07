@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
 
-interface SubmitButtonProps {
+export interface SubmitButtonProps {
   buttonClass?: string;
   disabled: boolean;
   isSubmitting: boolean;

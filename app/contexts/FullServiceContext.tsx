@@ -590,17 +590,26 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   //   }
   // };
 
-  // const retrieveEntropy = async (password: string) => {
-  //   const DecryptEntropyServiceInstance = new DecryptEntropyService(client, {
-  //     password,
-  //   });
+  const retrieveEntropy = async (password: string) => {
+    try {
+      const { hashedPassword, selectedAccount } = state;
+      const LocalStoreInstance = new LocalStore();
+      const salt = LocalStoreInstance.getHashedPasswordSalt();
+      if (!hashedPassword || !salt) throw new Error('hashedPassword not found.');
 
-  //   const { isSuccess, data, errorMessage } = await DecryptEntropyServiceInstance.call();
-  //   if (isSuccess) {
-  //     return data.entropy;
-  //   }
-  //   throw new Error(errorMessage);
-  // };
+      // Attempt to match password digest
+      const { secretKeyString } = await scryptKeys(password, salt);
+      if (secretKeyString !== hashedPassword) throw new Error('Incorrect Password'); // TODO: i18n
+
+      const { accountSecrets } = await fullServiceApi.exportAccountSecrets({
+        accountId: selectedAccount.account.accountId,
+      });
+
+      return accountSecrets.entropy;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
 
   // const submitGiftCode = async (txProposal: TxProposal, giftB58Code: string) => {
   //   if (state.monitorId === null) {
@@ -830,7 +839,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         importAccount,
         // openGiftCode,
         // payAddressCode,
-        // retrieveEntropy,
+        retrieveEntropy,
         // submitGiftCode,
         submitTransaction,
         unlockWallet,

@@ -516,8 +516,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  // test entropy!
-  // ed62ae3259992ec31dc9fe08be1b9964327e0c4846be99a975397a32099b9860
   // Import the wallet should initalize the basic wallet information
   // The wallet status
   // Accounts + status

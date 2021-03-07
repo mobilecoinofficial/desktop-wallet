@@ -13,6 +13,8 @@ export const schemaKeys = {
   FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   GIFT_CODES: 'giftCodes',
   HASHED_PIN: 'hashedPin',
+  HASHED_PASSWORD: 'hashedPassword',
+  HASHED_PASSWORD_SALT: 'hashedPasswordSalt',
   LEAVE_MOBILECOIND_RUNNING: 'leaveMobilecoindRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
   MINIMUM_FOR_PIN: 'minimumPin',
@@ -97,6 +99,32 @@ class LocalStore {
   getLedgerDbPath(): string {
     const ledgerDbPath = this.store.get(schemaKeys.LEDGER_DB_PATH);
     return typeof ledgerDbPath === 'string' ? ledgerDbPath : '';
+  }
+
+  // TODO - add tests
+  getHashedPassword(): string | null {
+    const hashedPassword = this.store.get(schemaKeys.HASHED_PASSWORD);
+    return typeof hashedPassword === 'string' ? hashedPassword : null;
+  }
+
+  // TODO - add tests
+  setHashedPassword(hashedPassword: string) {
+    this.store.set({
+      [schemaKeys.HASHED_PASSWORD]: hashedPassword,
+    });
+  }
+
+  // TODO - add tests
+  getHashedPasswordSalt(): string | null {
+    const hashedPasswordSalt = this.store.get(schemaKeys.HASHED_PASSWORD_SALT);
+    return typeof hashedPasswordSalt === 'string' ? hashedPasswordSalt : null;
+  }
+
+  // TODO - add tests
+  setHashedPasswordSalt(hashedPasswordSalt: string) {
+    this.store.set({
+      [schemaKeys.HASHED_PASSWORD_SALT]: hashedPasswordSalt,
+    });
   }
 
   getMobilecoindDbPath(): string {

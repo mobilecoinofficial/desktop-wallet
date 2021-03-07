@@ -2,20 +2,20 @@ import type FullServiceAccount from '../../types/FullServiceAccount';
 import type { StringHex } from '../../types/SpecialStrings';
 import axiosFullService from '../axiosFullService';
 
-const GET_ACCOUNT_METHOD = 'get_account';
+const GET_ACCOUNT_STATUS_METHOD = 'get_account_status';
 
-type GetAccountParams = {
+type GetAccountStatusParams = {
   accountId: StringHex;
 };
 
-type GetAccountResult = {
+type GetAccountStatusResult = {
   account: FullServiceAccount;
 };
 
-const getAccount = async ({
+const getAccountStatus = async ({
   accountId,
-}: GetAccountParams): Promise<GetAccountResult> => {
-  const { result, error } = await axiosFullService(GET_ACCOUNT_METHOD, {
+}: GetAccountStatusParams): Promise<GetAccountStatusResult> => {
+  const { result, error } = await axiosFullService(GET_ACCOUNT_STATUS_METHOD, {
     accountId,
   });
 
@@ -27,4 +27,4 @@ const getAccount = async ({
   }
 };
 
-export default getAccount;
+export default getAccountStatus;

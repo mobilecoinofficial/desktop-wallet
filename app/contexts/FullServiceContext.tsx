@@ -666,29 +666,26 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const LocalStoreInstance = new LocalStore();
       const salt = LocalStoreInstance.getHashedPasswordSalt();
       if (!hashedPassword || !salt) throw new Error('hashedPassword not found.');
-      debugger;
 
       // Attempt to match password digest
       const { secretKeyString } = await scryptKeys(password, salt);
-      // FixMe
-      // if (secretKeyString !== hashedPassword) throw new Error('Incorrect Password') // TODO: i18n
+      if (secretKeyString !== hashedPassword) throw new Error('Incorrect Password'); // TODO: i18n
 
       // Get main account id
       const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-      const selectedAccount = accountMap[accountIds[0]]; // TODO - need better metadata for this; come back and use config data
-      debugger;
+      // TODO - need better metadata for this; come back and use config data
+      const selectedAccount = accountMap[accountIds[0]];
 
       // Get basic wallet information
       const { walletStatus } = await fullServiceApi.getWalletStatus();
-      debugger;
 
       const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
         accountId: selectedAccount.accountId,
       });
-      debugger;
 
-      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId: selectedAccount.accountId });
-      debugger;
+      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({
+        accountId: selectedAccount.accountId,
+      });
       dispatch({
         payload: {
           accounts: {

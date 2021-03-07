@@ -2,22 +2,22 @@ import type Address from '../../types/Address';
 import type { StringHex } from '../../types/SpecialStrings';
 import axiosFullService from '../axiosFullService';
 
-const GET_ALL_ADRESSES_BY_ACCOUNT_METHOD = 'get_all_addresses_by_account';
+const GET_ALL_ADRESSES_FOR_ACCOUNT_METHOD = 'get_all_addresses_for_account';
 
-type GetAllAddressesByAccountParams = {
+type GetAllAddressesForAccountParams = {
   accountId: StringHex;
 };
 
-type GetAllAddressesByAccountResult = {
+type GetAllAddressesForAccountResult = {
   addressIds: StringHex[];
   addressMap: { [addressId: string]: Address };
 };
 
-const getAllAddressesByAccount = async ({
+const getAllAddressesForAccount = async ({
   accountId,
-}: GetAllAddressesByAccountParams): Promise<GetAllAddressesByAccountResult> => {
+}: GetAllAddressesForAccountParams): Promise<GetAllAddressesForAccountResult> => {
   const { result, error } = await axiosFullService(
-    GET_ALL_ADRESSES_BY_ACCOUNT_METHOD,
+    GET_ALL_ADRESSES_FOR_ACCOUNT_METHOD,
     {
       accountId,
     },
@@ -27,8 +27,11 @@ const getAllAddressesByAccount = async ({
     // TODO - I'll write up a better error handler
     throw new Error(error);
   } else {
-    return result;
+    return {
+      addressIds: result.publicAddresses,
+      addressMap: result.addressMap,
+    };
   }
 };
 
-export default getAllAddressesByAccount;
+export default getAllAddressesForAccount;

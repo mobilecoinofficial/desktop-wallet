@@ -5,7 +5,7 @@ const IMPORT_ACCOUNT_METHOD = 'import_account';
 
 type ImportAccountParams = {
   entropy: string,
-  firstBlock?: string,
+  firstBlockIndex?: string,
   name: string | null,
 };
 
@@ -15,12 +15,12 @@ type ImportAccountResult = {
 
 const importAccount = async ({
   entropy,
-  firstBlock = '0',
+  firstBlockIndex,
   name,
 }: ImportAccountParams): Promise<ImportAccountResult> => {
   const { result, error } = await axiosFullService(IMPORT_ACCOUNT_METHOD, {
     entropy,
-    firstBlock,
+    firstBlockIndex,
     name,
   });
 

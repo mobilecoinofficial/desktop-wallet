@@ -20,10 +20,11 @@ import getPercentSyncedNew from '../../../utils/getPercentSyncedNew';
 const LedgerStatus: FC = () => {
   const { selectedAccount } = useFullService();
 
-  const networkHeightBigInt = BigInt(selectedAccount.account.networkHeight);
-  const localHeightBigInt = BigInt(selectedAccount.account.localHeight);
-  const accountHeightBigInt = BigInt(selectedAccount.account.accountHeight);
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+  const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
 
+  // TODO - check these types now
   const createData = (
     blockType: string,
     currentHeight: number | string | null,
@@ -35,34 +36,34 @@ const LedgerStatus: FC = () => {
     };
   };
 
-  const percentAccountSynced = networkHeightBigInt < accountHeightBigInt
+  const percentAccountSynced = networkBlockIndexBigInt < accountBlockIndexBigInt
     ? 'Error'
     : getPercentSyncedNew(
-      networkHeightBigInt,
-      accountHeightBigInt,
+      networkBlockIndexBigInt,
+      accountBlockIndexBigInt,
     );
 
-  const percentLocalSynced = networkHeightBigInt < localHeightBigInt
-    || localHeightBigInt < accountHeightBigInt
+  const percentLocalSynced = networkBlockIndexBigInt < localBlockIndexBigInt
+    || localBlockIndexBigInt < accountBlockIndexBigInt
     ? 'Error'
     : getPercentSyncedNew(
-      networkHeightBigInt,
-      localHeightBigInt,
+      networkBlockIndexBigInt,
+      localBlockIndexBigInt,
     );
 
   const rows = [
-    createData('Network Blocks', '', Number(networkHeightBigInt), ''),
+    createData('Network Blocks', '', Number(networkBlockIndexBigInt), ''),
     createData(
       'Local Blocks',
-      Number(localHeightBigInt),
-      Number(networkHeightBigInt),
-      percentLocalSynced === 'Error' ? 'Error' : 100 * percentLocalSynced,
+      Number(localBlockIndexBigInt),
+      Number(networkBlockIndexBigInt),
+      percentLocalSynced === 'Error' ? 'Error' : percentLocalSynced,
     ),
     createData(
       'Account Blocks',
-      Number(accountHeightBigInt),
-      Number(networkHeightBigInt),
-      percentAccountSynced === 'Error' ? 'Error' : 100 * percentAccountSynced,
+      Number(accountBlockIndexBigInt),
+      Number(networkBlockIndexBigInt),
+      percentAccountSynced === 'Error' ? 'Error' : percentAccountSynced,
     ),
   ];
 

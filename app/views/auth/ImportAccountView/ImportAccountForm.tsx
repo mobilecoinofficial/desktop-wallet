@@ -10,9 +10,9 @@ import { Checkbox, TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
-import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
+import type { FullServiceContextValue } from '../../../contexts/FullServiceContext';
+import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
 
 export interface ImportAccountFormValues {
   accountName: string;
@@ -25,7 +25,7 @@ export interface ImportAccountFormValues {
 
 interface ImportAccountFormPseudoProps {
   isMountedRef: { current: boolean };
-  importAccount: MobileCoinDContextValue['importAccount'];
+  importAccount: FullServiceContextValue['importAccount'];
 }
 
 export const importAccountFormOnSubmit = async (
@@ -63,7 +63,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
   onSubmit,
 }: ImportAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
-  const { importAccount } = useMobileCoinD();
+  const { importAccount } = useFullService();
 
   const [canCheck, setCanCheck] = React.useState(false);
   const [open, setOpen] = React.useState(false);

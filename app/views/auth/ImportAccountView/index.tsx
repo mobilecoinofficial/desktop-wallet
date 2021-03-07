@@ -14,7 +14,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
+import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 import ImportAccountForm, { importAccountFormOnSubmit } from './ImportAccountForm';
 
@@ -54,7 +54,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
   isTest,
 }: ImportAccountViewProps) => {
   const classes = useStyles();
-  const { encryptedEntropy } = useMobileCoinD();
+  const { hashedPassword } = useFullService();
 
   return (
     <Box data-testid="ImportAccountView" className={classes.root}>
@@ -72,7 +72,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
             accounts. If you do not have an account, please create a new account
             instead.
           </Typography>
-          {encryptedEntropy && (
+          {hashedPassword && (
             <Box data-testid="overwrite-warning">
               <Typography variant="body2" paragraph>
                 It appears that this wallet is locked with an encrypted Entropy.

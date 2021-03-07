@@ -1,12 +1,12 @@
 // TODO - delete other
 const getPercentSyncedNew = (
-  networkHeight: bigint,
-  blockHeight: bigint,
+  networkBlockIndex: bigint,
+  blockBlockIndex: bigint,
 ): number => {
-  return networkHeight === BigInt(0)
+  return networkBlockIndex === BigInt(0)
     ? 0
     // eslint-disable-next-line no-mixed-operators
-    : (Number(blockHeight * BigInt(100) / networkHeight));
+    : (Number(blockBlockIndex * BigInt(100) / networkBlockIndex));
 };
 
 export default getPercentSyncedNew;

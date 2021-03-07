@@ -2,24 +2,24 @@ import type Address from '../../types/Address';
 import type { StringHex } from '../../types/SpecialStrings';
 import axiosFullService from '../axiosFullService';
 
-const CREATE_ADDRESS_METHOD = 'create_address';
+const ASSIGN_ADDRESS_FOR_ACCOUNT_METHOD = 'assign_address_for_account';
 
-type CreateAddressParams = {
+type AssignAddressForAccountParams = {
   accountId: StringHex;
-  comment?: string;
+  metadata?: string;
 };
 
-type CreateAddressResult = {
+type AssignAddressForAccountResult = {
   address: Address;
 };
 
-const createAddress = async ({
+const assignAddressForAccount = async ({
   accountId,
-  comment,
-}: CreateAddressParams): Promise<CreateAddressResult> => {
-  const { result, error } = await axiosFullService(CREATE_ADDRESS_METHOD, {
-    account_id: accountId,
-    comment,
+  metadata,
+}: AssignAddressForAccountParams): Promise<AssignAddressForAccountResult> => {
+  const { result, error } = await axiosFullService(ASSIGN_ADDRESS_FOR_ACCOUNT_METHOD, {
+    accountId,
+    metadata,
   });
 
   if (error) {
@@ -31,4 +31,4 @@ const createAddress = async ({
   }
 };
 
-export default createAddress;
+export default assignAddressForAccount;

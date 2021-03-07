@@ -17,9 +17,7 @@ const submitTransaction = async ({
 }: SubmitTransactionParams): Promise<SubmitTransactionResult> => {
   const { result, error } = await axiosFullService(
     SUBMIT_TRANSACTION_METHOD,
-    {
-      tx_proposal: txProposal,
-    },
+    { txProposal },
   );
 
   if (error) {

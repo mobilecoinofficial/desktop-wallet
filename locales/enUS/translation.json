@@ -254,14 +254,14 @@
   },
 
   "LedgerStatus": {
+    "accountBlocks": "Account Blocks",
+    "accountBlocksDescription": "Account Blocks shows the blocks that a specific Account has synced. Each account has its own Account Blocks count. Once this value is synced, you will immediately see the effects of transactions.",
     "blockType": "Block Type",
     "formLabel": "Ledger Status",
     "height": "Current Height",
     "localBlocks": "Local Blocks",
     "localBlocksDescription": "Local Blocks shows the blocks your mobilecoind has synced the ledger.",
     "maxHeight": "Maximum Height",
-    "monitorBlocks": "Monitor Blocks",
-    "monitorBlocksDescription": "Monitor Blocks shows the blocks that a specific monitor has synced. Each account has its own Monitor Blocks count. Once this value is synced, you will immediately see the effects of transactions.",
     "networkBlocks": "Network Blocks",
     "networkBlocksDescription": "Network Blocks represent the total blocks within the MobileCoin network. This is the value your Local and Monitor Blocks needs to hit to be 100% synced.",
     "statusCopy100": "The ledger is synced.",

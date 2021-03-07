@@ -15,7 +15,8 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useMobileCoinD from '../../hooks/useMobileCoinD';
+import useFullService from '../../hooks/useFullService';
+// import useMobileCoinD from '../../hooks/useMobileCoinD';
 import type { Theme } from '../../theme';
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -46,13 +47,13 @@ const ShowEntropyModal: FC = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [showEntropy, setShowEntropy] = useState(false);
-  const { entropy, isEntropyKnown, confirmEntropyKnown } = useMobileCoinD();
   const { t } = useTranslation('ShowEntropyModal');
+  const { pendingSecrets, isEntropyKnown, confirmEntropyKnown } = useFullService();
   const handleCloseModal = () => {
     confirmEntropyKnown();
   };
   // TODO, i should start making a single util for all of this coercing logic
-  const entropyString = entropy ? Buffer.from(entropy).toString('hex') : '';
+  const entropyString = pendingSecrets?.entropy || '';
 
   const toggleEntropy = () => {
     if (!canGoForward) setCanGoForward(true);
@@ -106,7 +107,7 @@ const ShowEntropyModal: FC = () => {
                 <Box py={3} display="flex" alignItems="center" flexDirection="column">
                   <Box p={2}>
                     <Fab variant="extended" color="primary" onClick={toggleEntropy} size="small">
-                      {showEntropy ? t('hide') : t('show')}
+                      {showEntropy ? t('hide') as string : t('show') as string}
                     </Fab>
                   </Box>
                   {showEntropy ? (

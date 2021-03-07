@@ -17,8 +17,8 @@ const changePassword = async ({
   oldPassword,
 }: ChangePasswordParams): Promise<ChangePasswordResponse> => {
   return axiosFullService(CHANGE_PASSWORD_METHOD, {
-    new_password: newPassword,
-    old_password: oldPassword,
+    newPassword,
+    oldPassword,
   });
 };
 

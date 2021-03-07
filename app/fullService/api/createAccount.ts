@@ -4,8 +4,8 @@ import axiosFullService from '../axiosFullService';
 const CREATE_ACCOUNT_METHOD = 'create_account';
 
 type CreateAccountParams = {
-  firstBlock?: string,
-  name?: string,
+  firstBlockIndex?: string,
+  name: string | null,
 };
 
 type CreateAccountResult = {
@@ -13,11 +13,11 @@ type CreateAccountResult = {
 };
 
 const createAccount = async ({
-  firstBlock = '0',
+  firstBlockIndex,
   name,
 }: CreateAccountParams): Promise<CreateAccountResult> => {
   const { result, error } = await axiosFullService(CREATE_ACCOUNT_METHOD, {
-    first_block: firstBlock,
+    firstBlockIndex,
     name,
   });
 

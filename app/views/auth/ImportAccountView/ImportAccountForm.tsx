@@ -9,14 +9,18 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
-import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
+import type { FullServiceContextValue } from '../../../contexts/FullServiceContext';
+import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
+<<<<<<< HEAD
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import {
   convertMnemonicOrHexToEntropy,
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
 } from '../../../utils/bip39Functions';
+=======
+>>>>>>> 780a5a0... Full service integration/begin intergration (#55)
 
 export interface ImportAccountFormValues {
   accountName: string;
@@ -29,7 +33,7 @@ export interface ImportAccountFormValues {
 
 interface ImportAccountFormPseudoProps {
   isMountedRef: { current: boolean };
-  importAccount: MobileCoinDContextValue['importAccount'];
+  importAccount: FullServiceContextValue['importAccount'];
 }
 
 export const importAccountFormOnSubmit = async (
@@ -68,8 +72,8 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
   onSubmit,
 }: ImportAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
-  const { importAccount } = useMobileCoinD();
   const { t } = useTranslation('ImportAccountForm');
+  const { importAccount } = useFullService();
 
   const [canCheck, setCanCheck] = React.useState(false);
   const [open, setOpen] = React.useState(false);

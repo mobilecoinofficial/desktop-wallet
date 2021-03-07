@@ -1,18 +1,56 @@
 // TODO - change to just Account; delete the other Account type
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
-export default interface FullServiceAccount {
-  account_height: StringUInt64;
-  account_id: StringHex;
-  available_pmob: StringUInt64;
-  is_synced: boolean;
-  local_height: StringUInt64;
-  main_address: StringB58;
+// type AccountKey = {
+//   object: 'account_key';
+//   accountId: StringHex;
+//   fogAuthoritySpki: string;
+//   fogReportId: string;
+//   fogReportUrl: string;
+//   spendPrivateKey: StringHex;
+//   viewPrivateKey: StringHex;
+// };
+
+// type AccountSyncStatus = {
+//   object: 'account_balance';
+//   accountId: StringHex;
+//   accountBlockCount: StringUInt64;
+//   localBlockCount: StringUInt64;
+//   networkBlockCount: StringUInt64;
+//   isSynced: boolean
+// };
+
+// type AccountBalance = {
+//   object: 'account_balance';
+//   accountId: StringHex;
+//   orphanedPmob: StringUInt64;
+//   pendingPmob: StringUInt64;
+//   secretedPmob: StringUInt64;
+//   spentPmob: StringUInt64;
+//   unspentPmob: StringUInt64;
+// };
+// export default interface Account {
+//   object: 'account';
+//   accountBalance: AccountBalance;
+//   accountHeight: StringUInt64; // why do we have this?
+//   accountId: StringHex;
+//   accountKey: AccountKey;
+//   accountSyncStatus: AccountSyncStatus;
+//   entropy: StringHex;
+//   mainAddress: StringB58;
+//   // metadata: string used as a wildcard, stringified json object?
+//   name: string | null;
+//   nextSubaddressIndex: StringUInt64;
+//   // offsetCount: number; TODO - follow up on why we removed this? to discourage n accounts?
+//   recoveryMode: boolean;
+// }
+
+export default interface Account {
+  // metadata: string used as a wildcard, stringified json object?
+  accountId: StringHex;
+  firstBlockIndex: StringUInt64;
+  mainAddress: StringB58;
   name: string | null;
-  network_height: StringUInt64;
-  next_subaddress_index: StringUInt64;
+  nextSubaddressIndex: StringUInt64;
   object: 'account';
-  offset_count: number;
-  pending_pmob: StringUInt64;
-  recovery_mode: boolean;
 }

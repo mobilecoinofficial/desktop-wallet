@@ -15,18 +15,18 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
-import getPercentSynced from '../../../utils/getPercentSynced';
+import useFullService from '../../../hooks/useFullService';
+import getPercentSyncedNew from '../../../utils/getPercentSyncedNew';
 
 const LedgerStatus: FC = () => {
-  const { localBlockIndex, networkHighestBlockIndex, nextBlock } = useMobileCoinD();
-
   const { t } = useTranslation('LedgerStatus');
+  const { selectedAccount } = useFullService();
 
-  const localBlockIndexInt = parseInt(localBlockIndex || '0', 10);
-  const networkHighestBlockIndexInt = parseInt(networkHighestBlockIndex || '0', 10);
-  const nextBlockInt = parseInt(nextBlock || '0', 10);
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+  const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
 
+  // TODO - check these types now
   const createData = (
     blockType: string,
     currentHeight: number | string | null,
@@ -41,46 +41,43 @@ const LedgerStatus: FC = () => {
     };
   };
 
-  const percentMonitorSynced =
-    networkHighestBlockIndexInt === null ||
-    nextBlockInt === null ||
-    networkHighestBlockIndexInt < 0 ||
-    nextBlockInt < 0 ||
-    nextBlockInt - 1 > networkHighestBlockIndexInt
-      ? 'Error'
-      : getPercentSynced(networkHighestBlockIndexInt, nextBlockInt, 'nextBlock');
+  const percentAccountSynced = networkBlockIndexBigInt < accountBlockIndexBigInt
+    ? 'Error'
+    : getPercentSyncedNew(
+      networkBlockIndexBigInt,
+      accountBlockIndexBigInt,
+    );
 
-  const percentLocalSynced =
-    networkHighestBlockIndexInt === null ||
-    localBlockIndexInt === null ||
-    networkHighestBlockIndexInt < 0 ||
-    localBlockIndexInt < 0 ||
-    localBlockIndexInt > networkHighestBlockIndexInt
-      ? 'Error'
-      : getPercentSynced(networkHighestBlockIndexInt, localBlockIndexInt, 'localBlockIndex');
+  const percentLocalSynced = networkBlockIndexBigInt < localBlockIndexBigInt
+    || localBlockIndexBigInt < accountBlockIndexBigInt
+    ? 'Error'
+    : getPercentSyncedNew(
+      networkBlockIndexBigInt,
+      localBlockIndexBigInt,
+    );
 
   const rows = [
-    createData(t('networkBlocks'), '', networkHighestBlockIndexInt, ''),
+    createData(t('networkBlocks'), '', Number(networkBlockIndexBigInt), ''),
     createData(
       t('localBlocks'),
-      localBlockIndexInt,
-      networkHighestBlockIndexInt,
-      percentLocalSynced
+      Number(localBlockIndexBigInt),
+      Number(networkBlockIndexBigInt),
+      percentLocalSynced === 'Error' ? 'Error' : percentLocalSynced,
     ),
     createData(
-      t('monitorBlocks'),
-      localBlockIndexInt,
-      networkHighestBlockIndexInt,
-      percentMonitorSynced
+      t('accountBlocks'),
+      Number(accountBlockIndexBigInt),
+      Number(networkBlockIndexBigInt),
+      percentAccountSynced === 'Error' ? 'Error' : percentAccountSynced,
     ),
   ];
 
   let statusCopy;
-  if (percentMonitorSynced === 'Error' || percentLocalSynced === 'Error') {
+  if (percentAccountSynced === 'Error' || percentLocalSynced === 'Error') {
     statusCopy = t('statusCopyError');
-  } else if (percentMonitorSynced < 90) {
-    statusCopy = t('statusCopyBelow90');
-  } else if (percentMonitorSynced < 100) {
+  } else if (percentAccountSynced < 90) {
+    statusCopy = t('statusCopyBelow90';
+  } else if (percentAccountSynced < 100) {
     statusCopy = t('statusCopyAbove90');
   } else {
     statusCopy = t('statusCopy100');
@@ -134,7 +131,7 @@ const LedgerStatus: FC = () => {
       </Typography>
       <Box py={1} />
       <Typography variant="body2" color="textSecondary">
-        {t('monitorBlocksDescription')}
+        {t('accountBlocksDescription')}
       </Typography>
     </Box>
   );

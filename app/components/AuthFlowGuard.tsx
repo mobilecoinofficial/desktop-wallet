@@ -5,21 +5,21 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import routePaths from '../constants/routePaths';
-import useMobileCoinD from '../hooks/useMobileCoinD';
 import SplashScreen from './SplashScreen';
+import useFullService from '../hooks/useFullService';
 
 interface AuthFlowGuardProps {
   children?: ReactNode;
 }
 
 const AuthFlowGuard: FC<AuthFlowGuardProps> = ({ children }) => {
-  const { encryptedEntropy, isAuthenticated, isInitialised } = useMobileCoinD();
+  const { isAuthenticated, isInitialized } = useFullService();
 
-  if (!isInitialised) {
+  if (!isInitialized) {
     return <SplashScreen />;
   }
 
-  if (encryptedEntropy && isAuthenticated) {
+  if (isAuthenticated) {
     return <Redirect to={routePaths.APP_DASHBOARD} />;
   }
 

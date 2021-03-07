@@ -21,8 +21,8 @@ import * as Yup from 'yup';
 import { SubmitButton } from '../../../components';
 import { PASSWORD_MIN_SIZE, PASSWORD_MAX_SIZE } from '../../../constants/codes';
 import routePaths from '../../../constants/routePaths';
+import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -82,8 +82,8 @@ const ChangePasswordView: FC = () => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const { changePassword } = useMobileCoinD();
   const { t } = useTranslation('ChangePasswordView');
+  const { changePassword } = useFullService();
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">

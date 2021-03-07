@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
 import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
+import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 
@@ -63,6 +64,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
 }: CreateAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
   const { createAccount } = useMobileCoinD();
+  const { createAccount: fullServiceCreateAccount } = useFullService();
 
   const [canCheck, setCanCheck] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -82,7 +84,11 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
     values: CreateAccountFormValues,
     helpers: FormikHelpers<CreateAccountFormValues>,
   ) => {
-    const pseduoProps = { createAccount, isMountedRef };
+    await createAccount(
+      values.accountName, values.password,
+    );
+
+    const pseduoProps = { createAccount: fullServiceCreateAccount, isMountedRef };
     onSubmit(pseduoProps, values, helpers);
   };
 

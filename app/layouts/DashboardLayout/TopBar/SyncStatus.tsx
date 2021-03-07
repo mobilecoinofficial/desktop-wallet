@@ -59,24 +59,24 @@ const SyncStatus: FC = () => {
   let statusCode;
   let title;
   let backgroundColor;
-  const networkHeightBigInt = BigInt(selectedAccount.account.networkHeight);
-  const localHeightBigInt = BigInt(selectedAccount.account.localHeight);
-  const accountHeightBigInt = BigInt(selectedAccount.account.accountHeight);
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+  const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
   const acceptableDiffBigInt = BigInt(2);
 
   if (
-    networkHeightBigInt < accountHeightBigInt
-    || networkHeightBigInt < localHeightBigInt
-    || localHeightBigInt < accountHeightBigInt
+    networkBlockIndexBigInt < accountBlockIndexBigInt
+    || networkBlockIndexBigInt < localBlockIndexBigInt
+    || localBlockIndexBigInt < accountBlockIndexBigInt
   ) {
     isSynced = false;
     percentSynced = 0;
     statusCode = ERROR;
   } else {
-    isSynced = networkHeightBigInt - accountHeightBigInt < acceptableDiffBigInt;
+    isSynced = networkBlockIndexBigInt - accountBlockIndexBigInt < acceptableDiffBigInt;
     percentSynced = getPercentSyncedNew(
-      networkHeightBigInt,
-      accountHeightBigInt,
+      networkBlockIndexBigInt,
+      accountBlockIndexBigInt,
     );
     statusCode = isSynced ? SYNCED : SYNCING;
   }
@@ -97,7 +97,6 @@ const SyncStatus: FC = () => {
       title = 'Please see Admin Panel in Settings.';
     }
   }
-
   return (
     <Tooltip title={title} placement="right" arrow className={classes.tooltip}>
       <Box className={classes.statusContainer}>

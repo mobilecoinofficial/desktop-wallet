@@ -2,15 +2,12 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import type { FC, ReactNode } from 'react';
 
 import * as fullServiceApi from '../fullService/api';
-import type { PublicAddress } from '../mobilecoind/protos/external_pb';
-import type { TxProposal } from '../mobilecoind/protos/mobilecoind_api_pb';
-import type { BuildGiftCodeServiceSuccessData } from '../mobilecoind/services/BuildGiftCodeService';
-import type { BuildTransactionServiceSuccessData } from '../mobilecoind/services/BuildTransactionService';
-import type { OpenGiftCodeServiceSuccessData } from '../mobilecoind/services/OpenGiftCodeService';
+import type { BuildTransactionParams } from '../fullService/api/buildTransaction';
 import type Address from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
 import type FullServiceAccount from '../types/FullServiceAccount';
-import type { StringB58, StringHex } from '../types/SpecialStrings';
+import type { StringB58, StringUInt64, StringHex } from '../types/SpecialStrings';
+import type TxProposal from '../types/TxProposal';
 import type WalletStatus from '../types/WalletStatus';
 import LocalStore from '../utils/LocalStore';
 import scryptKeys from '../utils/scryptKeys';
@@ -25,6 +22,12 @@ type Addresses = {
   addressMap: { [addressId: string]: Address };
 };
 
+type SelectedAccount = {
+  account: FullServiceAccount;
+  balanceStatus: BalanceStatus;
+  mobUrl: string;
+};
+
 interface FullServiceState {
   accounts: Accounts;
   addresses: Addresses;
@@ -32,22 +35,14 @@ interface FullServiceState {
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
   isInitialized: boolean;
-  selectedAccount: {
-    account: FullServiceAccount;
-    balanceStatus: BalanceStatus;
-    mobUrl: string;
-  };
+  selectedAccount: SelectedAccount;
   walletStatus: WalletStatus;
 }
 
 // TODO - context can be broken down into seperate files
 export interface FullServiceContextValue extends FullServiceState {
   buildGiftCode: (value: bigint, fee: bigint) => Promise<BuildGiftCodeServiceSuccessData | void>; // include object
-  buildTransaction: (
-    amount: bigint,
-    fee: bigint,
-    receiverB58Code: string
-  ) => Promise<BuildTransactionServiceSuccessData | void>; // include object
+  buildTransaction: (buildTransactionParams: BuildTransactionParams) => Promise<TxProposal | void>;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
   confirmEntropyKnown: () => void;
   deleteStoredGiftB58Code: (storedGiftB58Code: string) => void;
@@ -57,7 +52,7 @@ export interface FullServiceContextValue extends FullServiceState {
   payAddressCode: (amount: bigint, fee: bigint, receiverB58Code: string) => Promise<void>;
   retrieveEntropy: (password: string) => Promise<string | void>;
   submitGiftCode: (txProposal: TxProposal, giftB58Code: string) => Promise<void>;
-  submitTransaction: (txPropsal: TxProposal) => Promise<void>;
+  submitTransaction: (txProposal: TxProposal) => Promise<void>;
   unlockWallet: (password: string) => Promise<void>;
 }
 
@@ -94,19 +89,9 @@ type FetchBalanceAction = {
 type CreateAccountAction = {
   type: 'CREATE_ACCOUNT';
   payload: {
-    accounts: {
-      accountIds: StringHex[];
-      accountMap: { [accountId: string]: FullServiceAccount };
-    };
-    addresses: {
-      addressIds: StringHex[];
-      addressMap: { [addressId: string]: Address };
-    };
-    selectedAccount: {
-      account: FullServiceAccount;
-      balanceStatus: BalanceStatus;
-      mobUrl: string;
-    };
+    accounts: Accounts;
+    addresses: Addresses;
+    selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
 };
@@ -115,19 +100,9 @@ type CreateAccountAction = {
 type ImportAccountAction = {
   type: 'IMPORT_ACCOUNT';
   payload: {
-    accounts: {
-      accountIds: StringHex[];
-      accountMap: { [accountId: string]: FullServiceAccount };
-    };
-    addresses: {
-      addressIds: StringHex[];
-      addressMap: { [addressId: string]: Address };
-    };
-    selectedAccount: {
-      account: FullServiceAccount;
-      balanceStatus: BalanceStatus;
-      mobUrl: string;
-    };
+    accounts: Accounts;
+    addresses: Addresses;
+    selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
 };
@@ -153,19 +128,9 @@ type SyncLedgerAction = {
 type UnlockWalletAction = {
   type: 'UNLOCK_WALLET';
   payload: {
-    accounts: {
-      accountIds: StringHex[];
-      accountMap: { [accountId: string]: FullServiceAccount };
-    };
-    addresses: {
-      addressIds: StringHex[];
-      addressMap: { [addressId: string]: Address };
-    };
-    selectedAccount: {
-      account: FullServiceAccount;
-      balanceStatus: BalanceStatus;
-      mobUrl: string;
-    };
+    accounts: Accounts;
+    addresses: Addresses;
+    selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
 };
@@ -173,9 +138,8 @@ type UnlockWalletAction = {
 type UpdateStatusAction = {
   type: 'UPDATE_STATUS';
   payload: {
-    localBlockIndex: string;
-    networkHighestBlockIndex: string;
-    nextBlock: string;
+    selectedAccount: SelectedAccount;
+    walletStatus: WalletStatus;
   };
 };
 
@@ -206,34 +170,44 @@ const initialFullServiceState: FullServiceState = {
     account: {
       accountHeight: '',
       accountId: '',
-      availablePmob: '',
-      isSynced: false,
-      localHeight: '',
+      accountKey: {
+        fogAuthoritySpki: '',
+        fogReportId: '',
+        fogReportUrl: '',
+        spendPrivateKey: '',
+        viewPrivateKey: '',
+      },
+      entropy: '',
       mainAddress: '',
       name: null,
-      networkHeight: '',
       nextSubaddressIndex: '',
-      offsetCount: 0,
-      pendingPmob: '',
+      // offsetCount: 0,
       recoveryMode: false,
     },
     balanceStatus: {
+      accountBlockCount: '',
+      isSynced: false,
       localBlockCount: '',
-      orphaned: '',
-      pending: '',
-      secreted: '',
-      spent: '',
-      syncedBlocks: '',
-      unspent: '',
+      networkBlockCount: '',
+      orphanedPmob: '',
+      pendingPmob: '',
+      secretedPmob: '',
+      spentPmob: '',
+      unspentPmob: '',
     },
     mobUrl: '',
   },
   walletStatus: {
     isSyncedAll: false,
-    localHeight: '',
+    localBlockCount: '',
+    minSyncedBlockIndex: '',
+    networkBlockCount: '',
     networkHeight: '',
-    totalAvailablePmob: '',
+    totalOrphanedPmob: '',
     totalPendingPmob: '',
+    totalSecretedPmob: '',
+    totalSpentPmob: '',
+    totalUnspentPmob: '',
   },
 };
 
@@ -273,15 +247,14 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         selectedAccount,
         walletStatus,
       } = action.payload;
-      debugger;
       return {
         ...state,
         accounts,
         addresses,
-        selectedAccount,
-        walletStatus,
         isAuthenticated: true,
         isEntropyKnown: true,
+        selectedAccount,
+        walletStatus,
       };
     }
     case 'CREATE_ACCOUNT': {
@@ -295,10 +268,10 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         ...state,
         accounts,
         addresses,
-        selectedAccount,
-        walletStatus,
         isAuthenticated: true,
         isEntropyKnown: false,
+        selectedAccount,
+        walletStatus,
       };
     }
     case 'PAY_ADDRESS_CODE': {
@@ -342,12 +315,11 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
     case 'UPDATE_STATUS': {
-      const { localBlockIndex, networkHighestBlockIndex, nextBlock } = action.payload;
+      const { selectedAccount, walletStatus } = action.payload;
       return {
         ...state,
-        localBlockIndex,
-        networkHighestBlockIndex,
-        nextBlock,
+        selectedAccount,
+        walletStatus,
       };
     }
     default: {
@@ -418,24 +390,10 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   //   throw new Error(errorMessage);
   // };
 
-  // const buildTransaction = async (amount: bigint, fee: bigint, receiverB58Code: string) => {
-  //   if (state.monitorId === null) {
-  //     throw new Error('TODO - need better message - This should never happen');
-  //   }
-
-  //   const BuildTransactionServiceInstance = new BuildTransactionService(client, {
-  //     amount,
-  //     fee,
-  //     receiverB58Code,
-  //     senderMonitorId: state.monitorId, // TODO, on multiple accounts we need to select from form
-  //   });
-
-  //   const { isSuccess, data, errorMessage } = await BuildTransactionServiceInstance.call();
-  //   if (isSuccess) {
-  //     return data;
-  //   }
-  //   throw new Error(errorMessage);
-  // };
+  // TODO, better error handling
+  const buildTransaction = async (buildTransactionParams: BuildTransactionParams) => {
+    return fullServiceApi.buildTransaction(buildTransactionParams);
+  };
 
   // const changePassword = async (oldPassword: string, newPassword: string) => {
   //   const ChangePasswordServiceInstance = new ChangePasswordService(null, {
@@ -498,14 +456,15 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { accountId } = account;
 
       // Get basic wallet information
-      const { status } = await fullServiceApi.getWalletStatus();
-      const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesByAccount({
+      const { walletStatus } = await fullServiceApi.getWalletStatus();
+      const { accountIds, accountMap } = walletStatus;
+      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
         accountId,
       });
-      const { status: balanceStatus } = await fullServiceApi.getBalance({ accountId });
+      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
       // After successful import, store password digest
+      // TODO - rename secret key as digest
       const { publicSaltString, secretKeyString } = await scryptKeys(password);
       const LocalStoreInstance = new LocalStore();
       LocalStoreInstance.setHashedPassword(secretKeyString);
@@ -526,7 +485,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             balanceStatus,
             mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
           },
-          walletStatus: status,
+          walletStatus,
         },
         type: 'CREATE_ACCOUNT',
       });
@@ -542,6 +501,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Accounts + status
   const importAccount = async (name: string | null, entropy: string, password: string) => {
     try {
+      debugger;
+      // TODO - allow this once we're setup again!
       // Attempt import
       const { account } = await fullServiceApi.importAccount({
         entropy,
@@ -550,19 +511,23 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { accountId } = account;
 
       // Get basic wallet information
-      const { status } = await fullServiceApi.getWalletStatus();
+      const { walletStatus } = await fullServiceApi.getWalletStatus();
       const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesByAccount({
+      debugger;
+      // const accountId = accountIds[0];
+      // const account = accountMap[accountId];
+
+      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
         accountId,
       });
-      const { status: balanceStatus } = await fullServiceApi.getBalance({ accountId });
 
+      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
+      debugger;
       // After successful import, store password digest
       const { publicSaltString, secretKeyString } = await scryptKeys(password);
       const LocalStoreInstance = new LocalStore();
       LocalStoreInstance.setHashedPassword(secretKeyString);
       LocalStoreInstance.setHashedPasswordSalt(publicSaltString);
-
       dispatch({
         payload: {
           accounts: {
@@ -578,7 +543,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             balanceStatus,
             mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
           },
-          walletStatus: status,
+          walletStatus,
         },
         type: 'IMPORT_ACCOUNT',
       });
@@ -647,28 +612,31 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   //   if (!isSuccess) throw new Error(errorMessage);
   // };
 
-  // const submitTransaction = async (txProposal: TxProposal) => {
-  //   if (state.monitorId === null) {
-  //     throw new Error('TODO - need better message - This should never happen');
-  //   }
+  const submitTransaction = async (txProposal: TxProposal) => {
+    // submit transaction
+    const result = await fullServiceApi.submitTransaction({ txProposal });
+    debugger;
+    const { selectedAccount } = state;
+    const { accountId } = selectedAccount.account;
 
-  //   const SubmitTransactionServiceInstance = new SubmitTransactionService(client, {
-  //     senderMonitorId: state.monitorId, // TODO, on multiple accounts we need to select from form
-  //     txProposal,
-  //   });
-  //   const { isSuccess, data, errorMessage } = await SubmitTransactionServiceInstance.call();
-
-  //   if (isSuccess) {
-  //     dispatch({
-  //       payload: {
-  //         ...data,
-  //       },
-  //       type: 'UPDATE_STATUS',
-  //     });
-  //   } else {
-  //     throw new Error(errorMessage);
-  //   }
-  // };
+    // TODO- right now, we're just using the selected account to refresh
+    // this is obviously not ideal
+    const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
+    const { walletStatus } = await fullServiceApi.getWalletStatus();
+    debugger;
+    // TODO - get new balance (now that is it pending)
+    dispatch({
+      payload: {
+        selectedAccount: {
+          account: selectedAccount.account,
+          balanceStatus,
+          mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
+        },
+        walletStatus,
+      },
+      type: 'UPDATE_STATUS',
+    });
+  };
 
   const unlockWallet = async (password: string) => {
     try {
@@ -677,6 +645,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const LocalStoreInstance = new LocalStore();
       const salt = LocalStoreInstance.getHashedPasswordSalt();
       if (!hashedPassword || !salt) throw new Error('hashedPassword not found.');
+      debugger;
 
       // Attempt to match password digest
       const { secretKeyString } = await scryptKeys(password, salt);
@@ -686,14 +655,19 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       // Get main account id
       const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
       const selectedAccount = accountMap[accountIds[0]]; // TODO - need better metadata for this; come back and use config data
+      debugger;
 
       // Get basic wallet information
-      const { status } = await fullServiceApi.getWalletStatus();
-      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesByAccount({
+      const { walletStatus } = await fullServiceApi.getWalletStatus();
+      debugger;
+
+      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
         accountId: selectedAccount.accountId,
       });
-      const { status: balanceStatus } = await fullServiceApi.getBalance({ accountId: selectedAccount.accountId });
+      debugger;
 
+      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId: selectedAccount.accountId });
+      debugger;
       dispatch({
         payload: {
           accounts: {
@@ -709,7 +683,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             balanceStatus,
             mobUrl: `https://mobilecoin.com/mob58/${selectedAccount.accountId}`,
           },
-          walletStatus: status,
+          walletStatus,
         },
         type: 'UNLOCK_WALLET',
       });
@@ -718,6 +692,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
+  // Inialize App On Startup
   useEffect(() => {
     const initialize = () => {
       try {
@@ -746,43 +721,48 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   }, []);
 
   // Poll Status
-  // useEffect(() => {
-  //   const { balance, monitorId } = state;
-  //   // TODO - check this early exit
-  //   if (balance === undefined || monitorId === null) return () => {};
+  useEffect(() => {
+    const { selectedAccount } = state;
+    const { accountId } = selectedAccount.account;
+    // // TODO - check this early exit
+    if (accountId === '') return () => {};
 
-  //   const fetchBalance = async () => {
-  //     // TODO - consider making a GetBalanceService
-  //     // but, currently, it's unclear of its value if it's just 1 call
+    const fetchBalance = async () => {
+      // TODO - consider making a GetBalanceService
+      // but, currently, it's unclear of its value if it's just 1 call
 
-  //     // TODO - like most of the api calls, i really want to, instead,
-  //     // attach them directly to the client.
-  //     // Let's time box this for 1 hour today
-  //     const GetBalanceResponse = await getBalance(client, {
-  //       monitorId,
-  //       subaddressIndex: 0,
-  //     });
-  //     const newBalance = BigInt(GetBalanceResponse.getBalance());
-  //     if (newBalance !== balance) {
-  //       dispatch({
-  //         payload: {
-  //           balance: newBalance,
-  //         },
-  //         type: 'FETCH_BALANCE',
-  //       });
-  //     }
-  //   };
-  //   fetchBalance();
-  //   const fetchBalanceForver = setInterval(fetchBalance, 1000);
-  //   return () => {
-  //     return clearInterval(fetchBalanceForver);
-  //   };
-  //   // TODO - consider rebuilding the setInterval based on roundtrip time
-  //   // TODO - Right now, we have 1 monitorID. later, we may have multiple for
-  //   // many accounts. We'll need to parse each monitorId and built a fetcher for each.
-  //   // Or Alternatievly (and I like this idea more), our GetBalanceService can take
-  //   // an array of monitorIds and return a balance for each.
-  // }, [state, client]);
+      // TODO - like most of the api calls, i really want to, instead,
+      // attach them directly to the client.
+      // Let's time box this for 1 hour today
+
+      // TODO- right now, we're just using the selected account to refresh
+      // this is obviously not ideal
+      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
+      const { walletStatus } = await fullServiceApi.getWalletStatus();
+      // TODO - get new balance (now that is it pending)
+      dispatch({
+        payload: {
+          selectedAccount: {
+            account: selectedAccount.account,
+            balanceStatus,
+            mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
+          },
+          walletStatus,
+        },
+        type: 'UPDATE_STATUS',
+      });
+    };
+    fetchBalance();
+    const fetchBalanceForver = setInterval(fetchBalance, 10000);
+    return () => {
+      return clearInterval(fetchBalanceForver);
+    };
+    // TODO - consider rebuilding the setInterval based on roundtrip time
+    // TODO - Right now, we have 1 monitorID. later, we may have multiple for
+    // many accounts. We'll need to parse each monitorId and built a fetcher for each.
+    // Or Alternatievly (and I like this idea more), our GetBalanceService can take
+    // an array of monitorIds and return a balance for each.
+  }, [state]);
 
   // useEffect(() => {
   //   const { monitorId } = state;
@@ -830,7 +810,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       value={{
         ...state,
         // buildGiftCode,
-        // buildTransaction,
+        buildTransaction,
         // changePassword,
         // confirmEntropyKnown,
         createAccount,
@@ -840,7 +820,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         // payAddressCode,
         // retrieveEntropy,
         // submitGiftCode,
-        // submitTransaction,
+        submitTransaction,
         unlockWallet,
       }}
     >

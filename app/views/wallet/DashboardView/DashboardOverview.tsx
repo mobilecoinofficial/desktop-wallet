@@ -17,18 +17,20 @@ const DashboardOverview: FC<OverviewProps> = () => {
     selectedAccount,
   } = useFullService();
 
+  // TODO - figure out if we should calculate isSynced with a buffer.
+  // We should pull that into a util
   return (
     <Box>
       <Box alignItems="center">
         <BalanceIndicator
-          balance={selectedAccount.balanceStatus.unspent}
-          isSynced={selectedAccount.account.isSynced}
+          balance={selectedAccount.balanceStatus.unspentPmob}
+          isSynced={selectedAccount.balanceStatus.isSynced}
         />
       </Box>
       <AccountCard
         account={{
           b58Code: selectedAccount.account.mainAddress,
-          balance: selectedAccount.balanceStatus.unspent,
+          balance: selectedAccount.balanceStatus.unspentPmob,
           mobUrl: selectedAccount.mobUrl,
           name: selectedAccount.account.name,
         }}

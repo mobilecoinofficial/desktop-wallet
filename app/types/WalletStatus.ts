@@ -1,9 +1,9 @@
-import type Address from './Address';
+import type Account from './FullServiceAccount';
 import type { StringHex, StringUInt64 } from './SpecialStrings';
 
 export default interface WalletStatus {
-  addressIds: StringHex[];
-  addressMap: { [addressId: string]: Address };
+  accountIds: StringHex[];
+  accountMap: { [accountId: string]: Account };
   isSyncedAll: boolean
   localBlockIndex: StringUInt64;
   minSyncedBlockIndex: StringUInt64;

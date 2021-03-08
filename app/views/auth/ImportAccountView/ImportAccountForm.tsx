@@ -12,15 +12,11 @@ import { SubmitButton, TermsOfUseDialog } from '../../../components';
 import type { FullServiceContextValue } from '../../../contexts/FullServiceContext';
 import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-<<<<<<< HEAD
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import {
   convertMnemonicOrHexToEntropy,
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
 } from '../../../utils/bip39Functions';
-=======
->>>>>>> 780a5a0... Full service integration/begin intergration (#55)
 
 export interface ImportAccountFormValues {
   accountName: string;

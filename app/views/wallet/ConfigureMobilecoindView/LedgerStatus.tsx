@@ -41,20 +41,16 @@ const LedgerStatus: FC = () => {
     };
   };
 
-  const percentAccountSynced = networkBlockIndexBigInt < accountBlockIndexBigInt
-    ? 'Error'
-    : getPercentSyncedNew(
-      networkBlockIndexBigInt,
-      accountBlockIndexBigInt,
-    );
+  const percentAccountSynced =
+    networkBlockIndexBigInt < accountBlockIndexBigInt
+      ? 'Error'
+      : getPercentSyncedNew(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
-  const percentLocalSynced = networkBlockIndexBigInt < localBlockIndexBigInt
-    || localBlockIndexBigInt < accountBlockIndexBigInt
-    ? 'Error'
-    : getPercentSyncedNew(
-      networkBlockIndexBigInt,
-      localBlockIndexBigInt,
-    );
+  const percentLocalSynced =
+    networkBlockIndexBigInt < localBlockIndexBigInt ||
+    localBlockIndexBigInt < accountBlockIndexBigInt
+      ? 'Error'
+      : getPercentSyncedNew(networkBlockIndexBigInt, localBlockIndexBigInt);
 
   const rows = [
     createData(t('networkBlocks'), '', Number(networkBlockIndexBigInt), ''),
@@ -62,13 +58,13 @@ const LedgerStatus: FC = () => {
       t('localBlocks'),
       Number(localBlockIndexBigInt),
       Number(networkBlockIndexBigInt),
-      percentLocalSynced === 'Error' ? 'Error' : percentLocalSynced,
+      percentLocalSynced === 'Error' ? 'Error' : percentLocalSynced
     ),
     createData(
       t('accountBlocks'),
       Number(accountBlockIndexBigInt),
       Number(networkBlockIndexBigInt),
-      percentAccountSynced === 'Error' ? 'Error' : percentAccountSynced,
+      percentAccountSynced === 'Error' ? 'Error' : percentAccountSynced
     ),
   ];
 
@@ -76,7 +72,7 @@ const LedgerStatus: FC = () => {
   if (percentAccountSynced === 'Error' || percentLocalSynced === 'Error') {
     statusCopy = t('statusCopyError');
   } else if (percentAccountSynced < 90) {
-    statusCopy = t('statusCopyBelow90';
+    statusCopy = t('statusCopyBelow90');
   } else if (percentAccountSynced < 100) {
     statusCopy = t('statusCopyAbove90');
   } else {

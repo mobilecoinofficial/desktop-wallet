@@ -15,5 +15,8 @@
   "license": "",
   "devDependencies": {
     "@types/i18next-node-fs-backend": "^2.1.0"
+  },
+  "dependencies": {
+    "keytar": "^7.4.0"
   }
 }

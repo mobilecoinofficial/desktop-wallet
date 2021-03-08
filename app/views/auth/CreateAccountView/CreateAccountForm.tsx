@@ -2,6 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
@@ -41,6 +42,7 @@ export const createAccountFormOnSubmit = async (
     if (isMountedRef.current) {
       setStatus({ success: true });
       setSubmitting(false);
+      ipcRenderer.sendSync('set-password', accountName, password);
     }
   } catch (err) {
     if (isMountedRef.current) {

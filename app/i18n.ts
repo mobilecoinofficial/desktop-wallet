@@ -1,28 +1,28 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
-import enUS from '../locales/enUS.json';
+import config from '../configs/app.config';
+import enUS from '../locales/enUS/translation.json';
+import upDEV from '../locales/upDEV/translation.json'; // this is uppercased and for dev only
 
-const resources = {
-  enUS,
-};
+i18n.use(initReactI18next);
 
-i18n
-  // pass the i18n instance to react-i18next.
-  .use(initReactI18next)
-  // init i18next
-  .init({
+if (!i18n.isInitialized) {
+  i18n.init({
     debug: true,
-    fallbackLng: 'enUS',
+    fallbackLng: config.fallbackLng,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
     },
-    lng: 'enUS',
     react: {
       wait: false,
     },
-    resources,
-    supportedLngs: ['enUS'],
+    resources: {
+      enUS,
+      upDEV,
+    },
+    supportedLngs: config.languages,
   });
+}
 
 export default i18n;

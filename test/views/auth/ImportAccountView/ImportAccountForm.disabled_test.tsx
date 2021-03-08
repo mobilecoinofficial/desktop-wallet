@@ -98,7 +98,7 @@ function setupOnSubmit() {
 
 describe('ImportAccountForm', () => {
   describe('component', () => {
-    describe('initalValues', () => {
+    describe('initialValues', () => {
       test('sets correct initial values', async () => {
         const { form } = setupComponent();
         const expectedInitialValues = {

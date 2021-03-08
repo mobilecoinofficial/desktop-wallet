@@ -1,0 +1,456 @@
+{
+  "AccountCard": {
+    "accountHeader": "ACCOUNT ADDRESS CODE",
+    "accountQR": "ACCOUNT QR CODE",
+    "accountTooltip": "SHOW ACCOUNT ADDRESS CODE",
+    "clipboardAddress": "ADDRESS CODE COPIED TO CLIPBOARD!",
+    "clipboardGift": "GIFT CODE COPIED TO CLIPBOARD!",
+    "copyTooltip": "CLICK TO COPY TO CLIPBOARD.",
+    "giftHeader": "GIFT CODE",
+    "giftQR": "GIFT QR CODE",
+    "mobUrlTooltip": "SHOW MOBURL QR CODE",
+    "unnamed": "UNNAMED ACCOUNT"
+  },
+
+  "BalanceIndicator": {
+    "syncMessage": "BALANCE MAY BE OUT-OF-DATE WHILE WALLET SYNCS WITH LEDGER.",
+    "title": "BALANCE"
+  },
+
+  "BuildGiftForm": {
+    "accountBalance": "ACCOUNT BALANCE",
+    "accountName": "ACCOUNT NAME",
+    "cancel": "CANCEL",
+    "confirmationNotFound": "COULD NOT FIND CONFIRMATION",
+    "confirmGift": "CONFIRM GIFT",
+    "createGift": "CREATE GIFT",
+    "enterPin": "FOR THIS AMOUNT YOUR PIN IS NEEDED",
+    "error": "HMM, SOMETHING WENT WRONG.",
+    "errorBuild": "COULD NOT BUILD GIFT CODE.",
+    "errorFee": "PLEASE RESERVE 0.01 MOB FOR TRANSACTION FEE.",
+    "errorSyncBeforeSending": "WALLET MUST SYNC WITH LEDGER BEFORE SENDING GIFTS.",
+    "fee": "FEE",
+    "giftCanceled": "GIFT CANCELED",
+    "giftConfirmation": "GIFT CONFIRMATION",
+    "giftConfirmationDescription": "PLEASE CHECK AND CONFIRM YOUR GIFT INTENT",
+    "giftCreated": "GIFT CREATED! YOUR BALANCE WILL UPDATE SHORTLY.",
+    "giftDetails": "GIFT DETAILS",
+    "giftValue": "GIFT VALUE",
+    "mobLabel": "MOB AMOUNT",
+    "mobWillBeSent": "MOB WILL BE SENT TO THIS GIFT CARD AFTER YOU CONFIRM.",
+    "pending": "GIFT CODE (PENDING)",
+    "positiveValidation": "A POSITIVE, NON-ZERO AMOUNT IS REQUIRED TO GIFT MOB.",
+    "positiveValidationRequired": "A POSITIVE, NON-ZERO AMOUNT IS REQUIRED TO GIFT MOB.",
+    "remaining": "REMAINING BALANCE",
+    "secureCode": "PLEASE SECURE CODE",
+    "select": "SELECT ACCOUNT",
+    "showCode": "SHOW GIFT CODE",
+    "total": "TOTAL",
+    "unnamed": "UNNAMED ACCOUNT",
+    "walletSyncing": "WALLET SYNCING"
+  },
+
+  "BuildGiftPanel": {
+    "cancelButton": "CANCEL",
+    "clickToCopy": "CLICK TO COPY TO CLIPBOARD.",
+    "clickToDelete": "CLICK TO DELETE GIFT CODE.",
+    "deleteButton": "DELETE",
+    "deleted": "DELETED!",
+    "deleteDialogDescription": "IF THIS GIFT HAS BEEN CLAIMED, OR IF YOU DO NOT WANT TO STORE THE CODE AND VALUE ANYMORE, YOU CAN DELETE CODE HERE.",
+    "deleteDialogText": "DELETING WILL NOT CANCEL THE GIFT, AND A USER MUST CLAIM THE GIFT WITH THE CODE.",
+    "deleteDialogTitle": "DELETE GIFT CODE?",
+    "description": "USE THIS FORM TO CREATE REDEEMABLE GIFT CODES WITH MOB INSIDE. TO CREATE A GIFT CODE, YOU SIMPLY NEED TO INPUT THE VALUE YOU WOULD LIKE TO GIFT. YOU WILL THEN BE ASKED TO CONFIRM THE CONTENTS OF THE GIFT AND SECURE THE GIFTS SECRET CODE.",
+    "giftCodeCopied": "GIFT CODE COPIED TO CLIPBOARD!",
+    "giftValue": "GIFT VALUE:",
+    "manageGiftCodes": "MANAGE GIFT CODES",
+    "manageGiftCodesDescription": "WHEN YOU CREATE A GIFT, THIS WALLET WILL STORE ITS CODE AND VALUE. YOU CAN CLICK TO COPY AT ANY TIME. IF YOU DO NOT WISH TO STORE THE GIFT CODE ANYMORE, YOU CAN CLICK THE TRASHCAN ICON TO DELETE.",
+    "shortened": "SHORTENED GIFT CODE",
+    "title": "YOU CAN PACKAGE AND GIFT YOUR MOB!",
+    "value": "VALUE"
+  },
+
+  "ChangePasswordView": {
+    "changePasswordBreadcrumb": "CHANGE PASSWORD",
+    "changePasswordButton": "CHANGE PASSWORD",
+    "description": "CHANGING YOUR PASSWORD WILL CHANGE HOW WE ENCRYPT YOUR SECRET ENTROPY. YOU SHOULD ALWAYS USE STRONG (UNGUESSABLE) PASSWORDS AND CHANGE THEM REGULARLY.",
+    "enqueue": "SUCCESSFULLY CHANGE PASSWORD!",
+    "formLabel": "CHANGE PASSWORD",
+    "instructions": "TO CHANGE YOUR CURRENT PASSWORD, PLEASE ENTER YOUR CURRENT PASSWORD AND YOUR NEW PASSWORD.",
+    "newPasswordLabel": "NEW PASSWORD",
+    "oldPasswordLabel": "OLD PASSWORD",
+    "oldPasswordRequired": "OLD PASSWORD IS REQUIRED",
+    "passwordConfirmationLabel": "CONFIRM NEW PASSWORD",
+    "passwordConfirmationRef": "MUST MATCH NEW PASSWORD",
+    "passwordConfirmationRequired": "NEW PASSWORD CONFIRMATION IS REQUIRED",
+    "passwordMax": "PASSWORDS CANNOT BE MORE THAN 99 CHARACTERS.",
+    "passwordMin": "NEW PASSWORD MUST BE AT LEAST 8 CHARACTERS IN LENGTH.",
+    "passwordRequired": "NEW PASSWORD IS REQUIRED",
+    "settingsBreadcrumb": "SETTINGS"
+  },
+
+  "ChangePinView": {
+    "changePinBreadcrumb": "SET OR CHANGE PIN",
+    "changePinButton": "SET PIN",
+    "currentPasswordLabel": "CURRENT PASSWORD",
+    "currentPasswordRequired": "YOUR CURRENT PASSWORD IS REQUIRED TO SET OR CHANGE YOUR PIN",
+    "description": "THE PIN NUMBER IS USED AS AN EXTRA SAFETY CONFIRMATION FOR OPERATIONS. IT'S REQUIRED IF THE MOB AMOUNT IS GREATER THAN A MINIMUM VALUE.",
+    "enqueue": "SUCCESSFULLY SET PIN!",
+    "errorPin": "PIN MUST BE ALL DIGITS",
+    "formLabel": "PIN TO USE",
+    "instructions": "TO CHANGE YOUR PIN OR TO SET ONE, JUST ENTER THE DESIRED VALUE BELOW, AND THE MINIMUM IT APPLIES TO AS WELL.",
+    "minimumForPin": "MINIMUM AMOUNT THAT REQUIRES A PIN",
+    "newPinLabel": "PIN TO USE",
+    "pinConfirmationLabel": "CONFIRM PIN TO USE",
+    "pinConfirmationRef": "MUST MATCH PIN",
+    "pinConfirmationRequired": "PIN CONFIRMATION IS REQUIRED",
+    "pinRequired": "PIN IS REQUIRED",
+    "pinSize": "PIN MUST BE 6 CHARACTERS LONG.",
+    "settingsBreadcrumb": "SETTINGS"
+  },
+
+  "CloseWalletModal": {
+    "closeVerifyBody": "ARE YOU SURE YOU WANT TO CLOSE AND SECURE THE WALLET?",
+    "closeVerifyConfirm": "YES, CLOSE WALLET",
+    "closeVerifyDeny": "NO, KEEP WALLET OPEN",
+    "closeVerifyHeader": "CLOSE AND SECURE WALLET?",
+    "closeWalletButton": "CLOSE WALLET"
+  },
+
+  "ConfigureMobilecoindView": {
+    "configureMobilecoindBreadcrumb": "CONFIGURE MOBILECOIND",
+    "daemonDescription": "THE MOBILECOIN DAEMON, OR MOBILECOIND, IS A STANDALONE EXECUTABLE WHICH PROVIDES BLOCKCHAIN SYNCHRONIZATION AND WALLET SERVICES.",
+    "daemonDescriptionContinued": "IT CREATES ENCRYPTED, ATTESTED CONNECTIONS TO VALIDATOR NODES WHO ARE PARTICIPATING IN FEDERATED VOTING IN ORDER TO GET THE CURRENT BLOCK HEIGHT, BLOCK HEADERS, AND TO SUBMIT TRANSACTIONS. THESE VALIDATOR NODES ARE CONSIDERED HIGHLY TRUSTED DUE TO THEIR USE OF SGX, AND THEY ARE USED AS A RELIABLE SOURCE FOR BLOCK INFORMATION AS WELL AS TO VALIDATE AND PROCESS THE PROPOSED TRANSACTIONS FROM MOBILECOIND.",
+    "panelDescription": "THIS PANEL ALLOWS YOU TO CUSTOMIZE THE BEHAVIOR OF MOBILECOIND AS WELL AS PERFORM SOME BASIC RESETS.",
+    "settingsBreadcrumb": "SETTINGS"
+  },
+
+  "ConsumeGiftForm": {
+    "accountBalance": "ACCOUNT BALANCE",
+    "accountName": "ACCOUNT NAME",
+    "cancel": "CANCEL",
+    "claimGift": "CLAIM GIFT",
+    "confirmation": "GIFT RECEIVED! YOUR BALANCE WILL UPDATE SHORTLY.",
+    "confirmationNotFound": "COULD NOT FIND CONFIRMATION",
+    "error": "HMM, SOMETHING WENT WRONG.",
+    "error13": "13 INTERNAL: TRANSACTIONS_MANAGER.SUBMIT_TX_PROPOSAL: CONNECTION(OPERATION { ERROR: TRANSACTIONVALIDATION(CONTAINSSPENTKEYIMAGE), TOTAL_DELAY: 0NS, TRIES: 1 })",
+    "fee": "FEE",
+    "giftB58Error": "COULD NOT FIND GIFT WITH CODE.",
+    "giftB58Validation": "YOU NEED A VALID GIFT CODE TO OPEN A GIFT.",
+    "giftCanceled": "GIFT CANCELED",
+    "giftClaimed": "THIS GIFT HAS ALREADY BEEN CLAIMED!",
+    "giftCode": "GIFT CODE",
+    "giftConfirmation": "GIFT CONFIRMATION",
+    "giftDetails": "GIFT DETAILS",
+    "giftValue": "GIFT VALUE",
+    "newBalance": "NEW BALANCE",
+    "openGift": "OPEN GIFT",
+    "select": "SELECT ACCOUNT",
+    "total": "TOTAL",
+    "unnamed": "UNNAMED ACCOUNT"
+  },
+
+  "ConsumeGiftPanel": {
+    "balance": "BALANCE",
+    "description": "YOU MAY USE THIS FORM TO COLLECT GIFT CODES. SIMPLY ENTER THE GIFT CODE AND CONFIRM YOU WANT TO CONSUME THE GIFT INTO YOUR WALLET.",
+    "syncMessage": "BALANCE MAY BE OUT-OF-DATE WHILE WALLET SYNCS WITH LEDGER."
+  },
+
+  "CreateAccountForm": {
+    "acceptTerms": "I HAVE READ AND ACCEPT THE",
+    "acceptTermsButton": "TERMS OF USE",
+    "acceptTermsFormHelper": "YOU MUST READ THE TERMS OF USE BEFORE USING THE WALLET.",
+    "accountNameValidation": "ACCOUNT NAME CANNOT BE MORE THAN 64 CHARACTERS.",
+    "checkedTermsValidation": "YOU MUST ACCEPT TERMS OF USE TO USE WALLET.",
+    "createAccountButton": "CREATE ACCOUNT",
+    "nameLabel": "ACCOUNT NAME (OPTIONAL)",
+    "passwordConfirmationLabel": "PASSWORD CONFIRMATION",
+    "passwordConfirmationRef": "MUST MATCH PASSWORD",
+    "passwordConfirmationRequired": "PASSWORD CONFIRMATION IS REQUIRED",
+    "passwordLabel": "PASSWORD",
+    "passwordMax": "PASSWORDS CANNOT BE MORE THAN 99 CHARACTERS.",
+    "passwordMin": "PASSWORD MUST BE AT LEAST 8 CHARACTERS IN LENGTH.",
+    "passwordRequired": "PASSWORD IS REQUIRED"
+  },
+
+  "CreateAccountView": {
+    "description": "THIS OPTION IS BEST FOR INDIVIDUALS WHO DO NOT HAVE AN EXISTING ACCOUNT. IF YOU HAVE AN ACCOUNT YOU WOULD LIKE TO USE, PLEASE IMPORT AN EXISTING ACCOUNT INSTEAD.",
+    "header": "CREATE A NEW ACCOUNT FOR THIS DESKTOP WALLET.",
+    "importInstead": "IMPORT ACCOUNT INSTEAD",
+    "overwriteWarning": "IT APPEARS THAT THIS WALLET IS LOCKED WITH AN ENCRYPTED ENTROPY. CREATING AN ACCOUNT WILL OVERRIDE THE WALLET. PLEASE ENSURE THAT YOU HAVE SECURED YOUR ENTROPY IF YOU WISH TO CHANGE ACCOUNTS.",
+    "title": "CREATE ACCOUNT",
+    "unlockWalletButton": "UNLOCK THIS WALLET"
+  },
+
+  "GiftingView": {
+    "giftMOB": "GIFT MOB",
+    "openGift": "OPEN GIFT"
+  },
+
+  "HistoryView": {
+    "showAllTransactions": "ALL",
+    "showReceivedTransactions": "RECEIVED",
+    "showSentTransactions": "SENT"
+  },
+
+  "ImportAccountForm": {
+    "acceptTerms": "I HAVE READ AND ACCEPT THE",
+    "acceptTermsButton": "TERMS OF USE",
+    "acceptTermsFormHelper": "YOU MUST READ THE TERMS OF USE BEFORE USING THE WALLET.",
+    "accountNameValidation": "ACCOUNT NAME CANNOT BE MORE THAN 64 CHARACTERS.",
+    "checkedTermsValidation": "YOU MUST ACCEPT TERMS OF USE TO USE WALLET.",
+    "entropyLabel": "ENTROPY",
+    "entropyMatches": "A VALID ENTROPY IS 64 HEXADECIMALS.",
+    "entropyRequired": "ENTROPY IS REQUIRED",
+    "importAccountButton": "IMPORT ACCOUNT",
+    "nameLabel": "ACCOUNT NAME (OPTIONAL)",
+    "passwordConfirmationLabel": "PASSWORD CONFIRMATION",
+    "passwordConfirmationRef": "MUST MATCH PASSWORD",
+    "passwordConfirmationRequired": "PASSWORD CONFIRMATION IS REQUIRED",
+    "passwordLabel": "PASSWORD",
+    "passwordMax": "PASSWORDS CANNOT BE MORE THAN 99 CHARACTERS.",
+    "passwordMin": "PASSWORD MUST BE AT LEAST 8 CHARACTERS IN LENGTH.",
+    "passwordRequired": "PASSWORD IS REQUIRED"
+  },
+
+  "ImportAccountView": {
+    "createInstead": "CREATE ACCOUNT INSTEAD",
+    "description": "THIS OPTION IS BEST FOR INDIVIDUALS WHO ALREADY HAVE MOBILECOIN ACCOUNTS. IF YOU DO NOT HAVE AN ACCOUNT, PLEASE CREATE A NEW ACCOUNT INSTEAD.",
+    "header": "IMPORT AN EXISTING ACCOUNT FOR THIS DESKTOP WALLET.",
+    "overwriteWarning": "IT APPEARS THAT THIS WALLET IS LOCKED WITH AN ENCRYPTED ENTROPY. IMPORTING AN ACCOUNT WILL OVERRIDE THE WALLET. PLEASE ENSURE THAT YOU HAVE SECURED YOUR ENTROPY IF YOU WISH TO CHANGE ACCOUNTS.",
+    "title": "IMPORT ACCOUNT",
+    "unlockWalletButton": "UNLOCK THIS WALLET"
+  },
+
+  "LeaveMobilecoindRunning": {
+    "defaultDescription": "BY DEFAULT, MOBILECOIND TERMINATES WHEN YOU EXIT THE WALLET. THIS SETTING ALLOWS YOU TO LEAVE MOBILECOIND SYNCING AS A BACKGROUND PROCESS. IT IS BEST TO KEEP THE LEDGER SYNCED TO AVOID DELAYS IN TRANSACTIONS OR BALANCE FETCHES.",
+    "formLabel": "MOBILECOIND BACKGROUND PROCESS",
+    "ternaryOff": "LEAVE MOBILECOIND ACTIVE IS OFF",
+    "ternaryOn": "LEAVE MOBILECOIND ACTIVE IS ON",
+    "ternaryWillNotSync": "MOBILECOIND WILL NOT CONTINUE TO SYNC WHEN YOU EXIT THE WALLET.",
+    "ternaryWillSync": "MOBILECOIND WILL CONTINUE TO SYNC WHEN YOU EXIT THE WALLET."
+  },
+
+  "LedgerStatus": {
+    "blockType": "BLOCK TYPE",
+    "formLabel": "LEDGER STATUS",
+    "height": "CURRENT HEIGHT",
+    "localBlocks": "LOCAL BLOCKS",
+    "localBlocksDescription": "LOCAL BLOCKS SHOWS THE BLOCKS YOUR MOBILECOIND HAS SYNCED THE LEDGER.",
+    "maxHeight": "MAXIMUM HEIGHT",
+    "monitorBlocks": "MONITOR BLOCKS",
+    "monitorBlocksDescription": "MONITOR BLOCKS SHOWS THE BLOCKS THAT A SPECIFIC MONITOR HAS SYNCED. EACH ACCOUNT HAS ITS OWN MONITOR BLOCKS COUNT. ONCE THIS VALUE IS SYNCED, YOU WILL IMMEDIATELY SEE THE EFFECTS OF TRANSACTIONS.",
+    "networkBlocks": "NETWORK BLOCKS",
+    "networkBlocksDescription": "NETWORK BLOCKS REPRESENT THE TOTAL BLOCKS WITHIN THE MOBILECOIN NETWORK. THIS IS THE VALUE YOUR LOCAL AND MONITOR BLOCKS NEEDS TO HIT TO BE 100% SYNCED.",
+    "statusCopy100": "THE LEDGER IS SYNCED.",
+    "statusCopyAbove90": "THE LEDGER IS SYNCING.",
+    "statusCopyBelow90": "THE LEDGER IS SYNCING. THIS MAY TAKE AWHILE.",
+    "statusCopyError": "THERE'S BEEN AN ERROR IN THE LEDGER. PLEASE RESET THE LEDGER AT THE BOTTOM OF THIS PAGE.",
+    "synced": "% SYNCED"
+  },
+
+  "Menu": {
+    "about": "ABOUT MOBILECOIN DESKTOP WALLET",
+    "bringToFront": "SHOW ALL",
+    "close": "CLOSE",
+    "copy": "COPY",
+    "cut": "CUT",
+    "edit": "EDIT",
+    "file": "FILE",
+    "hideOthers": "HIDE OTHERS",
+    "hideWallet": "HIDE MOBILECOIN DESKTOP WALLET",
+    "inspectElement": "INSPECT ELEMENT",
+    "learnMore": "LEARN MORE",
+    "learnMoreCommunityForum": "COMMUNITY FORUM",
+    "learnMoreFoundationGithub": "MOBILECOIN FOUNDATION GITHUB",
+    "learnMoreGithub": "MOBILECOIN GITHUB",
+    "learnMoreMobileCoinFoundation": "MOBILECOIN FOUNDATION",
+    "minimize": "MINIMIZE",
+    "mobileCoin": "MOBILECOIN",
+    "open": "OPEN",
+    "paste": "PASTE",
+    "quit": "QUIT",
+    "redo": "REDO",
+    "reload": "RELOAD",
+    "selectAll": "SELECT ALL",
+    "showAll": "SHOW ALL",
+    "toggleDeveloperTools": "TOGGLE DEVELOPER TOOLS",
+    "toggleFullScreen": "TOGGLE FULL SCREEN",
+    "undo": "UNDO",
+    "view": "VIEW",
+    "window": "WINDOW",
+    "language": "LANGUAGE",
+    "languages": {
+      "upDEV": "UPPERCASED",
+      "enUS": "ENGLISH"
+    }
+  },
+
+  "MobilecoindDirectory": {
+    "formLabel": "MOBILECOIND DIRECTORY",
+    "ledgerDbPathHeader": "LEDGER DATABASE PATH:",
+    "mobilecoindDbPathHeader": "MOBILECOIND DATABASE PATH:"
+  },
+
+  "NavBar": {
+    "gift": "GIFTING",
+    "home": "HOME",
+    "settings": "SETTINGS",
+    "transaction": "SEND/RECEIVE"
+  },
+
+  "NotFoundView": {
+    "backButton": "BACK TO HOME",
+    "description": "YOU SHOULD NEVER SEE THIS PAGE. IF YOU DO, AN ENGINEER MESSED UP.",
+    "header": "404: THE PAGE YOU ARE LOOKING FOR ISN’T HERE"
+  },
+
+  "PrivacyPolicyView": {
+    "privacyPolicy": "PRIVACY POLICY",
+    "settings": "SETTINGS"
+  },
+
+  "ResetLedger": {
+    "cancelButton": "CANCEL",
+    "confirmButton": "CONFIRM",
+    "description": "IN RARE CASES, YOUR LOCAL DATABASE MAY BECOME CORRUPTED AND PERMANENTLY OUT-OF-SYNC WITH THE LEDGER. IF THIS OCCURS, PLEASE MANUALLY RESET YOUR LEDGER.",
+    "formLabel": "RESET YOUR LEDGER",
+    "resetButton": "RESET LEDGER",
+    "resetLedgerModal": "RESET THE LEDGER?",
+    "resetLedgerModalDescription": "RESETTING THE LEDGER WILL RESTART THE WALLET. YOU WILL NEED TO RE-SYNC THE LEDGER FROM 0. THE APP WILL REFRESH, AND YOU WILL NEED TO RE-ENTER YOUR PASSWORD."
+  },
+
+  "RetrieveEntropyView": {
+    "description": "THAT UNLOCKS YOUR WALLET AND ALLOWS YOU TO USE MOBILECOIN. IT IS UNIQUE TO YOUR ACCOUNT. IT IS IMPORTANT THAT YOU NEVER SHARE THIS CODE. YOU MAY WISH TO USE THIS CODE IN A SECURE, SAFE MANNER. THIS WALLET USES YOUR PASSWORD TO STORE AN ENCRYPTED ENTROPY.",
+    "entropyCanBeUsed": "THE ENTROPY CAN BE USED TO IMPORT YOUR WALLET IN CASE YOUR DEVICE IS DAMAGED OR LOST. IT ALLOWS YOU TO ADD YOUR ACCOUNT TO OTHER WALLETS.",
+    "error": "HMM, SOMETHING WENT WRONG.",
+    "header": "YOUR ENTROPY IS THE",
+    "misplacedYourEntropy": "IF YOU HAVE FORGOTTEN OR MISPLACED YOUR ENTROPY, YOU MAY RETRIEVE HERE WITH YOUR PASSWORD.",
+    "password": "PASSWORD",
+    "passwordRequired": "PASSWORD IS REQUIRED",
+    "retrieveEntropy": "RETRIEVE ENTROPY",
+    "retrieveSecret": "RETRIEVE SECRET ENTROPY",
+    "settings": "SETTINGS"
+  },
+
+  "SendMobForm": {
+    "accountBalance": "ACCOUNT BALANCE",
+    "accountName": "ACCOUNT NAME",
+    "addressRequired": "A PUBLIC ADDRESS IS REQUIRED TO SEND MOB.",
+    "amount": "AMOUNT",
+    "cancel": "CANCEL",
+    "confirm": "SEND MOB CONFIRMATION",
+    "confirmSend": "CONFIRM SEND",
+    "enterPin": "FOR THIS AMOUNT YOUR PIN IS NEEDED",
+    "error": "COULD NOT BUILD TRANSACTION.",
+    "errorFee": "PLEASE RESERVE 0.01 MOB FOR TRANSACTION FEE.",
+    "fee": "FEE",
+    "intent": "PLEASE CHECK AND CONFIRM YOUR PAYMENT INTENT",
+    "mob": "MOB",
+    "mobAmount": "MOB AMOUNT",
+    "mustSync": "WALLET MUST SYNC WITH LEDGER BEFORE SENDING MOB.",
+    "positiveValidation": "A POSITIVE, NON-ZERO AMOUNT IS REQUIRED TO SEND MOB.",
+    "positiveValidationRequired": "A POSITIVE, NON-ZERO AMOUNT IS REQUIRED TO SEND MOB.",
+    "recipient": "RECIPIENT PUBLIC ADDRESS",
+    "recipientPlus": "RECIPIENT ADDRESS (THEIR ADDRESS)",
+    "recipientPlus1": "RECIPIENT ADDRESS",
+    "recipientPlus2": "(THEIR ADDRESS)",
+    "remaining": "REMAINING BALANCE",
+    "select": "SELECT ACCOUNT",
+    "send": "SEND PAYMENT",
+    "senderPlus": "SENDER ADDRESS (YOUR ADDRESS)",
+    "senderPlus1": "SENDER ADDRESS",
+    "senderPlus2": "(YOUR ADDRESS)",
+    "success": "SUCCESSFULLY SENT ",
+    "syncing": "WALLET SYNCING...",
+    "total": "TOTAL",
+    "transaction": "TRANSACTION DETAILS",
+    "transactionCanceled": "TRANSACTION CANCELED",
+    "unnamed": "UNNAMED ACCOUNT"
+  },
+
+  "SendMobPanel": {
+    "header": "PLEASE ENTER THE AMOUNT OF MOB YOU WANT TO SEND AND THE PUBLIC ADDRESS OF THE RECIPIENT."
+  },
+
+  "SettingsOptionsItem": {
+    "changePassword": "CHANGE PASSWORD",
+    "changePin": "SET OR CHANGE PIN",
+    "configureMobileCoinD": "CONFIGURE MOBILECOIND",
+    "privacyPolicy": "PRIVACY POLICY",
+    "retrieveEntropy": "RETRIEVE SECRET ENTROPY",
+    "terms": "TERMS OF USE"
+  },
+
+  "ShowEntropyModal": {
+    "back": "GO BACK...",
+    "confirm": "CONFIRM YOU HAVE SECURED ENTROPY",
+    "description": "WE GENERATED A RANDOM ENTROPY TO CREATE YOUR NEW ACCOUNT. PLEASE STORE THIS CODE IN A SECURE, PRIVATE MANNER. YOU WILL NEED YOUR ENTROPY TO IMPORT THIS ACCOUNT INTO OTHER WALLETS.",
+    "header": "WELCOME TO THE MOBILECOIN DESKTOP WALLET!",
+    "hide": "HIDE SECRET ENTROPY",
+    "recommend": "WE RECOMMEND STORING YOUR ENTROPY IN A SECURE MANNER.",
+    "retrieve": "IF YOU NEED TO SEE YOUR ENTROPY AGAIN, YOU MAY RETRIEVE IT FROM THE SETTINGS TAB WITH YOUR PASSWORD. HOWEVER, IF YOU FORGET YOUR PASSWORD OR LOSE THIS DEVICE, YOU WILL NEED TO KNOW YOUR ENTROPY.",
+    "secured": "I HAVE SECURED MY ENTROPY",
+    "show": "SHOW SECRET ENTROPY",
+    "yes": "YES, I HAVE SECURED MY ENTROPY"
+  },
+
+  "ShowRetrievedEntropyModal": {
+    "description": "WE DECRYPTED YOUR ENTROPY AND WILL NOW SHOW YOU THE CODE ON YOUR SCREEN. PLEASE STORE THIS CODE IN A SECURE, PRIVATE MANNER. YOU WILL NEED YOUR ENTROPY TO IMPORT THIS ACCOUNT INTO OTHER WALLETS.",
+    "header": "THIS IS YOUR SECRET ENTROPY!",
+    "hide": "HIDE SECRET ENTROPY",
+    "secured": "I HAVE SECURED MY ENTROPY",
+    "show": "SHOW SECRET ENTROPY"
+  },
+
+  "SyncStatus": {
+    "error": "PLEASE SEE ADMIN PANEL IN SETTINGS.",
+    "synced": "100%: SYNCED WITH THE LEDGER",
+    "syncing": "SYNCING WITH THE LEDGER"
+  },
+
+  "TransactionDetails": {
+    "amount": "AMOUNT",
+    "addComment": "ADD COMMENT",
+    "buttons": {
+      "back": "GO BACK",
+      "cancel": "CANCEL COMMENT",
+      "save": "SAVE COMMENT"
+    },
+
+    "changeComment": "CHANGE COMMENT",
+    "date": "DATE",
+    "recipient": "RECIPIENT",
+    "savedComment": "COMMENT SAVED",
+    "sender": "SENDER",
+    "time": "TIME",
+    "txo": "TXO",
+    "txoDetails": "TXO DETAILS",
+    "typeHere": "START TYPING HERE"
+  },
+
+  "TermsOfUseDialog": {
+    "close": "CLOSE TERMS OF USE"
+  },
+
+  "TermsOfUseView": {
+    "settings": "SETTINGS",
+    "terms": "TERMS OF USE"
+  },
+
+  "TransactionView": {
+    "receive": "RECEIVE MOB",
+    "send": "SEND MOB"
+  },
+
+  "UnlockWalletForm": {
+    "passwordLabel": "PASSWORD",
+    "passwordRequired": "PASSWORD IS REQUIRED",
+    "unlockWalletButton": "UNLOCK WALLET"
+  },
+
+  "UnlockWalletView": {
+    "description": "PLEASE ENTER THE PASSPHRASE YOU USED TO SECURE YOUR WALLET. IF YOU CANNOT RECALL YOUR PASSPHRASE, YOU MAY RE-IMPORT THE ACCOUNT INTO YOUR WALLET USING THEIR ENTROPY SEED.",
+    "importInstead": "IMPORT ACCOUNT FROM ENTROPY INSTEAD",
+    "title": "UNLOCK WALLET"
+  }
+}

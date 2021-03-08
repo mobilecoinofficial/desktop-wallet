@@ -249,6 +249,10 @@ app.on('activate', () => {
  * Add custom message listeners...
  */
 
+ipcMain.on('logged-in', (_event, password) => {
+  console.log('THE USER LOGGED IN WITH PASSWORD=', password);
+});
+
 ipcMain.on('close-app', () => {
   app.quit();
 });

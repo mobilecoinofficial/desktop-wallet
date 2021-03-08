@@ -526,7 +526,7 @@ const SendMobForm: FC = () => {
                       type="text"
                     />
                   )}
-                  <Box display="flex" justifyContent="space-between">
+                  <Box display="flex" justifyContent="space-around" padding=".5em 0">
                     <Button
                       className={classes.button}
                       color="secondary"

@@ -41,7 +41,7 @@ interface FullServiceState {
   isInitialized: boolean;
   selectedAccount: SelectedAccount;
   walletStatus: WalletStatus;
-  pendingSecrets: PendingSecrets | null
+  pendingSecrets: PendingSecrets | null;
 }
 
 // TODO - context can be broken down into seperate files
@@ -96,6 +96,7 @@ type CreateAccountAction = {
   payload: {
     accounts: Accounts;
     addresses: Addresses;
+    hashedPassword: string;
     pendingSecrets: PendingSecrets;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
@@ -108,6 +109,7 @@ type ImportAccountAction = {
   payload: {
     accounts: Accounts;
     addresses: Addresses;
+    hashedPassword: string;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
@@ -247,16 +249,12 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
     case 'IMPORT_ACCOUNT': {
-      const {
-        accounts,
-        addresses,
-        selectedAccount,
-        walletStatus,
-      } = action.payload;
+      const { accounts, addresses, hashedPassword, selectedAccount, walletStatus } = action.payload;
       return {
         ...state,
         accounts,
         addresses,
+        hashedPassword,
         isAuthenticated: true,
         isEntropyKnown: true,
         selectedAccount,
@@ -267,6 +265,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       const {
         accounts,
         addresses,
+        hashedPassword,
         pendingSecrets,
         selectedAccount,
         walletStatus,
@@ -275,6 +274,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         ...state,
         accounts,
         addresses,
+        hashedPassword,
         isAuthenticated: true,
         isEntropyKnown: false,
         pendingSecrets,
@@ -306,12 +306,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
     case 'UNLOCK_WALLET': {
-      const {
-        accounts,
-        addresses,
-        selectedAccount,
-        walletStatus,
-      } = action.payload;
+      const { accounts, addresses, selectedAccount, walletStatus } = action.payload;
       return {
         ...state,
         accounts,
@@ -408,17 +403,20 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { hashedPassword } = state;
       const LocalStoreInstance = new LocalStore();
       const salt = LocalStoreInstance.getHashedPasswordSalt();
-      if (!hashedPassword || !salt) throw new Error('hashedPassword not found.');
+      if (!hashedPassword || !salt) {
+        throw new Error('hashedPassword not found.');
+      }
 
       // Attempt to match password digest
       const { secretKeyString } = await scryptKeys(oldPassword, salt);
-      if (secretKeyString !== hashedPassword) throw new Error('Incorrect Password'); // TODO: i18n
+      if (secretKeyString !== hashedPassword) {
+        throw new Error('Incorrect Password');
+      } // TODO: i18n
 
       // Set new password
-      const {
-        publicSaltString,
-        secretKeyString: newSecretKeyString,
-      } = await scryptKeys(newPassword);
+      const { publicSaltString, secretKeyString: newSecretKeyString } = await scryptKeys(
+        newPassword
+      );
       LocalStoreInstance.setHashedPassword(newSecretKeyString);
       LocalStoreInstance.setHashedPasswordSalt(publicSaltString);
     } catch (err) {
@@ -486,9 +484,9 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
       // After successful import, store password digest
       // TODO - rename secret key as digest
-      const { publicSaltString, secretKeyString } = await scryptKeys(password);
+      const { publicSaltString, secretKeyString: hashedPassword } = await scryptKeys(password);
       const LocalStoreInstance = new LocalStore();
-      LocalStoreInstance.setHashedPassword(secretKeyString);
+      LocalStoreInstance.setHashedPassword(hashedPassword);
       LocalStoreInstance.setHashedPasswordSalt(publicSaltString);
 
       dispatch({
@@ -501,6 +499,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
+          hashedPassword,
           pendingSecrets,
           selectedAccount: {
             account,
@@ -521,7 +520,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Accounts + status
   const importAccount = async (name: string | null, entropy: string, password: string) => {
     try {
-      debugger;
       // TODO - allow this once we're setup again!
       // Attempt import
       const { account } = await fullServiceApi.importAccount({
@@ -533,7 +531,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       // Get basic wallet information
       const { walletStatus } = await fullServiceApi.getWalletStatus();
       const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-      debugger;
       // const accountId = accountIds[0];
       // const account = accountMap[accountId];
 
@@ -542,11 +539,10 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       });
 
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-      debugger;
       // After successful import, store password digest
-      const { publicSaltString, secretKeyString } = await scryptKeys(password);
+      const { publicSaltString, secretKeyString: hashedPassword } = await scryptKeys(password);
       const LocalStoreInstance = new LocalStore();
-      LocalStoreInstance.setHashedPassword(secretKeyString);
+      LocalStoreInstance.setHashedPassword(hashedPassword);
       LocalStoreInstance.setHashedPasswordSalt(publicSaltString);
       dispatch({
         payload: {
@@ -558,6 +554,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
+          hashedPassword,
           selectedAccount: {
             account,
             balanceStatus,
@@ -603,11 +600,15 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { hashedPassword, selectedAccount } = state;
       const LocalStoreInstance = new LocalStore();
       const salt = LocalStoreInstance.getHashedPasswordSalt();
-      if (!hashedPassword || !salt) throw new Error('hashedPassword not found.');
+      if (!hashedPassword || !salt) {
+        throw new Error('hashedPassword not found.');
+      }
 
       // Attempt to match password digest
       const { secretKeyString } = await scryptKeys(password, salt);
-      if (secretKeyString !== hashedPassword) throw new Error('Incorrect Password'); // TODO: i18n
+      if (secretKeyString !== hashedPassword) {
+        throw new Error('Incorrect Password');
+      } // TODO: i18n
 
       const { accountSecrets } = await fullServiceApi.exportAccountSecrets({
         accountId: selectedAccount.account.accountId,
@@ -673,11 +674,15 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { hashedPassword } = state;
       const LocalStoreInstance = new LocalStore();
       const salt = LocalStoreInstance.getHashedPasswordSalt();
-      if (!hashedPassword || !salt) throw new Error('hashedPassword not found.');
+      if (!hashedPassword || !salt) {
+        throw new Error('hashedPassword not found.');
+      }
 
       // Attempt to match password digest
       const { secretKeyString } = await scryptKeys(password, salt);
-      if (secretKeyString !== hashedPassword) throw new Error('Incorrect Password'); // TODO: i18n
+      if (secretKeyString !== hashedPassword) {
+        throw new Error('Incorrect Password');
+      } // TODO: i18n
 
       // Get main account id
       const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
@@ -751,7 +756,9 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     const { selectedAccount } = state;
     const { accountId } = selectedAccount.account;
     // // TODO - check this early exit
-    if (accountId === '') return () => {};
+    if (accountId === '') {
+      return () => {};
+    }
 
     const fetchBalance = async () => {
       // TODO - consider making a GetBalanceService

@@ -12,9 +12,9 @@ export const schemaKeys = {
   FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
   FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   GIFT_CODES: 'giftCodes',
-  HASHED_PIN: 'hashedPin',
   HASHED_PASSWORD: 'hashedPassword',
   HASHED_PASSWORD_SALT: 'hashedPasswordSalt',
+  HASHED_PIN: 'hashedPin',
   LEAVE_MOBILECOIND_RUNNING: 'leaveMobilecoindRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
   MINIMUM_FOR_PIN: 'minimumPin',
@@ -26,12 +26,16 @@ export const schemaKeys = {
 
 export const schema: LocalStoreSchema = {
   [schemaKeys.ENCRYPTED_ENTROPY]: { type: 'string' },
-  [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_DB_PATH]: { type: 'string' },
+  [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.GIFT_CODES]: { type: 'array' },
+  [schemaKeys.HASHED_PASSWORD]: { type: 'string' },
+  [schemaKeys.HASHED_PASSWORD_SALT]: { type: 'string' },
+  [schemaKeys.HASHED_PIN]: { type: 'string' },
   [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: { type: 'boolean' },
-  [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: { type: 'string' },
+  [schemaKeys.LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.MOBILECOIND_DB_PATH]: { type: 'string' },
+  [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.NAME]: { type: 'string' },
   [schemaKeys.SALT]: { type: 'string' },
 };
@@ -148,7 +152,7 @@ class LocalStore {
     mobilecoindLedgerDbPath: string,
     mobilecoindDbPath: string,
     fullServiceLedgerDbPath: string,
-    fullServiceDbPath: string,
+    fullServiceDbPath: string
   ) {
     this.store.set({
       [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: mobilecoindLedgerDbPath,

@@ -108,7 +108,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
     entropy: Yup.string()
       .test('format', t('entropyMatches'), isValidMnemonicOrHexFormat)
-      .test('validPassPhrase', t('entropyIsWrong'), isValidMnemonicOrHexValue)
+      .test('validEntropy', t('entropyIsWrong'), isValidMnemonicOrHexValue)
       .required(t('entropyRequired')),
     password: Yup.string()
       .min(8, t('passwordMin'))

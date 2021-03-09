@@ -10,6 +10,22 @@ import renderSnapshot from '../../../renderSnapshot';
 
 jest.mock('../../../../app/hooks/useMobileCoinD');
 
+jest.mock(
+  'electron',
+  () => {
+    const mockElectron = {
+      app: { getPath: jest.fn(), getVersion: jest.fn() },
+      ipcRenderer: {
+        sendSync: () => {
+          return [];
+        },
+      },
+    };
+    return mockElectron;
+  },
+  { virtual: true }
+);
+
 function setupComponent() {
   // Variables
   const password = 'password';

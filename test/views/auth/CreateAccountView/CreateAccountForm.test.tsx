@@ -10,6 +10,22 @@ import renderSnapshot from '../../../renderSnapshot';
 
 jest.mock('../../../../app/hooks/useMobileCoinD');
 
+jest.mock(
+  'electron',
+  () => {
+    const mockElectron = {
+      app: { getPath: jest.fn(), getVersion: jest.fn() },
+      ipcRenderer: {
+        sendSync: () => {
+          return [];
+        },
+      },
+    };
+    return mockElectron;
+  },
+  { virtual: true }
+);
+
 function setupComponent() {
   // Variables
   const validAccountName64 = '64llllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll';
@@ -33,7 +49,8 @@ function setupComponent() {
   const passwordConfirmationField = screen.getByLabelText('Password Confirmation', {
     selector: 'input',
   }) as HTMLInputElement;
-  const checkTermsField = screen.getByRole('checkbox') as HTMLInputElement;
+  const checkedSavePasswordField = screen.getAllByRole('checkbox')[0] as HTMLInputElement;
+  const checkTermsField = screen.getAllByRole('checkbox')[1] as HTMLInputElement;
   const termsButton = screen.getByRole('button', {
     name: 'Terms of Use',
   });
@@ -42,6 +59,7 @@ function setupComponent() {
   return {
     accountNameField,
     checkTermsField,
+    checkedSavePasswordField,
     form,
     invalidAccountName65,
     invalidPasswordShort,

@@ -154,6 +154,53 @@ exports[`CreateAccountView component render it renders correctly 1`] = `
                 <p
                   class="MuiTypography-root MuiTypography-body1 MuiTypography-displayInline"
                 >
+                  Save Password to Keychain
+                </p>
+              </div>
+              <span
+                aria-disabled="false"
+                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root MuiCheckbox-root MuiCheckbox-colorSecondary PrivateSwitchBase-checked MuiCheckbox-checked MuiIconButton-colorSecondary"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <input
+                    checked=""
+                    class="PrivateSwitchBase-input"
+                    data-indeterminate="false"
+                    name="checkedSavePassword"
+                    type="checkbox"
+                    value="true"
+                  />
+                  <svg
+                    aria-hidden="true"
+                    class="MuiSvgIcon-root"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.11 0 2-.9 2-2V5c0-1.1-.89-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+                    />
+                  </svg>
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </span>
+            </div>
+          </div>
+          <div
+            class="MuiBox-root MuiBox-root"
+          >
+            <div
+              class="MuiBox-root MuiBox-root"
+            >
+              <div
+                class="MuiBox-root MuiBox-root"
+              >
+                <p
+                  class="MuiTypography-root MuiTypography-body1 MuiTypography-displayInline"
+                >
                   I have read and accept the
                 </p>
                 <button

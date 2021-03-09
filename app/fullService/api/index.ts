@@ -1,6 +1,7 @@
 export { default as buildGiftCode } from './buildGiftCode';
 export { default as buildTransaction } from './buildTransaction';
 // export { default as changePassword } from './changePassword';
+export { default as checkGiftCodeStatus } from './checkGiftCodeStatus';
 export { default as createAccount } from './createAccount';
 export { default as createAddress } from './assignAddressForAccount';
 export { default as exportAccountSecrets } from './exportAccountSecrets';

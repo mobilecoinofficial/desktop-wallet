@@ -1,3 +1,4 @@
+export { default as buildGiftCode } from './buildGiftCode';
 export { default as buildTransaction } from './buildTransaction';
 // export { default as changePassword } from './changePassword';
 export { default as createAccount } from './createAccount';

@@ -18,8 +18,6 @@ export const schemaKeys = {
   LEAVE_FULL_SERVICE_RUNNING: 'leaveFullServiceRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
   MINIMUM_FOR_PIN: 'minimumPin',
-  FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
-  FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   NAME: 'name',
   SALT: 'salt',
 };
@@ -34,8 +32,6 @@ export const schema: LocalStoreSchema = {
   [schemaKeys.HASHED_PIN]: { type: 'string' },
   [schemaKeys.LEAVE_FULL_SERVICE_RUNNING]: { type: 'boolean' },
   [schemaKeys.LEDGER_DB_PATH]: { type: 'string' },
-  [schemaKeys.FULL_SERVICE_DB_PATH]: { type: 'string' },
-  [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.NAME]: { type: 'string' },
   [schemaKeys.SALT]: { type: 'string' },
 };
@@ -80,14 +76,6 @@ class LocalStore {
 
   setLeaveFullServiceRunning(leaveFullServiceRunning: boolean): void {
     this.store.set(schemaKeys.LEAVE_FULL_SERVICE_RUNNING, leaveFullServiceRunning);
-  }
-
-  getFullServiceLedgerDbPath() {
-    return this.store.get(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
-  }
-
-  getFullServiceDbPath() {
-    return this.store.get(schemaKeys.FULL_SERVICE_DB_PATH);
   }
 
   getMinimumForPin(): number {
@@ -146,20 +134,6 @@ class LocalStore {
 
   setFullServiceDbPath(name: string): void {
     this.store.set(schemaKeys.FULL_SERVICE_DB_PATH, name);
-  }
-
-  setDbPaths(
-    fullServiceLedgerDbPath: string,
-    fullServiceDbPath: string,
-    fullServiceLedgerDbPath: string,
-    fullServiceDbPath: string
-  ) {
-    this.store.set({
-      [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fullServiceLedgerDbPath,
-      [schemaKeys.FULL_SERVICE_DB_PATH]: fullServiceDbPath,
-      [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fullServiceLedgerDbPath,
-      [schemaKeys.FULL_SERVICE_DB_PATH]: fullServiceDbPath,
-    });
   }
 
   getName(): string {

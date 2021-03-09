@@ -56,7 +56,6 @@ export interface FullServiceContextValue extends FullServiceState {
   openGiftCode: (giftCodeB58: string) => Promise<OpenGiftCodeServiceSuccessData | void>;
   createAccount: (accountName: string | null, password: string) => Promise<void>;
   importAccount: (accountName: string | null, entropy: string, password: string) => Promise<void>;
-  payAddressCode: (amount: bigint, fee: bigint, receiverB58Code: string) => Promise<void>;
   retrieveEntropy: (password: string) => Promise<string | void>;
   submitGiftCode: (txProposal: TxProposal, giftCodeB58: string) => Promise<void>;
   submitTransaction: (txProposal: TxProposal) => Promise<void>;
@@ -118,15 +117,6 @@ type ImportAccountAction = {
   };
 };
 
-type PayAddressCodeAction = {
-  type: 'PAY_ADDRESS_CODE';
-  payload: {
-    localBlockIndex: string;
-    networkHighestBlockIndex: string;
-    nextBlock: string;
-  };
-};
-
 type SyncLedgerAction = {
   type: 'SYNC_LEDGER';
   payload: {
@@ -161,7 +151,6 @@ type Action =
   | CreateAccountAction
   | ImportAccountAction
   | InitializeAction
-  | PayAddressCodeAction
   | SyncLedgerAction
   | UnlockWalletAction
   | UpdateStatusAction;
@@ -286,15 +275,6 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         walletStatus,
       };
     }
-    case 'PAY_ADDRESS_CODE': {
-      const { localBlockIndex, networkHighestBlockIndex, nextBlock } = action.payload;
-      return {
-        ...state,
-        localBlockIndex,
-        networkHighestBlockIndex,
-        nextBlock,
-      };
-    }
     case 'UPDATE_GIFT_CODES': {
       const { giftCodes } = action.payload;
       return {
@@ -355,9 +335,6 @@ const FullServiceContext = createContext<FullServiceContextValue>({
     return Promise.resolve();
   },
   openGiftCode: () => {
-    return Promise.resolve();
-  },
-  payAddressCode: () => {
     return Promise.resolve();
   },
   retrieveEntropy: () => {
@@ -577,32 +554,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       throw new Error(err.message);
     }
   };
-
-  // const payAddressCode = async (amount: bigint, fee: bigint, receiverB58Code: string) => {
-  //   if (state.monitorId === null) {
-  //     throw new Error('TODO - need better message - This should never happen');
-  //   }
-
-  //   const SendPaymentServiceInstance = new SendPaymentService(client, {
-  //     amount,
-  //     fee,
-  //     receiverB58Code,
-  //     senderMonitorId: state.monitorId,
-  //   });
-
-  //   const { isSuccess, data, errorMessage } = await SendPaymentServiceInstance.call();
-
-  //   if (isSuccess) {
-  //     dispatch({
-  //       payload: {
-  //         ...data,
-  //       },
-  //       type: 'PAY_ADDRESS_CODE',
-  //     });
-  //   } else {
-  //     throw new Error(errorMessage);
-  //   }
-  // };
 
   const retrieveEntropy = async (password: string) => {
     try {

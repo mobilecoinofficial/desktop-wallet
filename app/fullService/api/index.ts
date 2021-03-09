@@ -13,6 +13,7 @@ export { default as getAllGiftCodes } from './getAllGiftCodes';
 export { default as getAllTransactionsForAccount } from './getAllTransactionLogsForAccount';
 export { default as getAllTxosForAccount } from './getAllTxosForAccount';
 export { default as getBalanceForAccount } from './getBalanceForAccount';
+export { default as getGiftCode } from './getGiftCode';
 // export { default as getLockedStatus } from './getLockedStatus';
 export { default as getWalletStatus } from './getWalletStatus';
 export { default as getTransaction } from './getTransaction';

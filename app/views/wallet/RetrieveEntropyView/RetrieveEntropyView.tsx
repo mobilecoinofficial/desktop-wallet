@@ -11,13 +11,14 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
+import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import routePaths from '../../../constants/routePaths';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
@@ -86,6 +87,22 @@ const RetrieveEntropyView: FC = () => {
     setEntropy('');
   };
   const { t } = useTranslation('RetrieveEntropyView');
+
+  const accounts = ipcRenderer.sendSync('fetch-accounts');
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (accounts.length === 0) {
+      return;
+    }
+
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -156,7 +173,7 @@ const RetrieveEntropyView: FC = () => {
             }
           }}
         >
-          {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
+          {({ errors, isSubmitting, dirty, isValid, submitForm, setFieldValue }) => {
             return (
               <Form>
                 <Box pt={4}>
@@ -170,6 +187,7 @@ const RetrieveEntropyView: FC = () => {
                     margin="normal"
                     name="password"
                     type="password"
+                    onClick={handleClick}
                   />
                 </Box>
                 {errors.submit && (
@@ -177,6 +195,12 @@ const RetrieveEntropyView: FC = () => {
                     <FormHelperText error>{errors.submit}</FormHelperText>
                   </Box>
                 )}
+                <SavedPasswordsModal
+                  accounts={accounts}
+                  anchorEl={anchorEl}
+                  handleClose={handleClose}
+                  setFieldValue={setFieldValue}
+                />
                 <SubmitButton
                   disabled={!dirty || !isValid || isSubmitting}
                   onClick={submitForm}

@@ -5,6 +5,7 @@ export { default as LoadingScreen } from './LoadingScreen';
 export { default as MOBNumberFormat } from './MOBNumberFormat';
 export { default as PrivacyPolicy } from './PrivacyPolicy';
 export { default as QRMob } from './QRMob';
+export { default as SavedPasswordsModal } from './SavedPasswordsModal/SavedPasswordsModal.component';
 export { default as ShortCode } from './ShortCode';
 export { default as SplashScreen } from './SplashScreen';
 export { default as SubmitButton } from './SubmitButton';

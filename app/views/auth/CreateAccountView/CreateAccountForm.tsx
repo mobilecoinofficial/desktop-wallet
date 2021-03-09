@@ -16,6 +16,7 @@ import useMobileCoinD from '../../../hooks/useMobileCoinD';
 
 export interface CreateAccountFormValues {
   accountName: string;
+  checkedSavePassword: boolean;
   checkedTerms: boolean;
   password: string;
   passwordConfirmation: string;
@@ -33,16 +34,18 @@ export const createAccountFormOnSubmit = async (
   helpers: FormikHelpers<CreateAccountFormValues>
 ): Promise<void> => {
   const { isMountedRef, createAccount } = pseudoProps;
-  const { accountName, password } = values;
+  const { accountName, password, checkedSavePassword } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
 
   try {
     await createAccount(accountName, password);
 
     if (isMountedRef.current) {
+      if (checkedSavePassword) {
+        ipcRenderer.sendSync('set-password', accountName, password);
+      }
       setStatus({ success: true });
       setSubmitting(false);
-      ipcRenderer.sendSync('set-password', accountName, password);
     }
   } catch (err) {
     if (isMountedRef.current) {
@@ -90,6 +93,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
 
   const initialValues = {
     accountName: '',
+    checkedSavePassword: true,
     checkedTerms: false,
     password: '',
     passwordConfirmation: '',
@@ -143,6 +147,14 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
               name="passwordConfirmation"
               type="password"
             />
+            <Box pt={1} display="flex">
+              <Box display="flex" alignItems="center" flexDirection="row-reverse">
+                <Box>
+                  <Typography display="inline">Save Password to Keychain</Typography>
+                </Box>
+                <Field component={Checkbox} type="checkbox" name="checkedSavePassword" />
+              </Box>
+            </Box>
             <Box pt={1} display="flex">
               <Box display="flex" alignItems="center" flexDirection="row-reverse">
                 <Box>

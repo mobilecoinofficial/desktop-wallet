@@ -9,7 +9,7 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
+import { SavedPasswordsModal, SubmitButton } from '../../../components';
 import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
@@ -35,7 +35,6 @@ export const unlockWalletFormOnSubmit = async (
 
   try {
     await unlockWallet(password);
-    ipcRenderer.sendSync('set-password', 'brian', password);
     if (isMountedRef.current) {
       setStatus({ success: true });
       setSubmitting(false);
@@ -75,13 +74,29 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
     password: Yup.string().required(t('passwordRequired')),
   });
 
+  const accounts = ipcRenderer.sendSync('fetch-accounts');
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (accounts.length === 0) {
+      return;
+    }
+
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={handleOnSubmit}
     >
-      {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
+      {({ errors, isSubmitting, dirty, isValid, submitForm, setFieldValue }) => {
         return (
           <Form name="UnlockWalletInnerForm">
             <Field
@@ -91,7 +106,16 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
               label={t('passwordLabel')}
               name="password"
               type="password"
+              onClick={handleClick}
             />
+
+            <SavedPasswordsModal
+              accounts={accounts}
+              anchorEl={anchorEl}
+              handleClose={handleClose}
+              setFieldValue={setFieldValue}
+            />
+
             {errors.submit && (
               <Box mt={3}>
                 <FormHelperText error>{errors.submit}</FormHelperText>

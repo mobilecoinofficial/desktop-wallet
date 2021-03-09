@@ -287,6 +287,20 @@ ipcMain.on('set-password', (_, accountName, password) => {
   keytar.setPassword('Mobile Coin', accountName, password);
 });
 
+ipcMain.on('fetch-accounts', (event) => {
+  keytar
+    .findCredentials('Mobile Coin')
+    // eslint-disable-next-line promise/always-return
+    .then((accounts) => {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = accounts;
+    })
+    .catch(() => {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = [];
+    });
+});
+
 const shutDownMobilecoind = () => {
   const leaveMobilecoindRunning = LocalStoreInstance.getLeaveMobilecoindRunning();
   console.log('Leave mobilecoind running:', leaveMobilecoindRunning);

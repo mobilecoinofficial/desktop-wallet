@@ -25,9 +25,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
       { type: 'separator' },
       {
         accelerator: 'Command+Q',
-        click: () => {
-          app.quit();
-        },
+        click: () => app.quit(),
         label: i18n.t('Menu.quit'),
       },
     ],
@@ -55,9 +53,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
     submenu: [
       {
         accelerator: 'Ctrl+Command+F',
-        click: () => {
-          this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
-        },
+        click: () => this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen()),
         label: i18n.t('Menu.toggleFullScreen'),
       },
     ],
@@ -66,10 +62,14 @@ const defaultTemplate = (app, mainWindow, i18n) => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     submenuViewProd.submenu.push({
       accelerator: 'Alt+Command+I',
-      click: () => {
-        mainWindow.webContents.toggleDevTools();
-      },
+      click: () => mainWindow.webContents.toggleDevTools(),
       label: 'Toggle Developer Tools',
+    });
+
+    submenuViewProd.submenu.push({
+      accelerator: 'Command+R',
+      click: () => mainWindow.webContents.reload(),
+      label: 'Reload',
     });
   }
 
@@ -122,9 +122,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
   const languageMenu = config.languages.map((languageCode) => {
     return {
       checked: i18n.language === languageCode,
-      click: () => {
-        i18n.changeLanguage(languageCode);
-      },
+      click: () => i18n.changeLanguage(languageCode),
       label: i18n.t(`Menu.languages.${languageCode}`),
       type: 'radio',
     };

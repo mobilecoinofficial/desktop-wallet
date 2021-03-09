@@ -62,8 +62,8 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
     values: UnlockWalletFormValues,
     helpers: FormikHelpers<UnlockWalletFormValues>
   ) => {
-    const pseduoProps = { isMountedRef, unlockWallet };
-    onSubmit(pseduoProps, values, helpers);
+    const pseudoProps = { isMountedRef, unlockWallet };
+    onSubmit(pseudoProps, values, helpers);
   };
 
   const initialValues = {

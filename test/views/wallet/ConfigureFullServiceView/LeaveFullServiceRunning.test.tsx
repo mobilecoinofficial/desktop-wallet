@@ -3,39 +3,39 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import useMobilecoindConfigs from '../../../../app/hooks/useMobilecoindConfigs';
-import LeaveMobilecoindRunning from '../../../../app/views/wallet/ConfigureMobilecoindView';
+import useFullServiceConfigs from '../../../../app/hooks/useFullServiceConfigs';
+import LeaveFullServiceRunning from '../../../../app/views/wallet/ConfigureFullServiceView';
 import renderSnapshot from '../../../renderSnapshot';
 
-jest.mock('../../../../app/hooks/useMobilecoindConfigs');
+jest.mock('../../../../app/hooks/useFullServiceConfigs');
 
-function setupComponent(isLeaveMobilecoindRunning: boolean) {
-  const mockToggleLeaveMobilecoindRunning = jest.fn();
-  const mockUseMobilecoindConfigs = useMobilecoindConfigs as jest.MockedFunction<
-    typeof useMobilecoindConfigs
+function setupComponent(isLeaveFullServiceRunning: boolean) {
+  const mockToggleLeaveFullServiceRunning = jest.fn();
+  const mockUseFullServiceConfigs = useFullServiceConfigs as jest.MockedFunction<
+    typeof useFullServiceConfigs
   >;
   // @ts-ignore mock
-  mockUseMobilecoindConfigs.mockImplementation(() => {
+  mockUseFullServiceConfigs.mockImplementation(() => {
     return {
-      leaveMobilecoindRunning: isLeaveMobilecoindRunning,
-      toggleLeaveMobilecoindRunning: mockToggleLeaveMobilecoindRunning,
+      leaveFullServiceRunning: isLeaveFullServiceRunning,
+      toggleLeaveFullServiceRunning: mockToggleLeaveFullServiceRunning,
     };
   });
-  renderSnapshot(<LeaveMobilecoindRunning />);
+  renderSnapshot(<LeaveFullServiceRunning />);
 
   // Render Elements
-  const offQuery = screen.queryByText('Leave MobileCoinD Active is off');
-  const onQuery = screen.queryByText('Leave MobileCoinD Active is on');
+  const offQuery = screen.queryByText('Leave FullService Active is off');
+  const onQuery = screen.queryByText('Leave FullService Active is on');
   const offDescriptionQuery = screen.queryByText(
-    'MobileCoinD will not continue to sync when you exit the wallet.'
+    'FullService will not continue to sync when you exit the wallet.'
   );
   const onDescriptionQuery = screen.queryByText(
-    'MobileCoinD will continue to sync when you exit the wallet.'
+    'FullService will continue to sync when you exit the wallet.'
   );
   const toggleSwitch = screen.getByRole('checkbox') as HTMLInputElement;
   return {
-    isLeaveMobilecoindRunning,
-    mockToggleLeaveMobilecoindRunning,
+    isLeaveFullServiceRunning,
+    mockToggleLeaveFullServiceRunning,
     offDescriptionQuery,
     offQuery,
     onDescriptionQuery,
@@ -44,8 +44,8 @@ function setupComponent(isLeaveMobilecoindRunning: boolean) {
   };
 }
 
-describe('LeaveMobilecoindRunning', () => {
-  describe('when leaveMobilecoindRunning is false', () => {
+describe('LeaveFullServiceRunning', () => {
+  describe('when leaveFullServiceRunning is false', () => {
     test('the CTA is to toggle it on', () => {
       const { offQuery, onQuery } = setupComponent(false);
       expect(offQuery).toBeInTheDocument();
@@ -64,7 +64,7 @@ describe('LeaveMobilecoindRunning', () => {
     });
   });
 
-  describe('when leaveMobilecoindRunning is true', () => {
+  describe('when leaveFullServiceRunning is true', () => {
     test('the CTA is to toggle it on', () => {
       const { offQuery, onQuery } = setupComponent(true);
       expect(offQuery).not.toBeInTheDocument();
@@ -84,10 +84,10 @@ describe('LeaveMobilecoindRunning', () => {
   });
 
   describe('toggle switch', () => {
-    test('it calls toggleLeaveMobilecoindRunning on click', () => {
-      const { mockToggleLeaveMobilecoindRunning, toggleSwitch } = setupComponent(true);
+    test('it calls toggleLeaveFullServiceRunning on click', () => {
+      const { mockToggleLeaveFullServiceRunning, toggleSwitch } = setupComponent(true);
       userEvent.click(toggleSwitch);
-      expect(mockToggleLeaveMobilecoindRunning).toBeCalled();
+      expect(mockToggleLeaveFullServiceRunning).toBeCalled();
     });
   });
 });

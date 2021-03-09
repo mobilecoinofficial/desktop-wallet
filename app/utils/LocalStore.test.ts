@@ -81,24 +81,18 @@ describe('LocalStore', () => {
         const { MockLocalStoreInstance, mockStoreGet } = setup();
 
         expect(MockLocalStoreInstance.getFullServiceLedgerDbPath()).toBe(
-          schemaKeys.FULL_SERVICE_LEDGER_DB_PATH,
+          schemaKeys.FULL_SERVICE_LEDGER_DB_PATH
         );
-        expect(mockStoreGet).toHaveBeenCalledWith(
-          schemaKeys.FULL_SERVICE_LEDGER_DB_PATH,
-        );
+        expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
       });
     });
 
     describe('.getFullServiceDbPath', () => {
-      test('return store.get for mobilecoindDbPath', () => {
+      test('return store.get for fullServiceDbPath', () => {
         const { MockLocalStoreInstance, mockStoreGet } = setup();
 
-        expect(MockLocalStoreInstance.getFullServiceDbPath()).toBe(
-          schemaKeys.FULL_SERVICE_DB_PATH,
-        );
-        expect(mockStoreGet).toHaveBeenCalledWith(
-          schemaKeys.FULL_SERVICE_DB_PATH,
-        );
+        expect(MockLocalStoreInstance.getFullServiceDbPath()).toBe(schemaKeys.FULL_SERVICE_DB_PATH);
+        expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_DB_PATH);
       });
     });
 
@@ -121,67 +115,65 @@ describe('LocalStore', () => {
       });
     });
 
-    describe('.getLeaveMobilecoindRunning', () => {
-      test('return store.get for leaveMobilecoindRunning', () => {
+    describe('.getLeaveFullServiceRunning', () => {
+      test('return store.get for leaveFullServiceRunning', () => {
         const { MockLocalStoreInstance, mockStoreGet } = setup();
 
-        expect(MockLocalStoreInstance.getLeaveMobilecoindRunning()).toBe(
-          schemaKeys.LEAVE_MOBILECOIND_RUNNING
+        expect(MockLocalStoreInstance.getLeaveFullServiceRunning()).toBe(
+          schemaKeys.LEAVE_FULL_SERVICE_RUNNING
         );
-        expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.LEAVE_MOBILECOIND_RUNNING);
+        expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.LEAVE_FULL_SERVICE_RUNNING);
       });
     });
 
-    describe('.setLeaveMobilecoindRunning', () => {
-      test('return store.set for leaveMobilecoindRunning', () => {
+    describe('.setLeaveFullServiceRunning', () => {
+      test('return store.set for leaveFullServiceRunning', () => {
         const { MockLocalStoreInstance, mockStoreSet } = setup();
-        const fakeLeaveMobilecoindRunning = false;
+        const fakeLeaveFullServiceRunning = false;
 
-        MockLocalStoreInstance.setLeaveMobilecoindRunning(fakeLeaveMobilecoindRunning);
+        MockLocalStoreInstance.setLeaveFullServiceRunning(fakeLeaveFullServiceRunning);
         expect(mockStoreSet).toHaveBeenCalledWith(
-          schemaKeys.LEAVE_MOBILECOIND_RUNNING,
-          fakeLeaveMobilecoindRunning
+          schemaKeys.LEAVE_FULL_SERVICE_RUNNING,
+          fakeLeaveFullServiceRunning
         );
       });
     });
 
-    describe('.getMobilecoindLedgerDbPath', () => {
+    describe('.getFullServiceLedgerDbPath', () => {
       test('return store.get for ledgerDbPath', () => {
         const { MockLocalStoreInstance, mockStoreGet } = setup();
 
-        expect(MockLocalStoreInstance.getMobilecoindLedgerDbPath()).toBe(
-          schemaKeys.MOBILECOIND_LEDGER_DB_PATH,
+        expect(MockLocalStoreInstance.getFullServiceLedgerDbPath()).toBe(
+          schemaKeys.FULL_SERVICE_LEDGER_DB_PATH
         );
-        expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.MOBILECOIND_LEDGER_DB_PATH);
+        expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
       });
     });
 
-    describe('.getMobilecoindDbPath', () => {
-      test('return store.get for mobilecoindDbPath', () => {
+    describe('.getFullServiceDbPath', () => {
+      test('return store.get for fullServiceDbPath', () => {
         const { MockLocalStoreInstance, mockStoreGet } = setup();
 
-        expect(MockLocalStoreInstance.getMobilecoindDbPath()).toBe(schemaKeys.MOBILECOIND_DB_PATH);
-        expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.MOBILECOIND_DB_PATH);
+        expect(MockLocalStoreInstance.getFullServiceDbPath()).toBe(schemaKeys.FULL_SERVICE_DB_PATH);
+        expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_DB_PATH);
       });
     });
 
     describe('.setLedgerDbPath', () => {
       test('return store.set for setLedgerDbPath', () => {
         const { MockLocalStoreInstance, mockStoreSet } = setup();
-        const fakeMobilecoindLedgerDbPath = '/fake/mobilecoind/ledger/';
-        const fakeMobilecoindDbPath = '/fake/path/mobilecoind/db';
         const fakeFullServiceLedgerDbPath = '/fake/full-service/ledger/';
         const fakeFullServiceDbPath = '/fake/path/full-servide/db';
 
         MockLocalStoreInstance.setDbPaths(
-          fakeMobilecoindLedgerDbPath,
-          fakeMobilecoindDbPath,
           fakeFullServiceLedgerDbPath,
           fakeFullServiceDbPath,
+          fakeFullServiceLedgerDbPath,
+          fakeFullServiceDbPath
         );
         expect(mockStoreSet).toHaveBeenCalledWith({
-          [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: fakeMobilecoindLedgerDbPath,
-          [schemaKeys.MOBILECOIND_DB_PATH]: fakeMobilecoindDbPath,
+          [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fakeFullServiceLedgerDbPath,
+          [schemaKeys.FULL_SERVICE_DB_PATH]: fakeFullServiceDbPath,
           [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fakeFullServiceLedgerDbPath,
           [schemaKeys.FULL_SERVICE_DB_PATH]: fakeFullServiceDbPath,
         });

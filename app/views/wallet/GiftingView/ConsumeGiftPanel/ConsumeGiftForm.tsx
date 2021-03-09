@@ -94,7 +94,7 @@ const ConsumeGiftForm: FC = () => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ConsumeGiftForm');
 
-  // const { accountName, balance, openGiftCode, b58Code, submitTransaction } = useMobileCoinD();
+  // const { accountName, balance, openGiftCode, b58Code, submitTransaction } = useFullService();
   const accountName = 'helloworld';
   const balance = '1';
   const openGiftCode = () => {};

@@ -4,11 +4,11 @@ import type { FC } from 'react';
 import { Box, FormLabel, Typography, Switch } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useMobilecoindConfigs from '../../../hooks/useMobilecoindConfigs';
+import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
 
-const LeaveMobilecoindRunning: FC = () => {
-  const { leaveMobilecoindRunning, toggleLeaveMobilecoindRunning } = useMobilecoindConfigs();
-  const { t } = useTranslation('LeaveMobilecoindRunning');
+const LeaveFullServiceRunning: FC = () => {
+  const { leaveFullServiceRunning, toggleLeaveFullServiceRunning } = useFullServiceConfigs();
+  const { t } = useTranslation('LeaveFullServiceRunning');
 
   return (
     <Box flexGrow={1} mt={3}>
@@ -21,14 +21,14 @@ const LeaveMobilecoindRunning: FC = () => {
         <Box display="flex" justifyContent="space-between">
           <Typography
             variant="body2"
-            color={leaveMobilecoindRunning ? 'textPrimary' : 'textSecondary'}
+            color={leaveFullServiceRunning ? 'textPrimary' : 'textSecondary'}
           >
-            {leaveMobilecoindRunning ? t('ternaryOn') : t('ternaryOff')}
+            {leaveFullServiceRunning ? t('ternaryOn') : t('ternaryOff')}
           </Typography>
           <Box>
             <Switch
-              checked={leaveMobilecoindRunning}
-              onChange={toggleLeaveMobilecoindRunning}
+              checked={leaveFullServiceRunning}
+              onChange={toggleLeaveFullServiceRunning}
               name="checkedC"
             />
           </Box>
@@ -36,9 +36,9 @@ const LeaveMobilecoindRunning: FC = () => {
         <Typography
           variant="body2"
           display="inline"
-          color={leaveMobilecoindRunning ? 'textPrimary' : 'textSecondary'}
+          color={leaveFullServiceRunning ? 'textPrimary' : 'textSecondary'}
         >
-          {leaveMobilecoindRunning ? t('ternaryWillSync') : t('ternaryWillNotSync')}
+          {leaveFullServiceRunning ? t('ternaryWillSync') : t('ternaryWillNotSync')}
         </Typography>
         <Box py={1} />
         <Typography variant="body2" color="textSecondary">
@@ -49,4 +49,4 @@ const LeaveMobilecoindRunning: FC = () => {
   );
 };
 
-export default LeaveMobilecoindRunning;
+export default LeaveFullServiceRunning;

@@ -7,9 +7,9 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import routePaths from '../../../constants/routePaths';
 import type { Theme } from '../../../theme';
-import LeaveMobilecoindRunning from './LeaveMobilecoindRunning';
+import LeaveFullServiceRunning from './LeaveFullServiceRunning';
 import LedgerStatus from './LedgerStatus';
-import MobilecoindDirectory from './MobilecoindDirectory';
+import FullServiceDirectory from './FullServiceDirectory';
 import ResetLedger from './ResetLedger';
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -38,9 +38,9 @@ const useStyles = makeStyles((theme: Theme) => {
   };
 });
 
-const ConfigureMobilecoindView: FC = () => {
+const ConfigureFullServiceView: FC = () => {
   const classes = useStyles();
-  const { t } = useTranslation('ConfigureMobilecoindView');
+  const { t } = useTranslation('ConfigureFullServiceView');
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -48,7 +48,7 @@ const ConfigureMobilecoindView: FC = () => {
         <Link color="inherit" to={routePaths.APP_SETTINGS} component={RouterLink}>
           <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
         </Link>
-        <Typography color="textPrimary">{t('configureMobilecoindBreadcrumb')}</Typography>
+        <Typography color="textPrimary">{t('configureFullServiceBreadcrumb')}</Typography>
       </Breadcrumbs>
       <Box
         alignItems="center"
@@ -70,11 +70,11 @@ const ConfigureMobilecoindView: FC = () => {
         </Typography>
       </Box>
       <LedgerStatus />
-      <LeaveMobilecoindRunning />
+      <LeaveFullServiceRunning />
       <ResetLedger />
-      <MobilecoindDirectory />
+      <FullServiceDirectory />
     </Container>
   );
 };
 
-export default ConfigureMobilecoindView;
+export default ConfigureFullServiceView;

@@ -4,11 +4,11 @@ import type { FC } from 'react';
 import { Box, FormLabel, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useMobilecoindConfigs from '../../../hooks/useMobilecoindConfigs';
+import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
 
-const MobilecoindDirectory: FC = () => {
-  const { ledgerDbPath, mobilecoindDbPath } = useMobilecoindConfigs();
-  const { t } = useTranslation('MobilecoindDirectory');
+const FullServiceDirectory: FC = () => {
+  const { ledgerDbPath, fullServiceDbPath } = useFullServiceConfigs();
+  const { t } = useTranslation('FullServiceDirectory');
 
   return (
     <Box flexGrow={1} mt={3}>
@@ -27,14 +27,14 @@ const MobilecoindDirectory: FC = () => {
         </Typography>
         <Box py={1} />
         <Typography variant="body2" color="textPrimary">
-          {t('mobilecoindDbPathHeader')}
+          {t('fullServiceDbPathHeader')}
         </Typography>
         <Typography variant="body2" color="textSecondary">
-          {`${mobilecoindDbPath}`}
+          {`${fullServiceDbPath}`}
         </Typography>
       </Box>
     </Box>
   );
 };
 
-export default MobilecoindDirectory;
+export default FullServiceDirectory;

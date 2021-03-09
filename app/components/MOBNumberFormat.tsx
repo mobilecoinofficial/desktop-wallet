@@ -26,7 +26,7 @@ const convertPicoMobStringToMob = (picoMobString: string): string => {
   ].join('');
 };
 // This component handles converting incoming pico-mobs and mobs into mobs.
-// All values from MobileCoinD are in pico-mobs, but once it hits our frontend,
+// All values from FullService are in pico-mobs, but once it hits our frontend,
 // it's more sensible have the display value be mobs. (Sensible my be a strong
 // word... The real reason is I have to debug seperating the display value from)
 // the calculated value. This would simplify the matter). So, until we have

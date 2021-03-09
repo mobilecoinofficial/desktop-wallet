@@ -15,11 +15,11 @@ export const schemaKeys = {
   HASHED_PASSWORD: 'hashedPassword',
   HASHED_PASSWORD_SALT: 'hashedPasswordSalt',
   HASHED_PIN: 'hashedPin',
-  LEAVE_MOBILECOIND_RUNNING: 'leaveMobilecoindRunning',
+  LEAVE_FULL_SERVICE_RUNNING: 'leaveFullServiceRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
   MINIMUM_FOR_PIN: 'minimumPin',
-  MOBILECOIND_DB_PATH: 'mobilecoindDbPath',
-  MOBILECOIND_LEDGER_DB_PATH: 'mobilecoindLedgerDbPath',
+  FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
+  FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   NAME: 'name',
   SALT: 'salt',
 };
@@ -32,10 +32,10 @@ export const schema: LocalStoreSchema = {
   [schemaKeys.HASHED_PASSWORD]: { type: 'string' },
   [schemaKeys.HASHED_PASSWORD_SALT]: { type: 'string' },
   [schemaKeys.HASHED_PIN]: { type: 'string' },
-  [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: { type: 'boolean' },
+  [schemaKeys.LEAVE_FULL_SERVICE_RUNNING]: { type: 'boolean' },
   [schemaKeys.LEDGER_DB_PATH]: { type: 'string' },
-  [schemaKeys.MOBILECOIND_DB_PATH]: { type: 'string' },
-  [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: { type: 'string' },
+  [schemaKeys.FULL_SERVICE_DB_PATH]: { type: 'string' },
+  [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.NAME]: { type: 'string' },
   [schemaKeys.SALT]: { type: 'string' },
 };
@@ -74,12 +74,12 @@ class LocalStore {
     this.store.set(schemaKeys.HASHED_PIN, hashedPin || '');
   }
 
-  getLeaveMobilecoindRunning(): boolean {
-    return this.store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING) as boolean;
+  getLeaveFullServiceRunning(): boolean {
+    return this.store.get(schemaKeys.LEAVE_FULL_SERVICE_RUNNING) as boolean;
   }
 
-  setLeaveMobilecoindRunning(leaveMobilecoindRunning: boolean): void {
-    this.store.set(schemaKeys.LEAVE_MOBILECOIND_RUNNING, leaveMobilecoindRunning);
+  setLeaveFullServiceRunning(leaveFullServiceRunning: boolean): void {
+    this.store.set(schemaKeys.LEAVE_FULL_SERVICE_RUNNING, leaveFullServiceRunning);
   }
 
   getFullServiceLedgerDbPath() {
@@ -131,32 +131,32 @@ class LocalStore {
     });
   }
 
-  getMobilecoindDbPath(): string {
-    const mobilecoindDbPath = this.store.get(schemaKeys.MOBILECOIND_DB_PATH);
-    return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
+  getFullServiceDbPath(): string {
+    const fullServiceDbPath = this.store.get(schemaKeys.FULL_SERVICE_DB_PATH);
+    return typeof fullServiceDbPath === 'string' ? fullServiceDbPath : '';
   }
 
-  getMobilecoindLedgerDbPath() {
-    return this.store.get(schemaKeys.MOBILECOIND_LEDGER_DB_PATH);
+  getFullServiceLedgerDbPath() {
+    return this.store.get(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
   }
 
   setLedgerDbPath(name: string): void {
     this.store.set(schemaKeys.LEDGER_DB_PATH, name);
   }
 
-  setMobilecoindDbPath(name: string): void {
-    this.store.set(schemaKeys.MOBILECOIND_DB_PATH, name);
+  setFullServiceDbPath(name: string): void {
+    this.store.set(schemaKeys.FULL_SERVICE_DB_PATH, name);
   }
 
   setDbPaths(
-    mobilecoindLedgerDbPath: string,
-    mobilecoindDbPath: string,
+    fullServiceLedgerDbPath: string,
+    fullServiceDbPath: string,
     fullServiceLedgerDbPath: string,
     fullServiceDbPath: string
   ) {
     this.store.set({
-      [schemaKeys.MOBILECOIND_LEDGER_DB_PATH]: mobilecoindLedgerDbPath,
-      [schemaKeys.MOBILECOIND_DB_PATH]: mobilecoindDbPath,
+      [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fullServiceLedgerDbPath,
+      [schemaKeys.FULL_SERVICE_DB_PATH]: fullServiceDbPath,
       [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fullServiceLedgerDbPath,
       [schemaKeys.FULL_SERVICE_DB_PATH]: fullServiceDbPath,
     });

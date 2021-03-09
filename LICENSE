@@ -25,9 +25,9 @@ terms that pertain to those sources of IP. This list is for informational
 purposes only and is not intended to represent an exhaustive list of third party
 contributions to MobileCoin.
 
-  * **mobilecoind**
-  (https://github.com/mobilecoinfoundation/mobilecoin/tree/master/mobilecoind)
-    MobileCoin Desktop Wallet makes use mobilecoind binaries to interact with
+  * **full-service**
+  (https://github.com/mobilecoinofficial/full-service)
+    MobileCoin Desktop Wallet makes use Full-Service binaries to interact with
     the Mobilecoin ledger.
 
   * **electron-react-boilerplate**

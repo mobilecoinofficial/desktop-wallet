@@ -2,7 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, FormHelperText } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
+// import { ipcRenderer } from 'electron';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -35,7 +35,8 @@ export const unlockWalletFormOnSubmit = async (
 
   try {
     await unlockWallet(password);
-    ipcRenderer.send('logged-in', password);
+    // TODO: remove comment from next line to load binary at later time
+    // ipcRenderer.send('logged-in', password);
     if (isMountedRef.current) {
       setStatus({ success: true });
       setSubmitting(false);

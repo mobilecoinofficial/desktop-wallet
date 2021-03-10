@@ -22,6 +22,6 @@ export { default as getTransactionLog } from './getTransactionLog';
 export { default as getTxo } from './getTxo';
 export { default as getWalletStatus } from './getWalletStatus';
 export { default as importAccount } from './importAccount';
-// export { default as setPassword } from './setPassword';
+export { default as removeGiftCode } from './removeGiftCode';
 export { default as submitTransaction } from './submitTransaction';
 export { default as updateAccountName } from './updateAccountName';

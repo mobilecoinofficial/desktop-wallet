@@ -8,6 +8,7 @@ import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom'
 import {
   AddressBookIcon,
   CogIcon,
+  ContactIcon,
   GiftIcon,
   TransactionIcon,
   WalletIcon,
@@ -28,6 +29,11 @@ interface Section {
 }
 
 const sections: Section[] = [
+  {
+    Icon: ContactIcon,
+    label: 'CONTACT',
+    path: '/app/CONTACTNEWFORM',
+  },
   {
     Icon: WalletHomeIcon,
     label: 'home',

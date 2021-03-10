@@ -13,6 +13,7 @@ import {
   ChangePasswordView,
   ChangePinView,
   ConfigureMobilecoindView,
+  ContactPanel,
   DashboardView,
   GiftingView,
   HistoryView,
@@ -106,6 +107,15 @@ const routes: Routes = [
     layout: DashboardLayout,
     path: routePaths.APP,
     routes: [
+      ...(process.env.NODE_ENV === 'development'
+        ? [
+            {
+              Component: ContactPanel,
+              exact: true,
+              path: '/app/CONTACTNEWFORM',
+            },
+          ]
+        : []),
       {
         Component: DashboardView,
         exact: true,

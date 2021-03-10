@@ -76,60 +76,39 @@ const installExtensions = async () => {
 // TODO: remane this function to full service after intergration
 // TODO: test
 const spawnAPIBinaries = () => {
-  // Start the mobilecoind & full service process in the background
+  // Start the full-service process in the background
   const IS_PROD = process.env.NODE_ENV === 'production';
   const root = process.cwd();
   const { isPackaged } = app;
 
   // TODO move these strings into constants/
   const platform = getPlatform() || '';
-  const mobilecoindBinariesPath = IS_PROD && isPackaged
-    ? path.join(process.resourcesPath, '..', 'mobilecoind-bin', platform)
-    : path.join(root, 'mobilecoind-bin', platform);
-  const fullServiceBinariesPath = IS_PROD && isPackaged
-    ? path.join(process.resourcesPath, '..', 'full-service-bin', platform)
-    : path.join(root, 'full-service-bin', platform);
+  const fullServiceBinariesPath =
+    IS_PROD && isPackaged
+      ? path.join(process.resourcesPath, '..', 'full-service-bin', platform)
+      : path.join(root, 'full-service-bin', platform);
 
-  // console.log('Looking for mobilecoind binary in', mobilecoindBinariesPath);
-  const mobilecoindExecPath = path.resolve(
-    path.join(mobilecoindBinariesPath, './start-mobilecoind.sh'),
-  );
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   const fullServiceExecPath = path.resolve(
-    path.join(fullServiceBinariesPath, './start-full-service.sh'),
+    path.join(fullServiceBinariesPath, './start-full-service.sh')
   );
 
-  // Determine mobilecoind path and store for config view
+  // Determine Full-Service path and store for config view
   const userDataPath = app.getPath('userData');
-  const ledgerMobilecoindDbPath = path.normalize(
-    path.join(userDataPath, 'mobilecoind', 'ledger-db'),
-  ); // escape spaces in mac and linux (change logic for windows)
-  const mobilecoindDbPath = path.normalize(
-    path.join(userDataPath, 'mobilecoind', 'transaction-db')
-  ); // escape spaces in mac and linux (change logic for windows)
   const ledgerFullServiceDbPath = path.normalize(
-    path.join(userDataPath, 'full-service', 'ledger-db'),
+    path.join(userDataPath, 'full-service', 'ledger-db')
   ); // escape spaces in mac and linux (change logic for windows)
-  const fullServiceDbPath = path.normalize(
-    path.join(userDataPath, 'full-service', 'wallet-db'),
-  ); // escape spaces in mac and linux (change logic for windows)
+  const fullServiceDbPath = path.normalize(path.join(userDataPath, 'full-service', 'wallet-db')); // escape spaces in mac and linux (change logic for windows)
 
   // TODO - delete the console logs
-  // console.log('ledgerMobilecoindDbPath', ledgerMobilecoindDbPath);
-  // console.log('mobilecoindDbPath', mobilecoindDbPath);
   console.log('ledgerFullServiceDbPath', ledgerFullServiceDbPath);
   console.log('fullServiceDbPath', fullServiceDbPath);
-  LocalStoreInstance.setDbPaths(
-    ledgerMobilecoindDbPath,
-    mobilecoindDbPath,
-    ledgerFullServiceDbPath,
-    fullServiceDbPath,
-  );
-  spawn(mobilecoindExecPath, [ledgerMobilecoindDbPath, mobilecoindDbPath], {});
+  LocalStoreInstance.setLedgerDbPath(ledgerFullServiceDbPath);
+  LocalStoreInstance.setFullServiceDbPath(fullServiceDbPath);
   spawn(
     fullServiceExecPath,
     [ledgerFullServiceDbPath, fullServiceDbPath, [fullServiceDbPath, 'wallet.db'].join('/')],
-    {},
+    {}
   );
 };
 
@@ -270,7 +249,7 @@ if (process.env.E2E_BUILD === 'true') {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  // NOTE: we do not want to respawn mobilecoind in this case.
+  // NOTE: we do not want to respawn full-service in this case.
   if (mainWindow === null) {
     createWindow();
   }
@@ -285,17 +264,16 @@ ipcMain.on('close-app', () => {
 });
 
 ipcMain.on('reset-ledger', () => {
-  const ledgerDbPath = LocalStoreInstance.getMobilecoindLedgerDbPath();
-  const mobilecoindDbPath = LocalStoreInstance.getMobilecoindDbPath();
+  const ledgerDbPath = LocalStoreInstance.getFullServiceLedgerDbPath();
 
-  console.log('killing mobilecoind');
-  exec('pkill -f mobilecoind');
+  console.log('killing full-service');
+  // TODO -- probably should make the binaries a little more specific
+  // e.g., mobilecoin-full-service
+  exec('pkill -f full-service');
 
   // Explicitly only delete db files. No rm -r
   exec(`rm "${ledgerDbPath}/data.mdb"`);
   exec(`rm "${ledgerDbPath}/lock.mdb"`);
-  exec(`rm "${mobilecoindDbPath}/data.mdb"`);
-  exec(`rm "${mobilecoindDbPath}/lock.mdb"`);
   app.relaunch(); // does not trigger until app quits or exits
   app.exit(); // exits without before-quit and will-quit
 });
@@ -313,16 +291,18 @@ ipcMain.on('get-initial-translations', (event) => {
   });
 });
 
-const shutDownMobilecoind = () => {
-  const leaveMobilecoindRunning = LocalStoreInstance.getLeaveMobilecoindRunning();
-  console.log('Leave mobilecoind running:', leaveMobilecoindRunning);
-  if (!leaveMobilecoindRunning) {
-    exec('pkill -f mobilecoind');
+const shutDownFullService = () => {
+  const leaveFullServiceRunning = LocalStoreInstance.getLeaveFullServiceRunning();
+  console.log('Leave Full-Service running:', leaveFullServiceRunning);
+  if (!leaveFullServiceRunning) {
+    // TODO -- probably should make the binaries a little more specific
+    // e.g., mobilecoin-full-service
+    exec('pkill -f full-service');
   }
 };
 
 app.on('will-quit', () => {
-  shutDownMobilecoind();
+  shutDownFullService();
 });
 
 // Filter the remote module

@@ -65,19 +65,16 @@ const SyncStatus: FC = () => {
   const acceptableDiffBigInt = BigInt(2);
 
   if (
-    networkBlockIndexBigInt < accountBlockIndexBigInt
-    || networkBlockIndexBigInt < localBlockIndexBigInt
-    || localBlockIndexBigInt < accountBlockIndexBigInt
+    networkBlockIndexBigInt < accountBlockIndexBigInt ||
+    networkBlockIndexBigInt < localBlockIndexBigInt ||
+    localBlockIndexBigInt < accountBlockIndexBigInt
   ) {
     isSynced = false;
     percentSynced = 0;
     statusCode = ERROR;
   } else {
     isSynced = networkBlockIndexBigInt - accountBlockIndexBigInt < acceptableDiffBigInt;
-    percentSynced = getPercentSyncedNew(
-      networkBlockIndexBigInt,
-      accountBlockIndexBigInt,
-    );
+    percentSynced = getPercentSyncedNew(networkBlockIndexBigInt, accountBlockIndexBigInt);
     statusCode = isSynced ? SYNCED : SYNCING;
   }
 

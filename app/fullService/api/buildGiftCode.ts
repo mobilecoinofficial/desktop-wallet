@@ -1,57 +1,57 @@
+import type GiftCode from '../../types/GiftCode';
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings';
 import type TxProposal from '../../types/TxProposal';
 import axiosFullService from '../axiosFullService';
 
-// TODO - fix the error handling at this level -- when giving the wrong method, for example
-const BUILD_TRANSACTION_METHOD = 'build_transaction';
+const BUILD_GIFT_CODE_METHOD = 'build_gift_code';
 
-export type BuildTransactionParams = {
+export type BuildGiftCodeParams = {
   accountId: StringHex;
   fee?: StringUInt64;
   inputTxoIds?: StringHex[];
   maxSpendableValue?: StringUInt64;
-  recipientPublicAddress: StringB58;
+  memo?: string;
   tombstoneBlock?: StringUInt64;
-  value: StringUInt64;
+  valuePmob: StringUInt64;
 };
 
-type BuildTransactionResult = {
+export type BuildGiftCodeResult = {
   feeConfirmation: bigint;
+  giftCode: GiftCode;
+  giftCodeB58: StringB58;
   totalValueConfirmation: bigint;
   txProposal: TxProposal;
-  txProposalReceiverB58Code: StringB58;
 };
 
 type AxiosFullServiceResponse = {
   error: any;
-  result: { txProposal: TxProposal };
+  result: {
+    giftCode: GiftCode;
+    giftCodeB58: StringB58;
+    txProposal: TxProposal;
+  };
 };
 
-const buildTransaction = async ({
+const buildGiftCode = async ({
   accountId,
   fee,
   inputTxoIds,
   maxSpendableValue,
-  recipientPublicAddress,
   tombstoneBlock,
-  value,
-}: BuildTransactionParams): Promise<BuildTransactionResult> => {
+  valuePmob,
+}: BuildGiftCodeParams): Promise<BuildGiftCodeResult> => {
   const { result, error }: AxiosFullServiceResponse = await axiosFullService(
-    BUILD_TRANSACTION_METHOD,
+    BUILD_GIFT_CODE_METHOD,
     {
       accountId,
       fee,
       inputTxoIds,
       maxSpendableValue,
-      recipientPublicAddress,
       tombstoneBlock,
-      value,
+      valuePmob,
     }
   );
-  const { txProposal } = result;
-
-  // FIX-ME: assumes only 1 recipient
-  const txProposalReceiverB58Code = recipientPublicAddress;
+  const { txProposal, giftCode, giftCodeB58 } = result;
 
   // TODO fix type, right now it just matches what the component is expecting
   const totalValueConfirmation = txProposal.outlayList
@@ -70,11 +70,12 @@ const buildTransaction = async ({
   } else {
     return {
       feeConfirmation,
+      giftCode,
+      giftCodeB58,
       totalValueConfirmation,
       txProposal,
-      txProposalReceiverB58Code,
     };
   }
 };
 
-export default buildTransaction;
+export default buildGiftCode;

@@ -12,7 +12,7 @@ import NotFoundView from './views/errors/NotFoundView';
 import {
   ChangePasswordView,
   ChangePinView,
-  ConfigureMobilecoindView,
+  ConfigureFullServiceView,
   DashboardView,
   GiftingView,
   HistoryView,
@@ -147,9 +147,9 @@ const routes: Routes = [
         path: routePaths.APP_SETTINGS_RETRIEVE_ENTROPY,
       },
       {
-        Component: ConfigureMobilecoindView,
+        Component: ConfigureFullServiceView,
         exact: true,
-        path: routePaths.APP_SETTINGS_CONFIGURE_MOBILECOIND,
+        path: routePaths.APP_SETTINGS_CONFIGURE_FULL_SERVICE,
       },
       {
         Component: TermsOfUseView,

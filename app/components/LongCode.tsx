@@ -22,7 +22,6 @@ const useStyles = makeStyles(() => {
 
 const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
   const classes = useStyles();
-
   const colorCode = code.split('').map((char, i) => {
     let charColor = WHITE;
     if (!Number.isNaN(char * 1)) {

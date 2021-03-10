@@ -14,7 +14,7 @@ import 'regenerator-runtime/runtime';
 import { exec, spawn } from 'child_process';
 import path from 'path';
 
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, crashReporter, ipcMain } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 
@@ -138,6 +138,15 @@ const createWindow = async () => {
             preload: path.join(__dirname, 'dist/renderer.prod.js'),
           },
     width: 700,
+  });
+
+  crashReporter.start({
+    companyName: 'mobilecoin',
+    compress: true,
+    productName: 'Desktop-Wallet',
+    submitURL:
+      'https://submit.backtrace.io/mobilecoin/d832c8227d3e7df52440e9afa58935cb672a01ec5ae1127eb51b375a48f3eef8/minidump',
+    uploadToServer: true,
   });
 
   // Reject all session permission requests from remote content

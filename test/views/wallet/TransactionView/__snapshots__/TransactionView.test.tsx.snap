@@ -178,6 +178,7 @@ exports[`TransactionView component render TransactionView renders correctly 1`] 
                             >
                               <span
                                 class="MuiBox-root MuiBox-root"
+                                style="color: rgb(255, 255, 255);"
                               >
                                 b
                               </span>
@@ -201,26 +202,31 @@ exports[`TransactionView component render TransactionView renders correctly 1`] 
                               </span>
                               <span
                                 class="MuiBox-root MuiBox-root"
+                                style="color: rgb(255, 255, 255);"
                               >
                                 -
                               </span>
                               <span
                                 class="MuiBox-root MuiBox-root"
+                                style="color: rgb(255, 255, 255);"
                               >
                                 c
                               </span>
                               <span
                                 class="MuiBox-root MuiBox-root"
+                                style="color: rgb(255, 255, 255);"
                               >
                                 o
                               </span>
                               <span
                                 class="MuiBox-root MuiBox-root"
+                                style="color: rgb(255, 255, 255);"
                               >
                                 d
                               </span>
                               <span
                                 class="MuiBox-root MuiBox-root"
+                                style="color: rgb(255, 255, 255);"
                               >
                                 e
                               </span>

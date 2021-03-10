@@ -8,7 +8,7 @@ import CreateAccountForm, {
 } from '../../../../app/views/auth/CreateAccountView/CreateAccountForm';
 import renderSnapshot from '../../../renderSnapshot';
 
-jest.mock('../../../../app/hooks/useMobileCoinD');
+jest.mock('../../../../app/hooks/useFullService');
 
 function setupComponent() {
   // Variables
@@ -18,7 +18,7 @@ function setupComponent() {
   const validPassword99 =
     'longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglon';
 
-  const { mockUseMobileCoinDValues } = renderSnapshot(
+  const { mockUseFullServiceValues } = renderSnapshot(
     <CreateAccountForm onSubmit={createAccountFormOnSubmit} isTest />
   );
 
@@ -45,7 +45,7 @@ function setupComponent() {
     form,
     invalidAccountName65,
     invalidPasswordShort,
-    mockUseMobileCoinDValues,
+    mockUseFullServiceValues,
     passwordConfirmationField,
     passwordField,
     submitButton,
@@ -230,7 +230,7 @@ describe('CreateAccountForm', () => {
       //   const {
       //     accountNameField,
       //     checkTermsField,
-      //     mockUseMobileCoinDValues,
+      //     mockUseFullServiceValues,
       //     passwordConfirmationField,
       //     passwordField,
       //     termsButton,
@@ -243,7 +243,7 @@ describe('CreateAccountForm', () => {
       //   expect(submitButton).toBeDisabled();
       //   userEvent.click(submitButton);
       //   await waitFor(() => {
-      //     expect(mockUseMobileCoinDValues.createAccount).not.toBeCalled();
+      //     expect(mockUseFullServiceValues.createAccount).not.toBeCalled();
       //   });
 
       //   // Enter valid form information
@@ -264,7 +264,7 @@ describe('CreateAccountForm', () => {
       //   userEvent.click(submitButton);
 
       //   await waitFor(() => {
-      //     expect(mockUseMobileCoinDValues.createAccount).toBeCalledWith(
+      //     expect(mockUseFullServiceValues.createAccount).toBeCalledWith(
       //       validAccountName64,
       //       validPassword99
       //     );
@@ -276,7 +276,7 @@ describe('CreateAccountForm', () => {
         const {
           accountNameField,
           checkTermsField,
-          mockUseMobileCoinDValues,
+          mockUseFullServiceValues,
           passwordConfirmationField,
           passwordField,
           termsButton,
@@ -285,7 +285,7 @@ describe('CreateAccountForm', () => {
           validPassword99,
         } = setupComponent();
         // @ts-ignore mock
-        mockUseMobileCoinDValues.createAccount.mockImplementation(() => {
+        mockUseFullServiceValues.createAccount.mockImplementation(() => {
           throw new Error(expectedErrorMessage);
         });
 

@@ -2,7 +2,6 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, FormHelperText } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -13,6 +12,7 @@ import { SavedPasswordsModal, SubmitButton } from '../../../components';
 import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
+import { getKeychainAccounts } from '../../../utils/keytarService';
 
 export interface UnlockWalletFormValues {
   password: string;
@@ -74,7 +74,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
     password: Yup.string().required(t('passwordRequired')),
   });
 
-  const accounts = ipcRenderer.sendSync('fetch-accounts');
+  const accounts = getKeychainAccounts();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 

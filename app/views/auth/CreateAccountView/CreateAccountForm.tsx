@@ -2,7 +2,6 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
@@ -13,6 +12,7 @@ import { SubmitButton, TermsOfUseDialog } from '../../../components';
 import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
+import { setKeychainAccount } from '../../../utils/keytarService';
 
 export interface CreateAccountFormValues {
   accountName: string;
@@ -42,7 +42,7 @@ export const createAccountFormOnSubmit = async (
 
     if (isMountedRef.current) {
       if (checkedSavePassword) {
-        ipcRenderer.sendSync('set-password', accountName, password);
+        setKeychainAccount(accountName, password);
       }
       setStatus({ success: true });
       setSubmitting(false);

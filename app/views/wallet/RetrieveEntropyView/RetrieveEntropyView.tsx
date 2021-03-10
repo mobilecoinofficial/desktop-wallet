@@ -11,7 +11,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
@@ -23,6 +22,7 @@ import routePaths from '../../../constants/routePaths';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
+import { getKeychainAccounts } from '../../../utils/keytarService';
 import ShowRetrievedEntropyModal from './ShowRetrievedEntropyModal';
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -88,7 +88,7 @@ const RetrieveEntropyView: FC = () => {
   };
   const { t } = useTranslation('RetrieveEntropyView');
 
-  const accounts = ipcRenderer.sendSync('fetch-accounts');
+  const accounts = getKeychainAccounts();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 

@@ -2,7 +2,6 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
@@ -18,6 +17,7 @@ import {
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
 } from '../../../utils/bip39Functions';
+import { setKeychainAccount } from '../../../utils/keytarService';
 
 export interface ImportAccountFormValues {
   accountName: string;
@@ -48,7 +48,7 @@ export const importAccountFormOnSubmit = async (
     await importAccount(accountName, decodedEntropy, password);
 
     if (checkedSavePassword) {
-      ipcRenderer.send('set-password', accountName, password);
+      setKeychainAccount(accountName, password);
     }
 
     if (isMountedRef.current) {

@@ -7,22 +7,16 @@ import { MobileCoinDContextValue } from '../../app/contexts/MobileCoinDContext';
 import renderSnapshot from '../renderSnapshot';
 
 jest.mock('../../app/hooks/useMobileCoinD');
+jest.mock('../../app/utils/keytarService', () => {
+  const mockKeytarService = {
+    getKeychainAccounts: () => {
+      return [];
+    },
+    setKeychainAccount: () => jest.fn(),
+  };
 
-jest.mock(
-  'electron',
-  () => {
-    const mockElectron = {
-      app: { getPath: jest.fn(), getVersion: jest.fn() },
-      ipcRenderer: {
-        sendSync: () => {
-          return [];
-        },
-      },
-    };
-    return mockElectron;
-  },
-  { virtual: true }
-);
+  return mockKeytarService;
+});
 
 function setupComponent(contextOverrides?: MobileCoinDContextValue) {
   const defaultContext = {

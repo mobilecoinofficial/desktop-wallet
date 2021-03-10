@@ -86,9 +86,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <Formik

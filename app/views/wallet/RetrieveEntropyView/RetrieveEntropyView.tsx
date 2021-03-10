@@ -100,9 +100,7 @@ const RetrieveEntropyView: FC = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">

@@ -8,10 +8,10 @@ import {
   FormHelperText,
   makeStyles,
   Modal,
-  TextField,
   Typography,
 } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
+import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
 import type { Theme } from '../../theme';
@@ -58,6 +58,7 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
   const classes = useStyles();
   const initialValues = {
     accountName: '',
+    submit: null,
   };
 
   const validationSchema = Yup.object().shape({
@@ -95,9 +96,9 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
                     </Box>
                   </Box>
                 </Box>
-                {errors.accountName && (
+                {errors.submit && (
                   <Box mt={3}>
-                    <FormHelperText error>{errors.accountName}</FormHelperText>
+                    <FormHelperText error>{errors.submit}</FormHelperText>
                   </Box>
                 )}
                 <Box display="flex" flexDirection="row" className={classes.buttonBox}>

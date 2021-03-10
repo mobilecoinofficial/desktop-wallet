@@ -14,6 +14,10 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 
 export interface ContactViewProps {
+  abbreviation: string;
+  addressCode: string;
+  contactAlias: string;
+  favoriteContact: boolean;
   onCancel: () => void;
   onSaved: () => void;
 }
@@ -72,24 +76,32 @@ const useStyles = makeStyles((theme: Theme) => {
 });
 
 // This should something else...
-const ContactView: FC<ContactViewProps> = ({ onCancel, onSaved }: ContactViewProps) => {
+const ContactView: FC<ContactViewProps> = ({
+  abbreviation,
+  addressCode,
+  contactAlias,
+  favoriteContact,
+  onCancel,
+  onSaved,
+}: ContactViewProps) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
 
   const { t } = useTranslation('ContactView');
+  const isNew = !addressCode;
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
-      <h3>Add New Contact</h3>
+      <h3>{isNew ? t('addTitle') : t('editTitle')}</h3>
       <Box flexGrow={1} mt={3}>
         <Formik
           initialValues={{
-            abbreviation: '',
-            addressCode: '',
+            abbreviation: abbreviation || '',
+            addressCode: addressCode || '',
             button: '',
-            contactAlias: '',
-            favoriteContact: false,
+            contactAlias: contactAlias || '',
+            favoriteContact: !!favoriteContact,
             submit: null,
           }}
           validationSchema={Yup.object().shape({
@@ -98,7 +110,7 @@ const ContactView: FC<ContactViewProps> = ({ onCancel, onSaved }: ContactViewPro
             contactAlias: Yup.string().required(t('aliasRequired')),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-            console.log('SUBMITTING values=', values);
+            console.log('SUBMITTING values=', values); // TODO: Remove!
 
             if (values.button === 'back') {
               onCancel();
@@ -183,7 +195,7 @@ const ContactView: FC<ContactViewProps> = ({ onCancel, onSaved }: ContactViewPro
                   }}
                   isSubmitting={isSubmitting}
                 >
-                  {t('addContact')}
+                  {isNew ? t('addContact') : t('editContact')}
                 </SubmitButton>
               </Form>
             );

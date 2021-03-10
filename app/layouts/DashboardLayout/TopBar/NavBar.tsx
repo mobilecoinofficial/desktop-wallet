@@ -29,11 +29,20 @@ interface Section {
 }
 
 const sections: Section[] = [
-  {
-    Icon: ContactIcon,
-    label: 'CONTACT',
-    path: '/app/CONTACTNEWFORM',
-  },
+  ...(process.env.NODE_ENV === 'development' // TODO: REMOVE THIS!
+    ? [
+        {
+          Icon: ContactIcon,
+          label: 'ADD',
+          path: '/app/CONTACTNEWFORM',
+        },
+        {
+          Icon: ContactIcon,
+          label: 'EDIT',
+          path: '/app/CONTACTOLDFORM',
+        },
+      ]
+    : []),
   {
     Icon: WalletHomeIcon,
     label: 'home',

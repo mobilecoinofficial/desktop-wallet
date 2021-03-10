@@ -7,7 +7,7 @@ const ContactPanel: FC = () => {
   return (
     <ContactView
       onCancel={() => console.log('CANCELLED (from panel)')}
-      onSaved={() => console.log('SAVED (to panel)')}
+      onSaved={() => console.log('CREATED (to panel)')}
     />
   );
 };

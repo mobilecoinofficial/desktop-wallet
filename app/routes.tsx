@@ -13,7 +13,6 @@ import {
   ChangePasswordView,
   ChangePinView,
   ConfigureMobilecoindView,
-  ContactPanel,
   DashboardView,
   GiftingView,
   HistoryView,
@@ -23,6 +22,8 @@ import {
   TermsOfUseView,
   TransactionView,
 } from './views/wallet';
+import ContactPanelAdd from './views/wallet/ContactView/ContactPanelAdd';
+import ContactPanelEdit from './views/wallet/ContactView/ContactPanelEdit';
 
 type Routes = {
   Component?: any;
@@ -107,12 +108,17 @@ const routes: Routes = [
     layout: DashboardLayout,
     path: routePaths.APP,
     routes: [
-      ...(process.env.NODE_ENV === 'development'
+      ...(process.env.NODE_ENV === 'development' // TODO: Remove this!
         ? [
             {
-              Component: ContactPanel,
+              Component: ContactPanelAdd,
               exact: true,
               path: '/app/CONTACTNEWFORM',
+            },
+            {
+              Component: ContactPanelEdit,
+              exact: true,
+              path: '/app/CONTACTOLDFORM',
             },
           ]
         : []),

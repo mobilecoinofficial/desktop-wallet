@@ -158,10 +158,14 @@
   "ContactView": {
     "ContactView": {
       "abbreviation": "ABBREVIATION (3 CHARACTERS MAX)",
+      "addContact": "ADD CONTACT",
+      "addTitle": "ADD NEW CONTACT",
       "addressCode": "ACCOUNT ADDRESS CODE",
       "addressCodeRequired": "ADDRESS CODE IS REQUIRED",
       "aliasRequired": "ALIAS IS REQUIRED",
       "contactAlias": "CONTACT ALIAS",
+      "editContact": "UPDATE CONTACT",
+      "editTitle": "EDIT EXISTING CONTACT",
       "enqueue": "SUCCESSFULLY ADDED CONTACT!",
       "favoriteContact": "FAVORITE CONTACT?",
       "maxAbbreviationLength": "THREE CHARACTERS TOPS"
@@ -305,10 +309,13 @@
   },
 
   "NavBar": {
+    "contacts": "CONTACTS",
     "gift": "GIFTING",
+    "history": "HISTORY",
     "home": "HOME",
     "settings": "SETTINGS",
-    "transaction": "SEND/RECEIVE"
+    "transaction": "SEND/RECEIVE",
+    "wallet": "WALLET"
   },
 
   "NotFoundView": {

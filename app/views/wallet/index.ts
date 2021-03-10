@@ -1,7 +1,7 @@
 export { default as ChangePasswordView } from './ChangePasswordView';
 export { default as ChangePinView } from './ChangePinView';
 export { default as ConfigureMobilecoindView } from './ConfigureMobilecoindView';
-export { default as ContactPanel } from './ContactPanel';
+export { default as ContactView } from './ContactView';
 export { default as DashboardView } from './DashboardView';
 export { default as GiftingView } from './GiftingView';
 export { default as HistoryView } from './HistoryView';

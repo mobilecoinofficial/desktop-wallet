@@ -8,10 +8,8 @@ const STOP_PATHS = [
 ];
 
 // This function simply skips the top level keys and applies camelCase to the children.
-const skipTopKeyCamelCase = (
-  obj: {},
-): {} => {
-  const result: {[key: string]: any} = {};
+const skipTopKeyCamelCase = (obj: Record<string, unknown>): Record<string, unknown> => {
+  const result: Record<string, unknown> = {};
   Object.entries(obj).forEach(([k, v]: [string, any]) => {
     result[k] = camelCaseKeys(v, { deep: true });
   });
@@ -21,11 +19,11 @@ const skipTopKeyCamelCase = (
 // CBB: This is a hack that solves an annoying problem. The normalized IDs change case with
 // camelCaseKeys. So, this hack manually skip the mapping. There's better ways to do this. Where we
 // give it the problematic path and it skips accordingly without the manual reassign.
-const skipKeysCamelCase = (
-  response: any,
-): {} => {
+const skipKeysCamelCase = (response: any): Record<string, unknown> => {
   // If there's an error, early exit.
-  if (response.error) return response;
+  if (response.error) {
+    return response;
+  }
 
   // Apply camelCase but stop at all problematic keys.
   const camelCaseResponse = camelCaseKeys(response, { deep: true, stopPaths: STOP_PATHS });
@@ -37,7 +35,7 @@ const skipKeysCamelCase = (
     camelCaseResponse.result.addressMap = skipTopKeyCamelCase(camelCaseResponse.result.addressMap);
   } else if (camelCaseResponse?.result?.transactionLogMap) {
     camelCaseResponse.result.transactionLogMap = skipTopKeyCamelCase(
-      camelCaseResponse.result.transactionLogMap,
+      camelCaseResponse.result.transactionLogMap
     );
   } else if (camelCaseResponse?.result?.txoMap) {
     camelCaseResponse.result.txoMap = skipTopKeyCamelCase(camelCaseResponse.result.txoMap);

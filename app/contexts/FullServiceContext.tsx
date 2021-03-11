@@ -11,6 +11,7 @@ import type { StringHex } from '../types/SpecialStrings';
 import type TxProposal from '../types/TxProposal';
 import type WalletStatus from '../types/WalletStatus';
 import LocalStore from '../utils/LocalStore';
+import sameObject from '../utils/sameObject';
 import scryptKeys from '../utils/scryptKeys';
 
 type Accounts = {
@@ -155,7 +156,7 @@ type Action =
   | UnlockWalletAction
   | UpdateStatusAction;
 
-// TODO -- check if initailized state is the only time thse values are null
+// TODO -- check if initialized state is the only time thse values are null
 // If so, the state type should either be the expected object or empty
 // instead of key key with type | null
 // TODO -- maybe remove object key from types!
@@ -225,6 +226,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         isInitialized: true,
       };
     }
+
     case 'SYNC_LEDGER': {
       const { localBlockIndex, networkHighestBlockIndex, nextBlock } = action.payload;
       return {
@@ -234,6 +236,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         nextBlock,
       };
     }
+
     case 'FETCH_BALANCE': {
       const { balance } = action.payload;
       return {
@@ -241,6 +244,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         balance,
       };
     }
+
     case 'IMPORT_ACCOUNT': {
       const { accounts, addresses, hashedPassword, selectedAccount, walletStatus } = action.payload;
       return {
@@ -254,6 +258,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         walletStatus,
       };
     }
+
     case 'CREATE_ACCOUNT': {
       const {
         accounts,
@@ -275,6 +280,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         walletStatus,
       };
     }
+
     case 'UPDATE_GIFT_CODES': {
       const { giftCodes } = action.payload;
       return {
@@ -282,6 +288,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         giftCodes,
       };
     }
+
     case 'CONFIRM_ENTROPY_KNOWN': {
       return {
         ...state,
@@ -289,6 +296,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         pendingSecrets: null, // Clear secrets from in-memory
       };
     }
+
     case 'UNLOCK_WALLET': {
       const { accounts, addresses, selectedAccount, walletStatus } = action.payload;
       return {
@@ -301,14 +309,20 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         walletStatus,
       };
     }
+
     case 'UPDATE_STATUS': {
       const { selectedAccount, walletStatus } = action.payload;
-      return {
-        ...state,
-        selectedAccount,
-        walletStatus,
-      };
+
+      return sameObject(selectedAccount, state.selectedAccount) &&
+        sameObject(walletStatus, state.walletStatus)
+        ? state
+        : {
+            ...state,
+            selectedAccount,
+            walletStatus,
+          };
     }
+
     default: {
       return { ...state };
     }
@@ -429,6 +443,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         payload: { giftCodes },
         type: 'UPDATE_GIFT_CODES',
       });
+
+      return '';
     } catch (err) {
       return err.message;
     }
@@ -607,15 +623,16 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         payload: { giftCodes },
         type: 'UPDATE_GIFT_CODES',
       });
+
+      return '';
     } catch (err) {
       return err.message;
     }
   };
 
-  const submitTransaction = async (txProposal: TxProposal) => {
+  const submitTransaction = async (txProposal: TxProposal): Promise<void> => {
     // submit transaction
-    const result = await fullServiceApi.submitTransaction({ txProposal });
-    debugger;
+    await fullServiceApi.submitTransaction({ txProposal }); // and if there was an error?
     const { selectedAccount } = state;
     const { accountId } = selectedAccount.account;
 
@@ -623,7 +640,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     // this is obviously not ideal
     const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
     const { walletStatus } = await fullServiceApi.getWalletStatus();
-    debugger;
+
     // TODO - get new balance (now that is it pending)
     dispatch({
       payload: {
@@ -638,7 +655,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     });
   };
 
-  const unlockWallet = async (password: string) => {
+  const unlockWallet = async (password: string): Promise<void> => {
     try {
       // TODO -- remove scrypt for DB encryption w/ Argon2
       const { hashedPassword } = state;
@@ -748,6 +765,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
       const { walletStatus } = await fullServiceApi.getWalletStatus();
       // TODO - get new balance (now that is it pending)
+
       dispatch({
         payload: {
           selectedAccount: {
@@ -760,6 +778,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         type: 'UPDATE_STATUS',
       });
     };
+
     fetchBalance();
     const fetchBalanceForver = setInterval(fetchBalance, 10000);
     return () => {

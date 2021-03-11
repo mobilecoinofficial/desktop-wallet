@@ -19,6 +19,7 @@ export interface HistoryItemProps {
   comment: string;
   dateTime: Date;
   direction: string;
+  id: string;
   name: string;
   onClick: () => void;
   sign: '+' | '-';

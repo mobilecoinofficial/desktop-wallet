@@ -4,6 +4,10 @@ import type { FC } from 'react';
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+/*
+import getAllTransactionLogsForAccount from '../../../fullService/api/getAllTransactionLogsForAccount';
+import getTxo from '../../../fullService/api/getTxo';
+*/
 import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 import { differentYearMonth } from '../../../utils/dateFunctions';
@@ -99,6 +103,24 @@ const DETAILS = 'details';
 const HistoryView: FC = () => {
   const classes = useStyles();
 
+  const { selectedAccount } = useFullService(); // ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8
+  console.log('Account...', selectedAccount.account.accountId);
+
+  /*
+ getAllTransactionLogsForAccount({ accountId: selectedAccount.account.accountId })
+    .then((x) => {
+      console.log('GOT TRANSACTIONS!!', x);
+      x.transactionLogIds.forEach((y) => {
+        console.log('GOT TXO DATA!!', y);
+        getTxo({ txoId: y })
+          .then((z) => console.log('success...', z))
+          .catch((z) => console.log('failure...', z));
+      });
+      return x;
+    })
+    .catch((e) => console.log('FAILURE??', e));
+  */
+
   const [currentTransaction, setCurrentTransaction] = React.useState(null);
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
   const [dataToShow, setDataToShow] = React.useState(FAKE_DATA);
@@ -142,7 +164,7 @@ const HistoryView: FC = () => {
             </Tabs>
           </Grid>
           {dataToShow.map((trans, ind) => (
-            <Fragment key={trans.id}>
+            <Fragment key={`historyitem_${trans.id}`}>
               {(ind === 0 ||
                 differentYearMonth(dataToShow[ind - 1].dateTime, dataToShow[ind].dateTime)) && (
                 <HistoryDateSeparator dateTime={trans.dateTime} />

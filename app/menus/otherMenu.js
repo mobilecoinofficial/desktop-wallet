@@ -71,6 +71,12 @@ const defaultTemplate = (app, mainWindow, i18n) => {
       },
       label: 'Toggle Developer Tools',
     });
+
+    submenuViewProd.submenu.push({
+      accelerator: 'Command+R',
+      click: () => mainWindow.webContents.reload(),
+      label: 'Reload',
+    });
   }
 
   const submenuWindow = {

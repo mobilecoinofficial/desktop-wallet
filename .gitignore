@@ -52,3 +52,5 @@ npm-debug.log.*
 # MobileCoinD Binary
 mobilecoind-bin/mac/mobilecoind
 mobilecoind-bin/linux/mobilecoind
+
+full-service-bin/mac/full-service-testnet

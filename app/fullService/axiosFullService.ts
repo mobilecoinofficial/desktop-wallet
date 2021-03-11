@@ -4,13 +4,13 @@ import snakeCaseKeys from 'snakecase-keys';
 
 import skipKeysCamelCase from './utils/skipKeysCamelCase';
 
-interface FullServiceResponse extends AxiosResponse<{}> {
+interface FullServiceResponse extends AxiosResponse {
   data: {
     method: string;
     jsonrpc: string;
     result?: any; // TODO, consider replacing with generic T
     error?: string;
-  }
+  };
 }
 
 interface AxiosFullServiceResponse {
@@ -19,7 +19,7 @@ interface AxiosFullServiceResponse {
 }
 
 export const handleResponse = (
-  response: AxiosResponse<FullServiceResponse>,
+  response: AxiosResponse<FullServiceResponse>
 ): FullServiceResponse => {
   return response.data;
 };
@@ -32,17 +32,14 @@ export const handleError = (error: { message?: string }) => {
 
 const axiosFullService = async (
   method: string,
-  params?: Record<string, any>,
+  params?: Record<string, any>
 ): Promise<AxiosFullServiceResponse> => {
   const axiosInstance = axios.create({
     baseURL: 'http://localhost:9090/wallet',
     headers: { 'Content-type': 'application/json' },
     method: 'post',
   });
-  axiosInstance.interceptors.response.use(
-    handleResponse,
-    handleError,
-  );
+  axiosInstance.interceptors.response.use(handleResponse, handleError);
   const snakeCaseParams = params === undefined ? undefined : snakeCaseKeys(params);
   try {
     const response = await axiosInstance({
@@ -55,7 +52,8 @@ const axiosFullService = async (
     // @ts-ignore override
     if (!response.jsonrpc) {
       // Throw is response is not jsonrpc
-      const errorMessage = typeof response === 'string' ? response : 'Full-Service returned an unexpected object.';
+      const errorMessage =
+        typeof response === 'string' ? response : 'Full-Service returned an unexpected object.';
       throw new Error(errorMessage);
     }
 

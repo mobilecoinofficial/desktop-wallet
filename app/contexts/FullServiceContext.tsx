@@ -12,6 +12,7 @@ import TransactionLog from '../types/TransactionLog';
 import type TxProposal from '../types/TxProposal';
 import type WalletStatus from '../types/WalletStatus';
 import LocalStore from '../utils/LocalStore';
+import sameObject from '../utils/sameObject';
 import scryptKeys from '../utils/scryptKeys';
 
 type Accounts = {
@@ -242,6 +243,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         isInitialized: true,
       };
     }
+
     case 'SYNC_LEDGER': {
       const { localBlockIndex, networkHighestBlockIndex, nextBlock } = action.payload;
       return {
@@ -251,6 +253,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         nextBlock,
       };
     }
+
     case 'FETCH_BALANCE': {
       const { balance } = action.payload;
       return {
@@ -258,6 +261,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         balance,
       };
     }
+
     case 'FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT': {
       const { transactionLogs } = action.payload;
       return {
@@ -265,6 +269,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         transactionLogs,
       };
     }
+
     case 'IMPORT_ACCOUNT': {
       const { accounts, addresses, hashedPassword, selectedAccount, walletStatus } = action.payload;
       return {
@@ -278,6 +283,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         walletStatus,
       };
     }
+
     case 'CREATE_ACCOUNT': {
       const {
         accounts,
@@ -299,6 +305,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         walletStatus,
       };
     }
+
     case 'UPDATE_GIFT_CODES': {
       const { giftCodes } = action.payload;
       return {
@@ -306,6 +313,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         giftCodes,
       };
     }
+
     case 'CONFIRM_ENTROPY_KNOWN': {
       return {
         ...state,
@@ -313,6 +321,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         pendingSecrets: null, // Clear secrets from in-memory
       };
     }
+
     case 'UNLOCK_WALLET': {
       const { accounts, addresses, selectedAccount, walletStatus } = action.payload;
       return {
@@ -325,14 +334,20 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         walletStatus,
       };
     }
+
     case 'UPDATE_STATUS': {
       const { selectedAccount, walletStatus } = action.payload;
-      return {
-        ...state,
-        selectedAccount,
-        walletStatus,
-      };
+
+      return sameObject(selectedAccount, state.selectedAccount) &&
+        sameObject(walletStatus, state.walletStatus)
+        ? state
+        : {
+            ...state,
+            selectedAccount,
+            walletStatus,
+          };
     }
+
     default: {
       return { ...state };
     }
@@ -652,6 +667,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         payload: { giftCodes },
         type: 'UPDATE_GIFT_CODES',
       });
+
+      return '';
     } catch (err) {
       return err.message;
     }
@@ -792,6 +809,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
       const { walletStatus } = await fullServiceApi.getWalletStatus();
       // TODO - get new balance (now that is it pending)
+
       dispatch({
         payload: {
           selectedAccount: {
@@ -804,6 +822,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         type: 'UPDATE_STATUS',
       });
     };
+
     fetchBalance();
     const fetchBalanceForver = setInterval(fetchBalance, 10000);
     return () => {

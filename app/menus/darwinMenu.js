@@ -1,6 +1,7 @@
 import { shell } from 'electron';
 
 import config from '../../configs/app.config';
+import debugLogger from '../utils/debugLogger.server';
 
 const defaultTemplate = (app, mainWindow, i18n) => {
   const submenuAbout = {
@@ -60,18 +61,30 @@ const defaultTemplate = (app, mainWindow, i18n) => {
         },
         label: i18n.t('Menu.toggleFullScreen'),
       },
+      {
+        accelerator: 'Alt+Command+I',
+        click: () => {
+          mainWindow.webContents.toggleDevTools();
+        },
+        label: 'Toggle Developer Tools',
+      },
+      { type: 'separator' },
+      {
+        accelerator: 'Command+Shift+D',
+        click: () => {
+          debugLogger.openDebugLogsModal(mainWindow);
+        },
+        label: i18n.t('Menu.viewDebugLogs'),
+      },
+      {
+        accelerator: 'Command+D',
+        click: () => {
+          debugLogger.openLogsFolder();
+        },
+        label: i18n.t('Menu.openDebugLogsFolder'),
+      },
     ],
   };
-
-  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    submenuViewProd.submenu.push({
-      accelerator: 'Alt+Command+I',
-      click: () => {
-        mainWindow.webContents.toggleDevTools();
-      },
-      label: 'Toggle Developer Tools',
-    });
-  }
 
   const submenuWindow = {
     label: i18n.t('Menu.window'),

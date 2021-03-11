@@ -155,6 +155,16 @@
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
   },
 
+  "CrashReportModal": {
+    "uhOh": "Uh Oh!",
+    "encounteredAnIssue": "It seems we've encountered an issue that's causing the app the crash!",
+    "sendReport": "It would be super helpful if you sent the crash report to us, but we totally understand if you'd rather not :)",
+    "sendDebugLog": "If you'd like to also send us a copy of the debug log, you can find a copy of it",
+    "here": "here",
+    "sendDebugLog2": "so feel free to check it out.",
+    "quitApplication": "Quit Desktop Wallet"
+  },
+
   "CreateAccountForm": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",
@@ -194,6 +204,13 @@
     "m09": "October",
     "m10": "November",
     "m11": "December"
+  },
+
+  "DebugLogModal": {
+    "debugLogs": "Debug Logs",
+    "title": "This log will be posted publicly online for contributors to view. You may examine and edit it before submitting.",
+    "submit": "Submit",
+    "openLogsDir": "Open Logs Folder"
   },
 
   "GiftingView": {
@@ -298,7 +315,9 @@
     "languages": {
       "upDEV": "UPPERCASED",
       "enUS": "English"
-    }
+    },
+    "openDebugLogsFolder": "Debug Logs Folder",
+    "viewDebugLogs": "Debug Logs"
   },
 
   "MobilecoindDirectory": {

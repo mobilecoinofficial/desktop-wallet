@@ -2052,6 +2052,13 @@
     react-is "^16.8.0 || ^17.0.0"
     react-transition-group "^4.4.0"
 
+"@material-ui/icons@^4.11.2":
+  version "4.11.2"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.11.2.tgz#b3a7353266519cd743b6461ae9fdfcb1b25eb4c5"
+  integrity sha512-fQNsKX2TxBmqIGJCSi3tGTO/gZ+eJgWmMJkgDiOfyNaunNaxcklJQFaFogYcFl0qFuaEz1qaXYXboa/bUXVSOQ==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+
 "@material-ui/styles@^4.11.3":
   version "4.11.3"
   resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.11.3.tgz#1b8d97775a4a643b53478c895e3f2a464e8916f2"
@@ -12988,6 +12995,11 @@ onetime@^5.1.0:
   integrity sha512-kbpaSSGJTWdAY5KPVeMOKXSrPtr8C8C7wodJbcsd51jRnmD+GZu8Y0VoU6Dm5Z4vWr0Ig/1NKuWRKf7j5aaYSg==
   dependencies:
     mimic-fn "^2.1.0"
+
+open-file-explorer@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/open-file-explorer/-/open-file-explorer-1.0.2.tgz#4083716ec6fb3de7812adcf5d8ac5f76e9316037"
+  integrity sha512-U4p+VW5uhtgK5W7qSsRhKioYAHCiTX9PiqV4ZtAFLMGfQ3QhppaEevk8k8+DSjM6rgc1yNIR2nttDuWfdNnnJQ==
 
 open@^7.0.2, open@^7.0.3:
   version "7.4.2"

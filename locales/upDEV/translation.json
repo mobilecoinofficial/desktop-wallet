@@ -155,6 +155,16 @@
     "syncMessage": "BALANCE MAY BE OUT-OF-DATE WHILE WALLET SYNCS WITH LEDGER."
   },
 
+  "CrashReportModal": {
+    "uhOh": "UH OH!",
+    "encounteredAnIssue": "IT SEEMS WE'VE ENCOUNTERED AN ISSUE THAT'S CAUSING THE APP TO CRASH!",
+    "sendReport": "IT WOULD BE SUPER HELPFUL IF YOU SENT THE CRASH REPORT TO US, BUT WE TOTALLY UNDERSTAND IF YOU'D RATHER NOT :)",
+    "sendDebugLog": "IF YOU'D LIKE TO ALSO SEND US A COPY OF THE DEBUG LOG, YOU CAN FIND A COPY OF IT",
+    "here": "HERE",
+    "sendDebugLog2": "SO FEEL FREE TO CHECK IT OUT.",
+    "quitApplication": "QUIT DESKTOP WALLET"
+  },
+
   "CreateAccountForm": {
     "acceptTerms": "I HAVE READ AND ACCEPT THE",
     "acceptTermsButton": "TERMS OF USE",
@@ -179,6 +189,13 @@
     "overwriteWarning": "IT APPEARS THAT THIS WALLET IS LOCKED WITH AN ENCRYPTED ENTROPY. CREATING AN ACCOUNT WILL OVERRIDE THE WALLET. PLEASE ENSURE THAT YOU HAVE SECURED YOUR ENTROPY IF YOU WISH TO CHANGE ACCOUNTS.",
     "title": "CREATE ACCOUNT",
     "unlockWalletButton": "UNLOCK THIS WALLET"
+  },
+
+  "DebugLogModal": {
+    "debugLogs": "DEBUG LOGS",
+    "title": "THIS LOG WILL BE POSTED PUBLICLY ONLINE FOR CONTRIBUTORS TO VIEW. YOU MAY EXAMINE AND EDIT IT BEFORE SUBMITTING.",
+    "submit": "SUBMIT",
+    "openLogsDir": "OPEN LOGS FOLDER"
   },
 
   "GiftingView": {
@@ -282,7 +299,9 @@
     "languages": {
       "upDEV": "UPPERCASED",
       "enUS": "ENGLISH"
-    }
+    },
+    "openDebugLogsFolder": "DEBUG LOGS FOLDER",
+    "viewDebugLogs": "DEBUG LOGS"
   },
 
   "MobilecoindDirectory": {

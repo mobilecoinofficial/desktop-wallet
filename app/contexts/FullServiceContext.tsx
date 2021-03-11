@@ -434,20 +434,14 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  // const openGiftCode = async (giftCodeB58: string) => {
-  //   // TODO - for multiple accounts, we'll need to change this select logic
-  //   if (!state.receiver) throw new Error('No Receiver found.');
-  //   const OpenGiftCodeServiceInstance = new OpenGiftCodeService(client, {
-  //     giftCodeB58,
-  //     receiver: state.receiver,
-  //   });
-
-  //   const { isSuccess, data, errorMessage } = await OpenGiftCodeServiceInstance.call();
-  //   if (isSuccess) {
-  //     return data;
-  //   }
-  //   throw new Error(errorMessage);
-  // };
+  const openGiftCode = async (giftCodeB58: string) => {
+    try {
+      const test = fullServiceApi.checkGiftCodeStatus({ giftCodeB58 });
+      debugger;
+    } catch (err) {
+      return err.message;
+    }
+  };
 
   const createAccount = async (name: string | null, password: string) => {
     try {
@@ -824,8 +818,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         createAccount,
         deleteStoredGiftCodeB58,
         importAccount,
-        // openGiftCode,
-        // payAddressCode,
+        openGiftCode,
         retrieveEntropy,
         submitGiftCode,
         submitTransaction,

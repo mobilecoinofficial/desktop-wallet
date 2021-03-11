@@ -25,6 +25,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
 import ShortCode from '../../../../components/ShortCode';
+import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
@@ -93,20 +94,16 @@ const ConsumeGiftForm: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ConsumeGiftForm');
-
-  // const { accountName, balance, openGiftCode, b58Code, submitTransaction } = useFullService();
-  const accountName = 'helloworld';
-  const balance = '1';
-  const openGiftCode = () => {};
-  const b58Code = '';
-  const submitTransaction = () => {};
+  const { openGiftCode, selectedAccount, submitTransaction } = useFullService();
 
   // We'll use this array in prep for future patterns with multiple accounts
+  // TODO - fix the type for Account
   const mockMultipleAccounts: Array<Account> = [
     {
-      b58Code: b58Code || '', // TODO -- This hack is to bypass the null state hack on initailization
-      balance: balance || BigInt(0), // once we move to multiple accounts, we won't have to null the values of an account (better typing!)
-      name: accountName,
+      b58Code: selectedAccount.account.mainAddress,
+      balance: selectedAccount.balanceStatus.unspentPmob,
+      mobUrl: selectedAccount.mobUrl,
+      name: selectedAccount.account.name,
     },
   ];
 

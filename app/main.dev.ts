@@ -283,7 +283,7 @@ ipcMain.on('get-initial-translations', (event) => {
   });
 });
 
-ipcMain.on('set-password', (_, accountName, password) => {
+ipcMain.on('set-account', (_event, accountName, password) => {
   keytar.setPassword('Mobile Coin', accountName, password);
 });
 
@@ -299,6 +299,11 @@ ipcMain.on('fetch-accounts', (event) => {
       // eslint-disable-next-line no-param-reassign
       event.returnValue = [];
     });
+});
+
+ipcMain.on('open-save-password-modal', (_, accountName: string, password: string) => {
+  console.log(`ipcMain accountName: ${accountName}`);
+  mainWindow?.webContents.send('open-save-password-modal', accountName, password);
 });
 
 const shutDownMobilecoind = () => {

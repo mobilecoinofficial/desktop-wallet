@@ -2,6 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
@@ -12,11 +13,9 @@ import { SubmitButton, TermsOfUseDialog } from '../../../components';
 import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
-import { setKeychainAccount } from '../../../utils/keytarService';
 
 export interface CreateAccountFormValues {
   accountName: string;
-  checkedSavePassword: boolean;
   checkedTerms: boolean;
   password: string;
   passwordConfirmation: string;
@@ -34,16 +33,15 @@ export const createAccountFormOnSubmit = async (
   helpers: FormikHelpers<CreateAccountFormValues>
 ): Promise<void> => {
   const { isMountedRef, createAccount } = pseudoProps;
-  const { accountName, password, checkedSavePassword } = values;
+  const { accountName, password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
 
   try {
     await createAccount(accountName, password);
 
+    ipcRenderer.send('open-save-password-modal', accountName, password);
+
     if (isMountedRef.current) {
-      if (checkedSavePassword) {
-        setKeychainAccount(accountName, password);
-      }
       setStatus({ success: true });
       setSubmitting(false);
     }
@@ -93,7 +91,6 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
 
   const initialValues = {
     accountName: '',
-    checkedSavePassword: true,
     checkedTerms: false,
     password: '',
     passwordConfirmation: '',
@@ -147,14 +144,6 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
               name="passwordConfirmation"
               type="password"
             />
-            <Box pt={1} display="flex">
-              <Box display="flex" alignItems="center" flexDirection="row-reverse">
-                <Box>
-                  <Typography display="inline">Save Password to Keychain</Typography>
-                </Box>
-                <Field component={Checkbox} type="checkbox" name="checkedSavePassword" />
-              </Box>
-            </Box>
             <Box pt={1} display="flex">
               <Box display="flex" alignItems="center" flexDirection="row-reverse">
                 <Box>

@@ -19,9 +19,9 @@ import { MOBIcon } from '../icons';
 
 export interface AddPasswordToKeychainModalProps {
   onClose: () => void;
-  onSave: () => void;
+  onSave: (accountName: string, password: string) => void;
   open: boolean;
-  passwordLength: number;
+  password: string;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     form: {
       backgroundColor: theme.palette.background.dark,
+      boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
       padding: '10px 25px',
       width: '300px',
     },
@@ -62,7 +63,7 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
   onClose,
   onSave,
   open,
-  passwordLength,
+  password,
 }: AddPasswordToKeychainModalProps) => {
   const classes = useStyles();
   const initialValues = {
@@ -74,13 +75,17 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
     accountName: Yup.string().required('Account Name Required'),
   });
 
-  const onCloseHandler = () => onClose;
-  const onSaveHandler = () => onSave;
+  const onCloseHandler = () => onClose();
+  const onSaveHandler = (values: { accountName: string }) => onSave(values.accountName, password);
 
   return (
     <Modal className={classes.modal} open={open} hideBackdrop>
-      <Formik initialValues={initialValues} onSubmit={() => {}} validationSchema={validationSchema}>
-        {({ dirty, errors, isValid }) => {
+      <Formik
+        initialValues={initialValues}
+        onSubmit={onSaveHandler}
+        validationSchema={validationSchema}
+      >
+        {({ dirty, errors, isValid, submitForm }) => {
           return (
             <Form name="SavePasswordForm" className={classes.form}>
               <Box display="flex" flexDirection="column">
@@ -102,7 +107,7 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
                     <Box pt={1} display="flex">
                       <Box>
                         <Typography className={classes.pwLenText} display="inline">
-                          {'*'.repeat(passwordLength)}
+                          {'*'.repeat(password.length)}
                         </Typography>
                       </Box>
                     </Box>
@@ -117,7 +122,7 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
                   <Button color="primary" onClick={onCloseHandler}>
                     Not Now
                   </Button>
-                  <Button disabled={!dirty || !isValid} onClick={onSaveHandler}>
+                  <Button disabled={!dirty || !isValid} onClick={submitForm}>
                     Save
                   </Button>
                 </Box>
@@ -134,7 +139,7 @@ AddPasswordToKeychainModal.defaultProps = {
   onClose: () => {},
   onSave: () => {},
   open: false,
-  passwordLength: 10,
+  password: '',
 };
 
 export default AddPasswordToKeychainModal;

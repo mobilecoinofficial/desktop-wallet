@@ -27,16 +27,20 @@ export interface AddPasswordToKeychainModalProps {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     buttonBox: {
-      alignItems: 'baseline',
-      justifyContent: 'space-evenly',
+      justifyContent: 'flex-end',
     },
     form: {
       backgroundColor: theme.palette.background.dark,
-      padding: '15px',
+      padding: '10px 25px',
       width: '300px',
     },
     icon: {
       paddingRight: '10px',
+    },
+    modal: {
+      alignItems: 'flex-start',
+      display: 'flex',
+      justifyContent: 'flex-end',
     },
     pwBox: {
       backgroundColor: theme.palette.background.default,
@@ -47,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
     pwLenText: {
       color: theme.palette.text.primary,
     },
-    titleText: {
+    title: {
       color: theme.palette.text.primary,
       fontWeight: 'bold',
     },
@@ -74,18 +78,13 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
   const onSaveHandler = () => onSave;
 
   return (
-    <Modal
-      open={open}
-      aria-labelledby="simple-modal"
-      aria-describedby="simple-modal-desc"
-      hideBackdrop
-    >
+    <Modal className={classes.modal} open={open} hideBackdrop>
       <Formik initialValues={initialValues} onSubmit={() => {}} validationSchema={validationSchema}>
         {({ dirty, errors, isValid }) => {
           return (
             <Form name="SavePasswordForm" className={classes.form}>
               <Box display="flex" flexDirection="column">
-                <Typography className={classes.titleText}>Save Password to Keychain?</Typography>
+                <Typography className={classes.title}>Save Password to Keychain?</Typography>
                 <Box
                   className={classes.pwBox}
                   display="flex"

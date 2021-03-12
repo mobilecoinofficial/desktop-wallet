@@ -8,15 +8,13 @@ import { SnackbarProvider } from 'notistack';
 import { hot } from 'react-hot-loader/root';
 import { MemoryRouter } from 'react-router-dom';
 
-import GlobalStyles from './components/GlobalStyles';
+import { CrashReportModal, DebugLogModal, GlobalStyles } from './components';
 import { MOBILE_COIN_DARK } from './constants/themes';
 import { MobileCoinDProvider } from './contexts/MobileCoinDContext';
 import client from './mobilecoind/client';
 import routes, { renderRoutes } from './routes';
 import { setTheme } from './theme';
 import debugLogger from './utils/debugLogger.client';
-import CrashReportModal from './views/errors/CrashReportModal/CrashReportModal.component';
-import DebugLogModal from './views/errors/DebugLogModal/DebugLogModal.component';
 
 const App: FC = () => {
   const theme = setTheme({

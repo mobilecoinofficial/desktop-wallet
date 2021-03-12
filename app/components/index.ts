@@ -1,5 +1,7 @@
 export { default as AccountCard } from './AccountCard';
 export { default as AuthFlowGuard } from './AuthFlowGuard';
+export { default as CrashReportModal } from './CrashReportModal/CrashReportModal.component';
+export { default as DebugLogModal } from './DebugLogModal/DebugLogModal.component';
 export { default as GlobalStyles } from './GlobalStyles';
 export { default as LoadingScreen } from './LoadingScreen';
 export { default as MOBNumberFormat } from './MOBNumberFormat';

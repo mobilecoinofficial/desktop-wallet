@@ -15,8 +15,8 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import { useTranslation } from 'react-i18next';
 
-import { MOBIcon } from '../../../components/icons';
-import type { Theme } from '../../../theme';
+import type { Theme } from '../../theme';
+import { MOBIcon } from '../icons';
 
 export interface DebugLogModalProps {
   debugLog: string;

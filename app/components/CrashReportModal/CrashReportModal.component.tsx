@@ -4,9 +4,9 @@ import type { FC } from 'react';
 import { Backdrop, Box, Button, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { LogoIcon } from '../../../components/icons';
-import type { Theme } from '../../../theme';
-import debugLogger from '../../../utils/debugLogger.client';
+import type { Theme } from '../../theme';
+import debugLogger from '../../utils/debugLogger.client';
+import { LogoIcon } from '../icons';
 
 export interface CrashReportModalProps {
   open: boolean;

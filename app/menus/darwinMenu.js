@@ -148,6 +148,20 @@ const defaultTemplate = (app, mainWindow, i18n) => {
     submenu: languageMenu,
   });
 
+  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
+    menuView.push({
+      label: 'Developer',
+      submenu: [
+        {
+          click: () => {
+            mainWindow.webContents.send('open-crash-report-modal');
+          },
+          label: 'Force Crash',
+        },
+      ],
+    });
+  }
+
   return menuView;
 };
 

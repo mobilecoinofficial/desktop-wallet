@@ -71,9 +71,6 @@ const defaultTemplate = (app, mainWindow, i18n) => {
             click: () => {
               nativeTheme.themeSource = 'system';
               localStore.setTheme('system');
-              mainWindow.webContents.send(
-                nativeTheme.shouldUseDarkColors ? 'set-theme-dark' : 'set-theme-light'
-              );
             },
             label: 'System',
             type: 'radio',
@@ -83,7 +80,6 @@ const defaultTemplate = (app, mainWindow, i18n) => {
             click: () => {
               nativeTheme.themeSource = 'light';
               localStore.setTheme('light');
-              mainWindow.webContents.send('set-theme-light');
             },
             label: 'Light',
             type: 'radio',
@@ -93,7 +89,6 @@ const defaultTemplate = (app, mainWindow, i18n) => {
             click: () => {
               nativeTheme.themeSource = 'dark';
               localStore.setTheme('dark');
-              mainWindow.webContents.send('set-theme-dark');
             },
             label: 'Dark',
             type: 'radio',

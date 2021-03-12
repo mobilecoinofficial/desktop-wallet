@@ -202,6 +202,12 @@ const createWindow = async () => {
 
   menuFactoryService.buildMenu(app, mainWindow, i18n);
 
+  nativeTheme.on('updated', () => {
+    mainWindow?.webContents.send(
+      nativeTheme.shouldUseDarkColors ? 'set-theme-dark' : 'set-theme-light'
+    );
+  });
+
   nativeTheme.themeSource =
     (LocalStoreInstance.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
 

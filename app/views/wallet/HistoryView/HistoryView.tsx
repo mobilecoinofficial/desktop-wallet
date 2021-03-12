@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 import { differentYearMonth } from '../../../utils/dateFunctions';
 import TransactionDetailsView from '../TransactionDetailsView';
@@ -102,7 +103,8 @@ const HistoryView: FC = () => {
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
   const [dataToShow, setDataToShow] = React.useState(FAKE_DATA);
   const [showing, setShowing] = useState(HISTORY);
-
+  const { transactionLogs, fetchAllTransactionLogsForAccount } = useFullService();
+  debugger;
   const { t } = useTranslation('HistoryView');
 
   const handleChange = (_event: React.ChangeEvent<Record<string, unknown>>, newValue: number) => {

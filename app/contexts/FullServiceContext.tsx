@@ -8,6 +8,7 @@ import type Address from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
 import type FullServiceAccount from '../types/FullServiceAccount';
 import type { StringHex } from '../types/SpecialStrings';
+import TransactionLog from '../types/TransactionLog';
 import type TxProposal from '../types/TxProposal';
 import type WalletStatus from '../types/WalletStatus';
 import LocalStore from '../utils/LocalStore';
@@ -27,6 +28,11 @@ type PendingSecrets = {
   entropy: StringHex;
 };
 
+type TransactionLogs = {
+  transactionLogIds: StringHex[];
+  transactionLogMap: { [transactionLogId: string]: TransactionLog };
+};
+
 type SelectedAccount = {
   account: FullServiceAccount;
   balanceStatus: BalanceStatus;
@@ -41,9 +47,10 @@ interface FullServiceState {
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
   isInitialized: boolean;
-  selectedAccount: SelectedAccount;
-  walletStatus: WalletStatus;
   pendingSecrets: PendingSecrets | null;
+  selectedAccount: SelectedAccount;
+  transactionLogs: TransactionLogs;
+  walletStatus: WalletStatus;
 }
 
 // TODO - context can be broken down into seperate files
@@ -52,10 +59,11 @@ export interface FullServiceContextValue extends FullServiceState {
   buildTransaction: (buildTransactionParams: BuildTransactionParams) => Promise<TxProposal | void>;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
   confirmEntropyKnown: () => void;
-  deleteStoredGiftCodeB58: (storedGiftCodeB58: string) => void;
-  openGiftCode: (giftCodeB58: string) => Promise<OpenGiftCodeServiceSuccessData | void>;
   createAccount: (accountName: string | null, password: string) => Promise<void>;
+  deleteStoredGiftCodeB58: (storedGiftCodeB58: string) => void;
+  fetchAllTransactionLogsForAccount: (accountId: StringHex) => void;
   importAccount: (accountName: string | null, entropy: string, password: string) => Promise<void>;
+  openGiftCode: (giftCodeB58: string) => Promise<OpenGiftCodeServiceSuccessData | void>;
   retrieveEntropy: (password: string) => Promise<string | void>;
   submitGiftCode: (txProposal: TxProposal, giftCodeB58: string) => Promise<void>;
   submitTransaction: (txProposal: TxProposal) => Promise<void>;
@@ -90,6 +98,13 @@ type FetchBalanceAction = {
   type: 'FETCH_BALANCE';
   payload: {
     balance: bigint;
+  };
+};
+
+type FetchAllTransactionLogsForAccountAction = {
+  type: 'FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT';
+  payload: {
+    transactionLogs: TransactionLogs;
   };
 };
 
@@ -145,17 +160,18 @@ type UpdateStatusAction = {
 };
 
 type Action =
-  | UpdateGiftCodesAction
   | ConfirmEntropyKnownAction
-  | FetchBalanceAction
   | CreateAccountAction
+  | FetchAllTransactionLogsForAccountAction
+  | FetchBalanceAction
   | ImportAccountAction
   | InitializeAction
   | SyncLedgerAction
   | UnlockWalletAction
+  | UpdateGiftCodesAction
   | UpdateStatusAction;
 
-// TODO -- check if initailized state is the only time thse values are null
+// TODO -- check if initialized state is the only time thse values are null
 // If so, the state type should either be the expected object or empty
 // instead of key key with type | null
 // TODO -- maybe remove object key from types!
@@ -197,6 +213,7 @@ const initialFullServiceState: FullServiceState = {
     },
     mobUrl: '',
   },
+  transactionLogs: { transactionLogIds: [], transactionLogMap: {} },
   walletStatus: {
     isSyncedAll: false,
     localBlockCount: '',
@@ -239,6 +256,13 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       return {
         ...state,
         balance,
+      };
+    }
+    case 'FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT': {
+      const { transactionLogs } = action.payload;
+      return {
+        ...state,
+        transactionLogs,
       };
     }
     case 'IMPORT_ACCOUNT': {
@@ -429,19 +453,27 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         payload: { giftCodes },
         type: 'UPDATE_GIFT_CODES',
       });
+
+      return '';
     } catch (err) {
       return err.message;
     }
   };
 
-  const openGiftCode = async (giftCodeB58: string) => {
-    try {
-      const test = fullServiceApi.checkGiftCodeStatus({ giftCodeB58 });
-      debugger;
-    } catch (err) {
-      return err.message;
-    }
-  };
+  // const openGiftCode = async (giftCodeB58: string) => {
+  //   // TODO - for multiple accounts, we'll need to change this select logic
+  //   if (!state.receiver) throw new Error('No Receiver found.');
+  //   const OpenGiftCodeServiceInstance = new OpenGiftCodeService(client, {
+  //     giftCodeB58,
+  //     receiver: state.receiver,
+  //   });
+
+  //   const { isSuccess, data, errorMessage } = await OpenGiftCodeServiceInstance.call();
+  //   if (isSuccess) {
+  //     return data;
+  //   }
+  //   throw new Error(errorMessage);
+  // };
 
   const createAccount = async (name: string | null, password: string) => {
     try {
@@ -549,6 +581,25 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
+  const fetchAllTransactionLogsForAccount = async (accountId: StringHex) => {
+    try {
+      // TODO - allow this once we're setup again!
+      // Attempt import
+      const transactionLogs = await fullServiceApi.getAllTransactionLogsForAccount({
+        accountId,
+      });
+
+      dispatch({
+        payload: {
+          transactionLogs,
+        },
+        type: 'FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT',
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
   const retrieveEntropy = async (password: string) => {
     try {
       const { hashedPassword, selectedAccount } = state;
@@ -606,10 +657,9 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  const submitTransaction = async (txProposal: TxProposal) => {
+  const submitTransaction = async (txProposal: TxProposal): Promise<void> => {
     // submit transaction
-    const result = await fullServiceApi.submitTransaction({ txProposal });
-    debugger;
+    await fullServiceApi.submitTransaction({ txProposal }); // and if there was an error?
     const { selectedAccount } = state;
     const { accountId } = selectedAccount.account;
 
@@ -617,7 +667,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     // this is obviously not ideal
     const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
     const { walletStatus } = await fullServiceApi.getWalletStatus();
-    debugger;
+
     // TODO - get new balance (now that is it pending)
     dispatch({
       payload: {
@@ -632,7 +682,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     });
   };
 
-  const unlockWallet = async (password: string) => {
+  const unlockWallet = async (password: string): Promise<void> => {
     try {
       // TODO -- remove scrypt for DB encryption w/ Argon2
       const { hashedPassword } = state;
@@ -766,47 +816,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     // an array of monitorIds and return a balance for each.
   }, [state]);
 
-  // useEffect(() => {
-  //   const { monitorId } = state;
-  //   // TODO -- am i doing this right? triple check
-  //   if (monitorId === null) return () => {};
-
-  //   const fetchLedgerInfo = async () => {
-  //     if (monitorId === undefined) return;
-
-  //     const GetStatusServiceInstance = new GetStatusService(client, {
-  //       monitorId,
-  //     });
-  //     const { isSuccess, data, errorMessage } = await GetStatusServiceInstance.call();
-  //     if (isSuccess) {
-  //       const { localBlockIndex, networkHighestBlockIndex, nextBlock } = data;
-  //       if (
-  //         state.localBlockIndex === null ||
-  //         state.networkHighestBlockIndex === null ||
-  //         state.nextBlock === null ||
-  //         localBlockIndex !== state.localBlockIndex ||
-  //         networkHighestBlockIndex !== state.networkHighestBlockIndex ||
-  //         nextBlock !== state.nextBlock
-  //       ) {
-  //         dispatch({
-  //           payload: {
-  //             localBlockIndex,
-  //             networkHighestBlockIndex,
-  //             nextBlock,
-  //           },
-  //           type: 'SYNC_LEDGER',
-  //         });
-  //       }
-  //     } else {
-  //       throw new Error(errorMessage);
-  //     }
-  //   };
-  //   fetchLedgerInfo();
-  //   const fetchLedgerInfoForever = setInterval(fetchLedgerInfo, 1000);
-  //   return () => {
-  //     return clearInterval(fetchLedgerInfoForever);
-  //   };
-  // }, [state, client]);
   return (
     <FullServiceContext.Provider
       value={{
@@ -817,8 +826,10 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         confirmEntropyKnown,
         createAccount,
         deleteStoredGiftCodeB58,
+        fetchAllTransactionLogsForAccount,
         importAccount,
-        openGiftCode,
+        // openGiftCode,
+        // payAddressCode,
         retrieveEntropy,
         submitGiftCode,
         submitTransaction,

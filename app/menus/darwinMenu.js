@@ -1,6 +1,9 @@
-import { shell } from 'electron';
+import { shell, nativeTheme } from 'electron';
 
 import config from '../../configs/app.config';
+import LocalStore from '../utils/LocalStore';
+
+const localStore = new LocalStore();
 
 const defaultTemplate = (app, mainWindow, i18n) => {
   const submenuAbout = {
@@ -59,6 +62,43 @@ const defaultTemplate = (app, mainWindow, i18n) => {
           this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
         },
         label: i18n.t('Menu.toggleFullScreen'),
+      },
+      {
+        label: 'Theme',
+        submenu: [
+          {
+            checked: localStore.getTheme() === 'system',
+            click: () => {
+              nativeTheme.themeSource = 'system';
+              localStore.setTheme('system');
+              mainWindow.webContents.send(
+                nativeTheme.shouldUseDarkColors ? 'set-theme-dark' : 'set-theme-light'
+              );
+            },
+            label: 'System',
+            type: 'radio',
+          },
+          {
+            checked: localStore.getTheme() === 'light',
+            click: () => {
+              nativeTheme.themeSource = 'light';
+              localStore.setTheme('light');
+              mainWindow.webContents.send('set-theme-light');
+            },
+            label: 'Light',
+            type: 'radio',
+          },
+          {
+            checked: localStore.getTheme() === 'dark',
+            click: () => {
+              nativeTheme.themeSource = 'dark';
+              localStore.setTheme('dark');
+              mainWindow.webContents.send('set-theme-dark');
+            },
+            label: 'Dark',
+            type: 'radio',
+          },
+        ],
       },
     ],
   };

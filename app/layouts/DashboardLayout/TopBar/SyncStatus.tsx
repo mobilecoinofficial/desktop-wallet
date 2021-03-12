@@ -7,13 +7,14 @@ import { useTranslation } from 'react-i18next';
 import { CircleMOBIcon } from '../../../components/icons';
 import { GREEN, GOLD_LIGHT, RED } from '../../../constants/colors';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
+import { Theme } from '../../../theme';
 import getPercentSynced from '../../../utils/getPercentSynced';
 
 const ERROR = 'ERROR';
 const SYNCED = 'SYNCED';
 const SYNCING = 'SYNCING';
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return {
     root: {},
     statusContainer: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles(() => {
       position: 'relative',
     },
     statusIconContainer: {
-      backgroundColor: '#202124',
+      backgroundColor: theme.palette.background.dark,
       borderRadius: '35px',
       height: '70px',
       left: '-35px',

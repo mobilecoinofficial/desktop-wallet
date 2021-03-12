@@ -7,7 +7,7 @@ import type {
 import type { Shadows as MuiShadows } from '@material-ui/core/styles/shadows';
 
 import { BLACK_DARK } from '../constants/colors';
-import { MOBILE_COIN_DARK_THEME } from '../constants/themes';
+import { MOBILE_COIN_DARK_THEME, MOBILE_COIN_LIGHT_THEME } from '../constants/themes';
 import typography from './typography';
 
 interface TypeBackground extends MuiTypeBackground {
@@ -16,6 +16,11 @@ interface TypeBackground extends MuiTypeBackground {
 
 interface Palette extends MuiPalette {
   background: TypeBackground;
+  longCode: {
+    lowercased: string;
+    uppercased: string;
+    number: string;
+  };
 }
 
 export interface Theme extends MuiTheme {
@@ -58,7 +63,7 @@ const baseOptions: ThemeOptions = {
   typography,
 };
 
-const themesOptions: ThemeOptions[] = [MOBILE_COIN_DARK_THEME];
+const themesOptions: ThemeOptions[] = [MOBILE_COIN_DARK_THEME, MOBILE_COIN_LIGHT_THEME];
 
 export const setTheme = (config: ThemeConfig = {}): Theme => {
   let themeOptions = themesOptions.find((theme) => {

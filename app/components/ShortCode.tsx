@@ -1,21 +1,41 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 
-import { GOLD_DARK, GOLD_LIGHT, WHITE } from '../constants/colors';
 import {
   LUCKY_ARRAY_INDEX,
   LUCKY_ARRAY_END_INDEX,
   SUPER_LUCKY_ARRAY_INDEX,
   SUPER_LUCKY_ARRAY_END_INDEX,
 } from '../constants/indicies';
+import { Theme } from '../theme';
 
 interface ShortCodeProps {
   code: string;
 }
 
+const useStyles = makeStyles((theme: Theme) => {
+  return {
+    lastLine: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    lowercased: {
+      color: theme.palette.longCode.lowercased,
+    },
+    number: {
+      color: theme.palette.longCode.number,
+    },
+    uppercased: {
+      color: theme.palette.longCode.uppercased,
+    },
+  };
+});
+
 const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
+  const classes = useStyles();
+
   const colorPairs: string[][] = [];
   const codeIndicies = [
     SUPER_LUCKY_ARRAY_INDEX[0],
@@ -29,15 +49,15 @@ const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
 
   codeIndicies.forEach((luck) => {
     if (colorPairs.length === 4) {
-      colorPairs.push(['-', WHITE]);
+      colorPairs.push(['-', classes.lowercased]);
     }
-    let charColor = WHITE;
+    let charColorClass = classes.lowercased;
     if (!Number.isNaN(code.charAt(luck) * 1)) {
-      charColor = GOLD_LIGHT;
+      charColorClass = classes.number;
     } else if (code.charAt(luck) === code.charAt(luck).toUpperCase()) {
-      charColor = GOLD_DARK;
+      charColorClass = classes.uppercased;
     }
-    const currentChar: string[] = [code.charAt(luck), charColor];
+    const currentChar: string[] = [code.charAt(luck), charColorClass];
     colorPairs.push(currentChar);
   });
 
@@ -45,13 +65,7 @@ const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
     <Box component="span" data-testid="short-code">
       {colorPairs.map((pair, i) => {
         return (
-          <Box
-            component="span"
-            key={[pair[0], i].join('|')}
-            style={{
-              color: pair[1],
-            }}
-          >
+          <Box component="span" key={[pair[0], i].join('|')} className={pair[1]}>
             {pair[0]}
           </Box>
         );

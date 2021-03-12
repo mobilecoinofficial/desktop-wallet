@@ -1,12 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
-
 import React from 'react';
 
 import { Box, Typography } from '@material-ui/core';
 
 const PrivacyPolicy = (): JSX.Element => {
   return (
-    <Box p={3}>
+    <Box p={3} color="text.primary">
       <Box p={2} component={Typography} textAlign="center" data-testid="privacy-header">
         Privacy Policy
       </Box>

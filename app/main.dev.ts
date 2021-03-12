@@ -14,7 +14,7 @@ import 'regenerator-runtime/runtime';
 import { exec, spawn } from 'child_process';
 import path from 'path';
 
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 
@@ -201,6 +201,14 @@ const createWindow = async () => {
   }
 
   menuFactoryService.buildMenu(app, mainWindow, i18n);
+
+  nativeTheme.themeSource =
+    (LocalStoreInstance.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
+
+  ipcMain.on('get-theme', (event) => {
+    // eslint-disable-next-line no-param-reassign
+    event.returnValue = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+  });
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line

@@ -3,20 +3,28 @@ import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 
-import { GOLD_DARK, GOLD_LIGHT, WHITE } from '../constants/colors';
+import type { Theme } from '../theme';
 
 interface LongCodeProps {
   code: string;
   codeClass?: string;
 }
 
-const useStyles = makeStyles(() => {
+const useStyles = makeStyles((theme: Theme) => {
   return {
     lastLine: {
       display: 'flex',
       justifyContent: 'space-between',
     },
-    root: {},
+    lowercased: {
+      color: theme.palette.longCode.lowercased,
+    },
+    number: {
+      color: theme.palette.longCode.number,
+    },
+    uppercased: {
+      color: theme.palette.longCode.uppercased,
+    },
   };
 });
 
@@ -24,21 +32,15 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
   const classes = useStyles();
 
   const colorCode = code.split('').map((char, i) => {
-    let charColor = WHITE;
+    let charColorClass = classes.lowercased;
     if (!Number.isNaN(char * 1)) {
-      charColor = GOLD_LIGHT;
+      charColorClass = classes.number;
     } else if (char === char.toUpperCase()) {
-      charColor = GOLD_DARK;
+      charColorClass = classes.uppercased;
     }
 
     return (
-      <Box
-        component="span"
-        key={[char, i].join('|')}
-        style={{
-          color: charColor,
-        }}
-      >
+      <Box component="span" key={[char, i].join('|')} className={charColorClass}>
         {char}
       </Box>
     );

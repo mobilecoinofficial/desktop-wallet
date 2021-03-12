@@ -154,11 +154,11 @@ const ConsumeGiftForm: FC = () => {
       account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
     return (
       <Box display="flex" justifyContent="space-between">
-        <Typography>
+        <Typography color="textPrimary">
           {name}
           <ShortCode code={account.b58Code} />
         </Typography>
-        <Typography>
+        <Typography color="textPrimary">
           <MOBNumberFormat
             value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
             valueUnit="pMOB"
@@ -176,8 +176,8 @@ const ConsumeGiftForm: FC = () => {
         </FormLabel>
         <Field component={RadioGroup} name="senderPublicAddress">
           <Box display="flex" justifyContent="space-between">
-            <Typography>{t('accountName')}</Typography>
-            <Typography>{t('accountBalance')}</Typography>
+            <Typography color="textPrimary">{t('accountName')}</Typography>
+            <Typography color="textPrimary">{t('accountBalance')}</Typography>
           </Box>
           {accounts.map((account: Account) => {
             return (

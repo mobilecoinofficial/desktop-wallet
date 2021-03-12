@@ -17,6 +17,7 @@ export const schemaKeys = {
   MOBILECOIND_DB_PATH: 'mobilecoindDbPath',
   NAME: 'name',
   SALT: 'salt',
+  THEME: 'theme',
 };
 
 export const schema: LocalStoreSchema = {
@@ -29,6 +30,7 @@ export const schema: LocalStoreSchema = {
   [schemaKeys.MOBILECOIND_DB_PATH]: { type: 'string' },
   [schemaKeys.NAME]: { type: 'string' },
   [schemaKeys.SALT]: { type: 'string' },
+  [schemaKeys.THEME]: { type: 'string' },
 };
 
 class LocalStore {
@@ -93,6 +95,11 @@ class LocalStore {
     return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
   }
 
+  getTheme(): string {
+    const theme = this.store.get(schemaKeys.THEME);
+    return typeof theme === 'string' ? theme : 'system';
+  }
+
   setLedgerDbPath(name: string): void {
     this.store.set(schemaKeys.LEDGER_DB_PATH, name);
   }
@@ -115,6 +122,10 @@ class LocalStore {
 
   setSalt(salt: string): void {
     this.store.set(schemaKeys.SALT, salt);
+  }
+
+  setTheme(theme: 'system' | 'light' | 'dark'): void {
+    this.store.set(schemaKeys.THEME, theme);
   }
 }
 

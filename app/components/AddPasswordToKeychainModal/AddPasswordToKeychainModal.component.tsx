@@ -18,6 +18,8 @@ import type { Theme } from '../../theme';
 import { MOBIcon } from '../icons';
 
 export interface AddPasswordToKeychainModalProps {
+  onClose: () => void;
+  onSave: () => void;
   open: boolean;
   passwordLength: number;
 }
@@ -30,15 +32,16 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     form: {
       backgroundColor: theme.palette.background.dark,
-      padding: '10px',
-      width: '250px',
+      padding: '15px',
+      width: '300px',
     },
     icon: {
       paddingRight: '10px',
     },
     pwBox: {
       backgroundColor: theme.palette.background.default,
-      marginBottom: '5px ',
+      marginBottom: '5px',
+      marginTop: '5px',
       padding: '0px 15px',
     },
     pwLenText: {
@@ -52,6 +55,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
+  onClose,
+  onSave,
   open,
   passwordLength,
 }: AddPasswordToKeychainModalProps) => {
@@ -65,8 +70,16 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
     accountName: Yup.string().required('Account Name Required'),
   });
 
+  const onCloseHandler = () => onClose;
+  const onSaveHandler = () => onSave;
+
   return (
-    <Modal open={open} aria-labelledby="simple-modal" aria-describedby="simple-modal-desc">
+    <Modal
+      open={open}
+      aria-labelledby="simple-modal"
+      aria-describedby="simple-modal-desc"
+      hideBackdrop
+    >
       <Formik initialValues={initialValues} onSubmit={() => {}} validationSchema={validationSchema}>
         {({ dirty, errors, isValid }) => {
           return (
@@ -102,8 +115,12 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
                   </Box>
                 )}
                 <Box display="flex" flexDirection="row" className={classes.buttonBox}>
-                  <Button color="primary">Not Now</Button>
-                  <Button disabled={!dirty || !isValid}>Add</Button>
+                  <Button color="primary" onClick={onCloseHandler}>
+                    Not Now
+                  </Button>
+                  <Button disabled={!dirty || !isValid} onClick={onSaveHandler}>
+                    Save
+                  </Button>
                 </Box>
               </Box>
             </Form>
@@ -115,6 +132,8 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
 };
 
 AddPasswordToKeychainModal.defaultProps = {
+  onClose: () => {},
+  onSave: () => {},
   open: false,
   passwordLength: 10,
 };

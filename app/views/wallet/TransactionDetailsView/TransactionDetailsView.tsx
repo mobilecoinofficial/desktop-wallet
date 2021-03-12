@@ -10,19 +10,7 @@ import { useTranslation } from 'react-i18next';
 import SubmitButton from '../../../components/SubmitButton';
 import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
-
-export interface TransactionDetailsViewProps {
-  amount: number;
-  comment: string;
-  dateTime: Date;
-  direction: string;
-  id: string;
-  name: string;
-  onChangedComment: any;
-  onClickBack: any;
-  sign: string;
-  status: string;
-}
+import { TransactionDetailsViewProps } from './TransactionDetailsView.d';
 
 const useStyles = makeStyles((theme: Theme) => {
   return {

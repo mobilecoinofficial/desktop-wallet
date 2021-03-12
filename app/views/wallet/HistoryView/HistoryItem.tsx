@@ -13,18 +13,7 @@ import {
 
 import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
-
-export interface HistoryItemProps {
-  amount: number;
-  comment: string;
-  dateTime: Date;
-  direction: string;
-  id: string;
-  name: string;
-  onClick: () => void;
-  sign: '+' | '-';
-  status: string;
-}
+import { HistoryItemProps } from './HistoryItem.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {

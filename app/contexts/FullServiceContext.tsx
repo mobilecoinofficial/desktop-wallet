@@ -356,38 +356,18 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
 
 const FullServiceContext = createContext<FullServiceContextValue>({
   ...initialFullServiceState,
-  buildGiftCode: () => {
-    return Promise.resolve();
-  },
-  buildTransaction: () => {
-    return Promise.resolve();
-  },
-  changePassword: () => {
-    return Promise.resolve();
-  },
+  buildGiftCode: () => Promise.resolve(),
+  buildTransaction: () => Promise.resolve(),
+  changePassword: () => Promise.resolve(),
   confirmEntropyKnown: () => {},
-  createAccount: () => {
-    return Promise.resolve();
-  },
-  deleteStoredGiftCodeB58: () => {},
-  importAccount: () => {
-    return Promise.resolve();
-  },
-  openGiftCode: () => {
-    return Promise.resolve();
-  },
-  retrieveEntropy: () => {
-    return Promise.resolve();
-  },
-  submitGiftCode: () => {
-    return Promise.resolve();
-  },
-  submitTransaction: () => {
-    return Promise.resolve();
-  },
-  unlockWallet: () => {
-    return Promise.resolve();
-  },
+  createAccount: () => Promise.resolve(),
+  deleteStoredGiftCodeB58: () => undefined,
+  importAccount: () => Promise.resolve(),
+  openGiftCode: () => Promise.resolve(),
+  retrieveEntropy: () => Promise.resolve(),
+  submitGiftCode: () => Promise.resolve(),
+  submitTransaction: () => Promise.resolve(),
+  unlockWallet: () => Promise.resolve(),
 });
 
 export const FullServiceProvider: FC<FullServiceProviderProps> = ({
@@ -395,14 +375,12 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 }: FullServiceProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialFullServiceState);
 
-  const buildGiftCode = async (buildGiftCodeParams: BuildGiftCodeParams) => {
-    return fullServiceApi.buildGiftCode(buildGiftCodeParams);
-  };
+  const buildGiftCode = async (buildGiftCodeParams: BuildGiftCodeParams) =>
+    fullServiceApi.buildGiftCode(buildGiftCodeParams);
 
   // TODO, better error handling
-  const buildTransaction = async (buildTransactionParams: BuildTransactionParams) => {
-    return fullServiceApi.buildTransaction(buildTransactionParams);
-  };
+  const buildTransaction = async (buildTransactionParams: BuildTransactionParams) =>
+    fullServiceApi.buildTransaction(buildTransactionParams);
 
   const changePassword = async (oldPassword: string, newPassword: string) => {
     try {
@@ -430,11 +408,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  const confirmEntropyKnown = () => {
-    dispatch({
-      type: 'CONFIRM_ENTROPY_KNOWN',
-    });
-  };
+  const confirmEntropyKnown = () => dispatch({ type: 'CONFIRM_ENTROPY_KNOWN' });
 
   const deleteStoredGiftCodeB58 = (storedGiftCodeB58: string) => {
     try {
@@ -493,9 +467,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   const createAccount = async (name: string | null, password: string) => {
     try {
       // Attempt create
-      const { account } = await fullServiceApi.createAccount({
-        name,
-      });
+      const { account } = await fullServiceApi.createAccount({ name });
       const { accountId } = account;
 
       // Get basic wallet information
@@ -549,10 +521,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     try {
       // TODO - allow this once we're setup again!
       // Attempt import
-      const { account } = await fullServiceApi.importAccount({
-        entropy,
-        name,
-      });
+      const { account } = await fullServiceApi.importAccount({ entropy, name });
       const { accountId } = account;
 
       // Get basic wallet information
@@ -653,12 +622,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
       // TODO - this should definitely be in a util
       const giftValue = txProposal.outlayList
-        .map((outlay) => {
-          return BigInt(outlay.value);
-        })
-        .reduce((acc, cur) => {
-          return acc + cur;
-        });
+        .map((outlay) => BigInt(outlay.value))
+        .reduce((acc, cur) => acc + cur);
       const giftValueString = giftValue.toString();
       giftCodes.push({ giftCodeB58, giftValueString });
       LocalStoreInstance.setGiftCodes(giftCodes);
@@ -793,7 +758,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     const { accountId } = selectedAccount.account;
     // // TODO - check this early exit
     if (accountId === '') {
-      return () => {};
+      return () => undefined;
     }
 
     const fetchBalance = async () => {
@@ -824,10 +789,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     };
 
     fetchBalance();
-    const fetchBalanceForver = setInterval(fetchBalance, 10000);
-    return () => {
-      return clearInterval(fetchBalanceForver);
-    };
+    const fetchBalanceForever = setInterval(fetchBalance, 10000);
+    return () => clearInterval(fetchBalanceForever);
     // TODO - consider rebuilding the setInterval based on roundtrip time
     // TODO - Right now, we have 1 monitorID. later, we may have multiple for
     // many accounts. We'll need to parse each monitorId and built a fetcher for each.

@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 import { Field, Form, Formik } from 'formik';
 import { TextField } from 'formik-material-ui';
+import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import type { Theme } from '../../theme';
@@ -66,13 +67,15 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
   password,
 }: AddPasswordToKeychainModalProps) => {
   const classes = useStyles();
+  const { t } = useTranslation('SavePasswordModal');
+
   const initialValues = {
     accountName: '',
     submit: null,
   };
 
   const validationSchema = Yup.object().shape({
-    accountName: Yup.string().required('Account Name Required'),
+    accountName: Yup.string().required(t('accountNameRequired')),
   });
 
   const onCloseHandler = () => onClose();
@@ -89,7 +92,7 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
           return (
             <Form name="SavePasswordForm" className={classes.form}>
               <Box display="flex" flexDirection="column">
-                <Typography className={classes.title}>Save Password to Keychain?</Typography>
+                <Typography className={classes.title}>{t('saveToKeychain')}</Typography>
                 <Box
                   className={classes.pwBox}
                   display="flex"
@@ -120,10 +123,10 @@ const AddPasswordToKeychainModal: FC<AddPasswordToKeychainModalProps> = ({
                 )}
                 <Box display="flex" flexDirection="row" className={classes.buttonBox}>
                   <Button color="primary" onClick={onCloseHandler}>
-                    Not Now
+                    {t('notNow')}
                   </Button>
                   <Button disabled={!dirty || !isValid} onClick={submitForm}>
-                    Save
+                    {t('save')}
                   </Button>
                 </Box>
               </Box>

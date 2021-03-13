@@ -332,6 +332,13 @@
     "settings": "SETTINGS"
   },
 
+  "SavePasswordModal": {
+    "accountNameRequired": "ACCOUNT NAME REQUIRED",
+    "notNow": "NOT NOW",
+    "save": "SAVE",
+    "saveToKeychain": "SAVE PASSWORD TO KEYCHAIN?"
+  },
+
   "SendMobForm": {
     "accountBalance": "ACCOUNT BALANCE",
     "accountName": "ACCOUNT NAME",

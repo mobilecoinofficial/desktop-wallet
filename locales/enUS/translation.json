@@ -156,13 +156,13 @@
   },
 
   "CrashReportModal": {
-    "uhOh": "Uh Oh!",
     "encounteredAnIssue": "It seems we've encountered an issue that's causing the app the crash!",
-    "sendReport": "It would be super helpful if you sent the crash report to us, but we totally understand if you'd rather not :)",
-    "sendDebugLog": "If you'd like to also send us a copy of the debug log, you can find a copy of it",
     "here": "here",
+    "quitApplication": "Quit Desktop Wallet",
+    "sendDebugLog": "If you'd like to also send us a copy of the debug log, you can find a copy of it",
     "sendDebugLog2": "so feel free to check it out.",
-    "quitApplication": "Quit Desktop Wallet"
+    "sendReport": "It would be super helpful if you sent the crash report to us, but we totally understand if you'd rather not :)",
+    "uhOh": "Uh Oh!"
   },
 
   "CreateAccountForm": {
@@ -208,9 +208,9 @@
 
   "DebugLogModal": {
     "debugLogs": "Debug Logs",
-    "title": "This log will be posted publicly online for contributors to view. You may examine and edit it before submitting.",
+    "openLogsDir": "Open Logs Folder",
     "submit": "Submit",
-    "openLogsDir": "Open Logs Folder"
+    "title": "This log will be posted publicly online for contributors to view. You may examine and edit it before submitting."
   },
 
   "GiftingView": {

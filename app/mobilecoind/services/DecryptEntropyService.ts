@@ -1,7 +1,7 @@
 // import * as mobileCoinDAPI from '../protos/mobilecoind_api_pb';
 import { decrypt } from 'sjcl';
 
-import LocalStore from '../../utils/LocalStore';
+import * as localStore from '../../utils/LocalStore';
 import scryptKeys from '../../utils/scryptKeys';
 import BaseService from './BaseService';
 
@@ -15,15 +15,13 @@ class DecryptEntropyService extends BaseService<DecryptEntropyServiceArgs> {
   // we should save the salt to store
   async call() {
     try {
-      const LocalStoreInstance = new LocalStore();
-
       const { password } = this.argsObj;
-      const encryptedEntropy = LocalStoreInstance.getEncryptedEntropy();
+      const encryptedEntropy = localStore.getEncryptedEntropy();
       if (typeof encryptedEntropy !== 'string') {
         throw new Error('Cannot find existing wallet');
       }
 
-      const salt = LocalStoreInstance.getSalt();
+      const salt = localStore.getSalt();
       if (typeof salt !== 'string') {
         throw new Error('Cannot find existing wallet');
       }
@@ -31,7 +29,7 @@ class DecryptEntropyService extends BaseService<DecryptEntropyServiceArgs> {
       const { secretKeyString } = await scryptKeys(password, salt);
 
       const entropy = decrypt(secretKeyString, encryptedEntropy);
-      const name = LocalStoreInstance.getName();
+      const name = localStore.getName();
 
       return this.handleSuccess({ entropy, name });
     } catch (err) {

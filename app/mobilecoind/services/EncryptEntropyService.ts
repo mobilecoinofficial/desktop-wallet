@@ -1,7 +1,7 @@
 // import * as mobileCoinDAPI from '../protos/mobilecoind_api_pb';
 import { encrypt } from 'sjcl';
 
-import LocalStore from '../../utils/LocalStore';
+import * as localStore from '../../utils/LocalStore';
 import scryptKeys from '../../utils/scryptKeys';
 import BaseService from './BaseService';
 
@@ -40,7 +40,6 @@ interface EncryptEntropyServiceArgs {
 class EncryptEntropyService extends BaseService<EncryptEntropyServiceArgs> {
   async call() {
     try {
-      const LocalStoreInstance = new LocalStore();
       const { entropyBuffer, name, password } = this.argsObj;
       const { publicSaltString, secretKeyString } = await scryptKeys(password);
 
@@ -52,9 +51,9 @@ class EncryptEntropyService extends BaseService<EncryptEntropyServiceArgs> {
       // later, when we implement multiple accounts, this information should be nested
       // and normalized
 
-      LocalStoreInstance.setEncryptedEntropy(encryptedEntropy);
-      LocalStoreInstance.setSalt(publicSaltString);
-      LocalStoreInstance.setName(name);
+      localStore.setEncryptedEntropy(encryptedEntropy);
+      localStore.setSalt(publicSaltString);
+      localStore.setName(name);
 
       return this.handleSuccess({ encryptedEntropy });
     } catch (err) {

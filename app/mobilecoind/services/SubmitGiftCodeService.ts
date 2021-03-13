@@ -1,4 +1,4 @@
-import LocalStore from '../../utils/LocalStore';
+import * as localStore from '../../utils/LocalStore';
 import type { TxProposal } from '../protos/mobilecoind_api_pb';
 import BaseService from './BaseService';
 import SubmitTransactionService from './SubmitTransactionService';
@@ -20,8 +20,7 @@ class SubmitGiftCodeService extends BaseService<SubmitGiftCodeServiceArgs> {
       const { errorMessage, isSuccess } = await SubmitTransactionServiceInstance.call();
 
       if (isSuccess) {
-        const LocalStoreInstance = new LocalStore();
-        const giftCodes = LocalStoreInstance.getGiftCodes() || [];
+        const giftCodes = localStore.getGiftCodes() || [];
         // const giftCodes = [];
         if (!Array.isArray(giftCodes)) {
           throw new Error('Cannot find gift codes');
@@ -38,7 +37,7 @@ class SubmitGiftCodeService extends BaseService<SubmitGiftCodeServiceArgs> {
           });
         const giftValueString = giftValue.toString();
         giftCodes.push({ giftB58Code, giftValueString });
-        LocalStoreInstance.setGiftCodes(giftCodes);
+        localStore.setGiftCodes(giftCodes);
 
         // At this point, let's make sure to store the entropy
         // in the context, we can detect the change and begin monitoring the gift code

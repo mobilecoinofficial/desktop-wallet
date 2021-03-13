@@ -33,100 +33,93 @@ export const schema: LocalStoreSchema = {
   [schemaKeys.THEME]: { type: 'string' },
 };
 
-class LocalStore {
-  store: Store;
+let store = new Store({ name: STORE_NAME, schema });
 
-  schema: LocalStoreSchema;
+export const setStore = (newStore: Store): void => {
+  store = newStore;
+};
 
-  constructor(store?: Store) {
-    this.store = store || new Store({ name: STORE_NAME, schema });
-    this.schema = schema;
-  }
+export const getEncryptedEntropy = (): SjclCipherEncrypted => {
+  return store.get(schemaKeys.ENCRYPTED_ENTROPY) as SjclCipherEncrypted;
+};
 
-  getEncryptedEntropy(): SjclCipherEncrypted {
-    return this.store.get(schemaKeys.ENCRYPTED_ENTROPY) as SjclCipherEncrypted;
-  }
+export const setEncryptedEntropy = (encryptedEntropy: SjclCipherEncrypted): void => {
+  store.set(schemaKeys.ENCRYPTED_ENTROPY, encryptedEntropy);
+};
 
-  setEncryptedEntropy(encryptedEntropy: SjclCipherEncrypted): void {
-    this.store.set(schemaKeys.ENCRYPTED_ENTROPY, encryptedEntropy);
-  }
+export const getGiftCodes = (): Array<string> => {
+  return store.get(schemaKeys.GIFT_CODES) as Array<string>;
+};
 
-  getGiftCodes(): Array<string> {
-    return this.store.get(schemaKeys.GIFT_CODES) as Array<string>;
-  }
+export const setGiftCodes = (giftCodes: Array<string>): void => {
+  store.set(schemaKeys.GIFT_CODES, giftCodes);
+};
 
-  setGiftCodes(giftCodes: Array<string>): void {
-    this.store.set(schemaKeys.GIFT_CODES, giftCodes);
-  }
+export const getHashedPin = (): string => {
+  return (store.get(schemaKeys.HASHED_PIN) as string) || '';
+};
 
-  getHashedPin(): string {
-    return (this.store.get(schemaKeys.HASHED_PIN) as string) || '';
-  }
+export const setHashedPin = (hashedPin: string | null): void => {
+  store.set(schemaKeys.HASHED_PIN, hashedPin || '');
+};
 
-  setHashedPin(hashedPin: string | null): void {
-    this.store.set(schemaKeys.HASHED_PIN, hashedPin || '');
-  }
+export const getLeaveMobilecoindRunning = (): boolean => {
+  return store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING) as boolean;
+};
 
-  getLeaveMobilecoindRunning(): boolean {
-    return this.store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING) as boolean;
-  }
+export const setLeaveMobilecoindRunning = (leaveMobilecoindRunning: boolean): void => {
+  store.set(schemaKeys.LEAVE_MOBILECOIND_RUNNING, leaveMobilecoindRunning);
+};
 
-  setLeaveMobilecoindRunning(leaveMobilecoindRunning: boolean): void {
-    this.store.set(schemaKeys.LEAVE_MOBILECOIND_RUNNING, leaveMobilecoindRunning);
-  }
+export const getMinimumForPin = (): number => {
+  return Number(store.get(schemaKeys.MINIMUM_FOR_PIN));
+};
 
-  getMinimumForPin(): number {
-    return Number(this.store.get(schemaKeys.MINIMUM_FOR_PIN));
-  }
+export const setMinimumForPin = (minimumForPin: number | null): void => {
+  store.set(schemaKeys.MINIMUM_FOR_PIN, String(minimumForPin) || '0');
+};
 
-  setMinimumForPin(minimumForPin: number | null): void {
-    this.store.set(schemaKeys.MINIMUM_FOR_PIN, String(minimumForPin) || '0');
-  }
+// TODO - add type guards to app
+// https://www.typescriptlang.org/docs/handbook/advanced-types.html#typeof-type-guards
+export const getLedgerDbPath = (): string => {
+  const ledgerDbPath = store.get(schemaKeys.LEDGER_DB_PATH);
+  return typeof ledgerDbPath === 'string' ? ledgerDbPath : '';
+};
 
-  // TODO - add type guards to app
-  // https://www.typescriptlang.org/docs/handbook/advanced-types.html#typeof-type-guards
-  getLedgerDbPath(): string {
-    const ledgerDbPath = this.store.get(schemaKeys.LEDGER_DB_PATH);
-    return typeof ledgerDbPath === 'string' ? ledgerDbPath : '';
-  }
+export const getMobilecoindDbPath = (): string => {
+  const mobilecoindDbPath = store.get(schemaKeys.MOBILECOIND_DB_PATH);
+  return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
+};
 
-  getMobilecoindDbPath(): string {
-    const mobilecoindDbPath = this.store.get(schemaKeys.MOBILECOIND_DB_PATH);
-    return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
-  }
+export const getTheme = (): string => {
+  const theme = store.get(schemaKeys.THEME);
+  return typeof theme === 'string' ? theme : 'system';
+};
 
-  getTheme(): string {
-    const theme = this.store.get(schemaKeys.THEME);
-    return typeof theme === 'string' ? theme : 'system';
-  }
+export const setLedgerDbPath = (name: string): void => {
+  store.set(schemaKeys.LEDGER_DB_PATH, name);
+};
 
-  setLedgerDbPath(name: string): void {
-    this.store.set(schemaKeys.LEDGER_DB_PATH, name);
-  }
+export const setMobilecoindDbPath = (name: string): void => {
+  store.set(schemaKeys.MOBILECOIND_DB_PATH, name);
+};
 
-  setMobilecoindDbPath(name: string): void {
-    this.store.set(schemaKeys.MOBILECOIND_DB_PATH, name);
-  }
+export const getName = (): string => {
+  return store.get(schemaKeys.NAME) as string;
+};
 
-  getName(): string {
-    return this.store.get(schemaKeys.NAME) as string;
-  }
+export const setName = (name: string | null): void => {
+  store.set(schemaKeys.NAME, name);
+};
 
-  setName(name: string | null): void {
-    this.store.set(schemaKeys.NAME, name);
-  }
+export const getSalt = (): string => {
+  return store.get(schemaKeys.SALT) as string;
+};
 
-  getSalt(): string {
-    return this.store.get(schemaKeys.SALT) as string;
-  }
+export const setSalt = (salt: string): void => {
+  store.set(schemaKeys.SALT, salt);
+};
 
-  setSalt(salt: string): void {
-    this.store.set(schemaKeys.SALT, salt);
-  }
-
-  setTheme(theme: 'system' | 'light' | 'dark'): void {
-    this.store.set(schemaKeys.THEME, theme);
-  }
-}
-
-export default LocalStore;
+export const setTheme = (theme: 'system' | 'light' | 'dark'): void => {
+  store.set(schemaKeys.THEME, theme);
+};

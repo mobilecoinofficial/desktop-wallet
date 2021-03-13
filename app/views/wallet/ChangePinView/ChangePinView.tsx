@@ -25,11 +25,9 @@ import routePaths from '../../../constants/routePaths';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
-import LocalStore from '../../../utils/LocalStore';
+import * as localStore from '../../../utils/LocalStore';
 import { makeHash } from '../../../utils/hashing';
 import isValidPin from '../../../utils/isValidPin';
-
-const localStore = new LocalStore();
 
 const useStyles = makeStyles((theme: Theme) => {
   return {

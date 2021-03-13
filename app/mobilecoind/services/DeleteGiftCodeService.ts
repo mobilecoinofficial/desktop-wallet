@@ -1,4 +1,4 @@
-import LocalStore from '../../utils/LocalStore';
+import * as localStore from '../../utils/LocalStore';
 import BaseService from './BaseService';
 
 interface DeleteGiftCodeServiceArgs {
@@ -10,8 +10,7 @@ class DeleteGiftCodeService extends BaseService<DeleteGiftCodeServiceArgs> {
     try {
       const { storedGiftB58Code } = this.argsObj;
 
-      const LocalStoreInstance = new LocalStore();
-      const giftCodes = LocalStoreInstance.getGiftCodes();
+      const giftCodes = localStore.getGiftCodes();
       if (!Array.isArray(giftCodes)) {
         throw new Error('Cannot find gift codes');
       }
@@ -25,10 +24,12 @@ class DeleteGiftCodeService extends BaseService<DeleteGiftCodeServiceArgs> {
         }
       }
 
-      if (giftCodeIndex === undefined) throw new Error('Cannot find gift code');
+      if (giftCodeIndex === undefined) {
+        throw new Error('Cannot find gift code');
+      }
 
       giftCodes.splice(giftCodeIndex, 1);
-      LocalStoreInstance.setGiftCodes(giftCodes);
+      localStore.setGiftCodes(giftCodes);
 
       // At this point, let's make sure to store the entropy
       // in the context, we can detect the change and begin monitoring the gift code

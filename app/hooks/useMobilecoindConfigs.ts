@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import LocalStore from '../utils/LocalStore';
+import * as localStore from '../utils/LocalStore';
 
 interface UseMobilecoindConfigs {
   leaveMobilecoindRunning: boolean;
@@ -10,24 +10,23 @@ interface UseMobilecoindConfigs {
 }
 
 const useMobilecoindConfigs = (): UseMobilecoindConfigs => {
-  const LocalStoreInstance = new LocalStore();
-  const initialLeaveMobilecoindRunningStore = LocalStoreInstance.getLeaveMobilecoindRunning();
+  const initialLeaveMobilecoindRunningStore = localStore.getLeaveMobilecoindRunning();
   const initialLeaveMobilecoindRunningState = initialLeaveMobilecoindRunningStore === true; // This coerces initial state of null to false
   const [leaveMobilecoindRunning, setLeaveMobilecoindRunning] = useState(
     initialLeaveMobilecoindRunningState
   );
 
   const toggleLeaveMobilecoindRunning = () => {
-    const previousLeaveMobilecoindRunningState = LocalStoreInstance.getLeaveMobilecoindRunning();
+    const previousLeaveMobilecoindRunningState = localStore.getLeaveMobilecoindRunning();
     const newLeaveMobilecoindRunningState = !previousLeaveMobilecoindRunningState;
-    LocalStoreInstance.setLeaveMobilecoindRunning(newLeaveMobilecoindRunningState);
+    localStore.setLeaveMobilecoindRunning(newLeaveMobilecoindRunningState);
 
     setLeaveMobilecoindRunning(newLeaveMobilecoindRunningState);
   };
 
   // Paths
-  const ledgerDbPath = LocalStoreInstance.getLedgerDbPath();
-  const mobilecoindDbPath = LocalStoreInstance.getMobilecoindDbPath();
+  const ledgerDbPath = localStore.getLedgerDbPath();
+  const mobilecoindDbPath = localStore.getMobilecoindDbPath();
 
   return {
     leaveMobilecoindRunning,

@@ -1,9 +1,7 @@
 import { shell, nativeTheme } from 'electron';
 
 import config from '../../configs/app.config';
-import LocalStore from '../utils/LocalStore';
-
-const localStore = new LocalStore();
+import * as localStore from '../utils/LocalStore';
 
 const defaultTemplate = (app, mainWindow, i18n) => {
   const submenuAbout = {

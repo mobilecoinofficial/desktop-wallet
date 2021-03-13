@@ -31,7 +31,7 @@ import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
-import LocalStore from '../../../../utils/LocalStore';
+import * as localStore from '../../../../utils/LocalStore';
 import { makeHash } from '../../../../utils/hashing';
 
 // CBB: Shouldn't have to use this hack to get around state issues
@@ -259,7 +259,6 @@ const BuildGiftForm: FC = () => {
     event.target.select();
   };
 
-  const localStore = new LocalStore();
   const minimumForPin = String(localStore.getMinimumForPin());
   const hashedPin = localStore.getHashedPin();
 

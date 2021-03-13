@@ -22,7 +22,7 @@ import SubmitGiftCodeService from '../mobilecoind/services/SubmitGiftCodeService
 import SubmitTransactionService from '../mobilecoind/services/SubmitTransactionService';
 import UnlockWalletService from '../mobilecoind/services/UnlockWalletService';
 import type Account from '../types/Account';
-import LocalStore from '../utils/LocalStore';
+import * as localStore from '../utils/LocalStore';
 
 // TODO - for MVP with only 1 account, I'm stuffing all of the context in one
 // location. Once we implement multiple accounts, each account's information (
@@ -608,13 +608,12 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
     // TODO, i don't need to make this async
     const initialise = async () => {
       try {
-        const LocalStoreInstance = new LocalStore();
         // TODO - fix typescript
-        const encryptedEntropy = LocalStoreInstance.getEncryptedEntropy();
+        const encryptedEntropy = localStore.getEncryptedEntropy();
         const assertedEncryptedEntropy =
           typeof encryptedEntropy === 'string' ? encryptedEntropy : null;
 
-        const giftCodes = LocalStoreInstance.getGiftCodes();
+        const giftCodes = localStore.getGiftCodes();
         const assertedGiftCodes = Array.isArray(giftCodes) ? giftCodes : [];
         // try to get encryptedEntropy from file
         // const accessToken = window.localStorage.getItem('accessToken');

@@ -24,7 +24,7 @@ import languages from './constants/languages';
 import getPlatform from './get-platform';
 import i18n from './i18next.config';
 import menuFactoryService from './menuFactory';
-import LocalStore from './utils/LocalStore';
+import * as localStore from './utils/LocalStore';
 
 import './utils/autoupdate';
 
@@ -54,8 +54,6 @@ if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true')
   // eslint-disable-next-line
   require('electron-debug')();
 }
-
-const LocalStoreInstance = new LocalStore();
 
 const installExtensions = async () => {
   // eslint-disable-next-line
@@ -97,8 +95,8 @@ const spawnMobilecoind = () => {
   console.log('userDataPath', userDataPath);
   console.log('ledgerDbPath', ledgerDbPath);
   console.log('mobilecoindDbPath', mobilecoindDbPath);
-  LocalStoreInstance.setLedgerDbPath(ledgerDbPath);
-  LocalStoreInstance.setMobilecoindDbPath(mobilecoindDbPath);
+  localStore.setLedgerDbPath(ledgerDbPath);
+  localStore.setMobilecoindDbPath(mobilecoindDbPath);
   spawn(execPath, [ledgerDbPath, mobilecoindDbPath], {});
 };
 
@@ -208,8 +206,7 @@ const createWindow = async () => {
     );
   });
 
-  nativeTheme.themeSource =
-    (LocalStoreInstance.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
+  nativeTheme.themeSource = (localStore.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
 
   ipcMain.on('get-theme', (event) => {
     // eslint-disable-next-line no-param-reassign
@@ -268,8 +265,8 @@ ipcMain.on('close-app', () => {
 });
 
 ipcMain.on('reset-ledger', () => {
-  const ledgerDbPath = LocalStoreInstance.getLedgerDbPath();
-  const mobilecoindDbPath = LocalStoreInstance.getMobilecoindDbPath();
+  const ledgerDbPath = localStore.getLedgerDbPath();
+  const mobilecoindDbPath = localStore.getMobilecoindDbPath();
 
   console.log('killing mobilecoind');
   exec('pkill -f mobilecoind');
@@ -297,7 +294,7 @@ ipcMain.on('get-initial-translations', (event) => {
 });
 
 const shutDownMobilecoind = () => {
-  const leaveMobilecoindRunning = LocalStoreInstance.getLeaveMobilecoindRunning();
+  const leaveMobilecoindRunning = localStore.getLeaveMobilecoindRunning();
   console.log('Leave mobilecoind running:', leaveMobilecoindRunning);
   if (!leaveMobilecoindRunning) {
     exec('pkill -f mobilecoind');

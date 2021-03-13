@@ -24,7 +24,6 @@ export interface DebugLogModalProps {
   onOpenLogsFolder: () => void;
   onSendReport: () => void;
   open: boolean;
-  // state: { debugLog: string; open: boolean };
 }
 
 const useStyles = makeStyles((theme: Theme) => {

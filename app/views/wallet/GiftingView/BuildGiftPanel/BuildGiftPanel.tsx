@@ -35,20 +35,18 @@ import BuildGiftForm from './BuildGiftForm';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
 
-const useStyles = makeStyles(() => {
-  return {
-    cardContainer: {
-      paddingBottom: 64,
-      paddingTop: 64,
-    },
-    clickable: {
-      cursor: 'pointer',
-      marginRight: 8,
-      paddingLeft: 4,
-      paddingRight: 4,
-    },
-  };
-});
+const useStyles = makeStyles(() => ({
+  cardContainer: {
+    paddingBottom: 64,
+    paddingTop: 64,
+  },
+  clickable: {
+    cursor: 'pointer',
+    marginRight: 8,
+    paddingLeft: 4,
+    paddingRight: 4,
+  },
+}));
 
 const BuildGiftPanel: FC = () => {
   const classes = useStyles();
@@ -60,11 +58,9 @@ const BuildGiftPanel: FC = () => {
 
   const { t } = useTranslation('BuildGiftPanel');
 
-  const handleDialogOpen = (giftCode: string, giftValue: string) => {
-    return () => {
-      setDialogOpen(true);
-      setPendingDeleteCode([giftCode, giftValue]);
-    };
+  const handleDialogOpen = (giftCode: string, giftValue: string) => () => {
+    setDialogOpen(true);
+    setPendingDeleteCode([giftCode, giftValue]);
   };
 
   const handleDialogClose = () => {
@@ -72,13 +68,11 @@ const BuildGiftPanel: FC = () => {
     setPendingDeleteCode(EMPTY_PENDING_DELETE_CODE);
   };
 
-  const handleCopyClick = (code: string) => {
-    return () => {
-      clipboard.writeText(code);
-      enqueueSnackbar(t('giftCodeCopied'), {
-        variant: 'success',
-      });
-    };
+  const handleCopyClick = (code: string) => () => {
+    clipboard.writeText(code);
+    enqueueSnackbar(t('giftCodeCopied'), {
+      variant: 'success',
+    });
   };
 
   const handleConfirmDelete = () => {
@@ -135,44 +129,42 @@ const BuildGiftPanel: FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {giftCodes?.map(({ giftB58Code, giftValueString }) => {
-                    return (
-                      <TableRow key={giftB58Code}>
-                        <TableCell component="th" scope="row">
-                          <ShortCode code={giftB58Code} />
-                        </TableCell>
-                        <TableCell>
-                          <MOBNumberFormat value={giftValueString} valueUnit="pMOB" />
-                        </TableCell>
-                        <TableCell align="right">
-                          <Box display="flex" justifyContent="flex-end">
-                            <Tooltip title={t('clickToCopy')} placement="right" arrow>
-                              <div
-                                className={classes.clickable}
-                                onClick={handleCopyClick(giftB58Code)}
-                                aria-hidden="true"
-                              >
-                                <IconButton>
-                                  <CopyIcon />
-                                </IconButton>
-                              </div>
-                            </Tooltip>
-                            <Tooltip title={t('clickToDelete')} placement="right" arrow>
-                              <div
-                                className={classes.clickable}
-                                onClick={handleDialogOpen(giftB58Code, giftValueString)}
-                                aria-hidden="true"
-                              >
-                                <IconButton>
-                                  <TrashcanIcon />
-                                </IconButton>
-                              </div>
-                            </Tooltip>
-                          </Box>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                  {giftCodes?.map(({ giftB58Code, giftValueString }) => (
+                    <TableRow key={giftB58Code}>
+                      <TableCell component="th" scope="row">
+                        <ShortCode code={giftB58Code} />
+                      </TableCell>
+                      <TableCell>
+                        <MOBNumberFormat value={giftValueString} valueUnit="pMOB" />
+                      </TableCell>
+                      <TableCell align="right">
+                        <Box display="flex" justifyContent="flex-end">
+                          <Tooltip title={t('clickToCopy')} placement="right" arrow>
+                            <div
+                              className={classes.clickable}
+                              onClick={handleCopyClick(giftB58Code)}
+                              aria-hidden="true"
+                            >
+                              <IconButton>
+                                <CopyIcon />
+                              </IconButton>
+                            </div>
+                          </Tooltip>
+                          <Tooltip title={t('clickToDelete')} placement="right" arrow>
+                            <div
+                              className={classes.clickable}
+                              onClick={handleDialogOpen(giftB58Code, giftValueString)}
+                              aria-hidden="true"
+                            >
+                              <IconButton>
+                                <TrashcanIcon />
+                              </IconButton>
+                            </div>
+                          </Tooltip>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>

@@ -11,18 +11,16 @@ export interface TransactionInfoLabelProps {
   label: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    negative: {
-      color: theme.palette.number.negative,
-    },
-    positive: {
-      color: theme.palette.number.positive,
-    },
-    root: { position: 'relative' },
-    textRight: { textAlign: 'right', width: '100%' },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  negative: {
+    color: theme.palette.number.negative,
+  },
+  positive: {
+    color: theme.palette.number.positive,
+  },
+  root: { position: 'relative' },
+  textRight: { textAlign: 'right', width: '100%' },
+}));
 
 const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
   amount,

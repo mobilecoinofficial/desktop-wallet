@@ -24,26 +24,24 @@ export interface TransactionDetailsViewProps {
   status: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    container: {
-      padding: '10px',
-    },
-    internal: {
-      backgroundColor: theme.palette.background.dark,
-      display: 'flex',
-      flexDirection: 'row',
-      margin: '5px',
-      padding: '5px',
-    },
-    root: {
-      minHeight: '100%',
-      padding: theme.spacing(1),
-    },
-    textLeft: { textAlign: 'left' },
-    textRight: { textAlign: 'right', width: '100%' },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  container: {
+    padding: '10px',
+  },
+  internal: {
+    backgroundColor: theme.palette.background.dark,
+    display: 'flex',
+    flexDirection: 'row',
+    margin: '5px',
+    padding: '5px',
+  },
+  root: {
+    minHeight: '100%',
+    padding: theme.spacing(1),
+  },
+  textLeft: { textAlign: 'left' },
+  textRight: { textAlign: 'right', width: '100%' },
+}));
 
 const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
   amount,
@@ -139,31 +137,29 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
                 }, 1500);
               }}
             >
-              {({ isSubmitting, dirty, isValid, submitForm }) => {
-                return (
-                  <Form>
-                    <Box>
-                      <Field
-                        component={TextField}
-                        fullWidth
-                        label={t('typeHere')}
-                        margin="normal"
-                        name="newComment"
-                        type="text"
-                      />
-                    </Box>{' '}
-                    <Box paddingLeft={10} paddingRight={10}>
-                      <SubmitButton
-                        disabled={!dirty || !isValid || isSubmitting}
-                        onClick={submitForm}
-                        isSubmitting={isSubmitting}
-                      >
-                        {t('changeComment')}
-                      </SubmitButton>
-                    </Box>
-                  </Form>
-                );
-              }}
+              {({ isSubmitting, dirty, isValid, submitForm }) => (
+                <Form>
+                  <Box>
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      label={t('typeHere')}
+                      margin="normal"
+                      name="newComment"
+                      type="text"
+                    />
+                  </Box>{' '}
+                  <Box paddingLeft={10} paddingRight={10}>
+                    <SubmitButton
+                      disabled={!dirty || !isValid || isSubmitting}
+                      onClick={submitForm}
+                      isSubmitting={isSubmitting}
+                    >
+                      {t('changeComment')}
+                    </SubmitButton>
+                  </Box>
+                </Form>
+              )}
             </Formik>
           </Card>
         </Container>

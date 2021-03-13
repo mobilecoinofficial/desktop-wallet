@@ -18,28 +18,26 @@ import { useTranslation } from 'react-i18next';
 import useMobileCoinD from '../../hooks/useMobileCoinD';
 import type { Theme } from '../../theme';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    hiddenEntropy: {
-      letterSpacing: 2.95,
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-    shownEntropy: {
-      letterSpacing: 1,
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  hiddenEntropy: {
+    letterSpacing: 2.95,
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+  shownEntropy: {
+    letterSpacing: 1,
+  },
+}));
 
 const ShowEntropyModal: FC = () => {
   const classes = useStyles();
@@ -55,7 +53,9 @@ const ShowEntropyModal: FC = () => {
   const entropyString = entropy ? Buffer.from(entropy).toString('hex') : '';
 
   const toggleEntropy = () => {
-    if (!canGoForward) setCanGoForward(true);
+    if (!canGoForward) {
+      setCanGoForward(true);
+    }
     setShowEntropy(!showEntropy);
   };
 

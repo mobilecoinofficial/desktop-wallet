@@ -15,33 +15,31 @@ export interface CreateAccountViewProps {
   isTest?: boolean;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    cardContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      height: 'auto',
-      justifyContent: 'space-between',
-      marginTop: theme.spacing(5),
-      padding: theme.spacing(4),
-    },
-    logoIcon: {
-      height: 70,
-      width: 282,
-    },
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      height: '100vh',
-      overflow: 'auto',
-      padding: `${theme.spacing(5)}px ${theme.spacing(3)}px`,
-    },
-    viewContainer: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  cardContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: 'auto',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing(5),
+    padding: theme.spacing(4),
+  },
+  logoIcon: {
+    height: 70,
+    width: 282,
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    height: '100vh',
+    overflow: 'auto',
+    padding: `${theme.spacing(5)}px ${theme.spacing(3)}px`,
+  },
+  viewContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+}));
 
 const CreateAccountView: FC<CreateAccountViewProps> = ({ isTest }: CreateAccountViewProps) => {
   const classes = useStyles();

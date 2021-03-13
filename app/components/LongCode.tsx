@@ -10,23 +10,21 @@ interface LongCodeProps {
   codeClass?: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    lastLine: {
-      display: 'flex',
-      justifyContent: 'space-between',
-    },
-    lowercased: {
-      color: theme.palette.longCode.lowercased,
-    },
-    number: {
-      color: theme.palette.longCode.number,
-    },
-    uppercased: {
-      color: theme.palette.longCode.uppercased,
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  lastLine: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  lowercased: {
+    color: theme.palette.longCode.lowercased,
+  },
+  number: {
+    color: theme.palette.longCode.number,
+  },
+  uppercased: {
+    color: theme.palette.longCode.uppercased,
+  },
+}));
 
 const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
   const classes = useStyles();
@@ -61,17 +59,15 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
 
   return (
     <Box data-testid="long-code-code" className={codeClass} aria-hidden="true">
-      {codeLines.map((line, i) => {
-        return (
-          <Box
-            component="span"
-            key={[line, i].join('|')}
-            className={i === codeLines.length - 1 ? classes.lastLine : ''}
-          >
-            {line}
-          </Box>
-        );
-      })}
+      {codeLines.map((line, i) => (
+        <Box
+          component="span"
+          key={[line, i].join('|')}
+          className={i === codeLines.length - 1 ? classes.lastLine : ''}
+        >
+          {line}
+        </Box>
+      ))}
     </Box>
   );
 };

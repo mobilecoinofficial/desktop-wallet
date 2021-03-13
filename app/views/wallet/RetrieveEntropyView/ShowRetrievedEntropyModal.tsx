@@ -24,28 +24,26 @@ interface ShowRetrievedEntropyModalProps {
   onClose: () => void;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    hiddenEntropy: {
-      letterSpacing: 2.95,
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-    shownEntropy: {
-      letterSpacing: 1,
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  hiddenEntropy: {
+    letterSpacing: 2.95,
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+  shownEntropy: {
+    letterSpacing: 1,
+  },
+}));
 
 const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
   entropy,

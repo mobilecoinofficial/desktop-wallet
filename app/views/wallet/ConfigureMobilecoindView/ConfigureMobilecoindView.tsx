@@ -12,31 +12,29 @@ import LedgerStatus from './LedgerStatus';
 import MobilecoindDirectory from './MobilecoindDirectory';
 import ResetLedger from './ResetLedger';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    cardContainer: {
-      paddingBottom: 64,
-      paddingTop: 8 * 4,
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  cardContainer: {
+    paddingBottom: 64,
+    paddingTop: 8 * 4,
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+}));
 
 const ConfigureMobilecoindView: FC = () => {
   const classes = useStyles();

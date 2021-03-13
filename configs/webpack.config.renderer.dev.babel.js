@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 /**
  * Build config for development electron renderer process that uses
  * Hot-Module-Replacement
@@ -268,12 +269,8 @@ export default merge(baseConfig, {
           env: process.env,
           stdio: 'inherit',
         })
-          .on('close', (code) => {
-            return process.exit(code);
-          })
-          .on('error', (spawnError) => {
-            return console.error(spawnError);
-          });
+          .on('close', (code) => process.exit(code))
+          .on('error', (spawnError) => console.error(spawnError));
       }
     },
   },

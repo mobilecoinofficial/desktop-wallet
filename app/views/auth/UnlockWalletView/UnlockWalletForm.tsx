@@ -79,32 +79,30 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
       validationSchema={validationSchema}
       onSubmit={handleOnSubmit}
     >
-      {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
-        return (
-          <Form name="UnlockWalletInnerForm">
-            <Field
-              id="passwordField"
-              component={TextField}
-              fullWidth
-              label={t('passwordLabel')}
-              name="password"
-              type="password"
-            />
-            {errors.submit && (
-              <Box mt={3}>
-                <FormHelperText error>{errors.submit}</FormHelperText>
-              </Box>
-            )}
-            <SubmitButton
-              disabled={!dirty || !isValid || isSubmitting}
-              isSubmitting={isSubmitting}
-              onClick={submitForm}
-            >
-              {t('unlockWalletButton')}
-            </SubmitButton>
-          </Form>
-        );
-      }}
+      {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+        <Form name="UnlockWalletInnerForm">
+          <Field
+            id="passwordField"
+            component={TextField}
+            fullWidth
+            label={t('passwordLabel')}
+            name="password"
+            type="password"
+          />
+          {errors.submit && (
+            <Box mt={3}>
+              <FormHelperText error>{errors.submit}</FormHelperText>
+            </Box>
+          )}
+          <SubmitButton
+            disabled={!dirty || !isValid || isSubmitting}
+            isSubmitting={isSubmitting}
+            onClick={submitForm}
+          >
+            {t('unlockWalletButton')}
+          </SubmitButton>
+        </Form>
+      )}
     </Formik>
   );
 };

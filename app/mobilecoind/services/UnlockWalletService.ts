@@ -19,7 +19,9 @@ class UnlockWalletService extends BaseService<UnlockWalletServiceArgs> {
         errorMessage: errorMessageDecrypt,
         isSuccess: isSuccessDecrypt,
       } = await DecryptEntropyServiceInstance.call();
-      if (!isSuccessDecrypt) throw new Error(errorMessageDecrypt);
+      if (!isSuccessDecrypt) {
+        throw new Error(errorMessageDecrypt);
+      }
 
       const { entropy, name } = dataDecrypt;
 

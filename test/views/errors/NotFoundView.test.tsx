@@ -15,12 +15,10 @@ function setupComponent() {
   const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<typeof useMobileCoinD>;
 
   // @ts-ignore mock
-  mockUseMobileCoinD.mockImplementation(() => {
-    return {
-      encryptedEntropy: mockEncryptedEntropy,
-      isAuthenticated: mockIsAuthenticated,
-    };
-  });
+  mockUseMobileCoinD.mockImplementation(() => ({
+    encryptedEntropy: mockEncryptedEntropy,
+    isAuthenticated: mockIsAuthenticated,
+  }));
 
   const { asFragment } = renderSnapshot(<NotFoundView />);
 

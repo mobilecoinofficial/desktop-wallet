@@ -39,41 +39,33 @@ export const setStore = (newStore: Store): void => {
   store = newStore;
 };
 
-export const getEncryptedEntropy = (): SjclCipherEncrypted => {
-  return store.get(schemaKeys.ENCRYPTED_ENTROPY) as SjclCipherEncrypted;
-};
+export const getEncryptedEntropy = (): SjclCipherEncrypted =>
+  store.get(schemaKeys.ENCRYPTED_ENTROPY) as SjclCipherEncrypted;
 
 export const setEncryptedEntropy = (encryptedEntropy: SjclCipherEncrypted): void => {
   store.set(schemaKeys.ENCRYPTED_ENTROPY, encryptedEntropy);
 };
 
-export const getGiftCodes = (): Array<string> => {
-  return store.get(schemaKeys.GIFT_CODES) as Array<string>;
-};
+export const getGiftCodes = (): Array<string> => store.get(schemaKeys.GIFT_CODES) as Array<string>;
 
 export const setGiftCodes = (giftCodes: Array<string>): void => {
   store.set(schemaKeys.GIFT_CODES, giftCodes);
 };
 
-export const getHashedPin = (): string => {
-  return (store.get(schemaKeys.HASHED_PIN) as string) || '';
-};
+export const getHashedPin = (): string => (store.get(schemaKeys.HASHED_PIN) as string) || '';
 
 export const setHashedPin = (hashedPin: string | null): void => {
   store.set(schemaKeys.HASHED_PIN, hashedPin || '');
 };
 
-export const getLeaveMobilecoindRunning = (): boolean => {
-  return store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING) as boolean;
-};
+export const getLeaveMobilecoindRunning = (): boolean =>
+  store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING) as boolean;
 
 export const setLeaveMobilecoindRunning = (leaveMobilecoindRunning: boolean): void => {
   store.set(schemaKeys.LEAVE_MOBILECOIND_RUNNING, leaveMobilecoindRunning);
 };
 
-export const getMinimumForPin = (): number => {
-  return Number(store.get(schemaKeys.MINIMUM_FOR_PIN));
-};
+export const getMinimumForPin = (): number => Number(store.get(schemaKeys.MINIMUM_FOR_PIN));
 
 export const setMinimumForPin = (minimumForPin: number | null): void => {
   store.set(schemaKeys.MINIMUM_FOR_PIN, String(minimumForPin) || '0');
@@ -104,17 +96,13 @@ export const setMobilecoindDbPath = (name: string): void => {
   store.set(schemaKeys.MOBILECOIND_DB_PATH, name);
 };
 
-export const getName = (): string => {
-  return store.get(schemaKeys.NAME) as string;
-};
+export const getName = (): string => store.get(schemaKeys.NAME) as string;
 
 export const setName = (name: string | null): void => {
   store.set(schemaKeys.NAME, name);
 };
 
-export const getSalt = (): string => {
-  return store.get(schemaKeys.SALT) as string;
-};
+export const getSalt = (): string => store.get(schemaKeys.SALT) as string;
 
 export const setSalt = (salt: string): void => {
   store.set(schemaKeys.SALT, salt);

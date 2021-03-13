@@ -675,9 +675,7 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
     };
     fetchBalance();
     const fetchBalanceForver = setInterval(fetchBalance, 1000);
-    return () => {
-      return clearInterval(fetchBalanceForver);
-    };
+    return () => clearInterval(fetchBalanceForver);
     // TODO - consider rebuilding the setInterval based on roundtrip time
     // TODO - Right now, we have 1 monitorID. later, we may have multiple for
     // many accounts. We'll need to parse each monitorId and built a fetcher for each.
@@ -726,9 +724,7 @@ export const MobileCoinDProvider: FC<MobileCoinDProviderProps> = ({
     };
     fetchLedgerInfo();
     const fetchLedgerInfoForever = setInterval(fetchLedgerInfo, 1000);
-    return () => {
-      return clearInterval(fetchLedgerInfoForever);
-    };
+    return () => clearInterval(fetchLedgerInfoForever);
   }, [state, client]);
 
   return (

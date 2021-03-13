@@ -15,12 +15,10 @@ function setupComponent(isLeaveMobilecoindRunning: boolean) {
     typeof useMobilecoindConfigs
   >;
   // @ts-ignore mock
-  mockUseMobilecoindConfigs.mockImplementation(() => {
-    return {
-      leaveMobilecoindRunning: isLeaveMobilecoindRunning,
-      toggleLeaveMobilecoindRunning: mockToggleLeaveMobilecoindRunning,
-    };
-  });
+  mockUseMobilecoindConfigs.mockImplementation(() => ({
+    leaveMobilecoindRunning: isLeaveMobilecoindRunning,
+    toggleLeaveMobilecoindRunning: mockToggleLeaveMobilecoindRunning,
+  }));
   renderSnapshot(<LeaveMobilecoindRunning />);
 
   // Render Elements

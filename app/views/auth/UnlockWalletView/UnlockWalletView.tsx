@@ -10,32 +10,30 @@ import routePaths from '../../../constants/routePaths';
 import type { Theme } from '../../../theme';
 import UnlockWalletForm, { unlockWalletFormOnSubmit } from './UnlockWalletForm';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    cardContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      marginTop: theme.spacing(5),
-      padding: theme.spacing(4),
-    },
-    logoIcon: {
-      height: 70,
-      width: 282,
-    },
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      height: '100vh',
-      overflow: 'auto',
-      padding: `${theme.spacing(5)}px ${theme.spacing(3)}px`,
-    },
-    viewContainer: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  cardContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing(5),
+    padding: theme.spacing(4),
+  },
+  logoIcon: {
+    height: 70,
+    width: 282,
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    height: '100vh',
+    overflow: 'auto',
+    padding: `${theme.spacing(5)}px ${theme.spacing(3)}px`,
+  },
+  viewContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+}));
 
 const UnlockWalletView: FC = () => {
   const classes = useStyles();

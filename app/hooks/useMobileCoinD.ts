@@ -1,10 +1,8 @@
 import { useContext } from 'react';
 
-import MobileCoinDContext from '../contexts/MobileCoinDContext';
+import MobileCoinDContext, { MobileCoinDContextValue } from '../contexts/MobileCoinDContext';
 
 // TODO -- rename these files better
-const useMobileCoinD = () => {
-  return useContext(MobileCoinDContext);
-};
+const useMobileCoinD = (): MobileCoinDContextValue => useContext(MobileCoinDContext);
 
 export default useMobileCoinD;

@@ -24,58 +24,56 @@ import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
 import ShowRetrievedEntropyModal from './ShowRetrievedEntropyModal';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    button: {
-      width: 200,
-    },
-    cardContainer: {
-      paddingBottom: 64,
-      paddingTop: 8 * 4,
-    },
-    cardContent: {
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: 400,
-      padding: theme.spacing(4),
-    },
-    center: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    code: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      letterSpacing: '.70rem',
-      marginRight: '-.70rem',
-      padding: theme.spacing(1),
-    },
-    form: {
-      paddingBottom: theme.spacing(2),
-    },
-    label: {
-      width: '100%',
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  button: {
+    width: 200,
+  },
+  cardContainer: {
+    paddingBottom: 64,
+    paddingTop: 8 * 4,
+  },
+  cardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: 400,
+    padding: theme.spacing(4),
+  },
+  center: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  code: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    letterSpacing: '.70rem',
+    marginRight: '-.70rem',
+    padding: theme.spacing(1),
+  },
+  form: {
+    paddingBottom: theme.spacing(2),
+  },
+  label: {
+    width: '100%',
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+}));
 
 const RetrieveEntropyView: FC = () => {
   const classes = useStyles();
@@ -156,37 +154,35 @@ const RetrieveEntropyView: FC = () => {
             }
           }}
         >
-          {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
-            return (
-              <Form>
-                <Box pt={4}>
-                  <FormLabel component="legend">
-                    <Typography color="primary">{t('retrieveEntropy')}</Typography>
-                  </FormLabel>
-                  <Field
-                    component={TextField}
-                    fullWidth
-                    label={t('password')}
-                    margin="normal"
-                    name="password"
-                    type="password"
-                  />
+          {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+            <Form>
+              <Box pt={4}>
+                <FormLabel component="legend">
+                  <Typography color="primary">{t('retrieveEntropy')}</Typography>
+                </FormLabel>
+                <Field
+                  component={TextField}
+                  fullWidth
+                  label={t('password')}
+                  margin="normal"
+                  name="password"
+                  type="password"
+                />
+              </Box>
+              {errors.submit && (
+                <Box mt={3}>
+                  <FormHelperText error>{errors.submit}</FormHelperText>
                 </Box>
-                {errors.submit && (
-                  <Box mt={3}>
-                    <FormHelperText error>{errors.submit}</FormHelperText>
-                  </Box>
-                )}
-                <SubmitButton
-                  disabled={!dirty || !isValid || isSubmitting}
-                  onClick={submitForm}
-                  isSubmitting={isSubmitting}
-                >
-                  {t('retrieveEntropy')}
-                </SubmitButton>
-              </Form>
-            );
-          }}
+              )}
+              <SubmitButton
+                disabled={!dirty || !isValid || isSubmitting}
+                onClick={submitForm}
+                isSubmitting={isSubmitting}
+              >
+                {t('retrieveEntropy')}
+              </SubmitButton>
+            </Form>
+          )}
         </Formik>
       </Box>
       <ShowRetrievedEntropyModal open={!!entropy} entropy={entropy} onClose={handleCloseModal} />

@@ -65,9 +65,7 @@ const installExtensions = async () => {
   ];
 
   return Promise.all(
-    extensions.map((name) => {
-      return installer.default(installer[name], forceDownload);
-    })
+    extensions.map((name) => installer.default(installer[name], forceDownload))
   ).catch(console.log);
 };
 
@@ -109,9 +107,7 @@ const createWindow = async () => {
     ? path.join(process.resourcesPath, 'resources')
     : path.join(__dirname, '../resources');
 
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
+  const getAssetPath = (...paths: string[]): string => path.join(RESOURCES_PATH, ...paths);
 
   mainWindow = new BrowserWindow({
     height: INITIAL_WINDOW_HEIGHT,
@@ -140,14 +136,10 @@ const createWindow = async () => {
 
   // Reject all session permission requests from remote content
   mainWindow.webContents.session.setPermissionRequestHandler(
-    (_webContents, _permission, callback) => {
-      return callback(false);
-    }
+    (_webContents, _permission, callback) => callback(false)
   );
 
-  mainWindow.webContents.session.setPermissionCheckHandler(() => {
-    return false;
-  });
+  mainWindow.webContents.session.setPermissionCheckHandler(() => false);
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
@@ -237,9 +229,7 @@ if (process.env.E2E_BUILD === 'true') {
   app
     .whenReady()
     .then(createWindow)
-    .catch(() => {
-      return null;
-    });
+    .catch(() => null);
 } else {
   app.on('ready', () => {
     spawnMobilecoind();

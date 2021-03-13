@@ -29,12 +29,8 @@ class SubmitGiftCodeService extends BaseService<SubmitGiftCodeServiceArgs> {
         // TODO - this should definitely be in a util
         const giftValue = txProposal
           .toObject()
-          .outlayListList.map((outlay) => {
-            return BigInt(outlay.value);
-          })
-          .reduce((acc, cur) => {
-            return acc + cur;
-          });
+          .outlayListList.map((outlay) => BigInt(outlay.value))
+          .reduce((acc, cur) => acc + cur);
         const giftValueString = giftValue.toString();
         giftCodes.push({ giftB58Code, giftValueString });
         localStore.setGiftCodes(giftCodes);

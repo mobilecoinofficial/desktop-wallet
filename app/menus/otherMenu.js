@@ -154,16 +154,14 @@ const defaultTemplate = (app, mainWindow, i18n) => {
 
   const menuView = [submenuAbout, submenuEdit, submenuViewProd, submenuWindow, submenuLearnMore];
 
-  const languageMenu = config.languages.map((languageCode) => {
-    return {
-      checked: i18n.language === languageCode,
-      click: () => {
-        i18n.changeLanguage(languageCode);
-      },
-      label: i18n.t(`Menu.languages.${languageCode}`),
-      type: 'radio',
-    };
-  });
+  const languageMenu = config.languages.map((languageCode) => ({
+    checked: i18n.language === languageCode,
+    click: () => {
+      i18n.changeLanguage(languageCode);
+    },
+    label: i18n.t(`Menu.languages.${languageCode}`),
+    type: 'radio',
+  }));
 
   menuView.push({
     label: i18n.t('Menu.language'),

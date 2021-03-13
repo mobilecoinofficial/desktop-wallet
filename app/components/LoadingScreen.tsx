@@ -6,19 +6,17 @@ import NProgress from 'nprogress';
 
 import type { Theme } from '../theme';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    root: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      justifyContent: 'center',
-      minHeight: '100%',
-      padding: theme.spacing(3),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    justifyContent: 'center',
+    minHeight: '100%',
+    padding: theme.spacing(3),
+  },
+}));
 
 const LoadingScreen: FC = () => {
   const classes = useStyles();

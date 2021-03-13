@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-commented-out-tests */
 // TODO :- We will come back to this after the wild wild west phase is over :) Yee haww.
 
 // import Store from 'electron-store';

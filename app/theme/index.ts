@@ -21,6 +21,10 @@ interface Palette extends MuiPalette {
     uppercased: string;
     number: string;
   };
+  number: {
+    negative: string;
+    positive: string;
+  };
 }
 
 export interface Theme extends MuiTheme {
@@ -66,9 +70,7 @@ const baseOptions: ThemeOptions = {
 const themesOptions: ThemeOptions[] = [MOBILE_COIN_DARK_THEME, MOBILE_COIN_LIGHT_THEME];
 
 export const setTheme = (config: ThemeConfig = {}): Theme => {
-  let themeOptions = themesOptions.find((theme) => {
-    return theme.name === config.theme;
-  });
+  let themeOptions = themesOptions.find((theme) => theme.name === config.theme);
 
   if (!themeOptions) {
     [themeOptions] = themesOptions;

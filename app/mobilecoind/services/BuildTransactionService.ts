@@ -73,12 +73,8 @@ class BuildTransactionService extends BaseService<BuildTransactionServiceArgs> {
       const txProposalReceiverB58Code = CreateAddressCodeResponse.getB58Code();
       const totalValueConfirmation = txProposal
         .toObject()
-        .outlayListList.map((outlay) => {
-          return BigInt(outlay.value);
-        })
-        .reduce((acc, cur) => {
-          return acc + cur;
-        });
+        .outlayListList.map((outlay) => BigInt(outlay.value))
+        .reduce((acc, cur) => acc + cur);
       const feeConfirmation = BigInt(txProposal.getFee());
 
       // TODO - when multiple accounts, also confirm the sender account address

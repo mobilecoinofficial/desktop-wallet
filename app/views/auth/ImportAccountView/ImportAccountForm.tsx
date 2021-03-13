@@ -81,9 +81,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
 
   // FIX-ME: This hack is to avoid opening the Dialog -- which is causing some
   // headaches in testing.
-  const handleClickOpen = () => {
-    return isTest ? handleCloseTerms() : setOpen(true);
-  };
+  const handleClickOpen = () => (isTest ? handleCloseTerms() : setOpen(true));
 
   const handleOnSubmit = async (
     values: ImportAccountFormValues,
@@ -125,77 +123,75 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
       onSubmit={handleOnSubmit}
       validationSchema={validationSchema}
     >
-      {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
-        return (
-          <Form name="ImportAccountFormName">
-            <Field
-              id="ImportAccountForm-accountNameField"
-              component={TextField}
-              fullWidth
-              label={t('nameLabel')}
-              name="accountName"
-            />
-            <Field
-              id="ImportAccountForm-entropyField"
-              component={TextField}
-              fullWidth
-              label={t('entropyLabel')}
-              margin="dense"
-              multiline
-              name="entropy"
-            />
-            <Field
-              id="ImportAccountForm-passwordField"
-              component={TextField}
-              fullWidth
-              label={t('passwordLabel')}
-              margin="dense"
-              name="password"
-              type="password"
-            />
-            <Field
-              id="ImportAccountForm-passwordConfirmationField"
-              component={TextField}
-              fullWidth
-              label={t('passwordConfirmationLabel')}
-              margin="dense"
-              name="passwordConfirmation"
-              type="password"
-            />
-            <Box pt={1} display="flex">
-              <Box display="flex" alignItems="center" flexDirection="row-reverse">
-                <Box>
-                  <Typography display="inline">{t('acceptTerms')}</Typography>
-                  <Button color="primary" onClick={handleClickOpen}>
-                    {t('acceptTermsButton')}
-                  </Button>
-                </Box>
-                <Field
-                  component={Checkbox}
-                  type="checkbox"
-                  name="checkedTerms"
-                  disabled={!canCheck}
-                  indeterminate={!canCheck}
-                />
+      {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+        <Form name="ImportAccountFormName">
+          <Field
+            id="ImportAccountForm-accountNameField"
+            component={TextField}
+            fullWidth
+            label={t('nameLabel')}
+            name="accountName"
+          />
+          <Field
+            id="ImportAccountForm-entropyField"
+            component={TextField}
+            fullWidth
+            label={t('entropyLabel')}
+            margin="dense"
+            multiline
+            name="entropy"
+          />
+          <Field
+            id="ImportAccountForm-passwordField"
+            component={TextField}
+            fullWidth
+            label={t('passwordLabel')}
+            margin="dense"
+            name="password"
+            type="password"
+          />
+          <Field
+            id="ImportAccountForm-passwordConfirmationField"
+            component={TextField}
+            fullWidth
+            label={t('passwordConfirmationLabel')}
+            margin="dense"
+            name="passwordConfirmation"
+            type="password"
+          />
+          <Box pt={1} display="flex">
+            <Box display="flex" alignItems="center" flexDirection="row-reverse">
+              <Box>
+                <Typography display="inline">{t('acceptTerms')}</Typography>
+                <Button color="primary" onClick={handleClickOpen}>
+                  {t('acceptTermsButton')}
+                </Button>
               </Box>
+              <Field
+                component={Checkbox}
+                type="checkbox"
+                name="checkedTerms"
+                disabled={!canCheck}
+                indeterminate={!canCheck}
+              />
             </Box>
-            {!canCheck && <FormHelperText focused>{t('acceptTermsFormHelper')}</FormHelperText>}
-            {errors.submit && (
-              <Box mt={3}>
-                <FormHelperText error>{errors.submit}</FormHelperText>
-              </Box>
-            )}
-            <SubmitButton
-              disabled={!dirty || !isValid || isSubmitting}
-              onClick={submitForm}
-              isSubmitting={isSubmitting}
-            >
-              {t('importAccountButton')}
-            </SubmitButton>
-            <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
-          </Form>
-        );
-      }}
+          </Box>
+          {!canCheck && <FormHelperText focused>{t('acceptTermsFormHelper')}</FormHelperText>}
+          {errors.submit && (
+            <Box mt={3}>
+              <FormHelperText error>{errors.submit}</FormHelperText>
+            </Box>
+          )}
+          <SubmitButton
+            disabled={!dirty || !isValid || isSubmitting}
+            onClick={submitForm}
+            isSubmitting={isSubmitting}
+          >
+            {t('importAccountButton')}
+          </SubmitButton>
+          <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
+        </Form>
+      )}
     </Formik>
   );
 };

@@ -22,7 +22,9 @@ const addMonitor = async (
   AddMonitorRequestInstance.setFirstSubaddress(firstSubaddress);
   AddMonitorRequestInstance.setNumSubaddresses(numSubaddresses);
   AddMonitorRequestInstance.setFirstBlock(firstBlock);
-  if (name) AddMonitorRequestInstance.setName(name);
+  if (name) {
+    AddMonitorRequestInstance.setName(name);
+  }
   const AddMonitorResponse = await client.addMonitor(AddMonitorRequestInstance);
   return AddMonitorResponse;
 };

@@ -80,17 +80,15 @@ const FAKE_DATA = [
 
 /* FAKE DATA END ************************************************* */
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      minHeight: '100%',
-      paddingBottom: theme.spacing(3),
-      paddingLeft: theme.spacing(5),
-      paddingRight: theme.spacing(5),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingLeft: theme.spacing(5),
+    paddingRight: theme.spacing(5),
+  },
+}));
 
 const HISTORY = 'history';
 const DETAILS = 'details';
@@ -176,8 +174,6 @@ const HistoryView: FC = () => {
         id={currentTransaction.id}
         name={currentTransaction.name}
         onChangedComment={(i, v) => {
-          console.log('Supposedly changing comment to ', i, v);
-
           FAKE_DATA.find((x) => x.id === i).comment = v;
         }}
         onClickBack={() => setShowing(HISTORY)}

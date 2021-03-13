@@ -9,21 +9,19 @@ import { MOBIcon } from '../../../../components/icons';
 import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import ConsumeGiftForm from './ConsumeGiftForm';
 
-const useStyles = makeStyles(() => {
-  return {
-    mobContainer: {
-      alignSelf: 'center',
-      display: 'flex',
-      paddingRight: 4,
-    },
-    root: {},
-    valueContainer: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-  };
-});
+const useStyles = makeStyles(() => ({
+  mobContainer: {
+    alignSelf: 'center',
+    display: 'flex',
+    paddingRight: 4,
+  },
+  root: {},
+  valueContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}));
 
 const ConsumeGiftPanel: FC = () => {
   const classes = useStyles();

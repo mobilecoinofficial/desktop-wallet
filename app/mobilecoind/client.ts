@@ -38,6 +38,7 @@ import type {
   SubmitTxResponse,
 } from './protos/mobilecoind_api_pb';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const grpc = require('@grpc/grpc-js');
 
 // So, because we call promisifyAll, we remove the callback argument...
@@ -103,7 +104,9 @@ export interface MobilecoindClient {
 // packaging the .protos into the electron package via electron-builder.
 function promisifyClient(client: any): MobilecoindClient {
   Object.keys(Object.getPrototypeOf(client)).forEach((k) => {
-    if (typeof client[k] !== 'function') return;
+    if (typeof client[k] !== 'function') {
+      return;
+    }
 
     // eslint-disable-next-line no-param-reassign
     client[k] = promisify(client[k].bind(client));

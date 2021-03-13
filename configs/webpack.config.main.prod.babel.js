@@ -19,15 +19,18 @@ DeleteSourceMaps();
 export default merge(baseConfig, {
   devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
 
-  mode: 'production',
-
-  target: 'electron-main',
-
   entry: './app/main.dev.ts',
 
-  output: {
-    path: path.join(__dirname, '..'),
-    filename: './app/main.prod.js',
+  mode: 'production',
+
+  /**
+   * Disables webpack processing of __dirname and __filename.
+   * If you run the bundle in node.js it falls back to these values of node.js.
+   * https://github.com/webpack/webpack/issues/2010
+   */
+  node: {
+    __dirname: false,
+    __filename: false,
   },
 
   optimization: {
@@ -35,11 +38,16 @@ export default merge(baseConfig, {
       ? []
       : [
           new TerserPlugin({
+            cache: true,
             parallel: true,
             sourceMap: true,
-            cache: true,
           }),
         ],
+  },
+
+  output: {
+    filename: './app/main.prod.js',
+    path: path.join(__dirname, '..'),
   },
 
   plugins: [
@@ -58,20 +66,12 @@ export default merge(baseConfig, {
      * development checks
      */
     new webpack.EnvironmentPlugin({
-      NODE_ENV: 'production',
       DEBUG_PROD: false,
-      START_MINIMIZED: false,
       E2E_BUILD: false,
+      NODE_ENV: 'production',
+      START_MINIMIZED: false,
     }),
   ],
 
-  /**
-   * Disables webpack processing of __dirname and __filename.
-   * If you run the bundle in node.js it falls back to these values of node.js.
-   * https://github.com/webpack/webpack/issues/2010
-   */
-  node: {
-    __dirname: false,
-    __filename: false,
-  },
+  target: 'electron-main',
 });

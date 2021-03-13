@@ -13,12 +13,10 @@ describe('MobilecoindDirectory', () => {
   >;
 
   // @ts-ignore mock
-  mockUseMobilecoindConfigs.mockImplementation(() => {
-    return {
-      ledgerDbPath: 'ledger/db/path',
-      mobilecoindDbPath: 'mobilecoin/db/path',
-    };
-  });
+  mockUseMobilecoindConfigs.mockImplementation(() => ({
+    ledgerDbPath: 'ledger/db/path',
+    mobilecoindDbPath: 'mobilecoin/db/path',
+  }));
 
   test('MobilecoindDirectory renders view and displays correct ledgerDbPath', () => {
     render(<MobilecoindDirectory />);

@@ -13,13 +13,11 @@ function setupComponent() {
   const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<typeof useMobileCoinD>;
 
   // @ts-ignore mock
-  mockUseMobileCoinD.mockImplementation(() => {
-    return {
-      accountName: 'account name',
-      b58Code: 'b58 code',
-      mobUrl: 'string',
-    };
-  });
+  mockUseMobileCoinD.mockImplementation(() => ({
+    accountName: 'account name',
+    b58Code: 'b58 code',
+    mobUrl: 'string',
+  }));
 
   const { asFragment } = renderSnapshot(<TransactionView />);
 
@@ -55,13 +53,13 @@ describe('TransactionView', () => {
       test('ReceiveMobPanel renders correctly', async () => {
         const { sendQuery } = setupComponent();
         userEvent.click(screen.getByText('Receive MOB'));
-        await waitFor(() => {
-          return expect(
+        await waitFor(() =>
+          expect(
             screen.queryByText(
               /To receive MOB, you must share your public address code to the sender./i
             )
-          ).toBeInTheDocument();
-        });
+          ).toBeInTheDocument()
+        );
         expect(sendQuery).not.toBeInTheDocument();
       });
     });

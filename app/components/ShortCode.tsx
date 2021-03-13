@@ -15,23 +15,21 @@ interface ShortCodeProps {
   code: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    lastLine: {
-      display: 'flex',
-      justifyContent: 'space-between',
-    },
-    lowercased: {
-      color: theme.palette.longCode.lowercased,
-    },
-    number: {
-      color: theme.palette.longCode.number,
-    },
-    uppercased: {
-      color: theme.palette.longCode.uppercased,
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  lastLine: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  lowercased: {
+    color: theme.palette.longCode.lowercased,
+  },
+  number: {
+    color: theme.palette.longCode.number,
+  },
+  uppercased: {
+    color: theme.palette.longCode.uppercased,
+  },
+}));
 
 const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
   const classes = useStyles();
@@ -63,13 +61,11 @@ const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
 
   return (
     <Box component="span" data-testid="short-code">
-      {colorPairs.map((pair, i) => {
-        return (
-          <Box component="span" key={[pair[0], i].join('|')} className={pair[1]}>
-            {pair[0]}
-          </Box>
-        );
-      })}
+      {colorPairs.map((pair, i) => (
+        <Box component="span" key={[pair[0], i].join('|')} className={pair[1]}>
+          {pair[0]}
+        </Box>
+      ))}
     </Box>
   );
 };

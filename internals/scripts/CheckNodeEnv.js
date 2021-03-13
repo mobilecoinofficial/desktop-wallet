@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import chalk from 'chalk';
 
 export default function CheckNodeEnv(expectedEnv) {

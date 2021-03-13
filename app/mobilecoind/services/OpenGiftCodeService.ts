@@ -48,18 +48,16 @@ class OpenGiftCodeService extends BaseService<OpenGiftCodeServiceArgs> {
       });
 
       const txProposal = GenerateTxFromTxOutListResponse.getTxProposal();
-      if (txProposal === undefined) throw new Error('Could not make TxProposal.');
+      if (txProposal === undefined) {
+        throw new Error('Could not make TxProposal.');
+      }
 
       // TODO - this logic should probably live in a util, we'll need it again
       // for correctly building SendPayment confirmations (when we nuke payAddressCode)
       const totalValueConfirmation = txProposal
         .toObject()
-        .outlayListList.map((outlay) => {
-          return BigInt(outlay.value);
-        })
-        .reduce((acc, cur) => {
-          return acc + cur;
-        });
+        .outlayListList.map((outlay) => BigInt(outlay.value))
+        .reduce((acc, cur) => acc + cur);
       const feeConfirmation = BigInt(txProposal.getFee());
 
       return this.handleSuccess({

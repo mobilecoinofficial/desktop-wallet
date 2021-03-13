@@ -20,9 +20,8 @@ import { setTheme } from '../app/theme';
 jest.mock('../app/hooks/useMobileCoinD');
 
 // This hack overrides random CSS naming
-const generateClassName: StylesOptions['generateClassName'] = (rule, sheet): string => {
-  return `${sheet.options.classNamePrefix}-${rule.key}`;
-};
+const generateClassName: StylesOptions['generateClassName'] = (rule, sheet): string =>
+  `${sheet.options.classNamePrefix}-${rule.key}`;
 
 // CBB: This function is starting to be gnarly as its use has evolved with time.
 // We should consider setting up the testing environment in an easier, unified way.
@@ -64,9 +63,7 @@ const renderSnapshot = (
   };
 
   // @ts-ignore mock
-  mockUseMobileCoinD.mockImplementation(() => {
-    return mockUseMobileCoinDValues;
-  });
+  mockUseMobileCoinD.mockImplementation(() => mockUseMobileCoinDValues);
 
   // CBB: we may want to just import a test version of App.tsx
   const renderedScreen = render(

@@ -14,37 +14,35 @@ const ERROR = 'ERROR';
 const SYNCED = 'SYNCED';
 const SYNCING = 'SYNCING';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    root: {},
-    statusContainer: {
-      margin: 'auto',
-      position: 'relative',
-    },
-    statusIconContainer: {
-      backgroundColor: theme.palette.background.dark,
-      borderRadius: '35px',
-      height: '70px',
-      left: '-35px',
-      position: 'absolute',
-      top: '-35px',
-      width: '70px',
-    },
-    statusLogo: {
-      left: '5px',
-      position: 'absolute',
-      top: '5px',
-    },
-    statusProgress: {
-      backgroundColor: 'rgba(53, 54, 58, 0.6)',
-      borderRadius: '60px',
-      left: '5px',
-      position: 'absolute',
-      top: '5px',
-    },
-    tooltip: { margin: 'auto', position: 'relative' },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {},
+  statusContainer: {
+    margin: 'auto',
+    position: 'relative',
+  },
+  statusIconContainer: {
+    backgroundColor: theme.palette.background.dark,
+    borderRadius: '35px',
+    height: '70px',
+    left: '-35px',
+    position: 'absolute',
+    top: '-35px',
+    width: '70px',
+  },
+  statusLogo: {
+    left: '5px',
+    position: 'absolute',
+    top: '5px',
+  },
+  statusProgress: {
+    backgroundColor: 'rgba(53, 54, 58, 0.6)',
+    borderRadius: '60px',
+    left: '5px',
+    position: 'absolute',
+    top: '5px',
+  },
+  tooltip: { margin: 'auto', position: 'relative' },
+}));
 
 const SyncStatus: FC = () => {
   const classes = useStyles();

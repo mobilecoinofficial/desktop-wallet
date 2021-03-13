@@ -273,10 +273,18 @@
     "reload": "RELOAD",
     "selectAll": "SELECT ALL",
     "showAll": "SHOW ALL",
-    "toggleDeveloperTools": "TOGGLE DEVELOPER TOOLS",
-    "toggleFullScreen": "TOGGLE FULL SCREEN",
     "undo": "UNDO",
-    "view": "VIEW",
+    "View": {
+      "Theme": {
+        "title": "THEME",
+        "system": "SYSTEM",
+        "light": "LIGHT",
+        "dark": "DARK"
+      },
+      "title": "VIEW",
+      "toggleDevTools": "TOGGLE DEVELOPER TOOLS",
+      "toggleFullScreen": "TOGGLE FULL SCREEN"
+    },
     "window": "WINDOW",
     "language": "LANGUAGE",
     "languages": {

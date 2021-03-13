@@ -289,10 +289,18 @@
     "reload": "Reload",
     "selectAll": "Select All",
     "showAll": "Show All",
-    "toggleDeveloperTools": "Toggle Developer Tools",
-    "toggleFullScreen": "Toggle Full Screen",
     "undo": "Undo",
-    "view": "View",
+    "View": {
+      "Theme": {
+        "title": "Theme",
+        "system": "System",
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "title": "View",
+      "toggleDevTools": "Toggle Developer Tools",
+      "toggleFullScreen": "Toggle Full Screen"
+    },
     "window": "Window",
     "language": "Language",
     "languages": {

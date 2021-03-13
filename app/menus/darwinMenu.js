@@ -54,17 +54,18 @@ const defaultTemplate = (app, mainWindow, i18n) => {
   };
 
   const submenuViewProd = {
-    label: i18n.t('Menu.view'),
+    label: i18n.t('Menu.View.title'),
     submenu: [
       {
         accelerator: 'Ctrl+Command+F',
         click: () => {
           this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
         },
-        label: i18n.t('Menu.toggleFullScreen'),
+        label: i18n.t('Menu.View.toggleFullScreen'),
       },
+      { type: 'separator' },
       {
-        label: 'Theme',
+        label: i18n.t('Menu.View.Theme.title'),
         submenu: [
           {
             checked: localStore.getTheme() === 'system',
@@ -72,7 +73,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
               nativeTheme.themeSource = 'system';
               localStore.setTheme('system');
             },
-            label: 'System',
+            label: i18n.t('Menu.View.Theme.system'),
             type: 'radio',
           },
           {
@@ -81,7 +82,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
               nativeTheme.themeSource = 'light';
               localStore.setTheme('light');
             },
-            label: 'Light',
+            label: i18n.t('Menu.View.Theme.light'),
             type: 'radio',
           },
           {
@@ -90,7 +91,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
               nativeTheme.themeSource = 'dark';
               localStore.setTheme('dark');
             },
-            label: 'Dark',
+            label: i18n.t('Menu.View.Theme.dark'),
             type: 'radio',
           },
         ],
@@ -99,12 +100,13 @@ const defaultTemplate = (app, mainWindow, i18n) => {
   };
 
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
+    submenuViewProd.submenu.push({ type: 'separator' });
     submenuViewProd.submenu.push({
       accelerator: 'Alt+Command+I',
       click: () => {
         mainWindow.webContents.toggleDevTools();
       },
-      label: 'Toggle Developer Tools',
+      label: i18n.t('Menu.View.toggleDevTools'),
     });
   }
 

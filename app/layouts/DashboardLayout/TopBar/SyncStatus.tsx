@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: '70px',
   },
   statusLogo: {
+    fill: theme.palette.background.dark,
     left: '5px',
     position: 'absolute',
     top: '5px',
@@ -97,7 +98,6 @@ const SyncStatus: FC = () => {
         <Box className={classes.statusIconContainer}>
           <CircleMOBIcon
             backgroundColor={backgroundColor}
-            color="#000"
             height={60}
             width={60}
             className={classes.statusLogo}

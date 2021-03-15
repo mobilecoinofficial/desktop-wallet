@@ -4,9 +4,9 @@ import type { FC, ReactNode } from 'react';
 import * as fullServiceApi from '../fullService/api';
 import type { BuildGiftCodeParams, BuildGiftCodeResult } from '../fullService/api/buildGiftCode';
 import type { BuildTransactionParams } from '../fullService/api/buildTransaction';
+import type { Accounts } from '../types/Account';
 import type Address from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
-import type FullServiceAccount from '../types/FullServiceAccount';
 import type { StringHex } from '../types/SpecialStrings';
 import type { TransactionLogs } from '../types/TransactionLog';
 import type TxProposal from '../types/TxProposal';
@@ -15,11 +15,6 @@ import type WalletStatus from '../types/WalletStatus';
 import LocalStore from '../utils/LocalStore';
 import sameObject from '../utils/sameObject';
 import scryptKeys from '../utils/scryptKeys';
-
-type Accounts = {
-  accountIds: StringHex[];
-  accountMap: { [accountId: string]: FullServiceAccount };
-};
 
 type Addresses = {
   addressIds: StringHex[];
@@ -31,7 +26,7 @@ type PendingSecrets = {
 };
 
 type SelectedAccount = {
-  account: FullServiceAccount;
+  account: Account;
   balanceStatus: BalanceStatus;
   mobUrl: string;
 };

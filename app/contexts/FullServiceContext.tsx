@@ -10,7 +10,7 @@ import type FullServiceAccount from '../types/FullServiceAccount';
 import type { StringHex } from '../types/SpecialStrings';
 import type TransactionLog from '../types/TransactionLog';
 import type TxProposal from '../types/TxProposal';
-import type Txo from '../types/Txo';
+import type { Txos } from '../types/Txo';
 import type WalletStatus from '../types/WalletStatus';
 import LocalStore from '../utils/LocalStore';
 import sameObject from '../utils/sameObject';
@@ -33,11 +33,6 @@ type PendingSecrets = {
 type TransactionLogs = {
   transactionLogIds: StringHex[];
   transactionLogMap: { [transactionLogId: string]: TransactionLog };
-};
-
-type Txos = {
-  txoIds: StringHex[];
-  txoMap: { [txoId: string]: Txo };
 };
 
 type SelectedAccount = {

@@ -1,5 +1,5 @@
 import type { StringHex } from '../../types/SpecialStrings';
-import type Txo from '../../types/Txo';
+import type { Txos } from '../../types/Txo';
 import axiosFullService from '../axiosFullService';
 
 const GET_ALL_TXOS_FOR_ACCOUNT_METHOD = 'get_all_txos_for_account';
@@ -8,20 +8,14 @@ type GetAllTxosByAccountParams = {
   accountId: StringHex;
 };
 
-type GetAllTxosByAccountResult = {
-  txoIds: StringHex[];
-  txoMap: { [txoId: string]: Txo };
-};
+type GetAllTxosByAccountResult = Txos;
 
 const getAllTxosByAccount = async ({
   accountId,
 }: GetAllTxosByAccountParams): Promise<GetAllTxosByAccountResult> => {
-  const { result, error } = await axiosFullService(
-    GET_ALL_TXOS_FOR_ACCOUNT_METHOD,
-    {
-      accountId,
-    },
-  );
+  const { result, error } = await axiosFullService(GET_ALL_TXOS_FOR_ACCOUNT_METHOD, {
+    accountId,
+  });
 
   if (error) {
     // TODO - I'll write up a better error handler

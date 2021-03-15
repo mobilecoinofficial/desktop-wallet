@@ -17,7 +17,12 @@ export default interface TransactionLog {
   outputTxoIds: StringHex[];
   recipientAddressId: StringB58 | null;
   sentTime: string | null; // FIX-ME: Confirm type
-  status: 'tx_status_built' | 'tx_status_pending' | 'tx_status_received' | 'tx_status_succeded' | 'tx_status_failed';
+  status:
+    | 'tx_status_built'
+    | 'tx_status_pending'
+    | 'tx_status_received'
+    | 'tx_status_succeded'
+    | 'tx_status_failed';
   submittedBlockIndex: StringUInt64 | null;
   transactionLogId: StringHex;
   valuePmob: StringUInt64;

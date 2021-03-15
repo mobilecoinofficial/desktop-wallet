@@ -237,6 +237,13 @@
     "unlockWalletButton": "Unlock this wallet"
   },
 
+  "InactivityDetect": {
+    "confirmToStay": "Unless you confirm you want to stay, the app will be closing down.",
+    "keepWorking": "Click to keep working",
+    "title": "Closing because of inactivity",
+    "tooLong": "You have been inactive too long..."
+  },
+
   "LeaveMobilecoindRunning": {
     "defaultDescription": "By default, MobileCoinD terminates when you exit the wallet. This setting allows you to leave MobileCoinD syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches.",
     "formLabel": "MobileCoinD Background Process",
@@ -308,7 +315,9 @@
   },
 
   "NavBar": {
+    "contacts": "Contacts",
     "gift": "Gifting",
+    "history": "History",
     "home": "Home",
     "settings": "Settings",
     "transaction": "Send/Receive"

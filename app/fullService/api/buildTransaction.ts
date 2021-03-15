@@ -12,7 +12,7 @@ export type BuildTransactionParams = {
   maxSpendableValue?: StringUInt64;
   recipientPublicAddress: StringB58;
   tombstoneBlock?: StringUInt64;
-  value: StringUInt64;
+  valuePmob: StringUInt64;
 };
 
 type BuildTransactionResult = {
@@ -34,7 +34,7 @@ const buildTransaction = async ({
   maxSpendableValue,
   recipientPublicAddress,
   tombstoneBlock,
-  value,
+  valuePmob,
 }: BuildTransactionParams): Promise<BuildTransactionResult> => {
   const { result, error }: AxiosFullServiceResponse = await axiosFullService(
     BUILD_TRANSACTION_METHOD,
@@ -45,11 +45,14 @@ const buildTransaction = async ({
       maxSpendableValue,
       recipientPublicAddress,
       tombstoneBlock,
-      value,
+      valuePmob,
     }
   );
-  const { txProposal } = result;
+  if (error) {
+    throw new Error(error);
+  }
 
+  const { txProposal } = result;
   // FIX-ME: assumes only 1 recipient
   const txProposalReceiverB58Code = recipientPublicAddress;
 
@@ -64,17 +67,12 @@ const buildTransaction = async ({
 
   const feeConfirmation = BigInt(txProposal.fee);
 
-  if (error) {
-    // TODO - I'll write up a better error handler
-    throw new Error(error);
-  } else {
-    return {
-      feeConfirmation,
-      totalValueConfirmation,
-      txProposal,
-      txProposalReceiverB58Code,
-    };
-  }
+  return {
+    feeConfirmation,
+    totalValueConfirmation,
+    txProposal,
+    txProposalReceiverB58Code,
+  };
 };
 
 export default buildTransaction;

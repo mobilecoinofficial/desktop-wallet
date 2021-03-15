@@ -1,15 +1,15 @@
-import type FullServiceAccount from '../../types/FullServiceAccount';
+import type Account from '../../types/Account';
 import axiosFullService from '../axiosFullService';
 
 const CREATE_ACCOUNT_METHOD = 'create_account';
 
 type CreateAccountParams = {
-  firstBlockIndex?: string,
-  name: string | null,
+  firstBlockIndex?: string;
+  name: string | null;
 };
 
 type CreateAccountResult = {
-  account: FullServiceAccount;
+  account: Account;
 };
 
 const createAccount = async ({

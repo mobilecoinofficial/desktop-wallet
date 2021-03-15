@@ -1,4 +1,4 @@
-import type FullServiceAccount from '../../types/FullServiceAccount';
+import type Account from '../../types/Account';
 import type { StringHex } from '../../types/SpecialStrings';
 import axiosFullService from '../axiosFullService';
 
@@ -10,7 +10,7 @@ type UpdateAccountNameParams = {
 };
 
 type UpdateAccountNameResult = {
-  account: FullServiceAccount;
+  account: Account;
 };
 
 const updateAccountName = async ({

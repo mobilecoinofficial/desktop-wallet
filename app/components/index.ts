@@ -11,6 +11,6 @@ export { default as SubmitButton } from './SubmitButton';
 export { default as TabPanel } from './TabPanel';
 export { default as TermsOfUse } from './TermsOfUse';
 export { default as TermsOfUseDialog } from './TermsOfUseDialog';
-export { default as TransactionInfoLabel } from './TransactionInfoLabel/TransactionInfoLabel';
+export { default as TransactionInfoLabel } from './TransactionInfoLabel';
 export { default as UnlockWalletGuard } from './UnlockWalletGuard';
 export { default as WalletGuard } from './WalletGuard';

@@ -1,4 +1,4 @@
-import type FullServiceAccount from '../../types/FullServiceAccount';
+import type Account from '../../types/Account';
 import type { StringHex } from '../../types/SpecialStrings';
 import axiosFullService from '../axiosFullService';
 
@@ -9,12 +9,10 @@ type GetAccountParams = {
 };
 
 type GetAccountResult = {
-  account: FullServiceAccount;
+  account: Account;
 };
 
-const getAccount = async ({
-  accountId,
-}: GetAccountParams): Promise<GetAccountResult> => {
+const getAccount = async ({ accountId }: GetAccountParams): Promise<GetAccountResult> => {
   const { result, error } = await axiosFullService(GET_ACCOUNT_METHOD, {
     accountId,
   });

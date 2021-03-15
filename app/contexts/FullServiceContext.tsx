@@ -596,7 +596,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     try {
       // TODO - allow this once we're setup again!
       // Attempt import
-      const txos = await fullServiceApi.getAllTxosByAccount({
+      const txos = await fullServiceApi.getAllTxosForAccount({
         accountId,
       });
 

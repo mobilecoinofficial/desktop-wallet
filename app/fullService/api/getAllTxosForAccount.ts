@@ -10,7 +10,7 @@ type GetAllTxosByAccountParams = {
 
 type GetAllTxosByAccountResult = Txos;
 
-const getAllTxosByAccount = async ({
+const getAllTxosForAccount = async ({
   accountId,
 }: GetAllTxosByAccountParams): Promise<GetAllTxosByAccountResult> => {
   const { result, error } = await axiosFullService(GET_ALL_TXOS_FOR_ACCOUNT_METHOD, {
@@ -25,4 +25,4 @@ const getAllTxosByAccount = async ({
   }
 };
 
-export default getAllTxosByAccount;
+export default getAllTxosForAccount;

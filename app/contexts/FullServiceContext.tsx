@@ -8,8 +8,9 @@ import type Address from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
 import type FullServiceAccount from '../types/FullServiceAccount';
 import type { StringHex } from '../types/SpecialStrings';
-import TransactionLog from '../types/TransactionLog';
+import type TransactionLog from '../types/TransactionLog';
 import type TxProposal from '../types/TxProposal';
+import type Txo from '../types/Txo';
 import type WalletStatus from '../types/WalletStatus';
 import LocalStore from '../utils/LocalStore';
 import sameObject from '../utils/sameObject';
@@ -34,6 +35,11 @@ type TransactionLogs = {
   transactionLogMap: { [transactionLogId: string]: TransactionLog };
 };
 
+type Txos = {
+  txoIds: StringHex[];
+  txoMap: { [txoId: string]: Txo };
+};
+
 type SelectedAccount = {
   account: FullServiceAccount;
   balanceStatus: BalanceStatus;
@@ -51,6 +57,7 @@ interface FullServiceState {
   pendingSecrets: PendingSecrets | null;
   selectedAccount: SelectedAccount;
   transactionLogs: TransactionLogs;
+  txos: Txos;
   walletStatus: WalletStatus;
 }
 
@@ -63,6 +70,7 @@ export interface FullServiceContextValue extends FullServiceState {
   createAccount: (accountName: string | null, password: string) => Promise<void>;
   deleteStoredGiftCodeB58: (storedGiftCodeB58: string) => void;
   fetchAllTransactionLogsForAccount: (accountId: StringHex) => void;
+  fetchAllTxosForAccount: (accountId: StringHex) => void;
   importAccount: (accountName: string | null, entropy: string, password: string) => Promise<void>;
   openGiftCode: (giftCodeB58: string) => Promise<OpenGiftCodeServiceSuccessData | void>;
   retrieveEntropy: (password: string) => Promise<string | void>;
@@ -106,6 +114,13 @@ type FetchAllTransactionLogsForAccountAction = {
   type: 'FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT';
   payload: {
     transactionLogs: TransactionLogs;
+  };
+};
+
+type FetchAllTxosForAccountAction = {
+  type: 'FETCH_ALL_TXOS_FOR_ACCOUNT';
+  payload: {
+    txos: Txos;
   };
 };
 
@@ -164,6 +179,7 @@ type Action =
   | ConfirmEntropyKnownAction
   | CreateAccountAction
   | FetchAllTransactionLogsForAccountAction
+  | FetchAllTxosForAccountAction
   | FetchBalanceAction
   | ImportAccountAction
   | InitializeAction
@@ -267,6 +283,14 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       return {
         ...state,
         transactionLogs,
+      };
+    }
+
+    case 'FETCH_ALL_TXOS_FOR_ACCOUNT': {
+      const { txos } = action.payload;
+      return {
+        ...state,
+        txos,
       };
     }
 
@@ -375,12 +399,14 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 }: FullServiceProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialFullServiceState);
 
-  const buildGiftCode = async (buildGiftCodeParams: BuildGiftCodeParams) =>
-    fullServiceApi.buildGiftCode(buildGiftCodeParams);
+  const buildGiftCode = async (buildGiftCodeParams: BuildGiftCodeParams) => {
+    return fullServiceApi.buildGiftCode(buildGiftCodeParams);
+  };
 
   // TODO, better error handling
-  const buildTransaction = async (buildTransactionParams: BuildTransactionParams) =>
-    fullServiceApi.buildTransaction(buildTransactionParams);
+  const buildTransaction = async (buildTransactionParams: BuildTransactionParams) => {
+    return fullServiceApi.buildTransaction(buildTransactionParams);
+  };
 
   const changePassword = async (oldPassword: string, newPassword: string) => {
     try {
@@ -573,11 +599,32 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         accountId,
       });
 
+      // TODO add logic to only trigger if different object
+
       dispatch({
         payload: {
           transactionLogs,
         },
         type: 'FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT',
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
+  const fetchAllTxosForAccount = async (accountId: StringHex) => {
+    try {
+      // TODO - allow this once we're setup again!
+      // Attempt import
+      const txos = await fullServiceApi.getAllTxosByAccount({
+        accountId,
+      });
+
+      // TODO add logic to only trigger if different object
+
+      dispatch({
+        payload: { txos },
+        type: 'FETCH_ALL_TXOS_FOR_ACCOUNT',
       });
     } catch (err) {
       throw new Error(err.message);
@@ -809,6 +856,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         createAccount,
         deleteStoredGiftCodeB58,
         fetchAllTransactionLogsForAccount,
+        fetchAllTxosForAccount,
         importAccount,
         // openGiftCode,
         // payAddressCode,

@@ -10,7 +10,9 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 
+import ShortCode from '../../../components/ShortCode';
 import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
 import { HistoryItemProps } from './HistoryItem.d';
@@ -31,16 +33,16 @@ const useStyles = makeStyles((theme: Theme) => ({
   textSmall: { fontSize: 'small' },
 }));
 
-const HistoryItem: FC<HistoryItemProps> = ({
-  amount,
-  dateTime,
-  direction,
-  name,
-  onClick,
-  sign,
-}: HistoryItemProps) => {
+const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryItemProps) => {
   const classes = useStyles();
+  const { t } = useTranslation('HistoryView');
 
+  const { assignedAddressId, direction, finalizedBlockIndex, valuePmob } = transactionLog;
+
+  // TODO - this should be a helper somewhere
+  const sign = direction === 'tx_direction_sent' ? '-' : '+';
+  const directionText =
+    direction === 'tx_direction_sent' ? t('historyItemSent') : t('historyItemReceived');
   return (
     <Grid item xs={12}>
       <Card className={classes.card}>
@@ -48,17 +50,17 @@ const HistoryItem: FC<HistoryItemProps> = ({
           <CardContent>
             <Box className={classes.internal}>
               <Typography className={classes.textLeft} display="inline" color="textPrimary">
-                <b>{name}</b>
+                {assignedAddressId ? <ShortCode code={assignedAddressId} /> : '???'}
               </Typography>
-              <TransactionInfoLabel amount={amount} sign={sign} label="&nbsp;MOB" />
+              <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label="&nbsp;MOB" />
             </Box>
 
             <Box className={classes.internal}>
               <Typography className={`${classes.textLeft} ${classes.textSmall}`} display="inline">
-                {dateTime.toLocaleDateString()}&nbsp;{dateTime.toLocaleTimeString()}
+                {`${t('finalizedBlockHeight')}${finalizedBlockIndex}`}
               </Typography>
               <Typography className={`${classes.textRight} ${classes.textSmall}`} display="inline">
-                {direction.toLocaleUpperCase()}
+                {directionText}
               </Typography>
             </Box>
           </CardContent>

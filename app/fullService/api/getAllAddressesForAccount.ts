@@ -1,4 +1,4 @@
-import type Address from '../../types/Address';
+import type { Addresses } from '../../types/Address';
 import type { StringHex } from '../../types/SpecialStrings';
 import axiosFullService from '../axiosFullService';
 
@@ -8,20 +8,14 @@ type GetAllAddressesForAccountParams = {
   accountId: StringHex;
 };
 
-type GetAllAddressesForAccountResult = {
-  addressIds: StringHex[];
-  addressMap: { [addressId: string]: Address };
-};
+type GetAllAddressesForAccountResult = Addresses;
 
 const getAllAddressesForAccount = async ({
   accountId,
 }: GetAllAddressesForAccountParams): Promise<GetAllAddressesForAccountResult> => {
-  const { result, error } = await axiosFullService(
-    GET_ALL_ADRESSES_FOR_ACCOUNT_METHOD,
-    {
-      accountId,
-    },
-  );
+  const { result, error } = await axiosFullService(GET_ALL_ADRESSES_FOR_ACCOUNT_METHOD, {
+    accountId,
+  });
 
   if (error) {
     // TODO - I'll write up a better error handler

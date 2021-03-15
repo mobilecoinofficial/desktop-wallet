@@ -4,7 +4,7 @@ export default interface Txo {
   accountStatusMap: {
     [accountId: string]: {
       txoStatus: 'unspent' | 'pending' | 'spent' | 'secreted' | 'orphaned';
-      txoType: 'minted' | 'received'
+      txoType: 'minted' | 'received';
     };
   };
   assignedSubaddress: StringB58 | null;
@@ -24,3 +24,8 @@ export default interface Txo {
   txoId: StringHex;
   valuePmob: StringUInt64;
 }
+
+export type Txos = {
+  txoIds: StringHex[];
+  txoMap: { [txoId: string]: Txo };
+};

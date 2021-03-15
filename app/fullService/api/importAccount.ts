@@ -1,16 +1,16 @@
-import type FullServiceAccount from '../../types/FullServiceAccount';
+import type Account from '../../types/Account';
 import axiosFullService from '../axiosFullService';
 
 const IMPORT_ACCOUNT_METHOD = 'import_account';
 
 type ImportAccountParams = {
-  entropy: string,
-  firstBlockIndex?: string,
-  name: string | null,
+  entropy: string;
+  firstBlockIndex?: string;
+  name: string | null;
 };
 
 type ImportAccountResult = {
-  account: FullServiceAccount;
+  account: Account;
 };
 
 const importAccount = async ({

@@ -202,6 +202,9 @@
   },
 
   "HistoryView": {
+    "finalizedBlockHeight": "Finalized Block Height: ",
+    "historyItemReceived": "RECEIVED",
+    "historyItemSent": "SENT",
     "showAllTransactions": "All",
     "showReceivedTransactions": "Received",
     "showSentTransactions": "Sent"
@@ -436,17 +439,17 @@
   "TransactionDetails": {
     "amount": "Amount",
     "addComment": "Add comment",
+    "blockHeight": "Block Height",
     "buttons": {
       "back": "Go Back",
       "cancel": "Cancel comment",
       "save": "Save comment"
     },
     "changeComment": "Change comment",
-    "date": "Date",
     "recipient": "Recipient",
     "savedComment": "Comment saved",
     "sender": "Sender",
-    "time": "Time",
+    "transactionDetails": "Transaction Details",
     "txo": "TXO",
     "txoDetails": "TXO Details",
     "typeHere": "Start typing here"

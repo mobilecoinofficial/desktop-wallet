@@ -93,7 +93,9 @@ const PICO_MOB_PRECISION = 12;
 
 const ensureMobStringPrecision = (mobString: string): string => {
   const num = Number(mobString);
-  if (num === NaN) throw new Error('mobString is NaN');
+  if (num === NaN) {
+    throw new Error('mobString is NaN');
+  }
 
   return num.toFixed(PICO_MOB_PRECISION);
 };
@@ -162,9 +164,11 @@ const SendMobForm: FC = () => {
           accountId: selectedAccount.account.accountId,
           fee: convertMobStringToPicoMobString(values.feeAmount),
           recipientPublicAddress: values.recipientPublicAddress,
-          value: convertMobStringToPicoMobString(values.mobAmount),
+          valuePmob: convertMobStringToPicoMobString(values.mobAmount),
         });
-        if (result === null || result === undefined) throw new Error('Could not build transaction.');
+        if (result === null || result === undefined) {
+          throw new Error('Could not build transaction.');
+        }
 
         const {
           feeConfirmation,
@@ -172,6 +176,7 @@ const SendMobForm: FC = () => {
           txProposal,
           txProposalReceiverB58Code,
         } = result;
+        debugger;
         setConfirmation({
           feeConfirmation,
           totalValueConfirmation,
@@ -354,9 +359,11 @@ const SendMobForm: FC = () => {
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
           // @ts-ignore
-          BigInt(mockMultipleAccounts.find((account) => {
-            return account.b58Code === values.senderPublicAddress;
-          }).balance);
+          BigInt(
+            mockMultipleAccounts.find((account) => {
+              return account.b58Code === values.senderPublicAddress;
+            }).balance
+          );
 
         let remainingBalance;
         let totalSent;

@@ -12,9 +12,7 @@ type GetTxoResult = {
   txo: Txo;
 };
 
-const getTxo = async ({
-  txoId,
-}: GetTxoParams): Promise<GetTxoResult> => {
+const getTxo = async ({ txoId }: GetTxoParams): Promise<GetTxoResult> => {
   const { result, error } = await axiosFullService(GET_TXO_METHOD, {
     txoId,
   });

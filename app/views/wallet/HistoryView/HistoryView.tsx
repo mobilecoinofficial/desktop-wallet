@@ -3,56 +3,73 @@ import type { FC } from 'react';
 
 import { Redirect } from 'react-router-dom';
 
-import getAllTransactionLogsForAccount from '../../../fullService/api/getAllTransactionLogsForAccount';
-// import getTxo from '../../../fullService/api/getTxo';
+import { LoadingScreen } from '../../../components';
 import useFullService from '../../../hooks/useFullService';
-import TransactionDetailsView, { TransactionDetailsViewProps } from '../TransactionDetailsView';
+import type TransactionLog from '../../../types/TransactionLog';
+import TransactionDetailsView from '../TransactionDetailsView';
 import HistoryList from './HistoryList';
 
 const HistoryView: FC = () => {
   const HISTORY = 'history';
   const DETAILS = 'details';
-  const LOADING = 'loading';
-  const ERROR = 'error';
 
-  const [currentData, setData] = React.useState([]);
-  const [currentTransaction, setCurrentTransaction] = React.useState(
-    {} as TransactionDetailsViewProps
-  );
-  const [showing, setShowing] = useState(LOADING);
-  const { selectedAccount } = useFullService(); // ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8
+  const [currentTransactionLog, setCurrentTransaction] = React.useState({} as TransactionLog);
+  const {
+    selectedAccount,
+    transactionLogs,
+    txos,
+    fetchAllTransactionLogsForAccount,
+    fetchAllTxosForAccount,
+  } = useFullService(); // ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8
+
+  const [showing, setShowing] = useState(HISTORY);
 
   React.useEffect(() => {
-    getAllTransactionLogsForAccount({ accountId: selectedAccount.account.accountId })
-      .then((x) => {
-        /*
-        x.transactionLogIds.forEach((y) => {
-          console.log('GOT TXO DATA!!', y);
-          getTxo({ txoId: y })
-            .then((z) => console.log('success...', z))
-            .catch((z) => console.log('failure...', z));
-        });
-        */
-        setData(x);
-        setShowing(HISTORY);
-        return x;
-      })
-      .catch(() => setShowing(ERROR));
+    fetchAllTransactionLogsForAccount(selectedAccount.account.accountId);
+    fetchAllTxosForAccount(selectedAccount.account.accountId);
   }, []);
 
+  // TODO -- this error state is fine, we should reintroduce
+  // React.useEffect(() => {
+  //   try {
+  //   } catch (err) {
+  //     setShowing(ERROR);
+  //   }
+  // }, []);
+
+  if (transactionLogs === null) {
+    return <LoadingScreen />;
+  }
+
+  if (transactionLogs.transactionLogIds.length === 0) {
+    return <span>show empty state</span>;
+  }
+
+  const buildList = (): TransactionLog[] => {
+    return transactionLogs.transactionLogIds
+      .map((id) => {
+        return transactionLogs.transactionLogMap[id];
+      })
+      .sort((a, b) => {
+        if (a.offsetCount < b.offsetCount) {
+          return 1;
+        }
+        if (b.offsetCount < a.offsetCount) {
+          return -1;
+        }
+
+        return 0;
+      })
+      .slice(0, 50);
+  };
+  // debugger;
   switch (showing) {
-    case LOADING:
-      return <span>loading GIF animation...</span>; // do we have some animation around?
-
-    case ERROR:
-      return <span>some error icon...</span>; // and do we have an error icon?
-
     case HISTORY:
       return (
         <HistoryList
-          transactionsList={currentData}
-          onTransactionClick={(trans) => {
-            setCurrentTransaction(trans);
+          transactionLogsList={buildList()}
+          onTransactionClick={(transactionLog) => {
+            setCurrentTransaction(transactionLog);
             setShowing(DETAILS);
           }}
         />
@@ -65,19 +82,11 @@ const HistoryView: FC = () => {
 
       return (
         <TransactionDetailsView
-          amount={currentTransaction.amount}
-          comment={currentTransaction.comment}
-          dateTime={currentTransaction.dateTime}
-          direction={currentTransaction.direction}
-          id={currentTransaction.id}
-          name={currentTransaction.name}
-          onChangedComment={(i, v) => {
-            console.log('Supposedly changing comment to ', i, v);
-            currentData.find((x) => x.id === i).comment = v;
-          }}
+          comment="this should come from metadata"
           onClickBack={() => setShowing(HISTORY)}
-          sign={currentTransaction.direction === 'sent' ? '-' : '+'}
-          status={currentTransaction.status}
+          onChangedComment={(t: string, c: string) => console.log(`t: ${t}, c: ${c}`)}
+          transactionLog={currentTransactionLog}
+          txos={txos}
         />
       );
 

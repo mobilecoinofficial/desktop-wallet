@@ -36,7 +36,7 @@ interface FullServiceState {
   isInitialized: boolean;
   pendingSecrets: PendingSecrets | null;
   selectedAccount: SelectedAccount;
-  transactionLogs: TransactionLogs;
+  transactionLogs: TransactionLogs | null;
   txos: Txos;
   walletStatus: WalletStatus;
 }
@@ -210,7 +210,7 @@ const initialFullServiceState: FullServiceState = {
     },
     mobUrl: '',
   },
-  transactionLogs: { transactionLogIds: [], transactionLogMap: {} },
+  transactionLogs: null,
   walletStatus: {
     isSyncedAll: false,
     localBlockCount: '',

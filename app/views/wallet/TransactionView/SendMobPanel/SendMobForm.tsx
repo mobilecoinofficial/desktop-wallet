@@ -44,19 +44,28 @@ const EMPTY_CONFIRMATION = {
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
-    button: { width: 200 },
-    center: { display: 'flex', justifyContent: 'center' },
+    button: { width: 175 },
+    center: {
+      display: 'flex',
+      fontWeight: 'bold',
+      justifyContent: 'center',
+      letterSpacing: '2px',
+    },
     code: {
-      alignItems: 'center',
       display: 'flex',
       flexDirection: 'column',
       letterSpacing: '.70rem',
-      marginRight: '-.70rem',
+      margin: 'auto',
       padding: theme.spacing(1),
+      width: 'fit-content',
     },
     form: { paddingBottom: theme.spacing(2) },
     formControlLabelRoot: { marginRight: 0 },
     label: { width: '100%' },
+    lastLine: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
     modal: {
       alignItems: 'center',
       display: 'flex',
@@ -505,6 +514,7 @@ const SendMobForm: FC = () => {
                         <LongCode
                           code={confirmation?.txProposalReceiverB58Code}
                           codeClass={classes.code}
+                          lastLineClass={classes.lastLine}
                         />
                       </Box>
                     </Box>
@@ -512,7 +522,11 @@ const SendMobForm: FC = () => {
                       <Box>
                         <p className={classes.center}>{t('senderPlus1')}</p>
                         <p className={classes.center}>{t('senderPlus2')}</p>
-                        <LongCode code={values.senderPublicAddress} codeClass={classes.code} />
+                        <LongCode
+                          code={values.senderPublicAddress}
+                          codeClass={classes.code}
+                          lastLineClass={classes.lastLine}
+                        />
                       </Box>
                     </Box>
                   </Box>
@@ -526,7 +540,7 @@ const SendMobForm: FC = () => {
                       type="text"
                     />
                   )}
-                  <Box display="flex" justifyContent="space-between">
+                  <Box display="flex" justifyContent="space-around" padding=".5em 0">
                     <Button
                       className={classes.button}
                       color="secondary"

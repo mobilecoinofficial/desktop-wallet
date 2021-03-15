@@ -49,6 +49,10 @@ const useStyles = makeStyles((theme: Theme) => {
       justifyContent: 'space-between',
       width: '100%',
     },
+    lastLine: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
     root: {
       padding: '0 10px',
     },
@@ -125,6 +129,7 @@ const AccountCard: FC<AccountCardProps> = ({
                     <LongCode
                       data-testid="account-card-long-code"
                       codeClass={classes.code}
+                      lastLineClass={classes.lastLine}
                       code={b58Code}
                     />
                   </Box>

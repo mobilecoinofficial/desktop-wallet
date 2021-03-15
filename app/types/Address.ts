@@ -10,3 +10,8 @@ export default interface Address {
   publicAddress: StringB58;
   subaddressIndex: StringUInt64;
 }
+
+export type Addresses = {
+  addressIds: StringHex[];
+  addressMap: { [addressId: string]: Address };
+};

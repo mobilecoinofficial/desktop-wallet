@@ -8,7 +8,7 @@ import type Address from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
 import type FullServiceAccount from '../types/FullServiceAccount';
 import type { StringHex } from '../types/SpecialStrings';
-import type TransactionLog from '../types/TransactionLog';
+import type { TransactionLogs } from '../types/TransactionLog';
 import type TxProposal from '../types/TxProposal';
 import type { Txos } from '../types/Txo';
 import type WalletStatus from '../types/WalletStatus';
@@ -28,11 +28,6 @@ type Addresses = {
 
 type PendingSecrets = {
   entropy: StringHex;
-};
-
-type TransactionLogs = {
-  transactionLogIds: StringHex[];
-  transactionLogMap: { [transactionLogId: string]: TransactionLog };
 };
 
 type SelectedAccount = {

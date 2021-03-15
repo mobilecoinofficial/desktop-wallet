@@ -27,3 +27,8 @@ export default interface TransactionLog {
   transactionLogId: StringHex;
   valuePmob: StringUInt64;
 }
+
+export type TransactionLogs = {
+  transactionLogIds: StringHex[];
+  transactionLogMap: { [transactionLogId: string]: TransactionLog };
+};

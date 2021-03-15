@@ -66,9 +66,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     submenuViewProd.submenu.push({
       accelerator: 'Alt+Command+I',
-      click: () => {
-        mainWindow.webContents.toggleDevTools();
-      },
+      click: () => mainWindow.webContents.toggleDevTools(),
       label: 'Toggle Developer Tools',
     });
 

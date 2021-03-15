@@ -1,12 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../../../theme';
-import { differentYearMonth } from '../../../utils/dateFunctions';
-import HistoryDateSeparator from './HistoryDateSeparator';
 import HistoryItem from './HistoryItem';
 import { HistoryListProps } from './HistoryList.d';
 
@@ -23,13 +21,12 @@ const useStyles = makeStyles((theme: Theme) => {
 });
 
 const HistoryList: FC<HistoryListProps> = ({
-  transactionsList,
+  transactionLogsList,
   onTransactionClick,
 }: HistoryListProps) => {
   const classes = useStyles();
-
   const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
-  const [dataToShow, setDataToShow] = React.useState(transactionsList);
+  const [dataToShow, setDataToShow] = React.useState(transactionLogsList);
 
   const { t } = useTranslation('HistoryView');
 
@@ -37,13 +34,13 @@ const HistoryList: FC<HistoryListProps> = ({
     setSelectedTabIndex(Number(newValue));
     switch (newValue) {
       case 0:
-        setDataToShow(transactionsList);
+        setDataToShow(transactionLogsList);
         break;
       case 1:
-        setDataToShow(transactionsList.filter((x) => x.direction === 'sent'));
+        setDataToShow(transactionLogsList.filter((x) => x.direction === 'tx_direction_sent'));
         break;
       case 2:
-        setDataToShow(transactionsList.filter((x) => x.direction === 'received'));
+        setDataToShow(transactionLogsList.filter((x) => x.direction === 'tx_direction_received'));
         break;
       default:
         throw new Error('WRONG TAB!');
@@ -66,25 +63,15 @@ const HistoryList: FC<HistoryListProps> = ({
             <Tab label={t('showReceivedTransactions')} />
           </Tabs>
         </Grid>
-        {dataToShow.map((trans, ind: number) => (
-          <Fragment key={`historyitem_${trans.id}`}>
-            {(ind === 0 ||
-              differentYearMonth(dataToShow[ind - 1].dateTime, dataToShow[ind].dateTime)) && (
-              <HistoryDateSeparator dateTime={trans.dateTime} />
-            )}
+        {dataToShow.map((transactionLog) => {
+          return (
             <HistoryItem
-              amount={trans.amount}
-              comment={trans.comment}
-              dateTime={trans.dateTime}
-              direction={trans.direction}
-              id={trans.id}
-              name={trans.name}
-              onClick={() => onTransactionClick(trans)}
-              sign={trans.direction === 'sent' ? '-' : '+'}
-              status={trans.status}
+              key={`historyitem_${transactionLog.transactionLogId}`}
+              onClick={() => onTransactionClick(transactionLog)}
+              transactionLog={transactionLog}
             />
-          </Fragment>
-        ))}
+          );
+        })}
       </Grid>
     </Box>
   );

@@ -1,15 +1,8 @@
-export interface HistoryListTrans {
-  amount: number;
-  comment: string;
-  dateTime: string;
-  direction: string;
-  id: string;
-  name: string;
-  sign: string;
-  status: string;
-}
+// TODO - this shouldn't live here
+
+import TransactionLog from '../../../types/TransactionLog';
 
 export interface HistoryListProps {
-  transactionsList: HistoryListTrans[];
-  onTransactionClick: (trans: HistoryListTrans) => void;
+  onTransactionClick: (transactionLog: TransactionLog) => void;
+  transactionLogsList: TransactionLog[];
 }

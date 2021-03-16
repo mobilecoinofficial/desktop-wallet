@@ -32,7 +32,7 @@ module.exports = {
         'ts-ignore': 'allow-with-description',
       },
     ],
-    'arrow-body-style': ['error', 'as-needed'],
+    'arrow-body-style': ['warn', 'as-needed'],
     curly: ['error', 'all'],
     'import/no-extraneous-dependencies': 'off',
     'import/order': [

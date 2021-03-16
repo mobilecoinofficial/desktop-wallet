@@ -62,7 +62,7 @@ const HistoryView: FC = () => {
       })
       .slice(0, 50);
   };
-  // debugger;
+  //
   switch (showing) {
     case HISTORY:
       return (

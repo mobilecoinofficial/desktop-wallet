@@ -43,55 +43,53 @@ const EMPTY_CONFIRMATION = {
   txProposal: null,
 };
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    button: {
-      width: 300,
-    },
-    center: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    code: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      letterSpacing: '.70rem',
-      marginRight: '-.70rem',
-      padding: theme.spacing(1),
-    },
-    form: {
-      paddingBottom: theme.spacing(2),
-    },
-    formControlLabelRoot: {
-      marginRight: 0,
-    },
-    label: {
-      width: '100%',
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-      overflow: 'auto',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      maxWidth: 800,
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  button: {
+    width: 300,
+  },
+  center: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  code: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    letterSpacing: '.70rem',
+    marginRight: '-.70rem',
+    padding: theme.spacing(1),
+  },
+  form: {
+    paddingBottom: theme.spacing(2),
+  },
+  formControlLabelRoot: {
+    marginRight: 0,
+  },
+  label: {
+    width: '100%',
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    overflow: 'auto',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    maxWidth: 800,
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+}));
 
 // TODO - ya, this definitely shouldn't live here
 const PICO_MOB_PRECISION = 12;
 
 const ensureMobStringPrecision = (mobString: string): string => {
   const num = Number(mobString);
-  if (num === NaN) {
+  if (Number.isNaN(num)) {
     throw new Error('mobString is NaN');
   }
 
@@ -99,9 +97,8 @@ const ensureMobStringPrecision = (mobString: string): string => {
 };
 
 // TODO - ya, this definitely shouldn't live here
-const convertMobStringToPicoMobString = (mobString: string): string => {
-  return ensureMobStringPrecision(mobString).replace('.', '');
-};
+const convertMobStringToPicoMobString = (mobString: string): string =>
+  ensureMobStringPrecision(mobString).replace('.', '');
 
 // TODO -- right now, we can show a progress bar for the sending modal
 // But, it would be nice to have a counter that parses up to, say, 10 seconds, before
@@ -154,37 +151,35 @@ const BuildGiftForm: FC = () => {
     });
   };
 
-  const handleConfirm = (setErrors, setStatus) => {
-    return async () => {
-      setSubmittingConfirmedGift(true);
-      setShowModal(false);
-      try {
-        if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
-          throw new Error(t('confirmationNotFound'));
-        }
-        await submitGiftCode(confirmation.txProposal, confirmation.giftCodeB58);
-        if (isMountedRef.current) {
-          setStatus({ success: true });
-          setSubmittingConfirmedGift(false);
-          setIsAwaitingConformation(false);
-          setConfirmation(EMPTY_CONFIRMATION);
-          enqueueSnackbar(t('giftCreated'), {
-            variant: 'success',
-          });
-        }
-      } catch (err) {
-        if (isMountedRef.current) {
-          setStatus({ success: false });
-          setErrors({ submit: err.message });
-          setSubmittingConfirmedGift(false);
-          setIsAwaitingConformation(false);
-          setConfirmation(EMPTY_CONFIRMATION);
-          enqueueSnackbar(t('error'), {
-            variant: 'error',
-          });
-        }
+  const handleConfirm = (setErrors, setStatus) => async () => {
+    setSubmittingConfirmedGift(true);
+    setShowModal(false);
+    try {
+      if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
+        throw new Error(t('confirmationNotFound'));
       }
-    };
+      await submitGiftCode(confirmation.txProposal, confirmation.giftCodeB58);
+      if (isMountedRef.current) {
+        setStatus({ success: true });
+        setSubmittingConfirmedGift(false);
+        setIsAwaitingConformation(false);
+        setConfirmation(EMPTY_CONFIRMATION);
+        enqueueSnackbar(t('giftCreated'), {
+          variant: 'success',
+        });
+      }
+    } catch (err) {
+      if (isMountedRef.current) {
+        setStatus({ success: false });
+        setErrors({ submit: err.message });
+        setSubmittingConfirmedGift(false);
+        setIsAwaitingConformation(false);
+        setConfirmation(EMPTY_CONFIRMATION);
+        enqueueSnackbar(t('error'), {
+          variant: 'error',
+        });
+      }
+    }
   };
 
   const createAccountLabel = (account: Account) => {
@@ -206,48 +201,42 @@ const BuildGiftForm: FC = () => {
     );
   };
 
-  const renderSenderPublicAddressOptions = (accounts: Account[], isSubmitting: boolean) => {
-    return (
-      <Box pt={2}>
-        <FormLabel className={classes.form} component="legend">
-          <Typography color="primary">{t('select')}</Typography>
-        </FormLabel>
-        <Field component={RadioGroup} name="senderPublicAddress">
-          <Box display="flex" justifyContent="space-between">
-            <Typography>{t('accountName')}</Typography>
-            <Typography>{t('accountBalance')}</Typography>
-          </Box>
-          {accounts.map((account: Account) => {
-            return (
-              <FormControlLabel
-                key={account.b58Code}
-                value={account.b58Code}
-                control={<Radio disabled={isSubmitting} />}
-                label={createAccountLabel(account)}
-                labelPlacement="end"
-                disabled={isSubmitting}
-                classes={{
-                  label: classes.label,
-                  root: classes.formControlLabelRoot,
-                }}
-              />
-            );
-          })}
-        </Field>
-      </Box>
-    );
-  };
+  const renderSenderPublicAddressOptions = (accounts: Account[], isSubmitting: boolean) => (
+    <Box pt={2}>
+      <FormLabel className={classes.form} component="legend">
+        <Typography color="primary">{t('select')}</Typography>
+      </FormLabel>
+      <Field component={RadioGroup} name="senderPublicAddress">
+        <Box display="flex" justifyContent="space-between">
+          <Typography>{t('accountName')}</Typography>
+          <Typography>{t('accountBalance')}</Typography>
+        </Box>
+        {accounts.map((account: Account) => (
+          <FormControlLabel
+            key={account.b58Code}
+            value={account.b58Code}
+            control={<Radio disabled={isSubmitting} />}
+            label={createAccountLabel(account)}
+            labelPlacement="end"
+            disabled={isSubmitting}
+            classes={{
+              label: classes.label,
+              root: classes.formControlLabelRoot,
+            }}
+          />
+        ))}
+      </Field>
+    </Box>
+  );
 
-  const validateAmount = (selectedBalance: bigint, fee: bigint) => {
-    return (valueString: string) => {
-      let error;
-      const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-      if (valueAsPicoMob + fee > selectedBalance) {
-        // TODO - probably want to replace this before launch
-        error = t('errorFee');
-      }
-      return error;
-    };
+  const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
+    let error;
+    const valueAsPicoMob = BigInt(valueString.replace('.', ''));
+    if (valueAsPicoMob + fee > selectedBalance) {
+      // TODO - probably want to replace this before launch
+      error = t('errorFee');
+    }
+    return error;
   };
 
   // We'll use this to auto-select all text when focused. This is a better user
@@ -326,9 +315,8 @@ const BuildGiftForm: FC = () => {
           // eslint-disable-next-line
           // @ts-ignore
           BigInt(
-            mockMultipleAccounts.find((account) => {
-              return account.b58Code === values.senderPublicAddress;
-            }).balance
+            mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
+              .balance
           );
 
         let remainingBalance;

@@ -31,7 +31,7 @@ import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
-import LocalStore from '../../../../utils/LocalStore';
+import * as localStore from '../../../../utils/LocalStore';
 import { makeHash } from '../../../../utils/hashing';
 import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
 
@@ -43,35 +43,33 @@ const EMPTY_CONFIRMATION = {
   txProposalReceiverB58Code: '',
 };
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    button: { width: 200 },
-    center: { display: 'flex', justifyContent: 'center' },
-    code: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      letterSpacing: '.70rem',
-      marginRight: '-.70rem',
-      padding: theme.spacing(1),
-    },
-    form: { paddingBottom: theme.spacing(2) },
-    formControlLabelRoot: { marginRight: 0 },
-    label: { width: '100%' },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  button: { width: 200 },
+  center: { display: 'flex', justifyContent: 'center' },
+  code: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    letterSpacing: '.70rem',
+    marginRight: '-.70rem',
+    padding: theme.spacing(1),
+  },
+  form: { paddingBottom: theme.spacing(2) },
+  formControlLabelRoot: { marginRight: 0 },
+  label: { width: '100%' },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+}));
 
 // TODO -- right now, we can show a progress bar for the sending modal
 // But, it would be nice to have a counter that parses up to, say, 10 seconds, before
@@ -93,9 +91,8 @@ const ensureMobStringPrecision = (mobString: string): string => {
 
 // This function assumes basic US style decimal places.
 // We'll need to revisit for differnet formats
-const convertMobStringToPicoMobString = (mobString: string): string => {
-  return ensureMobStringPrecision(mobString).replace('.', '');
-};
+const convertMobStringToPicoMobString = (mobString: string): string =>
+  ensureMobStringPrecision(mobString).replace('.', '');
 
 const convertPicoMobStringToMob = (picoMobString: string): string => {
   if (picoMobString.length <= 12) {
@@ -147,113 +144,118 @@ const SendMobForm: FC = () => {
     },
   ];
 
-  const handleOpen = (values, setStatus, setErrors) => {
-    return async () => {
-      try {
-        setIsAwaitingConformation(true);
-        const result = await buildTransaction({
-          accountId: selectedAccount.account.accountId,
-          fee: convertMobStringToPicoMobString(values.feeAmount),
-          recipientPublicAddress: values.recipientPublicAddress,
-          valuePmob: convertMobStringToPicoMobString(values.mobAmount),
-        });
-        if (result === null || result === undefined) {
-          throw new Error('Could not build transaction.');
-        }
-
-        const {
-          feeConfirmation,
-          totalValueConfirmation,
-          txProposal,
-          txProposalReceiverB58Code,
-        } = result;
-        debugger;
-        setConfirmation({
-          feeConfirmation,
-          totalValueConfirmation,
-          txProposal,
-          txProposalReceiverB58Code,
-        });
-
-        setOpen(true);
-      } catch (err) {
-        setStatus({ success: false });
-        setErrors({ submit: err.message });
-        setIsAwaitingConformation(false);
-        setConfirmation(EMPTY_CONFIRMATION);
-      }
-    };
-  };
-
-  const handleClose = (setSubmitting: (boolean: boolean) => void, resetForm: () => void) => {
-    return () => {
-      setSlideExitSpeed(0);
-      enqueueSnackbar(t('transactionCanceled'), {
-        variant: 'warning',
+  const handleOpen = (values, setStatus, setErrors) => async () => {
+    try {
+      setIsAwaitingConformation(true);
+      const result = await buildTransaction({
+        accountId: selectedAccount.account.accountId,
+        fee: convertMobStringToPicoMobString(values.feeAmount),
+        recipientPublicAddress: values.recipientPublicAddress,
+        valuePmob: convertMobStringToPicoMobString(values.mobAmount),
       });
-      setOpen(false);
-      setSubmitting(false);
-      resetForm();
+      if (result === null || result === undefined) {
+        throw new Error('Could not build transaction.');
+      }
+
+      const {
+        feeConfirmation,
+        totalValueConfirmation,
+        txProposal,
+        txProposalReceiverB58Code,
+      } = result;
+      debugger;
+      setConfirmation({
+        feeConfirmation,
+        totalValueConfirmation,
+        txProposal,
+        txProposalReceiverB58Code,
+      });
+
+      setOpen(true);
+    } catch (err) {
+      setStatus({ success: false });
+      setErrors({ submit: err.message });
       setIsAwaitingConformation(false);
       setConfirmation(EMPTY_CONFIRMATION);
-    };
+    }
+
+    const {
+      feeConfirmation,
+      totalValueConfirmation,
+      txProposal,
+      txProposalReceiverB58Code,
+    } = result;
+    setConfirmation({
+      feeConfirmation,
+      totalValueConfirmation,
+      txProposal,
+      txProposalReceiverB58Code,
+    });
+
+    setOpen(true);
+  };
+
+  const handleClose = (setSubmitting: (boolean: boolean) => void, resetForm: () => void) => () => {
+    setSlideExitSpeed(0);
+    enqueueSnackbar(t('transactionCanceled'), {
+      variant: 'warning',
+    });
+    setOpen(false);
+    setSubmitting(false);
+    resetForm();
+    setIsAwaitingConformation(false);
+    setConfirmation(EMPTY_CONFIRMATION);
   };
 
   const createAccountLabel = (account: Account) => {
     const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}:`;
     return (
       <Box display="flex" justifyContent="space-between">
-        <Typography>
+        <Typography color="textPrimary">
           {' '}
           {name}
           <ShortCode code={account.b58Code} />
         </Typography>
-        <Typography>
+        <Typography color="textPrimary">
           <MOBNumberFormat value={account.balance.toString()} valueUnit="pMOB" />
         </Typography>
       </Box>
     );
   };
 
-  const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => {
-    return (
-      <Box pt={2}>
-        <FormLabel className={classes.form} component="legend">
-          <Typography color="primary">{t('select')}</Typography>
-        </FormLabel>
-        <Field component={RadioGroup} name="senderPublicAddress">
-          <Box display="flex" justifyContent="space-between">
-            <Typography>{t('accountName')}</Typography>
-            <Typography>{t('accountBalance')}</Typography>
-          </Box>
-          {accounts.map((account: Account) => {
-            return (
-              <FormControlLabel
-                key={account.b58Code}
-                value={account.b58Code}
-                control={<Radio disabled={isSubmitting} />}
-                label={createAccountLabel(account)}
-                labelPlacement="end"
-                disabled={isSubmitting}
-                classes={{ label: classes.label }}
-              />
-            );
-          })}
-        </Field>
-      </Box>
-    );
-  };
+  const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
+    <Box pt={2}>
+      <FormLabel className={classes.form} component="legend">
+        <Typography color="primary">{t('select')}</Typography>
+      </FormLabel>
+      <Field component={RadioGroup} name="senderPublicAddress">
+        <Box display="flex" justifyContent="space-between">
+          <Typography color="textPrimary">{t('accountName')}</Typography>
+          <Typography color="textPrimary">{t('accountBalance')}</Typography>
+        </Box>
+        {accounts.map((account: Account) => (
+          <FormControlLabel
+            key={account.b58Code}
+            value={account.b58Code}
+            control={<Radio disabled={isSubmitting} />}
+            label={createAccountLabel(account)}
+            labelPlacement="end"
+            disabled={isSubmitting}
+            classes={{ label: classes.label }}
+          />
+        ))}
+      </Field>
+    </Box>
+  );
 
-  const validateAmount = (selectedBalance: bigint, fee: bigint) => {
-    return (valueString: string) => {
-      let error;
-      const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-      if (valueAsPicoMob + fee > selectedBalance) {
-        // TODO - probably want to replace this before launch
-        error = t('errorFee');
-      }
-      return error;
-    };
+  const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
+    let error;
+    const valueAsPicoMob = BigInt(valueString.replace('.', ''));
+    if (valueAsPicoMob + fee > selectedBalance) {
+      // TODO - probably want to replace this before launch
+      error = t('errorFee');
+    }
+    return error;
   };
 
   // We'll use this to auto-select all text when focused. This is a better user
@@ -263,7 +265,6 @@ const SendMobForm: FC = () => {
     event.target.select();
   };
 
-  const localStore = new LocalStore();
   const minimumForPin = String(localStore.getMinimumForPin());
   const hashedPin = localStore.getHashedPin();
 
@@ -351,9 +352,8 @@ const SendMobForm: FC = () => {
           // eslint-disable-next-line
           // @ts-ignore
           BigInt(
-            mockMultipleAccounts.find((account) => {
-              return account.b58Code === values.senderPublicAddress;
-            }).balance
+            mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
+              .balance
           );
 
         let remainingBalance;

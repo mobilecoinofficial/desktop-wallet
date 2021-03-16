@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { app } from 'electron';
 import { autoUpdater } from 'electron-updater';
 

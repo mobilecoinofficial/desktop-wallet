@@ -19,9 +19,8 @@ import { setTheme } from '../app/theme';
 jest.mock('../app/hooks/useFullService');
 
 // This hack overrides random CSS naming
-const generateClassName: StylesOptions['generateClassName'] = (rule, sheet): string => {
-  return `${sheet.options.classNamePrefix}-${rule.key}`;
-};
+const generateClassName: StylesOptions['generateClassName'] = (rule, sheet): string =>
+  `${sheet.options.classNamePrefix}-${rule.key}`;
 
 // CBB: This function is starting to be gnarly as its use has evolved with time.
 // We should consider setting up the testing environment in an easier, unified way.

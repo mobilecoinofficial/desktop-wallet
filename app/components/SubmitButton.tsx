@@ -12,18 +12,16 @@ interface SubmitButtonProps {
   testID?: string;
 }
 
-const useStyles = makeStyles(() => {
-  return {
-    buttonProgress: {
-      left: '50%',
-      marginLeft: -12,
-      marginTop: -12,
-      position: 'absolute',
-      top: '50%',
-    },
-    root: { position: 'relative' },
-  };
-});
+const useStyles = makeStyles(() => ({
+  buttonProgress: {
+    left: '50%',
+    marginLeft: -12,
+    marginTop: -12,
+    position: 'absolute',
+    top: '50%',
+  },
+  root: { position: 'relative' },
+}));
 
 const SubmitButton: FC<SubmitButtonProps> = ({
   disabled,

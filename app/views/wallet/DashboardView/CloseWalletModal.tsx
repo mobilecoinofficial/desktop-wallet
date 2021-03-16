@@ -8,25 +8,23 @@ import { useTranslation } from 'react-i18next';
 import { SubmitButton } from '../../../components';
 import { Theme } from '../../../theme';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    button: {
-      maxWidth: 300,
-      width: '35vw',
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(3, 4),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  button: {
+    maxWidth: 300,
+    width: '35vw',
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(3, 4),
+  },
+}));
 
 const CloseWalletModal: FC = () => {
   const classes = useStyles();

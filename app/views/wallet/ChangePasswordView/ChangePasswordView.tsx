@@ -25,58 +25,56 @@ import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    button: {
-      width: 200,
-    },
-    cardContainer: {
-      paddingBottom: 64,
-      paddingTop: 8 * 4,
-    },
-    cardContent: {
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: 400,
-      padding: theme.spacing(4),
-    },
-    center: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    code: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      letterSpacing: '.70rem',
-      marginRight: '-.70rem',
-      padding: theme.spacing(1),
-    },
-    form: {
-      paddingBottom: theme.spacing(2),
-    },
-    label: {
-      width: '100%',
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  button: {
+    width: 200,
+  },
+  cardContainer: {
+    paddingBottom: 64,
+    paddingTop: 8 * 4,
+  },
+  cardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: 400,
+    padding: theme.spacing(4),
+  },
+  center: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  code: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    letterSpacing: '.70rem',
+    marginRight: '-.70rem',
+    padding: theme.spacing(1),
+  },
+  form: {
+    paddingBottom: theme.spacing(2),
+  },
+  label: {
+    width: '100%',
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+}));
 
 const ChangePasswordView: FC = () => {
   const classes = useStyles();
@@ -147,53 +145,51 @@ const ChangePasswordView: FC = () => {
             }
           }}
         >
-          {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
-            return (
-              <Form>
-                <Box pt={4}>
-                  <FormLabel component="legend">
-                    <Typography color="primary">{t('formLabel')}</Typography>
-                  </FormLabel>
-                  <Field
-                    component={TextField}
-                    fullWidth
-                    label={t('oldPasswordLabel')}
-                    margin="normal"
-                    name="oldPassword"
-                    type="password"
-                  />
-                  <Field
-                    component={TextField}
-                    fullWidth
-                    label={t('newPasswordLabel')}
-                    margin="normal"
-                    name="newPassword"
-                    type="password"
-                  />
-                  <Field
-                    component={TextField}
-                    fullWidth
-                    label={t('passwordConfirmationLabel')}
-                    margin="normal"
-                    name="newPasswordConfirmation"
-                    type="password"
-                  />
+          {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+            <Form>
+              <Box pt={4}>
+                <FormLabel component="legend">
+                  <Typography color="primary">{t('formLabel')}</Typography>
+                </FormLabel>
+                <Field
+                  component={TextField}
+                  fullWidth
+                  label={t('oldPasswordLabel')}
+                  margin="normal"
+                  name="oldPassword"
+                  type="password"
+                />
+                <Field
+                  component={TextField}
+                  fullWidth
+                  label={t('newPasswordLabel')}
+                  margin="normal"
+                  name="newPassword"
+                  type="password"
+                />
+                <Field
+                  component={TextField}
+                  fullWidth
+                  label={t('passwordConfirmationLabel')}
+                  margin="normal"
+                  name="newPasswordConfirmation"
+                  type="password"
+                />
+              </Box>
+              {errors.submit && (
+                <Box mt={3}>
+                  <FormHelperText error>{errors.submit}</FormHelperText>
                 </Box>
-                {errors.submit && (
-                  <Box mt={3}>
-                    <FormHelperText error>{errors.submit}</FormHelperText>
-                  </Box>
-                )}
-                <SubmitButton
-                  disabled={!dirty || !isValid || isSubmitting}
-                  onClick={submitForm}
-                  isSubmitting={isSubmitting}
-                >
-                  {t('changePasswordButton')}
-                </SubmitButton>
-              </Form>
-            );
-          }}
+              )}
+              <SubmitButton
+                disabled={!dirty || !isValid || isSubmitting}
+                onClick={submitForm}
+                isSubmitting={isSubmitting}
+              >
+                {t('changePasswordButton')}
+              </SubmitButton>
+            </Form>
+          )}
         </Formik>
       </Box>
     </Container>

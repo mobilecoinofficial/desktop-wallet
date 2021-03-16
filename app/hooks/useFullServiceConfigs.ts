@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import LocalStore from '../utils/LocalStore';
+import * as localStore from '../utils/LocalStore';
 
 interface UseFullServiceConfigs {
   leaveFullServiceRunning: boolean;
@@ -10,8 +10,7 @@ interface UseFullServiceConfigs {
 }
 
 const useFullServiceConfigs = (): UseFullServiceConfigs => {
-  const LocalStoreInstance = new LocalStore();
-  const initialLeaveFullServiceRunningStore = LocalStoreInstance.getLeaveFullServiceRunning();
+  const initialLeaveFullServiceRunningStore = localStore.getLeaveFullServiceRunning();
   // This coerces initial state of null to false
   const initialLeaveFullServiceRunningState = initialLeaveFullServiceRunningStore === true;
   const [leaveFullServiceRunning, setLeaveFullServiceRunning] = useState(
@@ -19,16 +18,16 @@ const useFullServiceConfigs = (): UseFullServiceConfigs => {
   );
 
   const toggleLeaveFullServiceRunning = () => {
-    const previousLeaveFullServiceRunningState = LocalStoreInstance.getLeaveFullServiceRunning();
+    const previousLeaveFullServiceRunningState = localStore.getLeaveFullServiceRunning();
     const newLeaveFullServiceRunningState = !previousLeaveFullServiceRunningState;
-    LocalStoreInstance.setLeaveFullServiceRunning(newLeaveFullServiceRunningState);
+    localStore.setLeaveFullServiceRunning(newLeaveFullServiceRunningState);
 
     setLeaveFullServiceRunning(newLeaveFullServiceRunningState);
   };
 
   // Paths
-  const ledgerDbPath = LocalStoreInstance.getFullServiceLedgerDbPath();
-  const fullServiceDbPath = LocalStoreInstance.getFullServiceDbPath();
+  const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
+  const fullServiceDbPath = localStore.getFullServiceDbPath();
 
   return {
     fullServiceDbPath,

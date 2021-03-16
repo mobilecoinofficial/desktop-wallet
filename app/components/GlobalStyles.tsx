@@ -2,8 +2,8 @@ import type { FC } from 'react';
 
 import { createStyles, makeStyles } from '@material-ui/core';
 
-const useStyles = makeStyles(() => {
-  return createStyles({
+const useStyles = makeStyles(() =>
+  createStyles({
     '@global': {
       '#root': {
         height: '100%',
@@ -26,8 +26,8 @@ const useStyles = makeStyles(() => {
         width: '100%',
       },
     },
-  });
-});
+  })
+);
 
 const GlobalStyles: FC = () => {
   useStyles();

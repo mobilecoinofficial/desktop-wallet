@@ -13,24 +13,22 @@ interface BalanceProps {
   isSynced: boolean;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    icon: {
-      height: 25,
-      paddingRight: 5,
-      width: 25,
-    },
-    item: {
-      padding: theme.spacing(3),
-      textAlign: 'center',
-    },
-    valueContainer: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  icon: {
+    height: 25,
+    paddingRight: 5,
+    width: 25,
+  },
+  item: {
+    padding: theme.spacing(3),
+    textAlign: 'center',
+  },
+  valueContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}));
 
 const BalanceIndicator: FC<BalanceProps> = ({ balance, isSynced }: BalanceProps) => {
   const classes = useStyles();

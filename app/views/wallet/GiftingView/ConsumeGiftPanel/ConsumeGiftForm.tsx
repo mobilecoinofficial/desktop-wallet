@@ -38,47 +38,45 @@ const EMPTY_CONFIRMATION = {
   txProposal: null,
 };
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    button: {
-      width: 300,
-    },
-    center: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    code: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      letterSpacing: '.70rem',
-      marginRight: '-.70rem',
-      padding: theme.spacing(1),
-    },
-    form: {
-      paddingBottom: theme.spacing(2),
-    },
-    formControlLabelRoot: {
-      marginRight: 0,
-    },
-    label: {
-      width: '100%',
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      maxWidth: 800,
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  button: {
+    width: 300,
+  },
+  center: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  code: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    letterSpacing: '.70rem',
+    marginRight: '-.70rem',
+    padding: theme.spacing(1),
+  },
+  form: {
+    paddingBottom: theme.spacing(2),
+  },
+  formControlLabelRoot: {
+    marginRight: 0,
+  },
+  label: {
+    width: '100%',
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    maxWidth: 800,
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+}));
 
 // TODO -- right now, we can show a progress bar for the sending modal
 // But, it would be nice to have a counter that parses up to, say, 10 seconds, before
@@ -116,39 +114,37 @@ const ConsumeGiftForm: FC = () => {
     });
   };
 
-  const handleConfirm = (setErrors, setStatus) => {
-    return async () => {
-      setSubmittingConfirmedGift(true);
-      setShowModal(false);
-      try {
-        if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
-          throw new Error(t('confirmationNotFound'));
-        }
-
-        await submitTransaction(confirmation.txProposal);
-        if (isMountedRef.current) {
-          setStatus({ success: true });
-          setSubmittingConfirmedGift(false);
-          setIsAwaitingConformation(false);
-          setConfirmation(EMPTY_CONFIRMATION);
-          enqueueSnackbar(t('confirmation'), {
-            variant: 'success',
-          });
-        }
-      } catch (err) {
-        if (isMountedRef.current) {
-          const santitizedError = err.message === t('error13') ? t('giftClaimed') : err.message;
-          setStatus({ success: false });
-          setErrors({ submit: santitizedError });
-          setSubmittingConfirmedGift(false);
-          setIsAwaitingConformation(false);
-          setConfirmation(EMPTY_CONFIRMATION);
-          enqueueSnackbar(t('error'), {
-            variant: 'error',
-          });
-        }
+  const handleConfirm = (setErrors, setStatus) => async () => {
+    setSubmittingConfirmedGift(true);
+    setShowModal(false);
+    try {
+      if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
+        throw new Error(t('confirmationNotFound'));
       }
-    };
+
+      await submitTransaction(confirmation.txProposal);
+      if (isMountedRef.current) {
+        setStatus({ success: true });
+        setSubmittingConfirmedGift(false);
+        setIsAwaitingConformation(false);
+        setConfirmation(EMPTY_CONFIRMATION);
+        enqueueSnackbar(t('confirmation'), {
+          variant: 'success',
+        });
+      }
+    } catch (err) {
+      if (isMountedRef.current) {
+        const santitizedError = err.message === t('error13') ? t('giftClaimed') : err.message;
+        setStatus({ success: false });
+        setErrors({ submit: santitizedError });
+        setSubmittingConfirmedGift(false);
+        setIsAwaitingConformation(false);
+        setConfirmation(EMPTY_CONFIRMATION);
+        enqueueSnackbar(t('error'), {
+          variant: 'error',
+        });
+      }
+    }
   };
 
   const createAccountLabel = (account: Account) => {
@@ -156,11 +152,11 @@ const ConsumeGiftForm: FC = () => {
       account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
     return (
       <Box display="flex" justifyContent="space-between">
-        <Typography>
+        <Typography color="textPrimary">
           {name}
           <ShortCode code={account.b58Code} />
         </Typography>
-        <Typography>
+        <Typography color="textPrimary">
           <MOBNumberFormat
             value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
             valueUnit="pMOB"
@@ -170,37 +166,33 @@ const ConsumeGiftForm: FC = () => {
     );
   };
 
-  const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => {
-    return (
-      <Box pt={2}>
-        <FormLabel className={classes.form} component="legend">
-          <Typography color="primary">{t('select')}</Typography>
-        </FormLabel>
-        <Field component={RadioGroup} name="senderPublicAddress">
-          <Box display="flex" justifyContent="space-between">
-            <Typography>{t('accountName')}</Typography>
-            <Typography>{t('accountBalance')}</Typography>
-          </Box>
-          {accounts.map((account: Account) => {
-            return (
-              <FormControlLabel
-                key={account.b58Code}
-                value={account.b58Code}
-                control={<Radio disabled={isSubmitting} />}
-                label={createAccountLabel(account)}
-                labelPlacement="end"
-                disabled={isSubmitting}
-                classes={{
-                  label: classes.label,
-                  root: classes.formControlLabelRoot,
-                }}
-              />
-            );
-          })}
-        </Field>
-      </Box>
-    );
-  };
+  const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
+    <Box pt={2}>
+      <FormLabel className={classes.form} component="legend">
+        <Typography color="primary">{t('select')}</Typography>
+      </FormLabel>
+      <Field component={RadioGroup} name="senderPublicAddress">
+        <Box display="flex" justifyContent="space-between">
+          <Typography color="textPrimary">{t('accountName')}</Typography>
+          <Typography color="textPrimary">{t('accountBalance')}</Typography>
+        </Box>
+        {accounts.map((account: Account) => (
+          <FormControlLabel
+            key={account.b58Code}
+            value={account.b58Code}
+            control={<Radio disabled={isSubmitting} />}
+            label={createAccountLabel(account)}
+            labelPlacement="end"
+            disabled={isSubmitting}
+            classes={{
+              label: classes.label,
+              root: classes.formControlLabelRoot,
+            }}
+          />
+        ))}
+      </Field>
+    </Box>
+  );
 
   return (
     <Formik
@@ -248,9 +240,8 @@ const ConsumeGiftForm: FC = () => {
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
           // @ts-ignore
-          mockMultipleAccounts.find((account) => {
-            return account.b58Code === values.senderPublicAddress;
-          }).balance;
+          mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
+            .balance;
         let increasedBalance;
         let totalSent;
         if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {

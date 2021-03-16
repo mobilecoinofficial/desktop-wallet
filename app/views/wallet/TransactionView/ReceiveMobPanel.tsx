@@ -7,20 +7,18 @@ import AccountCard from '../../../components/AccountCard';
 import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    cardContainer: {
-      paddingBottom: 64,
-      paddingTop: 64,
-    },
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      minHeight: '100%',
-      paddingBottom: theme.spacing(3),
-      paddingTop: theme.spacing(3),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  cardContainer: {
+    paddingBottom: 64,
+    paddingTop: 64,
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3),
+  },
+}));
 
 const ReceiveMobPanel: FC = () => {
   const { selectedAccount } = useFullService();

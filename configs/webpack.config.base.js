@@ -31,8 +31,8 @@ export default {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
         exclude: /node_modules/,
+        test: /\.tsx?$/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -44,17 +44,9 @@ export default {
   },
 
   output: {
+    libraryTarget: 'commonjs2',
     path: path.join(__dirname, '..', 'app'),
     // https://github.com/webpack/webpack/issues/1114
-    libraryTarget: 'commonjs2',
-  },
-
-  /**
-   * Determine the array of extensions that should be used to resolve modules.
-   */
-  resolve: {
-    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
-    modules: [path.join(__dirname, '..', 'app'), 'node_modules'],
   },
 
   plugins: [
@@ -74,4 +66,12 @@ export default {
     //   ],
     // }),
   ],
+
+  /**
+   * Determine the array of extensions that should be used to resolve modules.
+   */
+  resolve: {
+    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+    modules: [path.join(__dirname, '..', 'app'), 'node_modules'],
+  },
 };

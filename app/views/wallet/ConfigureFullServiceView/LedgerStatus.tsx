@@ -32,14 +32,12 @@ const LedgerStatus: FC = () => {
     currentHeight: number | string | null,
     maxHeight: number | null,
     percentSynced: number | string | null
-  ) => {
-    return {
-      blockType,
-      currentHeight,
-      maxHeight,
-      percentSynced,
-    };
-  };
+  ) => ({
+    blockType,
+    currentHeight,
+    maxHeight,
+    percentSynced,
+  });
 
   const percentAccountSynced =
     networkBlockIndexBigInt < accountBlockIndexBigInt
@@ -102,18 +100,16 @@ const LedgerStatus: FC = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => {
-                return (
-                  <TableRow key={row.blockType}>
-                    <TableCell component="th" scope="row">
-                      {row.blockType}
-                    </TableCell>
-                    <TableCell align="right">{row.currentHeight}</TableCell>
-                    <TableCell align="right">{row.maxHeight}</TableCell>
-                    <TableCell align="right">{row.percentSynced}</TableCell>
-                  </TableRow>
-                );
-              })}
+              {rows.map((row) => (
+                <TableRow key={row.blockType}>
+                  <TableCell component="th" scope="row">
+                    {row.blockType}
+                  </TableCell>
+                  <TableCell align="right">{row.currentHeight}</TableCell>
+                  <TableCell align="right">{row.maxHeight}</TableCell>
+                  <TableCell align="right">{row.percentSynced}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

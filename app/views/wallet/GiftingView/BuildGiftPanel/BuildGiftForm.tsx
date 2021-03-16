@@ -31,7 +31,7 @@ import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
-import LocalStore from '../../../../utils/LocalStore';
+import * as localStore from '../../../../utils/LocalStore';
 import { makeHash } from '../../../../utils/hashing';
 import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
 
@@ -180,6 +180,16 @@ const BuildGiftForm: FC = () => {
         });
       }
     }
+    await submitGiftCode(confirmation.txProposal, confirmation.giftB58Code);
+    if (isMountedRef.current) {
+      setStatus({ success: true });
+      setSubmittingConfirmedGift(false);
+      setIsAwaitingConformation(false);
+      setConfirmation(EMPTY_CONFIRMATION);
+      enqueueSnackbar(t('giftCreated'), {
+        variant: 'success',
+      });
+    }
   };
 
   const createAccountLabel = (account: Account) => {
@@ -187,11 +197,11 @@ const BuildGiftForm: FC = () => {
       account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
     return (
       <Box display="flex" justifyContent="space-between">
-        <Typography>
+        <Typography color="textPrimary">
           {name}
           <ShortCode code={account.b58Code} />
         </Typography>
-        <Typography>
+        <Typography color="textPrimary">
           <MOBNumberFormat
             value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
             valueUnit="pMOB"
@@ -208,8 +218,8 @@ const BuildGiftForm: FC = () => {
       </FormLabel>
       <Field component={RadioGroup} name="senderPublicAddress">
         <Box display="flex" justifyContent="space-between">
-          <Typography>{t('accountName')}</Typography>
-          <Typography>{t('accountBalance')}</Typography>
+          <Typography color="textPrimary">{t('accountName')}</Typography>
+          <Typography color="textPrimary">{t('accountBalance')}</Typography>
         </Box>
         {accounts.map((account: Account) => (
           <FormControlLabel
@@ -246,7 +256,6 @@ const BuildGiftForm: FC = () => {
     event.target.select();
   };
 
-  const localStore = new LocalStore();
   const minimumForPin = String(localStore.getMinimumForPin());
   const hashedPin = localStore.getHashedPin();
 
@@ -392,12 +401,16 @@ const BuildGiftForm: FC = () => {
               <Slide in={showModal} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <Container className={classes.paper}>
                   <Box py={2}>
-                    <h2 id="transition-modal-title">{t('giftConfirmation')}</h2>
-                    <p id="transition-modal-description">{t('giftConfirmationDescription')}:</p>
+                    <Typography variant="h1" color="textPrimary">
+                      {t('giftConfirmation')}
+                    </Typography>
+                    <Typography variant="p" color="textPrimary">
+                      {t('giftConfirmationDescription')}:
+                    </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('accountBalance')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('accountBalance')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -406,8 +419,8 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>---</Typography>
-                    <Typography>---</Typography>
+                    <Typography color="textPrimary">---</Typography>
+                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="primary">{t('giftValue')}:</Typography>
@@ -420,8 +433,8 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('fee')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('fee')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -430,8 +443,8 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('total')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('total')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -440,12 +453,12 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>---</Typography>
-                    <Typography>---</Typography>
+                    <Typography color="textPrimary">---</Typography>
+                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('remaining')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('remaining')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"

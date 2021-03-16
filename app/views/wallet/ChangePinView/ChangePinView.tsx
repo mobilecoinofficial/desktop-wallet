@@ -25,64 +25,60 @@ import routePaths from '../../../constants/routePaths';
 import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
-import LocalStore from '../../../utils/LocalStore';
+import * as localStore from '../../../utils/LocalStore';
 import { makeHash } from '../../../utils/hashing';
 import isValidPin from '../../../utils/isValidPin';
 
-const localStore = new LocalStore();
-
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    button: {
-      width: 200,
-    },
-    cardContainer: {
-      paddingBottom: 64,
-      paddingTop: 8 * 4,
-    },
-    cardContent: {
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: 400,
-      padding: theme.spacing(4),
-    },
-    center: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    code: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      letterSpacing: '.70rem',
-      marginRight: '-.70rem',
-      padding: theme.spacing(1),
-    },
-    form: {
-      paddingBottom: theme.spacing(2),
-    },
-    label: {
-      width: '100%',
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      display: 'flex',
-      flexDirection: 'column',
-      minHeight: '100vh',
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  button: {
+    width: 200,
+  },
+  cardContainer: {
+    paddingBottom: 64,
+    paddingTop: 8 * 4,
+  },
+  cardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: 400,
+    padding: theme.spacing(4),
+  },
+  center: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  code: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    letterSpacing: '.70rem',
+    marginRight: '-.70rem',
+    padding: theme.spacing(1),
+  },
+  form: {
+    paddingBottom: theme.spacing(2),
+  },
+  label: {
+    width: '100%',
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+  },
+}));
 
 const ChangePinView: FC = () => {
   const classes = useStyles();
@@ -162,70 +158,68 @@ const ChangePinView: FC = () => {
             }
           }}
         >
-          {({ errors, isSubmitting, dirty, isValid, submitForm }) => {
-            return (
-              <Form>
-                <Box>
-                  <Field
-                    component={TextField}
-                    fullWidth
-                    label={t('currentPasswordLabel')}
-                    margin="normal"
-                    name="currentPassword"
-                    type="password"
-                  />
-                  <Field
-                    component={TextField}
-                    fullWidth
-                    label={t('newPinLabel')}
-                    margin="normal"
-                    name="newPin"
-                    type="Pin"
-                    validate={validatePin}
-                  />
-                  <Field
-                    component={TextField}
-                    fullWidth
-                    label={t('pinConfirmationLabel')}
-                    margin="normal"
-                    name="newPinConfirmation"
-                    type="Pin"
-                    validate={validatePin}
-                  />
-                  <Field
-                    component={TextField}
-                    fullWidth
-                    label={t('minimumForPin')}
-                    margin="normal"
-                    name="minimumForPin"
-                    id="minimumForPin"
-                    type="text"
-                    onFocus={handleSelect}
-                    InputProps={{
-                      inputComponent: MOBNumberFormat,
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <MOBIcon height={20} width={20} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
+          {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+            <Form>
+              <Box>
+                <Field
+                  component={TextField}
+                  fullWidth
+                  label={t('currentPasswordLabel')}
+                  margin="normal"
+                  name="currentPassword"
+                  type="password"
+                />
+                <Field
+                  component={TextField}
+                  fullWidth
+                  label={t('newPinLabel')}
+                  margin="normal"
+                  name="newPin"
+                  type="Pin"
+                  validate={validatePin}
+                />
+                <Field
+                  component={TextField}
+                  fullWidth
+                  label={t('pinConfirmationLabel')}
+                  margin="normal"
+                  name="newPinConfirmation"
+                  type="Pin"
+                  validate={validatePin}
+                />
+                <Field
+                  component={TextField}
+                  fullWidth
+                  label={t('minimumForPin')}
+                  margin="normal"
+                  name="minimumForPin"
+                  id="minimumForPin"
+                  type="text"
+                  onFocus={handleSelect}
+                  InputProps={{
+                    inputComponent: MOBNumberFormat,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MOBIcon height={20} width={20} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+              {errors.submit && (
+                <Box mt={3}>
+                  <FormHelperText error>{errors.submit}</FormHelperText>
                 </Box>
-                {errors.submit && (
-                  <Box mt={3}>
-                    <FormHelperText error>{errors.submit}</FormHelperText>
-                  </Box>
-                )}
-                <SubmitButton
-                  disabled={!dirty || !isValid || isSubmitting}
-                  onClick={submitForm}
-                  isSubmitting={isSubmitting}
-                >
-                  {t('changePinButton')}
-                </SubmitButton>
-              </Form>
-            );
-          }}
+              )}
+              <SubmitButton
+                disabled={!dirty || !isValid || isSubmitting}
+                onClick={submitForm}
+                isSubmitting={isSubmitting}
+              >
+                {t('changePinButton')}
+              </SubmitButton>
+            </Form>
+          )}
         </Formik>
       </Box>
     </Container>

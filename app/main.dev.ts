@@ -14,7 +14,7 @@ import 'regenerator-runtime/runtime';
 import { exec, spawn } from 'child_process';
 import path from 'path';
 
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 
@@ -24,7 +24,7 @@ import languages from './constants/languages';
 import getPlatform from './get-platform';
 import i18n from './i18next.config';
 import menuFactoryService from './menuFactory';
-import LocalStore from './utils/LocalStore';
+import * as localStore from './utils/LocalStore';
 
 import './utils/autoupdate';
 
@@ -55,8 +55,6 @@ if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true')
   require('electron-debug')();
 }
 
-const LocalStoreInstance = new LocalStore();
-
 const installExtensions = async () => {
   // eslint-disable-next-line
   const installer = require('electron-devtools-installer');
@@ -67,9 +65,7 @@ const installExtensions = async () => {
   ];
 
   return Promise.all(
-    extensions.map((name) => {
-      return installer.default(installer[name], forceDownload);
-    })
+    extensions.map((name) => installer.default(installer[name], forceDownload))
   ).catch(console.log);
 };
 
@@ -103,13 +99,13 @@ const spawnAPIBinaries = () => {
   // TODO - delete the console logs
   console.log('ledgerFullServiceDbPath', ledgerFullServiceDbPath);
   console.log('fullServiceDbPath', fullServiceDbPath);
-  LocalStoreInstance.setLedgerDbPath(ledgerFullServiceDbPath);
-  LocalStoreInstance.setFullServiceDbPath(fullServiceDbPath);
   spawn(
     fullServiceExecPath,
     [ledgerFullServiceDbPath, fullServiceDbPath, [fullServiceDbPath, 'wallet.db'].join('/')],
     {}
   );
+  localStore.setLedgerDbPath(ledgerFullServiceDbPath);
+  localStore.setFullServiceDbPath(fullServiceDbPath);
 };
 
 const createWindow = async () => {
@@ -121,9 +117,7 @@ const createWindow = async () => {
     ? path.join(process.resourcesPath, 'resources')
     : path.join(__dirname, '../resources');
 
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
+  const getAssetPath = (...paths: string[]): string => path.join(RESOURCES_PATH, ...paths);
 
   mainWindow = new BrowserWindow({
     height: INITIAL_WINDOW_HEIGHT,
@@ -152,14 +146,10 @@ const createWindow = async () => {
 
   // Reject all session permission requests from remote content
   mainWindow.webContents.session.setPermissionRequestHandler(
-    (_webContents, _permission, callback) => {
-      return callback(false);
-    }
+    (_webContents, _permission, callback) => callback(false)
   );
 
-  mainWindow.webContents.session.setPermissionCheckHandler(() => {
-    return false;
-  });
+  mainWindow.webContents.session.setPermissionCheckHandler(() => false);
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
@@ -212,6 +202,19 @@ const createWindow = async () => {
 
   menuFactoryService.buildMenu(app, mainWindow, i18n);
 
+  nativeTheme.on('updated', () => {
+    mainWindow?.webContents.send(
+      nativeTheme.shouldUseDarkColors ? 'set-theme-dark' : 'set-theme-light'
+    );
+  });
+
+  nativeTheme.themeSource = (localStore.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
+
+  ipcMain.on('get-theme', (event) => {
+    // eslint-disable-next-line no-param-reassign
+    event.returnValue = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+  });
+
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
@@ -236,9 +239,7 @@ if (process.env.E2E_BUILD === 'true') {
   app
     .whenReady()
     .then(createWindow)
-    .catch(() => {
-      return null;
-    });
+    .catch(() => null);
 } else {
   app.on('ready', () => {
     spawnAPIBinaries();
@@ -264,7 +265,7 @@ ipcMain.on('close-app', () => {
 });
 
 ipcMain.on('reset-ledger', () => {
-  const ledgerDbPath = LocalStoreInstance.getFullServiceLedgerDbPath();
+  const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
 
   console.log('killing full-service');
   // TODO -- probably should make the binaries a little more specific
@@ -292,7 +293,7 @@ ipcMain.on('get-initial-translations', (event) => {
 });
 
 const shutDownFullService = () => {
-  const leaveFullServiceRunning = LocalStoreInstance.getLeaveFullServiceRunning();
+  const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
   console.log('Leave Full-Service running:', leaveFullServiceRunning);
   if (!leaveFullServiceRunning) {
     // TODO -- probably should make the binaries a little more specific

@@ -14,18 +14,16 @@ export interface SettingsOptionsItemProps {
   path: string;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    card: {
-      color: theme.palette.text.secondary,
-      textAlign: 'center',
-    },
-    cardArea: {
-      height: 8 * 20,
-    },
-    root: {},
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  card: {
+    color: theme.palette.text.secondary,
+    textAlign: 'center',
+  },
+  cardArea: {
+    height: 8 * 20,
+  },
+  root: {},
+}));
 
 const SettingsOptionsItem: FC<SettingsOptionsItemProps> = ({
   Icon,

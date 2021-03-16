@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { UnlockWalletView } from '../../../../app/views/auth';
 import renderSnapshot from '../../../renderSnapshot';
 
-jest.mock('../../../../app/hooks/useMobileCoinD');
+jest.mock('../../../../app/hooks/useFullService');
 
 function setupComponent() {
   // Default Context

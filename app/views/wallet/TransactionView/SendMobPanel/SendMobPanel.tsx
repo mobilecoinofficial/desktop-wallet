@@ -6,16 +6,14 @@ import { useTranslation } from 'react-i18next';
 
 import SendMobForm from './SendMobForm';
 
-const useStyles = makeStyles(() => {
-  return {
-    cardContainer: {
-      paddingBottom: 64,
-      paddingTop: 64,
-    },
-  };
-});
+const useStyles = makeStyles(() => ({
+  cardContainer: {
+    paddingBottom: 64,
+    paddingTop: 64,
+  },
+}));
 
-// TODO -- we need PENDING STATUS for payments in MobileCoinD
+// TODO -- we need PENDING STATUS for payments in FullService
 const SendMobPanel: FC = () => {
   const classes = useStyles();
   const { t } = useTranslation('SendMobPanel');

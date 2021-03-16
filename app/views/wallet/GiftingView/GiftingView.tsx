@@ -9,15 +9,13 @@ import type { Theme } from '../../../theme';
 import BuildGiftPanel from './BuildGiftPanel';
 import ConsumeGiftPanel from './ConsumeGiftPanel';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      minHeight: '100%',
-      paddingBottom: theme.spacing(3),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+  },
+}));
 
 const GiftingView: FC = () => {
   const classes = useStyles();

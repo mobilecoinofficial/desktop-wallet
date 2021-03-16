@@ -46,9 +46,9 @@ That's it!
 
 (There's plenty of other commands, take a peak at the package.json scripts).
 
-### Changes to MobileCoinD and the Protos
+### Changes to FullService and the Protos
 
-If there have been changes to the Protos and MobileCoinD, you'll need to change the `mobilecoind` binaries and grant permission as noted in `Setup`. You will also need to regenerate the static Protos in javascript.
+If there have been changes to the Protos and FullService, you'll need to change the `mobilecoind` binaries and grant permission as noted in `Setup`. You will also need to regenerate the static Protos in javascript.
 
 After copying the new .protos files into `./app/mobilecoind/protos/`. You should make sure that the correct javascript flag is assigned to data-types when appropriate. For example, `uint64 balance = 1 [jstype = JS_STRING];` will import the `uint64` as a `string` --> preventing precision loss with unsafe numbers.
 

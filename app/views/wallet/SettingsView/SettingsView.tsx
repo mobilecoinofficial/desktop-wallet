@@ -42,21 +42,19 @@ const settingsOptionsList = [
   },
   {
     Icon: ToolsIcon,
-    label: 'configureMobileCoinD',
-    path: routePaths.APP_SETTINGS_CONFIGURE_MOBILECOIND,
+    label: 'configureFullService',
+    path: routePaths.APP_SETTINGS_CONFIGURE_FULL_SERVICE,
   },
 ];
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      minHeight: '100%',
-      paddingBottom: theme.spacing(3),
-      paddingTop: theme.spacing(3),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3),
+  },
+}));
 
 const SettingsView: FC = () => {
   const classes = useStyles();

@@ -9,17 +9,43 @@ import { hot } from 'react-hot-loader/root';
 import { MemoryRouter } from 'react-router-dom';
 
 import { CrashReportModal, DebugLogModal, GlobalStyles } from './components';
-import { MOBILE_COIN_DARK } from './constants/themes';
-import { MobileCoinDProvider } from './contexts/MobileCoinDContext';
-import client from './mobilecoind/client';
+import GlobalStyles from './components/GlobalStyles';
+import { FullServiceProvider } from './contexts/FullServiceContext';
+import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
 import routes, { renderRoutes } from './routes';
 import { setTheme } from './theme';
 import debugLogger from './utils/debugLogger.client';
 
 const App: FC = () => {
-  const theme = setTheme({
-    responsiveFontSizes: true,
-    theme: MOBILE_COIN_DARK,
+  const [theme, setThemeReact] = React.useState(
+    setTheme({
+      responsiveFontSizes: true,
+      theme: ipcRenderer.sendSync('get-theme') === 'light' ? MOBILE_COIN_LIGHT : MOBILE_COIN_DARK,
+    })
+  );
+
+  useEffect(() => {
+    ipcRenderer.on('set-theme-light', () => {
+      setThemeReact(
+        setTheme({
+          responsiveFontSizes: true,
+          theme: MOBILE_COIN_LIGHT,
+        })
+      );
+    });
+    ipcRenderer.on('set-theme-dark', () => {
+      setThemeReact(
+        setTheme({
+          responsiveFontSizes: true,
+          theme: MOBILE_COIN_DARK,
+        })
+      );
+    });
+
+    return () => {
+      ipcRenderer.removeAllListeners('set-theme-light');
+      ipcRenderer.removeAllListeners('set-theme-dark');
+    };
   });
 
   const [openCrashReportModal, setOpenCrashReportModal] = React.useState(false);
@@ -55,7 +81,7 @@ const App: FC = () => {
     <MemoryRouter>
       <ThemeProvider theme={theme}>
         <SnackbarProvider dense maxSnack={5}>
-          <MobileCoinDProvider client={client}>
+          <FullServiceProvider>
             <GlobalStyles />
             {renderRoutes(routes)}
             <CrashReportModal open={openCrashReportModal} />
@@ -66,7 +92,7 @@ const App: FC = () => {
               onSendReport={handleSendDebugLog}
               open={debugModalOpen}
             />
-          </MobileCoinDProvider>
+          </FullServiceProvider>
         </SnackbarProvider>
       </ThemeProvider>
     </MemoryRouter>

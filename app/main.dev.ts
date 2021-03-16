@@ -14,7 +14,7 @@ import 'regenerator-runtime/runtime';
 import { exec, spawn } from 'child_process';
 import path from 'path';
 
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 
@@ -24,7 +24,7 @@ import languages from './constants/languages';
 import getPlatform from './get-platform';
 import i18n from './i18next.config';
 import menuFactoryService from './menuFactory';
-import LocalStore from './utils/LocalStore';
+import * as localStore from './utils/LocalStore';
 import debugLogger from './utils/debugLogger.server';
 
 import './utils/autoupdate';
@@ -56,8 +56,6 @@ if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true')
   require('electron-debug')();
 }
 
-const LocalStoreInstance = new LocalStore();
-
 const installExtensions = async () => {
   // eslint-disable-next-line
   const installer = require('electron-devtools-installer');
@@ -68,39 +66,47 @@ const installExtensions = async () => {
   ];
 
   return Promise.all(
-    extensions.map((name) => {
-      return installer.default(installer[name], forceDownload);
-    })
+    extensions.map((name) => installer.default(installer[name], forceDownload))
   ).catch(console.log);
 };
 
-const spawnMobilecoind = () => {
-  // Start the mobilecoind process in the background
+// TODO: remane this function to full service after intergration
+// TODO: test
+const spawnAPIBinaries = () => {
+  // Start the full-service process in the background
   const IS_PROD = process.env.NODE_ENV === 'production';
   const root = process.cwd();
   const { isPackaged } = app;
 
+  // TODO move these strings into constants/
   const platform = getPlatform() || '';
-  const binariesPath =
+  const fullServiceBinariesPath =
     IS_PROD && isPackaged
-      ? path.join(process.resourcesPath, '..', 'mobilecoind-bin', platform)
-      : path.join(root, 'mobilecoind-bin', platform);
+      ? path.join(process.resourcesPath, '..', 'full-service-bin', platform)
+      : path.join(root, 'full-service-bin', platform);
 
-  console.log('Looking for binary in', binariesPath);
-  const execPath = path.resolve(path.join(binariesPath, './start-mobilecoind.sh'));
-  // Determine mobilecoind path and store for config view
+  console.log('Looking for Full Service binary in', fullServiceBinariesPath);
+  const fullServiceExecPath = path.resolve(
+    path.join(fullServiceBinariesPath, './start-full-service.sh')
+  );
+
+  // Determine Full-Service path and store for config view
   const userDataPath = app.getPath('userData');
-  const ledgerDbPath = path.normalize(path.join(userDataPath, 'mobilecoind', 'ledger-db')); // escape spaces in mac and linux (change logic for windows)
-  const mobilecoindDbPath = path.normalize(
-    path.join(userDataPath, 'mobilecoind', 'transaction-db')
+  const ledgerFullServiceDbPath = path.normalize(
+    path.join(userDataPath, 'full-service', 'ledger-db')
   ); // escape spaces in mac and linux (change logic for windows)
+  const fullServiceDbPath = path.normalize(path.join(userDataPath, 'full-service', 'wallet-db')); // escape spaces in mac and linux (change logic for windows)
 
-  console.log('userDataPath', userDataPath);
-  console.log('ledgerDbPath', ledgerDbPath);
-  console.log('mobilecoindDbPath', mobilecoindDbPath);
-  LocalStoreInstance.setLedgerDbPath(ledgerDbPath);
-  LocalStoreInstance.setMobilecoindDbPath(mobilecoindDbPath);
-  spawn(execPath, [ledgerDbPath, mobilecoindDbPath], {});
+  // TODO - delete the console logs
+  console.log('ledgerFullServiceDbPath', ledgerFullServiceDbPath);
+  console.log('fullServiceDbPath', fullServiceDbPath);
+  spawn(
+    fullServiceExecPath,
+    [ledgerFullServiceDbPath, fullServiceDbPath, [fullServiceDbPath, 'wallet.db'].join('/')],
+    {}
+  );
+  localStore.setLedgerDbPath(ledgerFullServiceDbPath);
+  localStore.setFullServiceDbPath(fullServiceDbPath);
 };
 
 const createWindow = async () => {
@@ -112,9 +118,7 @@ const createWindow = async () => {
     ? path.join(process.resourcesPath, 'resources')
     : path.join(__dirname, '../resources');
 
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
+  const getAssetPath = (...paths: string[]): string => path.join(RESOURCES_PATH, ...paths);
 
   mainWindow = new BrowserWindow({
     height: INITIAL_WINDOW_HEIGHT,
@@ -143,14 +147,10 @@ const createWindow = async () => {
 
   // Reject all session permission requests from remote content
   mainWindow.webContents.session.setPermissionRequestHandler(
-    (_webContents, _permission, callback) => {
-      return callback(false);
-    }
+    (_webContents, _permission, callback) => callback(false)
   );
 
-  mainWindow.webContents.session.setPermissionCheckHandler(() => {
-    return false;
-  });
+  mainWindow.webContents.session.setPermissionCheckHandler(() => false);
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
@@ -203,6 +203,19 @@ const createWindow = async () => {
 
   menuFactoryService.buildMenu(app, mainWindow, i18n);
 
+  nativeTheme.on('updated', () => {
+    mainWindow?.webContents.send(
+      nativeTheme.shouldUseDarkColors ? 'set-theme-dark' : 'set-theme-light'
+    );
+  });
+
+  nativeTheme.themeSource = (localStore.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
+
+  ipcMain.on('get-theme', (event) => {
+    // eslint-disable-next-line no-param-reassign
+    event.returnValue = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
+  });
+
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
@@ -227,12 +240,10 @@ if (process.env.E2E_BUILD === 'true') {
   app
     .whenReady()
     .then(createWindow)
-    .catch(() => {
-      return null;
-    });
+    .catch(() => null);
 } else {
   app.on('ready', () => {
-    spawnMobilecoind();
+    spawnAPIBinaries();
     createWindow();
   });
 }
@@ -240,7 +251,7 @@ if (process.env.E2E_BUILD === 'true') {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  // NOTE: we do not want to respawn mobilecoind in this case.
+  // NOTE: we do not want to respawn full-service in this case.
   if (mainWindow === null) {
     createWindow();
   }
@@ -255,17 +266,16 @@ ipcMain.on('close-app', () => {
 });
 
 ipcMain.on('reset-ledger', () => {
-  const ledgerDbPath = LocalStoreInstance.getLedgerDbPath();
-  const mobilecoindDbPath = LocalStoreInstance.getMobilecoindDbPath();
+  const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
 
-  console.log('killing mobilecoind');
-  exec('pkill -f mobilecoind');
+  console.log('killing full-service');
+  // TODO -- probably should make the binaries a little more specific
+  // e.g., mobilecoin-full-service
+  exec('pkill -f full-service');
 
   // Explicitly only delete db files. No rm -r
   exec(`rm "${ledgerDbPath}/data.mdb"`);
   exec(`rm "${ledgerDbPath}/lock.mdb"`);
-  exec(`rm "${mobilecoindDbPath}/data.mdb"`);
-  exec(`rm "${mobilecoindDbPath}/lock.mdb"`);
   app.relaunch(); // does not trigger until app quits or exits
   app.exit(); // exits without before-quit and will-quit
 });
@@ -300,16 +310,18 @@ ipcMain.on('crash-application', () => {
   process.crash();
 });
 
-const shutDownMobilecoind = () => {
-  const leaveMobilecoindRunning = LocalStoreInstance.getLeaveMobilecoindRunning();
-  console.log('Leave mobilecoind running:', leaveMobilecoindRunning);
-  if (!leaveMobilecoindRunning) {
-    exec('pkill -f mobilecoind');
+const shutDownFullService = () => {
+  const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
+  console.log('Leave Full-Service running:', leaveFullServiceRunning);
+  if (!leaveFullServiceRunning) {
+    // TODO -- probably should make the binaries a little more specific
+    // e.g., mobilecoin-full-service
+    exec('pkill -f full-service');
   }
 };
 
 app.on('will-quit', () => {
-  shutDownMobilecoind();
+  shutDownFullService();
 });
 
 // Filter the remote module

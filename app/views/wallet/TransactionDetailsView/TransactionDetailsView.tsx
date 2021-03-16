@@ -1,5 +1,5 @@
 import React from 'react';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 
 import { Box, Card, CardContent, Container, makeStyles, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
@@ -7,22 +7,10 @@ import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import SubmitButton from '../../../components/SubmitButton';
+import { ShortCode, SubmitButton } from '../../../components';
 import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
-
-export interface TransactionDetailsViewProps {
-  amount: number;
-  comment: string;
-  dateTime: Date;
-  direction: string;
-  id: string;
-  name: string;
-  onChangedComment: any;
-  onClickBack: any;
-  sign: string;
-  status: string;
-}
+import { TransactionDetailsViewProps } from './TransactionDetailsView.d';
 
 const useStyles = makeStyles((theme: Theme) => {
   return {
@@ -33,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) => {
       backgroundColor: theme.palette.background.dark,
       display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'space-between',
       margin: '5px',
       padding: '5px',
     },
@@ -41,84 +30,98 @@ const useStyles = makeStyles((theme: Theme) => {
       padding: theme.spacing(1),
     },
     textLeft: { textAlign: 'left' },
-    textRight: { textAlign: 'right', width: '100%' },
+    textRight: { textAlign: 'right' },
   };
 });
 
 const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
-  amount,
-  comment,
-  dateTime,
-  id,
-  // direction, status
-  name,
   onChangedComment,
   onClickBack,
-  sign,
+  transactionLog,
+  txos,
 }: TransactionDetailsViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('TransactionDetails');
   const { enqueueSnackbar } = useSnackbar();
 
+  const {
+    comment,
+    direction,
+    finalizedBlockIndex,
+    assignedAddressId,
+    recipientAddressId, // TODO -- add sent logic
+    outputTxoIds,
+    transactionLogId,
+    valuePmob,
+  } = transactionLog;
+  // const { selectedAccount, txos, fetchAllTxosForAccount } = useFullService(); // ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8
+
+  // fetchAllTxosForAccount(selectedAccount.account.accountId);
+  // TODO -- make this view an actual view
+
+  const sign = direction === 'tx_direction_sent' ? '-' : '+';
+
+  // TODO replace this with a component
+  const renderRow = (title: string, value: string | ReactNode) => {
+    return (
+      <Box className={classes.internal} key={title}>
+        <Typography className={classes.textLeft} display="inline" noWrap>
+          {title}
+        </Typography>
+        {typeof value === 'string' ? (
+          <Typography className={classes.textRight} display="inline">
+            {value}
+          </Typography>
+        ) : (
+          value
+        )}
+      </Box>
+    );
+  };
+
   return (
-    <Container maxWidth="sm" style={{ padding: '0' }}>
+    <Container maxWidth="md" style={{ padding: '0' }}>
       <Box>
-        <Container className={classes.container} fixed maxWidth="sm">
+        <Container className={classes.container} fixed maxWidth="md">
           <Card className={classes.root}>
+            <Typography variant="body2" color="textPrimary">
+              {t('transactionDetails')}
+            </Typography>
             <CardContent>
-              <Box className={classes.internal}>
-                <Typography className={classes.textLeft} display="inline">
-                  {`${t('date')}:`}
-                </Typography>
-                <Typography className={classes.textRight} display="inline">
-                  {dateTime.toLocaleDateString()}
-                </Typography>
-              </Box>
-              <Box className={classes.internal}>
-                <Typography className={classes.textLeft} display="inline">
-                  {`${t('time')}:`}
-                </Typography>
-                <Typography className={classes.textRight} display="inline">
-                  {dateTime.toLocaleTimeString()}
-                </Typography>
-              </Box>
-              <Box className={classes.internal}>
-                <Typography className={classes.textLeft} display="inline">
-                  {`${sign === '+' ? t('sender') : t('recipient')}:`}
-                </Typography>
-                <Typography className={classes.textRight} display="inline">
-                  {name}
-                </Typography>
-              </Box>
-              <Box className={classes.internal}>
-                <Typography className={classes.textLeft} display="inline">
-                  {`${t('amount')}:`}
-                </Typography>
-                <TransactionInfoLabel amount={amount} sign={sign} label="&nbsp;MOB" />
-              </Box>
+              {renderRow(`${t('blockHeight')}:`, finalizedBlockIndex)}
+              {renderRow(
+                `${sign === '+' ? t('sender') : t('recipient')}:`,
+                <ShortCode code={assignedAddressId} />
+              )}
+              {renderRow(
+                `${t('amount')}:`,
+                <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label=" MOB" />
+              )}
             </CardContent>
           </Card>
         </Container>
 
-        <Container className={classes.container} fixed maxWidth="sm">
+        <Container className={classes.container} fixed maxWidth="md">
           <Card className={classes.root}>
             <Typography variant="body2" color="textPrimary">
               {t('txoDetails')}
             </Typography>
             <CardContent>
-              {[1, 2, 3].map((x) => (
-                <Box className={classes.internal} key={x}>
-                  <Typography className={classes.textLeft} display="inline">
-                    TXO&nbsp;#{x}
-                  </Typography>
-                  <TransactionInfoLabel sign={sign} label=" MOB &gt;" />
-                </Box>
-              ))}
+              {outputTxoIds.map((txoId) =>
+                renderRow(
+                  txoId,
+                  <TransactionInfoLabel
+                    valuePmob={txos.txoMap[txoId].valuePmob}
+                    sign={sign}
+                    label=" MOB"
+                  />
+                )
+              )}
             </CardContent>
           </Card>
         </Container>
 
-        <Container className={classes.container} fixed maxWidth="sm">
+        <Container className={classes.container} fixed maxWidth="md">
           <Card className={classes.root}>
             <Typography variant="body2" color="textPrimary">
               {t('addComment')}
@@ -131,7 +134,7 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
               }}
               onSubmit={(values, { setSubmitting, setStatus }) => {
                 setSubmitting(true);
-                onChangedComment(id, values.newComment);
+                onChangedComment(transactionLogId, values.newComment);
                 setTimeout(() => {
                   setSubmitting(false);
                   enqueueSnackbar(t('savedComment'), { variant: 'success' });
@@ -139,31 +142,29 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
                 }, 1500);
               }}
             >
-              {({ isSubmitting, dirty, isValid, submitForm }) => {
-                return (
-                  <Form>
-                    <Box>
-                      <Field
-                        component={TextField}
-                        fullWidth
-                        label={t('typeHere')}
-                        margin="normal"
-                        name="newComment"
-                        type="text"
-                      />
-                    </Box>{' '}
-                    <Box paddingLeft={10} paddingRight={10}>
-                      <SubmitButton
-                        disabled={!dirty || !isValid || isSubmitting}
-                        onClick={submitForm}
-                        isSubmitting={isSubmitting}
-                      >
-                        {t('changeComment')}
-                      </SubmitButton>
-                    </Box>
-                  </Form>
-                );
-              }}
+              {({ isSubmitting, dirty, isValid, submitForm }) => (
+                <Form>
+                  <Box>
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      label={t('typeHere')}
+                      margin="normal"
+                      name="newComment"
+                      type="text"
+                    />
+                  </Box>{' '}
+                  <Box paddingLeft={10} paddingRight={10}>
+                    <SubmitButton
+                      disabled={!dirty || !isValid || isSubmitting}
+                      onClick={submitForm}
+                      isSubmitting={isSubmitting}
+                    >
+                      {t('changeComment')}
+                    </SubmitButton>
+                  </Box>
+                </Form>
+              )}
             </Formik>
           </Card>
         </Container>

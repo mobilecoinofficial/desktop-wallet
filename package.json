@@ -63,8 +63,8 @@
     ],
     "extraFiles": [
       {
-        "from": "mobilecoind-bin",
-        "to": "mobilecoind-bin",
+        "from": "full-service-bin",
+        "to": "full-service-bin",
         "filter": [
           "**/*"
         ]
@@ -213,6 +213,7 @@
     "@types/yup": "^0.29.7",
     "@typescript-eslint/eslint-plugin": "^4.12.0",
     "@typescript-eslint/parser": "^4.12.0",
+    "axios-mock-adapter": "^1.19.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.1.0",
     "babel-loader": "^8.1.0",
@@ -247,8 +248,6 @@
     "eslint-plugin-testcafe": "^0.2.1",
     "eslint-plugin-testing-library": "^3.10.1",
     "file-loader": "^6.0.0",
-    "grpc-tools": "^1.9.1",
-    "grpc_tools_node_protoc_ts": "^5.0.1",
     "husky": "^4.2.5",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.1.0",
@@ -275,11 +274,12 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
-    "@grpc/grpc-js": "^1.1.7",
     "@hot-loader/react-dom": "^17.0.1",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.11.2",
+    "axios": "^0.21.1",
     "bip39": "^3.0.3",
+    "camelcase-keys": "^6.2.2",
     "electron-debug": "^3.1.0",
     "electron-log": "^4.2.4",
     "electron-store": "^6.0.1",
@@ -302,6 +302,7 @@
     "react-transition-group": "^4.4.1",
     "regenerator-runtime": "^0.13.5",
     "sjcl": "^1.0.8",
+    "snakecase-keys": "^3.2.1",
     "source-map-support": "^0.5.19",
     "util.promisify": "^1.0.1",
     "yup": "^0.32.8"

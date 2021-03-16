@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 /**
  * Build config for electron renderer process
  */

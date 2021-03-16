@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
+import { makeStyles } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
@@ -29,6 +30,15 @@ const HistoryView: FC = () => {
     fetchAllTxosForAccount(selectedAccount.account.accountId);
   }, []);
 
+  const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+      backgroundColor: theme.palette.background.dark,
+      minHeight: '100%',
+      paddingBottom: theme.spacing(3),
+      paddingLeft: theme.spacing(5),
+      paddingRight: theme.spacing(5),
+    },
+  }));
   // TODO -- this error state is fine, we should reintroduce
   // React.useEffect(() => {
   //   try {
@@ -45,11 +55,9 @@ const HistoryView: FC = () => {
     return <span>show empty state</span>;
   }
 
-  const buildList = (): TransactionLog[] => {
-    return transactionLogs.transactionLogIds
-      .map((id) => {
-        return transactionLogs.transactionLogMap[id];
-      })
+  const buildList = (): TransactionLog[] =>
+    transactionLogs.transactionLogIds
+      .map((id) => transactionLogs.transactionLogMap[id])
       .sort((a, b) => {
         if (a.offsetCount < b.offsetCount) {
           return 1;
@@ -61,7 +69,6 @@ const HistoryView: FC = () => {
         return 0;
       })
       .slice(0, 50);
-  };
   // debugger;
   switch (showing) {
     case HISTORY:

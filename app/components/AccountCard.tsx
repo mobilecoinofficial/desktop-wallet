@@ -29,35 +29,29 @@ interface AccountCardProps {
   isGift?: boolean;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    code: {
-      cursor: 'pointer',
-      display: 'flex',
-      flexDirection: 'column',
-      fontSize: 24,
-      letterSpacing: '.70rem',
-      marginRight: '-.70rem',
-      padding: theme.spacing(1),
-    },
-    container: {
-      padding: '20px 0 0',
-    },
-    corners: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'space-between',
-      width: '100%',
-    },
-    lastLine: {
-      display: 'flex',
-      justifyContent: 'space-between',
-    },
-    root: {
-      padding: '0 10px',
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  code: {
+    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column',
+    fontSize: 24,
+    letterSpacing: '.70rem',
+    marginRight: '-.70rem',
+    padding: theme.spacing(1),
+  },
+  container: {
+    padding: '20px 0 0',
+  },
+  corners: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
+  root: {
+    padding: '0 10px',
+  },
+}));
 
 const AccountCard: FC<AccountCardProps> = ({
   className,
@@ -72,13 +66,11 @@ const AccountCard: FC<AccountCardProps> = ({
 
   const { b58Code, mobUrl, name } = account;
 
-  const handleCodeClick = (code: string) => {
-    return () => {
-      clipboard.writeText(code);
-      enqueueSnackbar(isGift ? t('clipboardGift') : t('clipboardAddress'), {
-        variant: 'success',
-      });
-    };
+  const handleCodeClick = (code: string) => () => {
+    clipboard.writeText(code);
+    enqueueSnackbar(isGift ? t('clipboardGift') : t('clipboardAddress'), {
+      variant: 'success',
+    });
   };
 
   const handleToggleClick = () => {
@@ -129,7 +121,6 @@ const AccountCard: FC<AccountCardProps> = ({
                     <LongCode
                       data-testid="account-card-long-code"
                       codeClass={classes.code}
-                      lastLineClass={classes.lastLine}
                       code={b58Code}
                     />
                   </Box>

@@ -9,15 +9,13 @@ import type { Theme } from '../../../theme';
 import ReceiveMobPanel from './ReceiveMobPanel';
 import SendMobPanel from './SendMobPanel';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      minHeight: '100%',
-      paddingBottom: theme.spacing(3),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+  },
+}));
 
 const TransactionView: FC = () => {
   const classes = useStyles();

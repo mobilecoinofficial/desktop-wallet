@@ -17,26 +17,24 @@ import { useTranslation } from 'react-i18next';
 import { SubmitButton } from '../../../components';
 import type { Theme } from '../../../theme';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    cardContainer: {
-      paddingBottom: 64,
-      paddingTop: 8 * 4,
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  cardContainer: {
+    paddingBottom: 64,
+    paddingTop: 8 * 4,
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+}));
 
 const ResetLedger: FC = () => {
   const classes = useStyles();

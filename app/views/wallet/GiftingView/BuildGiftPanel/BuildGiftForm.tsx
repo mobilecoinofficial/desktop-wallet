@@ -31,7 +31,7 @@ import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
-import LocalStore from '../../../../utils/LocalStore';
+import * as localStore from '../../../../utils/LocalStore';
 import { makeHash } from '../../../../utils/hashing';
 import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
 
@@ -43,48 +43,46 @@ const EMPTY_CONFIRMATION = {
   txProposal: null,
 };
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    button: {
-      width: 300,
-    },
-    center: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    code: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      letterSpacing: '.70rem',
-      marginRight: '-.70rem',
-      padding: theme.spacing(1),
-    },
-    form: {
-      paddingBottom: theme.spacing(2),
-    },
-    formControlLabelRoot: {
-      marginRight: 0,
-    },
-    label: {
-      width: '100%',
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-      overflow: 'auto',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      maxWidth: 800,
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  button: {
+    width: 300,
+  },
+  center: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  code: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    letterSpacing: '.70rem',
+    marginRight: '-.70rem',
+    padding: theme.spacing(1),
+  },
+  form: {
+    paddingBottom: theme.spacing(2),
+  },
+  formControlLabelRoot: {
+    marginRight: 0,
+  },
+  label: {
+    width: '100%',
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+    overflow: 'auto',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    maxWidth: 800,
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+}));
 
 // TODO - ya, this definitely shouldn't live here
 const PICO_MOB_PRECISION = 12;
@@ -99,9 +97,8 @@ const ensureMobStringPrecision = (mobString: string): string => {
 };
 
 // TODO - ya, this definitely shouldn't live here
-const convertMobStringToPicoMobString = (mobString: string): string => {
-  return ensureMobStringPrecision(mobString).replace('.', '');
-};
+const convertMobStringToPicoMobString = (mobString: string): string =>
+  ensureMobStringPrecision(mobString).replace('.', '');
 
 // TODO -- right now, we can show a progress bar for the sending modal
 // But, it would be nice to have a counter that parses up to, say, 10 seconds, before
@@ -154,37 +151,45 @@ const BuildGiftForm: FC = () => {
     });
   };
 
-  const handleConfirm = (setErrors, setStatus) => {
-    return async () => {
-      setSubmittingConfirmedGift(true);
-      setShowModal(false);
-      try {
-        if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
-          throw new Error(t('confirmationNotFound'));
-        }
-        await submitGiftCode(confirmation.txProposal, confirmation.giftCodeB58);
-        if (isMountedRef.current) {
-          setStatus({ success: true });
-          setSubmittingConfirmedGift(false);
-          setIsAwaitingConformation(false);
-          setConfirmation(EMPTY_CONFIRMATION);
-          enqueueSnackbar(t('giftCreated'), {
-            variant: 'success',
-          });
-        }
-      } catch (err) {
-        if (isMountedRef.current) {
-          setStatus({ success: false });
-          setErrors({ submit: err.message });
-          setSubmittingConfirmedGift(false);
-          setIsAwaitingConformation(false);
-          setConfirmation(EMPTY_CONFIRMATION);
-          enqueueSnackbar(t('error'), {
-            variant: 'error',
-          });
-        }
+  const handleConfirm = (setErrors, setStatus) => async () => {
+    setSubmittingConfirmedGift(true);
+    setShowModal(false);
+    try {
+      if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
+        throw new Error(t('confirmationNotFound'));
       }
-    };
+      await submitGiftCode(confirmation.txProposal, confirmation.giftCodeB58);
+      if (isMountedRef.current) {
+        setStatus({ success: true });
+        setSubmittingConfirmedGift(false);
+        setIsAwaitingConformation(false);
+        setConfirmation(EMPTY_CONFIRMATION);
+        enqueueSnackbar(t('giftCreated'), {
+          variant: 'success',
+        });
+      }
+    } catch (err) {
+      if (isMountedRef.current) {
+        setStatus({ success: false });
+        setErrors({ submit: err.message });
+        setSubmittingConfirmedGift(false);
+        setIsAwaitingConformation(false);
+        setConfirmation(EMPTY_CONFIRMATION);
+        enqueueSnackbar(t('error'), {
+          variant: 'error',
+        });
+      }
+    }
+    await submitGiftCode(confirmation.txProposal, confirmation.giftB58Code);
+    if (isMountedRef.current) {
+      setStatus({ success: true });
+      setSubmittingConfirmedGift(false);
+      setIsAwaitingConformation(false);
+      setConfirmation(EMPTY_CONFIRMATION);
+      enqueueSnackbar(t('giftCreated'), {
+        variant: 'success',
+      });
+    }
   };
 
   const createAccountLabel = (account: Account) => {
@@ -192,11 +197,11 @@ const BuildGiftForm: FC = () => {
       account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
     return (
       <Box display="flex" justifyContent="space-between">
-        <Typography>
+        <Typography color="textPrimary">
           {name}
           <ShortCode code={account.b58Code} />
         </Typography>
-        <Typography>
+        <Typography color="textPrimary">
           <MOBNumberFormat
             value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
             valueUnit="pMOB"
@@ -206,48 +211,42 @@ const BuildGiftForm: FC = () => {
     );
   };
 
-  const renderSenderPublicAddressOptions = (accounts: Account[], isSubmitting: boolean) => {
-    return (
-      <Box pt={2}>
-        <FormLabel className={classes.form} component="legend">
-          <Typography color="primary">{t('select')}</Typography>
-        </FormLabel>
-        <Field component={RadioGroup} name="senderPublicAddress">
-          <Box display="flex" justifyContent="space-between">
-            <Typography>{t('accountName')}</Typography>
-            <Typography>{t('accountBalance')}</Typography>
-          </Box>
-          {accounts.map((account: Account) => {
-            return (
-              <FormControlLabel
-                key={account.b58Code}
-                value={account.b58Code}
-                control={<Radio disabled={isSubmitting} />}
-                label={createAccountLabel(account)}
-                labelPlacement="end"
-                disabled={isSubmitting}
-                classes={{
-                  label: classes.label,
-                  root: classes.formControlLabelRoot,
-                }}
-              />
-            );
-          })}
-        </Field>
-      </Box>
-    );
-  };
+  const renderSenderPublicAddressOptions = (accounts: Account[], isSubmitting: boolean) => (
+    <Box pt={2}>
+      <FormLabel className={classes.form} component="legend">
+        <Typography color="primary">{t('select')}</Typography>
+      </FormLabel>
+      <Field component={RadioGroup} name="senderPublicAddress">
+        <Box display="flex" justifyContent="space-between">
+          <Typography color="textPrimary">{t('accountName')}</Typography>
+          <Typography color="textPrimary">{t('accountBalance')}</Typography>
+        </Box>
+        {accounts.map((account: Account) => (
+          <FormControlLabel
+            key={account.b58Code}
+            value={account.b58Code}
+            control={<Radio disabled={isSubmitting} />}
+            label={createAccountLabel(account)}
+            labelPlacement="end"
+            disabled={isSubmitting}
+            classes={{
+              label: classes.label,
+              root: classes.formControlLabelRoot,
+            }}
+          />
+        ))}
+      </Field>
+    </Box>
+  );
 
-  const validateAmount = (selectedBalance: bigint, fee: bigint) => {
-    return (valueString: string) => {
-      let error;
-      const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-      if (valueAsPicoMob + fee > selectedBalance) {
-        // TODO - probably want to replace this before launch
-        error = t('errorFee');
-      }
-      return error;
-    };
+  const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
+    let error;
+    const valueAsPicoMob = BigInt(valueString.replace('.', ''));
+    if (valueAsPicoMob + fee > selectedBalance) {
+      // TODO - probably want to replace this before launch
+      error = t('errorFee');
+    }
+    return error;
   };
 
   // We'll use this to auto-select all text when focused. This is a better user
@@ -257,7 +256,6 @@ const BuildGiftForm: FC = () => {
     event.target.select();
   };
 
-  const localStore = new LocalStore();
   const minimumForPin = String(localStore.getMinimumForPin());
   const hashedPin = localStore.getHashedPin();
 
@@ -326,9 +324,8 @@ const BuildGiftForm: FC = () => {
           // eslint-disable-next-line
           // @ts-ignore
           BigInt(
-            mockMultipleAccounts.find((account) => {
-              return account.b58Code === values.senderPublicAddress;
-            }).balance
+            mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
+              .balance
           );
 
         let remainingBalance;
@@ -404,12 +401,16 @@ const BuildGiftForm: FC = () => {
               <Slide in={showModal} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <Container className={classes.paper}>
                   <Box py={2}>
-                    <h2 id="transition-modal-title">{t('giftConfirmation')}</h2>
-                    <p id="transition-modal-description">{t('giftConfirmationDescription')}:</p>
+                    <Typography variant="h1" color="textPrimary">
+                      {t('giftConfirmation')}
+                    </Typography>
+                    <Typography variant="p" color="textPrimary">
+                      {t('giftConfirmationDescription')}:
+                    </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('accountBalance')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('accountBalance')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -418,8 +419,8 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>---</Typography>
-                    <Typography>---</Typography>
+                    <Typography color="textPrimary">---</Typography>
+                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="primary">{t('giftValue')}:</Typography>
@@ -432,8 +433,8 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('fee')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('fee')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -442,8 +443,8 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('total')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('total')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -452,12 +453,12 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>---</Typography>
-                    <Typography>---</Typography>
+                    <Typography color="textPrimary">---</Typography>
+                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('remaining')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('remaining')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"

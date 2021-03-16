@@ -52,3 +52,5 @@ npm-debug.log.*
 # Full Service Binary
 full-service-bin/mac/full-service-testnet*
 full-service-bin/linux/full-service-testnet*
+
+full-service-bin/mac/full-service-testnet

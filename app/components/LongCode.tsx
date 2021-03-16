@@ -1,33 +1,43 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 
-import { GOLD_DARK, GOLD_LIGHT, WHITE } from '../constants/colors';
+import type { Theme } from '../theme';
 
 interface LongCodeProps {
   code: string;
   codeClass?: string;
-  lastLineClass?: string;
 }
 
-const LongCode: FC<LongCodeProps> = ({ code, codeClass, lastLineClass }: LongCodeProps) => {
+const useStyles = makeStyles((theme: Theme) => ({
+  lastLine: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  lowercased: {
+    color: theme.palette.longCode.lowercased,
+  },
+  number: {
+    color: theme.palette.longCode.number,
+  },
+  uppercased: {
+    color: theme.palette.longCode.uppercased,
+  },
+}));
+
+const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
+  const classes = useStyles();
   const colorCode = code.split('').map((char, i) => {
-    let charColor = WHITE;
+    let charColorClass = classes.lowercased;
     if (!Number.isNaN(char * 1)) {
-      charColor = GOLD_LIGHT;
+      charColorClass = classes.number;
     } else if (char === char.toUpperCase()) {
-      charColor = GOLD_DARK;
+      charColorClass = classes.uppercased;
     }
 
     return (
-      <Box
-        component="span"
-        key={[char, i].join('|')}
-        style={{
-          color: charColor,
-        }}
-      >
+      <Box component="span" key={[char, i].join('|')} className={charColorClass}>
         {char}
       </Box>
     );
@@ -48,24 +58,21 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass, lastLineClass }: LongCod
 
   return (
     <Box data-testid="long-code-code" className={codeClass} aria-hidden="true">
-      {codeLines.map((line, i) => {
-        return (
-          <Box
-            component="span"
-            key={[line, i].join('|')}
-            className={i === codeLines.length - 1 ? lastLineClass : ''}
-          >
-            {line}
-          </Box>
-        );
-      })}
+      {codeLines.map((line, i) => (
+        <Box
+          component="span"
+          key={[line, i].join('|')}
+          className={i === codeLines.length - 1 ? classes.lastLine : ''}
+        >
+          {line}
+        </Box>
+      ))}
     </Box>
   );
 };
 
 LongCode.defaultProps = {
   codeClass: '',
-  lastLineClass: '',
 };
 
 export default LongCode;

@@ -64,13 +64,13 @@ const sections: Section[] = [
 const NavBar: FC<NavBarProps> = () => {
   const location = useLocation();
   const { t } = useTranslation('NavBar');
-  const value = sections.findIndex((section) => {
-    return matchPath(location.pathname, {
+  const value = sections.findIndex((section) =>
+    matchPath(location.pathname, {
       exact: false,
       path: section.path,
       strict: false,
-    });
-  });
+    })
+  );
 
   return (
     <Tabs value={value} variant="scrollable">

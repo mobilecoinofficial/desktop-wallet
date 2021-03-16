@@ -3,13 +3,13 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import type { MobileCoinDContextValue } from '../../../../app/contexts/MobileCoinDContext';
+import type { FullServiceContextValue } from '../../../../app/contexts/FullServiceContext';
 import { CreateAccountView } from '../../../../app/views/auth';
 import renderSnapshot from '../../../renderSnapshot';
 
-jest.mock('../../../../app/hooks/useMobileCoinD');
+jest.mock('../../../../app/hooks/useFullService');
 
-function setupComponent(contextOverrides?: MobileCoinDContextValue) {
+function setupComponent(contextOverrides?: FullServiceContextValue) {
   // Default Context
   const defaultContext = {
     encryptedEntropy: 'existing encrypted entropy',

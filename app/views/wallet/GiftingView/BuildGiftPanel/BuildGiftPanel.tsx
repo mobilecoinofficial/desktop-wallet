@@ -29,8 +29,8 @@ import { useTranslation } from 'react-i18next';
 import { AccountCard, MOBNumberFormat } from '../../../../components';
 import ShortCode from '../../../../components/ShortCode';
 import { CopyIcon, TrashcanIcon } from '../../../../components/icons';
+import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import BuildGiftForm from './BuildGiftForm';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
@@ -50,7 +50,7 @@ const useStyles = makeStyles(() => ({
 
 const BuildGiftPanel: FC = () => {
   const classes = useStyles();
-  const { deleteStoredGiftB58Code, giftCodes } = useMobileCoinD();
+  const { deleteStoredGiftCodeB58, giftCodes } = useFullService();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -78,7 +78,7 @@ const BuildGiftPanel: FC = () => {
   const handleConfirmDelete = () => {
     handleDialogClose();
     try {
-      deleteStoredGiftB58Code(pendingDeleteCode[0]);
+      deleteStoredGiftCodeB58(pendingDeleteCode[0]);
       enqueueSnackbar(t('deleted'), {
         variant: 'success',
       });
@@ -129,42 +129,44 @@ const BuildGiftPanel: FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {giftCodes?.map(({ giftB58Code, giftValueString }) => (
-                    <TableRow key={giftB58Code}>
-                      <TableCell component="th" scope="row">
-                        <ShortCode code={giftB58Code} />
-                      </TableCell>
-                      <TableCell>
-                        <MOBNumberFormat value={giftValueString} valueUnit="pMOB" />
-                      </TableCell>
-                      <TableCell align="right">
-                        <Box display="flex" justifyContent="flex-end">
-                          <Tooltip title={t('clickToCopy')} placement="right" arrow>
-                            <div
-                              className={classes.clickable}
-                              onClick={handleCopyClick(giftB58Code)}
-                              aria-hidden="true"
-                            >
-                              <IconButton>
-                                <CopyIcon />
-                              </IconButton>
-                            </div>
-                          </Tooltip>
-                          <Tooltip title={t('clickToDelete')} placement="right" arrow>
-                            <div
-                              className={classes.clickable}
-                              onClick={handleDialogOpen(giftB58Code, giftValueString)}
-                              aria-hidden="true"
-                            >
-                              <IconButton>
-                                <TrashcanIcon />
-                              </IconButton>
-                            </div>
-                          </Tooltip>
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {giftCodes?.map(({ giftCodeB58, giftValueString }) => {
+                    return (
+                      <TableRow key={giftCodeB58}>
+                        <TableCell component="th" scope="row">
+                          <ShortCode code={giftCodeB58} />
+                        </TableCell>
+                        <TableCell>
+                          <MOBNumberFormat value={giftValueString} valueUnit="pMOB" />
+                        </TableCell>
+                        <TableCell align="right">
+                          <Box display="flex" justifyContent="flex-end">
+                            <Tooltip title={t('clickToCopy')} placement="right" arrow>
+                              <div
+                                className={classes.clickable}
+                                onClick={handleCopyClick(giftCodeB58)}
+                                aria-hidden="true"
+                              >
+                                <IconButton>
+                                  <CopyIcon />
+                                </IconButton>
+                              </div>
+                            </Tooltip>
+                            <Tooltip title={t('clickToDelete')} placement="right" arrow>
+                              <div
+                                className={classes.clickable}
+                                onClick={handleDialogOpen(giftCodeB58, giftValueString)}
+                                aria-hidden="true"
+                              >
+                                <IconButton>
+                                  <TrashcanIcon />
+                                </IconButton>
+                              </div>
+                            </Tooltip>
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             </TableContainer>

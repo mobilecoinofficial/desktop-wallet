@@ -13,7 +13,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-// TODO -- we need PENDING STATUS for payments in MobileCoinD
+// TODO -- we need PENDING STATUS for payments in FullService
 const SendMobPanel: FC = () => {
   const classes = useStyles();
   const { t } = useTranslation('SendMobPanel');

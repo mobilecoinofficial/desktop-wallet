@@ -22,8 +22,8 @@ import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_SIZE } from '../../../constants/codes';
 import routePaths from '../../../constants/routePaths';
+import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
 import * as localStore from '../../../utils/LocalStore';
 import { makeHash } from '../../../utils/hashing';
@@ -84,7 +84,7 @@ const ChangePinView: FC = () => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const { retrieveEntropy } = useMobileCoinD();
+  const { retrieveEntropy } = useFullService();
 
   const { t } = useTranslation('ChangePinView');
 

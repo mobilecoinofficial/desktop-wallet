@@ -27,12 +27,13 @@ import { SubmitButton, MOBNumberFormat } from '../../../../components';
 import LongCode from '../../../../components/LongCode';
 import ShortCode from '../../../../components/ShortCode';
 import { MOBIcon } from '../../../../components/icons';
+import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
 import * as localStore from '../../../../utils/LocalStore';
 import { makeHash } from '../../../../utils/hashing';
+import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
@@ -77,8 +78,21 @@ const useStyles = makeStyles((theme: Theme) => ({
 // this component managable.
 
 // TODO - ya, this definitely shouldn't live here
-const convertMobStringToPicoMobBigInt = (mobString: string): bigint =>
-  BigInt(mobString.replace('.', ''));
+const PICO_MOB_PRECISION = 12;
+
+const ensureMobStringPrecision = (mobString: string): string => {
+  const num = Number(mobString);
+  if (num === NaN) {
+    throw new Error('mobString is NaN');
+  }
+
+  return num.toFixed(PICO_MOB_PRECISION);
+};
+
+// This function assumes basic US style decimal places.
+// We'll need to revisit for differnet formats
+const convertMobStringToPicoMobString = (mobString: string): string =>
+  ensureMobStringPrecision(mobString).replace('.', '');
 
 const convertPicoMobStringToMob = (picoMobString: string): string => {
   if (picoMobString.length <= 12) {
@@ -112,50 +126,35 @@ const SendMobForm: FC = () => {
   const [slideExitSpeed, setSlideExitSpeed] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const {
-    accountName,
-    b58Code,
-    balance,
-    buildTransaction,
-    networkHighestBlockIndex,
-    nextBlock,
-    submitTransaction,
-  } = useMobileCoinD();
+  const { buildTransaction, selectedAccount, submitTransaction } = useFullService();
 
-  // TODO - this isSynced stuff should live in 1 location -- maybe as context state
-  let isSynced = false;
-  if (
-    networkHighestBlockIndex === null ||
-    nextBlock === null ||
-    Number(networkHighestBlockIndex) < 0 ||
-    Number(nextBlock) < 0 ||
-    Number(nextBlock) - 1 > Number(networkHighestBlockIndex)
-  ) {
-    isSynced = false;
-  } else {
-    isSynced = Number(networkHighestBlockIndex) - Number(nextBlock) < 2; // Let's say a diff of 1 is fine.
-  }
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+
+  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   // We'll use this array in prep for future patterns with multiple accounts
+  // TODO - fix the type for Account
   const mockMultipleAccounts: Array<Account> = [
     {
-      b58Code: b58Code || '', // TODO -- This hack is to bypass the null state hack on initailization
-      // eslint-disable-next-line max-len
-      balance: balance || BigInt(0), // once we move to multiple accounts, we won't have to null the values of an account (better typing!)
-      name: accountName,
+      b58Code: selectedAccount.account.mainAddress,
+      balance: selectedAccount.balanceStatus.unspentPmob,
+      mobUrl: selectedAccount.mobUrl,
+      name: selectedAccount.account.name,
     },
   ];
 
   const handleOpen = (values, setStatus, setErrors) => async () => {
     try {
       setIsAwaitingConformation(true);
-      const result = await buildTransaction(
-        convertMobStringToPicoMobBigInt(values.mobAmount),
-        convertMobStringToPicoMobBigInt(values.feeAmount),
-        values.recipientPublicAddress
-      );
+      const result = await buildTransaction({
+        accountId: selectedAccount.account.accountId,
+        fee: convertMobStringToPicoMobString(values.feeAmount),
+        recipientPublicAddress: values.recipientPublicAddress,
+        valuePmob: convertMobStringToPicoMobString(values.mobAmount),
+      });
       if (result === null || result === undefined) {
-        throw new Error(t('error'));
+        throw new Error('Could not build transaction.');
       }
 
       const {
@@ -164,6 +163,7 @@ const SendMobForm: FC = () => {
         txProposal,
         txProposalReceiverB58Code,
       } = result;
+      debugger;
       setConfirmation({
         feeConfirmation,
         totalValueConfirmation,
@@ -178,6 +178,21 @@ const SendMobForm: FC = () => {
       setIsAwaitingConformation(false);
       setConfirmation(EMPTY_CONFIRMATION);
     }
+
+    const {
+      feeConfirmation,
+      totalValueConfirmation,
+      txProposal,
+      txProposalReceiverB58Code,
+    } = result;
+    setConfirmation({
+      feeConfirmation,
+      totalValueConfirmation,
+      txProposal,
+      txProposalReceiverB58Code,
+    });
+
+    setOpen(true);
   };
 
   const handleClose = (setSubmitting: (boolean: boolean) => void, resetForm: () => void) => () => {
@@ -336,8 +351,10 @@ const SendMobForm: FC = () => {
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
           // @ts-ignore
-          mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
-            .balance;
+          BigInt(
+            mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
+              .balance
+          );
 
         let remainingBalance;
         let totalSent;

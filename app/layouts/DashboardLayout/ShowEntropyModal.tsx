@@ -15,8 +15,9 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useMobileCoinD from '../../hooks/useMobileCoinD';
+import useFullService from '../../hooks/useFullService';
 import type { Theme } from '../../theme';
+import { entropyToMnemonic } from '../../utils/bip39Functions';
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: {
@@ -44,13 +45,16 @@ const ShowEntropyModal: FC = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [showEntropy, setShowEntropy] = useState(false);
-  const { entropy, isEntropyKnown, confirmEntropyKnown } = useMobileCoinD();
   const { t } = useTranslation('ShowEntropyModal');
+  const { pendingSecrets, isEntropyKnown, confirmEntropyKnown } = useFullService();
+
   const handleCloseModal = () => {
     confirmEntropyKnown();
   };
   // TODO, i should start making a single util for all of this coercing logic
-  const entropyString = entropy ? Buffer.from(entropy).toString('hex') : '';
+  const entropyString = pendingSecrets?.entropy || '';
+
+  const mnemonicEntropy = entropyString ? entropyToMnemonic(entropyString) : '';
 
   const toggleEntropy = () => {
     if (!canGoForward) {
@@ -106,7 +110,7 @@ const ShowEntropyModal: FC = () => {
                 <Box py={3} display="flex" alignItems="center" flexDirection="column">
                   <Box p={2}>
                     <Fab variant="extended" color="primary" onClick={toggleEntropy} size="small">
-                      {showEntropy ? t('hide') : t('show')}
+                      {showEntropy ? (t('hide') as string) : (t('show') as string)}
                     </Fab>
                   </Box>
                   {showEntropy ? (
@@ -115,16 +119,25 @@ const ShowEntropyModal: FC = () => {
                       variant="body2"
                       color="textPrimary"
                     >
-                      {entropyString}
+                      {mnemonicEntropy}
                     </Typography>
                   ) : (
-                    <Typography
-                      className={classes.hiddenEntropy}
-                      variant="body2"
-                      color="textPrimary"
-                    >
-                      ****************************************************************
-                    </Typography>
+                    <>
+                      <Typography
+                        className={classes.hiddenEntropy}
+                        variant="body2"
+                        color="textPrimary"
+                      >
+                        ****************************************************************
+                      </Typography>
+                      <Typography
+                        className={classes.hiddenEntropy}
+                        variant="body2"
+                        color="textPrimary"
+                      >
+                        ****************************************************************
+                      </Typography>
+                    </>
                   )}
                 </Box>
               </CardContent>

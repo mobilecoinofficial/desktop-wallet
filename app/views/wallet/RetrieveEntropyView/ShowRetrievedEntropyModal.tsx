@@ -54,7 +54,7 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
   const [showEntropy, setShowEntropy] = useState(false);
   const { t } = useTranslation('ShowRetrievedEntropyModal');
 
-  const passPhrase = entropy ? entropyToMnemonic(entropy) : '';
+  const mnemonicEntropy = entropy ? entropyToMnemonic(entropy) : '';
 
   // TODO, i should start making a single util for all of this coercing logic
   const toggleEntropy = () => {
@@ -102,7 +102,7 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
                 </Box>
                 {showEntropy ? (
                   <Typography className={classes.shownEntropy} variant="body2" color="textPrimary">
-                    {passPhrase}
+                    {mnemonicEntropy}
                   </Typography>
                 ) : (
                   <>

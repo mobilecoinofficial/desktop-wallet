@@ -9,9 +9,9 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton } from '../../../components';
-import type { MobileCoinDContextValue } from '../../../contexts/MobileCoinDContext';
+import type { FullServiceContextValue } from '../../../contexts/FullServiceContext';
+import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
 
 export interface UnlockWalletFormValues {
   password: string;
@@ -20,7 +20,7 @@ export interface UnlockWalletFormValues {
 
 interface UnlockWalletFormPseudoProps {
   isMountedRef: { current: boolean };
-  unlockWallet: MobileCoinDContextValue['unlockWallet'];
+  unlockWallet: FullServiceContextValue['unlockWallet'];
 }
 
 export const unlockWalletFormOnSubmit = async (
@@ -53,8 +53,8 @@ interface UnlockWalletFormProps {
 
 const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletFormProps) => {
   const isMountedRef = useIsMountedRef();
-  const { unlockWallet } = useMobileCoinD();
   const [t] = useTranslation('UnlockWalletForm');
+  const { unlockWallet } = useFullService();
 
   const handleOnSubmit = async (
     values: UnlockWalletFormValues,

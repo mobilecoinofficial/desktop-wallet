@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
   const classes = useStyles();
-
   const colorCode = code.split('').map((char, i) => {
     let charColorClass = classes.lowercased;
     if (!Number.isNaN(char * 1)) {

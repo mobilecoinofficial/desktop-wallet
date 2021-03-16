@@ -7,7 +7,7 @@ const routePaths = {
   APP_SETTINGS: '/app/settings',
   APP_SETTINGS_CHANGE_PASSWORD: '/app/settings/change_password',
   APP_SETTINGS_CHANGE_PIN: '/app/settings/change_pin',
-  APP_SETTINGS_CONFIGURE_MOBILECOIND: '/app/settings/configure_mobilecoind',
+  APP_SETTINGS_CONFIGURE_FULL_SERVICE: '/app/settings/configure_full_service',
   APP_SETTINGS_PRIVACY_POLICY: '/app/settings/privacy_policy',
   APP_SETTINGS_RETRIEVE_ENTROPY: '/app/settings/retrieve_entropy',
   APP_SETTINGS_TERMS_OF_USE: '/app/settings/terms_of_use',

@@ -3,22 +3,24 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import useMobileCoinD from '../../../app/hooks/useMobileCoinD';
+import useFullService from '../../../app/hooks/useFullService';
 import NotFoundView from '../../../app/views/errors/NotFoundView';
 import renderSnapshot from '../../renderSnapshot';
 
-jest.mock('../../../app/hooks/useMobileCoinD');
+jest.mock('../../../app/hooks/useFullService');
 
 function setupComponent() {
   const mockIsAuthenticated = false;
   const mockEncryptedEntropy = 'a entropy string';
-  const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<typeof useMobileCoinD>;
+  const mockUseFullService = useFullService as jest.MockedFunction<typeof useFullService>;
 
   // @ts-ignore mock
-  mockUseMobileCoinD.mockImplementation(() => ({
-    encryptedEntropy: mockEncryptedEntropy,
-    isAuthenticated: mockIsAuthenticated,
-  }));
+  mockUseFullService.mockImplementation(() => {
+    return {
+      encryptedEntropy: mockEncryptedEntropy,
+      isAuthenticated: mockIsAuthenticated,
+    };
+  });
 
   const { asFragment } = renderSnapshot(<NotFoundView />);
 

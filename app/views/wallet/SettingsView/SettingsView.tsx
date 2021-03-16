@@ -42,8 +42,8 @@ const settingsOptionsList = [
   },
   {
     Icon: ToolsIcon,
-    label: 'configureMobileCoinD',
-    path: routePaths.APP_SETTINGS_CONFIGURE_MOBILECOIND,
+    label: 'configureFullService',
+    path: routePaths.APP_SETTINGS_CONFIGURE_FULL_SERVICE,
   },
 ];
 

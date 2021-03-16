@@ -5,25 +5,21 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import routePaths from '../constants/routePaths';
-import useMobileCoinD from '../hooks/useMobileCoinD';
 import SplashScreen from './SplashScreen';
+import useFullService from '../hooks/useFullService';
 
 interface UnlockWalletGuardProps {
   children?: ReactNode;
 }
 
 const UnlockWalletGuard: FC<UnlockWalletGuardProps> = ({ children }) => {
-  const { encryptedEntropy, isAuthenticated, isInitialised } = useMobileCoinD();
+  const { hashedPassword, isAuthenticated, isInitialized } = useFullService();
 
-  if (!isInitialised) {
+  if (!isInitialized) {
     return <SplashScreen />;
-  }
-
-  if (!encryptedEntropy) {
+  } else if (!hashedPassword) {
     return <Redirect to={routePaths.CREATE} />;
-  }
-
-  if (isAuthenticated) {
+  } else if (isAuthenticated) {
     return <Redirect to={routePaths.APP_DASHBOARD} />;
   }
 

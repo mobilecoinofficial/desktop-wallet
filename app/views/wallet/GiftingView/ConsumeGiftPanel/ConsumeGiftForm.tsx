@@ -25,15 +25,15 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
 import ShortCode from '../../../../components/ShortCode';
+import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
   feeConfirmation: null,
-  giftB58Code: '',
+  giftCodeB58: '',
   totalValueConfirmation: null,
   txProposal: null,
 };
@@ -91,15 +91,17 @@ const ConsumeGiftForm: FC = () => {
   const [submittingConfimedGift, setSubmittingConfirmedGift] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const { accountName, balance, openGiftCode, b58Code, submitTransaction } = useMobileCoinD();
   const { t } = useTranslation('ConsumeGiftForm');
+  const { openGiftCode, selectedAccount, submitTransaction } = useFullService();
 
   // We'll use this array in prep for future patterns with multiple accounts
+  // TODO - fix the type for Account
   const mockMultipleAccounts: Array<Account> = [
     {
-      b58Code: b58Code || '', // TODO -- This hack is to bypass the null state hack on initailization
-      balance: balance || BigInt(0), // once we move to multiple accounts, we won't have to null the values of an account (better typing!)
-      name: accountName,
+      b58Code: selectedAccount.account.mainAddress,
+      balance: selectedAccount.balanceStatus.unspentPmob,
+      mobUrl: selectedAccount.mobUrl,
+      name: selectedAccount.account.name,
     },
   ];
 
@@ -195,17 +197,17 @@ const ConsumeGiftForm: FC = () => {
   return (
     <Formik
       initialValues={{
-        giftB58Code: '', // mobs
+        giftCodeB58: '', // mobs
         senderPublicAddress: mockMultipleAccounts[0].b58Code,
         submit: null,
       }}
       validationSchema={Yup.object().shape({
-        giftB58Code: Yup.string().required(t('giftB58Validation')),
+        giftCodeB58: Yup.string().required(t('giftB58Validation')),
       })}
       onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
         try {
           setIsAwaitingConformation(true);
-          const result = await openGiftCode(values.giftB58Code);
+          const result = await openGiftCode(values.giftCodeB58);
           if (result === null || result === undefined) {
             throw new Error(t('giftB58Error'));
           }
@@ -259,8 +261,8 @@ const ConsumeGiftForm: FC = () => {
                 fullWidth
                 label={t('giftCode')}
                 margin="normal"
-                name="giftB58Code"
-                id="giftB58Code"
+                name="giftCodeB58"
+                id="giftCodeB58"
                 type="text"
               />
             </Box>

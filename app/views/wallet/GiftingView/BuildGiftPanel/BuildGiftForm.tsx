@@ -27,17 +27,18 @@ import * as Yup from 'yup';
 import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
 import ShortCode from '../../../../components/ShortCode';
 import { MOBIcon } from '../../../../components/icons';
+import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
 import * as localStore from '../../../../utils/LocalStore';
 import { makeHash } from '../../../../utils/hashing';
+import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
   feeConfirmation: null,
-  giftB58Code: '',
+  giftCodeB58: '',
   totalValueConfirmation: null,
   txProposal: null,
 };
@@ -84,8 +85,20 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 // TODO - ya, this definitely shouldn't live here
-const convertMobStringToPicoMobBigInt = (mobString: string): bigint =>
-  BigInt(mobString.replace('.', ''));
+const PICO_MOB_PRECISION = 12;
+
+const ensureMobStringPrecision = (mobString: string): string => {
+  const num = Number(mobString);
+  if (num === NaN) {
+    throw new Error('mobString is NaN');
+  }
+
+  return num.toFixed(PICO_MOB_PRECISION);
+};
+
+// TODO - ya, this definitely shouldn't live here
+const convertMobStringToPicoMobString = (mobString: string): string =>
+  ensureMobStringPrecision(mobString).replace('.', '');
 
 // TODO -- right now, we can show a progress bar for the sending modal
 // But, it would be nice to have a counter that parses up to, say, 10 seconds, before
@@ -102,38 +115,23 @@ const BuildGiftForm: FC = () => {
   const [slideExitSpeed, setSlideExitSpeed] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const {
-    accountName,
-    b58Code,
-    balance,
-    buildGiftCode,
-    networkHighestBlockIndex,
-    nextBlock,
-    submitGiftCode,
-  } = useMobileCoinD();
-  const { t } = useTranslation('BuildGiftForm');
 
-  // TODO - this isSynced stuff should live in 1 location -- maybe as context state
-  let isSynced = false;
-  if (
-    networkHighestBlockIndex === null ||
-    nextBlock === null ||
-    Number(networkHighestBlockIndex) < 0 ||
-    Number(nextBlock) < 0 ||
-    Number(nextBlock) - 1 > Number(networkHighestBlockIndex)
-  ) {
-    isSynced = false;
-  } else {
-    isSynced = Number(networkHighestBlockIndex) - Number(nextBlock) < 2; // Let's say a diff of 1 is fine.
-  }
+  const { t } = useTranslation('BuildGiftForm');
+  const { buildGiftCode, selectedAccount, submitGiftCode } = useFullService();
+
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+
+  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   // TODO - consider adding minimum gift ~ 1 MOB
   // We'll use this array in prep for future patterns with multiple accounts
   const mockMultipleAccounts: Array<Account> = [
     {
-      b58Code: b58Code || '', // TODO -- This hack is to bypass the null state hack on initialization
-      balance: balance || BigInt(0), // once we move to multiple accounts, we won't have to null the values of an account (better typing!)
-      name: accountName,
+      b58Code: selectedAccount.account.mainAddress,
+      balance: selectedAccount.balanceStatus.unspentPmob,
+      mobUrl: selectedAccount.mobUrl,
+      name: selectedAccount.account.name,
     },
   ];
 
@@ -160,7 +158,7 @@ const BuildGiftForm: FC = () => {
       if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
         throw new Error(t('confirmationNotFound'));
       }
-      await submitGiftCode(confirmation.txProposal, confirmation.giftB58Code);
+      await submitGiftCode(confirmation.txProposal, confirmation.giftCodeB58);
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmittingConfirmedGift(false);
@@ -181,6 +179,16 @@ const BuildGiftForm: FC = () => {
           variant: 'error',
         });
       }
+    }
+    await submitGiftCode(confirmation.txProposal, confirmation.giftB58Code);
+    if (isMountedRef.current) {
+      setStatus({ success: true });
+      setSubmittingConfirmedGift(false);
+      setIsAwaitingConformation(false);
+      setConfirmation(EMPTY_CONFIRMATION);
+      enqueueSnackbar(t('giftCreated'), {
+        variant: 'success',
+      });
     }
   };
 
@@ -276,19 +284,21 @@ const BuildGiftForm: FC = () => {
         // After they do, they can "Create Gift"
         try {
           setIsAwaitingConformation(true);
-          const result = await buildGiftCode(
-            convertMobStringToPicoMobBigInt(values.mobValue),
-            convertMobStringToPicoMobBigInt(values.feeAmount)
-          );
+
+          const result = await buildGiftCode({
+            accountId: selectedAccount.account.accountId,
+            fee: convertMobStringToPicoMobString(values.feeAmount),
+            valuePmob: convertMobStringToPicoMobString(values.mobValue),
+          });
           if (result === null || result === undefined) {
             throw new Error(t('errorBuild'));
           }
 
-          const { feeConfirmation, giftB58Code, totalValueConfirmation, txProposal } = result;
+          const { feeConfirmation, giftCodeB58, totalValueConfirmation, txProposal } = result;
 
           setConfirmation({
             feeConfirmation,
-            giftB58Code,
+            giftCodeB58,
             totalValueConfirmation,
             txProposal,
           });
@@ -313,8 +323,10 @@ const BuildGiftForm: FC = () => {
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
           // @ts-ignore
-          mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
-            .balance;
+          BigInt(
+            mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
+              .balance
+          );
 
         let remainingBalance;
         let totalSent;
@@ -389,12 +401,16 @@ const BuildGiftForm: FC = () => {
               <Slide in={showModal} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <Container className={classes.paper}>
                   <Box py={2}>
-                    <h2 id="transition-modal-title">{t('giftConfirmation')}</h2>
-                    <p id="transition-modal-description">{t('giftConfirmationDescription')}:</p>
+                    <Typography variant="h1" color="textPrimary">
+                      {t('giftConfirmation')}
+                    </Typography>
+                    <Typography variant="p" color="textPrimary">
+                      {t('giftConfirmationDescription')}:
+                    </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('accountBalance')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('accountBalance')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -403,8 +419,8 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>---</Typography>
-                    <Typography>---</Typography>
+                    <Typography color="textPrimary">---</Typography>
+                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="primary">{t('giftValue')}:</Typography>
@@ -417,8 +433,8 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('fee')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('fee')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -427,8 +443,8 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('total')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('total')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -437,12 +453,12 @@ const BuildGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>---</Typography>
-                    <Typography>---</Typography>
+                    <Typography color="textPrimary">---</Typography>
+                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('remaining')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('remaining')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -460,8 +476,8 @@ const BuildGiftForm: FC = () => {
                     <AccountCard
                       isGift
                       account={{
-                        b58Code: confirmation?.giftB58Code,
-                        mobUrl: `https://mobilecoin.com/mob58/${confirmation?.giftB58Code}`,
+                        b58Code: confirmation?.giftCodeB58,
+                        mobUrl: `https://mobilecoin.com/mob58/${confirmation?.giftCodeB58}`,
                         name: t('pending'),
                       }}
                     />

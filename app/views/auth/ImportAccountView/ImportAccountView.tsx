@@ -7,7 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
+import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 import ImportAccountForm, { importAccountFormOnSubmit } from './ImportAccountForm';
 
@@ -43,8 +43,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ImportAccountView: FC<ImportAccountViewProps> = ({ isTest }: ImportAccountViewProps) => {
   const classes = useStyles();
-  const { encryptedEntropy } = useMobileCoinD();
   const { t } = useTranslation('ImportAccountView');
+  const { hashedPassword } = useFullService();
 
   return (
     <Box data-testid="ImportAccountView" className={classes.root}>
@@ -60,7 +60,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({ isTest }: ImportAccount
           <Typography variant="body2" color="textSecondary" paragraph>
             {t('description')}
           </Typography>
-          {encryptedEntropy && (
+          {hashedPassword && (
             <Box data-testid="overwrite-warning">
               <Typography variant="body2" paragraph>
                 {t('overwriteWarning')}

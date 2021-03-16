@@ -9,12 +9,15 @@ const STORE_NAME = 'mobilecoin_config';
 
 export const schemaKeys = {
   ENCRYPTED_ENTROPY: 'encryptedEntropy',
+  FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
+  FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   GIFT_CODES: 'giftCodes',
+  HASHED_PASSWORD: 'hashedPassword',
+  HASHED_PASSWORD_SALT: 'hashedPasswordSalt',
   HASHED_PIN: 'hashedPin',
-  LEAVE_MOBILECOIND_RUNNING: 'leaveMobilecoindRunning',
+  LEAVE_FULL_SERVICE_RUNNING: 'leaveFullServiceRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
   MINIMUM_FOR_PIN: 'minimumPin',
-  MOBILECOIND_DB_PATH: 'mobilecoindDbPath',
   NAME: 'name',
   SALT: 'salt',
   THEME: 'theme',
@@ -22,12 +25,14 @@ export const schemaKeys = {
 
 export const schema: LocalStoreSchema = {
   [schemaKeys.ENCRYPTED_ENTROPY]: { type: 'string' },
+  [schemaKeys.FULL_SERVICE_DB_PATH]: { type: 'string' },
+  [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.GIFT_CODES]: { type: 'array' },
+  [schemaKeys.HASHED_PASSWORD]: { type: 'string' },
+  [schemaKeys.HASHED_PASSWORD_SALT]: { type: 'string' },
   [schemaKeys.HASHED_PIN]: { type: 'string' },
-  [schemaKeys.LEAVE_MOBILECOIND_RUNNING]: { type: 'boolean' },
+  [schemaKeys.LEAVE_FULL_SERVICE_RUNNING]: { type: 'boolean' },
   [schemaKeys.LEDGER_DB_PATH]: { type: 'string' },
-  [schemaKeys.MINIMUM_FOR_PIN]: { type: 'string' },
-  [schemaKeys.MOBILECOIND_DB_PATH]: { type: 'string' },
   [schemaKeys.NAME]: { type: 'string' },
   [schemaKeys.SALT]: { type: 'string' },
   [schemaKeys.THEME]: { type: 'string' },
@@ -58,11 +63,11 @@ export const setHashedPin = (hashedPin: string | null): void => {
   store.set(schemaKeys.HASHED_PIN, hashedPin || '');
 };
 
-export const getLeaveMobilecoindRunning = (): boolean =>
-  store.get(schemaKeys.LEAVE_MOBILECOIND_RUNNING) as boolean;
+export const getLeaveFullServiceRunning = (): boolean =>
+  store.get(schemaKeys.LEAVE_FULL_SERVICE_RUNNING) as boolean;
 
-export const setLeaveMobilecoindRunning = (leaveMobilecoindRunning: boolean): void => {
-  store.set(schemaKeys.LEAVE_MOBILECOIND_RUNNING, leaveMobilecoindRunning);
+export const setLeaveFullServiceRunning = (leaveFullServiceRunning: boolean): void => {
+  store.set(schemaKeys.LEAVE_FULL_SERVICE_RUNNING, leaveFullServiceRunning);
 };
 
 export const getMinimumForPin = (): number => Number(store.get(schemaKeys.MINIMUM_FOR_PIN));
@@ -78,22 +83,49 @@ export const getLedgerDbPath = (): string => {
   return typeof ledgerDbPath === 'string' ? ledgerDbPath : '';
 };
 
-export const getMobilecoindDbPath = (): string => {
-  const mobilecoindDbPath = store.get(schemaKeys.MOBILECOIND_DB_PATH);
-  return typeof mobilecoindDbPath === 'string' ? mobilecoindDbPath : '';
-};
-
 export const getTheme = (): string => {
   const theme = store.get(schemaKeys.THEME);
   return typeof theme === 'string' ? theme : 'system';
 };
 
+export const getHashedPassword = (): string | null => {
+  const hashedPassword = store.get(schemaKeys.HASHED_PASSWORD);
+  return typeof hashedPassword === 'string' ? hashedPassword : null;
+};
+
+// TODO - add tests
+export const setHashedPassword = (hashedPassword: string): void => {
+  store.set({
+    [schemaKeys.HASHED_PASSWORD]: hashedPassword,
+  });
+};
+
+// TODO - add tests
+export const getHashedPasswordSalt = (): string | null => {
+  const hashedPasswordSalt = store.get(schemaKeys.HASHED_PASSWORD_SALT);
+  return typeof hashedPasswordSalt === 'string' ? hashedPasswordSalt : null;
+};
+
+// TODO - add tests
+export const setHashedPasswordSalt = (hashedPasswordSalt: string): void => {
+  store.set({
+    [schemaKeys.HASHED_PASSWORD_SALT]: hashedPasswordSalt,
+  });
+};
+
+export const getFullServiceDbPath = (): string => {
+  const fullServiceDbPath = store.get(schemaKeys.FULL_SERVICE_DB_PATH);
+  return typeof fullServiceDbPath === 'string' ? fullServiceDbPath : '';
+};
+
+export const getFullServiceLedgerDbPath = () => store.get(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
+
 export const setLedgerDbPath = (name: string): void => {
   store.set(schemaKeys.LEDGER_DB_PATH, name);
 };
 
-export const setMobilecoindDbPath = (name: string): void => {
-  store.set(schemaKeys.MOBILECOIND_DB_PATH, name);
+export const setFullServiceDbPath = (name: string): void => {
+  store.set(schemaKeys.FULL_SERVICE_DB_PATH, name);
 };
 
 export const getName = (): string => store.get(schemaKeys.NAME) as string;

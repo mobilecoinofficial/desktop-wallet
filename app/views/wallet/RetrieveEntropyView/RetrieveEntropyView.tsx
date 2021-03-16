@@ -19,8 +19,8 @@ import * as Yup from 'yup';
 
 import { SubmitButton } from '../../../components';
 import routePaths from '../../../constants/routePaths';
+import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../theme';
 import ShowRetrievedEntropyModal from './ShowRetrievedEntropyModal';
 
@@ -79,7 +79,7 @@ const RetrieveEntropyView: FC = () => {
   const classes = useStyles();
   const [entropy, setEntropy] = useState('');
   const isMountedRef = useIsMountedRef();
-  const { retrieveEntropy } = useMobileCoinD();
+  const { retrieveEntropy } = useFullService();
   const handleCloseModal = () => {
     setEntropy('');
   };

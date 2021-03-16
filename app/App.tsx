@@ -8,9 +8,8 @@ import { hot } from 'react-hot-loader/root';
 import { MemoryRouter } from 'react-router-dom';
 
 import GlobalStyles from './components/GlobalStyles';
+import { FullServiceProvider } from './contexts/FullServiceContext';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
-import { MobileCoinDProvider } from './contexts/MobileCoinDContext';
-import client from './mobilecoind/client';
 import routes, { renderRoutes } from './routes';
 import { setTheme } from './theme';
 
@@ -50,10 +49,10 @@ const App: FC = () => {
     <MemoryRouter>
       <ThemeProvider theme={theme}>
         <SnackbarProvider dense maxSnack={5}>
-          <MobileCoinDProvider client={client}>
+          <FullServiceProvider>
             <GlobalStyles />
             {renderRoutes(routes)}
-          </MobileCoinDProvider>
+          </FullServiceProvider>
         </SnackbarProvider>
       </ThemeProvider>
     </MemoryRouter>

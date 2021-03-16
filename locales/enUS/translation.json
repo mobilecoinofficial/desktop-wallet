@@ -205,6 +205,7 @@
     "finalizedBlockHeight": "Finalized Block Height: ",
     "historyItemReceived": "RECEIVED",
     "historyItemSent": "SENT",
+    "orphaned": "??? Orphaned",
     "showAllTransactions": "All",
     "showReceivedTransactions": "Received",
     "showSentTransactions": "Sent"

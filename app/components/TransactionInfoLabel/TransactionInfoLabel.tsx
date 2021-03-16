@@ -7,18 +7,16 @@ import type { Theme } from '../../theme';
 import MOBNumberFormat from '../MOBNumberFormat';
 import type { TransactionInfoLabelProps } from './TransactionInfoLabel.d';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    negative: {
-      color: theme.palette.number.negative,
-    },
-    positive: {
-      color: theme.palette.number.positive,
-    },
-    root: { position: 'relative' },
-    textRight: { textAlign: 'right', width: '100%' },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  negative: {
+    color: theme.palette.number.negative,
+  },
+  positive: {
+    color: theme.palette.number.positive,
+  },
+  root: { position: 'relative' },
+  textRight: { textAlign: 'right', width: '100%' },
+}));
 
 const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
   valuePmob,

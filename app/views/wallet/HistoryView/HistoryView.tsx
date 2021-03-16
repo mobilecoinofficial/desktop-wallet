@@ -20,9 +20,11 @@ const HistoryView: FC = () => {
     txos,
     fetchAllTransactionLogsForAccount,
     fetchAllTxosForAccount,
-  } = useFullService(); // ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8
+  } = useFullService();
 
   const [showing, setShowing] = useState(HISTORY);
+
+  console.log('SELECTED ACCOUNT', selectedAccount);
 
   React.useEffect(() => {
     fetchAllTransactionLogsForAccount(selectedAccount.account.accountId);
@@ -45,24 +47,12 @@ const HistoryView: FC = () => {
     return <span>show empty state</span>;
   }
 
-  const buildList = (): TransactionLog[] => {
-    return transactionLogs.transactionLogIds
-      .map((id) => {
-        return transactionLogs.transactionLogMap[id];
-      })
-      .sort((a, b) => {
-        if (a.offsetCount < b.offsetCount) {
-          return 1;
-        }
-        if (b.offsetCount < a.offsetCount) {
-          return -1;
-        }
-
-        return 0;
-      })
+  const buildList = (): TransactionLog[] =>
+    transactionLogs.transactionLogIds
+      .map((id) => transactionLogs.transactionLogMap[id])
+      .sort((a, b) => b.offsetCount - a.offsetCount)
       .slice(0, 50);
-  };
-  //
+
   switch (showing) {
     case HISTORY:
       return (

@@ -187,6 +187,10 @@
   },
 
   "HistoryView": {
+    "finalizedBlockHeight": "FINALIZED BLOCK HEIGHT: ",
+    "historyItemReceived": "RECEIVED",
+    "historyItemSent": "SENT",
+    "orphaned": "??? ORPHANED",
     "showAllTransactions": "ALL",
     "showReceivedTransactions": "RECEIVED",
     "showSentTransactions": "SENT"

@@ -24,8 +24,6 @@ const HistoryView: FC = () => {
 
   const [showing, setShowing] = useState(HISTORY);
 
-  console.log('SELECTED ACCOUNT', selectedAccount);
-
   React.useEffect(() => {
     fetchAllTransactionLogsForAccount(selectedAccount.account.accountId);
     fetchAllTxosForAccount(selectedAccount.account.accountId);

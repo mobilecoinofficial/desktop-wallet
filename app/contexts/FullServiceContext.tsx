@@ -12,7 +12,7 @@ import type { TransactionLogs } from '../types/TransactionLog';
 import type TxProposal from '../types/TxProposal';
 import type { Txos } from '../types/Txo';
 import type WalletStatus from '../types/WalletStatus';
-import LocalStore from '../utils/LocalStore';
+import * as localStore from '../utils/LocalStore';
 import sameObject from '../utils/sameObject';
 import scryptKeys from '../utils/scryptKeys';
 
@@ -391,8 +391,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   const changePassword = async (oldPassword: string, newPassword: string) => {
     try {
       const { hashedPassword } = state;
-      const LocalStoreInstance = new LocalStore();
-      const salt = LocalStoreInstance.getHashedPasswordSalt();
+      const salt = localStore.getHashedPasswordSalt();
       if (!hashedPassword || !salt) {
         throw new Error('hashedPassword not found.');
       }
@@ -407,8 +406,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { publicSaltString, secretKeyString: newSecretKeyString } = await scryptKeys(
         newPassword
       );
-      LocalStoreInstance.setHashedPassword(newSecretKeyString);
-      LocalStoreInstance.setHashedPasswordSalt(publicSaltString);
+      localStore.setHashedPassword(newSecretKeyString);
+      localStore.setHashedPasswordSalt(publicSaltString);
     } catch (err) {
       throw new Error(err.message);
     }
@@ -418,8 +417,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
   const deleteStoredGiftCodeB58 = (storedGiftCodeB58: string) => {
     try {
-      const LocalStoreInstance = new LocalStore();
-      const giftCodes = LocalStoreInstance.getGiftCodes();
+      const giftCodes = localStore.getGiftCodes();
       if (!Array.isArray(giftCodes)) {
         throw new Error('Cannot find gift codes');
       }
@@ -438,7 +436,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       }
 
       giftCodes.splice(giftCodeIndex, 1);
-      LocalStoreInstance.setGiftCodes(giftCodes);
+      localStore.setGiftCodes(giftCodes);
 
       // At this point, let's make sure to store the entropy
       // in the context, we can detect the change and begin monitoring the gift code
@@ -490,9 +488,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       // After successful import, store password digest
       // TODO - rename secret key as digest
       const { publicSaltString, secretKeyString: hashedPassword } = await scryptKeys(password);
-      const LocalStoreInstance = new LocalStore();
-      LocalStoreInstance.setHashedPassword(hashedPassword);
-      LocalStoreInstance.setHashedPasswordSalt(publicSaltString);
+      localStore.setHashedPassword(hashedPassword);
+      localStore.setHashedPasswordSalt(publicSaltString);
 
       dispatch({
         payload: {
@@ -543,9 +540,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
       // After successful import, store password digest
       const { publicSaltString, secretKeyString: hashedPassword } = await scryptKeys(password);
-      const LocalStoreInstance = new LocalStore();
-      LocalStoreInstance.setHashedPassword(hashedPassword);
-      LocalStoreInstance.setHashedPasswordSalt(publicSaltString);
+      localStore.setHashedPassword(hashedPassword);
+      localStore.setHashedPasswordSalt(publicSaltString);
       dispatch({
         payload: {
           accounts: {
@@ -614,8 +610,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   const retrieveEntropy = async (password: string) => {
     try {
       const { hashedPassword, selectedAccount } = state;
-      const LocalStoreInstance = new LocalStore();
-      const salt = LocalStoreInstance.getHashedPasswordSalt();
+      const salt = localStore.getHashedPasswordSalt();
       if (!hashedPassword || !salt) {
         throw new Error('hashedPassword not found.');
       }
@@ -641,8 +636,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       // TODO probably want to figure out what I want to save about this transaction log
       await fullServiceApi.submitTransaction({ txProposal });
 
-      const LocalStoreInstance = new LocalStore();
-      const giftCodes = LocalStoreInstance.getGiftCodes() || [];
+      const giftCodes = localStore.getGiftCodes() || [];
       if (!Array.isArray(giftCodes)) {
         throw new Error('Cannot find gift codes');
       }
@@ -653,7 +647,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         .reduce((acc, cur) => acc + cur);
       const giftValueString = giftValue.toString();
       giftCodes.push({ giftCodeB58, giftValueString });
-      LocalStoreInstance.setGiftCodes(giftCodes);
+      localStore.setGiftCodes(giftCodes);
 
       dispatch({
         payload: { giftCodes },
@@ -695,8 +689,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     try {
       // TODO -- remove scrypt for DB encryption w/ Argon2
       const { hashedPassword } = state;
-      const LocalStoreInstance = new LocalStore();
-      const salt = LocalStoreInstance.getHashedPasswordSalt();
+      const salt = localStore.getHashedPasswordSalt();
       if (!hashedPassword || !salt) {
         throw new Error('hashedPassword not found.');
       }
@@ -751,9 +744,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     const initialize = () => {
       // TODO - no real reason to try
       try {
-        const LocalStoreInstance = new LocalStore();
-        const hashedPassword = LocalStoreInstance.getHashedPassword();
-        const giftCodes = LocalStoreInstance.getGiftCodes();
+        const hashedPassword = localStore.getHashedPassword();
+        const giftCodes = localStore.getGiftCodes();
         const assertedGiftCodes = Array.isArray(giftCodes) ? giftCodes : [];
 
         dispatch({

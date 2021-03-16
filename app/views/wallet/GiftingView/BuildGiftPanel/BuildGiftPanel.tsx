@@ -35,20 +35,18 @@ import BuildGiftForm from './BuildGiftForm';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
 
-const useStyles = makeStyles(() => {
-  return {
-    cardContainer: {
-      paddingBottom: 64,
-      paddingTop: 64,
-    },
-    clickable: {
-      cursor: 'pointer',
-      marginRight: 8,
-      paddingLeft: 4,
-      paddingRight: 4,
-    },
-  };
-});
+const useStyles = makeStyles(() => ({
+  cardContainer: {
+    paddingBottom: 64,
+    paddingTop: 64,
+  },
+  clickable: {
+    cursor: 'pointer',
+    marginRight: 8,
+    paddingLeft: 4,
+    paddingRight: 4,
+  },
+}));
 
 const BuildGiftPanel: FC = () => {
   const classes = useStyles();
@@ -60,11 +58,9 @@ const BuildGiftPanel: FC = () => {
 
   const { t } = useTranslation('BuildGiftPanel');
 
-  const handleDialogOpen = (giftCode: string, giftValue: string) => {
-    return () => {
-      setDialogOpen(true);
-      setPendingDeleteCode([giftCode, giftValue]);
-    };
+  const handleDialogOpen = (giftCode: string, giftValue: string) => () => {
+    setDialogOpen(true);
+    setPendingDeleteCode([giftCode, giftValue]);
   };
 
   const handleDialogClose = () => {
@@ -72,13 +68,11 @@ const BuildGiftPanel: FC = () => {
     setPendingDeleteCode(EMPTY_PENDING_DELETE_CODE);
   };
 
-  const handleCopyClick = (code: string) => {
-    return () => {
-      clipboard.writeText(code);
-      enqueueSnackbar(t('giftCodeCopied'), {
-        variant: 'success',
-      });
-    };
+  const handleCopyClick = (code: string) => () => {
+    clipboard.writeText(code);
+    enqueueSnackbar(t('giftCodeCopied'), {
+      variant: 'success',
+    });
   };
 
   const handleConfirmDelete = () => {

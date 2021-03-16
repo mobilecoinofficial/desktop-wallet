@@ -6,28 +6,26 @@ import { Box, LinearProgress, makeStyles } from '@material-ui/core';
 import type { Theme } from '../theme';
 import { LogoIcon } from './icons';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    progressBar: {
-      // TODO - this should be based on whatever I choose is the min-width
-      width: 141 * 3,
-    },
-    root: {
-      alignItems: 'center',
-      backgroundColor: theme.palette.background.default,
-      display: 'flex',
-      flexDirection: 'column',
-      height: '100%',
-      justifyContent: 'center',
-      left: 0,
-      padding: theme.spacing(3),
-      position: 'fixed',
-      top: 0,
-      width: '100%',
-      zIndex: 2000,
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  progressBar: {
+    // TODO - this should be based on whatever I choose is the min-width
+    width: 141 * 3,
+  },
+  root: {
+    alignItems: 'center',
+    backgroundColor: theme.palette.background.default,
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    justifyContent: 'center',
+    left: 0,
+    padding: theme.spacing(3),
+    position: 'fixed',
+    top: 0,
+    width: '100%',
+    zIndex: 2000,
+  },
+}));
 
 const SplashScreen: FC = () => {
   const classes = useStyles();

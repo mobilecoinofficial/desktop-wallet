@@ -7,18 +7,16 @@ import { LogoIcon } from '../../../components/icons';
 import NavBar from './NavBar';
 import SyncStatus from './SyncStatus';
 
-const useStyles = makeStyles((theme) => {
-  return {
-    root: {
-      backgroundColor: theme.palette.background.default,
-    },
-    toolbar: {
-      backgroundColor: theme.palette.background.paper,
-      height: '10px',
-      margin: 'auto',
-    },
-  };
-});
+const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+  },
+  toolbar: {
+    backgroundColor: theme.palette.background.paper,
+    height: '10px',
+    margin: 'auto',
+  },
+}));
 
 const TopBar: FC = () => {
   const classes = useStyles();

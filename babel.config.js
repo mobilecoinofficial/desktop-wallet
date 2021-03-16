@@ -2,15 +2,13 @@
 
 const developmentEnvironments = ['development', 'test'];
 
-const developmentPlugins = [require('react-hot-loader/babel')];
 const productionPlugins = [
-  require('babel-plugin-dev-expression'),
-
-  // babel-preset-react-optimize
   require('@babel/plugin-transform-react-constant-elements'),
   require('@babel/plugin-transform-react-inline-elements'),
+  require('babel-plugin-dev-expression'),
   require('babel-plugin-transform-react-remove-prop-types'),
 ];
+const developmentPlugins = [require('react-hot-loader/babel')];
 
 module.exports = (api) => {
   // See docs about api at https://babeljs.io/docs/en/config-files#apicache
@@ -18,12 +16,6 @@ module.exports = (api) => {
   const development = api.env(developmentEnvironments);
 
   return {
-    presets: [
-      // @babel/preset-env will automatically target our browserslist targets
-      require('@babel/preset-env'),
-      require('@babel/preset-typescript'),
-      [require('@babel/preset-react'), { development }],
-    ],
     plugins: [
       // Stage 0
       require('@babel/plugin-proposal-function-bind'),
@@ -50,6 +42,12 @@ module.exports = (api) => {
       require('@babel/plugin-proposal-json-strings'),
 
       ...(development ? developmentPlugins : productionPlugins),
+    ],
+    presets: [
+      // @babel/preset-env will automatically target our browserslist targets
+      require('@babel/preset-env'),
+      require('@babel/preset-typescript'),
+      [require('@babel/preset-react'), { development }],
     ],
   };
 };

@@ -31,7 +31,7 @@ import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
-import LocalStore from '../../../../utils/LocalStore';
+import * as localStore from '../../../../utils/LocalStore';
 import { makeHash } from '../../../../utils/hashing';
 import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
 
@@ -178,6 +178,21 @@ const SendMobForm: FC = () => {
       setIsAwaitingConformation(false);
       setConfirmation(EMPTY_CONFIRMATION);
     }
+
+    const {
+      feeConfirmation,
+      totalValueConfirmation,
+      txProposal,
+      txProposalReceiverB58Code,
+    } = result;
+    setConfirmation({
+      feeConfirmation,
+      totalValueConfirmation,
+      txProposal,
+      txProposalReceiverB58Code,
+    });
+
+    setOpen(true);
   };
 
   const handleClose = (setSubmitting: (boolean: boolean) => void, resetForm: () => void) => () => {
@@ -196,12 +211,12 @@ const SendMobForm: FC = () => {
     const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}:`;
     return (
       <Box display="flex" justifyContent="space-between">
-        <Typography>
+        <Typography color="textPrimary">
           {' '}
           {name}
           <ShortCode code={account.b58Code} />
         </Typography>
-        <Typography>
+        <Typography color="textPrimary">
           <MOBNumberFormat value={account.balance.toString()} valueUnit="pMOB" />
         </Typography>
       </Box>
@@ -215,8 +230,8 @@ const SendMobForm: FC = () => {
       </FormLabel>
       <Field component={RadioGroup} name="senderPublicAddress">
         <Box display="flex" justifyContent="space-between">
-          <Typography>{t('accountName')}</Typography>
-          <Typography>{t('accountBalance')}</Typography>
+          <Typography color="textPrimary">{t('accountName')}</Typography>
+          <Typography color="textPrimary">{t('accountBalance')}</Typography>
         </Box>
         {accounts.map((account: Account) => (
           <FormControlLabel
@@ -250,7 +265,6 @@ const SendMobForm: FC = () => {
     event.target.select();
   };
 
-  const localStore = new LocalStore();
   const minimumForPin = String(localStore.getMinimumForPin());
   const hashedPin = localStore.getHashedPin();
 

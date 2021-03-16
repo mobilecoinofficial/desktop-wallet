@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
+import { makeStyles } from '@material-ui/core';
 import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
@@ -33,6 +34,15 @@ const HistoryView: FC = () => {
     fetchAllTxosForAccount,
   ]);
 
+  const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+      backgroundColor: theme.palette.background.dark,
+      minHeight: '100%',
+      paddingBottom: theme.spacing(3),
+      paddingLeft: theme.spacing(5),
+      paddingRight: theme.spacing(5),
+    },
+  }));
   // TODO -- this error state is fine, we should reintroduce
   // React.useEffect(() => {
   //   try {

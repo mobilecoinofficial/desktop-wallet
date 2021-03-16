@@ -55,13 +55,13 @@ describe('TransactionView', () => {
       test('ReceiveMobPanel renders correctly', async () => {
         const { sendQuery } = setupComponent();
         userEvent.click(screen.getByText('Receive MOB'));
-        await waitFor(() => {
-          return expect(
+        await waitFor(() =>
+          expect(
             screen.queryByText(
               /To receive MOB, you must share your public address code to the sender./i
             )
-          ).toBeInTheDocument();
-        });
+          ).toBeInTheDocument()
+        );
         expect(sendQuery).not.toBeInTheDocument();
       });
     });

@@ -142,31 +142,29 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
                 }, 1500);
               }}
             >
-              {({ isSubmitting, dirty, isValid, submitForm }) => {
-                return (
-                  <Form>
-                    <Box>
-                      <Field
-                        component={TextField}
-                        fullWidth
-                        label={t('typeHere')}
-                        margin="normal"
-                        name="newComment"
-                        type="text"
-                      />
-                    </Box>{' '}
-                    <Box paddingLeft={10} paddingRight={10}>
-                      <SubmitButton
-                        disabled={!dirty || !isValid || isSubmitting}
-                        onClick={submitForm}
-                        isSubmitting={isSubmitting}
-                      >
-                        {t('changeComment')}
-                      </SubmitButton>
-                    </Box>
-                  </Form>
-                );
-              }}
+              {({ isSubmitting, dirty, isValid, submitForm }) => (
+                <Form>
+                  <Box>
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      label={t('typeHere')}
+                      margin="normal"
+                      name="newComment"
+                      type="text"
+                    />
+                  </Box>{' '}
+                  <Box paddingLeft={10} paddingRight={10}>
+                    <SubmitButton
+                      disabled={!dirty || !isValid || isSubmitting}
+                      onClick={submitForm}
+                      isSubmitting={isSubmitting}
+                    >
+                      {t('changeComment')}
+                    </SubmitButton>
+                  </Box>
+                </Form>
+              )}
             </Formik>
           </Card>
         </Container>

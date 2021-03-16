@@ -8,7 +8,7 @@ import UnlockWalletForm, {
 } from '../../../../app/views/auth/UnlockWalletView/UnlockWalletForm';
 import renderSnapshot from '../../../renderSnapshot';
 
-jest.mock('../../../../app/hooks/useMobileCoinD');
+jest.mock('../../../../app/hooks/useFullService');
 jest.mock('../../../../app/utils/keytarService', () => {
   const mockKeytarService = {
     getKeychainAccounts: () => {
@@ -24,7 +24,7 @@ function setupComponent() {
   // Variables
   const password = 'password';
 
-  const { asFragment, mockUseMobileCoinDValues } = renderSnapshot(
+  const { asFragment, mockUseFullServiceValues } = renderSnapshot(
     <UnlockWalletForm onSubmit={unlockWalletFormOnSubmit} />
   );
 
@@ -39,7 +39,7 @@ function setupComponent() {
   return {
     asFragment,
     form,
-    mockUseMobileCoinDValues,
+    mockUseFullServiceValues,
     password,
     passwordField,
     submitButton,
@@ -89,33 +89,33 @@ describe('UnlockWalletForm', () => {
     describe('submit', () => {
       test('calls unlockWallet hook with the password', async () => {
         const {
-          mockUseMobileCoinDValues,
+          mockUseFullServiceValues,
           password,
           passwordField,
           submitButton,
         } = setupComponent();
         userEvent.click(submitButton);
         await waitFor(() => {
-          expect(mockUseMobileCoinDValues.unlockWallet).not.toBeCalled();
+          expect(mockUseFullServiceValues.unlockWallet).not.toBeCalled();
         });
 
         userEvent.type(passwordField, password);
         userEvent.click(submitButton);
         await waitFor(() => {
-          expect(mockUseMobileCoinDValues.unlockWallet).toBeCalledWith(password);
+          expect(mockUseFullServiceValues.unlockWallet).toBeCalledWith(password);
         });
       });
 
       test('displays error when thrown', async () => {
         const expectedErrorMessage = 'I am an error!';
         const {
-          mockUseMobileCoinDValues,
+          mockUseFullServiceValues,
           password,
           passwordField,
           submitButton,
         } = setupComponent();
         // @ts-ignore mock
-        mockUseMobileCoinDValues.unlockWallet.mockImplementation(() => {
+        mockUseFullServiceValues.unlockWallet.mockImplementation(() => {
           throw new Error(expectedErrorMessage);
         });
 

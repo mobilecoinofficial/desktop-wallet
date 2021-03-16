@@ -13,15 +13,13 @@ export interface HistoryDateSeparatorItemProps {
 
 const HistoryDateSeparator: FC<HistoryDateSeparatorItemProps> = ({
   dateTime,
-}: HistoryDateSeparatorItemProps) => {
-  return (
-    <Typography variant="body2" color="textPrimary">
-      &nbsp;&nbsp;&nbsp;
-      <b>
-        {dateToMonthName(dateTime).toLocaleUpperCase()} {dateTime.getFullYear()}
-      </b>
-    </Typography>
-  );
-};
+}: HistoryDateSeparatorItemProps) => (
+  <Typography variant="body2" color="textPrimary">
+    &nbsp;&nbsp;&nbsp;
+    <b>
+      {dateToMonthName(dateTime).toLocaleUpperCase()} {dateTime.getFullYear()}
+    </b>
+  </Typography>
+);
 
 export default HistoryDateSeparator;

@@ -8,17 +8,42 @@ import { hot } from 'react-hot-loader/root';
 import { MemoryRouter } from 'react-router-dom';
 
 import { GlobalStyles, SavePasswordModal } from './components';
-import { MOBILE_COIN_DARK } from './constants/themes';
-import { MobileCoinDProvider } from './contexts/MobileCoinDContext';
-import client from './mobilecoind/client';
+import { FullServiceProvider } from './contexts/FullServiceContext';
+import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
 import routes, { renderRoutes } from './routes';
 import { setTheme } from './theme';
 import { setKeychainAccount } from './utils/keytarService';
 
 const App: FC = () => {
-  const theme = setTheme({
-    responsiveFontSizes: true,
-    theme: MOBILE_COIN_DARK,
+  const [theme, setThemeReact] = React.useState(
+    setTheme({
+      responsiveFontSizes: true,
+      theme: ipcRenderer.sendSync('get-theme') === 'light' ? MOBILE_COIN_LIGHT : MOBILE_COIN_DARK,
+    })
+  );
+
+  useEffect(() => {
+    ipcRenderer.on('set-theme-light', () => {
+      setThemeReact(
+        setTheme({
+          responsiveFontSizes: true,
+          theme: MOBILE_COIN_LIGHT,
+        })
+      );
+    });
+    ipcRenderer.on('set-theme-dark', () => {
+      setThemeReact(
+        setTheme({
+          responsiveFontSizes: true,
+          theme: MOBILE_COIN_DARK,
+        })
+      );
+    });
+
+    return () => {
+      ipcRenderer.removeAllListeners('set-theme-light');
+      ipcRenderer.removeAllListeners('set-theme-dark');
+    };
   });
 
   const [openSavePasswordModal, setOpenSavePasswordModal] = React.useState(false);
@@ -48,7 +73,7 @@ const App: FC = () => {
     <MemoryRouter>
       <ThemeProvider theme={theme}>
         <SnackbarProvider dense maxSnack={5}>
-          <MobileCoinDProvider client={client}>
+          <FullServiceProvider>
             <GlobalStyles />
             {renderRoutes(routes)}
             <SavePasswordModal
@@ -57,7 +82,7 @@ const App: FC = () => {
               open={openSavePasswordModal}
               password={password}
             />
-          </MobileCoinDProvider>
+          </FullServiceProvider>
         </SnackbarProvider>
       </ThemeProvider>
     </MemoryRouter>

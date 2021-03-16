@@ -3,12 +3,12 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 
 import { AuthFlowGuard } from '../../app/components';
-import { MobileCoinDContextValue } from '../../app/contexts/MobileCoinDContext';
+import { FullServiceContextValue } from '../../app/contexts/FullServiceContext';
 import renderSnapshot from '../renderSnapshot';
 
-jest.mock('../../app/hooks/useMobileCoinD');
+jest.mock('../../app/hooks/useFullService');
 
-function setupComponent(contextOverides?: MobileCoinDContextValue) {
+function setupComponent(contextOverides?: FullServiceContextValue) {
   const defaultContext = {
     encryptedEntropy: null,
     isAuthenticated: false,

@@ -3,10 +3,9 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 
 import { WalletGuard } from '../../../app/components';
-import { MobileCoinDContextValue } from '../../../app/contexts/MobileCoinDContext';
+import { FullServiceContextValue } from '../../../app/contexts/FullServiceContext';
 import renderSnapshot from '../../renderSnapshot';
 
-jest.mock('../../../app/hooks/useMobileCoinD');
 jest.mock('../../../app/utils/keytarService', () => {
   const mockKeytarService = {
     getKeychainAccounts: () => {
@@ -14,11 +13,12 @@ jest.mock('../../../app/utils/keytarService', () => {
     },
     setKeychainAccount: () => jest.fn(),
   };
+jest.mock('../../../app/hooks/useFullService');
 
   return mockKeytarService;
 });
 
-function setupComponent(contextOverrides?: MobileCoinDContextValue) {
+function setupComponent(contextOverrides?: FullServiceContextValue) {
   const defaultContext = {
     encryptedEntropy: null,
     isAuthenticated: false,

@@ -116,11 +116,11 @@
     "closeWalletButton": "Close Wallet"
   },
 
-  "ConfigureMobilecoindView": {
-    "configureMobilecoindBreadcrumb": "Configure MobileCoinD",
-    "daemonDescription": "The MobileCoin Daemon, or MobileCoinD, is a standalone executable which provides blockchain synchronization and wallet services.",
-    "daemonDescriptionContinued": "It creates encrypted, attested connections to validator nodes who are participating in federated voting in order to get the current block height, block headers, and to submit transactions. These validator nodes are considered highly trusted due to their use of SGX, and they are used as a reliable source for block information as well as to validate and process the proposed transactions from MobileCoinD.",
-    "panelDescription": "This panel allows you to customize the behavior of MobileCoinD as well as perform some basic resets.",
+  "ConfigureFullServiceView": {
+    "configureFullServiceBreadcrumb": "Configure Full-Service",
+    "daemonDescription": "The MobileCoin Daemon, or Full-Service, is a standalone executable which provides blockchain synchronization and wallet services.",
+    "daemonDescriptionContinued": "It creates encrypted, attested connections to validator nodes who are participating in federated voting in order to get the current block height, block headers, and to submit transactions. These validator nodes are considered highly trusted due to their use of SGX, and they are used as a reliable source for block information as well as to validate and process the proposed transactions from Full-Service.",
+    "panelDescription": "This panel allows you to customize the behavior of Full-Service as well as perform some basic resets.",
     "settingsBreadcrumb": "Settings"
   },
 
@@ -202,6 +202,9 @@
   },
 
   "HistoryView": {
+    "finalizedBlockHeight": "Finalized Block Height: ",
+    "historyItemReceived": "RECEIVED",
+    "historyItemSent": "SENT",
     "showAllTransactions": "All",
     "showReceivedTransactions": "Received",
     "showSentTransactions": "Sent"
@@ -237,24 +240,24 @@
     "unlockWalletButton": "Unlock this wallet"
   },
 
-  "LeaveMobilecoindRunning": {
-    "defaultDescription": "By default, MobileCoinD terminates when you exit the wallet. This setting allows you to leave MobileCoinD syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches.",
-    "formLabel": "MobileCoinD Background Process",
-    "ternaryOff": "Leave MobileCoinD Active is off",
-    "ternaryOn": "Leave MobileCoinD Active is on",
-    "ternaryWillNotSync": "MobileCoinD will not continue to sync when you exit the wallet.",
-    "ternaryWillSync": "MobileCoinD will continue to sync when you exit the wallet."
+  "LeaveFullServiceRunning": {
+    "defaultDescription": "By default, Full-Service terminates when you exit the wallet. This setting allows you to leave Full-Service syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches.",
+    "formLabel": "Full-Service Background Process",
+    "ternaryOff": "Leave Full-Service Active is off",
+    "ternaryOn": "Leave Full-Service Active is on",
+    "ternaryWillNotSync": "Full-Service will not continue to sync when you exit the wallet.",
+    "ternaryWillSync": "Full-Service will continue to sync when you exit the wallet."
   },
 
   "LedgerStatus": {
+    "accountBlocks": "Account Blocks",
+    "accountBlocksDescription": "Account Blocks shows the blocks that a specific Account has synced. Each account has its own Account Blocks count. Once this value is synced, you will immediately see the effects of transactions.",
     "blockType": "Block Type",
     "formLabel": "Ledger Status",
     "height": "Current Height",
     "localBlocks": "Local Blocks",
-    "localBlocksDescription": "Local Blocks shows the blocks your mobilecoind has synced the ledger.",
+    "localBlocksDescription": "Local Blocks shows the blocks your Full-Service has synced the ledger.",
     "maxHeight": "Maximum Height",
-    "monitorBlocks": "Monitor Blocks",
-    "monitorBlocksDescription": "Monitor Blocks shows the blocks that a specific monitor has synced. Each account has its own Monitor Blocks count. Once this value is synced, you will immediately see the effects of transactions.",
     "networkBlocks": "Network Blocks",
     "networkBlocksDescription": "Network Blocks represent the total blocks within the MobileCoin network. This is the value your Local and Monitor Blocks needs to hit to be 100% synced.",
     "statusCopy100": "The ledger is synced.",
@@ -289,10 +292,18 @@
     "reload": "Reload",
     "selectAll": "Select All",
     "showAll": "Show All",
-    "toggleDeveloperTools": "Toggle Developer Tools",
-    "toggleFullScreen": "Toggle Full Screen",
     "undo": "Undo",
-    "view": "View",
+    "View": {
+      "Theme": {
+        "title": "Theme",
+        "system": "System",
+        "light": "Light",
+        "dark": "Dark"
+      },
+      "title": "View",
+      "toggleDevTools": "Toggle Developer Tools",
+      "toggleFullScreen": "Toggle Full Screen"
+    },
     "window": "Window",
     "language": "Language",
     "languages": {
@@ -301,14 +312,16 @@
     }
   },
 
-  "MobilecoindDirectory": {
-    "formLabel": "MobileCoinD Directory",
+  "FullServiceDirectory": {
+    "formLabel": "Full-Service Directory",
     "ledgerDbPathHeader": "Ledger Database Path:",
-    "mobilecoindDbPathHeader": "MobileCoinD Database Path:"
+    "full-ServiceDbPathHeader": "Full-Service Database Path:"
   },
 
   "NavBar": {
+    "contacts": "Contacts",
     "gift": "Gifting",
+    "history": "History",
     "home": "Home",
     "settings": "Settings",
     "transaction": "Send/Receive"
@@ -398,7 +411,7 @@
   "SettingsOptionsItem": {
     "changePassword": "Change Password",
     "changePin": "Set or Change PIN",
-    "configureMobileCoinD": "Configure MobileCoinD",
+    "configureFull-Service": "Configure Full-Service",
     "privacyPolicy": "Privacy Policy",
     "retrieveEntropy": "Retrieve Secret Entropy",
     "terms": "Terms of Use"
@@ -434,17 +447,17 @@
   "TransactionDetails": {
     "amount": "Amount",
     "addComment": "Add comment",
+    "blockHeight": "Block Height",
     "buttons": {
       "back": "Go Back",
       "cancel": "Cancel comment",
       "save": "Save comment"
     },
     "changeComment": "Change comment",
-    "date": "Date",
     "recipient": "Recipient",
     "savedComment": "Comment saved",
     "sender": "Sender",
-    "time": "Time",
+    "transactionDetails": "Transaction Details",
     "txo": "TXO",
     "txoDetails": "TXO Details",
     "typeHere": "Start typing here"

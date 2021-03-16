@@ -4,28 +4,22 @@ import type { FC } from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
 
 import type { Theme } from '../../theme';
+import MOBNumberFormat from '../MOBNumberFormat';
+import type { TransactionInfoLabelProps } from './TransactionInfoLabel.d';
 
-export interface TransactionInfoLabelProps {
-  amount?: number;
-  sign: '+' | '-';
-  label: string;
-}
-
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    negative: {
-      color: theme.palette.number.negative,
-    },
-    positive: {
-      color: theme.palette.number.positive,
-    },
-    root: { position: 'relative' },
-    textRight: { textAlign: 'right', width: '100%' },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  negative: {
+    color: theme.palette.number.negative,
+  },
+  positive: {
+    color: theme.palette.number.positive,
+  },
+  root: { position: 'relative' },
+  textRight: { textAlign: 'right', width: '100%' },
+}));
 
 const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
-  amount,
+  valuePmob,
   sign,
   label,
 }: TransactionInfoLabelProps) => {
@@ -34,18 +28,16 @@ const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
   return (
     <Typography
       className={`${classes.textRight}
-      ${sign === '+' ? classes.positive : classes.negative}`}
+    ${sign === '+' ? classes.positive : classes.negative}`}
       display="inline"
     >
-      {sign}
-      {amount === undefined ? ' ???' : amount}
-      {label}
+      <MOBNumberFormat valueUnit="pMOB" value={valuePmob} prefix={sign} suffix={label} />
     </Typography>
   );
 };
 
 TransactionInfoLabel.defaultProps = {
-  amount: undefined,
+  valuePmob: undefined,
 };
 
 export default TransactionInfoLabel;

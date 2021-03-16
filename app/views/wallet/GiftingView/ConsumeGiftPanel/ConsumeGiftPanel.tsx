@@ -6,35 +6,34 @@ import { useTranslation } from 'react-i18next';
 
 import { MOBNumberFormat } from '../../../../components';
 import { MOBIcon } from '../../../../components/icons';
-import useMobileCoinD from '../../../../hooks/useMobileCoinD';
+import useFullService from '../../../../hooks/useFullService';
+import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
 import ConsumeGiftForm from './ConsumeGiftForm';
 
-const useStyles = makeStyles(() => {
-  return {
-    mobContainer: {
-      alignSelf: 'center',
-      display: 'flex',
-      paddingRight: 4,
-    },
-    root: {},
-    valueContainer: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-  };
-});
+const useStyles = makeStyles(() => ({
+  mobContainer: {
+    alignSelf: 'center',
+    display: 'flex',
+    paddingRight: 4,
+  },
+  root: {},
+  valueContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}));
 
 const ConsumeGiftPanel: FC = () => {
   const classes = useStyles();
-  const { balance, networkHighestBlockIndex, nextBlock } = useMobileCoinD();
+  const { selectedAccount } = useFullService();
+
   const { t } = useTranslation('ConsumeGiftPanel');
   // TODO consolidate the isSynced logic throughout app to one location.
-  // consider using a specifc context when we split the MobileCoinDContext
-  const isSynced =
-    nextBlock === null || networkHighestBlockIndex === null
-      ? false
-      : Number(nextBlock) - Number(networkHighestBlockIndex) < 2;
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+
+  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   return (
     <Container className={classes.root} maxWidth="sm">
@@ -49,7 +48,10 @@ const ConsumeGiftPanel: FC = () => {
                 <MOBIcon height={20} width={20} />
               </Box>
               <Typography variant="h3" color="textPrimary">
-                <MOBNumberFormat valueUnit="pMOB" value={balance?.toString() || ''} />
+                <MOBNumberFormat
+                  valueUnit="pMOB"
+                  value={selectedAccount.balanceStatus.unspentPmob}
+                />
               </Typography>
             </Box>
             {!isSynced && (

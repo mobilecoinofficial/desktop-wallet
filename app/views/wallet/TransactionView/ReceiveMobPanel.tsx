@@ -4,31 +4,25 @@ import type { FC } from 'react';
 import { Box, Container, makeStyles, Typography } from '@material-ui/core';
 
 import AccountCard from '../../../components/AccountCard';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
+import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    cardContainer: {
-      paddingBottom: 64,
-      paddingTop: 64,
-    },
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      minHeight: '100%',
-      paddingBottom: theme.spacing(3),
-      paddingTop: theme.spacing(3),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  cardContainer: {
+    paddingBottom: 64,
+    paddingTop: 64,
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+    paddingTop: theme.spacing(3),
+  },
+}));
 
 const ReceiveMobPanel: FC = () => {
-  const { accountName, b58Code, mobUrl } = useMobileCoinD();
+  const { selectedAccount } = useFullService();
   const classes = useStyles();
-
-  // TODO - we should add a global modal request for bug reporting.
-  // Esp for unexpected states like this. (unless I am misundering mobilecoind)
-  if (b58Code === null || mobUrl === null) return <></>;
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -43,7 +37,12 @@ const ReceiveMobPanel: FC = () => {
         </div>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <AccountCard account={{ b58Code, mobUrl, name: accountName }} />
+        <AccountCard account={{
+          b58Code: selectedAccount.account.mainAddress,
+          mobUrl: selectedAccount.mobUrl,
+          name: selectedAccount.account.name,
+        }}
+        />
       </Box>
     </Container>
   );

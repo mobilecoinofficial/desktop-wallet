@@ -7,11 +7,12 @@ import type { MutableRefObject } from 'react';
 const useIsMountedRef = (): MutableRefObject<boolean> => {
   const isMounted = useRef(true);
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       isMounted.current = false;
-    };
-  }, []);
+    },
+    []
+  );
 
   return isMounted;
 };

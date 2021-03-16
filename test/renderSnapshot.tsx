@@ -9,41 +9,39 @@ import { SnackbarProvider } from 'notistack';
 import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
 
-import { MobileCoinDProvider } from '../app/contexts/MobileCoinDContext';
-import type { MobileCoinDContextValue } from '../app/contexts/MobileCoinDContext';
-import useMobileCoinD from '../app/hooks/useMobileCoinD';
+import { FullServiceProvider } from '../app/contexts/FullServiceContext';
+import type { FullServiceContextValue } from '../app/contexts/FullServiceContext';
+import useFullService from '../app/hooks/useFullService';
 import i18n from '../app/i18n';
-import client from '../app/mobilecoind/client';
 import routes, { renderRoutes } from '../app/routes';
 import { setTheme } from '../app/theme';
 
-jest.mock('../app/hooks/useMobileCoinD');
+jest.mock('../app/hooks/useFullService');
 
 // This hack overrides random CSS naming
-const generateClassName: StylesOptions['generateClassName'] = (rule, sheet): string => {
-  return `${sheet.options.classNamePrefix}-${rule.key}`;
-};
+const generateClassName: StylesOptions['generateClassName'] = (rule, sheet): string =>
+  `${sheet.options.classNamePrefix}-${rule.key}`;
 
 // CBB: This function is starting to be gnarly as its use has evolved with time.
 // We should consider setting up the testing environment in an easier, unified way.
 const renderSnapshot = (
   testComponent: ReactElement,
-  mobilecoindContextOverrides?: MobileCoinDContextValue
+  fullServiceContextOverrides?: FullServiceContextValue
 ): RenderResult => {
   const theme = setTheme({
     responsiveFontSizes: true,
     theme: 'MOBILE_COIN_DARK',
   });
 
-  const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<typeof useMobileCoinD>;
+  const mockUseFullService = useFullService as jest.MockedFunction<typeof useFullService>;
 
-  const mockUseMobileCoinDFunctions = {
+  const mockUseFullServiceFunctions = {
     createAccount: jest.fn(),
     importAccount: jest.fn(),
     unlockWallet: jest.fn(),
   };
 
-  const mockUseMobileCoinDValues: MobileCoinDContextValue = {
+  const mockUseFullServiceValues: FullServiceContextValue = {
     accountName: 'account name',
     b58Code: 'b58 code',
     balance: BigInt(88888888),
@@ -59,13 +57,13 @@ const renderSnapshot = (
     networkHighestBlockIndex: '1234',
     nextBlock: '1235',
     receiver: null,
-    ...mockUseMobileCoinDFunctions,
-    ...mobilecoindContextOverrides,
+    ...mockUseFullServiceFunctions,
+    ...fullServiceContextOverrides,
   };
 
   // @ts-ignore mock
-  mockUseMobileCoinD.mockImplementation(() => {
-    return mockUseMobileCoinDValues;
+  mockUseFullService.mockImplementation(() => {
+    return mockUseFullServiceValues;
   });
 
   // CBB: we may want to just import a test version of App.tsx
@@ -74,20 +72,20 @@ const renderSnapshot = (
       <I18nextProvider i18n={i18n}>
         <ThemeProvider theme={theme}>
           <SnackbarProvider dense maxSnack={5}>
-            <MobileCoinDProvider client={client}>
+            <FullServiceProvider>
               <StylesProvider generateClassName={generateClassName}>
                 <MuiThemeProvider theme={theme}>
                   {renderRoutes(routes, testComponent)}
                 </MuiThemeProvider>
               </StylesProvider>
-            </MobileCoinDProvider>
+            </FullServiceProvider>
           </SnackbarProvider>
         </ThemeProvider>
       </I18nextProvider>
     </MemoryRouter>
   );
 
-  return { ...renderedScreen, mockUseMobileCoinDValues };
+  return { ...renderedScreen, mockUseFullServiceValues };
 };
 
 export default renderSnapshot;

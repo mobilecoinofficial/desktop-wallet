@@ -298,17 +298,11 @@ ipcMain.on('debug-logs-for-current-session', (event) => {
   event.returnValue = debugLogger.getLogForCurrentSession();
 });
 
-ipcMain.on('open-logs-folder', () => {
-  debugLogger.openLogsFolder();
-});
+ipcMain.on('open-logs-folder', () => debugLogger.openLogsFolder());
 
-ipcMain.on('record-log', (_, msg) => {
-  debugLogger.logMessage(msg);
-});
+ipcMain.on('record-log', (_, msg) => debugLogger.logMessage(msg));
 
-ipcMain.on('crash-application', () => {
-  process.crash();
-});
+ipcMain.on('crash-application', () => process.crash());
 
 const shutDownFullService = () => {
   const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
@@ -320,9 +314,7 @@ const shutDownFullService = () => {
   }
 };
 
-app.on('will-quit', () => {
-  shutDownFullService();
-});
+app.on('will-quit', () => shutDownFullService());
 
 // Filter the remote module
 const allowedModules = new Set(['electron-log']);

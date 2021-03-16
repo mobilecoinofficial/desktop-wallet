@@ -2,6 +2,7 @@ import { shell, nativeTheme } from 'electron';
 
 import config from '../../configs/app.config';
 import * as localStore from '../utils/LocalStore';
+import debugLogger from '../utils/debugLogger.server';
 
 const defaultTemplate = (app, mainWindow, i18n) => {
   const submenuAbout = {
@@ -94,25 +95,24 @@ const defaultTemplate = (app, mainWindow, i18n) => {
           },
         ],
       },
+      {
+        accelerator: 'Alt+Command+I',
+        click: () => mainWindow.webContents.toggleDevTools(),
+        label: 'Toggle Developer Tools',
+      },
+      { type: 'separator' },
+      {
+        accelerator: 'Command+Shift+D',
+        click: () => debugLogger.openDebugLogsModal(mainWindow),
+        label: i18n.t('Menu.viewDebugLogs'),
+      },
+      {
+        accelerator: 'Command+D',
+        click: () => debugLogger.openLogsFolder(),
+        label: i18n.t('Menu.openDebugLogsFolder'),
+      },
     ],
   };
-
-  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    submenuViewProd.submenu.push({ type: 'separator' });
-    submenuViewProd.submenu.push({
-      accelerator: 'Alt+Command+I',
-      click: () => {
-        mainWindow.webContents.toggleDevTools();
-      },
-      label: i18n.t('Menu.View.toggleDevTools'),
-    });
-
-    submenuViewProd.submenu.push({
-      accelerator: 'Command+R',
-      click: () => mainWindow.webContents.reload(),
-      label: 'Reload',
-    });
-  }
 
   const submenuWindow = {
     label: i18n.t('Menu.window'),
@@ -173,6 +173,20 @@ const defaultTemplate = (app, mainWindow, i18n) => {
     label: i18n.t('Menu.language'),
     submenu: languageMenu,
   });
+
+  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
+    menuView.push({
+      label: 'Developer',
+      submenu: [
+        {
+          click: () => {
+            mainWindow.webContents.send('open-crash-report-modal');
+          },
+          label: 'Force Crash',
+        },
+      ],
+    });
+  }
 
   return menuView;
 };

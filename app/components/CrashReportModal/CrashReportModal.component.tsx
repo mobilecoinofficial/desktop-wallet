@@ -12,22 +12,20 @@ export interface CrashReportModalProps {
   open: boolean;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+}));
 
 const CrashReportModal: FC<CrashReportModalProps> = ({ open }: CrashReportModalProps) => {
   const classes = useStyles();
@@ -71,12 +69,7 @@ const CrashReportModal: FC<CrashReportModalProps> = ({ open }: CrashReportModalP
             <Typography variant="body2" color="textSecondary" display="inline">
               {t('sendDebugLog')}
             </Typography>
-            <Button
-              color="primary"
-              onClick={() => {
-                debugLogger.openLogsFolder();
-              }}
-            >
+            <Button color="primary" onClick={() => debugLogger.openLogsFolder()}>
               {t('here')}
             </Button>
             <Typography variant="body2" color="textSecondary" display="inline">

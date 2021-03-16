@@ -97,24 +97,18 @@ const defaultTemplate = (app, mainWindow, i18n) => {
       },
       {
         accelerator: 'Alt+Command+I',
-        click: () => {
-          mainWindow.webContents.toggleDevTools();
-        },
+        click: () => mainWindow.webContents.toggleDevTools(),
         label: 'Toggle Developer Tools',
       },
       { type: 'separator' },
       {
         accelerator: 'Command+Shift+D',
-        click: () => {
-          debugLogger.openDebugLogsModal(mainWindow);
-        },
+        click: () => debugLogger.openDebugLogsModal(mainWindow),
         label: i18n.t('Menu.viewDebugLogs'),
       },
       {
         accelerator: 'Command+D',
-        click: () => {
-          debugLogger.openLogsFolder();
-        },
+        click: () => debugLogger.openLogsFolder(),
         label: i18n.t('Menu.openDebugLogsFolder'),
       },
     ],

@@ -27,7 +27,11 @@ const HistoryView: FC = () => {
   React.useEffect(() => {
     fetchAllTransactionLogsForAccount(selectedAccount.account.accountId);
     fetchAllTxosForAccount(selectedAccount.account.accountId);
-  }, []);
+  }, [
+    selectedAccount.account.accountId,
+    fetchAllTransactionLogsForAccount,
+    fetchAllTxosForAccount,
+  ]);
 
   // TODO -- this error state is fine, we should reintroduce
   // React.useEffect(() => {
@@ -48,8 +52,7 @@ const HistoryView: FC = () => {
   const buildList = (): TransactionLog[] =>
     transactionLogs.transactionLogIds
       .map((id) => transactionLogs.transactionLogMap[id])
-      .sort((a, b) => b.offsetCount - a.offsetCount)
-      .slice(0, 50);
+      .sort((a, b) => b.offsetCount - a.offsetCount);
 
   switch (showing) {
     case HISTORY:

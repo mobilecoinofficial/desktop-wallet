@@ -312,7 +312,9 @@
   },
 
   "NavBar": {
+    "contacts": "Contacts",
     "gift": "Gifting",
+    "history": "History",
     "home": "Home",
     "settings": "Settings",
     "transaction": "Send/Receive"

@@ -296,7 +296,9 @@
   },
 
   "NavBar": {
+    "contacts": "CONTACTS",
     "gift": "GIFTING",
+    "history": "HISTORY",
     "home": "HOME",
     "settings": "SETTINGS",
     "transaction": "SEND/RECEIVE"

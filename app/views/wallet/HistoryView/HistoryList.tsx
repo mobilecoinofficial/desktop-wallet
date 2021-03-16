@@ -35,6 +35,7 @@ const HistoryList: FC<HistoryListProps> = ({
 
   const handleChange = (_event: React.ChangeEvent<Record<string, unknown>>, newValue: number) => {
     setSelectedTabIndex(Number(newValue));
+    setFirstToShow(0);
     switch (newValue) {
       case 0:
         setDataToShow(transactionLogsList);

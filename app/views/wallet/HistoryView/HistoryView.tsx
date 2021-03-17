@@ -15,6 +15,7 @@ const HistoryView: FC = () => {
 
   const [currentTransactionLog, setCurrentTransaction] = React.useState({} as TransactionLog);
   const {
+    addresses,
     selectedAccount,
     transactionLogs,
     txos,
@@ -48,6 +49,7 @@ const HistoryView: FC = () => {
   const buildList = (): TransactionLog[] =>
     transactionLogs.transactionLogIds
       .map((id) => transactionLogs.transactionLogMap[id])
+      .filter((txo) => txo.assignedAddressId !== addresses.addressIds[1])
       .sort((a, b) => b.offsetCount - a.offsetCount);
 
   switch (showing) {

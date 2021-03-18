@@ -155,6 +155,22 @@
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
   },
 
+  "ContactView": {
+    "abbreviation": "Abbreviation (3 characters max)",
+    "addContact": "Add Contact",
+    "addTitle": "Add New Contact",
+    "addressCode": "Account Address Code",
+    "addressCodeRequired": "Address code is required",
+    "aliasRequired": "Alias is required",
+    "cancel": "Cancel",
+    "contactAlias": "Contact alias",
+    "editContact": "Save Contact",
+    "editTitle": "Update Existing Contact",
+    "enqueue": "Successfully added contact!",
+    "favoriteContact": "Favorite contact?",
+    "maxAbbreviationLength": "Three characters tops"
+  },
+
   "CreateAccountForm": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",
@@ -325,7 +341,8 @@
     "history": "History",
     "home": "Home",
     "settings": "Settings",
-    "transaction": "Send/Receive"
+    "transaction": "Send/Receive",
+    "wallet": "Wallet"
   },
 
   "NotFoundView": {

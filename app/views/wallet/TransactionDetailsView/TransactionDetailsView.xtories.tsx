@@ -45,8 +45,8 @@ Primary.args = {
   txos: {
     txoMap: {
       '0740242490125dd1b9e909e25dd1b90740242490125dd1b9e909e25dd1b9': { valuePmob: '1230000' },
-      '591bc7632cd3823e970d83d043515bf7e6d6370740242490125dd1b9e909e305': { valuePmob: '124' },
       '5bf7e6d6370742490125dd1b9e909e5bf7e6d6370742490125dd1b9e909e': { valuePmob: '4000' },
+      '591bc7632cd3823e970d83d043515bf7e6d6370740242490125dd1b9e909e305': { valuePmob: '124' },
     },
   },
 };

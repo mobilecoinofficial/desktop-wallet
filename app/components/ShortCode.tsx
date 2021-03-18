@@ -11,7 +11,7 @@ import {
 } from '../constants/indicies';
 import { Theme } from '../theme';
 
-interface ShortCodeProps {
+export interface ShortCodeProps {
   code: string;
 }
 

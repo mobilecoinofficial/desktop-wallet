@@ -3,13 +3,13 @@ import axiosFullService from '../axiosFullService';
 
 const CLAIM_GIFT_CODE_METHOD = 'claim_gift_cde';
 
-type ClaimGiftCodeParams = {
+export type ClaimGiftCodeParams = {
   accountId: StringHex;
   address?: StringB58;
   giftCodeB58: StringB58;
 };
 
-type ClaimGiftCodeResult = {
+export type ClaimGiftCodeResult = {
   giftCodeStatus: string;
 };
 
@@ -23,7 +23,7 @@ const claimGiftCode = async ({
     address,
     giftCodeB58,
   });
-  debugger;
+
   if (error) {
     // TODO - I'll write up a better error handler
     throw new Error(error);

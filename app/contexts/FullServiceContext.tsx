@@ -4,6 +4,8 @@ import type { FC, ReactNode } from 'react';
 import * as fullServiceApi from '../fullService/api';
 import type { BuildGiftCodeParams, BuildGiftCodeResult } from '../fullService/api/buildGiftCode';
 import type { BuildTransactionParams } from '../fullService/api/buildTransaction';
+import type { CheckGiftCodeStatusParams, CheckGiftCodeStatusResult} from '../fullService/api/checkGiftCodeStatus';
+import type { ClaimGiftCodeParams, ClaimGiftCodeResult } from '../fullService/api/claimGiftCode';
 import type { Accounts } from '../types/Account';
 import type { Addresses } from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
@@ -46,13 +48,16 @@ export interface FullServiceContextValue extends FullServiceState {
   buildGiftCode: (buildGiftCodeParams: BuildGiftCodeParams) => Promise<BuildGiftCodeResult | void>; // include object
   buildTransaction: (buildTransactionParams: BuildTransactionParams) => Promise<TxProposal | void>;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
+  checkGiftCodeStatus: (
+    checkGiftCodeStatusParams: CheckGiftCodeStatusParams
+  ) => Promise<CheckGiftCodeStatusResult | void>;
+  claimGiftCode: (claimGiftCodeParams: ClaimGiftCodeParams) => Promise<ClaimGiftCodeResult | void>;
   confirmEntropyKnown: () => void;
   createAccount: (accountName: string | null, password: string) => Promise<void>;
   deleteStoredGiftCodeB58: (storedGiftCodeB58: string) => void;
   fetchAllTransactionLogsForAccount: (accountId: StringHex) => void;
   fetchAllTxosForAccount: (accountId: StringHex) => void;
   importAccount: (accountName: string | null, entropy: string, password: string) => Promise<void>;
-  openGiftCode: (giftCodeB58: string) => Promise<OpenGiftCodeServiceSuccessData | void>;
   retrieveEntropy: (password: string) => Promise<string | void>;
   submitGiftCode: (txProposal: TxProposal, giftCodeB58: string) => Promise<void>;
   submitTransaction: (txProposal: TxProposal) => Promise<void>;
@@ -363,11 +368,12 @@ const FullServiceContext = createContext<FullServiceContextValue>({
   buildGiftCode: () => Promise.resolve(),
   buildTransaction: () => Promise.resolve(),
   changePassword: () => Promise.resolve(),
+  checkGiftCodeStatus: () => Promise.resolve(),
+  claimGiftCode: () => Promise.resolve(),
   confirmEntropyKnown: () => {},
   createAccount: () => Promise.resolve(),
   deleteStoredGiftCodeB58: () => undefined,
   importAccount: () => Promise.resolve(),
-  openGiftCode: () => Promise.resolve(),
   retrieveEntropy: () => Promise.resolve(),
   submitGiftCode: () => Promise.resolve(),
   submitTransaction: () => Promise.resolve(),
@@ -411,6 +417,14 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     } catch (err) {
       throw new Error(err.message);
     }
+  };
+
+  const checkGiftCodeStatus = async (checkGiftCodeStatusParams: CheckGiftCodeStatusParams) => {
+    return fullServiceApi.checkGiftCodeStatus(checkGiftCodeStatusParams);
+  };
+
+  const claimGiftCode = async (claimGiftCodeParams: ClaimGiftCodeParams) => {
+    return fullServiceApi.claimGiftCode(claimGiftCodeParams);
   };
 
   const confirmEntropyKnown = () => dispatch({ type: 'CONFIRM_ENTROPY_KNOWN' });
@@ -824,6 +838,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         buildGiftCode,
         buildTransaction,
         changePassword,
+        checkGiftCodeStatus,
+        claimGiftCode,
         confirmEntropyKnown,
         createAccount,
         deleteStoredGiftCodeB58,

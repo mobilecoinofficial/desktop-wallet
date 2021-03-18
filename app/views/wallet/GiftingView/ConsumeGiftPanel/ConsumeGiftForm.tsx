@@ -29,13 +29,12 @@ import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
+import type GiftCode from '../../../../types/GiftCode';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
-  feeConfirmation: null,
-  giftCodeB58: '',
-  totalValueConfirmation: null,
-  txProposal: null,
+  giftCode: null,
+  giftCodeStatus: '',
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -92,7 +91,12 @@ const ConsumeGiftForm: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ConsumeGiftForm');
-  const { openGiftCode, selectedAccount, submitTransaction } = useFullService();
+  const {
+    checkGiftCodeStatus,
+    claimGiftCode,
+    selectedAccount,
+    submitTransaction,
+  } = useFullService();
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
@@ -207,19 +211,44 @@ const ConsumeGiftForm: FC = () => {
       onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
         try {
           setIsAwaitingConformation(true);
-          const result = await openGiftCode(values.giftCodeB58);
+          const result = await checkGiftCodeStatus({ giftCodeB58: values.giftCodeB58 });
           if (result === null || result === undefined) {
             throw new Error(t('giftB58Error'));
           }
 
-          const { feeConfirmation, totalValueConfirmation, txProposal } = result;
+          const { giftCode, giftCodeStatus } = result;
+
+          console.log(giftCodeStatus, giftCode);
 
           setConfirmation({
-            feeConfirmation,
-            totalValueConfirmation,
-            txProposal,
+            giftCode,
+            giftCodeStatus,
           });
-          setShowModal(true);
+          // setConfirmation({
+          //   feeConfirmation,
+          //   totalValueConfirmation,
+          //   giftCode,
+          //   giftCodeStatus,
+          // });
+
+          if (giftCodeStatus === 'GiftCodeAvailable') {
+            setShowModal(true);
+          } else {
+            setStatus({ success: false });
+            setSubmitting(false);
+            setIsAwaitingConformation(false);
+            if (giftCodeStatus === 'GiftCodeSubmittedPending') {
+              enqueueSnackbar(t('giftB58Error'), {
+                variant: 'warning',
+              });
+            }
+
+            if (giftCodeStatus === 'GiftCodeClaimed') {
+              enqueueSnackbar(t('giftClaimed'), {
+                variant: 'warning',
+              });
+            }
+          }
 
           if (isMountedRef.current) {
             setSubmitting(false);
@@ -244,11 +273,18 @@ const ConsumeGiftForm: FC = () => {
             .balance;
         let increasedBalance;
         let totalSent;
-        if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
-          increasedBalance = selectedBalance + confirmation?.totalValueConfirmation;
-          // TODO - wtf is totalsent? rename or recalc
-          totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
+
+        const giftCode = confirmation?.giftCode as GiftCode | null;
+
+        if (giftCode) {
+          totalSent = giftCode?.valuePmob;
+          increasedBalance = Number(totalSent) - 10000000000 + Number(selectedBalance);
         }
+        // if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
+        //   increasedBalance = selectedBalance + confirmation?.totalValueConfirmation;
+        //   // TODO - wtf is totalsent? rename or recalc
+        //   totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
+        // }
         return (
           <Form>
             {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)}
@@ -325,11 +361,7 @@ const ConsumeGiftForm: FC = () => {
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('fee')}:</Typography>
                     <Typography>
-                      <MOBNumberFormat
-                        suffix=" MOB"
-                        valueUnit="pMOB"
-                        value={confirmation?.feeConfirmation?.toString()}
-                      />
+                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value="10000000000" />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -338,7 +370,7 @@ const ConsumeGiftForm: FC = () => {
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
-                        value={confirmation?.totalValueConfirmation?.toString()}
+                        value={(Number(giftCode?.valuePmob) - 10000000000).toString()}
                       />
                     </Typography>
                   </Box>

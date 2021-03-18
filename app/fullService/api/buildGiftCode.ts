@@ -40,6 +40,7 @@ const buildGiftCode = async ({
   tombstoneBlock,
   valuePmob,
 }: BuildGiftCodeParams): Promise<BuildGiftCodeResult> => {
+  console.log(accountId, fee, inputTxoIds, maxSpendableValue, tombstoneBlock, valuePmob);
   const { result, error }: AxiosFullServiceResponse = await axiosFullService(
     BUILD_GIFT_CODE_METHOD,
     {

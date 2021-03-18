@@ -24,7 +24,10 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
+// import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
+import AccountCard from '../../../../components/AccountCard';
+import SubmitButton from '../../../../components/SubmitButton';
+import MOBNumberFormat from '../../../../components/MOBNumberFormat';
 import ShortCode from '../../../../components/ShortCode';
 import { MOBIcon } from '../../../../components/icons';
 import useFullService from '../../../../hooks/useFullService';
@@ -242,7 +245,7 @@ const BuildGiftForm: FC = () => {
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-    if (valueAsPicoMob + fee > selectedBalance) {
+    if (valueAsPicoMob + fee + fee > selectedBalance) {
       // TODO - probably want to replace this before launch
       error = t('errorFee');
     }
@@ -285,16 +288,18 @@ const BuildGiftForm: FC = () => {
         try {
           setIsAwaitingConformation(true);
 
+          const adjustedValue = Number(values.mobValue) + 0.01;
+
           const result = await buildGiftCode({
             accountId: selectedAccount.account.accountId,
-            fee: convertMobStringToPicoMobString(values.feeAmount),
-            valuePmob: convertMobStringToPicoMobString(values.mobValue),
+            valuePmob: convertMobStringToPicoMobString(String(adjustedValue)),
           });
           if (result === null || result === undefined) {
             throw new Error(t('errorBuild'));
           }
 
           const { feeConfirmation, giftCodeB58, totalValueConfirmation, txProposal } = result;
+          console.log(feeConfirmation, giftCodeB58, totalValueConfirmation, txProposal);
 
           setConfirmation({
             feeConfirmation,
@@ -428,7 +433,9 @@ const BuildGiftForm: FC = () => {
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
-                        value={confirmation?.totalValueConfirmation?.toString()}
+                        value={(
+                          confirmation?.totalValueConfirmation - confirmation?.feeConfirmation
+                        ).toString()}
                       />
                     </Typography>
                   </Box>
@@ -438,7 +445,9 @@ const BuildGiftForm: FC = () => {
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
-                        value={confirmation?.feeConfirmation?.toString()}
+                        value={(
+                          confirmation?.feeConfirmation + confirmation?.feeConfirmation
+                        ).toString()}
                       />
                     </Typography>
                   </Box>

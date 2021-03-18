@@ -18,6 +18,7 @@ const importAccount = async ({
   firstBlockIndex,
   name,
 }: ImportAccountParams): Promise<ImportAccountResult> => {
+  console.log(entropy, firstBlockIndex, name);
   const { result, error } = await axiosFullService(IMPORT_ACCOUNT_METHOD, {
     entropy,
     firstBlockIndex,

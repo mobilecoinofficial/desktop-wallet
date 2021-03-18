@@ -8,8 +8,8 @@ import { hot } from 'react-hot-loader/root';
 import { MemoryRouter } from 'react-router-dom';
 
 import GlobalStyles from './components/GlobalStyles';
-import { FullServiceProvider } from './contexts/FullServiceContext';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
+import { FullServiceProvider } from './contexts/FullServiceContext';
 import routes, { renderRoutes } from './routes';
 import { setTheme } from './theme';
 

@@ -2,13 +2,13 @@
   "AccountCard": {
     "accountHeader": "Account Address Code",
     "accountQR": "Account QR Code",
-    "accountTooltip": "Show Account Address Code",
-    "clipboardAddress": "Address Code copied to clipboard!",
-    "clipboardGift": "Gift Code copied to clipboard!",
-    "copyTooltip": "Click to copy to clipboard.",
+    "accountTooltip": "Show account address code",
+    "clipboardAddress": "Address code copied to clipboard.",
+    "clipboardGift": "Gift code copied to clipboard.",
+    "copyTooltip": "Click to copy to clipboard",
     "giftHeader": "Gift Code",
     "giftQR": "Gift QR Code",
-    "mobUrlTooltip": "Show MobURL QR Code",
+    "mobUrlTooltip": "Show MOB URL QR Code",
     "unnamed": "Unnamed Account"
   },
 
@@ -32,12 +32,12 @@
     "fee": "Fee",
     "giftCanceled": "Gift Canceled",
     "giftConfirmation": "Gift Confirmation",
-    "giftConfirmationDescription": "Please check and confirm your gift intent",
-    "giftCreated": "Gift Created! Your balance will update shortly.",
+    "giftConfirmationDescription": "Please check and confirm the amount of the gift",
+    "giftCreated": "Gift created. Your balance will update shortly.",
     "giftDetails": "Gift Details",
     "giftValue": "Gift Value",
     "mobLabel": "MOB Amount",
-    "mobWillBeSent": "MOB will be sent to this gift card after you confirm.",
+    "mobWillBeSent": "MOB will be sent to the gift code below after you view, secure and confirm.",
     "pending": "Gift Code (Pending)",
     "positiveValidation": "A positive, non-zero amount is required to gift MOB.",
     "positiveValidationRequired": "A positive, non-zero amount is required to gift MOB.",
@@ -52,33 +52,33 @@
 
   "BuildGiftPanel": {
     "cancelButton": "Cancel",
-    "clickToCopy": "Click to copy to clipboard.",
-    "clickToDelete": "Click to delete gift code.",
+    "clickToCopy": "Click to copy to clipboard",
+    "clickToDelete": "Click to delete gift code",
     "deleteButton": "Delete",
-    "deleted": "Deleted!",
+    "deleted": "Deleted.",
     "deleteDialogDescription": "If this gift has been claimed, or if you do not want to store the code and value anymore, you can delete code here.",
     "deleteDialogText": "Deleting will not cancel the gift, and a user must claim the gift with the code.",
     "deleteDialogTitle": "Delete Gift Code?",
-    "description": "Use this form to create redeemable gift codes with MOB inside. To create a gift code, you simply need to input the value you would like to gift. You will then be asked to confirm the contents of the gift and secure the gifts secret code.",
-    "giftCodeCopied": "Gift Code copied to clipboard!",
+    "description": "Use this screen to create redeemable gift codes of MOB. To create a gift code, input the value to gift, confirm the amount of the gift, and secure the gift's secret code.",
+    "giftCodeCopied": "Gift code copied to clipboard.",
     "giftValue": "Gift Value:",
     "manageGiftCodes": "Manage Gift Codes",
-    "manageGiftCodesDescription": "When you create a gift, this wallet will store its code and value. You can click to copy at any time. If you do not wish to store the gift code anymore, you can click the trashcan icon to delete.",
+    "manageGiftCodesDescription": "When creating a gift, this wallet stores its gift code and value. Click to copy the gift code to the clipboard at any time. To stop storing the gift code, click the trash can icon to delete.",
     "shortened": "Shortened Gift Code",
-    "title": "You can package and gift your MOB!",
+    "title": "Packaging and gifting MOB",
     "value": "Value"
   },
 
   "ChangePasswordView": {
     "changePasswordBreadcrumb": "Change Password",
     "changePasswordButton": "Change Password",
-    "description": "Changing your password will change how we encrypt your secret Entropy. You should always use strong (unguessable) passwords and change them regularly.",
-    "enqueue": "Successfully change password!",
+    "description": "Changing your password will change how we encrypt your secret Entropy (random key). Always use strong (unguessable) passwords and change them regularly.",
+    "enqueue": "Successfully changed password.",
     "formLabel": "Change Password",
     "instructions": "To change your current password, please enter your current password and your new password.",
     "newPasswordLabel": "New Password",
-    "oldPasswordLabel": "Old Password",
-    "oldPasswordRequired": "Old Password is required",
+    "oldPasswordLabel": "Current Password",
+    "oldPasswordRequired": "Current Password is required",
     "passwordConfirmationLabel": "Confirm New Password",
     "passwordConfirmationRef": "Must match New Password",
     "passwordConfirmationRequired": "New Password Confirmation is required",
@@ -93,14 +93,14 @@
     "changePinButton": "Set PIN",
     "currentPasswordLabel": "Current Password",
     "currentPasswordRequired": "Your current password is required to set or change your PIN",
-    "description": "The PIN number is used as an extra safety confirmation for operations. It's required if the MOB amount is greater than a minimum value.",
+    "description": "The PIN is used as an extra safety confirmation for operations. It is required, if the MOB amount is greater than a minimum value.",
     "enqueue": "Successfully set PIN!",
     "errorPin": "PIN must be all digits",
-    "formLabel": "PIN to use",
-    "instructions": "To change your PIN or to set one, just enter the desired value below, and the minimum it applies to as well.",
+    "formLabel": "PIN to Use",
+    "instructions": "To change your PIN or to create one, enter the desired PIN value below, and the minimum amount it applies to, as well.",
     "minimumForPin": "Minimum amount that requires a PIN",
     "newPinLabel": "PIN to use",
-    "pinConfirmationLabel": "Confirm PIN to use",
+    "pinConfirmationLabel": "Confirm PIN to Use",
     "pinConfirmationRef": "Must match PIN",
     "pinConfirmationRequired": "PIN Confirmation is required",
     "pinRequired": "PIN is required",
@@ -109,18 +109,18 @@
   },
 
   "CloseWalletModal": {
-    "closeVerifyBody": "Are you sure you want to close and secure the wallet?",
+    "closeVerifyBody": "Do you want to close and secure the wallet?",
     "closeVerifyConfirm": "Yes, Close Wallet",
     "closeVerifyDeny": "No, Keep Wallet Open",
-    "closeVerifyHeader": "Close and Secure Wallet?",
+    "closeVerifyHeader": "Close and secure wallet?",
     "closeWalletButton": "Close Wallet"
   },
 
   "ConfigureFullServiceView": {
     "configureFullServiceBreadcrumb": "Configure Full-Service",
     "daemonDescription": "The MobileCoin Daemon, or Full-Service, is a standalone executable which provides blockchain synchronization and wallet services.",
-    "daemonDescriptionContinued": "It creates encrypted, attested connections to validator nodes who are participating in federated voting in order to get the current block height, block headers, and to submit transactions. These validator nodes are considered highly trusted due to their use of SGX, and they are used as a reliable source for block information as well as to validate and process the proposed transactions from Full-Service.",
-    "panelDescription": "This panel allows you to customize the behavior of Full-Service as well as perform some basic resets.",
+    "daemonDescriptionContinued": "It creates encrypted, attested connections to validator nodes that participate in federated voting for agreements on current block height, block headers, and to submitting transactions. These validator nodes are considered highly trusted due to their use of SGX, and they are used as a reliable source for block information, as well as for validating and processing the proposed transactions from Full-Service.",
+    "panelDescription": "This screen shows how to customize the behavior of Full-Service as well as how to perform some basic resets.",
     "settingsBreadcrumb": "Settings"
   },
 
@@ -129,7 +129,7 @@
     "accountName": "Account Name",
     "cancel": "Cancel",
     "claimGift": "Claim Gift",
-    "confirmation": "Gift Received! Your balance will update shortly.",
+    "confirmation": "Gift Received. Your balance will update shortly.",
     "confirmationNotFound": "Could not find confirmation",
     "error": "Hmm, something went wrong.",
     "error13": "13 INTERNAL: transactions_manager.submit_tx_proposal: Connection(Operation { error: TransactionValidation(ContainsSpentKeyImage), total_delay: 0ns, tries: 1 })",
@@ -151,7 +151,7 @@
 
   "ConsumeGiftPanel": {
     "balance": "Balance",
-    "description": "You may use this form to collect gift codes. Simply enter the Gift Code and confirm you want to consume the gift into your wallet.",
+    "description": "Use this form to collect gift codes. Enter the gift code and confirm you want to accept the gift into your wallet.",
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
   },
 
@@ -263,10 +263,10 @@
     "formLabel": "Ledger Status",
     "height": "Current Height",
     "localBlocks": "Local Blocks",
-    "localBlocksDescription": "Local Blocks shows the blocks your Full-Service has synced the ledger.",
+    "localBlocksDescription": "Local Blocks shows the blocks your Full-Service has synced to the ledger.",
     "maxHeight": "Maximum Height",
     "networkBlocks": "Network Blocks",
-    "networkBlocksDescription": "Network Blocks represent the total blocks within the MobileCoin network. This is the value your Local and Monitor Blocks needs to hit to be 100% synced.",
+    "networkBlocksDescription": "Network Blocks represent the total blocks within the MobileCoin Network. This is the value your Local Blocks and Monitor Blocks must equal the total amount of Network Blocks to be synced 100 percent.",
     "statusCopy100": "The ledger is synced.",
     "statusCopyAbove90": "The ledger is syncing.",
     "statusCopyBelow90": "The ledger is syncing. This may take awhile.",
@@ -322,7 +322,7 @@
   "FullServiceDirectory": {
     "formLabel": "Full-Service Directory",
     "ledgerDbPathHeader": "Ledger Database Path:",
-    "full-ServiceDbPathHeader": "Full-Service Database Path:"
+    "fullServiceDbPathHeader": "Full-Service Database Path:"
   },
 
   "NavBar": {
@@ -337,7 +337,7 @@
   "NotFoundView": {
     "backButton": "Back to home",
     "description": "You should never see this page. If you do, an engineer messed up.",
-    "header": "404: The page you are looking for isn’t here"
+    "header": "404: The page you are looking for is not here"
   },
 
   "PrivacyPolicyView": {
@@ -348,19 +348,19 @@
   "ResetLedger": {
     "cancelButton": "Cancel",
     "confirmButton": "Confirm",
-    "description": "In rare cases, your local database may become corrupted and permanently out-of-sync with the ledger. If this occurs, please manually reset your ledger.",
+    "description": "In rare cases, your local databases may become corrupted and permanently out-of-sync with the public ledger. If this occurs, please manually reset the local ledger.",
     "formLabel": "Reset Your Ledger",
     "resetButton": "Reset Ledger",
     "resetLedgerModal": "Reset the ledger?",
-    "resetLedgerModalDescription": "Resetting the ledger will restart the wallet. You will need to re-sync the ledger from 0. The app will refresh, and you will need to re-enter your password."
+    "resetLedgerModalDescription": "Resetting the ledger restarts the wallet. Re-sync the ledger from 0. Once the app refreshes, re-enter your password."
   },
 
   "RetrieveEntropyView": {
-    "description": "that unlocks your wallet and allows you to use MobileCoin. It is unique to your account. It is important that you never share this code. You may wish to use this code in a secure, safe manner. This wallet uses your password to store an encrypted Entropy.",
-    "entropyCanBeUsed": "The Entropy can be used to import your wallet in case your device is damaged or lost. It allows you to add your account to other wallets.",
+    "description": "that unlocks your wallet and allows you to use MOB. It is unique to your account. Never share this code. Use this code in a secure, safe manner. This wallet uses your password to store an encrypted Entropy.",
+    "entropyCanBeUsed": "The Entropy can be used to import your wallet in case your device is damaged or lost. It also allows you to add your account to other wallets.",
     "error": "Hmm, something went wrong.",
-    "header": "Your Entropy is the",
-    "misplacedYourEntropy": "If you have forgotten or misplaced your Entropy, you may retrieve here with your password.",
+    "header": "Your Entropy (random key) is the",
+    "misplacedYourEntropy": "If you have forgotten or misplaced your Entropy, you may retrieve it here with your password.",
     "password": "Password",
     "passwordRequired": "Password is required",
     "retrieveEntropy": "Retrieve Entropy",
@@ -380,13 +380,13 @@
     "error": "Could not build transaction.",
     "errorFee": "Please reserve 0.01 MOB for transaction fee.",
     "fee": "Fee",
-    "intent": "Please check and confirm your payment intent",
+    "intent": "Please check and confirm your payment amount",
     "mob": "MOB",
     "mobAmount": "MOB Amount",
     "mustSync": "Wallet must sync with ledger before sending MOB.",
     "positiveValidation": "A positive, non-zero amount is required to send MOB.",
     "positiveValidationRequired": "A positive, non-zero amount is required to send MOB.",
-    "recipient": "Recipient Public Address",
+    "recipient": "Recipient's Public Address",
     "recipientPlus": "Recipient Address (Their Address)",
     "recipientPlus1": "Recipient Address",
     "recipientPlus2": "(Their Address)",
@@ -405,13 +405,13 @@
   },
 
   "SendMobPanel": {
-    "header": "Please enter the amount of MOB you want to send and the public address of the recipient."
+    "header": "Please enter the amount of MOB to send to the recipient and the recipient’s public address."
   },
 
   "SettingsOptionsItem": {
     "changePassword": "Change Password",
     "changePin": "Set or Change PIN",
-    "configureFull-Service": "Configure Full-Service",
+    "configureFullService": "Configure Full-Service",
     "privacyPolicy": "Privacy Policy",
     "retrieveEntropy": "Retrieve Secret Entropy",
     "terms": "Terms of Use"
@@ -432,7 +432,7 @@
 
   "ShowRetrievedEntropyModal": {
     "description": "We decrypted your Entropy and will now show you the code on your screen. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.",
-    "header": "This is your secret Entropy!",
+    "header": "This is your secret Entropy",
     "hide": "Hide Secret Entropy",
     "secured": "I have secured my Entropy",
     "show": "Show Secret Entropy"
@@ -440,7 +440,7 @@
 
   "SyncStatus": {
     "error": "Please see Admin Panel in Settings.",
-    "synced": "100%: synced with the ledger",
+    "synced": "100% synced with the ledger",
     "syncing": "Syncing with the ledger"
   },
 
@@ -453,6 +453,7 @@
       "cancel": "Cancel comment",
       "save": "Save comment"
     },
+
     "changeComment": "Change comment",
     "recipient": "Recipient",
     "savedComment": "Comment saved",

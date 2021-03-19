@@ -25,6 +25,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
 import ShortCode from '../../../../components/ShortCode';
+import { buildTransaction } from '../../../../fullService/api';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
@@ -33,8 +34,10 @@ import type GiftCode from '../../../../types/GiftCode';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
-  giftCode: null,
-  giftCodeStatus: '',
+  feeConfirmation: null,
+  totalValueConfirmation: null,
+  txProposal: null,
+  txProposalReceiverB58Code: '',
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -91,12 +94,7 @@ const ConsumeGiftForm: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ConsumeGiftForm');
-  const {
-    checkGiftCodeStatus,
-    claimGiftCode,
-    selectedAccount,
-    submitTransaction,
-  } = useFullService();
+  const { checkGiftCodeStatus, selectedAccount, submitTransaction } = useFullService();
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
@@ -218,20 +216,31 @@ const ConsumeGiftForm: FC = () => {
 
           const { giftCode, giftCodeStatus } = result;
 
-          console.log(giftCodeStatus, giftCode);
-
-          setConfirmation({
-            giftCode,
-            giftCodeStatus,
-          });
-          // setConfirmation({
-          //   feeConfirmation,
-          //   totalValueConfirmation,
-          //   giftCode,
-          //   giftCodeStatus,
-          // });
-
           if (giftCodeStatus === 'GiftCodeAvailable') {
+            console.log("transaction built", giftCode.accountId, selectedAccount.account.mainAddress, giftCode.valuePmob);
+            const adjustedValue = String(Number(giftCode.valuePmob) - 10000000000);
+            const buildTransactionResult = await buildTransaction({
+              accountId: giftCode.accountId,
+              recipientPublicAddress: selectedAccount.account.mainAddress,
+              valuePmob: adjustedValue,
+            });
+
+            const {
+              feeConfirmation,
+              txProposal,
+              totalValueConfirmation,
+              txProposalReceiverB58Code,
+            } = buildTransactionResult;
+
+            // console.log(feeConfirmation, totalValueConfirmation, txProposalReceiverB58Code);
+
+            setConfirmation({
+              feeConfirmation,
+              txProposal,
+              txProposalReceiverB58Code,
+              totalValueConfirmation,
+            });
+
             setShowModal(true);
           } else {
             setStatus({ success: false });
@@ -274,17 +283,12 @@ const ConsumeGiftForm: FC = () => {
         let increasedBalance;
         let totalSent;
 
-        const giftCode = confirmation?.giftCode as GiftCode | null;
-
-        if (giftCode) {
-          totalSent = giftCode?.valuePmob;
-          increasedBalance = Number(totalSent) - 10000000000 + Number(selectedBalance);
+        if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
+          increasedBalance = Number(selectedBalance) + Number(confirmation?.totalValueConfirmation);
+          // TODO - wtf is totalsent? rename or recalc
+          totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
-        // if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
-        //   increasedBalance = selectedBalance + confirmation?.totalValueConfirmation;
-        //   // TODO - wtf is totalsent? rename or recalc
-        //   totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
-        // }
+
         return (
           <Form>
             {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)}
@@ -361,7 +365,11 @@ const ConsumeGiftForm: FC = () => {
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('fee')}:</Typography>
                     <Typography>
-                      <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value="10000000000" />
+                      <MOBNumberFormat
+                        suffix=" MOB"
+                        valueUnit="pMOB"
+                        value={confirmation?.feeConfirmation?.toString()}
+                      />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -370,7 +378,7 @@ const ConsumeGiftForm: FC = () => {
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
-                        value={(Number(giftCode?.valuePmob) - 10000000000).toString()}
+                        value={confirmation?.totalValueConfirmation?.toString()}
                       />
                     </Typography>
                   </Box>

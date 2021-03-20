@@ -44,7 +44,7 @@ const QRMob: FC<QRMobProps> = (props) => {
 
   return (
     <Box className={classes.container}>
-      <QRCode className={classes.qr} level="H" {...props} />
+      <QRCode className={classes.qr} includeMargin level="H" {...props} />
       <Box className={classes.icon}>
         <CircleStrokeMOBIcon color="black" height={64} width={64} />
       </Box>

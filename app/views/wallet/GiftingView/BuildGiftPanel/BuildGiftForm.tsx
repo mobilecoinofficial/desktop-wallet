@@ -477,7 +477,7 @@ const BuildGiftForm: FC = () => {
                       isGift
                       account={{
                         b58Code: confirmation?.giftCodeB58,
-                        mobUrl: `https://mobilecoin.com/mob58/${confirmation?.giftCodeB58}`,
+                        mobUrl: `mob:///b58/${confirmation?.giftCodeB58}`,
                         name: t('pending'),
                       }}
                     />

@@ -15,7 +15,7 @@ export default interface TransactionLog {
   object: 'transaction_log';
   offsetCount: number;
   outputTxoIds: StringHex[];
-  recipientAddressId: StringB58 | null;
+  recipientAddress: StringB58 | null;
   sentTime: string | null; // FIX-ME: Confirm type
   status:
     | 'tx_status_built'

@@ -155,6 +155,23 @@
     "syncMessage": "BALANCE MAY BE OUT-OF-DATE WHILE WALLET SYNCS WITH LEDGER."
   },
 
+  "ContactView": {
+    "ContactView": {
+      "abbreviation": "ABBREVIATION (3 CHARACTERS MAX)",
+      "addContact": "ADD CONTACT",
+      "addTitle": "ADD NEW CONTACT",
+      "recipientAddress": "ACCOUNT ADDRESS CODE",
+      "addressCodeRequired": "ADDRESS CODE IS REQUIRED",
+      "aliasRequired": "ALIAS IS REQUIRED",
+      "alias": "CONTACT ALIAS",
+      "editContact": "UPDATE CONTACT",
+      "editTitle": "EDIT EXISTING CONTACT",
+      "enqueue": "SUCCESSFULLY ADDED CONTACT!",
+      "isFavorite": "FAVORITE CONTACT?",
+      "maxAbbreviationLength": "THREE CHARACTERS TOPS"
+    }
+  },
+
   "CreateAccountForm": {
     "acceptTerms": "I HAVE READ AND ACCEPT THE",
     "acceptTermsButton": "TERMS OF USE",
@@ -202,6 +219,10 @@
   },
 
   "HistoryView": {
+    "finalizedBlockHeight": "FINALIZED BLOCK HEIGHT: ",
+    "historyItemReceived": "RECEIVED",
+    "historyItemSent": "SENT",
+    "orphaned": "??? ORPHANED",
     "showAllTransactions": "ALL",
     "showReceivedTransactions": "RECEIVED",
     "showSentTransactions": "SENT"
@@ -321,7 +342,8 @@
     "history": "HISTORY",
     "home": "HOME",
     "settings": "SETTINGS",
-    "transaction": "SEND/RECEIVE"
+    "transaction": "SEND/RECEIVE",
+    "wallet": "WALLET"
   },
 
   "NotFoundView": {

@@ -155,6 +155,29 @@
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
   },
 
+  "ContactsBookView": {
+    "added": "Contact was added",
+    "removed": "Contact was removed",
+    "updated": "Contact was updated"
+  },
+
+  "ContactView": {
+    "abbreviation": "Abbreviation (3 characters max)",
+    "addContact": "Add Contact",
+    "addressCodeRequired": "Address code is required",
+    "addTitle": "Add New Contact",
+    "alias": "Contact alias",
+    "aliasRequired": "Alias is required",
+    "cancel": "Cancel",
+    "editContact": "Update Contact",
+    "editTitle": "Update Existing Contact",
+    "enqueue": "Successfully added contact!",
+    "isFavorite": "Favorite contact?",
+    "maxAbbreviationLength": "Three characters tops",
+    "recipientAddress": "Account Address Code",
+    "removeContact": "Remove Contact"
+  },
+
   "CreateAccountForm": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",
@@ -205,6 +228,7 @@
     "finalizedBlockHeight": "Finalized Block Height: ",
     "historyItemReceived": "RECEIVED",
     "historyItemSent": "SENT",
+    "orphaned": "??? Orphaned",
     "showAllTransactions": "All",
     "showReceivedTransactions": "Received",
     "showSentTransactions": "Sent"
@@ -238,6 +262,13 @@
     "overwriteWarning": "It appears that this wallet is locked with an encrypted Entropy. Importing an account will override the wallet. Please ensure that you have secured your Entropy if you wish to change accounts.",
     "title": "Import Account",
     "unlockWalletButton": "Unlock this wallet"
+  },
+
+  "InactivityDetect": {
+    "confirmToStay": "Unless you confirm you want to stay, the app will be closing down.",
+    "keepWorking": "Click to keep working",
+    "title": "Closing because of inactivity",
+    "tooLong": "You have been inactive too long..."
   },
 
   "LeaveFullServiceRunning": {
@@ -324,7 +355,8 @@
     "history": "History",
     "home": "Home",
     "settings": "Settings",
-    "transaction": "Send/Receive"
+    "transaction": "Send/Receive",
+    "wallet": "Wallet"
   },
 
   "NotFoundView": {

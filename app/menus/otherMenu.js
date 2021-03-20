@@ -26,9 +26,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
       { type: 'separator' },
       {
         accelerator: 'Command+Q',
-        click: () => {
-          app.quit();
-        },
+        click: () => app.quit(),
         label: i18n.t('Menu.quit'),
       },
     ],
@@ -162,9 +160,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
 
   const languageMenu = config.languages.map((languageCode) => ({
     checked: i18n.language === languageCode,
-    click: () => {
-      i18n.changeLanguage(languageCode);
-    },
+    click: () => i18n.changeLanguage(languageCode),
     label: i18n.t(`Menu.languages.${languageCode}`),
     type: 'radio',
   }));

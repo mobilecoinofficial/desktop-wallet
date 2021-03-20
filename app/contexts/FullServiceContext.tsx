@@ -506,7 +506,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account,
             balanceStatus,
-            mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
+            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },
@@ -556,7 +556,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account,
             balanceStatus,
-            mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
+            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },
@@ -677,7 +677,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         selectedAccount: {
           account: selectedAccount.account,
           balanceStatus,
-          mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
+          mobUrl: `mob:///b58/${accountId}`,
         },
         walletStatus,
       },
@@ -728,7 +728,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account: selectedAccount,
             balanceStatus,
-            mobUrl: `https://mobilecoin.com/mob58/${selectedAccount.accountId}`,
+            mobUrl: `mob:///b58/${selectedAccount.accountId}`,
           },
           walletStatus,
         },
@@ -799,7 +799,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account: selectedAccount.account,
             balanceStatus,
-            mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
+            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },

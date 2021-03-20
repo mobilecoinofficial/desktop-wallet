@@ -110,12 +110,6 @@ const defaultTemplate = (app, mainWindow, i18n) => {
       click: () => mainWindow.webContents.reload(),
       label: 'Reload',
     });
-
-    submenuViewProd.submenu.push({
-      accelerator: 'Command+R',
-      click: () => mainWindow.webContents.reload(),
-      label: 'Reload',
-    });
   }
 
   const submenuWindow = {

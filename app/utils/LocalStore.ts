@@ -8,6 +8,7 @@ interface LocalStoreSchema {
 const STORE_NAME = 'mobilecoin_config';
 
 export const schemaKeys = {
+  CONTACTS: 'contacts',
   ENCRYPTED_ENTROPY: 'encryptedEntropy',
   FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
   FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
@@ -24,6 +25,7 @@ export const schemaKeys = {
 };
 
 export const schema: LocalStoreSchema = {
+  [schemaKeys.CONTACTS]: { type: 'string' },
   [schemaKeys.ENCRYPTED_ENTROPY]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_DB_PATH]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
@@ -42,6 +44,12 @@ let store = new Store({ name: STORE_NAME, schema });
 
 export const setStore = (newStore: Store): void => {
   store = newStore;
+};
+
+export const getContacts = (): [] => JSON.parse((store.get(schemaKeys.CONTACTS) as string) || '{}');
+
+export const setContacts = (contacts: []): void => {
+  store.set(schemaKeys.CONTACTS, JSON.stringify(contacts));
 };
 
 export const getEncryptedEntropy = (): SjclCipherEncrypted =>

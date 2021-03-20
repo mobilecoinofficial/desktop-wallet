@@ -4,7 +4,6 @@ import type { FC } from 'react';
 import { Box, Container, FormHelperText, makeStyles, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
@@ -68,18 +67,18 @@ const useStyles = makeStyles((theme: Theme) => ({
 // This should something else...
 const ContactView: FC<ContactViewProps> = ({
   abbreviation,
-  addressCode,
-  contactAlias,
-  favoriteContact,
+  recipientAddress,
+  alias,
+  isFavorite,
   onCancel,
+  onDelete,
   onSaved,
 }: ContactViewProps) => {
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
 
   const { t } = useTranslation('ContactView');
-  const isNew = !addressCode;
+  const isNew = !recipientAddress;
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -88,20 +87,21 @@ const ContactView: FC<ContactViewProps> = ({
         <Formik
           initialValues={{
             abbreviation: abbreviation || '',
-            addressCode: addressCode || '',
+            alias: alias || '',
             button: '',
-            contactAlias: contactAlias || '',
-            favoriteContact: !!favoriteContact,
+            isFavorite: !!isFavorite,
+            recipientAddress: recipientAddress || '',
             submit: null,
           }}
           validationSchema={Yup.object().shape({
             abbreviation: Yup.string().max(3, t('maxAbbreviationLength')),
-            addressCode: Yup.string().required(t('addressCodeRequired')),
-            contactAlias: Yup.string().required(t('aliasRequired')),
+            alias: Yup.string().required(t('aliasRequired')),
+            recipientAddress: Yup.string()
+              .min(106, '106')
+              .max(106, '106')
+              .required(t('addressCodeRequired')),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-            console.log('SUBMITTING values=', values); // TODO: Remove!
-
             if (values.button === 'back') {
               onCancel();
               return;
@@ -112,9 +112,13 @@ const ContactView: FC<ContactViewProps> = ({
               // save contact somewhere... on failure, an error should be thrown
               if (isMountedRef.current) {
                 setSubmitting(false);
-                enqueueSnackbar(t('enqueue'), { variant: 'success' });
                 setStatus({ success: true });
-                onSaved();
+                onSaved({
+                  abbreviation: values.abbreviation,
+                  alias: values.alias,
+                  isFavorite: values.isFavorite,
+                  recipientAddress: values.recipientAddress,
+                });
               }
             } catch (err) {
               if (isMountedRef.current) {
@@ -133,23 +137,24 @@ const ContactView: FC<ContactViewProps> = ({
                 </Box>
                 &nbsp;&nbsp;&nbsp;
                 <Box component="div" display="inline">
-                  <Field type="checkbox" name="favoriteContact" />
-                  <Typography display="inline">{t('favoriteContact')}</Typography>
+                  <Field type="checkbox" name="isFavorite" />
+                  <Typography display="inline">{t('isFavorite')}</Typography>
                 </Box>
                 <Field
                   component={TextField}
                   fullWidth
-                  label={t('contactAlias')}
+                  label={t('alias')}
                   margin="normal"
-                  name="contactAlias"
+                  name="alias"
                   type="text"
                 />
                 <Field
                   component={TextField}
                   fullWidth
-                  label={t('addressCode')}
+                  multiline
+                  label={t('recipientAddress')}
                   margin="normal"
-                  name="addressCode"
+                  name="recipientAddress"
                   type="text"
                 />
                 <Field
@@ -176,6 +181,18 @@ const ContactView: FC<ContactViewProps> = ({
               >
                 {t('cancel')}
               </SubmitButton>
+              {!isNew && (
+                <SubmitButton
+                  disabled={false}
+                  onClick={() => {
+                    setFieldValue('button', 'back');
+                    onDelete();
+                  }}
+                  isSubmitting={isSubmitting}
+                >
+                  {t('removeContact')}
+                </SubmitButton>
+              )}
               <SubmitButton
                 disabled={!dirty || !isValid || isSubmitting}
                 onClick={() => {

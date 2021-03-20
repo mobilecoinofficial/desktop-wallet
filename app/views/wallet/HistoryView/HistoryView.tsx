@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
 
 import { Redirect } from 'react-router-dom';
@@ -13,7 +13,9 @@ const HistoryView: FC = () => {
   const HISTORY = 'history';
   const DETAILS = 'details';
 
-  const [currentTransactionLog, setCurrentTransaction] = React.useState({} as TransactionLog);
+  const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
+  const [showing, setShowing] = useState(HISTORY);
+
   const {
     addresses,
     selectedAccount,
@@ -23,15 +25,13 @@ const HistoryView: FC = () => {
     fetchAllTxosForAccount,
   } = useFullService();
 
-  const [showing, setShowing] = useState(HISTORY);
-
-  React.useEffect(() => {
+  useEffect(() => {
     fetchAllTransactionLogsForAccount(selectedAccount.account.accountId);
     fetchAllTxosForAccount(selectedAccount.account.accountId);
   }, []);
 
   // TODO -- this error state is fine, we should reintroduce
-  // React.useEffect(() => {
+  // useEffect(() => {
   //   try {
   //   } catch (err) {
   //     setShowing(ERROR);

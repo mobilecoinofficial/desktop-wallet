@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
@@ -19,11 +19,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const GiftingView: FC = () => {
   const classes = useStyles();
-  const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { t } = useTranslation('GiftingView');
 
   const handleChange = (
-    _event: React.ChangeEvent<Record<string, unknown>>,
+    _event: ChangeEvent<Record<string, unknown>>,
     newSelectedTabIndex: number
   ) => {
     setSelectedTabIndex(newSelectedTabIndex);

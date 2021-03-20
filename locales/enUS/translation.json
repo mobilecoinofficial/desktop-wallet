@@ -155,20 +155,27 @@
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
   },
 
+  "ContactsBookView": {
+    "added": "Contact was added",
+    "removed": "Contact was removed",
+    "updated": "Contact was updated"
+  },
+
   "ContactView": {
     "abbreviation": "Abbreviation (3 characters max)",
     "addContact": "Add Contact",
-    "addTitle": "Add New Contact",
-    "addressCode": "Account Address Code",
     "addressCodeRequired": "Address code is required",
+    "addTitle": "Add New Contact",
+    "alias": "Contact alias",
     "aliasRequired": "Alias is required",
     "cancel": "Cancel",
-    "contactAlias": "Contact alias",
-    "editContact": "Save Contact",
+    "editContact": "Update Contact",
     "editTitle": "Update Existing Contact",
     "enqueue": "Successfully added contact!",
-    "favoriteContact": "Favorite contact?",
-    "maxAbbreviationLength": "Three characters tops"
+    "isFavorite": "Favorite contact?",
+    "maxAbbreviationLength": "Three characters tops",
+    "recipientAddress": "Account Address Code",
+    "removeContact": "Remove Contact"
   },
 
   "CreateAccountForm": {

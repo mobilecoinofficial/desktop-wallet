@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { ThemeProvider } from '@material-ui/core';
@@ -8,13 +8,13 @@ import { hot } from 'react-hot-loader/root';
 import { MemoryRouter } from 'react-router-dom';
 
 import GlobalStyles from './components/GlobalStyles';
-import { FullServiceProvider } from './contexts/FullServiceContext';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
+import { FullServiceProvider } from './contexts/FullServiceContext';
 import routes, { renderRoutes } from './routes';
 import { setTheme } from './theme';
 
 const App: FC = () => {
-  const [theme, setThemeReact] = React.useState(
+  const [theme, setThemeReact] = useState(
     setTheme({
       responsiveFontSizes: true,
       theme: ipcRenderer.sendSync('get-theme') === 'light' ? MOBILE_COIN_LIGHT : MOBILE_COIN_DARK,

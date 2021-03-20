@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 
 import { Switch, Redirect, Route } from 'react-router-dom';
 
@@ -13,6 +13,7 @@ import {
   ChangePasswordView,
   ChangePinView,
   ConfigureFullServiceView,
+  ContactsBookView,
   DashboardView,
   GiftingView,
   HistoryView,
@@ -26,8 +27,8 @@ import {
 type Routes = {
   Component?: any;
   exact?: boolean;
-  guard?: React.FC;
-  layout?: React.FC;
+  guard?: FC;
+  layout?: FC;
   path?: string | string[];
   routes?: Routes;
 }[];
@@ -112,6 +113,11 @@ const routes: Routes = [
         Component: HistoryView,
         exact: true,
         path: routePaths.APP_HISTORY,
+      },
+      {
+        Component: ContactsBookView,
+        exact: true,
+        path: routePaths.APP_CONTACTS,
       },
       {
         Component: SettingsView,

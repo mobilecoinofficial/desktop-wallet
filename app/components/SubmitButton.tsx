@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
@@ -7,7 +7,7 @@ interface SubmitButtonProps {
   buttonClass?: string;
   disabled: boolean;
   isSubmitting: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
   onClick: () => void;
   testID?: string;
 }

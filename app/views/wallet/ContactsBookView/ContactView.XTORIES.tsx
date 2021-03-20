@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
@@ -9,9 +9,7 @@ export default {
   title: 'Contacts/Add or Edit',
 };
 
-const Template: Story<React.ComponentProps<typeof ContactView>> = (args) => (
-  <ContactView {...args} />
-);
+const Template: Story<ComponentProps<typeof ContactView>> = (args) => <ContactView {...args} />;
 
 export const AddMode = Template.bind({});
 
@@ -24,9 +22,9 @@ export const EditMode = Template.bind({});
 
 EditMode.args = {
   abbreviation: 'FK',
-  addressCode: '220960ABCDEF',
-  contactAlias: 'My own person',
-  favoriteContact: true,
+  alias: 'My own person',
+  isFavorite: true,
   onCancel: () => console.log('CANCELLED (from panel)'),
   onSaved: () => console.log('SAVED (to panel)'),
+  recipientAddress: '220960ABCDEF',
 };

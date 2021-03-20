@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
@@ -33,7 +33,7 @@ const HistoryList: FC<HistoryListProps> = ({
 
   const { t } = useTranslation('HistoryView');
 
-  const handleChange = (_event: React.ChangeEvent<Record<string, unknown>>, newValue: number) => {
+  const handleChange = (_event: ChangeEvent<Record<string, unknown>>, newValue: number) => {
     setSelectedTabIndex(Number(newValue));
     setFirstToShow(0);
     switch (newValue) {

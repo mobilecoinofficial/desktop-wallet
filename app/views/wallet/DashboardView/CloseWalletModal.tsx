@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Container, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const CloseWalletModal: FC = () => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const { t } = useTranslation('CloseWalletModal');
 
   const handleOpenModal = () => {

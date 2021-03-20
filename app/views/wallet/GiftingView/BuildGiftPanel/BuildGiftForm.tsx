@@ -89,7 +89,7 @@ const PICO_MOB_PRECISION = 12;
 
 const ensureMobStringPrecision = (mobString: string): string => {
   const num = Number(mobString);
-  if (num === NaN) {
+  if (Number.isNaN(num)) {
     throw new Error('mobString is NaN');
   }
 

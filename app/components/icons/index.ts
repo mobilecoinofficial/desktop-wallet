@@ -2,6 +2,7 @@ export { default as AddressBookIcon } from './AddressBookIcon';
 export { default as CircleMOBIcon } from './CircleMOBIcon';
 export { default as CircleStrokeMOBIcon } from './CircleStrokeMOBIcon';
 export { default as CodeTextIcon } from './CodeTextIcon';
+export { default as ContactIcon } from './ContactIcon';
 export { default as CogIcon } from './CogIcon';
 export { default as CopyIcon } from './CopyIcon';
 export { default as GiftIcon } from './GiftIcon';

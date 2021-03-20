@@ -12,27 +12,25 @@ import TransactionInfoLabel from '../../../components/TransactionInfoLabel/Trans
 import type { Theme } from '../../../theme';
 import { TransactionDetailsViewProps } from './TransactionDetailsView.d';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    container: {
-      padding: '10px',
-    },
-    internal: {
-      backgroundColor: theme.palette.background.dark,
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      margin: '5px',
-      padding: '5px',
-    },
-    root: {
-      minHeight: '100%',
-      padding: theme.spacing(1),
-    },
-    textLeft: { textAlign: 'left' },
-    textRight: { textAlign: 'right' },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  container: {
+    padding: '10px',
+  },
+  internal: {
+    backgroundColor: theme.palette.background.dark,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: '5px',
+    padding: '5px',
+  },
+  root: {
+    minHeight: '100%',
+    padding: theme.spacing(1),
+  },
+  textLeft: { textAlign: 'left' },
+  textRight: { textAlign: 'right' },
+}));
 
 const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
   onChangedComment,
@@ -49,7 +47,7 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
     direction,
     finalizedBlockIndex,
     assignedAddressId,
-    recipientAddressId, // TODO -- add sent logic
+    // recipientAddress, // TODO -- add sent logic
     outputTxoIds,
     transactionLogId,
     valuePmob,
@@ -62,22 +60,20 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
 
   // TODO replace this with a component
-  const renderRow = (title: string, value: string | ReactNode) => {
-    return (
-      <Box className={classes.internal} key={title}>
-        <Typography className={classes.textLeft} display="inline" noWrap>
-          {title}
+  const renderRow = (title: string, value: string | ReactNode) => (
+    <Box className={classes.internal} key={title}>
+      <Typography className={classes.textLeft} display="inline" noWrap>
+        {title}
+      </Typography>
+      {typeof value === 'string' ? (
+        <Typography className={classes.textRight} display="inline">
+          {value}
         </Typography>
-        {typeof value === 'string' ? (
-          <Typography className={classes.textRight} display="inline">
-            {value}
-          </Typography>
-        ) : (
-          value
-        )}
-      </Box>
-    );
-  };
+      ) : (
+        value
+      )}
+    </Box>
+  );
 
   return (
     <Container maxWidth="md" style={{ padding: '0' }}>

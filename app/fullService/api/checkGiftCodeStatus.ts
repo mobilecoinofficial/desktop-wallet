@@ -22,8 +22,7 @@ const checkGiftCodeStatus = async ({
     giftCodeB58,
   });
 
-  debugger;
-  const { txProposal, giftCode } = result;
+  //  const { txProposal, giftCode } = result;
 
   if (error) {
     // TODO - I'll write up a better error handler

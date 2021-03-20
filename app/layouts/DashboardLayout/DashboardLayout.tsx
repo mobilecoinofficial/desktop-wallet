@@ -5,6 +5,7 @@ import { Box, makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
 import type { Theme } from '../../theme';
+import InactivityDetect from '../InactivityDetect';
 import ShowEntropyModal from './ShowEntropyModal';
 import TopBar from './TopBar/index';
 
@@ -46,6 +47,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
       <TopBar />
       <Box className={classes.wrapper}>
         <Box className={classes.contentContainer}>
+          <InactivityDetect />
           <Box className={classes.content}>{children}</Box>
           <ShowEntropyModal />
         </Box>

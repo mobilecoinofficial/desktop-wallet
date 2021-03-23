@@ -168,13 +168,14 @@
     "addTitle": "Add New Contact",
     "alias": "Contact alias",
     "aliasRequired": "Alias is required",
+    "assignedAddress": "Assigned Address",
     "cancel": "Cancel",
     "editContact": "Update Contact",
     "editTitle": "Update Existing Contact",
     "enqueue": "Successfully added contact!",
     "isFavorite": "Favorite contact?",
     "maxAbbreviationLength": "Three characters tops",
-    "recipientAddress": "Account Address Code",
+    "recipientAddress": "Contact's Address Code",
     "removeContact": "Remove Contact"
   },
 

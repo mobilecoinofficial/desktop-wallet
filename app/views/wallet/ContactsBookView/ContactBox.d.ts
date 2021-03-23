@@ -1,6 +1,6 @@
 export interface ContactBoxProps {
-  id: string;
-  initials: string;
-  name: string;
+  assignedAddress: string;
+  abbreviation: string;
+  alias: string;
   onEdit: () => unknown;
 }

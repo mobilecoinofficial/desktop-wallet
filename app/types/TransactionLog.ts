@@ -5,6 +5,7 @@ export default interface TransactionLog {
   assignedAddressId: StringB58;
   changeTxoIds: StringHex[];
   comment: string;
+  contactName?: string;
   direction: 'tx_direction_received' | 'tx_direction_sent';
   failureCode: number | null;
   failureMessage: string | null;

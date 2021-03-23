@@ -1,7 +1,4 @@
-import type {
-  StringHex,
-  StringUInt64,
-} from './SpecialStrings';
+import type { StringHex, StringUInt64 } from './SpecialStrings';
 
 type Amount = {
   commitment: StringHex;
@@ -72,7 +69,7 @@ type RingMLSAG = {
   responses: StringHex[];
 };
 
-type SignatureRctBulletproofs ={
+type SignatureRctBulletproofs = {
   pseudoOutputCommitments: StringHex[];
   rangeProofs: StringHex;
   ringSignatures: RingMLSAG;
@@ -84,7 +81,7 @@ type Tx = {
 };
 
 // TODO decide if i want to conver to camelCase, or even ignore the unused type
-export default interface TxPropsal {
+export default interface TxProposal {
   fee: StringUInt64;
   inputList: UnspentTxOut[];
   outlayConfirmationNumbers: number[][];

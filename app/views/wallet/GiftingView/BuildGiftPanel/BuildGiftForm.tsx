@@ -161,7 +161,13 @@ const BuildGiftForm: FC = () => {
       if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
         throw new Error(t('confirmationNotFound'));
       }
-      await submitGiftCode(confirmation.txProposal, confirmation.giftCodeB58);
+      console.log(selectedAccount.account.accountId);
+
+      await submitGiftCode({
+        fromAccountId: selectedAccount.account.accountId,
+        giftCodeB58: confirmation.giftCodeB58,
+        txProposal: confirmation.txProposal,
+      });
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmittingConfirmedGift(false);
@@ -183,16 +189,20 @@ const BuildGiftForm: FC = () => {
         });
       }
     }
-    await submitGiftCode(confirmation.txProposal, confirmation.giftB58Code);
-    if (isMountedRef.current) {
-      setStatus({ success: true });
-      setSubmittingConfirmedGift(false);
-      setIsAwaitingConformation(false);
-      setConfirmation(EMPTY_CONFIRMATION);
-      enqueueSnackbar(t('giftCreated'), {
-        variant: 'success',
-      });
-    }
+    // await submitGiftCode({
+    //   fromAccountId: selectedAccount.account.id,
+    //   giftCodeB58: confirmation.giftCodeB58,
+    //   txProposal: confirmation.txProposal,
+    // });
+    // if (isMountedRef.current) {
+    //   setStatus({ success: true });
+    //   setSubmittingConfirmedGift(false);
+    //   setIsAwaitingConformation(false);
+    //   setConfirmation(EMPTY_CONFIRMATION);
+    //   enqueueSnackbar(t('giftCreated'), {
+    //     variant: 'success',
+    //   });
+    // }
   };
 
   const createAccountLabel = (account: Account) => {
@@ -299,7 +309,6 @@ const BuildGiftForm: FC = () => {
           }
 
           const { feeConfirmation, giftCodeB58, totalValueConfirmation, txProposal } = result;
-          console.log(feeConfirmation, giftCodeB58, totalValueConfirmation, txProposal);
 
           setConfirmation({
             feeConfirmation,
@@ -307,6 +316,7 @@ const BuildGiftForm: FC = () => {
             totalValueConfirmation,
             txProposal,
           });
+
           setShowModal(true);
 
           if (isMountedRef.current) {

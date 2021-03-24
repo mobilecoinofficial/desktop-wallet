@@ -4,8 +4,12 @@ import type { FC, ReactNode } from 'react';
 import * as fullServiceApi from '../fullService/api';
 import type { BuildGiftCodeParams, BuildGiftCodeResult } from '../fullService/api/buildGiftCode';
 import type { BuildTransactionParams } from '../fullService/api/buildTransaction';
-import type { CheckGiftCodeStatusParams, CheckGiftCodeStatusResult} from '../fullService/api/checkGiftCodeStatus';
+import type {
+  CheckGiftCodeStatusParams,
+  CheckGiftCodeStatusResult,
+} from '../fullService/api/checkGiftCodeStatus';
 import type { ClaimGiftCodeParams, ClaimGiftCodeResult } from '../fullService/api/claimGiftCode';
+import type { SubmitGiftCodeParams, SubmitGiftCodeResult } from '../fullService/api/submitGiftCode';
 import type { Accounts } from '../types/Account';
 import type { Addresses } from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
@@ -59,7 +63,9 @@ export interface FullServiceContextValue extends FullServiceState {
   fetchAllTxosForAccount: (accountId: StringHex) => void;
   importAccount: (accountName: string | null, entropy: string, password: string) => Promise<void>;
   retrieveEntropy: (password: string) => Promise<string | void>;
-  submitGiftCode: (txProposal: TxProposal, giftCodeB58: string) => Promise<void>;
+  submitGiftCode: (
+    submitGiftCodeParams: SubmitGiftCodeParams
+  ) => Promise<SubmitGiftCodeResult | void>;
   submitTransaction: (txProposal: TxProposal) => Promise<void>;
   unlockWallet: (password: string) => Promise<void>;
 }
@@ -645,28 +651,27 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  const submitGiftCode = async (txProposal: TxProposal, giftCodeB58: string) => {
+  const submitGiftCode = async (submitGiftCodeParams: SubmitGiftCodeParams) => {
     try {
+      await fullServiceApi.submitGiftCode(submitGiftCodeParams);
       // TODO probably want to figure out what I want to save about this transaction log
-      await fullServiceApi.submitTransaction({ txProposal });
-
-      const giftCodes = localStore.getGiftCodes() || [];
-      if (!Array.isArray(giftCodes)) {
-        throw new Error('Cannot find gift codes');
-      }
+      // const giftCodes = localStore.getGiftCodes() || [];
+      // if (!Array.isArray(giftCodes)) {
+      //   throw new Error('Cannot find gift codes');
+      // }
 
       // TODO - this should definitely be in a util
-      const giftValue = txProposal.outlayList
-        .map((outlay) => BigInt(outlay.value))
-        .reduce((acc, cur) => acc + cur);
-      const giftValueString = giftValue.toString();
-      giftCodes.push({ giftCodeB58, giftValueString });
-      localStore.setGiftCodes(giftCodes);
+      // const giftValue = txProposal.outlayList
+      //   .map((outlay) => BigInt(outlay.value))
+      //   .reduce((acc, cur) => acc + cur);
+      // const giftValueString = giftValue.toString();
+      // giftCodes.push({ giftCodeB58, giftValueString });
+      // localStore.setGiftCodes(giftCodes);
 
-      dispatch({
-        payload: { giftCodes },
-        type: 'UPDATE_GIFT_CODES',
-      });
+      // dispatch({
+      //   payload: { giftCodes },
+      //   type: 'UPDATE_GIFT_CODES',
+      // });
 
       return '';
     } catch (err) {

@@ -1,7 +1,7 @@
 import type { StringB58, StringHex } from '../../types/SpecialStrings';
 import axiosFullService from '../axiosFullService';
 
-const CLAIM_GIFT_CODE_METHOD = 'claim_gift_cde';
+const CLAIM_GIFT_CODE_METHOD = 'claim_gift_code';
 
 export type ClaimGiftCodeParams = {
   accountId: StringHex;

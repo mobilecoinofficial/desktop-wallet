@@ -1,4 +1,3 @@
-import type GiftCode from '../../types/GiftCode';
 import type { StringB58 } from '../../types/SpecialStrings';
 import axiosFullService from '../axiosFullService';
 
@@ -10,13 +9,12 @@ export type CheckGiftCodeStatusParams = {
 
 export type CheckGiftCodeStatusResult = {
   giftCodeStatus: string; // TODO - add rest of status
-  giftCode: GiftCode;
+  giftCodeValue: number;
 };
 
 const checkGiftCodeStatus = async ({
   giftCodeB58,
 }: CheckGiftCodeStatusParams): Promise<CheckGiftCodeStatusResult> => {
-
   const { result, error } = await axiosFullService(CHECK_GIFT_CODE_STATUS_METHOD, {
     giftCodeB58,
   });

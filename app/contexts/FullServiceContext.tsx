@@ -13,6 +13,7 @@ import type { SubmitGiftCodeParams, SubmitGiftCodeResult } from '../fullService/
 import type { Accounts } from '../types/Account';
 import type { Addresses } from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
+import type GiftCode from '../types/GiftCode';
 import type { StringHex } from '../types/SpecialStrings';
 import type { TransactionLogs } from '../types/TransactionLog';
 import type TxProposal from '../types/TxProposal';
@@ -21,6 +22,7 @@ import type WalletStatus from '../types/WalletStatus';
 import * as localStore from '../utils/LocalStore';
 import sameObject from '../utils/sameObject';
 import scryptKeys from '../utils/scryptKeys';
+import { getAllGiftCodes } from '../fullService/api';
 
 type PendingSecrets = {
   entropy: StringHex;
@@ -35,7 +37,7 @@ type SelectedAccount = {
 interface FullServiceState {
   accounts: Accounts;
   addresses: Addresses;
-  giftCodes: { giftCodeB58: string; giftValueString: string }[] | null;
+  giftCodes: GiftCode[] | null;
   hashedPassword: string | null;
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
@@ -77,7 +79,7 @@ interface FullServiceProviderProps {
 type InitializeAction = {
   type: 'INITIALIZE';
   payload: {
-    giftCodes: { giftCodeB58: string; giftValueString: string }[] | null;
+    giftCodes: GiftCode[] | null;
     hashedPassword: string | null;
     isAuthenticated: boolean;
   };
@@ -86,7 +88,7 @@ type InitializeAction = {
 type UpdateGiftCodesAction = {
   type: 'UPDATE_GIFT_CODES';
   payload: {
-    giftCodes: { giftCodeB58: string; giftValueString: string }[];
+    giftCodes: GiftCode[];
   };
 };
 
@@ -240,11 +242,10 @@ const initialFullServiceState: FullServiceState = {
 const reducer = (state: FullServiceState, action: Action): FullServiceState => {
   switch (action.type) {
     case 'INITIALIZE': {
-      const { giftCodes, hashedPassword, isAuthenticated } = action.payload;
+      const { hashedPassword, isAuthenticated } = action.payload;
       // TODO - really, gift codes should be pulled when on the screen, not on startup
       return {
         ...state,
-        giftCodes,
         hashedPassword,
         isAuthenticated,
         isInitialized: true,
@@ -391,14 +392,12 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 }: FullServiceProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialFullServiceState);
 
-  const buildGiftCode = async (buildGiftCodeParams: BuildGiftCodeParams) => {
-    return fullServiceApi.buildGiftCode(buildGiftCodeParams);
-  };
+  const buildGiftCode = async (buildGiftCodeParams: BuildGiftCodeParams) =>
+    fullServiceApi.buildGiftCode(buildGiftCodeParams);
 
   // TODO, better error handling
-  const buildTransaction = async (buildTransactionParams: BuildTransactionParams) => {
-    return fullServiceApi.buildTransaction(buildTransactionParams);
-  };
+  const buildTransaction = async (buildTransactionParams: BuildTransactionParams) =>
+    fullServiceApi.buildTransaction(buildTransactionParams);
 
   const changePassword = async (oldPassword: string, newPassword: string) => {
     try {
@@ -425,68 +424,34 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  const checkGiftCodeStatus = async (checkGiftCodeStatusParams: CheckGiftCodeStatusParams) => {
-    return fullServiceApi.checkGiftCodeStatus(checkGiftCodeStatusParams);
-  };
+  const checkGiftCodeStatus = async (checkGiftCodeStatusParams: CheckGiftCodeStatusParams) =>
+    fullServiceApi.checkGiftCodeStatus(checkGiftCodeStatusParams);
 
-  const claimGiftCode = async (claimGiftCodeParams: ClaimGiftCodeParams) => {
-    return fullServiceApi.claimGiftCode(claimGiftCodeParams);
-  };
+  const claimGiftCode = async (claimGiftCodeParams: ClaimGiftCodeParams) =>
+    fullServiceApi.claimGiftCode(claimGiftCodeParams);
 
   const confirmEntropyKnown = () => dispatch({ type: 'CONFIRM_ENTROPY_KNOWN' });
 
-  const deleteStoredGiftCodeB58 = (storedGiftCodeB58: string) => {
+  const getAllGiftCodes = async () => {
+    const result = await fullServiceApi.getAllGiftCodes();
+
+    dispatch({
+      payload: { giftCodes: result.giftCodes },
+      type: 'UPDATE_GIFT_CODES',
+    });
+  };
+
+  const deleteStoredGiftCodeB58 = async (storedGiftCodeB58: string) => {
     try {
-      const giftCodes = localStore.getGiftCodes();
-      if (!Array.isArray(giftCodes)) {
-        throw new Error('Cannot find gift codes');
-      }
-
-      let giftCodeIndex;
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < giftCodes.length; i++) {
-        if (giftCodes[i].giftCodeB58 === storedGiftCodeB58) {
-          giftCodeIndex = i;
-          break;
-        }
-      }
-
-      if (giftCodeIndex === undefined) {
-        throw new Error('Cannot find gift code');
-      }
-
-      giftCodes.splice(giftCodeIndex, 1);
-      localStore.setGiftCodes(giftCodes);
-
-      // At this point, let's make sure to store the entropy
-      // in the context, we can detect the change and begin monitoring the gift code
-      // we want the user to be able to retreive the code on click
-      // it's not clear to me if these should be encrypted like the account
-      dispatch({
-        payload: { giftCodes },
-        type: 'UPDATE_GIFT_CODES',
-      });
+      // TO DO - Hook into full service delete gift code API call
+      await fullServiceApi.removeGiftCode({ giftCodeB58: storedGiftCodeB58 });
+      getAllGiftCodes();
 
       return '';
     } catch (err) {
       return err.message;
     }
   };
-
-  // const openGiftCode = async (giftCodeB58: string) => {
-  //   // TODO - for multiple accounts, we'll need to change this select logic
-  //   if (!state.receiver) throw new Error('No Receiver found.');
-  //   const OpenGiftCodeServiceInstance = new OpenGiftCodeService(client, {
-  //     giftCodeB58,
-  //     receiver: state.receiver,
-  //   });
-
-  //   const { isSuccess, data, errorMessage } = await OpenGiftCodeServiceInstance.call();
-  //   if (isSuccess) {
-  //     return data;
-  //   }
-  //   throw new Error(errorMessage);
-  // };
 
   const createAccount = async (name: string | null, password: string) => {
     try {
@@ -654,24 +619,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   const submitGiftCode = async (submitGiftCodeParams: SubmitGiftCodeParams) => {
     try {
       await fullServiceApi.submitGiftCode(submitGiftCodeParams);
-      // TODO probably want to figure out what I want to save about this transaction log
-      // const giftCodes = localStore.getGiftCodes() || [];
-      // if (!Array.isArray(giftCodes)) {
-      //   throw new Error('Cannot find gift codes');
-      // }
-
-      // TODO - this should definitely be in a util
-      // const giftValue = txProposal.outlayList
-      //   .map((outlay) => BigInt(outlay.value))
-      //   .reduce((acc, cur) => acc + cur);
-      // const giftValueString = giftValue.toString();
-      // giftCodes.push({ giftCodeB58, giftValueString });
-      // localStore.setGiftCodes(giftCodes);
-
-      // dispatch({
-      //   payload: { giftCodes },
-      //   type: 'UPDATE_GIFT_CODES',
-      // });
+      getAllGiftCodes();
 
       return '';
     } catch (err) {
@@ -691,7 +639,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     const { walletStatus } = await fullServiceApi.getWalletStatus();
 
     // TODO - get new balance (now that is it pending)
-    dispatch({
+    ({
       payload: {
         selectedAccount: {
           account: selectedAccount.account,
@@ -764,12 +712,9 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       // TODO - no real reason to try
       try {
         const hashedPassword = localStore.getHashedPassword();
-        const giftCodes = localStore.getGiftCodes();
-        const assertedGiftCodes = Array.isArray(giftCodes) ? giftCodes : [];
-
+        getAllGiftCodes();
         dispatch({
           payload: {
-            giftCodes: assertedGiftCodes,
             hashedPassword,
             isAuthenticated: false,
           },
@@ -778,7 +723,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       } catch (err) {
         dispatch({
           payload: {
-            giftCodes: [],
             hashedPassword: null,
             isAuthenticated: false,
           },
@@ -851,8 +795,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         fetchAllTransactionLogsForAccount,
         fetchAllTxosForAccount,
         importAccount,
-        // openGiftCode,
-        // payAddressCode,
         retrieveEntropy,
         submitGiftCode,
         submitTransaction,

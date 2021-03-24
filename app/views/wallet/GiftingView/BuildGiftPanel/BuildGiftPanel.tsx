@@ -129,20 +129,20 @@ const BuildGiftPanel: FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {giftCodes?.map(({ giftCodeB58, giftValueString }) => (
-                    <TableRow key={giftCodeB58}>
+                  {giftCodes?.map((giftCode) => (
+                    <TableRow key={giftCode.giftCodeB58}>
                       <TableCell component="th" scope="row">
-                        <ShortCode code={giftCodeB58} />
+                        <ShortCode code={giftCode.giftCodeB58} />
                       </TableCell>
                       <TableCell>
-                        <MOBNumberFormat value={giftValueString} valueUnit="pMOB" />
+                        <MOBNumberFormat value={giftCode.valuePmob} valueUnit="pMOB" />
                       </TableCell>
                       <TableCell align="right">
                         <Box display="flex" justifyContent="flex-end">
                           <Tooltip title={t('clickToCopy')} placement="right" arrow>
                             <div
                               className={classes.clickable}
-                              onClick={handleCopyClick(giftCodeB58)}
+                              onClick={handleCopyClick(giftCode.giftCodeB58)}
                               aria-hidden="true"
                             >
                               <IconButton>
@@ -153,7 +153,7 @@ const BuildGiftPanel: FC = () => {
                           <Tooltip title={t('clickToDelete')} placement="right" arrow>
                             <div
                               className={classes.clickable}
-                              onClick={handleDialogOpen(giftCodeB58, giftValueString)}
+                              onClick={handleDialogOpen(giftCode.giftCodeB58, giftCode.valuePmob)}
                               aria-hidden="true"
                             >
                               <IconButton>

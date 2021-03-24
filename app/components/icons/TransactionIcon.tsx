@@ -6,29 +6,19 @@ function TransactionIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
-    <svg width={32} height={32} viewBox="0 0 32 32" fill="none" {...props}>
+    <svg viewBox="0 0 28 22" fill="none" {...props}>
       <path
-        d="M27 6h-8a1 1 0 00-1 1v6a1 1 0 001 1h8a1 1 0 001-1V7a1 1 0 00-1-1zM13 18H5a1 1 0 00-1 1v6a1 1 0 001 1h8a1 1 0 001-1v-6a1 1 0 00-1-1z"
-        stroke={color}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M11 22h10l-2 2M21 10H11l2 2M21 22l-2-2M11 10l2-2"
-        stroke={color}
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M27.707 7.293l-7-7A1 1 0 0019 1v3h-7a1 1 0 100 2h8a1 1 0 001-1V3.414L25.586 8 21 12.586V11a1 1 0 00-1-1H9V7a1 1 0 00-1.707-.707l-7 7a1 1 0 000 1.414l7 7A1 1 0 009 21v-3h7a1 1 0 000-2H8a1 1 0 00-1 1v1.586L2.414 14 7 9.414V11a1 1 0 001 1h11v3a1 1 0 001.707.707l7-7a1 1 0 000-1.414z"
+        fill={color}
       />
     </svg>
   );
 }
 
 TransactionIcon.defaultProps = {
-  color: '#A6AAB4',
-  height: 32,
-  width: 32,
+  color: '#ADB0BB',
+  height: 22,
+  width: 28,
 };
 
 export default TransactionIcon;

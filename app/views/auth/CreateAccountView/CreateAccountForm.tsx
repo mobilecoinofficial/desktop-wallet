@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
@@ -64,8 +64,8 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
   const { t } = useTranslation('CreateAccountForm');
   const { createAccount } = useFullService();
 
-  const [canCheck, setCanCheck] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [canCheck, setCanCheck] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleCloseTerms = () => {
     setCanCheck(true);

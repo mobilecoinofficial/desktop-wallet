@@ -491,7 +491,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account,
             balanceStatus,
-            mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
+            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },
@@ -541,7 +541,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account,
             balanceStatus,
-            mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
+            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },
@@ -628,10 +628,14 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   };
 
   const submitTransaction = async (txProposal: TxProposal): Promise<void> => {
-    // submit transaction
-    await fullServiceApi.submitTransaction({ txProposal }); // and if there was an error?
     const { selectedAccount } = state;
     const { accountId } = selectedAccount.account;
+    // submit transaction
+    // TODO probably want to figure out what I want to save about this transaction log
+    await fullServiceApi.submitTransaction({
+      accountId,
+      txProposal,
+    });
 
     // TODO- right now, we're just using the selected account to refresh
     // this is obviously not ideal
@@ -644,7 +648,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         selectedAccount: {
           account: selectedAccount.account,
           balanceStatus,
-          mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
+          mobUrl: `mob:///b58/${accountId}`,
         },
         walletStatus,
       },
@@ -695,7 +699,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account: selectedAccount,
             balanceStatus,
-            mobUrl: `https://mobilecoin.com/mob58/${selectedAccount.accountId}`,
+            mobUrl: `mob:///b58/${selectedAccount.accountId}`,
           },
           walletStatus,
         },
@@ -762,7 +766,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account: selectedAccount.account,
             balanceStatus,
-            mobUrl: `https://mobilecoin.com/mob58/${accountId}`,
+            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },

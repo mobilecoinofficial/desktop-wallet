@@ -17,5 +17,12 @@ export const Primary = Template.bind({});
 Primary.args = {
   label: ' MOB',
   sign: '+',
-  valuePmob: '154',
+  valuePmob: 154,
+};
+
+export const Negative = Template.bind({});
+Negative.args = {
+  label: ' MOB',
+  sign: '-',
+  valuePmob: 229,
 };

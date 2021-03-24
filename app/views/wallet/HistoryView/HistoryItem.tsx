@@ -27,6 +27,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexDirection: 'row',
   },
+  negative: {
+    color: theme.palette.number.negative,
+    fontWeight: 'bold',
+  },
   root: {},
   textLeft: { textAlign: 'left', width: '100%' },
   textRight: { textAlign: 'right', width: '100%' },
@@ -43,15 +47,23 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
   const directionText =
     direction === 'tx_direction_sent' ? t('historyItemSent') : t('historyItemReceived');
+
   return (
     <Grid item xs={12}>
       <Card className={classes.card}>
         <CardActionArea onClick={onClick}>
           <CardContent>
             <Box className={classes.internal}>
-              <Typography className={classes.textLeft} display="inline" color="textPrimary">
-                {assignedAddressId ? <ShortCode code={assignedAddressId} /> : '???'}
-              </Typography>
+              {assignedAddressId ? (
+                <Typography className={classes.textLeft} display="inline" color="textPrimary">
+                  <ShortCode code={assignedAddressId} />
+                </Typography>
+              ) : (
+                <Typography className={`${classes.textLeft} ${classes.negative}`} display="inline">
+                  {t('orphaned')}
+                </Typography>
+              )}
+
               <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label="&nbsp;MOB" />
             </Box>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
@@ -23,7 +23,7 @@ const TransactionView: FC = () => {
   const { t } = useTranslation('TransactionView');
 
   const handleChange = (
-    _event: React.ChangeEvent<Record<string, unknown>>,
+    _event: ChangeEvent<Record<string, unknown>>,
     newSelectedTabIndex: number
   ) => {
     setSelectedTabIndex(newSelectedTabIndex);

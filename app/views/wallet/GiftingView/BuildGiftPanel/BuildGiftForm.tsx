@@ -92,7 +92,7 @@ const PICO_MOB_PRECISION = 12;
 
 const ensureMobStringPrecision = (mobString: string): string => {
   const num = Number(mobString);
-  if (num === NaN) {
+  if (Number.isNaN(num)) {
     throw new Error('mobString is NaN');
   }
 
@@ -496,7 +496,7 @@ const BuildGiftForm: FC = () => {
                       isGift
                       account={{
                         b58Code: confirmation?.giftCodeB58,
-                        mobUrl: `https://mobilecoin.com/mob58/${confirmation?.giftCodeB58}`,
+                        mobUrl: `mob:///b58/${confirmation?.giftCodeB58}`,
                         name: t('pending'),
                       }}
                     />

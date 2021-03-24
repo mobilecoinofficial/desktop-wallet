@@ -47,7 +47,7 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
     direction,
     finalizedBlockIndex,
     assignedAddressId,
-    recipientAddressId, // TODO -- add sent logic
+    // recipientAddress, // TODO -- add sent logic
     outputTxoIds,
     transactionLogId,
     valuePmob,

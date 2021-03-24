@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { ThemeProvider } from '@material-ui/core';
@@ -14,7 +14,7 @@ import routes, { renderRoutes } from './routes';
 import { setTheme } from './theme';
 
 const App: FC = () => {
-  const [theme, setThemeReact] = React.useState(
+  const [theme, setThemeReact] = useState(
     setTheme({
       responsiveFontSizes: true,
       theme: ipcRenderer.sendSync('get-theme') === 'light' ? MOBILE_COIN_LIGHT : MOBILE_COIN_DARK,

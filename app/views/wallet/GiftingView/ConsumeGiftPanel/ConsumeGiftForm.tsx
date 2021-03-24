@@ -25,22 +25,16 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
 import ShortCode from '../../../../components/ShortCode';
-// import { buildTransaction, claimGiftCode } from '../../../../fullService/api';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
-import type GiftCode from '../../../../types/GiftCode';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
+  giftCodeB58: '',
   giftCodeStatus: '',
   giftValue: 0,
-  giftCodeB58: '',
-  // feeConfirmation: null,
-  // totalValueConfirmation: null,
-  // txProposal: null,
-  // txProposalReceiverB58Code: '',
 };
 
 const useStyles = makeStyles((theme: Theme) => ({

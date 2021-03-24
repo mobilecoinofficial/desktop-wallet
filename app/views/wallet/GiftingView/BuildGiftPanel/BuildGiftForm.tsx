@@ -189,20 +189,6 @@ const BuildGiftForm: FC = () => {
         });
       }
     }
-    // await submitGiftCode({
-    //   fromAccountId: selectedAccount.account.id,
-    //   giftCodeB58: confirmation.giftCodeB58,
-    //   txProposal: confirmation.txProposal,
-    // });
-    // if (isMountedRef.current) {
-    //   setStatus({ success: true });
-    //   setSubmittingConfirmedGift(false);
-    //   setIsAwaitingConformation(false);
-    //   setConfirmation(EMPTY_CONFIRMATION);
-    //   enqueueSnackbar(t('giftCreated'), {
-    //     variant: 'success',
-    //   });
-    // }
   };
 
   const createAccountLabel = (account: Account) => {

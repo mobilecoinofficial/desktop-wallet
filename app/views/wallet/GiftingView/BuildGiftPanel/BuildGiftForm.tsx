@@ -24,7 +24,10 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
+// import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
+import AccountCard from '../../../../components/AccountCard';
+import SubmitButton from '../../../../components/SubmitButton';
+import MOBNumberFormat from '../../../../components/MOBNumberFormat';
 import ShortCode from '../../../../components/ShortCode';
 import { MOBIcon } from '../../../../components/icons';
 import useFullService from '../../../../hooks/useFullService';
@@ -158,7 +161,13 @@ const BuildGiftForm: FC = () => {
       if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
         throw new Error(t('confirmationNotFound'));
       }
-      await submitGiftCode(confirmation.txProposal, confirmation.giftCodeB58);
+      console.log(selectedAccount.account.accountId);
+
+      await submitGiftCode({
+        fromAccountId: selectedAccount.account.accountId,
+        giftCodeB58: confirmation.giftCodeB58,
+        txProposal: confirmation.txProposal,
+      });
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmittingConfirmedGift(false);
@@ -179,16 +188,6 @@ const BuildGiftForm: FC = () => {
           variant: 'error',
         });
       }
-    }
-    await submitGiftCode(confirmation.txProposal, confirmation.giftB58Code);
-    if (isMountedRef.current) {
-      setStatus({ success: true });
-      setSubmittingConfirmedGift(false);
-      setIsAwaitingConformation(false);
-      setConfirmation(EMPTY_CONFIRMATION);
-      enqueueSnackbar(t('giftCreated'), {
-        variant: 'success',
-      });
     }
   };
 
@@ -242,7 +241,7 @@ const BuildGiftForm: FC = () => {
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-    if (valueAsPicoMob + fee > selectedBalance) {
+    if (valueAsPicoMob + fee + fee > selectedBalance) {
       // TODO - probably want to replace this before launch
       error = t('errorFee');
     }
@@ -285,10 +284,11 @@ const BuildGiftForm: FC = () => {
         try {
           setIsAwaitingConformation(true);
 
+          const adjustedValue = Number(values.mobValue) + 0.01;
+
           const result = await buildGiftCode({
             accountId: selectedAccount.account.accountId,
-            fee: convertMobStringToPicoMobString(values.feeAmount),
-            valuePmob: convertMobStringToPicoMobString(values.mobValue),
+            valuePmob: convertMobStringToPicoMobString(String(adjustedValue)),
           });
           if (result === null || result === undefined) {
             throw new Error(t('errorBuild'));
@@ -302,6 +302,7 @@ const BuildGiftForm: FC = () => {
             totalValueConfirmation,
             txProposal,
           });
+
           setShowModal(true);
 
           if (isMountedRef.current) {
@@ -428,7 +429,9 @@ const BuildGiftForm: FC = () => {
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
-                        value={confirmation?.totalValueConfirmation?.toString()}
+                        value={(
+                          confirmation?.totalValueConfirmation - confirmation?.feeConfirmation
+                        ).toString()}
                       />
                     </Typography>
                   </Box>
@@ -438,7 +441,9 @@ const BuildGiftForm: FC = () => {
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
-                        value={confirmation?.feeConfirmation?.toString()}
+                        value={(
+                          confirmation?.feeConfirmation + confirmation?.feeConfirmation
+                        ).toString()}
                       />
                     </Typography>
                   </Box>

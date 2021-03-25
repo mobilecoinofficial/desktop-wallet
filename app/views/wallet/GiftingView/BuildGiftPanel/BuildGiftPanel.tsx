@@ -50,7 +50,7 @@ const useStyles = makeStyles(() => ({
 
 const BuildGiftPanel: FC = () => {
   const classes = useStyles();
-  const { deleteStoredGiftCodeB58, giftCodes } = useFullService();
+  const { checkGiftCodeStatus, deleteStoredGiftCodeB58, giftCodes } = useFullService();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -129,44 +129,42 @@ const BuildGiftPanel: FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {giftCodes?.map(({ giftCodeB58, giftValueString }) => {
-                    return (
-                      <TableRow key={giftCodeB58}>
-                        <TableCell component="th" scope="row">
-                          <ShortCode code={giftCodeB58} />
-                        </TableCell>
-                        <TableCell>
-                          <MOBNumberFormat value={giftValueString} valueUnit="pMOB" />
-                        </TableCell>
-                        <TableCell align="right">
-                          <Box display="flex" justifyContent="flex-end">
-                            <Tooltip title={t('clickToCopy')} placement="right" arrow>
-                              <div
-                                className={classes.clickable}
-                                onClick={handleCopyClick(giftCodeB58)}
-                                aria-hidden="true"
-                              >
-                                <IconButton>
-                                  <CopyIcon />
-                                </IconButton>
-                              </div>
-                            </Tooltip>
-                            <Tooltip title={t('clickToDelete')} placement="right" arrow>
-                              <div
-                                className={classes.clickable}
-                                onClick={handleDialogOpen(giftCodeB58, giftValueString)}
-                                aria-hidden="true"
-                              >
-                                <IconButton>
-                                  <TrashcanIcon />
-                                </IconButton>
-                              </div>
-                            </Tooltip>
-                          </Box>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
+                  {giftCodes?.map((giftCode) => (
+                    <TableRow key={giftCode.giftCodeB58}>
+                      <TableCell component="th" scope="row">
+                        <ShortCode code={giftCode.giftCodeB58} />
+                      </TableCell>
+                      <TableCell>
+                        <MOBNumberFormat value={giftCode.valuePmob} valueUnit="pMOB" />
+                      </TableCell>
+                      <TableCell align="right">
+                        <Box display="flex" justifyContent="flex-end">
+                          <Tooltip title={t('clickToCopy')} placement="right" arrow>
+                            <div
+                              className={classes.clickable}
+                              onClick={handleCopyClick(giftCode.giftCodeB58)}
+                              aria-hidden="true"
+                            >
+                              <IconButton>
+                                <CopyIcon />
+                              </IconButton>
+                            </div>
+                          </Tooltip>
+                          <Tooltip title={t('clickToDelete')} placement="right" arrow>
+                            <div
+                              className={classes.clickable}
+                              onClick={handleDialogOpen(giftCode.giftCodeB58, giftCode.valuePmob)}
+                              aria-hidden="true"
+                            >
+                              <IconButton>
+                                <TrashcanIcon />
+                              </IconButton>
+                            </div>
+                          </Tooltip>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  ))}
                 </TableBody>
               </Table>
             </TableContainer>

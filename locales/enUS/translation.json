@@ -221,8 +221,11 @@
   },
 
   "GiftingView": {
-    "giftMOB": "Gift MOB",
-    "openGift": "Open Gift"
+    "tabs": {
+      "createGift": "Create Gift",
+      "myGifts": "My Gifts",
+      "openGift": "Open Gift"
+    }
   },
 
   "HistoryView": {

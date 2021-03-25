@@ -1,18 +1,15 @@
-import type GiftCode from '../../types/GiftCode';
 import type { StringB58 } from '../../types/SpecialStrings';
 import axiosFullService from '../axiosFullService';
 
 const CHECK_GIFT_CODE_STATUS_METHOD = 'check_gift_code_status';
 
-type CheckGiftCodeStatusParams = {
+export type CheckGiftCodeStatusParams = {
   giftCodeB58: StringB58;
 };
 
-type CheckGiftCodeStatusResult = {
-  giftCodeStatus: 'GiftCodeAvailable'; // TODO - add rest of status
-  giftCode: GiftCode;
-  feeConfirmation: bigint;
-  totalValueConfirmation: bigint;
+export type CheckGiftCodeStatusResult = {
+  giftCodeStatus: string; // TODO - add rest of status
+  giftCodeValue: number;
 };
 
 const checkGiftCodeStatus = async ({
@@ -21,8 +18,6 @@ const checkGiftCodeStatus = async ({
   const { result, error } = await axiosFullService(CHECK_GIFT_CODE_STATUS_METHOD, {
     giftCodeB58,
   });
-
-  //  const { txProposal, giftCode } = result;
 
   if (error) {
     // TODO - I'll write up a better error handler

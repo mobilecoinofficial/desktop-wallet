@@ -23,5 +23,6 @@ export { default as getTxo } from './getTxo';
 export { default as getWalletStatus } from './getWalletStatus';
 export { default as importAccount } from './importAccount';
 export { default as removeGiftCode } from './removeGiftCode';
+export { default as submitGiftCode } from './submitGiftCode';
 export { default as submitTransaction } from './submitTransaction';
 export { default as updateAccountName } from './updateAccountName';

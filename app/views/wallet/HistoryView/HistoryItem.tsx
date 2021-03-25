@@ -41,7 +41,13 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
   const classes = useStyles();
   const { t } = useTranslation('HistoryView');
 
-  const { assignedAddressId, direction, finalizedBlockIndex, valuePmob } = transactionLog;
+  const {
+    assignedAddressId,
+    contactName,
+    direction,
+    finalizedBlockIndex,
+    valuePmob,
+  } = transactionLog;
 
   // TODO - this should be a helper somewhere
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
@@ -54,16 +60,21 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
         <CardActionArea onClick={onClick}>
           <CardContent>
             <Box className={classes.internal}>
-              {assignedAddressId ? (
+              {assignedAddressId && contactName ? (
+                <Typography className={classes.textLeft} display="inline" color="textPrimary">
+                  {contactName}
+                </Typography>
+              ) : null}
+              {assignedAddressId && !contactName ? (
                 <Typography className={classes.textLeft} display="inline" color="textPrimary">
                   <ShortCode code={assignedAddressId} />
                 </Typography>
-              ) : (
+              ) : null}
+              {!assignedAddressId ? (
                 <Typography className={`${classes.textLeft} ${classes.negative}`} display="inline">
                   {t('orphaned')}
                 </Typography>
-              )}
-
+              ) : null}
               <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label="&nbsp;MOB" />
             </Box>
 

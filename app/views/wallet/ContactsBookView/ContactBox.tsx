@@ -36,18 +36,23 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 // This should something else...
-const ContactBox: FC<ContactBoxProps> = ({ id, initials, name, onEdit }: ContactBoxProps) => {
+const ContactBox: FC<ContactBoxProps> = ({
+  assignedAddress,
+  abbreviation,
+  alias,
+  onEdit,
+}: ContactBoxProps) => {
   const classes = useStyles();
 
   return (
     <Grid item xs={12}>
       <Card className={classes.card}>
-        <CardActionArea onClick={() => onEdit(id)}>
+        <CardActionArea onClick={() => onEdit(assignedAddress)}>
           <CardContent>
             <Box className={classes.internal}>
-              <ContactCircle initials={initials} />
+              <ContactCircle abbreviation={abbreviation} />
               &nbsp;
-              <Typography display="inline">{name}</Typography>
+              <Typography display="inline">{alias}</Typography>
             </Box>
           </CardContent>
         </CardActionArea>
@@ -57,9 +62,9 @@ const ContactBox: FC<ContactBoxProps> = ({ id, initials, name, onEdit }: Contact
 };
 
 ContactBox.defaultProps = {
-  id: '',
-  initials: '',
-  name: '',
+  abbreviation: '',
+  alias: '',
+  assignedAddress: '',
 };
 
 export default ContactBox;

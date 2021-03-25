@@ -1,9 +1,10 @@
 export interface ContactViewProps {
   abbreviation?: string;
-  recipientAddress?: string;
   alias?: string;
+  assignedAddress?: string;
   isFavorite?: boolean;
+  recipientAddress?: string;
   onCancel: () => void;
-  onDelete?: () => void;
-  onSaved: () => void;
+  onDelete?: (x: unknown) => void;
+  onSaved: (x: unknown) => void;
 }

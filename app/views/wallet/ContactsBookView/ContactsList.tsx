@@ -35,10 +35,11 @@ const ContactsList: FC<ContactsListProps> = ({
         <Grid container spacing={3}>
           {contactsList.map((contact) => (
             <ContactBox
-              key={contact.id}
-              id={contact.id}
-              initials={contact.abbreviation}
-              name={contact.alias}
+              key={contact.assignedAddress}
+              assignedAddress={contact.assignedAddress}
+              abbreviation={contact.abbreviation}
+              alias={contact.alias}
+              recipientAddress={contact.recipientAddress}
               onEdit={onEdit}
             />
           ))}

@@ -40,6 +40,7 @@ const buildGiftCode = async ({
   tombstoneBlock,
   valuePmob,
 }: BuildGiftCodeParams): Promise<BuildGiftCodeResult> => {
+  console.log(accountId, fee, inputTxoIds, maxSpendableValue, tombstoneBlock, valuePmob);
   const { result, error }: AxiosFullServiceResponse = await axiosFullService(
     BUILD_GIFT_CODE_METHOD,
     {
@@ -55,12 +56,8 @@ const buildGiftCode = async ({
 
   // TODO fix type, right now it just matches what the component is expecting
   const totalValueConfirmation = txProposal.outlayList
-    .map((outlay) => {
-      return BigInt(outlay.value);
-    })
-    .reduce((acc, cur) => {
-      return acc + cur;
-    });
+    .map((outlay) => BigInt(outlay.value))
+    .reduce((acc, cur) => acc + cur);
 
   const feeConfirmation = BigInt(txProposal.fee);
 

@@ -46,7 +46,7 @@ export const setStore = (newStore: Store): void => {
   store = newStore;
 };
 
-export const getContacts = (): [] => JSON.parse((store.get(schemaKeys.CONTACTS) as string) || '{}');
+export const getContacts = (): [] => JSON.parse((store.get(schemaKeys.CONTACTS) as string) || '[]');
 
 export const setContacts = (contacts: []): void => {
   store.set(schemaKeys.CONTACTS, JSON.stringify(contacts));

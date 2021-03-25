@@ -51,6 +51,7 @@ interface FullServiceState {
 
 // TODO - context can be broken down into seperate files
 export interface FullServiceContextValue extends FullServiceState {
+  assignAddressForAccount: (x: unknown) => Promise<unknown>;
   buildGiftCode: (buildGiftCodeParams: BuildGiftCodeParams) => Promise<BuildGiftCodeResult | void>; // include object
   buildTransaction: (buildTransactionParams: BuildTransactionParams) => Promise<TxProposal | void>;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
@@ -372,6 +373,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
 
 const FullServiceContext = createContext<FullServiceContextValue>({
   ...initialFullServiceState,
+  assignAddressForAccount: () => Promise.resolve(),
   buildGiftCode: () => Promise.resolve(),
   buildTransaction: () => Promise.resolve(),
   changePassword: () => Promise.resolve(),
@@ -391,6 +393,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   children,
 }: FullServiceProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialFullServiceState);
+
+  const assignAddressForAccount = async (x: unknown) => fullServiceApi.assignAddressForAccount(x);
 
   const buildGiftCode = async (buildGiftCodeParams: BuildGiftCodeParams) =>
     fullServiceApi.buildGiftCode(buildGiftCodeParams);
@@ -686,6 +690,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({
         accountId: selectedAccount.accountId,
       });
+
       dispatch({
         payload: {
           accounts: {
@@ -788,6 +793,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     <FullServiceContext.Provider
       value={{
         ...state,
+        assignAddressForAccount,
         buildGiftCode,
         buildTransaction,
         changePassword,

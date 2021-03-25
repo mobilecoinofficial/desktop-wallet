@@ -5,6 +5,7 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
+import useFullService from '../../../hooks/useFullService';
 import * as localStore from '../../../utils/LocalStore';
 import ContactView from './ContactView';
 import ContactsList from './ContactsList';
@@ -19,6 +20,7 @@ const ContactsBookView: FC = () => {
   const [status, setStatus] = useState(SHOW_LIST);
   const [current, setCurrent] = useState({});
   const { enqueueSnackbar } = useSnackbar();
+  const { selectedAccount, assignAddressForAccount } = useFullService();
 
   const { t } = useTranslation('ContactsBookView');
 
@@ -33,7 +35,7 @@ const ContactsBookView: FC = () => {
           contactsList={sortedContacts}
           onAdd={() => setStatus(SHOW_ADD)}
           onEdit={(idToEdit: string) => {
-            setCurrent(sortedContacts.find((x) => x.id === idToEdit));
+            setCurrent(sortedContacts.find((x) => x.assignedAddress === idToEdit));
             setStatus(SHOW_EDIT);
           }}
         />
@@ -43,16 +45,20 @@ const ContactsBookView: FC = () => {
       return (
         <ContactView
           onCancel={() => setStatus(SHOW_LIST)}
-          onSaved={({ abbreviation, alias, isFavorite, recipientAddress }) => {
+          onSaved={async ({ abbreviation, alias, isFavorite, recipientAddress }) => {
+            const result = await assignAddressForAccount({
+              accountId: selectedAccount.account.accountId,
+            });
+
+            setStatus(SHOW_LIST);
             listOfContacts.push({
               abbreviation,
               alias,
-              id: recipientAddress.substr(1, 5),
+              assignedAddress: result.address.publicAddress,
               isFavorite,
               recipientAddress,
             });
             localStore.setContacts(listOfContacts);
-            setStatus(SHOW_LIST);
             enqueueSnackbar(t('added'), { variant: 'success' });
           }}
         />
@@ -63,12 +69,13 @@ const ContactsBookView: FC = () => {
         <ContactView
           abbreviation={current.abbreviation}
           alias={current.alias}
+          assignedAddress={current.assignedAddress}
           isFavorite={current.isFavorite}
           recipientAddress={current.recipientAddress}
           onCancel={() => setStatus(SHOW_LIST)}
           onDelete={() => {
             listOfContacts.splice(
-              listOfContacts.findIndex((x) => x.id === current.id),
+              listOfContacts.findIndex((x) => x.assignedAddress === current.assignedAddress),
               1
             );
             localStore.setContacts(listOfContacts);
@@ -76,10 +83,12 @@ const ContactsBookView: FC = () => {
             enqueueSnackbar(t('removed'), { variant: 'success' });
           }}
           onSaved={({ abbreviation, alias, isFavorite, recipientAddress }) => {
-            listOfContacts[listOfContacts.findIndex((x) => x.id === current.id)] = {
+            listOfContacts[
+              listOfContacts.findIndex((x) => x.assignedAddress === current.assignedAddress)
+            ] = {
               abbreviation,
               alias,
-              id: current.id,
+              assignedAddress: current.assignedAddress,
               isFavorite,
               recipientAddress,
             };

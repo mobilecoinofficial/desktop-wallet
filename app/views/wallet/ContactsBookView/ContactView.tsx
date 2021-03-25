@@ -67,9 +67,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 // This should something else...
 const ContactView: FC<ContactViewProps> = ({
   abbreviation,
-  recipientAddress,
   alias,
+  assignedAddress,
   isFavorite,
+  recipientAddress,
   onCancel,
   onDelete,
   onSaved,
@@ -78,7 +79,7 @@ const ContactView: FC<ContactViewProps> = ({
   const isMountedRef = useIsMountedRef();
 
   const { t } = useTranslation('ContactView');
-  const isNew = !recipientAddress;
+  const isNew = !assignedAddress;
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -88,6 +89,7 @@ const ContactView: FC<ContactViewProps> = ({
           initialValues={{
             abbreviation: abbreviation || '',
             alias: alias || '',
+            assignedAddress: assignedAddress || '',
             button: '',
             isFavorite: !!isFavorite,
             recipientAddress: recipientAddress || '',
@@ -96,10 +98,7 @@ const ContactView: FC<ContactViewProps> = ({
           validationSchema={Yup.object().shape({
             abbreviation: Yup.string().max(3, t('maxAbbreviationLength')),
             alias: Yup.string().required(t('aliasRequired')),
-            recipientAddress: Yup.string()
-              .min(106, '106')
-              .max(106, '106')
-              .required(t('addressCodeRequired')),
+            recipientAddress: Yup.string(),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             if (values.button === 'back') {
@@ -151,18 +150,30 @@ const ContactView: FC<ContactViewProps> = ({
                 <Field
                   component={TextField}
                   fullWidth
+                  label={t('abbreviation')}
+                  margin="normal"
+                  name="abbreviation"
+                  type="text"
+                />
+                {assignedAddress && (
+                  <Field
+                    disabled
+                    component={TextField}
+                    fullWidth
+                    multiline
+                    label={t('assignedAddress')}
+                    margin="normal"
+                    name="assignedAddress"
+                    type="text"
+                  />
+                )}{' '}
+                <Field
+                  component={TextField}
+                  fullWidth
                   multiline
                   label={t('recipientAddress')}
                   margin="normal"
                   name="recipientAddress"
-                  type="text"
-                />
-                <Field
-                  component={TextField}
-                  fullWidth
-                  label={t('abbreviation')}
-                  margin="normal"
-                  name="abbreviation"
                   type="text"
                 />
               </Box>

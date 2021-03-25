@@ -40,8 +40,8 @@ const GiftingView: FC = () => {
             textColor="secondary"
             onChange={handleChange}
           >
-            <Tab label={t('giftMOB')} />
-            <Tab label={t('openGift')} />
+            <Tab label={t('tabs.createGift')} />
+            <Tab label={t('tabs.openGift')} />
           </Tabs>
           <TabPanel
             panels={[BuildGiftPanel, ConsumeGiftPanel]}

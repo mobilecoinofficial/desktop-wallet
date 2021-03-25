@@ -44,6 +44,7 @@ const axiosFullService = async (
   try {
     const response = await axiosInstance({
       data: {
+        id: 1,
         jsonrpc: '2.0',
         method,
         params: snakeCaseParams,

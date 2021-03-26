@@ -85,10 +85,11 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
             </Typography>
             <CardContent>
               {renderRow(`${t('blockHeight')}:`, finalizedBlockIndex)}
-              {renderRow(
-                `${sign === '+' ? t('sender') : t('recipient')}:`,
-                <ShortCode code={assignedAddressId} />
-              )}
+              {assignedAddressId &&
+                renderRow(
+                  `${sign === '+' ? t('sender') : t('recipient')}:`,
+                  <ShortCode code={assignedAddressId} />
+                )}
               {renderRow(
                 `${t('amount')}:`,
                 <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label=" MOB" />

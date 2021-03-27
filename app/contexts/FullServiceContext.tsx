@@ -9,6 +9,7 @@ import type {
   CheckGiftCodeStatusResult,
 } from '../fullService/api/checkGiftCodeStatus';
 import type { ClaimGiftCodeParams, ClaimGiftCodeResult } from '../fullService/api/claimGiftCode';
+import type { RemoveAccountParams, RemoveAccountResult } from '../fullService/api/removeAccount';
 import type { SubmitGiftCodeParams, SubmitGiftCodeResult } from '../fullService/api/submitGiftCode';
 import type { Accounts } from '../types/Account';
 import type { Addresses } from '../types/Address';
@@ -22,7 +23,6 @@ import type WalletStatus from '../types/WalletStatus';
 import * as localStore from '../utils/LocalStore';
 import sameObject from '../utils/sameObject';
 import scryptKeys from '../utils/scryptKeys';
-import { getAllGiftCodes } from '../fullService/api';
 
 type PendingSecrets = {
   entropy: StringHex;
@@ -65,6 +65,7 @@ export interface FullServiceContextValue extends FullServiceState {
   fetchAllTransactionLogsForAccount: (accountId: StringHex) => void;
   fetchAllTxosForAccount: (accountId: StringHex) => void;
   importAccount: (accountName: string | null, entropy: string, password: string) => Promise<void>;
+  removeAccount: (removeAccountParams: RemoveAccountParams) => Promise<RemoveAccountResult | void>;
   retrieveEntropy: (password: string) => Promise<string | void>;
   submitGiftCode: (
     submitGiftCodeParams: SubmitGiftCodeParams
@@ -123,6 +124,7 @@ type CreateAccountAction = {
   payload: {
     accounts: Accounts;
     addresses: Addresses;
+    giftCodes: GiftCode[];
     hashedPassword: string;
     pendingSecrets: PendingSecrets;
     selectedAccount: SelectedAccount;
@@ -134,6 +136,7 @@ type CreateAccountAction = {
 type ImportAccountAction = {
   type: 'IMPORT_ACCOUNT';
   payload: {
+    giftCodes: GiftCode[];
     accounts: Accounts;
     addresses: Addresses;
     hashedPassword: string;
@@ -288,11 +291,19 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case 'IMPORT_ACCOUNT': {
-      const { accounts, addresses, hashedPassword, selectedAccount, walletStatus } = action.payload;
+      const {
+        accounts,
+        addresses,
+        giftCodes,
+        hashedPassword,
+        selectedAccount,
+        walletStatus,
+      } = action.payload;
       return {
         ...state,
         accounts,
         addresses,
+        giftCodes,
         hashedPassword,
         isAuthenticated: true,
         isEntropyKnown: true,
@@ -305,6 +316,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       const {
         accounts,
         addresses,
+        giftCodes,
         hashedPassword,
         pendingSecrets,
         selectedAccount,
@@ -314,6 +326,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         ...state,
         accounts,
         addresses,
+        giftCodes,
         hashedPassword,
         isAuthenticated: true,
         isEntropyKnown: false,
@@ -383,6 +396,7 @@ const FullServiceContext = createContext<FullServiceContextValue>({
   createAccount: () => Promise.resolve(),
   deleteStoredGiftCodeB58: () => undefined,
   importAccount: () => Promise.resolve(),
+  removeAccount: () => Promise.resolve(),
   retrieveEntropy: () => Promise.resolve(),
   submitGiftCode: () => Promise.resolve(),
   submitTransaction: () => Promise.resolve(),
@@ -490,6 +504,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
+          giftCodes: [],
           hashedPassword,
           pendingSecrets,
           selectedAccount: {
@@ -506,15 +521,49 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
+  const removeAccount = async (accountId: string) => {
+    try {
+      const removed = await fullServiceApi.removeAccount({ accountId });
+
+      return removed;
+      // Now we need to reflect the fact that we just removed an account from Full Service
+      // wallet_db in our Desktop Wallet's FullServiceContext state to then get passed on
+      // to any UI elements that care about it.
+      // const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
+  const removeAllAccounts = async (excludedAccountIds: string[]) => {
+    try {
+      const { accountIds } = await fullServiceApi.getAllAccounts();
+      accountIds.forEach(async (accountId) => {
+        if (excludedAccountIds.includes(accountId)) {
+          return;
+        }
+        await removeAccount(accountId);
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
   // Import the wallet should initalize the basic wallet information
   // The wallet status
   // Accounts + status
   const importAccount = async (name: string | null, entropy: string, password: string) => {
     try {
+      await removeAllAccounts([]);
       // TODO - allow this once we're setup again!
       // Attempt import
       const { account } = await fullServiceApi.importAccount({ entropy, name });
       const { accountId } = account;
+
+      // remove all accounts that are NOT the new imported account id, but doing this after
+      // the initial import in case there is an issue with the import of the new account.
+      // await removeAllAccounts([accountId]);
+      // await removeAllGiftCodes();
 
       // Get basic wallet information
       const { walletStatus } = await fullServiceApi.getWalletStatus();
@@ -541,6 +590,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
+          giftCodes: [],
           hashedPassword,
           selectedAccount: {
             account,

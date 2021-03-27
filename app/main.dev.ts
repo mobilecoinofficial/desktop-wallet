@@ -14,7 +14,7 @@ import 'regenerator-runtime/runtime';
 import { exec, spawn } from 'child_process';
 import path from 'path';
 
-import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, nativeTheme, Tray } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 
@@ -43,6 +43,8 @@ global.eval = function () {
 };
 
 let mainWindow: BrowserWindow | null = null;
+let tray: Tray | null;
+let fullServiceRunning = false;
 
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line
@@ -106,6 +108,7 @@ const spawnAPIBinaries = () => {
   );
   localStore.setLedgerDbPath(ledgerFullServiceDbPath);
   localStore.setFullServiceDbPath(fullServiceDbPath);
+  fullServiceRunning = true;
 };
 
 const createWindow = async () => {
@@ -232,17 +235,80 @@ app.on('window-all-closed', () => {
   }
 });
 
+const createTrayMenu = () => {
+  const RESOURCES_PATH = app.isPackaged
+    ? path.join(process.resourcesPath, 'resources')
+    : path.join(__dirname, '../resources');
+  if (tray) {
+    tray.destroy();
+  }
+  tray = new Tray(path.join(RESOURCES_PATH, 'icons/16x16_white.png'));
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: fullServiceRunning ? 'Full Service is Running' : 'Full Service is Stopped',
+      submenu: fullServiceRunning
+        ? [
+            {
+              click: () => {
+                exec('pkill -f full-service');
+                spawnAPIBinaries();
+                createTrayMenu();
+              },
+              label: 'Restart Full Service',
+            },
+            {
+              click: () => {
+                exec('pkill -f full-service');
+                fullServiceRunning = false;
+                createTrayMenu();
+              },
+              label: 'Stop Full Service',
+            },
+          ]
+        : [
+            {
+              click: () => {
+                spawnAPIBinaries();
+                createTrayMenu();
+              },
+              label: 'Start Full Service',
+            },
+          ],
+    },
+    { type: 'separator' },
+    {
+      click: () => app.emit('activate'),
+      label: 'Desktop Wallet',
+    },
+    { type: 'separator' },
+    { label: 'Preferences...' },
+    { label: 'Check for Updates...' },
+    { label: 'Troubleshoot' },
+    { label: 'About Desktop Wallet' },
+    { label: 'About Full Service' },
+    { type: 'separator' },
+    {
+      click: () => app.quit(),
+      label: 'Quit',
+    },
+  ]);
+  // tray.setToolTip('Mobile Coin');
+  tray.setContextMenu(contextMenu);
+};
+
 if (process.env.E2E_BUILD === 'true') {
   /*
   // eslint-disable-next-line promise/catch-or-return
   */
   app
     .whenReady()
+    .then(createTrayMenu)
     .then(createWindow)
     .catch(() => null);
 } else {
   app.on('ready', () => {
     spawnAPIBinaries();
+    createTrayMenu();
     createWindow();
   });
 }

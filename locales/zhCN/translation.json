@@ -3,9 +3,9 @@
     "accountHeader": "账户地址码",
     "accountQR": "账户二维码",
     "accountTooltip": "查看账户地址码",
-    "clipboardAddress": "地址码已复制",
-    "clipboardGift": "红包码已复制",
-    "copyTooltip": "点击复制",
+    "clipboardAddress": "地址码已复制到剪贴板。",
+    "clipboardGift": "红包码已复制到剪贴板。",
+    "copyTooltip": "点击复制。",
     "giftHeader": "红包码",
     "giftQR": "红包二维码",
     "mobUrlTooltip": "查看 MobURL 二维码",
@@ -13,7 +13,7 @@
   },
 
   "BalanceIndicator": {
-    "syncMessage": "在钱包与账簿同步完成前显示的余额可能不准确",
+    "syncMessage": "在钱包与账簿同步完成前显示的余额可能不准确。",
     "title": "账户余额"
   },
 
@@ -37,30 +37,30 @@
     "giftDetails": "红包明细",
     "giftValue": "红包金额",
     "mobLabel": "MOB金额",
-    "mobWillBeSent": "红包即将发送",
+    "mobWillBeSent": "红包将在您确认后发送。",
     "pending": "正在准备红包码",
-    "positiveValidation": "红包金额必须大于 0",
-    "positiveValidationRequired": "红包金额必须大于 0",
-    "remaining": "余额",
+    "positiveValidation": "红包金额必须大于 0。",
+    "positiveValidationRequired": "红包金额必须大于 0。",
+    "remaining": "账户余额",
     "secureCode": "请妥善保管红包码",
     "select": "选择账户",
     "showCode": "查看红包码",
-    "total": "总额",
+    "total": "总计",
     "unnamed": "未命名账户",
     "walletSyncing": "钱包同步中"
   },
 
   "BuildGiftPanel": {
     "cancelButton": "取消",
-    "clickToCopy": "点击复制",
-    "clickToDelete": "点击删除红包码",
+    "clickToCopy": "点击复制。",
+    "clickToDelete": "点击删除红包码。",
     "deleteButton": "删除",
-    "deleted": "已删除",
-    "deleteDialogDescription": "您可以删除已被领取或不需要保存的红包码",
-    "deleteDialogText": "删除红包码不会取消发出的红包，但红包必须通过红包码领取",
+    "deleted": "已删除。",
+    "deleteDialogDescription": "您可以删除已被领取或不需要保存的红包码。",
+    "deleteDialogText": "删除红包码不会取消发出的红包，但红包必须通过红包码领取。",
     "deleteDialogTitle": "是否删除红包码？",
     "description": "您只需要在下方输入红包金额，红包明细和红包码将会在创建红包后显示。",
-    "giftCodeCopied": "红包码已复制",
+    "giftCodeCopied": "红包码已复制到剪贴板。",
     "giftValue": "红包金额：",
     "manageGiftCodes": "管理红包码",
     "manageGiftCodesDescription": "当您创建红包后，钱包会保存红包码和金额。您可以随时复制红包码。您也可以点击垃圾桶按钮去删除不需要的红包码。",
@@ -73,17 +73,17 @@
     "changePasswordBreadcrumb": "修改密码",
     "changePasswordButton": "确认修改",
     "description": "修改密码将会同时修改您账户的备份口令。我们推荐您使用不容易被猜到的复杂密码并定期更换密码。",
-    "enqueue": "密码修改成功",
+    "enqueue": "密码修改成功。",
     "formLabel": "修改密码",
-    "instructions": "请输入当前密码和新密码",
+    "instructions": "请输入当前密码和新密码以修改您的密码。",
     "newPasswordLabel": "新密码",
     "oldPasswordLabel": "当前密码",
     "oldPasswordRequired": "请输入当前密码",
     "passwordConfirmationLabel": "确认新密码",
     "passwordConfirmationRef": "必须与新密码一致",
     "passwordConfirmationRequired": "请确认您的新密码",
-    "passwordMax": "密码不能超过 99 个字符",
-    "passwordMin": "新密码至少需要 8 个字符",
+    "passwordMax": "密码不能超过 99 个字符。",
+    "passwordMin": "新密码至少需要 8 个字符。",
     "passwordRequired": "请输入新密码",
     "settingsBreadcrumb": "设置"
   },
@@ -94,10 +94,10 @@
     "currentPasswordLabel": "当前密码",
     "currentPasswordRequired": "请输入您的密码以修改 PIN 码",
     "description": "为了保证您的安全，当交易金额超过您设定的阈值时，您将需要使用您的 PIN 码来确认交易。",
-    "enqueue": "PIN 码设置成功",
+    "enqueue": "PIN 码设置成功。",
     "errorPin": "PIN 码必须为数字",
     "formLabel": "在此处输入您的PIN",
-    "instructions": "请在下方输入您的 PIN 码并设定阈值。",
+    "instructions": "请在下方设置您的 PIN 码并设定阈值。",
     "minimumForPin": "需要 PIN 码的阈值",
     "newPinLabel": "您的 PIN 码",
     "pinConfirmationLabel": "确认您的 PIN 码",
@@ -119,7 +119,7 @@
   "ConfigureMobilecoindView": {
     "configureMobilecoindBreadcrumb": "配置 MobileCoinD",
     "daemonDescription": "MobileCoin Daemon（MobileCoinD）是一个独立的程序，它负责与区块链同步并提供钱包服务。",
-    "daemonDescriptionContinued": "MobildCoinD 会创建加密的，可靠的与验证节点的连接并获取当前区块高度和区块头，并提交交易。使用英特尔的 SGX 技术确保了验证节点具有极高的可信度，验证节点将会作为可靠的区块信息来源并会被用来验证以及处理由 MobileCoinD 提交的交易。",
+    "daemonDescriptionContinued": "MobildCoinD 会创建加密的，可靠的与验证节点的连接并通过该连接获取当前的区块链信息以及提交交易。使用英特尔的 SGX 技术确保了验证节点具有极高的可信度，验证节点将会作为可靠的区块信息来源并会被用来验证以及处理由 MobileCoinD 提交的交易。",
     "panelDescription": "您可以在这里配置 MobileCoinD 的行为并重置账簿。",
     "settingsBreadcrumb": "设置"
   },
@@ -129,13 +129,13 @@
     "accountName": "账户名",
     "cancel": "取消",
     "claimGift": "领取红包",
-    "confirmation": "红包已领取，正在更新余额",
+    "confirmation": "红包已领取，正在更新余额。",
     "confirmationNotFound": "红包尚未确认",
     "error": "抱歉，出了点问题。",
     "error13": "13 INTERNAL: transactions_manager.submit_tx_proposal: Connection(Operation { error: TransactionValidation(ContainsSpentKeyImage), total_delay: 0ns, tries: 1 })",
     "fee": "手续费",
-    "giftB58Error": "无法找到红包",
-    "giftB58Validation": "需要一个有效的红包码",
+    "giftB58Error": "无法找到红包。",
+    "giftB58Validation": "需要一个有效的红包码。",
     "giftCanceled": "红包已被取消",
     "giftClaimed": "这个红包已经被打开过啦！",
     "giftCode": "红包码",
@@ -152,29 +152,29 @@
   "ConsumeGiftPanel": {
     "balance": "账户余额",
     "description": "请在下方输入红包码来收取红包。",
-    "syncMessage": "在钱包与账簿同步完成前显示的余额可能不准确"
+    "syncMessage": "在钱包与账簿同步完成前显示的余额可能不准确。"
   },
 
   "CreateAccountForm": {
     "acceptTerms": "我已阅读并接受",
     "acceptTermsButton": "用户条款",
-    "acceptTermsFormHelper": "您必须先阅读使用条款才能使用钱包。",
+    "acceptTermsFormHelper": "您必须先阅读用户条款才能使用钱包。",
     "accountNameValidation": "账户名不能超过 64 个字符",
-    "checkedTermsValidation": "您必须接受使用条款才能使用钱包。",
+    "checkedTermsValidation": "您必须接受用户条款才能使用钱包。",
     "createAccountButton": "创建账户",
     "nameLabel": "账户名（选填）",
     "passwordConfirmationLabel": "确认密码",
     "passwordConfirmationRef": "必须和输入的密码一致",
     "passwordConfirmationRequired": "请确认您的密码",
     "passwordLabel": "密码",
-    "passwordMax": "密码不能超过 99 个字符",
-    "passwordMin": "新密码至少需要 8 个字符",
+    "passwordMax": "密码不能超过 99 个字符。",
+    "passwordMin": "新密码至少需要 8 个字符。",
     "passwordRequired": "请设置密码"
   },
 
   "CreateAccountView": {
     "description": "请创建账户。如果您想导入一个现有的账户，请选择导入已有账户。",
-    "header": "在本地钱包创建新账户",
+    "header": "在本地钱包创建新账户。",
     "importInstead": "导入已有账户",
     "overwriteWarning": "这个钱包里已经有一个账户了，创建新的账户会覆盖当前账户，请确保您已经妥善保管当前账户的备份口令以便找回该账户。",
     "title": "创建账户",
@@ -210,11 +210,11 @@
   "ImportAccountForm": {
     "acceptTerms": "我已阅读并接受",
     "acceptTermsButton": "用户条款",
-    "acceptTermsFormHelper": "您必须先阅读使用条款才能使用钱包。",
+    "acceptTermsFormHelper": "您必须先阅读用户条款才能使用钱包。",
     "accountNameValidation": "账户名不能超过 64 个字符",
-    "checkedTermsValidation": "您必须接受使用条款才能使用钱包。",
+    "checkedTermsValidation": "您必须接受用户条款才能使用钱包。",
     "entropyLabel": "备份口令",
-    "entropyMatches": "一个有效的备份口令应该有至少 12 个由空格分割的英语单词组成，或者是 64 位的十六进制数",
+    "entropyMatches": "一个有效的备份口令应该有至少 12 个由空格分割的英语单词组成，或者是 64 位的十六进制数。",
     "entropyIsWrong": "备份口令有误",
     "entropyRequired": "请输入备份口令",
     "importAccountButton": "导入账户",
@@ -223,8 +223,8 @@
     "passwordConfirmationRef": "密码必须一致",
     "passwordConfirmationRequired": "请确认密码",
     "passwordLabel": "密码",
-    "passwordMax": "密码不能超过 99 个字符",
-    "passwordMin": "新密码至少需要 8 个字符",
+    "passwordMax": "密码不能超过 99 个字符。",
+    "passwordMin": "新密码至少需要 8 个字符。",
     "passwordRequired": "请输入密码"
   },
 
@@ -238,7 +238,7 @@
   },
 
   "InactivityDetect": {
-    "confirmToStay": "鉴于您长时间没有操作，程序即将退出",
+    "confirmToStay": "鉴于您长时间没有操作，程序即将退出。",
     "keepWorking": "点击以保持程序运行",
     "title": "Zzz...即将自动退出",
     "tooLong": "您太久没有操作了。。。"
@@ -326,12 +326,12 @@
 
   "NotFoundView": {
     "backButton": "返回主页",
-    "description": "如果你看到了这个页面，就意味着有程序员玩脱了",
+    "description": "如果你看到了这个页面，说明有程序员玩脱了",
     "header": "404：您要找的页面不见了"
   },
 
   "PrivacyPolicyView": {
-    "privacyPolicy": "隐私政策",
+    "privacyPolicy": "隐私条款",
     "settings": "设置"
   },
 
@@ -347,7 +347,7 @@
 
   "RetrieveEntropyView": {
     "description": "备份口令可以用来解锁您的钱包并使用 MobileCoin。每组口令都是独一无二的。请勿公开您的备份口令并妥善保存在安全，可靠的地方。本程序会使用您的密码来加密并存储您的备份口令。",
-    "entropyCanBeUsed": "备份口令可以在此设备损坏或丢失时把当前账户导入进其他钱包。",
+    "entropyCanBeUsed": "备份口令可以在此设备损坏或丢失时把当前账户导入到其他钱包。",
     "error": "抱歉，出了点问题。",
     "header": "您的备份口令是",
     "misplacedYourEntropy": "如果您忘记或丢失了您的备份口令，可以通过您的密码再次查看。",
@@ -361,7 +361,7 @@
   "SendMobForm": {
     "accountBalance": "账户余额",
     "accountName": "账户名",
-    "addressRequired": "请输入收款人的公开地址",
+    "addressRequired": "请输入收款人的公开地址。",
     "amount": "金额",
     "cancel": "取消",
     "confirm": "确认转账",
@@ -373,21 +373,21 @@
     "intent": "请查看并确认您的转账交易",
     "mob": "MOB",
     "mobAmount": "MOB 金额",
-    "mustSync": "在发送 MOB 前请与账簿同步",
+    "mustSync": "在发送 MOB 前请与账簿同步。",
     "positiveValidation": "转账金额必须大于 0。",
     "positiveValidationRequired": "转账金额必须大于 0。",
     "recipient": "收款人公共地址",
     "recipientPlus": "收款人（对方）地址",
     "recipientPlus1": "收款人地址",
     "recipientPlus2": "（对方地址）",
-    "remaining": "余额",
+    "remaining": "账户余额",
     "select": "选择账户",
     "send": "转账",
     "senderPlus": "转账人（您的）地址",
     "senderPlus1": "转账人地址",
     "senderPlus2": "（您的地址）",
     "success": "转账成功",
-    "syncing": "正在同步钱包...",
+    "syncing": "正在同步钱包……",
     "total": "总计",
     "transaction": "交易明细",
     "transactionCanceled": "交易已取消",
@@ -402,9 +402,9 @@
     "changePassword": "修改密码",
     "changePin": "设置或修改 PIN 码",
     "configureMobileCoinD": "配置 MobileCoinD",
-    "privacyPolicy": "隐私政策",
+    "privacyPolicy": "隐私条款",
     "retrieveEntropy": "查看备份口令",
-    "terms": "使用条款"
+    "terms": "用户条款"
   },
 
   "ShowEntropyModal": {
@@ -412,7 +412,7 @@
     "confirm": "请确认您已妥善保存好了您的备份口令",
     "description": "您的新账户的随机备份口令已经生成。请妥善保存您的备份口令并确保只有您能够访问。备份口令可以用来把您的账号导入到其他钱包中。",
     "header": "欢迎使用 MobileCoin 桌面钱包！",
-    "hide": "隐藏备份口令y",
+    "hide": "隐藏备份口令",
     "recommend": "我们建议您妥善保存您的备份口令。",
     "retrieve": "您可以在设置面板中再次查看您的备份口令。如果您忘记了您的密码或者您丢失了本台设备，您将需要使用您的备份口令来找回您的账户。",
     "secured": "我已妥善保存了备份口令",
@@ -421,7 +421,7 @@
   },
 
   "ShowRetrievedEntropyModal": {
-    "description": "我们解密了您的备份口令，并将显示在下方。请妥善保存您的备份口令并确保只有您能够访问。备份口令可以用来把您的账号导入到其他钱包中。",
+    "description": "您的备份口令已显示在下方。请妥善保存您的备份口令并确保只有您能够访问。备份口令可以用来把您的账号导入到其他钱包中。",
     "header": "您的备份口令",
     "hide": "隐藏备份口令",
     "secured": "我已妥善保存了备份口令",
@@ -448,8 +448,8 @@
     "savedComment": "备注已保存",
     "sender": "转账人",
     "time": "时间",
-    "txo": "TXO",
-    "txoDetails": "TXO 明细",
+    "txo": "交易输出",
+    "txoDetails": "交易输出明细",
     "typeHere": "开始输入"
   },
 
@@ -459,7 +459,7 @@
 
   "TermsOfUseView": {
     "settings": "设置",
-    "terms": "使用条款"
+    "terms": "用户条款"
   },
 
   "TransactionView": {

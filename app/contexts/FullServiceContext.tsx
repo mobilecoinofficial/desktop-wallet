@@ -81,7 +81,6 @@ interface FullServiceProviderProps {
 type InitializeAction = {
   type: 'INITIALIZE';
   payload: {
-    giftCodes: GiftCode[] | null;
     hashedPassword: string | null;
     isAuthenticated: boolean;
   };
@@ -124,7 +123,6 @@ type CreateAccountAction = {
   payload: {
     accounts: Accounts;
     addresses: Addresses;
-    giftCodes: GiftCode[];
     hashedPassword: string;
     pendingSecrets: PendingSecrets;
     selectedAccount: SelectedAccount;
@@ -136,7 +134,6 @@ type CreateAccountAction = {
 type ImportAccountAction = {
   type: 'IMPORT_ACCOUNT';
   payload: {
-    giftCodes: GiftCode[];
     accounts: Accounts;
     addresses: Addresses;
     hashedPassword: string;
@@ -291,19 +288,11 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case 'IMPORT_ACCOUNT': {
-      const {
-        accounts,
-        addresses,
-        giftCodes,
-        hashedPassword,
-        selectedAccount,
-        walletStatus,
-      } = action.payload;
+      const { accounts, addresses, hashedPassword, selectedAccount, walletStatus } = action.payload;
       return {
         ...state,
         accounts,
         addresses,
-        giftCodes,
         hashedPassword,
         isAuthenticated: true,
         isEntropyKnown: true,
@@ -316,7 +305,6 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       const {
         accounts,
         addresses,
-        giftCodes,
         hashedPassword,
         pendingSecrets,
         selectedAccount,
@@ -326,7 +314,6 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         ...state,
         accounts,
         addresses,
-        giftCodes,
         hashedPassword,
         isAuthenticated: true,
         isEntropyKnown: false,
@@ -504,7 +491,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
-          giftCodes: [],
           hashedPassword,
           pendingSecrets,
           selectedAccount: {
@@ -560,11 +546,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { account } = await fullServiceApi.importAccount({ entropy, name });
       const { accountId } = account;
 
-      // remove all accounts that are NOT the new imported account id, but doing this after
-      // the initial import in case there is an issue with the import of the new account.
-      // await removeAllAccounts([accountId]);
-      // await removeAllGiftCodes();
-
       // Get basic wallet information
       const { walletStatus } = await fullServiceApi.getWalletStatus();
       const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
@@ -590,7 +571,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
-          giftCodes: [],
           hashedPassword,
           selectedAccount: {
             account,

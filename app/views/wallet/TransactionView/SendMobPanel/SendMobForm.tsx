@@ -12,8 +12,10 @@ import {
   InputAdornment,
   LinearProgress,
   Slide,
+  MenuItem,
   Modal,
   Radio,
+  Select,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -120,6 +122,7 @@ const SendMobForm: FC = () => {
   const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
   const { t } = useTranslation('SendMobForm');
 
+  const [contactId, setContactId] = useState('');
   const [open, setOpen] = useState(false);
   const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
   const [sendingOpen, setSendingOpen] = useState(false);
@@ -127,6 +130,8 @@ const SendMobForm: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const { buildTransaction, selectedAccount, submitTransaction } = useFullService();
+
+  const listOfContacts = localStore.getContacts().filter((x) => x.recipientAddress);
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
   const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
@@ -145,9 +150,10 @@ const SendMobForm: FC = () => {
   ];
 
   const handleOpen = (values, setStatus, setErrors) => async () => {
+    let result;
     try {
       setIsAwaitingConformation(true);
-      const result = await buildTransaction({
+      result = await buildTransaction({
         accountId: selectedAccount.account.accountId,
         fee: convertMobStringToPicoMobString(values.feeAmount),
         recipientPublicAddress: values.recipientPublicAddress,
@@ -268,9 +274,12 @@ const SendMobForm: FC = () => {
   const minimumForPin = String(localStore.getMinimumForPin());
   const hashedPin = localStore.getHashedPin();
 
+  const NO_CONTACT_SELECTED = '';
+
   return (
     <Formik
       initialValues={{
+        contactId: NO_CONTACT_SELECTED,
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
         hashedPin,
         minimumForPin,
@@ -338,6 +347,7 @@ const SendMobForm: FC = () => {
         isValid,
         resetForm,
         submitForm,
+        setFieldValue,
         setSubmitting,
         setStatus,
         setErrors,
@@ -372,8 +382,41 @@ const SendMobForm: FC = () => {
               <FormLabel component="legend">
                 <Typography color="primary">{t('transaction')}</Typography>
               </FormLabel>
+
+              {listOfContacts.length > 0 && (
+                <Select
+                  style={{ width: '100%' }}
+                  labelId="contactsList"
+                  id="contactsList"
+                  value={contactId}
+                  displayEmpty
+                  onChange={(x) => {
+                    setContactId(x.target.value);
+                    if (x.target.value !== NO_CONTACT_SELECTED) {
+                      setFieldValue(
+                        'recipientPublicAddress',
+                        listOfContacts.find((z) => z.assignedAddress === x.target.value)
+                          .recipientAddress
+                      );
+                    } else {
+                      setFieldValue('recipientPublicAddress', '');
+                    }
+                  }}
+                >
+                  <MenuItem value={NO_CONTACT_SELECTED} selected>
+                    Contact from list
+                  </MenuItem>
+                  {listOfContacts.map((contact) => (
+                    <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
+                      {contact.alias}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
               <Field
                 component={TextField}
+                multiline
+                disabled={contactId !== NO_CONTACT_SELECTED}
                 fullWidth
                 label={t('recipient')}
                 margin="normal"

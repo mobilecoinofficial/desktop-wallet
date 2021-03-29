@@ -33,6 +33,8 @@ const HistoryList: FC<HistoryListProps> = ({
 
   const { t } = useTranslation('HistoryView');
 
+  console.log('LIST...', transactionLogsList);
+
   const handleChange = (_event: ChangeEvent<Record<string, unknown>>, newValue: number) => {
     setSelectedTabIndex(Number(newValue));
     setFirstToShow(0);

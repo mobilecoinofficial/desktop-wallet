@@ -70,9 +70,14 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
                   <ShortCode code={assignedAddressId} />
                 </Typography>
               ) : null}
-              {!assignedAddressId ? (
+              {!assignedAddressId && sign === '+' ? (
                 <Typography className={`${classes.textLeft} ${classes.negative}`} display="inline">
                   {t('orphaned')}
+                </Typography>
+              ) : null}
+              {!assignedAddressId && sign === '-' ? (
+                <Typography className={classes.textLeft} display="inline" color="textPrimary">
+                  ---
                 </Typography>
               ) : null}
               <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label="&nbsp;MOB" />

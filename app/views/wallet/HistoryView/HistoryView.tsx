@@ -52,13 +52,19 @@ const HistoryView: FC = () => {
   const buildList = (): TransactionLog[] =>
     transactionLogs.transactionLogIds
       .map((id) => transactionLogs.transactionLogMap[id])
-      .filter((txo) => txo.assignedAddressId !== addresses.addressIds[1])
-      .map((txo) => {
-        const contact = listOfContacts.find((x) => x.assignedAddress === txo.assignedAddressId);
+      .filter((transactionLog) => transactionLog.assignedAddressId !== addresses.addressIds[1])
+      .map((transactionLog) => {
+        // If any transaction is associated to a contact, let's attach the contact object.
+        // TODO - we can improve this greatly by changing how this information is stored.
+        const contact = listOfContacts.find(
+          (x) =>
+            x.assignedAddress === transactionLog.assignedAddressId ||
+            x.recipientAddress === transactionLog.recipientAddressId
+        );
         if (contact) {
-          txo.contactName = contact.alias; /* eslint-disable-line no-param-reassign */
+          transactionLog.contact = contact; /* eslint-disable-line no-param-reassign */
         }
-        return txo;
+        return transactionLog;
       })
       .sort((a, b) => b.offsetCount - a.offsetCount);
 

@@ -24,6 +24,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: '5px',
     padding: '5px',
   },
+  negative: {
+    color: theme.palette.number.negative,
+    fontWeight: 'bold',
+  },
   root: {
     minHeight: '100%',
     padding: theme.spacing(1),
@@ -44,10 +48,11 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
 
   const {
     comment,
+    contact,
     direction,
     finalizedBlockIndex,
     assignedAddressId,
-    // recipientAddress, // TODO -- add sent logic
+    recipientAddressId,
     outputTxoIds,
     transactionLogId,
     valuePmob,
@@ -75,6 +80,22 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
     </Box>
   );
 
+  const renderSenderOrReceiver = () => {
+    let aliasOrAddress: string | ReactNode = (
+      <Typography className={classes.negative} display="inline">
+        {t('orphaned')}
+      </Typography>
+    );
+    if (assignedAddressId || recipientAddressId) {
+      aliasOrAddress = contact ? (
+        contact.alias
+      ) : (
+        <ShortCode code={assignedAddressId || recipientAddressId} />
+      );
+    }
+
+    return renderRow(`${sign === '+' ? t('sender') : t('recipient')}:`, aliasOrAddress);
+  };
   return (
     <Container maxWidth="md" style={{ padding: '0' }}>
       <Box>
@@ -85,11 +106,7 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
             </Typography>
             <CardContent>
               {renderRow(`${t('blockHeight')}:`, finalizedBlockIndex)}
-              {assignedAddressId &&
-                renderRow(
-                  `${sign === '+' ? t('sender') : t('recipient')}:`,
-                  <ShortCode code={assignedAddressId} />
-                )}
+              {renderSenderOrReceiver()}
               {renderRow(
                 `${t('amount')}:`,
                 <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label=" MOB" />

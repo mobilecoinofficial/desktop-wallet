@@ -2,9 +2,9 @@ import React from 'react';
 import type { FC, ReactNode } from 'react';
 
 import { Box, Card, CardContent, Container, makeStyles, Typography } from '@material-ui/core';
-import { Formik, Form, Field } from 'formik';
-import { TextField } from 'formik-material-ui';
-import { useSnackbar } from 'notistack';
+// import { Formik, Form, Field } from 'formik';
+// import { TextField } from 'formik-material-ui';
+// import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import { ShortCode, SubmitButton } from '../../../components';
@@ -37,24 +37,24 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
-  onChangedComment,
+  // onChangedComment,
   onClickBack,
   transactionLog,
   txos,
 }: TransactionDetailsViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('TransactionDetails');
-  const { enqueueSnackbar } = useSnackbar();
+  // const { enqueueSnackbar } = useSnackbar();
 
   const {
-    comment,
+    // comment,
     contact,
     direction,
     finalizedBlockIndex,
     assignedAddressId,
     recipientAddressId,
     outputTxoIds,
-    transactionLogId,
+    // transactionLogId,
     valuePmob,
   } = transactionLog;
   // const { selectedAccount, txos, fetchAllTxosForAccount } = useFullService(); // ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8
@@ -98,44 +98,43 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
   };
   return (
     <Container maxWidth="md" style={{ padding: '0' }}>
-      <Box>
-        <Container className={classes.container} fixed maxWidth="md">
-          <Card className={classes.root}>
-            <Typography variant="body2" color="textPrimary">
-              {t('transactionDetails')}
-            </Typography>
-            <CardContent>
-              {renderRow(`${t('blockHeight')}:`, finalizedBlockIndex)}
-              {renderSenderOrReceiver()}
-              {renderRow(
-                `${t('amount')}:`,
-                <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label=" MOB" />
-              )}
-            </CardContent>
-          </Card>
-        </Container>
+      <Container className={classes.container} fixed maxWidth="md">
+        <Card className={classes.root}>
+          <Typography variant="body2" color="textPrimary">
+            {t('transactionDetails')}
+          </Typography>
+          <CardContent>
+            {renderRow(`${t('blockHeight')}:`, finalizedBlockIndex)}
+            {renderSenderOrReceiver()}
+            {renderRow(
+              `${t('amount')}:`,
+              <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label=" MOB" />
+            )}
+          </CardContent>
+        </Card>
+      </Container>
 
-        <Container className={classes.container} fixed maxWidth="md">
-          <Card className={classes.root}>
-            <Typography variant="body2" color="textPrimary">
-              {t('txoDetails')}
-            </Typography>
-            <CardContent>
-              {outputTxoIds.map((txoId) =>
-                renderRow(
-                  txoId,
-                  <TransactionInfoLabel
-                    valuePmob={txos.txoMap[txoId].valuePmob}
-                    sign={sign}
-                    label=" MOB"
-                  />
-                )
-              )}
-            </CardContent>
-          </Card>
-        </Container>
+      <Container className={classes.container} fixed maxWidth="md">
+        <Card className={classes.root}>
+          <Typography variant="body2" color="textPrimary">
+            {t('txoDetails')}
+          </Typography>
+          <CardContent>
+            {outputTxoIds.map((txoId) =>
+              renderRow(
+                txoId,
+                <TransactionInfoLabel
+                  valuePmob={txos.txoMap[txoId].valuePmob}
+                  sign={sign}
+                  label=" MOB"
+                />
+              )
+            )}
+          </CardContent>
+        </Card>
+      </Container>
 
-        <Container className={classes.container} fixed maxWidth="md">
+      {/* <Container className={classes.container} fixed maxWidth="md">
           <Card className={classes.root}>
             <Typography variant="body2" color="textPrimary">
               {t('addComment')}
@@ -181,11 +180,10 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
               )}
             </Formik>
           </Card>
-        </Container>
-        <SubmitButton disabled={false} isSubmitting={false} onClick={onClickBack}>
-          {t('buttons.back')}
-        </SubmitButton>
-      </Box>
+        </Container> */}
+      <SubmitButton disabled={false} isSubmitting={false} onClick={onClickBack}>
+        {t('buttons.back')}
+      </SubmitButton>
     </Container>
   );
 };

@@ -467,8 +467,8 @@
       "cancel": "CANCEL COMMENT",
       "save": "SAVE COMMENT"
     },
-
     "changeComment": "CHANGE COMMENT",
+    "orphaned": "??? ORPHANED",
     "date": "DATE",
     "recipient": "RECIPIENT",
     "savedComment": "COMMENT SAVED",

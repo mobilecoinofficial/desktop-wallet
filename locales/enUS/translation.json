@@ -482,8 +482,8 @@
       "cancel": "Cancel comment",
       "save": "Save comment"
     },
-
     "changeComment": "Change comment",
+    "orphaned": "??? Orphaned",
     "recipient": "Recipient",
     "savedComment": "Comment saved",
     "sender": "Sender",

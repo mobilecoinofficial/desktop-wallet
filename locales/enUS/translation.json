@@ -343,7 +343,8 @@
     "language": "Language",
     "languages": {
       "upDEV": "UPPERCASED",
-      "enUS": "English"
+      "enUS": "English",
+      "zhCN": "简体中文 Simplified Chinese"
     }
   },
 

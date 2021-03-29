@@ -13,25 +13,24 @@ import type { Theme } from '../../../theme';
 import { TransactionDetailsViewProps } from './TransactionDetailsView.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  container: {
-    padding: '10px',
+  card: {
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    padding: theme.spacing(1),
   },
   internal: {
     backgroundColor: theme.palette.background.dark,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    margin: '5px',
-    padding: '5px',
+    marginTop: theme.spacing(2),
+    padding: theme.spacing(1),
   },
   negative: {
     color: theme.palette.number.negative,
     fontWeight: 'bold',
   },
-  root: {
-    minHeight: '100%',
-    padding: theme.spacing(1),
-  },
+  root: { padding: theme.spacing(5) },
   textLeft: { textAlign: 'left' },
   textRight: { textAlign: 'right' },
 }));
@@ -97,45 +96,54 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
     return renderRow(`${sign === '+' ? t('sender') : t('recipient')}:`, aliasOrAddress);
   };
   return (
-    <Container maxWidth="md" style={{ padding: '0' }}>
-      <Container className={classes.container} fixed maxWidth="md">
-        <Card className={classes.root}>
-          <Typography variant="body2" color="textPrimary">
-            {t('transactionDetails')}
+    <Container maxWidth="md" className={classes.root}>
+      <Card className={classes.card}>
+        <Typography variant="body2" color="textPrimary">
+          {t('transactionDetails')}
+        </Typography>
+        <CardContent>
+          {renderRow(`${t('blockHeight')}:`, finalizedBlockIndex)}
+          {renderSenderOrReceiver()}
+          {renderRow(
+            `${t('amount')}:`,
+            <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label=" MOB" />
+          )}
+        </CardContent>
+      </Card>
+
+      <Card className={classes.card}>
+        <Typography variant="body2" color="textPrimary">
+          {t('txoDetails')}
+        </Typography>
+        <CardContent>
+          {outputTxoIds.map((txoId) =>
+            renderRow(
+              txoId,
+              <TransactionInfoLabel
+                valuePmob={txos.txoMap[txoId].valuePmob}
+                sign={sign}
+                label=" MOB"
+              />
+            )
+          )}
+        </CardContent>
+      </Card>
+
+      {sign === '+' && !assignedAddressId && (
+        <Card className={classes.card}>
+          <Typography variant="body2" color="textPrimary" className={classes.negative}>
+            {t('orphanedTitle')}
           </Typography>
           <CardContent>
-            {renderRow(`${t('blockHeight')}:`, finalizedBlockIndex)}
-            {renderSenderOrReceiver()}
-            {renderRow(
-              `${t('amount')}:`,
-              <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label=" MOB" />
-            )}
+            <Typography variant="body2" color="textPrimary">
+              {t('orphanedExplaination')}
+            </Typography>
           </CardContent>
         </Card>
-      </Container>
+      )}
 
-      <Container className={classes.container} fixed maxWidth="md">
-        <Card className={classes.root}>
-          <Typography variant="body2" color="textPrimary">
-            {t('txoDetails')}
-          </Typography>
-          <CardContent>
-            {outputTxoIds.map((txoId) =>
-              renderRow(
-                txoId,
-                <TransactionInfoLabel
-                  valuePmob={txos.txoMap[txoId].valuePmob}
-                  sign={sign}
-                  label=" MOB"
-                />
-              )
-            )}
-          </CardContent>
-        </Card>
-      </Container>
-
-      {/* <Container className={classes.container} fixed maxWidth="md">
-          <Card className={classes.root}>
+      {/* <Container className={classes.container}>
+          <Card className={classes.card}>
             <Typography variant="body2" color="textPrimary">
               {t('addComment')}
             </Typography>

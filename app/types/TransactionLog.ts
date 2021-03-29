@@ -1,3 +1,4 @@
+import Contact from './Contact';
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
 export default interface TransactionLog {
@@ -5,7 +6,7 @@ export default interface TransactionLog {
   assignedAddressId: StringB58;
   changeTxoIds: StringHex[];
   comment: string;
-  contactName?: string;
+  contact?: Contact; // FIX-ME this is not from the full-service API, we should remove.
   direction: 'tx_direction_received' | 'tx_direction_sent';
   failureCode: number | null;
   failureMessage: string | null;
@@ -16,7 +17,7 @@ export default interface TransactionLog {
   object: 'transaction_log';
   offsetCount: number;
   outputTxoIds: StringHex[];
-  recipientAddress: StringB58 | null;
+  recipientAddressId: StringB58 | null;
   sentTime: string | null; // FIX-ME: Confirm type
   status:
     | 'tx_status_built'

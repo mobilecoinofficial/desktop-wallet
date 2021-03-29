@@ -29,7 +29,6 @@ const DashboardOverview: FC<OverviewProps> = () => {
         account={{
           b58Code: selectedAccount.account.mainAddress,
           balance: selectedAccount.balanceStatus.unspentPmob,
-          mobUrl: selectedAccount.mobUrl,
           name: selectedAccount.account.name,
         }}
       />

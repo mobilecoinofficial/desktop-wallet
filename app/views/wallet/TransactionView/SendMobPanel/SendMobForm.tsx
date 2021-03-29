@@ -144,7 +144,6 @@ const SendMobForm: FC = () => {
     {
       b58Code: selectedAccount.account.mainAddress,
       balance: selectedAccount.balanceStatus.unspentPmob,
-      mobUrl: selectedAccount.mobUrl,
       name: selectedAccount.account.name,
     },
   ];

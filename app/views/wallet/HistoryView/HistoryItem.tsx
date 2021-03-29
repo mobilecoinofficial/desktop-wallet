@@ -2,10 +2,11 @@ import React from 'react';
 import type { FC } from 'react';
 
 import {
+  Avatar,
   Box,
   Card,
   CardActionArea,
-  CardContent,
+  CardHeader,
   Grid,
   Typography,
   makeStyles,
@@ -14,10 +15,12 @@ import { useTranslation } from 'react-i18next';
 
 import ShortCode from '../../../components/ShortCode';
 import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
+import MOBIcon from '../../../components/icons/MOBIcon';
 import type { Theme } from '../../../theme';
 import { HistoryItemProps } from './HistoryItem.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
+  action: { margin: 'unset' },
   card: {
     color: theme.palette.text.secondary,
     display: 'flex',
@@ -32,9 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: 'bold',
   },
   root: {},
-  textLeft: { textAlign: 'left', width: '100%' },
-  textRight: { textAlign: 'right', width: '100%' },
-  textSmall: { fontSize: 'small' },
+  textSmallRight: { fontSize: 'small', textAlign: 'right' },
 }));
 
 const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryItemProps) => {
@@ -43,55 +44,75 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
 
   const {
     assignedAddressId,
-    contactName,
+    contact,
     direction,
     finalizedBlockIndex,
+    recipientAddressId,
+    // status, TODO - Add status state for "pending" or errors
     valuePmob,
   } = transactionLog;
+
+  // debugger;
 
   // TODO - this should be a helper somewhere
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
   const directionText =
     direction === 'tx_direction_sent' ? t('historyItemSent') : t('historyItemReceived');
 
+  let aliasOrAddress;
+
+  // If there's a contact Object...
+  if (contact) {
+    aliasOrAddress = (
+      <Typography display="inline" color="textPrimary">
+        {contact.alias}
+      </Typography>
+    );
+    // Has a known address
+  } else if (assignedAddressId || recipientAddressId) {
+    aliasOrAddress = (
+      <Typography display="inline" color="textPrimary">
+        <ShortCode code={assignedAddressId || recipientAddressId || ''} />
+      </Typography>
+    );
+    // Else it is an orphan
+  } else if (direction === 'tx_direction_received') {
+    aliasOrAddress = (
+      <Typography className={classes.negative} display="inline">
+        {t('orphaned')}
+      </Typography>
+    );
+    // Else the alias is unknown (on purpose)
+  } else {
+    aliasOrAddress = (
+      <Typography display="inline" color="textPrimary">
+        ---
+      </Typography>
+    );
+  }
+
+  const avatar = contact ? contact.abbreviation.toUpperCase() : <MOBIcon color="white" />;
+
   return (
     <Grid item xs={12}>
       <Card className={classes.card}>
         <CardActionArea onClick={onClick}>
-          <CardContent>
-            <Box className={classes.internal}>
-              {assignedAddressId && contactName ? (
-                <Typography className={classes.textLeft} display="inline" color="textPrimary">
-                  {contactName}
+          <CardHeader
+            avatar={<Avatar>{avatar}</Avatar>}
+            title={aliasOrAddress}
+            subheader={`${t('finalizedBlockHeight')}${finalizedBlockIndex}`}
+            action={
+              <Box display="flex" flexDirection="column" justifyContent="space-between">
+                <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label="&nbsp;MOB" />
+                <Typography className={classes.textSmallRight} display="inline">
+                  {directionText}
                 </Typography>
-              ) : null}
-              {assignedAddressId && !contactName ? (
-                <Typography className={classes.textLeft} display="inline" color="textPrimary">
-                  <ShortCode code={assignedAddressId} />
-                </Typography>
-              ) : null}
-              {!assignedAddressId && sign === '+' ? (
-                <Typography className={`${classes.textLeft} ${classes.negative}`} display="inline">
-                  {t('orphaned')}
-                </Typography>
-              ) : null}
-              {!assignedAddressId && sign === '-' ? (
-                <Typography className={classes.textLeft} display="inline" color="textPrimary">
-                  ---
-                </Typography>
-              ) : null}
-              <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label="&nbsp;MOB" />
-            </Box>
-
-            <Box className={classes.internal}>
-              <Typography className={`${classes.textLeft} ${classes.textSmall}`} display="inline">
-                {`${t('finalizedBlockHeight')}${finalizedBlockIndex}`}
-              </Typography>
-              <Typography className={`${classes.textRight} ${classes.textSmall}`} display="inline">
-                {directionText}
-              </Typography>
-            </Box>
-          </CardContent>
+              </Box>
+            }
+            classes={{
+              action: classes.action,
+            }}
+          />
         </CardActionArea>
       </Card>
     </Grid>

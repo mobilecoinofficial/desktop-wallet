@@ -31,7 +31,6 @@ type PendingSecrets = {
 type SelectedAccount = {
   account: Account;
   balanceStatus: BalanceStatus;
-  mobUrl: string;
 };
 
 interface FullServiceState {
@@ -222,7 +221,6 @@ const initialFullServiceState: FullServiceState = {
       spentPmob: '',
       unspentPmob: '',
     },
-    mobUrl: '',
   },
   transactionLogs: null,
   walletStatus: {
@@ -496,7 +494,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account,
             balanceStatus,
-            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },
@@ -575,7 +572,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account,
             balanceStatus,
-            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },
@@ -682,7 +678,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         selectedAccount: {
           account: selectedAccount.account,
           balanceStatus,
-          mobUrl: `mob:///b58/${accountId}`,
         },
         walletStatus,
       },
@@ -734,7 +729,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account: selectedAccount,
             balanceStatus,
-            mobUrl: `mob:///b58/${selectedAccount.accountId}`,
           },
           walletStatus,
         },
@@ -801,7 +795,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account: selectedAccount.account,
             balanceStatus,
-            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },

@@ -30,6 +30,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
   const classes = useStyles();
 
+  if (!code) {
+    return null;
+  }
+
   const colorPairs: string[][] = [];
   const codeIndicies = [
     SUPER_LUCKY_ARRAY_INDEX[0],

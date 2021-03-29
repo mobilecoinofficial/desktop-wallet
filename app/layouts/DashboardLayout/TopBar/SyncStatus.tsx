@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { CircleMOBIcon } from '../../../components/icons';
 import { GREEN, GOLD_LIGHT, RED } from '../../../constants/colors';
 import useFullService from '../../../hooks/useFullService';
-import getPercentSyncedNew from '../../../utils/getPercentSyncedNew';
 import { Theme } from '../../../theme';
+import getPercentSyncedNew from '../../../utils/getPercentSyncedNew';
 
 const ERROR = 'ERROR';
 const SYNCED = 'SYNCED';

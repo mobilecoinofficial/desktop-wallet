@@ -38,7 +38,6 @@ const ContactsList: FC<ContactsListProps> = ({
             assignedAddress={contact.assignedAddress}
             abbreviation={contact.abbreviation}
             alias={contact.alias}
-            recipientAddress={contact.recipientAddress}
             onEdit={onEdit}
           />
         ))}

@@ -374,6 +374,13 @@ const SendMobForm: FC = () => {
           totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
+        const sortedContacts = [...listOfContacts].sort((a, b) => {
+          if (a.isFavorite !== b.isFavorite) {
+            return a.isFavorite ? -1 : 1;
+          }
+          return a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1;
+        });
+
         return (
           <Form>
             {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)}
@@ -405,9 +412,9 @@ const SendMobForm: FC = () => {
                   <MenuItem value={NO_CONTACT_SELECTED} selected>
                     Contact from list
                   </MenuItem>
-                  {listOfContacts.map((contact) => (
+                  {sortedContacts.map((contact) => (
                     <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
-                      {contact.alias}
+                      {`${contact.isFavorite ? '*' : ''} ${contact.alias}`}
                     </MenuItem>
                   ))}
                 </Select>

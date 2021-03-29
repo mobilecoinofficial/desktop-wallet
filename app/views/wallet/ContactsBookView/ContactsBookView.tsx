@@ -24,9 +24,12 @@ const ContactsBookView: FC = () => {
 
   const { t } = useTranslation('ContactsBookView');
 
-  const sortedContacts = listOfContacts.sort((a, b) =>
-    a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1
-  );
+  const sortedContacts = [...listOfContacts].sort((a, b) => {
+    if (a.isFavorite !== b.isFavorite) {
+      return a.isFavorite ? -1 : 1;
+    }
+    return a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1;
+  });
 
   switch (status) {
     case SHOW_LIST:

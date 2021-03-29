@@ -11,6 +11,7 @@ interface ContactItemProps {
   assignedAddress?: string;
   abbreviation?: string;
   alias?: string;
+  isFavorite?: boolean;
   onEdit: () => unknown;
 }
 
@@ -29,6 +30,7 @@ const ContactItem: FC<ContactItemProps> = ({
   assignedAddress,
   abbreviation,
   alias,
+  isFavorite,
   onEdit,
 }: ContactItemProps) => {
   const classes = useStyles();
@@ -41,7 +43,7 @@ const ContactItem: FC<ContactItemProps> = ({
         <CardActionArea onClick={() => onEdit(assignedAddress)}>
           <CardHeader
             avatar={<Avatar>{avatar}</Avatar>}
-            title={alias}
+            title={`${isFavorite ? '*' : ''} ${alias}`}
             action={<ChevronRightIcon fontSize="large" />}
             classes={{
               action: classes.action,
@@ -57,6 +59,7 @@ ContactItem.defaultProps = {
   abbreviation: '',
   alias: '',
   assignedAddress: '',
+  isFavorite: false,
 };
 
 export default ContactItem;

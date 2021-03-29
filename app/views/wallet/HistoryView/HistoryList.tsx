@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Button, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { Box, Button, Container, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { HISTORY_PAGE_SIZE } from '../../../constants/app';
@@ -54,7 +54,7 @@ const HistoryList: FC<HistoryListProps> = ({
   };
 
   return (
-    <Box className={classes.root}>
+    <Container className={classes.root} maxWidth="lg">
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Tabs
@@ -101,7 +101,7 @@ const HistoryList: FC<HistoryListProps> = ({
           ) : null}
         </Box>
       </Grid>
-    </Box>
+    </Container>
   );
 };
 

@@ -4,14 +4,12 @@ import type { FC } from 'react';
 import { Container, Grid, makeStyles, Fab } from '@material-ui/core';
 
 import type { Theme } from '../../../theme';
-import ContactBox from './ContactBox';
+import ContactItem from './ContactItem';
 import { ContactsListProps } from './ContactsList.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   fab: {
-    bottom: theme.spacing(2),
-    position: 'fixed',
-    right: theme.spacing(2),
+    margin: '10px auto',
   },
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -30,10 +28,10 @@ const ContactsList: FC<ContactsListProps> = ({
   const classes = useStyles();
 
   return (
-    <Container className={classes.root}>
+    <Container className={classes.root} maxWidth="lg">
       <Grid container spacing={3}>
         {contactsList.map((contact) => (
-          <ContactBox
+          <ContactItem
             key={contact.assignedAddress}
             assignedAddress={contact.assignedAddress}
             abbreviation={contact.abbreviation}
@@ -41,10 +39,10 @@ const ContactsList: FC<ContactsListProps> = ({
             onEdit={onEdit}
           />
         ))}
+        <Fab color="primary" size="medium" className={classes.fab} onClick={onAdd}>
+          +
+        </Fab>
       </Grid>
-      <Fab color="primary" size="medium" className={classes.fab} onClick={onAdd}>
-        +
-      </Fab>
     </Container>
   );
 };

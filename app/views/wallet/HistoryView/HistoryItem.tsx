@@ -20,7 +20,7 @@ import type { Theme } from '../../../theme';
 import { HistoryItemProps } from './HistoryItem.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  action: { margin: 'unset ' },
+  action: { margin: 'unset' },
   card: {
     color: theme.palette.text.secondary,
     display: 'flex',

@@ -43,16 +43,52 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
 
   const {
     assignedAddressId,
-    contactName,
+    contact,
     direction,
     finalizedBlockIndex,
+    recipientAddressId,
+    // status, TODO - Add status state for "pending" or errors
     valuePmob,
   } = transactionLog;
+
+  // debugger;
 
   // TODO - this should be a helper somewhere
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
   const directionText =
     direction === 'tx_direction_sent' ? t('historyItemSent') : t('historyItemReceived');
+
+  let aliasOrAddress;
+
+  // If there's a contact Object...
+  if (contact) {
+    aliasOrAddress = (
+      <Typography className={classes.textLeft} display="inline" color="textPrimary">
+        {contact.alias}
+      </Typography>
+    );
+    // Has a known address
+  } else if (assignedAddressId || recipientAddressId) {
+    aliasOrAddress = (
+      <Typography className={classes.textLeft} display="inline" color="textPrimary">
+        <ShortCode code={assignedAddressId || recipientAddressId || ''} />
+      </Typography>
+    );
+    // Else it is an orphan
+  } else if (direction === 'tx_direction_received') {
+    aliasOrAddress = (
+      <Typography className={`${classes.textLeft} ${classes.negative}`} display="inline">
+        {t('orphaned')}
+      </Typography>
+    );
+    // Else the alias is unknown (on purpose)
+  } else {
+    aliasOrAddress = (
+      <Typography className={classes.textLeft} display="inline" color="textPrimary">
+        ---
+      </Typography>
+    );
+  }
 
   return (
     <Grid item xs={12}>
@@ -60,26 +96,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
         <CardActionArea onClick={onClick}>
           <CardContent>
             <Box className={classes.internal}>
-              {assignedAddressId && contactName ? (
-                <Typography className={classes.textLeft} display="inline" color="textPrimary">
-                  {contactName}
-                </Typography>
-              ) : null}
-              {assignedAddressId && !contactName ? (
-                <Typography className={classes.textLeft} display="inline" color="textPrimary">
-                  <ShortCode code={assignedAddressId} />
-                </Typography>
-              ) : null}
-              {!assignedAddressId && sign === '+' ? (
-                <Typography className={`${classes.textLeft} ${classes.negative}`} display="inline">
-                  {t('orphaned')}
-                </Typography>
-              ) : null}
-              {!assignedAddressId && sign === '-' ? (
-                <Typography className={classes.textLeft} display="inline" color="textPrimary">
-                  ---
-                </Typography>
-              ) : null}
+              {aliasOrAddress}
               <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label="&nbsp;MOB" />
             </Box>
 

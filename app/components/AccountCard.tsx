@@ -24,7 +24,7 @@ import ShortCode from './ShortCode';
 import { CodeTextIcon, LogoIcon, QRCodeIcon } from './icons';
 
 interface AccountCardProps {
-  account: Account;
+  account: { b58Code: string; name?: string };
   className?: string;
   isGift?: boolean;
 }
@@ -64,7 +64,9 @@ const AccountCard: FC<AccountCardProps> = ({
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('AccountCard');
 
-  const { b58Code, mobUrl, name } = account;
+  const { b58Code, name } = account;
+
+  const mobUrl = `mob:///b58/${b58Code}`;
 
   const handleCodeClick = (code: string) => () => {
     clipboard.writeText(code);

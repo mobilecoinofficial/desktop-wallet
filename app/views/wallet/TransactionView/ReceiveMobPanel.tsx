@@ -37,11 +37,11 @@ const ReceiveMobPanel: FC = () => {
         </div>
       </Box>
       <Box display="flex" flexDirection="column" alignItems="center">
-        <AccountCard account={{
-          b58Code: selectedAccount.account.mainAddress,
-          mobUrl: selectedAccount.mobUrl,
-          name: selectedAccount.account.name,
-        }}
+        <AccountCard
+          account={{
+            b58Code: selectedAccount.account.mainAddress,
+            name: selectedAccount.account.name,
+          }}
         />
       </Box>
     </Container>

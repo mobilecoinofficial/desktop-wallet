@@ -26,9 +26,9 @@ import * as Yup from 'yup';
 
 // import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
 import AccountCard from '../../../../components/AccountCard';
-import SubmitButton from '../../../../components/SubmitButton';
 import MOBNumberFormat from '../../../../components/MOBNumberFormat';
 import ShortCode from '../../../../components/ShortCode';
+import SubmitButton from '../../../../components/SubmitButton';
 import { MOBIcon } from '../../../../components/icons';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
@@ -133,7 +133,6 @@ const BuildGiftForm: FC = () => {
     {
       b58Code: selectedAccount.account.mainAddress,
       balance: selectedAccount.balanceStatus.unspentPmob,
-      mobUrl: selectedAccount.mobUrl,
       name: selectedAccount.account.name,
     },
   ];
@@ -482,7 +481,6 @@ const BuildGiftForm: FC = () => {
                       isGift
                       account={{
                         b58Code: confirmation?.giftCodeB58,
-                        mobUrl: `mob:///b58/${confirmation?.giftCodeB58}`,
                         name: t('pending'),
                       }}
                     />

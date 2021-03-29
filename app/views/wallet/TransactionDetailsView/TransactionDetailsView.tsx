@@ -7,7 +7,7 @@ import { Box, Card, CardContent, Container, makeStyles, Typography } from '@mate
 // import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import { ShortCode, SubmitButton } from '../../../components';
+import { AccountCard, ShortCode, SubmitButton } from '../../../components';
 import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
 import { TransactionDetailsViewProps } from './TransactionDetailsView.d';
@@ -128,6 +128,16 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
           )}
         </CardContent>
       </Card>
+
+      {/* {assignedAddressId ||
+        (recipientAddressId && (
+          <AccountCard
+            account={{
+              b58Code: assignedAddressId || recipientAddressId || '',
+              name: 'test',
+            }}
+          />
+        ))} */}
 
       {sign === '+' && !assignedAddressId && (
         <Card className={classes.card}>

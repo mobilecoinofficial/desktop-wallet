@@ -1,5 +1,7 @@
+import Contact from '../../../types/Contact';
+
 export interface ContactsListProps {
-  contactsList: Array<unknown>;
+  contactsList: Contact[];
   onAdd: () => unknown;
   onEdit: () => unknown;
 }

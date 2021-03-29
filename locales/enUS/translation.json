@@ -482,8 +482,10 @@
       "cancel": "Cancel comment",
       "save": "Save comment"
     },
-
     "changeComment": "Change comment",
+    "orphaned": "??? Orphaned",
+    "orphanedTitle": "Orphaned Transaction",
+    "orphanedExplaination": "This transaction is considered orphaned. This means that the assigned address that received this transaction is unknown to this wallet. This likely happens if you assign addresses for this account within other wallets. Other causes may be importing/recovering this account. We recommend to only use an account in a single wallet.",
     "recipient": "Recipient",
     "savedComment": "Comment saved",
     "sender": "Sender",

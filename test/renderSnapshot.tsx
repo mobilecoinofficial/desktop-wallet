@@ -52,7 +52,6 @@ const renderSnapshot = (
     isEntropyKnown: true,
     isInitialised: true,
     localBlockIndex: '1234',
-    mobUrl: 'string',
     monitorId: Uint8Array.from([1, 2, 3]),
     networkHighestBlockIndex: '1234',
     nextBlock: '1235',
@@ -62,9 +61,7 @@ const renderSnapshot = (
   };
 
   // @ts-ignore mock
-  mockUseFullService.mockImplementation(() => {
-    return mockUseFullServiceValues;
-  });
+  mockUseFullService.mockImplementation(() => mockUseFullServiceValues);
 
   // CBB: we may want to just import a test version of App.tsx
   const renderedScreen = render(

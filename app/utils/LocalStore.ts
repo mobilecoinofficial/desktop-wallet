@@ -1,6 +1,8 @@
 import Store from 'electron-store';
 import { SjclCipherEncrypted } from 'sjcl';
 
+import Contact from '../types/Contact';
+
 interface LocalStoreSchema {
   [key: string]: { type: 'string' | 'array' | 'boolean' };
 }
@@ -46,7 +48,9 @@ export const setStore = (newStore: Store): void => {
   store = newStore;
 };
 
-export const getContacts = (): [] => JSON.parse((store.get(schemaKeys.CONTACTS) as string) || '[]');
+// CBB not sure if this needs to be stringified.
+export const getContacts = (): Contact[] =>
+  JSON.parse((store.get(schemaKeys.CONTACTS) as string) || '[]') as Contact[];
 
 export const setContacts = (contacts: []): void => {
   store.set(schemaKeys.CONTACTS, JSON.stringify(contacts));

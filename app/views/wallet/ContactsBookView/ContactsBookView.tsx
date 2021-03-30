@@ -24,9 +24,12 @@ const ContactsBookView: FC = () => {
 
   const { t } = useTranslation('ContactsBookView');
 
-  const sortedContacts = listOfContacts.sort((a, b) =>
-    a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1
-  );
+  const sortedContacts = [...listOfContacts].sort((a, b) => {
+    if (a.isFavorite !== b.isFavorite) {
+      return a.isFavorite ? -1 : 1;
+    }
+    return a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1;
+  });
 
   switch (status) {
     case SHOW_LIST:
@@ -47,7 +50,7 @@ const ContactsBookView: FC = () => {
           onCancel={() => setStatus(SHOW_LIST)}
           onSaved={async ({ abbreviation, alias, isFavorite, recipientAddress }) => {
             const result = await assignAddressForAccount({
-              accountId: selectedAccount.account.accountId,
+              accountId: selectedAccount.account.accountId || Math.random(),
             });
 
             setStatus(SHOW_LIST);

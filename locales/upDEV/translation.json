@@ -359,7 +359,8 @@
     "languages": {
       "upDEV": "UPPERCASED",
       "enUS": "ENGLISH",
-      "zhCN": "简体中文 SIMPLIFIED CHINESE"
+      "zhCN": "简体中文 SIMPLIFIED CHINESE",
+      "elGR": "GREEK"
     }
   },
 

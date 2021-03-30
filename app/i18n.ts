@@ -4,6 +4,7 @@ import { initReactI18next } from 'react-i18next';
 import config from '../configs/app.config';
 import enUS from '../locales/enUS/translation.json';
 import upDEV from '../locales/upDEV/translation.json'; // this is uppercased and for dev only
+import zhCN from '../locales/zhCN/translation.json';
 
 i18n.use(initReactI18next);
 
@@ -20,6 +21,7 @@ if (!i18n.isInitialized) {
     resources: {
       enUS,
       upDEV,
+      zhCN,
     },
     supportedLngs: config.languages,
   });

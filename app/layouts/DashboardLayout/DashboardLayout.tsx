@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   content: {
     flex: '1 1 auto',
     height: '100%',
-    overflow: 'auto',
+    overflowX: 'hidden',
   },
   contentContainer: {
     display: 'flex',

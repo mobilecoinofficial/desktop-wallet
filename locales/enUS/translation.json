@@ -108,6 +108,13 @@
     "settingsBreadcrumb": "Settings"
   },
 
+  "CloseApp": {
+    "confirm": "Synchronize in the background?",
+    "explain": "The ledger isn't totally synchronized yet. Do you want to leave the process synchronizing in the background?",
+    "no": "No, close anyway",
+    "yes": "Yes, let it run"
+  },
+
   "CloseWalletModal": {
     "closeVerifyBody": "Do you want to close and secure the wallet?",
     "closeVerifyConfirm": "Yes, Close Wallet",

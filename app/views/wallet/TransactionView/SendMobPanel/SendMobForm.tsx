@@ -228,30 +228,31 @@ const SendMobForm: FC = () => {
     );
   };
 
-  const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
-    <Box pt={2}>
-      <FormLabel className={classes.form} component="legend">
-        <Typography color="primary">{t('select')}</Typography>
-      </FormLabel>
-      <Field component={RadioGroup} name="senderPublicAddress">
-        <Box display="flex" justifyContent="space-between">
-          <Typography color="textPrimary">{t('accountName')}</Typography>
-          <Typography color="textPrimary">{t('accountBalance')}</Typography>
-        </Box>
-        {accounts.map((account: Account) => (
-          <FormControlLabel
-            key={account.b58Code}
-            value={account.b58Code}
-            control={<Radio disabled={isSubmitting} />}
-            label={createAccountLabel(account)}
-            labelPlacement="end"
-            disabled={isSubmitting}
-            classes={{ label: classes.label }}
-          />
-        ))}
-      </Field>
-    </Box>
-  );
+  // TODO: Reintroduce with multiple accounts
+  // const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
+  //   <Box pt={2}>
+  //     <FormLabel className={classes.form} component="legend">
+  //       <Typography color="primary">{t('select')}</Typography>
+  //     </FormLabel>
+  //     <Field component={RadioGroup} name="senderPublicAddress">
+  //       <Box display="flex" justifyContent="space-between">
+  //         <Typography color="textPrimary">{t('accountName')}</Typography>
+  //         <Typography color="textPrimary">{t('accountBalance')}</Typography>
+  //       </Box>
+  //       {accounts.map((account: Account) => (
+  //         <FormControlLabel
+  //           key={account.b58Code}
+  //           value={account.b58Code}
+  //           control={<Radio disabled={isSubmitting} />}
+  //           label={createAccountLabel(account)}
+  //           labelPlacement="end"
+  //           disabled={isSubmitting}
+  //           classes={{ label: classes.label }}
+  //         />
+  //       ))}
+  //     </Field>
+  //   </Box>
+  // );
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
@@ -383,7 +384,7 @@ const SendMobForm: FC = () => {
 
         return (
           <Form>
-            {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)}
+            {/* {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)} */}
             <Box pt={4}>
               <FormLabel component="legend">
                 <Typography color="primary">{t('transaction')}</Typography>

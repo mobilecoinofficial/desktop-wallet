@@ -54,54 +54,56 @@ const HistoryList: FC<HistoryListProps> = ({
   };
 
   return (
-    <Container className={classes.root} maxWidth="lg">
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Tabs
-            variant="fullWidth"
-            value={selectedTabIndex}
-            indicatorColor="secondary"
-            textColor="secondary"
-            onChange={handleChange}
-          >
-            <Tab label={t('showAllTransactions')} />
-            <Tab label={t('showSentTransactions')} />
-            <Tab label={t('showReceivedTransactions')} />
-          </Tabs>
+    <Box>
+      <Box paddingY={3}>
+        <Tabs
+          variant="fullWidth"
+          value={selectedTabIndex}
+          indicatorColor="primary"
+          textColor="primary"
+          onChange={handleChange}
+        >
+          <Tab label={t('showAllTransactions')} />
+          <Tab label={t('showSentTransactions')} />
+          <Tab label={t('showReceivedTransactions')} />
+        </Tabs>
+      </Box>
+      <Container className={classes.root} maxWidth="lg">
+        <Grid container spacing={3}>
+          {dataToShow
+            .filter((_v, i) => firstToShow <= i && i < firstToShow + HISTORY_PAGE_SIZE)
+            .map((transactionLog) => (
+              <HistoryItem
+                key={`historyitem_${transactionLog.transactionLogId}`}
+                onClick={() => onTransactionClick(transactionLog)}
+                transactionLog={transactionLog}
+              />
+            ))}
+          <Box width="100%" display="flex" justifyContent="flex-end" m={2}>
+            {firstToShow > 0 ? (
+              <Button
+                onClick={pageBack}
+                style={{ margin: '5px' }}
+                color="primary"
+                variant="contained"
+              >
+                &lt;
+              </Button>
+            ) : null}
+            {firstToShow + HISTORY_PAGE_SIZE < dataToShow.length ? (
+              <Button
+                onClick={pageForward}
+                style={{ margin: '5px' }}
+                color="primary"
+                variant="contained"
+              >
+                &gt;
+              </Button>
+            ) : null}
+          </Box>
         </Grid>
-        {dataToShow
-          .filter((_v, i) => firstToShow <= i && i < firstToShow + HISTORY_PAGE_SIZE)
-          .map((transactionLog) => (
-            <HistoryItem
-              key={`historyitem_${transactionLog.transactionLogId}`}
-              onClick={() => onTransactionClick(transactionLog)}
-              transactionLog={transactionLog}
-            />
-          ))}
-        <Box width="100%" display="flex" justifyContent="flex-end" m={2}>
-          {firstToShow > 0 ? (
-            <Button
-              onClick={pageBack}
-              style={{ margin: '5px' }}
-              color="secondary"
-              variant="contained"
-            >
-              &lt;
-            </Button>
-          ) : null}
-          {firstToShow + HISTORY_PAGE_SIZE < dataToShow.length ? (
-            <Button
-              onClick={pageForward}
-              style={{ margin: '5px' }}
-              color="secondary"
-              variant="contained"
-            >
-              &gt;
-            </Button>
-          ) : null}
-        </Box>
-      </Grid>
-    </Container>
+      </Container>
+    </Box>
   );
 };
 

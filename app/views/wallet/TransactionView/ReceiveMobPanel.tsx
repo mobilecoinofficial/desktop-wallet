@@ -21,10 +21,6 @@ import type { Theme } from '../../../theme';
 import * as localStore from '../../../utils/LocalStore';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  cardContainer: {
-    paddingBottom: 64,
-    paddingTop: 64,
-  },
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: '100%',
@@ -51,7 +47,7 @@ const ReceiveMobPanel: FC = () => {
   );
 
   return (
-    <Container className={classes.cardContainer} maxWidth="sm">
+    <Container maxWidth="sm">
       <Select
         style={{ width: '100%' }}
         labelId="contactsList"

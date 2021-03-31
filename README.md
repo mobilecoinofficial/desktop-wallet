@@ -1,3 +1,7 @@
+# WARNING
+
+Do not build from main without full confidence in the state of the application. If there is no official release, please contact an admin for the correct branch.
+
 ## MobileCoin Electron Wallet [Beta]
 
 A user-friendly desktop wallet with support for encrypted key storage, an address book [WIP], and QR code generation for communicating Payment Request Codes and Gift Codes to mobile apps[WIP].

@@ -16,6 +16,10 @@ export interface ShortCodeProps {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
+  lastLine: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
   lowercased: {
     color: theme.palette.longCode.lowercased,
   },

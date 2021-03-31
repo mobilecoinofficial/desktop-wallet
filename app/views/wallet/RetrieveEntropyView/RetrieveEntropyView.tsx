@@ -79,7 +79,7 @@ const RetrieveEntropyView: FC = () => {
   const classes = useStyles();
   const [entropy, setEntropy] = useState('');
   const isMountedRef = useIsMountedRef();
-  const { retrieveEntropy } = useFullService();
+  const { retrieveEntropy, selectedAccount } = useFullService();
   const handleCloseModal = () => {
     setEntropy('');
   };
@@ -175,7 +175,12 @@ const RetrieveEntropyView: FC = () => {
                 </Box>
               )}
               <SubmitButton
-                disabled={!dirty || !isValid || isSubmitting}
+                disabled={
+                  !dirty ||
+                  !isValid ||
+                  isSubmitting ||
+                  selectedAccount.account.keyDerivationVersion === '1'
+                }
                 onClick={submitForm}
                 isSubmitting={isSubmitting}
               >

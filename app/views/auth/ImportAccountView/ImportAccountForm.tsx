@@ -22,6 +22,7 @@ export interface ImportAccountFormValues {
   accountName: string;
   checkedTerms: boolean;
   entropy: string;
+  legacyAccount: boolean;
   password: string;
   passwordConfirmation: string;
   submit: null;
@@ -30,6 +31,7 @@ export interface ImportAccountFormValues {
 interface ImportAccountFormPseudoProps {
   isMountedRef: { current: boolean };
   importAccount: FullServiceContextValue['importAccount'];
+  importLegacyAccount: FullServiceContextValue['importLegacyAccount'];
 }
 
 export const importAccountFormOnSubmit = async (
@@ -37,13 +39,17 @@ export const importAccountFormOnSubmit = async (
   values: ImportAccountFormValues,
   helpers: FormikHelpers<ImportAccountFormValues>
 ): Promise<void> => {
-  const { isMountedRef, importAccount } = pseudoProps;
-  const { accountName, entropy, password } = values;
+  const { isMountedRef, importAccount, importLegacyAccount } = pseudoProps;
+  const { accountName, entropy, legacyAccount, password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
 
   try {
-    const decodedEntropy = convertMnemonicOrHexToEntropy(entropy);
-    await importAccount(accountName, decodedEntropy, password);
+    if (legacyAccount) {
+      const decodedEntropy = convertMnemonicOrHexToEntropy(entropy);
+      await importLegacyAccount(accountName, decodedEntropy, password);
+    } else {
+      await importAccount(accountName, entropy, password);
+    }
 
     if (isMountedRef.current) {
       setStatus({ success: true });
@@ -69,7 +75,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
 }: ImportAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ImportAccountForm');
-  const { importAccount } = useFullService();
+  const { importAccount, importLegacyAccount } = useFullService();
 
   const [canCheck, setCanCheck] = useState(false);
   const [open, setOpen] = useState(false);
@@ -87,7 +93,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     values: ImportAccountFormValues,
     helpers: FormikHelpers<ImportAccountFormValues>
   ) => {
-    const pseudoProps = { importAccount, isMountedRef };
+    const pseudoProps = { importAccount, importLegacyAccount, isMountedRef };
     onSubmit(pseudoProps, values, helpers);
   };
 
@@ -95,6 +101,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     accountName: '',
     checkedTerms: false,
     entropy: '',
+    legacyAccount: false,
     password: '',
     passwordConfirmation: '',
     submit: null,
@@ -141,6 +148,14 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
             multiline
             name="entropy"
           />
+          <Box pt={1} display="flex">
+            <Box display="flex" alignItems="center" flexDirection="row-reverse">
+              <Box>
+                <Typography display="inline">This is a legacy account</Typography>
+              </Box>
+              <Field component={Checkbox} type="checkbox" name="legacyAccount" />
+            </Box>
+          </Box>
           <Field
             id="ImportAccountForm-passwordField"
             component={TextField}

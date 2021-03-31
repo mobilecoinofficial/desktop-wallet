@@ -52,9 +52,9 @@ const ShowEntropyModal: FC = () => {
     confirmEntropyKnown();
   };
   // TODO, i should start making a single util for all of this coercing logic
-  const entropyString = pendingSecrets?.entropy || '';
+  const entropyString = pendingSecrets?.mnemonic || '';
 
-  const mnemonicEntropy = entropyString ? entropyToMnemonic(entropyString) : '';
+  const mnemonicEntropy = entropyString;
 
   const toggleEntropy = () => {
     if (!canGoForward) {

@@ -1,11 +1,10 @@
 import type Account from '../../types/Account';
 import axiosFullService from '../axiosFullService';
 
-const IMPORT_ACCOUNT_METHOD = 'import_account';
+const IMPORT_LEGACY_ACCOUNT_METHOD = 'import_account_from_legacy_root_entropy';
 
 type ImportAccountParams = {
-  mnemonic: string;
-  keyDerivationVersion: string;
+  entropy: string;
   firstBlockIndex?: string;
   name: string | null;
 };
@@ -14,16 +13,14 @@ type ImportAccountResult = {
   account: Account;
 };
 
-const importAccount = async ({
-  mnemonic,
-  keyDerivationVersion,
+const importLegacyAccount = async ({
+  entropy,
   firstBlockIndex,
   name,
 }: ImportAccountParams): Promise<ImportAccountResult> => {
-  const { result, error } = await axiosFullService(IMPORT_ACCOUNT_METHOD, {
+  const { result, error } = await axiosFullService(IMPORT_LEGACY_ACCOUNT_METHOD, {
+    entropy,
     firstBlockIndex,
-    keyDerivationVersion,
-    mnemonic,
     name,
   });
 
@@ -35,4 +32,4 @@ const importAccount = async ({
   }
 };
 
-export default importAccount;
+export default importLegacyAccount;

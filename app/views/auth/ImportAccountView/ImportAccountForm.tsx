@@ -51,13 +51,6 @@ export const importAccountFormOnSubmit = async (
       await importAccount(accountName, entropy, password);
     }
 
-    // if (legacyAccount) {
-    //   const decodedEntropy = convertMnemonicOrHexToEntropy(entropy);
-    //   await importLegacyAccount(accountName, decodedEntropy, password);
-    // } else {
-    //   await importAccount(accountName, entropy, password);
-    // }
-
     if (isMountedRef.current) {
       setStatus({ success: true });
       setSubmitting(false);

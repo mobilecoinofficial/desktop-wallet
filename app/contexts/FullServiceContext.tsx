@@ -65,7 +65,11 @@ export interface FullServiceContextValue extends FullServiceState {
   fetchAllTransactionLogsForAccount: (accountId: StringHex) => void;
   fetchAllTxosForAccount: (accountId: StringHex) => void;
   importAccount: (accountName: string | null, mnemonic: string, password: string) => Promise<void>;
-  importLegacyAccount: (accountName: string | null, entropy: string, password: string) => Promise<void>;
+  importLegacyAccount: (
+    accountName: string | null,
+    entropy: string,
+    password: string
+  ) => Promise<void>;
   removeAccount: (removeAccountParams: RemoveAccountParams) => Promise<RemoveAccountResult | void>;
   retrieveEntropy: (password: string) => Promise<string | void>;
   submitGiftCode: (
@@ -489,7 +493,10 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
   const createAccount = async (name: string | null, password: string) => {
     try {
+      // Wipe Accounts and Contacts
       await removeAllAccounts([]);
+      localStore.setContacts([]);
+
       // Attempt create
       const { account } = await fullServiceApi.createAccount({ name });
       const { accountId } = account;
@@ -542,8 +549,10 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Accounts + status
   const importAccount = async (name: string | null, mnemonic: string, password: string) => {
     try {
+      // Wipe Accounts and Contacts
       await removeAllAccounts([]);
-      // TODO - allow this once we're setup again!
+      localStore.setContacts([]);
+
       // Attempt import
       const { account } = await fullServiceApi.importAccount({
         keyDerivationVersion: '2',
@@ -594,8 +603,10 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Accounts + status
   const importLegacyAccount = async (name: string | null, entropy: string, password: string) => {
     try {
+      // Wipe Accounts and Contacts
       await removeAllAccounts([]);
-      // TODO - allow this once we're setup again!
+      localStore.setContacts([]);
+
       // Attempt import
       const { account } = await fullServiceApi.importLegacyAccount({ entropy, name });
       const { accountId } = account;
@@ -698,7 +709,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       });
 
       return accountSecrets.entropy ?? accountSecrets.mnemonic ?? '';
-
     } catch (err) {
       throw new Error(err.message);
     }
@@ -731,7 +741,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     const { walletStatus } = await fullServiceApi.getWalletStatus();
 
     // TODO - get new balance (now that is it pending)
-    ({
+    dispatch({
       payload: {
         selectedAccount: {
           account: selectedAccount.account,

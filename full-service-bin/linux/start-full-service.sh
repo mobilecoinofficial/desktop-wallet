@@ -31,7 +31,7 @@ echo "Starting full-service-testnet with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR} a
         --peer mc://node2.test.mobilecoin.com/ \
         --tx-source-url https://s3-us-west-1.amazonaws.com/mobilecoin.chain/node1.test.mobilecoin.com/ \
         --tx-source-url https://s3-us-west-1.amazonaws.com/mobilecoin.chain/node2.test.mobilecoin.com/ \
-        --fog-ingest-enclave-css ./../ingest-enclave.css \
+        --fog-ingest-enclave-css ./../ingest-enclave.testnet.css \
         &> /tmp/full-service-$(date '+%Y-%m-%d-%H:%M:%S').log &
 
 pid=$!

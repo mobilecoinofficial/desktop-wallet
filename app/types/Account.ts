@@ -49,6 +49,7 @@ export default interface Account {
   // metadata: string used as a wildcard, stringified json object?
   accountId: StringHex;
   firstBlockIndex: StringUInt64;
+  key_derivation_version: string;
   mainAddress: StringB58;
   name: string | null;
   nextSubaddressIndex: StringUInt64;

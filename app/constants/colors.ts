@@ -10,3 +10,18 @@ export const GREY = '#A6AAB4';
 export const PURPLE = '#613EEA';
 export const RED = '#E6492D';
 export const WHITE = '#fff';
+
+// new brand colors
+export const BLACK_CHARADE = '#242731';
+export const BLACK_SHARK = '#1F2128';
+export const BLUE_DODGER = '#3F8CFF';
+export const BLUE_NEON_BLUE = '#355DFF';
+export const GREEN_EMERALD = '#4FBF67';
+export const GREEN_PUERTO_RICO = '#3DBAA2';
+export const GREY_MERCURY = '#E4E4E4';
+export const ORANGE_NEON_CARROT = '#FF9F38';
+export const ORANGE_ORANGE = '#FF6628';
+export const PINK_LAVENDER_ROSE = '#FF98E5';
+export const PURPLE_BLUE_MOODY = '#6C5DD3';
+export const RED_BITTERSWEET = '#FF7A68';
+export const WHITE_IVORY = '#FEFFED';

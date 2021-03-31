@@ -13,6 +13,7 @@ type AccountKey = {
 export default interface AccountSecrets {
   object: 'account_key';
   accountId: StringHex;
+  entropy: StringHex;
   mnemonic: string;
   accountKey: AccountKey;
 }

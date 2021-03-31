@@ -13,7 +13,7 @@ import type { FullServiceContextValue } from '../../../contexts/FullServiceConte
 import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import {
-  convertMnemonicOrHexToEntropy,
+  isHex64,
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
 } from '../../../utils/bip39Functions';
@@ -22,7 +22,6 @@ export interface ImportAccountFormValues {
   accountName: string;
   checkedTerms: boolean;
   entropy: string;
-  legacyAccount: boolean;
   password: string;
   passwordConfirmation: string;
   submit: null;
@@ -40,16 +39,24 @@ export const importAccountFormOnSubmit = async (
   helpers: FormikHelpers<ImportAccountFormValues>
 ): Promise<void> => {
   const { isMountedRef, importAccount, importLegacyAccount } = pseudoProps;
-  const { accountName, entropy, legacyAccount, password } = values;
+  const { accountName, entropy, password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
 
   try {
-    if (legacyAccount) {
-      const decodedEntropy = convertMnemonicOrHexToEntropy(entropy);
-      await importLegacyAccount(accountName, decodedEntropy, password);
+    // return isHex64(st) ? st : bip39.mnemonicToEntropy(st);
+
+    if (isHex64(entropy)) {
+      await importLegacyAccount(accountName, entropy, password);
     } else {
       await importAccount(accountName, entropy, password);
     }
+
+    // if (legacyAccount) {
+    //   const decodedEntropy = convertMnemonicOrHexToEntropy(entropy);
+    //   await importLegacyAccount(accountName, decodedEntropy, password);
+    // } else {
+    //   await importAccount(accountName, entropy, password);
+    // }
 
     if (isMountedRef.current) {
       setStatus({ success: true });
@@ -101,7 +108,6 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     accountName: '',
     checkedTerms: false,
     entropy: '',
-    legacyAccount: false,
     password: '',
     passwordConfirmation: '',
     submit: null,
@@ -148,14 +154,6 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
             multiline
             name="entropy"
           />
-          <Box pt={1} display="flex">
-            <Box display="flex" alignItems="center" flexDirection="row-reverse">
-              <Box>
-                <Typography display="inline">This is a legacy account</Typography>
-              </Box>
-              <Field component={Checkbox} type="checkbox" name="legacyAccount" />
-            </Box>
-          </Box>
           <Field
             id="ImportAccountForm-passwordField"
             component={TextField}

@@ -56,6 +56,7 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
 
   // const mnemonicEntropy = entropy ? entropyToMnemonic(entropy) : '';
 
+
   // TODO, i should start making a single util for all of this coercing logic
   const toggleEntropy = () => {
     setShowEntropy(!showEntropy);

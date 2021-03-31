@@ -25,6 +25,7 @@ import sameObject from '../utils/sameObject';
 import scryptKeys from '../utils/scryptKeys';
 
 type PendingSecrets = {
+  entropy: StringHex;
   mnemonic: string;
 };
 
@@ -497,6 +498,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { accountSecrets: pendingSecrets } = await fullServiceApi.exportAccountSecrets({
         accountId,
       });
+
       const { walletStatus } = await fullServiceApi.getWalletStatus();
       const { accountIds, accountMap } = walletStatus;
       const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
@@ -695,9 +697,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         accountId: selectedAccount.account.accountId,
       });
 
-      console.log(accountSecrets.mnemonic);
+      return accountSecrets.entropy ?? accountSecrets.mnemonic ?? '';
 
-      return accountSecrets.mnemonic;
     } catch (err) {
       throw new Error(err.message);
     }

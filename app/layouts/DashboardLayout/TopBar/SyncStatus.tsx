@@ -2,6 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, makeStyles, Tooltip, CircularProgress } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 
 import { CircleMOBIcon } from '../../../components/icons';
@@ -77,6 +78,7 @@ const SyncStatus: FC = () => {
     percentSynced = getPercentSyncedNew(networkBlockIndexBigInt, accountBlockIndexBigInt);
     statusCode = isSynced ? SYNCED : SYNCING;
   }
+  ipcRenderer.send('sync-status', statusCode);
 
   switch (statusCode) {
     case SYNCED: {

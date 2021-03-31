@@ -108,6 +108,13 @@
     "settingsBreadcrumb": "Settings"
   },
 
+  "CloseApp": {
+    "confirm": "Synchronize in the background?",
+    "explain": "The ledger isn't totally synchronized yet. Do you want to leave the process synchronizing in the background?",
+    "no": "No, close anyway",
+    "yes": "Yes, let it run"
+  },
+
   "CloseWalletModal": {
     "closeVerifyBody": "Do you want to close and secure the wallet?",
     "closeVerifyConfirm": "Yes, Close Wallet",
@@ -373,6 +380,15 @@
   "PrivacyPolicyView": {
     "privacyPolicy": "Privacy Policy",
     "settings": "Settings"
+  },
+
+  "ReceiveMobPanel": {
+    "assignedAddress": "Assigned Address",
+    "assignedAddressDetails": "If you want a record of your transaction history, you may create a new contact. Each new contact will have their own, unique public address. You can give this new contact an alias and abbreviation. A contact doesn’t have to be an individual, you can share it with businesses, groups, or even treat it as another public address. At rest, your contacts are encrypted and they never leave your local device.",
+    "howTo": "How To Receive MOB",
+    "howToReceiveDetails": "To receive MOB, you must share an address for your account. You may use your Public Address or an Asssigned Address.",
+    "mainPublicAddress": "Public Address",
+    "mainPublicAddressDetails": "Your Public Address can be shared with everyone. The sender will be ambiguous. This is a feature, not a bug. If you do not care about explicit transaction history, or if you purposely want to keep your history ambiguous, use this address."
   },
 
   "ResetLedger": {

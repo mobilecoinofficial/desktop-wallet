@@ -28,7 +28,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
   const classes = useStyles();
-  const colorCode = code.split('').map((char, i) => {
+
+  // Remove the center of the code and replace with * *
+  const shortenedCode = `${code.slice(0, 48)}•••${code.slice(code.length - 48, code.length)}`;
+  const colorCode = shortenedCode.split('').map((char, i) => {
     let charColorClass = classes.lowercased;
     if (!Number.isNaN(char * 1)) {
       charColorClass = classes.number;
@@ -48,7 +51,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
 
   colorCode.forEach((char, i) => {
     nextCodeLine.push(char);
-    if (i === code.length - 1) {
+    if (i === shortenedCode.length - 1) {
       codeLines.push(nextCodeLine);
     } else if (nextCodeLine.length === 11) {
       codeLines.push(nextCodeLine);

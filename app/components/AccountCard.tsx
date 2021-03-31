@@ -17,7 +17,6 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../theme';
-import type Account from '../types/Account';
 import LongCode from './LongCode';
 import QRMob from './QRMob';
 import ShortCode from './ShortCode';
@@ -34,9 +33,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'column',
-    fontSize: 24,
-    letterSpacing: '.70rem',
-    marginRight: '-.70rem',
+    fontSize: 27,
+    letterSpacing: '.65rem',
+    marginRight: '-.65rem',
     padding: theme.spacing(1),
   },
   container: {

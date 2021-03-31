@@ -95,6 +95,38 @@ export const MOBILE_COIN_LIGHT_THEME = {
   name: MOBILE_COIN_LIGHT,
   palette: {
     background: {
+      dark: WHITE,
+      default: GREY_MERCURY,
+      paper: GREY_MERCURY,
+    },
+    longCode: {
+      lowercased: PINK_LAVENDER_ROSE,
+      number: ORANGE_NEON_CARROT,
+      uppercased: BLUE_DODGER,
+    },
+    number: {
+      negative: RED_BITTERSWEET,
+      positive: GREEN_PUERTO_RICO,
+    },
+    primary: {
+      main: BLUE_NEON_BLUE,
+    },
+    secondary: {
+      main: PURPLE_BLUE_MOODY,
+    },
+    text: {
+      primary: BLACK_SHARK,
+      secondary: BLACK_CHARADE,
+      tertiary: BLUE_NEON_BLUE,
+    },
+    type: 'light',
+  },
+};
+
+export const MOBILE_COIN_LIGHT_GOLD_THEME = {
+  name: MOBILE_COIN_LIGHT,
+  palette: {
+    background: {
       dark: GREY_LIGHT,
       default: WHITE,
       paper: WHITE,

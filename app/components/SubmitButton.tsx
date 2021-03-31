@@ -38,7 +38,7 @@ const SubmitButton: FC<SubmitButtonProps> = ({
       <Button
         data-testid={testID}
         className={buttonClass}
-        color="secondary"
+        color="primary"
         disabled={disabled}
         fullWidth
         onClick={onClick}

@@ -15,7 +15,7 @@ import {
   WalletHomeIcon,
 } from '../../../components/icons';
 import { IconProps } from '../../../components/icons/IconProps';
-import { GOLD, GREY_DARK } from '../../../constants/colors';
+import { BLUE_NEON_BLUE, GREY_MERCURY } from '../../../constants/colors';
 import routePaths from '../../../constants/routePaths';
 
 interface NavBarProps {
@@ -74,9 +74,9 @@ const NavBar: FC<NavBarProps> = () => {
   );
 
   return (
-    <Tabs value={value} variant="scrollable">
+    <Tabs value={value} variant="scrollable" indicatorColor="primary" textColor="primary">
       {sections.map(({ Icon, label, path }, idx) => {
-        const color = value === idx ? GOLD : GREY_DARK;
+        const color = value === idx ? BLUE_NEON_BLUE : GREY_MERCURY;
 
         return (
           <Tab

@@ -31,15 +31,13 @@ import ShortCode from '../../../../components/ShortCode';
 import { CopyIcon, TrashcanIcon } from '../../../../components/icons';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
+import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
+import BalanceIndicator from '../../DashboardView/BalanceIndicator';
 import BuildGiftForm from './BuildGiftForm';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
 
 const useStyles = makeStyles(() => ({
-  cardContainer: {
-    paddingBottom: 64,
-    paddingTop: 64,
-  },
   clickable: {
     cursor: 'pointer',
     marginRight: 8,
@@ -50,11 +48,16 @@ const useStyles = makeStyles(() => ({
 
 const BuildGiftPanel: FC = () => {
   const classes = useStyles();
-  const { checkGiftCodeStatus, deleteStoredGiftCodeB58, giftCodes } = useFullService();
+  const { deleteStoredGiftCodeB58, giftCodes } = useFullService();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pendingDeleteCode, setPendingDeleteCode] = useState(EMPTY_PENDING_DELETE_CODE);
+  const { selectedAccount } = useFullService();
+
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   const { t } = useTranslation('BuildGiftPanel');
 
@@ -92,7 +95,8 @@ const BuildGiftPanel: FC = () => {
   };
 
   return (
-    <Container className={classes.cardContainer} maxWidth="sm">
+    <Container maxWidth="sm">
+      <BalanceIndicator balance={selectedAccount.balanceStatus.unspentPmob} isSynced={isSynced} />
       <Box alignItems="center" display="flex" justifyContent="space-between" mb={3}>
         <Box>
           <Typography variant="body2" color="textPrimary">

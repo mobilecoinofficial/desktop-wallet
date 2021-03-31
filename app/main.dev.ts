@@ -14,7 +14,7 @@ import 'regenerator-runtime/runtime';
 import { exec, spawn } from 'child_process';
 import path from 'path';
 
-import { app, BrowserWindow, ipcMain, nativeTheme } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, nativeTheme } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 
@@ -108,6 +108,8 @@ const spawnAPIBinaries = () => {
   localStore.setFullServiceDbPath(fullServiceDbPath);
 };
 
+let syncStatus = ''; // for the app to update, via ipcRenderer.send(...)
+
 const createWindow = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
     await installExtensions();
@@ -171,6 +173,19 @@ const createWindow = async () => {
     const parsedUrl = new URL(newURL);
     if (parsedUrl.origin !== 'https://mobilecoin.com') {
       event.preventDefault();
+    }
+  });
+
+  mainWindow.on('close', () => {
+    const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
+    if (syncStatus !== 'SYNCED' && !leaveFullServiceRunning) {
+      const choice = dialog.showMessageBoxSync(mainWindow as BrowserWindow, {
+        buttons: [i18n.t('CloseApp.yes'), i18n.t('CloseApp.no')],
+        message: i18n.t('CloseApp.explain'),
+        title: i18n.t('CloseApp.confirm'),
+        type: 'question',
+      });
+      localStore.setLeaveFullServiceRunning(choice === 0);
     }
   });
 
@@ -262,6 +277,10 @@ app.on('activate', () => {
 
 ipcMain.on('close-app', () => {
   app.quit();
+});
+
+ipcMain.on('sync-status', (_e, status) => {
+  syncStatus = status;
 });
 
 ipcMain.on('reset-ledger', () => {

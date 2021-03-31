@@ -43,10 +43,10 @@ const ReceiveMobPanel: FC = () => {
   const listOfContacts = localStore.getContacts();
   const nameFromAddress =
     selectedAddress === mainAddress
-      ? 'Main Public Address'
+      ? t('mainPublicAddress')
       : listOfContacts.find((contact) => contact.assignedAddress === selectedAddress)?.alias;
 
-  const dropDownValues = [{ alias: 'Main Public Address', assignedAddress: mainAddress }].concat(
+  const dropDownValues = [{ alias: t('mainPublicAddress'), assignedAddress: mainAddress }].concat(
     listOfContacts
   );
 

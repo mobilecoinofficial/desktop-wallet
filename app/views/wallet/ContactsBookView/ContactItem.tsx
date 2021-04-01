@@ -5,6 +5,7 @@ import { Avatar, Card, CardActionArea, CardHeader, Grid, makeStyles } from '@mat
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 // import ContactCircle from '../../../components/ContactCircle';
+import { StarIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
 
 interface ContactItemProps {
@@ -43,7 +44,12 @@ const ContactItem: FC<ContactItemProps> = ({
         <CardActionArea onClick={() => onEdit(assignedAddress)}>
           <CardHeader
             avatar={<Avatar>{avatar}</Avatar>}
-            title={`${isFavorite ? '*' : ''} ${alias}`}
+            title={
+              <>
+                {isFavorite ? <StarIcon /> : null}
+                {alias}
+              </>
+            }
             action={<ChevronRightIcon fontSize="large" />}
             classes={{
               action: classes.action,

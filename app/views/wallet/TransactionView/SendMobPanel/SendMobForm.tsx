@@ -12,6 +12,8 @@ import {
   LinearProgress,
   Slide,
   MenuItem,
+  ListItemIcon,
+  ListItemText,
   Modal,
   Select,
   Typography,
@@ -25,7 +27,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
 import LongCode from '../../../../components/LongCode';
-import { MOBIcon } from '../../../../components/icons';
+import { StarIcon, MOBIcon } from '../../../../components/icons';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
@@ -414,7 +416,14 @@ const SendMobForm: FC = () => {
                   </MenuItem>
                   {sortedContacts.map((contact) => (
                     <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
-                      {`${contact.isFavorite ? '*' : ''} ${contact.alias}`}
+                      {contact.isFavorite ? (
+                        <ListItemIcon style={{ margin: '0px' }}>
+                          <StarIcon />
+                          <ListItemText>{contact.alias} </ListItemText>
+                        </ListItemIcon>
+                      ) : (
+                        <ListItemText>{contact.alias} </ListItemText>
+                      )}
                     </MenuItem>
                   ))}
                 </Select>

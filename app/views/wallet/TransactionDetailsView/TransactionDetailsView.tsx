@@ -64,11 +64,17 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
 
   // TODO replace this with a component
-  const renderRow = (title: string, value: string | ReactNode) => (
+  const renderRow = (title: string, value: string | ReactNode, txo?: boolean) => (
     <Box className={classes.internal} key={title}>
-      <Typography className={classes.textLeft} display="inline" noWrap>
-        {title}
-      </Typography>
+      {txo ? (
+        <Typography className={classes.textLeft} display="inline" noWrap>
+          {title}
+        </Typography>
+      ) : (
+        <Typography className={classes.textLeft} display="inline">
+          {title}
+        </Typography>
+      )}
       {typeof value === 'string' ? (
         <Typography className={classes.textRight} display="inline">
           {value}
@@ -123,7 +129,8 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
                 valuePmob={txos.txoMap[txoId].valuePmob}
                 sign={sign}
                 label=" MOB"
-              />
+              />,
+              true
             )
           )}
         </CardContent>

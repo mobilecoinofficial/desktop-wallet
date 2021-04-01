@@ -430,6 +430,7 @@
     "mob": "MOB",
     "mobAmount": "MOB Amount",
     "mustSync": "Wallet must sync with ledger before sending MOB.",
+    "pickContact": "Contact from list (optional)",
     "positiveValidation": "A positive, non-zero amount is required to send MOB.",
     "positiveValidationRequired": "A positive, non-zero amount is required to send MOB.",
     "recipient": "Recipient's Public Address",

@@ -82,7 +82,7 @@ export const setLeaveFullServiceRunning = (leaveFullServiceRunning: boolean): vo
   store.set(schemaKeys.LEAVE_FULL_SERVICE_RUNNING, leaveFullServiceRunning);
 };
 
-export const getMinimumForPin = (): number => Number(store.get(schemaKeys.MINIMUM_FOR_PIN));
+export const getMinimumForPin = (): number => Number(store.get(schemaKeys.MINIMUM_FOR_PIN) || '0');
 
 export const setMinimumForPin = (minimumForPin: number | null): void => {
   store.set(schemaKeys.MINIMUM_FOR_PIN, String(minimumForPin) || '0');

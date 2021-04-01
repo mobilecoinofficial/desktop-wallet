@@ -15,6 +15,7 @@ export { default as OfficialDocumentIcon } from './OfficialDocumentIcon';
 export { default as PieChartIcon } from './PieChartIcon';
 export { default as PrivateDocumentIcon } from './PrivateDocumentIcon';
 export { default as QRCodeIcon } from './QRCodeIcon';
+export { default as StarIcon } from './StarIcon';
 export { default as ToolsIcon } from './ToolsIcon';
 export { default as TransactionIcon } from './TransactionIcon';
 export { default as TrashcanIcon } from './TrashcanIcon';

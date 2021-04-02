@@ -130,7 +130,7 @@ export const getFullServiceDbPath = (): string => {
   return typeof fullServiceDbPath === 'string' ? fullServiceDbPath : '';
 };
 
-export const getFullServiceLedgerDbPath = () => store.get(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
+export const getFullServiceLedgerDbPath = () => store.get(schemaKeys.LEDGER_DB_PATH);
 
 export const setLedgerDbPath = (name: string): void => {
   store.set(schemaKeys.LEDGER_DB_PATH, name);

@@ -96,7 +96,7 @@ const ContactView: FC<ContactViewProps> = ({
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-            abbreviation: Yup.string().max(3, t('maxAbbreviationLength')),
+            abbreviation: Yup.string().max(2, t('maxAbbreviationLength')),
             alias: Yup.string().required(t('aliasRequired')),
             recipientAddress: Yup.string(),
           })}

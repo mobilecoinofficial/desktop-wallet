@@ -1,5 +1,6 @@
 export { default as AccountCard } from './AccountCard';
 export { default as AuthFlowGuard } from './AuthFlowGuard';
+export { default as StarCheckbox } from './StarCheckbox';
 export { default as GlobalStyles } from './GlobalStyles';
 export { default as LoadingScreen } from './LoadingScreen';
 export { default as MOBNumberFormat } from './MOBNumberFormat';

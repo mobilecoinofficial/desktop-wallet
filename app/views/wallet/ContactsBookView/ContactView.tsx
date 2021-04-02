@@ -7,7 +7,7 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
+import { SubmitButton, StarCheckbox } from '../../../components';
 import { ContactIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
@@ -136,7 +136,7 @@ const ContactView: FC<ContactViewProps> = ({
                 </Box>
                 &nbsp;&nbsp;&nbsp;
                 <Box component="div" display="inline">
-                  <Field type="checkbox" name="isFavorite" />
+                  <Field type="checkbox" name="isFavorite" component={StarCheckbox} />
                   <Typography display="inline">{t('isFavorite')}</Typography>
                 </Box>
                 <Field

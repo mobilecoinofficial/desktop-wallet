@@ -50,9 +50,9 @@ export const setStore = (newStore: Store): void => {
 
 // CBB not sure if this needs to be stringified.
 export const getContacts = (): Contact[] =>
-  JSON.parse((store.get(schemaKeys.CONTACTS) as string) || '[]') as Contact[];
+  JSON.parse((store.get(schemaKeys.CONTACTS) as string) || '[]');
 
-export const setContacts = (contacts: []): void => {
+export const setContacts = (contacts: Contact[]): void => {
   store.set(schemaKeys.CONTACTS, JSON.stringify(contacts));
 };
 

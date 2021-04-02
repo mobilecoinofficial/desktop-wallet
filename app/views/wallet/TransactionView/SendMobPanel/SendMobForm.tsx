@@ -6,7 +6,6 @@ import {
   Box,
   Button,
   Fade,
-  FormControlLabel,
   FormHelperText,
   FormLabel,
   InputAdornment,
@@ -14,13 +13,12 @@ import {
   Slide,
   MenuItem,
   Modal,
-  Radio,
   Select,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { CheckboxWithLabel, RadioGroup, TextField } from 'formik-material-ui';
+import { CheckboxWithLabel, TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
@@ -121,10 +119,9 @@ const SendMobForm: FC = () => {
   const classes = useStyles();
   const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
   const { t } = useTranslation('SendMobForm');
-
   const [contactId, setContactId] = useState('');
   const [open, setOpen] = useState(false);
-  const [checked, setChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
   const [sendingOpen, setSendingOpen] = useState(false);
   const [slideExitSpeed, setSlideExitSpeed] = useState(0);
@@ -156,26 +153,24 @@ const SendMobForm: FC = () => {
   ];
 
   const handleChecked = () => {
-    setChecked(!checked);
+    setIsChecked(!isChecked);
   };
 
   //* ****TODO: Fix math.random + Add to util******
-  const saveToContacts = async (values, nualias, recipientAddress) => {
+  const saveToContacts = async (alias: string, recipientAddress: string) => {
     const result = await assignAddressForAccount({
       accountId: selectedAccount.account.accountId || Math.random(),
     });
-    console.log(values);
-    console.log(nualias);
+
     listOfAllContacts.push({
       abbreviation: '',
-      alias: nualias,
+      alias,
       assignedAddress: result.address.publicAddress,
       isFavorite: false,
       recipientAddress,
     });
-    console.log(listOfAllContacts);
+
     localStore.setContacts(listOfAllContacts);
-    // debugger
   };
 
   const handleOpen = (values, setStatus, setErrors) => async () => {
@@ -346,8 +341,7 @@ const SendMobForm: FC = () => {
               confirmation?.totalValueConfirmation?.toString()
             );
             const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
-
-            saveToContacts(values, values.alias, values.recipientPublicAddress);
+            saveToContacts(values.alias, values.recipientPublicAddress);
             enqueueSnackbar(`${t('success')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`, {
               variant: 'success',
             });
@@ -408,7 +402,6 @@ const SendMobForm: FC = () => {
           totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
-        // const sortedContacts = [...listOfContacts].sort((a, b) => {
         const sortedContacts = [...listOfContacts].sort((a, b) => {
           if (a.isFavorite !== b.isFavorite) {
             return a.isFavorite ? -1 : 1;
@@ -423,7 +416,6 @@ const SendMobForm: FC = () => {
               <FormLabel component="legend">
                 <Typography color="primary">{t('transaction')}</Typography>
               </FormLabel>
-
               {listOfContacts.length > 0 && (
                 <Select
                   style={{ width: '100%' }}
@@ -490,25 +482,20 @@ const SendMobForm: FC = () => {
                 component={CheckboxWithLabel}
                 type="checkbox"
                 name="checked"
-                checked={checked}
+                checked={isChecked}
                 onChange={handleChecked}
                 disabled={contactId !== NO_CONTACT_SELECTED}
                 Label={{ label: 'Save to contacts' }}
               />
-              {checked && (
+              {isChecked && (
                 <Field
                   component={TextField}
                   fullWidth
                   autoFocus
-                  // label={t('recipient')}
                   label="Contact Alias"
                   margin="normal"
                   name="alias"
                   type="text"
-                  // value={alias}
-                  // onChange={(x) => {
-                  //   setAlias(x.target.value);
-                  // }}
                 />
               )}
             </Box>

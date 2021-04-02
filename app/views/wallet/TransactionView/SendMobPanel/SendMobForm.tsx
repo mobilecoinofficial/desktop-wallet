@@ -20,7 +20,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { RadioGroup, TextField } from 'formik-material-ui';
+import { CheckboxWithLabel, RadioGroup, TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
@@ -124,14 +124,21 @@ const SendMobForm: FC = () => {
 
   const [contactId, setContactId] = useState('');
   const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(false);
   const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
   const [sendingOpen, setSendingOpen] = useState(false);
   const [slideExitSpeed, setSlideExitSpeed] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const { buildTransaction, selectedAccount, submitTransaction } = useFullService();
+  const {
+    buildTransaction,
+    selectedAccount,
+    submitTransaction,
+    assignAddressForAccount,
+  } = useFullService();
 
   const listOfContacts = localStore.getContacts().filter((x) => x.recipientAddress);
+  const listOfAllContacts = localStore.getContacts();
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
   const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
@@ -147,6 +154,29 @@ const SendMobForm: FC = () => {
       name: selectedAccount.account.name,
     },
   ];
+
+  const handleChecked = () => {
+    setChecked(!checked);
+  };
+
+  //* ****TODO: Fix math.random + Add to util******
+  const saveToContacts = async (values, nualias, recipientAddress) => {
+    const result = await assignAddressForAccount({
+      accountId: selectedAccount.account.accountId || Math.random(),
+    });
+    console.log(values);
+    console.log(nualias);
+    listOfAllContacts.push({
+      abbreviation: '',
+      alias: nualias,
+      assignedAddress: result.address.publicAddress,
+      isFavorite: false,
+      recipientAddress,
+    });
+    console.log(listOfAllContacts);
+    localStore.setContacts(listOfAllContacts);
+    // debugger
+  };
 
   const handleOpen = (values, setStatus, setErrors) => async () => {
     let result;
@@ -279,6 +309,7 @@ const SendMobForm: FC = () => {
   return (
     <Formik
       initialValues={{
+        alias: '',
         contactId: NO_CONTACT_SELECTED,
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
         hashedPin,
@@ -316,6 +347,7 @@ const SendMobForm: FC = () => {
             );
             const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
 
+            saveToContacts(values, values.alias, values.recipientPublicAddress);
             enqueueSnackbar(`${t('success')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`, {
               variant: 'success',
             });
@@ -323,6 +355,7 @@ const SendMobForm: FC = () => {
             setSendingOpen(false);
             setSubmitting(false);
             resetForm();
+            handleChecked();
             setIsAwaitingConformation(false);
             setConfirmation(EMPTY_CONFIRMATION);
           }
@@ -375,6 +408,7 @@ const SendMobForm: FC = () => {
           totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
+        // const sortedContacts = [...listOfContacts].sort((a, b) => {
         const sortedContacts = [...listOfContacts].sort((a, b) => {
           if (a.isFavorite !== b.isFavorite) {
             return a.isFavorite ? -1 : 1;
@@ -452,6 +486,31 @@ const SendMobForm: FC = () => {
                   ),
                 }}
               />
+              <Field
+                component={CheckboxWithLabel}
+                type="checkbox"
+                name="checked"
+                checked={checked}
+                onChange={handleChecked}
+                disabled={contactId !== NO_CONTACT_SELECTED}
+                Label={{ label: 'Save to contacts' }}
+              />
+              {checked && (
+                <Field
+                  component={TextField}
+                  fullWidth
+                  autoFocus
+                  // label={t('recipient')}
+                  label="Contact Alias"
+                  margin="normal"
+                  name="alias"
+                  type="text"
+                  // value={alias}
+                  // onChange={(x) => {
+                  //   setAlias(x.target.value);
+                  // }}
+                />
+              )}
             </Box>
             {errors.submit && (
               <Box mt={3}>

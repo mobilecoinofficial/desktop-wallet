@@ -169,7 +169,7 @@
   },
 
   "ContactView": {
-    "abbreviation": "Abbreviation (3 characters max)",
+    "abbreviation": "Abbreviation (2 characters max)",
     "addContact": "Add Contact",
     "addressCodeRequired": "Address code is required",
     "addTitle": "Add New Contact",

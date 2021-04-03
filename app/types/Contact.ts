@@ -4,7 +4,7 @@ export default interface Contact {
   abbreviation: string;
   alias: string;
   assignedAddress: StringB58;
-  color?: string;
+  color: string;
   isFavorite: boolean;
   recipientAddress?: StringB58;
 }

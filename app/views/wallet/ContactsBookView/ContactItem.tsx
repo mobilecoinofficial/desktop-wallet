@@ -11,7 +11,7 @@ interface ContactItemProps {
   assignedAddress?: string;
   abbreviation?: string;
   alias?: string;
-  color?: string;
+  color: string;
   isFavorite?: boolean;
   onEdit: () => unknown;
 }
@@ -66,7 +66,6 @@ ContactItem.defaultProps = {
   abbreviation: '',
   alias: '',
   assignedAddress: '',
-  color: '',
   isFavorite: false,
 };
 

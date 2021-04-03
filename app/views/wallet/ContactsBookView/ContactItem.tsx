@@ -11,6 +11,7 @@ interface ContactItemProps {
   assignedAddress?: string;
   abbreviation?: string;
   alias?: string;
+  color?: string;
   isFavorite?: boolean;
   onEdit: () => unknown;
 }
@@ -30,6 +31,7 @@ const ContactItem: FC<ContactItemProps> = ({
   assignedAddress,
   abbreviation,
   alias,
+  color,
   isFavorite,
   onEdit,
 }: ContactItemProps) => {
@@ -42,7 +44,7 @@ const ContactItem: FC<ContactItemProps> = ({
       <Card className={classes.card}>
         <CardActionArea onClick={() => onEdit(assignedAddress)}>
           <CardHeader
-            avatar={<Avatar>{avatar}</Avatar>}
+            avatar={<Avatar style={{ backgroundColor: color || '#757575' }}>{avatar}</Avatar>}
             title={
               <>
                 {isFavorite ? <StarIcon /> : null}
@@ -64,6 +66,7 @@ ContactItem.defaultProps = {
   abbreviation: '',
   alias: '',
   assignedAddress: '',
+  color: '',
   isFavorite: false,
 };
 

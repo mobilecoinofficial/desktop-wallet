@@ -21,7 +21,6 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, StarCheckbox } from '../../../components';
-// import { ContactIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { ContactViewProps } from './ContactView.d';

@@ -170,7 +170,8 @@
 
   "ContactsList": {
     "allContacts": "All",
-    "favoriteContacts": "Favorite"
+    "favoriteContacts": "Favorite",
+    "filter": "Filter"
   },
 
   "ContactView": {

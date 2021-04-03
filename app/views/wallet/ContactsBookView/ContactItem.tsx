@@ -4,7 +4,6 @@ import type { FC } from 'react';
 import { Avatar, Card, CardActionArea, CardHeader, Grid, makeStyles } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
-// import ContactCircle from '../../../components/ContactCircle';
 import { StarIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
 

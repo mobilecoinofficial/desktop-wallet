@@ -188,6 +188,7 @@
     "enqueue": "Successfully added contact!",
     "isFavorite": "Favorite contact?",
     "maxAbbreviationLength": "Three characters tops",
+    "pickColor": "Pick a color",
     "recipientAddress": "Contact's Address Code",
     "removeContact": "Remove Contact"
   },

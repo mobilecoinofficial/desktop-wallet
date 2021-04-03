@@ -168,7 +168,7 @@ const ContactView: FC<ContactViewProps> = ({
                 </Box>
                 {showPicker && (
                   <Dialog open={showPicker}>
-                    <DialogTitle id="alert-dialog-title">PICK A COLOR, ANY COLOR...</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">{t('pickColor')}</DialogTitle>
                     <DialogContent style={{ overflowY: 'hidden' }}>
                       <CirclePicker
                         colors={['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D969D', '#D82E26']}
@@ -180,7 +180,7 @@ const ContactView: FC<ContactViewProps> = ({
                     </DialogContent>
                     <DialogActions style={{ height: '100%' }}>
                       <Button onClick={() => setShowPicker(false)} color="primary" autoFocus>
-                        Cancel
+                        {t('cancel')}
                       </Button>
                     </DialogActions>
                   </Dialog>

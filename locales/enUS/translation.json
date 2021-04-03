@@ -168,8 +168,14 @@
     "updated": "Contact was updated"
   },
 
+  "ContactsList": {
+    "allContacts": "All",
+    "favoriteContacts": "Favorite",
+    "filter": "Filter"
+  },
+
   "ContactView": {
-    "abbreviation": "Abbreviation (3 characters max)",
+    "abbreviation": "Abbreviation (2 characters max)",
     "addContact": "Add Contact",
     "addressCodeRequired": "Address code is required",
     "addTitle": "Add New Contact",
@@ -182,6 +188,7 @@
     "enqueue": "Successfully added contact!",
     "isFavorite": "Favorite contact?",
     "maxAbbreviationLength": "Three characters tops",
+    "pickColor": "Pick any color",
     "recipientAddress": "Contact's Address Code",
     "removeContact": "Remove Contact"
   },
@@ -430,6 +437,7 @@
     "mob": "MOB",
     "mobAmount": "MOB Amount",
     "mustSync": "Wallet must sync with ledger before sending MOB.",
+    "pickContact": "Contact from list (optional)",
     "positiveValidation": "A positive, non-zero amount is required to send MOB.",
     "positiveValidationRequired": "A positive, non-zero amount is required to send MOB.",
     "recipient": "Recipient's Public Address",

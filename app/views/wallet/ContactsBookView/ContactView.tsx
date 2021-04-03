@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Container, FormHelperText, makeStyles, Typography } from '@material-ui/core';
+import {
+  Avatar,
+  Button,
+  Box,
+  Container,
+  FormHelperText,
+  makeStyles,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  Typography,
+} from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
+import { CirclePicker } from 'react-color';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
-import { ContactIcon } from '../../../components/icons';
+import { SubmitButton, StarCheckbox } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { ContactViewProps } from './ContactView.d';
@@ -69,6 +81,7 @@ const ContactView: FC<ContactViewProps> = ({
   abbreviation,
   alias,
   assignedAddress,
+  color,
   isFavorite,
   recipientAddress,
   onCancel,
@@ -77,6 +90,8 @@ const ContactView: FC<ContactViewProps> = ({
 }: ContactViewProps) => {
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
+
+  const [showPicker, setShowPicker] = useState(false);
 
   const { t } = useTranslation('ContactView');
   const isNew = !assignedAddress;
@@ -91,14 +106,15 @@ const ContactView: FC<ContactViewProps> = ({
             alias: alias || '',
             assignedAddress: assignedAddress || '',
             button: '',
+            color: color || '',
             isFavorite: !!isFavorite,
             recipientAddress: recipientAddress || '',
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-            abbreviation: Yup.string().max(3, t('maxAbbreviationLength')),
+            abbreviation: Yup.string().max(2, t('maxAbbreviationLength')),
             alias: Yup.string().required(t('aliasRequired')),
-            recipientAddress: Yup.string(),
+            recipientAddress: Yup.string().required(t('addressCodeRequired')),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
             if (values.button === 'back') {
@@ -115,6 +131,7 @@ const ContactView: FC<ContactViewProps> = ({
                 onSaved({
                   abbreviation: values.abbreviation,
                   alias: values.alias,
+                  color: values.color,
                   isFavorite: values.isFavorite,
                   recipientAddress: values.recipientAddress,
                 });
@@ -128,17 +145,45 @@ const ContactView: FC<ContactViewProps> = ({
             }
           }}
         >
-          {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
+          {({ values, errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
             <Form>
               <Box>
-                <Box component="div" display="inline">
-                  <ContactIcon height={32} width={32} />
+                <Box style={{ display: 'flex' }}>
+                  <Avatar
+                    style={{ backgroundColor: values.color || '#757575' }}
+                    onClick={() => setShowPicker(true)}
+                  >
+                    {values.abbreviation}
+                  </Avatar>
+                  <Field
+                    display="inline"
+                    type="checkbox"
+                    name="isFavorite"
+                    component={StarCheckbox}
+                  />
+                  <Typography display="inline" style={{ position: 'relative', top: '12px' }}>
+                    {t('isFavorite')}
+                  </Typography>
                 </Box>
-                &nbsp;&nbsp;&nbsp;
-                <Box component="div" display="inline">
-                  <Field type="checkbox" name="isFavorite" />
-                  <Typography display="inline">{t('isFavorite')}</Typography>
-                </Box>
+                {showPicker && (
+                  <Dialog open={showPicker}>
+                    <DialogTitle id="alert-dialog-title">{t('pickColor')}</DialogTitle>
+                    <DialogContent style={{ overflowY: 'hidden' }}>
+                      <CirclePicker
+                        colors={['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D969D', '#D82E26']}
+                        onChange={(pickedColor) => {
+                          setFieldValue('color', pickedColor.hex);
+                          setShowPicker(false);
+                        }}
+                      />
+                    </DialogContent>
+                    <DialogActions style={{ height: '100%' }}>
+                      <Button onClick={() => setShowPicker(false)} color="primary" autoFocus>
+                        {t('cancel')}
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
+                )}
                 <Field
                   component={TextField}
                   fullWidth

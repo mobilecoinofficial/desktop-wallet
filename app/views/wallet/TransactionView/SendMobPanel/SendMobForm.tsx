@@ -6,29 +6,28 @@ import {
   Box,
   Button,
   Fade,
-  FormControlLabel,
   FormHelperText,
   FormLabel,
   InputAdornment,
   LinearProgress,
   Slide,
   MenuItem,
+  ListItemIcon,
+  ListItemText,
   Modal,
-  Radio,
   Select,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { RadioGroup, TextField } from 'formik-material-ui';
+import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
 import LongCode from '../../../../components/LongCode';
-import ShortCode from '../../../../components/ShortCode';
-import { MOBIcon } from '../../../../components/icons';
+import { StarIcon, MOBIcon } from '../../../../components/icons';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
@@ -212,6 +211,7 @@ const SendMobForm: FC = () => {
     setConfirmation(EMPTY_CONFIRMATION);
   };
 
+  /* FK: COMMENTING OUT BECAUSE OF NOT BEING USED
   const createAccountLabel = (account: Account) => {
     const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}:`;
     return (
@@ -227,6 +227,7 @@ const SendMobForm: FC = () => {
       </Box>
     );
   };
+  */
 
   // TODO: Reintroduce with multiple accounts
   // const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
@@ -411,11 +412,18 @@ const SendMobForm: FC = () => {
                   }}
                 >
                   <MenuItem value={NO_CONTACT_SELECTED} selected>
-                    Contact from list
+                    {t('pickContact')}
                   </MenuItem>
                   {sortedContacts.map((contact) => (
                     <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
-                      {`${contact.isFavorite ? '*' : ''} ${contact.alias}`}
+                      {contact.isFavorite ? (
+                        <ListItemIcon style={{ margin: '0px' }}>
+                          <StarIcon />
+                          <ListItemText>{contact.alias} </ListItemText>
+                        </ListItemIcon>
+                      ) : (
+                        <ListItemText>{contact.alias} </ListItemText>
+                      )}
                     </MenuItem>
                   ))}
                 </Select>

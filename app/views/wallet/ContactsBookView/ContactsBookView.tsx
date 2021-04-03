@@ -82,6 +82,7 @@ const ContactsBookView: FC = () => {
           abbreviation={current.abbreviation}
           alias={current.alias}
           assignedAddress={current.assignedAddress}
+          color={current.color}
           isFavorite={current.isFavorite}
           recipientAddress={current.recipientAddress}
           onCancel={() => setStatus(SHOW_LIST)}
@@ -94,14 +95,14 @@ const ContactsBookView: FC = () => {
             setStatus(SHOW_LIST);
             enqueueSnackbar(t('removed'), { variant: 'success' });
           }}
-          onSaved={({ abbreviation, alias, isFavorite, recipientAddress }) => {
+          onSaved={({ abbreviation, alias, color, isFavorite, recipientAddress }) => {
             listOfContacts[
               listOfContacts.findIndex((x) => x.assignedAddress === current.assignedAddress)
             ] = {
               abbreviation,
               alias,
               assignedAddress: current.assignedAddress,
-              color: current.color || randomColor(),
+              color: color || randomColor(),
               isFavorite,
               recipientAddress,
             };

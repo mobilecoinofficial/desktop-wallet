@@ -28,7 +28,10 @@ const ContactsBookView: FC = () => {
     if (a.isFavorite !== b.isFavorite) {
       return a.isFavorite ? -1 : 1;
     }
-    return a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1;
+    if (a.alias.toUpperCase() !== b.alias.toUpperCase()) {
+      return a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1;
+    }
+    return 0;
   });
 
   switch (status) {

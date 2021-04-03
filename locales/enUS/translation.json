@@ -168,6 +168,11 @@
     "updated": "Contact was updated"
   },
 
+  "ContactsList": {
+    "allContacts": "All",
+    "favoriteContacts": "Favorite"
+  },
+
   "ContactView": {
     "abbreviation": "Abbreviation (2 characters max)",
     "addContact": "Add Contact",

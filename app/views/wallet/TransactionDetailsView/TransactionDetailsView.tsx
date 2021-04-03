@@ -7,7 +7,7 @@ import { Box, Card, CardContent, Container, makeStyles, Typography } from '@mate
 // import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import { AccountCard, ShortCode, SubmitButton } from '../../../components';
+import { ShortCode, SubmitButton } from '../../../components';
 import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
 import { TransactionDetailsViewProps } from './TransactionDetailsView.d';
@@ -64,17 +64,11 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
 
   // TODO replace this with a component
-  const renderRow = (title: string, value: string | ReactNode, txo?: boolean) => (
+  const renderRow = (title: string, value: string | ReactNode, noWrap?: boolean) => (
     <Box className={classes.internal} key={title}>
-      {txo ? (
-        <Typography className={classes.textLeft} display="inline" noWrap>
-          {title}
-        </Typography>
-      ) : (
-        <Typography className={classes.textLeft} display="inline">
-          {title}
-        </Typography>
-      )}
+      <Typography className={classes.textLeft} display="inline" noWrap={noWrap}>
+        {title}
+      </Typography>
       {typeof value === 'string' ? (
         <Typography className={classes.textRight} display="inline">
           {value}

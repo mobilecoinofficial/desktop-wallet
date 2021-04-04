@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(1),
   },
   container: {
-    padding: '20px 0 0',
+    padding: '0',
   },
   corners: {
     alignItems: 'center',

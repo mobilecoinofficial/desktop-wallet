@@ -55,19 +55,17 @@ const HistoryList: FC<HistoryListProps> = ({
 
   return (
     <Box>
-      <Box paddingY={3}>
-        <Tabs
-          variant="fullWidth"
-          value={selectedTabIndex}
-          indicatorColor="primary"
-          textColor="primary"
-          onChange={handleChange}
-        >
-          <Tab label={t('showAllTransactions')} />
-          <Tab label={t('showSentTransactions')} />
-          <Tab label={t('showReceivedTransactions')} />
-        </Tabs>
-      </Box>
+      <Tabs
+        variant="fullWidth"
+        value={selectedTabIndex}
+        indicatorColor="primary"
+        textColor="primary"
+        onChange={handleChange}
+      >
+        <Tab label={t('showAllTransactions')} />
+        <Tab label={t('showSentTransactions')} />
+        <Tab label={t('showReceivedTransactions')} />
+      </Tabs>
       <Container className={classes.root} maxWidth="lg">
         <Grid container spacing={3}>
           {dataToShow

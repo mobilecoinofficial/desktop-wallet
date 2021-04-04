@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '35px',
     height: '70px',
     left: '-35px',
-    position: 'absolute',
     top: '-35px',
     width: '70px',
   },
@@ -39,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   statusProgress: {
     backgroundColor: 'rgba(53, 54, 58, 0.6)',
     borderRadius: '60px',
+    color: GOLD_LIGHT,
     left: '5px',
     position: 'absolute',
     top: '5px',

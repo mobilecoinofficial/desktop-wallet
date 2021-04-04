@@ -5,7 +5,6 @@ import { Box, Container, makeStyles } from '@material-ui/core';
 
 import { AccountCard } from '../../../components';
 import useFullService from '../../../hooks/useFullService';
-import BalanceIndicator from './BalanceIndicator';
 import CloseWalletModal from './CloseWalletModal';
 
 const useStyles = makeStyles(() => ({
@@ -22,12 +21,7 @@ const DashboardOverview: FC = () => {
   // We should pull that into a util
   return (
     <Container data-testid="DashboardOverview" className={classes.root} maxWidth="sm">
-      <Box alignItems="center">
-        <BalanceIndicator
-          balance={selectedAccount.balanceStatus.unspentPmob}
-          isSynced={selectedAccount.balanceStatus.isSynced}
-        />
-      </Box>
+      <Box alignItems="center" />
       <AccountCard
         account={{
           b58Code: selectedAccount.account.mainAddress,

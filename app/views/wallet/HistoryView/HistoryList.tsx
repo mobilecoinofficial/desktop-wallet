@@ -13,9 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingLeft: theme.spacing(5),
-    paddingRight: theme.spacing(5),
+    padding: theme.spacing(3, 5),
   },
 }));
 

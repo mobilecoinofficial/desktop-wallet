@@ -131,7 +131,11 @@ const BuildGiftPanel: FC = () => {
                         <ShortCode code={giftCode.giftCodeB58} />
                       </TableCell>
                       <TableCell>
-                        <MOBNumberFormat value={giftCode.valuePmob} valueUnit="pMOB" />
+                        <MOBNumberFormat
+                          // FIX-ME right now, we subtract the hardcoded fee
+                          value={(BigInt(giftCode.valuePmob) - BigInt('10000000000')).toString()}
+                          valueUnit="pMOB"
+                        />
                       </TableCell>
                       <TableCell align="right">
                         <Box display="flex" justifyContent="flex-end">

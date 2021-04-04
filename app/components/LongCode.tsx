@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 
 import type { Theme } from '../theme';
+import isStringNumber from '../utils/isStringNumber';
 
 interface LongCodeProps {
   code: string;
@@ -21,9 +22,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   number: {
     color: theme.palette.longCode.number,
+    fontWeight: 'bolder',
   },
   uppercased: {
     color: theme.palette.longCode.uppercased,
+    fontWeight: 'bold',
   },
 }));
 
@@ -36,7 +39,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass, isTruncated }: LongCodeP
     : code;
   const colorCode = displayedCode.split('').map((char, i) => {
     let charColorClass = classes.lowercased;
-    if (!Number.isNaN(char * 1)) {
+    if (isStringNumber(char)) {
       charColorClass = classes.number;
     } else if (char === char.toUpperCase()) {
       charColorClass = classes.uppercased;

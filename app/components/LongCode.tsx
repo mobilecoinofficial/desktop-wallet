@@ -8,6 +8,7 @@ import type { Theme } from '../theme';
 interface LongCodeProps {
   code: string;
   codeClass?: string;
+  isTruncated?: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -26,12 +27,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
+const LongCode: FC<LongCodeProps> = ({ code, codeClass, isTruncated }: LongCodeProps) => {
   const classes = useStyles();
 
   // Remove the center of the code and replace with * *
-  const shortenedCode = `${code.slice(0, 48)}•••${code.slice(code.length - 48, code.length)}`;
-  const colorCode = shortenedCode.split('').map((char, i) => {
+  const displayedCode = isTruncated
+    ? `${code.slice(0, 48)}•••${code.slice(code.length - 48, code.length)}`
+    : code;
+  const colorCode = displayedCode.split('').map((char, i) => {
     let charColorClass = classes.lowercased;
     if (!Number.isNaN(char * 1)) {
       charColorClass = classes.number;
@@ -51,7 +54,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
 
   colorCode.forEach((char, i) => {
     nextCodeLine.push(char);
-    if (i === shortenedCode.length - 1) {
+    if (i === displayedCode.length - 1) {
       codeLines.push(nextCodeLine);
     } else if (nextCodeLine.length === 11) {
       codeLines.push(nextCodeLine);
@@ -76,6 +79,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
 
 LongCode.defaultProps = {
   codeClass: '',
+  isTruncated: false,
 };
 
 export default LongCode;

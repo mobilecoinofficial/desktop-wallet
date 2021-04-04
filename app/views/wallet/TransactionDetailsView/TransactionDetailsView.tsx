@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.number.negative,
     fontWeight: 'bold',
   },
-  root: { padding: theme.spacing(5) },
+  root: { padding: theme.spacing(0, 5) },
   textLeft: { textAlign: 'left' },
   textRight: { textAlign: 'right' },
 }));

@@ -8,7 +8,6 @@ import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom'
 import {
   AddressBookIcon,
   CogIcon,
-  // ContactIcon,
   GiftIcon,
   TransactionIcon,
   WalletIcon,

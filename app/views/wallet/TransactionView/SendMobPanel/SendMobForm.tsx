@@ -122,6 +122,7 @@ const SendMobForm: FC = () => {
   const { t } = useTranslation('SendMobForm');
 
   const [contactId, setContactId] = useState('');
+  const [contactName, setContactName] = useState('');
   const [open, setOpen] = useState(false);
   const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
   const [sendingOpen, setSendingOpen] = useState(false);
@@ -383,6 +384,13 @@ const SendMobForm: FC = () => {
           return a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1;
         });
 
+        const truncateContact = (contact: string, len: number) => {
+          if (contact.length > len) {
+            return `${contact.slice(0, len)}...`;
+          }
+          return contact;
+        };
+
         return (
           <Form>
             {/* {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)} */}
@@ -401,13 +409,14 @@ const SendMobForm: FC = () => {
                   onChange={(x) => {
                     setContactId(x.target.value);
                     if (x.target.value !== NO_CONTACT_SELECTED) {
-                      setFieldValue(
-                        'recipientPublicAddress',
-                        listOfContacts.find((z) => z.assignedAddress === x.target.value)
-                          .recipientAddress
+                      const selectedContact = listOfContacts.find(
+                        (z) => z.assignedAddress === x.target.value
                       );
+                      setFieldValue('recipientPublicAddress', selectedContact.recipientAddress);
+                      setContactName(selectedContact.alias);
                     } else {
                       setFieldValue('recipientPublicAddress', '');
+                      setContactName('');
                     }
                   }}
                 >
@@ -560,7 +569,11 @@ const SendMobForm: FC = () => {
                   <Box display="flex">
                     <Box width="50%">
                       <Box>
-                        <p className={classes.center}>{t('recipientPlus1')}</p>
+                        {contactName !== '' ? (
+                          <p className={classes.center}>{truncateContact(contactName, 15)}</p>
+                        ) : (
+                          <p className={classes.center}>{t('recipientPlus1')}</p>
+                        )}
                         <p className={classes.center}>{t('recipientPlus2')}</p>
                         <LongCode
                           code={confirmation?.txProposalReceiverB58Code}

@@ -6,7 +6,7 @@ import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 
 import { CircleMOBIcon } from '../../../components/icons';
-import { GREEN, GOLD_LIGHT, RED } from '../../../constants/colors';
+import { BLUE_DARK, GOLD_LIGHT, RED } from '../../../constants/colors';
 import useFullService from '../../../hooks/useFullService';
 import { Theme } from '../../../theme';
 import getPercentSyncedNew from '../../../utils/getPercentSyncedNew';
@@ -82,7 +82,7 @@ const SyncStatus: FC = () => {
 
   switch (statusCode) {
     case SYNCED: {
-      backgroundColor = GREEN;
+      backgroundColor = BLUE_DARK;
       title = t('synced');
       break;
     }

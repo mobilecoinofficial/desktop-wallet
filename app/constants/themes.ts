@@ -37,8 +37,8 @@ export const MOBILE_COIN_DARK_THEME = {
       main: BLUE_DARK,
     },
     text: {
-      primary: GREY_LIGHT,
-      secondary: WHITE_LIGHT,
+      primary: WHITE_LIGHT,
+      secondary: GREY_LIGHT,
       tertiary: BLUE_DARK,
     },
     type: 'dark',

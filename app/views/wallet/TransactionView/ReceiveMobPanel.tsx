@@ -10,31 +10,19 @@ import {
   MenuItem,
   Select,
   Typography,
-  makeStyles,
 } from '@material-ui/core';
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
 
 import AccountCard from '../../../components/AccountCard';
 import useFullService from '../../../hooks/useFullService';
-import type { Theme } from '../../../theme';
 import * as localStore from '../../../utils/LocalStore';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.dark,
-    minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
-  },
-}));
 
 // CBB, really, we should just give the list and work by the indexes.
 const ReceiveMobPanel: FC = () => {
   const { selectedAccount } = useFullService();
   const { mainAddress } = selectedAccount.account;
   const [selectedAddress, setSelectedAddress] = useState(mainAddress);
-  const classes = useStyles();
   const { t } = useTranslation('ReceiveMobPanel');
   const listOfContacts = localStore.getContacts();
   const nameFromAddress =
@@ -48,33 +36,7 @@ const ReceiveMobPanel: FC = () => {
 
   return (
     <Container maxWidth="sm">
-      <Select
-        style={{ width: '100%' }}
-        labelId="contactsList"
-        id="contactsList"
-        value={selectedAddress}
-        displayEmpty
-        onChange={(x) => {
-          setSelectedAddress(x.target.value);
-        }}
-      >
-        {dropDownValues.map((contact) => (
-          <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
-            {contact.alias}
-          </MenuItem>
-        ))}
-      </Select>
-
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <AccountCard
-          account={{
-            b58Code: selectedAddress,
-            name: nameFromAddress,
-          }}
-        />
-      </Box>
-
-      <Box mt={3}>
+      <Box mb={3}>
         <Accordion>
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
             <Typography>{t('howTo')}</Typography>
@@ -99,6 +61,33 @@ const ReceiveMobPanel: FC = () => {
             </Box>
           </AccordionDetails>
         </Accordion>
+      </Box>
+
+      <Select
+        style={{ width: '100%' }}
+        labelId="contactsList"
+        id="contactsList"
+        value={selectedAddress}
+        displayEmpty
+        variant="outlined"
+        onChange={(x) => {
+          setSelectedAddress(x.target.value);
+        }}
+      >
+        {dropDownValues.map((contact) => (
+          <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
+            {contact.alias}
+          </MenuItem>
+        ))}
+      </Select>
+
+      <Box pt={3} display="flex" flexDirection="column" alignItems="center">
+        <AccountCard
+          account={{
+            b58Code: selectedAddress,
+            name: nameFromAddress,
+          }}
+        />
       </Box>
     </Container>
   );

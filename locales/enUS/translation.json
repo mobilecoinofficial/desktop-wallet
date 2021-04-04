@@ -65,7 +65,7 @@
     "manageGiftCodes": "Manage Gift Codes",
     "manageGiftCodesDescription": "When creating a gift, this wallet stores its gift code and value. Click to copy the gift code to the clipboard at any time. To stop storing the gift code, click the trash can icon to delete.",
     "shortened": "Shortened Gift Code",
-    "title": "Packaging and gifting MOB",
+    "title": "Create Gifts of MOB",
     "value": "Value"
   },
 
@@ -157,9 +157,8 @@
   },
 
   "ConsumeGiftPanel": {
-    "balance": "Balance",
-    "description": "Use this form to collect gift codes. Enter the gift code and confirm you want to accept the gift into your wallet.",
-    "syncMessage": "Balance may be out-of-date while wallet syncs with ledger."
+    "title": "Open Gifts of MOB",
+    "description": "Use this form to collect gift codes. Enter the gift code and confirm you want to accept the gift into your wallet."
   },
 
   "ContactsBookView": {
@@ -459,7 +458,8 @@
   },
 
   "SendMobPanel": {
-    "header": "Please enter the amount of MOB to send to the recipient and the recipient’s public address."
+    "title": "Send MOB to an Address",
+    "description": "Please enter the amount of MOB to send to the recipient and the recipient’s public address."
   },
 
   "SettingsOptionsItem": {

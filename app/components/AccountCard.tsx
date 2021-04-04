@@ -136,7 +136,7 @@ const AccountCard: FC<AccountCardProps> = ({
               )}
             </Typography>
             <Box className={classes.corners}>
-              <Typography data-testid="account-card-name" color="textSecondary" variant="h4">
+              <Typography data-testid="account-card-name" color="textPrimary" variant="h4">
                 {name || t('unnamed')}
               </Typography>
               <Typography data-testid="account-card-short-code" color="textSecondary" variant="h4">

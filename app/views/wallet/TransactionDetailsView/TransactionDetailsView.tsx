@@ -149,6 +149,10 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
             <Typography variant="body2" color="textPrimary">
               {t('orphanedExplaination')}
             </Typography>
+            <Box pt={1} />
+            <Typography variant="body2" color="textPrimary">
+              {t('recoveryInstructions')}
+            </Typography>
           </CardContent>
         </Card>
       )}

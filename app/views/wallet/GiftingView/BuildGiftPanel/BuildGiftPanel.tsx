@@ -201,7 +201,12 @@ const BuildGiftPanel: FC = () => {
                   />
                   <Box py={2} display="flex" justifyContent="space-between">
                     <Typography color="textPrimary">{t('giftValue')}</Typography>
-                    <MOBNumberFormat value={pendingDeleteCode[1]} valueUnit="pMOB" suffix=" MOB" />
+                    {/* FIX-ME right now, we subtract the hardcoded fee */}
+                    <MOBNumberFormat
+                      value={(BigInt(pendingDeleteCode[1]) - BigInt('10000000000')).toString()}
+                      valueUnit="pMOB"
+                      suffix=" MOB"
+                    />
                   </Box>
                   <DialogContentText color="textPrimary">{t('deleteDialogText')}</DialogContentText>
                 </DialogContent>

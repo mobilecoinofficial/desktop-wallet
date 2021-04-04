@@ -22,7 +22,7 @@ const InactivityDetect: FC = () => {
   const { selectedAccount } = useFullService();
   const { t } = useTranslation('InactivityDetect');
 
-  let prepareForLogout = () => undefined; // to avoid "use before defining" ESLint complaint
+  let prepareForLogout = (): void | undefined => undefined; // to avoid "use before defining" ESLint complaint
 
   const resetTimer = () => {
     if (inactivityTimer) {

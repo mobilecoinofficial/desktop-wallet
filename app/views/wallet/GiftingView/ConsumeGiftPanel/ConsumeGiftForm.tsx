@@ -7,24 +7,21 @@ import {
   Button,
   Container,
   Fade,
-  FormControlLabel,
   FormHelperText,
   FormLabel,
   LinearProgress,
   Slide,
   Modal,
-  Radio,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { RadioGroup, TextField } from 'formik-material-ui';
+import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
-import ShortCode from '../../../../components/ShortCode';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
@@ -36,6 +33,9 @@ const EMPTY_CONFIRMATION = {
   giftCodeStatus: '',
   giftValue: 0,
 };
+
+const CLAIMED_GIFT_ERROR =
+  '13 INTERNAL: transactions_manager.submit_tx_proposal: Connection(Operation { error: TransactionValidation(ContainsSpentKeyImage), total_delay: 0ns, tries: 1 })';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -132,7 +132,7 @@ const ConsumeGiftForm: FC = () => {
       }
     } catch (err) {
       if (isMountedRef.current) {
-        const santitizedError = err.message === t('error13') ? t('giftClaimed') : err.message;
+        const santitizedError = err.message === CLAIMED_GIFT_ERROR ? t('giftClaimed') : err.message;
         setStatus({ success: false });
         setErrors({ submit: santitizedError });
         setSubmittingConfirmedGift(false);
@@ -145,24 +145,25 @@ const ConsumeGiftForm: FC = () => {
     }
   };
 
-  const createAccountLabel = (account: Account) => {
-    const name =
-      account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
-    return (
-      <Box display="flex" justifyContent="space-between">
-        <Typography color="textPrimary">
-          {name}
-          <ShortCode code={account.b58Code} />
-        </Typography>
-        <Typography color="textPrimary">
-          <MOBNumberFormat
-            value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
-            valueUnit="pMOB"
-          />
-        </Typography>
-      </Box>
-    );
-  };
+  // TODO - not sure what this is about. Should delete after confirming it's useless
+  // const createAccountLabel = (account: Account) => {
+  //   const name =
+  //     account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
+  //   return (
+  //     <Box display="flex" justifyContent="space-between">
+  //       <Typography color="textPrimary">
+  //         {name}
+  //         <ShortCode code={account.b58Code} />
+  //       </Typography>
+  //       <Typography color="textPrimary">
+  //         <MOBNumberFormat
+  //           value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
+  //           valueUnit="pMOB"
+  //         />
+  //       </Typography>
+  //     </Box>
+  //   );
+  // };
 
   // TODO Reintroduce with multiple accounts
   // const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
@@ -214,9 +215,9 @@ const ConsumeGiftForm: FC = () => {
           const { giftCodeStatus, giftCodeValue } = result;
 
           setConfirmation({
+            giftCodeB58: values.giftCodeB58,
             giftCodeStatus,
             giftValue: giftCodeValue,
-            giftCodeB58: values.giftCodeB58,
           });
 
           if (giftCodeStatus === 'GiftCodeAvailable') {

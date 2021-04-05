@@ -139,7 +139,6 @@
     "confirmation": "Gift Received. Your balance will update shortly.",
     "confirmationNotFound": "Could not find confirmation",
     "error": "Hmm, something went wrong.",
-    "error13": "13 INTERNAL: transactions_manager.submit_tx_proposal: Connection(Operation { error: TransactionValidation(ContainsSpentKeyImage), total_delay: 0ns, tries: 1 })",
     "fee": "Fee",
     "giftB58Error": "Could not find gift with code.",
     "giftB58Validation": "You need a valid gift code to open a gift.",
@@ -200,13 +199,13 @@
     "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
     "createAccountButton": "Create Account",
     "nameLabel": "Account Name (optional)",
-    "passwordConfirmationLabel": "Passphrases Confirmation",
-    "passwordConfirmationRef": "Must match Passphrases",
-    "passwordConfirmationRequired": "Passphrases Confirmation is required",
-    "passwordLabel": "Passphrases",
-    "passwordMax": "Passphrasess cannot be more than 99 characters.",
-    "passwordMin": "Passphrases must be at least 8 characters in length.",
-    "passwordRequired": "Passphrases is required"
+    "passwordConfirmationLabel": "Passphrase Confirmation",
+    "passwordConfirmationRef": "Must match Passphrase",
+    "passwordConfirmationRequired": "Passphrase Confirmation is required",
+    "passwordLabel": "Passphrase",
+    "passwordMax": "Passphrases cannot be more than 99 characters.",
+    "passwordMin": "Passphrase must be at least 8 characters in length.",
+    "passwordRequired": "Passphrase is required"
   },
 
   "CreateAccountView": {
@@ -302,7 +301,7 @@
 
   "LedgerStatus": {
     "accountBlocks": "Account Blocks",
-    "accountBlocksDescription": "Account Blocks shows the blocks that a specific Account has synced. Each account has its own Account Blocks number. Once this value is synced, you will immediately see the effects of transactions.",
+    "accountBlocksDescription": "Account Blocks shows the blocks that a specific Account has synced. Each account has its own Account Blocks sync. Once this value is synced, you will immediately see the effects of transactions.",
     "blockType": "Block Type",
     "formLabel": "Ledger Status",
     "height": "Current Height",
@@ -395,7 +394,7 @@
     "assignedAddress": "Assigned Address",
     "assignedAddressDetails": "If you want a record of your transaction history, you may create a new contact. Each new contact will have their own, unique public address. You can give this new contact an alias and abbreviation. A contact doesn’t have to be an individual, you can share it with businesses, groups, or even treat it as another public address. At rest, your contacts are encrypted, and they never leave your local device.",
     "howTo": "How To Receive MOB",
-    "howToReceiveDetails": "To receive MOB, you must give the sender an address for your account. You may use your Public Address or an Asssigned Address (assigned to the sender).",
+    "howToReceiveDetails": "To receive MOB, you must give the sender an address for your account. You may use your Public Address or an Assigned Address (assigned to the sender).",
     "mainPublicAddress": "Public Address",
     "mainPublicAddressDetails": "Your Public Address can be shared with everyone. The sender will be unknown to the wallet. This is a feature, not a bug. If you do not care about explicit transaction history, or if you purposely want to keep your history ambiguous, use this address."
   },

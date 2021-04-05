@@ -43,26 +43,28 @@ const UnlockWalletView: FC = () => {
     <Box data-testid="UnlockWalletView" className={classes.root}>
       <Container className={classes.viewContainer} maxWidth="sm">
         <LogoIcon className={classes.logoIcon} />
-        <Card className={classes.cardContainer}>
-          <Typography variant="h2" paragraph>
-            {t('title')}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" paragraph>
-            {t('description')}
-          </Typography>
-          <UnlockWalletForm onSubmit={unlockWalletFormOnSubmit} />
-          <Box my={3}>
-            <Divider />
-          </Box>
-          <Button
-            color="secondary"
-            component={RouterLink}
-            to={routePaths.IMPORT}
-            variant="outlined"
-          >
-            {t('importInstead')}
-          </Button>
-        </Card>
+        <Box width="552px">
+          <Card className={classes.cardContainer}>
+            <Typography variant="h2" paragraph>
+              {t('title')}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" paragraph>
+              {t('description')}
+            </Typography>
+            <UnlockWalletForm onSubmit={unlockWalletFormOnSubmit} />
+            <Box my={3}>
+              <Divider />
+            </Box>
+            <Button
+              color="secondary"
+              component={RouterLink}
+              to={routePaths.IMPORT}
+              variant="outlined"
+            >
+              {t('importInstead')}
+            </Button>
+          </Card>
+        </Box>
       </Container>
     </Box>
   );

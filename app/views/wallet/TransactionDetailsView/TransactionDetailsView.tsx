@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: theme.palette.number.negative,
     fontWeight: 'bold',
   },
-  root: { padding: theme.spacing(5) },
+  root: { padding: theme.spacing(0, 5) },
   textLeft: { textAlign: 'left' },
   textRight: { textAlign: 'right' },
 }));
@@ -148,6 +148,10 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
           <CardContent>
             <Typography variant="body2" color="textPrimary">
               {t('orphanedExplaination')}
+            </Typography>
+            <Box pt={1} />
+            <Typography variant="body2" color="textPrimary">
+              {t('recoveryInstructions')}
             </Typography>
           </CardContent>
         </Card>

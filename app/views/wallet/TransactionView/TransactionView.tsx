@@ -12,7 +12,6 @@ import SendMobPanel from './SendMobPanel';
 const useStyles = makeStyles((theme: Theme) => ({
   padding: {
     paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
   },
   root: {
     backgroundColor: theme.palette.background.dark,

@@ -4,7 +4,6 @@ import type { FC } from 'react';
 import { AppBar, makeStyles } from '@material-ui/core';
 
 import NavBar from './NavBar';
-import SyncStatus from './SyncStatus';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,7 +17,6 @@ const TopBar: FC = () => {
   return (
     <AppBar className={classes.root} color="default">
       <NavBar />
-      <SyncStatus />
     </AppBar>
   );
 };

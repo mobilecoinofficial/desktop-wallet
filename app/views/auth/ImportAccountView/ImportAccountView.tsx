@@ -60,6 +60,12 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({ isTest }: ImportAccount
           <Typography variant="body2" color="textSecondary" paragraph>
             {t('description')}
           </Typography>
+          <Typography variant="body2" color="textPrimary" paragraph>
+            {t('warning')}
+          </Typography>
+          <Typography variant="body2" color="textPrimary" paragraph>
+            {t('legacyHex')}
+          </Typography>
           {hashedPassword && (
             <Box data-testid="overwrite-warning">
               <Typography variant="body2" paragraph>

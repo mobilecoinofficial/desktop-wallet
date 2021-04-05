@@ -20,7 +20,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
-import { PIN_SIZE } from '../../../constants/codes';
+import { PIN_MIN_SIZE } from '../../../constants/codes';
 import routePaths from '../../../constants/routePaths';
 import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -128,7 +128,7 @@ const ChangePinView: FC = () => {
           }}
           validationSchema={Yup.object().shape({
             currentPassword: Yup.string().required(t('currentPasswordRequired')),
-            newPin: Yup.string().length(PIN_SIZE, t('pinSize')).required(t('pinRequired')),
+            newPin: Yup.string().min(PIN_MIN_SIZE, t('pinSize')).required(t('pinRequired')),
             newPinConfirmation: Yup.string()
               .oneOf([Yup.ref('newPin')], t('pinConfirmationRef'))
               .required(t('pinConfirmationRequired')),

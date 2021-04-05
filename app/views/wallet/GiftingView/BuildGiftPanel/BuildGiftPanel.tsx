@@ -11,7 +11,8 @@ import {
   DialogTitle,
   Button,
   IconButton,
-  Paper,
+  Card,
+  CardContent,
   Table,
   TableBody,
   TableCell,
@@ -31,8 +32,6 @@ import ShortCode from '../../../../components/ShortCode';
 import { CopyIcon, TrashcanIcon } from '../../../../components/icons';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
-import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
-import BalanceIndicator from '../../DashboardView/BalanceIndicator';
 import BuildGiftForm from './BuildGiftForm';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
@@ -53,11 +52,6 @@ const BuildGiftPanel: FC = () => {
   const isMountedRef = useIsMountedRef();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pendingDeleteCode, setPendingDeleteCode] = useState(EMPTY_PENDING_DELETE_CODE);
-  const { selectedAccount } = useFullService();
-
-  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
-  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
-  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   const { t } = useTranslation('BuildGiftPanel');
 
@@ -96,117 +90,138 @@ const BuildGiftPanel: FC = () => {
 
   return (
     <Container maxWidth="sm">
-      <BalanceIndicator balance={selectedAccount.balanceStatus.unspentPmob} isSynced={isSynced} />
-      <Box alignItems="center" display="flex" justifyContent="space-between" mb={3}>
-        <Box>
-          <Typography variant="body2" color="textPrimary">
-            {t('title')}
-          </Typography>
-          <Box p={1} />
-          <Typography variant="body2" color="textSecondary">
-            {t('description')}
-          </Typography>
-        </Box>
-      </Box>
-      <Box flexGrow={1} mt={3}>
-        <BuildGiftForm />
-      </Box>
+      <Card>
+        <CardContent>
+          <Box alignItems="center" display="flex" justifyContent="space-between" mb={3}>
+            <Box>
+              <Typography variant="body1" color="textPrimary">
+                {t('title')}
+              </Typography>
+              <Box p={1} />
+              <Typography variant="body2" color="textSecondary">
+                {t('description')}
+              </Typography>
+            </Box>
+          </Box>
+          <Box flexGrow={1} mt={3}>
+            <BuildGiftForm />
+          </Box>
+        </CardContent>
+      </Card>
       {giftCodes && giftCodes.length > 0 && (
-        <>
-          <Box pt={4}>
-            <Typography variant="body2" color="textPrimary">
-              {t('manageGiftCodes')}
-            </Typography>
-            <Box p={1} />
-            <Typography variant="body2" color="textSecondary">
-              {t('manageGiftCodesDescription')}
-            </Typography>
-          </Box>
-          <Box py={2}>
-            <TableContainer>
-              <Table size="small" aria-label="block status">
-                <TableHead component={Paper}>
-                  <TableRow>
-                    <TableCell>{t('shortened')}</TableCell>
-                    <TableCell>{t('value')}</TableCell>
-                    <TableCell />
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {giftCodes?.map((giftCode) => (
-                    <TableRow key={giftCode.giftCodeB58}>
-                      <TableCell component="th" scope="row">
-                        <ShortCode code={giftCode.giftCodeB58} />
-                      </TableCell>
-                      <TableCell>
-                        <MOBNumberFormat value={giftCode.valuePmob} valueUnit="pMOB" />
-                      </TableCell>
-                      <TableCell align="right">
-                        <Box display="flex" justifyContent="flex-end">
-                          <Tooltip title={t('clickToCopy')} placement="right" arrow>
-                            <div
-                              className={classes.clickable}
-                              onClick={handleCopyClick(giftCode.giftCodeB58)}
-                              aria-hidden="true"
-                            >
-                              <IconButton>
-                                <CopyIcon />
-                              </IconButton>
-                            </div>
-                          </Tooltip>
-                          <Tooltip title={t('clickToDelete')} placement="right" arrow>
-                            <div
-                              className={classes.clickable}
-                              onClick={handleDialogOpen(giftCode.giftCodeB58, giftCode.valuePmob)}
-                              aria-hidden="true"
-                            >
-                              <IconButton>
-                                <TrashcanIcon />
-                              </IconButton>
-                            </div>
-                          </Tooltip>
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
-          <Dialog
-            open={dialogOpen}
-            onClose={handleDialogClose}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
-            <DialogTitle id="alert-dialog-title">{t('deleteDialogTitle')}</DialogTitle>
-            <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {t('deleteDialogDescription')}
-              </DialogContentText>
-              <AccountCard
-                isGift
-                account={{
-                  b58Code: pendingDeleteCode[0],
-                  name: 'Gift Code',
-                }}
-              />
-              <Box py={2} display="flex" justifyContent="space-between">
-                <Typography color="textPrimary">{t('giftValue')}</Typography>
-                <MOBNumberFormat value={pendingDeleteCode[1]} valueUnit="pMOB" suffix=" MOB" />
+        <Box mt={3}>
+          <Card>
+            <CardContent>
+              <Box pt={1}>
+                <Typography variant="body1" color="textPrimary">
+                  {t('manageGiftCodes')}
+                </Typography>
+                <Box p={1} />
+                <Typography variant="body2" color="textSecondary">
+                  {t('manageGiftCodesDescription')}
+                </Typography>
               </Box>
-              <DialogContentText color="textPrimary">{t('deleteDialogText')}</DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleDialogClose} color="primary" autoFocus>
-                {t('cancelButton')}
-              </Button>
-              <Button onClick={handleConfirmDelete} color="primary">
-                {t('deleteButton')}
-              </Button>
-            </DialogActions>
-          </Dialog>
-        </>
+              <Box py={2}>
+                <TableContainer>
+                  <Table size="small" aria-label="block status">
+                    <TableHead component={Card}>
+                      <TableRow>
+                        <TableCell>{t('shortened')}</TableCell>
+                        <TableCell>{t('value')}</TableCell>
+                        <TableCell />
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {giftCodes?.map((giftCode) => (
+                        <TableRow key={giftCode.giftCodeB58}>
+                          <TableCell component="th" scope="row">
+                            <ShortCode code={giftCode.giftCodeB58} />
+                          </TableCell>
+                          <TableCell>
+                            <MOBNumberFormat
+                              // FIX-ME right now, we subtract the hardcoded fee
+                              value={(
+                                BigInt(giftCode.valuePmob) - BigInt('10000000000')
+                              ).toString()}
+                              valueUnit="pMOB"
+                            />
+                          </TableCell>
+                          <TableCell align="right">
+                            <Box display="flex" justifyContent="flex-end">
+                              <Tooltip title={t('clickToCopy')} placement="right" arrow>
+                                <div
+                                  className={classes.clickable}
+                                  onClick={handleCopyClick(giftCode.giftCodeB58)}
+                                  aria-hidden="true"
+                                >
+                                  <IconButton>
+                                    <CopyIcon />
+                                  </IconButton>
+                                </div>
+                              </Tooltip>
+                              <Tooltip title={t('clickToDelete')} placement="right" arrow>
+                                <div
+                                  className={classes.clickable}
+                                  onClick={handleDialogOpen(
+                                    giftCode.giftCodeB58,
+                                    giftCode.valuePmob
+                                  )}
+                                  aria-hidden="true"
+                                >
+                                  <IconButton>
+                                    <TrashcanIcon />
+                                  </IconButton>
+                                </div>
+                              </Tooltip>
+                            </Box>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+              <Dialog
+                open={dialogOpen}
+                onClose={handleDialogClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">{t('deleteDialogTitle')}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    {t('deleteDialogDescription')}
+                  </DialogContentText>
+                  <AccountCard
+                    isGift
+                    account={{
+                      b58Code: pendingDeleteCode[0],
+                      name: 'Gift Code',
+                    }}
+                  />
+                  <Box py={2} display="flex" justifyContent="space-between">
+                    <Typography color="textPrimary">{t('giftValue')}</Typography>
+                    {/* FIX-ME right now, we subtract the hardcoded fee */}
+                    <MOBNumberFormat
+                      value={(BigInt(pendingDeleteCode[1]) - BigInt('10000000000')).toString()}
+                      valueUnit="pMOB"
+                      suffix=" MOB"
+                    />
+                  </Box>
+                  <DialogContentText color="textPrimary">{t('deleteDialogText')}</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleDialogClose} color="primary" autoFocus>
+                    {t('cancelButton')}
+                  </Button>
+                  <Button onClick={handleConfirmDelete} color="primary">
+                    {t('deleteButton')}
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </CardContent>
+          </Card>
+        </Box>
       )}
     </Container>
   );

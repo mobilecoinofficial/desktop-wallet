@@ -4,9 +4,9 @@ import type { FC } from 'react';
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { MOBNumberFormat } from '../../../components';
-import { MOBIcon } from '../../../components/icons';
-import { Theme } from '../../../theme';
+import { MOBNumberFormat } from '../../components';
+import { MOBIcon } from '../../components/icons';
+import { Theme } from '../../theme';
 
 interface BalanceProps {
   balance: string | '';
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 25,
   },
   item: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(3, 0, 0, 0),
     textAlign: 'center',
   },
   valueContainer: {

@@ -4,10 +4,12 @@ import type { FC } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 
 import type { Theme } from '../theme';
+import isStringNumber from '../utils/isStringNumber';
 
 interface LongCodeProps {
   code: string;
   codeClass?: string;
+  isTruncated?: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -20,20 +22,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   number: {
     color: theme.palette.longCode.number,
+    fontWeight: 'bolder',
   },
   uppercased: {
     color: theme.palette.longCode.uppercased,
+    fontWeight: 'bold',
   },
 }));
 
-const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
+const LongCode: FC<LongCodeProps> = ({ code, codeClass, isTruncated }: LongCodeProps) => {
   const classes = useStyles();
 
   // Remove the center of the code and replace with * *
-  const shortenedCode = `${code.slice(0, 48)}•••${code.slice(code.length - 48, code.length)}`;
-  const colorCode = shortenedCode.split('').map((char, i) => {
+  const displayedCode = isTruncated
+    ? `${code.slice(0, 48)}•••${code.slice(code.length - 48, code.length)}`
+    : code;
+  const colorCode = displayedCode.split('').map((char, i) => {
     let charColorClass = classes.lowercased;
-    if (!Number.isNaN(char * 1)) {
+    if (isStringNumber(char)) {
       charColorClass = classes.number;
     } else if (char === char.toUpperCase()) {
       charColorClass = classes.uppercased;
@@ -51,7 +57,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
 
   colorCode.forEach((char, i) => {
     nextCodeLine.push(char);
-    if (i === shortenedCode.length - 1) {
+    if (i === displayedCode.length - 1) {
       codeLines.push(nextCodeLine);
     } else if (nextCodeLine.length === 11) {
       codeLines.push(nextCodeLine);
@@ -76,6 +82,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass }: LongCodeProps) => {
 
 LongCode.defaultProps = {
   codeClass: '',
+  isTruncated: false,
 };
 
 export default LongCode;

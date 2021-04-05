@@ -6,7 +6,7 @@ import type {
 } from '@material-ui/core/styles/createPalette';
 import type { Shadows as MuiShadows } from '@material-ui/core/styles/shadows';
 
-import { BLACK_SHARK } from '../constants/colors';
+import { BLACK_LIGHT } from '../constants/colors';
 import { MOBILE_COIN_DARK_THEME, MOBILE_COIN_LIGHT_THEME } from '../constants/themes';
 import typography from './typography';
 
@@ -49,7 +49,7 @@ const baseOptions: ThemeOptions = {
   overrides: {
     MuiChip: {
       root: {
-        backgroundColor: BLACK_SHARK,
+        backgroundColor: BLACK_LIGHT,
       },
     },
     MuiLinearProgress: {

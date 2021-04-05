@@ -33,13 +33,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     cursor: 'pointer',
     display: 'flex',
     flexDirection: 'column',
-    fontSize: 27,
+    fontSize: 22,
     letterSpacing: '.65rem',
     marginRight: '-.65rem',
     padding: theme.spacing(1),
   },
   container: {
-    padding: '20px 0 0',
+    padding: '0',
   },
   corners: {
     alignItems: 'center',
@@ -89,7 +89,14 @@ const AccountCard: FC<AccountCardProps> = ({
     <Container className={classes.container} fixed maxWidth="sm">
       <Card data-testid="account-card" className={clsx(classes.root, className)} {...rest}>
         <CardContent>
-          <Box display="flex" alignItems="center" flexDirection="column" textAlign="center">
+          <Box
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+            textAlign="center"
+            justifyContent="space-between"
+            minHeight={400}
+          >
             <Box className={classes.corners}>
               <LogoIcon />
               <Tooltip
@@ -129,7 +136,7 @@ const AccountCard: FC<AccountCardProps> = ({
               )}
             </Typography>
             <Box className={classes.corners}>
-              <Typography data-testid="account-card-name" color="textSecondary" variant="h4">
+              <Typography data-testid="account-card-name" color="textPrimary" variant="h4">
                 {name || t('unnamed')}
               </Typography>
               <Typography data-testid="account-card-short-code" color="textSecondary" variant="h4">

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Container, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   button: {
     maxWidth: 300,
     width: '35vw',
+  },
+  card: {
+    padding: theme.spacing(0, 3),
   },
   modal: {
     alignItems: 'center',
@@ -45,16 +48,18 @@ const CloseWalletModal: FC = () => {
 
   return (
     <>
-      <Container maxWidth="sm" style={{ padding: '0' }}>
-        <SubmitButton
-          testID="close-wallet-button"
-          disabled={false}
-          isSubmitting={false}
-          onClick={handleOpenModal}
-        >
-          {t('closeWalletButton')}
-        </SubmitButton>
-      </Container>
+      <Card className={classes.card}>
+        <CardContent>
+          <SubmitButton
+            testID="close-wallet-button"
+            disabled={false}
+            isSubmitting={false}
+            onClick={handleOpenModal}
+          >
+            {t('closeWalletButton')}
+          </SubmitButton>
+        </CardContent>
+      </Card>
       <Modal
         data-testid="close-wallet-modal"
         className={classes.modal}

@@ -9,7 +9,6 @@ import AccountCard from '../../../app/components/AccountCard';
 import renderSnapshot from '../../renderSnapshot';
 
 const MOCK_LONG_CODE = 'mockLongCode';
-const MOCK_QR_CODE = 'mockQRCode';
 
 function setupComponent(props?) {
   // @ts-ignore mock
@@ -19,7 +18,6 @@ function setupComponent(props?) {
         ...{
           b58Code: MOCK_LONG_CODE,
           balance: 'one million',
-          mobUrl: MOCK_QR_CODE,
         },
         ...props,
       }}

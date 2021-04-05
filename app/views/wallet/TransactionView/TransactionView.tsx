@@ -10,6 +10,9 @@ import ReceiveMobPanel from './ReceiveMobPanel';
 import SendMobPanel from './SendMobPanel';
 
 const useStyles = makeStyles((theme: Theme) => ({
+  padding: {
+    paddingBottom: theme.spacing(3),
+  },
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: '100%',
@@ -36,9 +39,10 @@ const TransactionView: FC = () => {
           <Tabs
             variant="fullWidth"
             value={selectedTabIndex}
-            indicatorColor="secondary"
-            textColor="secondary"
+            indicatorColor="primary"
+            textColor="primary"
             onChange={handleChange}
+            className={classes.padding}
           >
             <Tab label={t('send')} />
             <Tab label={t('receive')} />

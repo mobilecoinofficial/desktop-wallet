@@ -1,14 +1,13 @@
 import {
-  BLACK,
   BLACK_DARK,
-  GOLD,
-  GOLD_DARK,
-  GOLD_LIGHT,
-  GREY,
+  BLACK_LIGHT,
+  BLUE_DARK,
+  BLUE_LIGHT,
+  GREEN_LIGHT,
   GREY_DARK,
   GREY_LIGHT,
-  RED,
-  WHITE,
+  WHITE_DARK,
+  WHITE_LIGHT,
 } from './colors';
 
 export const MOBILE_COIN_DARK = 'MOBILE_COIN_DARK';
@@ -19,28 +18,28 @@ export const MOBILE_COIN_DARK_THEME = {
   palette: {
     background: {
       dark: BLACK_DARK,
-      default: BLACK,
-      paper: BLACK,
+      default: BLACK_LIGHT,
+      paper: BLACK_LIGHT,
     },
     longCode: {
-      lowercased: WHITE,
-      number: GOLD_LIGHT,
-      uppercased: GOLD_DARK,
+      lowercased: BLUE_LIGHT,
+      number: WHITE_LIGHT,
+      uppercased: GREEN_LIGHT,
     },
     number: {
-      negative: RED,
-      positive: GOLD,
+      negative: WHITE_LIGHT,
+      positive: BLUE_DARK,
     },
     primary: {
-      main: GOLD,
+      main: BLUE_DARK,
     },
     secondary: {
-      main: GOLD,
+      main: BLUE_DARK,
     },
     text: {
-      primary: GREY_LIGHT,
-      secondary: GREY,
-      tertiary: GOLD,
+      primary: WHITE_LIGHT,
+      secondary: GREY_LIGHT,
+      tertiary: BLUE_DARK,
     },
     type: 'dark',
   },
@@ -50,29 +49,29 @@ export const MOBILE_COIN_LIGHT_THEME = {
   name: MOBILE_COIN_LIGHT,
   palette: {
     background: {
-      dark: GREY_LIGHT,
-      default: WHITE,
-      paper: WHITE,
+      dark: WHITE_DARK,
+      default: WHITE_LIGHT,
+      paper: WHITE_LIGHT,
     },
     longCode: {
-      lowercased: GREY_DARK,
-      number: GOLD_LIGHT,
-      uppercased: GOLD_DARK,
+      lowercased: BLUE_LIGHT,
+      number: GREY_DARK,
+      uppercased: GREEN_LIGHT,
     },
     number: {
-      negative: RED,
-      positive: GOLD,
+      negative: GREY_DARK,
+      positive: BLUE_DARK,
     },
     primary: {
-      main: GOLD,
+      main: BLUE_DARK,
     },
     secondary: {
-      main: GOLD,
+      main: BLUE_DARK,
     },
     text: {
       primary: GREY_DARK,
-      secondary: GREY,
-      tertiary: GOLD,
+      secondary: GREY_LIGHT,
+      tertiary: BLUE_DARK,
     },
     type: 'light',
   },

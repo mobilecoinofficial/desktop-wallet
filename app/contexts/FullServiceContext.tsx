@@ -26,12 +26,12 @@ import scryptKeys from '../utils/scryptKeys';
 
 type PendingSecrets = {
   entropy: StringHex;
+  mnemonic: string;
 };
 
 type SelectedAccount = {
   account: Account;
   balanceStatus: BalanceStatus;
-  mobUrl: string;
 };
 
 interface FullServiceState {
@@ -64,7 +64,12 @@ export interface FullServiceContextValue extends FullServiceState {
   deleteStoredGiftCodeB58: (storedGiftCodeB58: string) => void;
   fetchAllTransactionLogsForAccount: (accountId: StringHex) => void;
   fetchAllTxosForAccount: (accountId: StringHex) => void;
-  importAccount: (accountName: string | null, entropy: string, password: string) => Promise<void>;
+  importAccount: (accountName: string | null, mnemonic: string, password: string) => Promise<void>;
+  importLegacyAccount: (
+    accountName: string | null,
+    entropy: string,
+    password: string
+  ) => Promise<void>;
   removeAccount: (removeAccountParams: RemoveAccountParams) => Promise<RemoveAccountResult | void>;
   retrieveEntropy: (password: string) => Promise<string | void>;
   submitGiftCode: (
@@ -222,7 +227,6 @@ const initialFullServiceState: FullServiceState = {
       spentPmob: '',
       unspentPmob: '',
     },
-    mobUrl: '',
   },
   transactionLogs: null,
   walletStatus: {
@@ -383,6 +387,7 @@ const FullServiceContext = createContext<FullServiceContextValue>({
   createAccount: () => Promise.resolve(),
   deleteStoredGiftCodeB58: () => undefined,
   importAccount: () => Promise.resolve(),
+  importLegacyAccount: () => Promise.resolve(),
   removeAccount: () => Promise.resolve(),
   retrieveEntropy: () => Promise.resolve(),
   submitGiftCode: () => Promise.resolve(),
@@ -458,55 +463,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  const createAccount = async (name: string | null, password: string) => {
-    try {
-      // Attempt create
-      const { account } = await fullServiceApi.createAccount({ name });
-      const { accountId } = account;
-
-      // Get basic wallet information
-      const { accountSecrets: pendingSecrets } = await fullServiceApi.exportAccountSecrets({
-        accountId,
-      });
-      const { walletStatus } = await fullServiceApi.getWalletStatus();
-      const { accountIds, accountMap } = walletStatus;
-      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
-        accountId,
-      });
-      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-
-      // After successful import, store password digest
-      // TODO - rename secret key as digest
-      const { publicSaltString, secretKeyString: hashedPassword } = await scryptKeys(password);
-      localStore.setHashedPassword(hashedPassword);
-      localStore.setHashedPasswordSalt(publicSaltString);
-
-      dispatch({
-        payload: {
-          accounts: {
-            accountIds,
-            accountMap,
-          },
-          addresses: {
-            addressIds,
-            addressMap,
-          },
-          hashedPassword,
-          pendingSecrets,
-          selectedAccount: {
-            account,
-            balanceStatus,
-            mobUrl: `mob:///b58/${accountId}`,
-          },
-          walletStatus,
-        },
-        type: 'CREATE_ACCOUNT',
-      });
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
   const removeAccount = async (accountId: string) => {
     try {
       const removed = await fullServiceApi.removeAccount({ accountId });
@@ -535,15 +491,124 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
+  const createAccount = async (name: string | null, password: string) => {
+    try {
+      // Wipe Accounts and Contacts
+      await removeAllAccounts([]);
+      localStore.setContacts([]);
+
+      // Attempt create
+      const { account } = await fullServiceApi.createAccount({ name });
+      const { accountId } = account;
+
+      // Get basic wallet information
+      const { accountSecrets: pendingSecrets } = await fullServiceApi.exportAccountSecrets({
+        accountId,
+      });
+
+      const { walletStatus } = await fullServiceApi.getWalletStatus();
+      const { accountIds, accountMap } = walletStatus;
+      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
+        accountId,
+      });
+      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
+
+      // After successful import, store password digest
+      // TODO - rename secret key as digest
+      const { publicSaltString, secretKeyString: hashedPassword } = await scryptKeys(password);
+      localStore.setHashedPassword(hashedPassword);
+      localStore.setHashedPasswordSalt(publicSaltString);
+
+      dispatch({
+        payload: {
+          accounts: {
+            accountIds,
+            accountMap,
+          },
+          addresses: {
+            addressIds,
+            addressMap,
+          },
+          hashedPassword,
+          pendingSecrets,
+          selectedAccount: {
+            account,
+            balanceStatus,
+          },
+          walletStatus,
+        },
+        type: 'CREATE_ACCOUNT',
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
   // Import the wallet should initalize the basic wallet information
   // The wallet status
   // Accounts + status
-  const importAccount = async (name: string | null, entropy: string, password: string) => {
+  const importAccount = async (name: string | null, mnemonic: string, password: string) => {
     try {
+      // Wipe Accounts and Contacts
       await removeAllAccounts([]);
-      // TODO - allow this once we're setup again!
+      localStore.setContacts([]);
+
       // Attempt import
-      const { account } = await fullServiceApi.importAccount({ entropy, name });
+      const { account } = await fullServiceApi.importAccount({
+        keyDerivationVersion: '2',
+        mnemonic,
+        name,
+      });
+      const { accountId } = account;
+
+      // Get basic wallet information
+      const { walletStatus } = await fullServiceApi.getWalletStatus();
+      const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
+
+      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
+        accountId,
+      });
+
+      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
+      // After successful import, store password digest
+      const { publicSaltString, secretKeyString: hashedPassword } = await scryptKeys(password);
+      localStore.setHashedPassword(hashedPassword);
+      localStore.setHashedPasswordSalt(publicSaltString);
+      dispatch({
+        payload: {
+          accounts: {
+            accountIds,
+            accountMap,
+          },
+          addresses: {
+            addressIds,
+            addressMap,
+          },
+          hashedPassword,
+          selectedAccount: {
+            account,
+            balanceStatus,
+          },
+          walletStatus,
+        },
+        type: 'IMPORT_ACCOUNT',
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
+  // Import the wallet should initalize the basic wallet information
+  // The wallet status
+  // Accounts + status
+  const importLegacyAccount = async (name: string | null, entropy: string, password: string) => {
+    try {
+      // Wipe Accounts and Contacts
+      await removeAllAccounts([]);
+      localStore.setContacts([]);
+
+      // Attempt import
+      const { account } = await fullServiceApi.importLegacyAccount({ entropy, name });
       const { accountId } = account;
 
       // Get basic wallet information
@@ -575,7 +640,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account,
             balanceStatus,
-            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },
@@ -644,7 +708,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         accountId: selectedAccount.account.accountId,
       });
 
-      return accountSecrets.entropy;
+      return accountSecrets.entropy ?? accountSecrets.mnemonic ?? '';
     } catch (err) {
       throw new Error(err.message);
     }
@@ -677,12 +741,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     const { walletStatus } = await fullServiceApi.getWalletStatus();
 
     // TODO - get new balance (now that is it pending)
-    ({
+    dispatch({
       payload: {
         selectedAccount: {
           account: selectedAccount.account,
           balanceStatus,
-          mobUrl: `mob:///b58/${accountId}`,
         },
         walletStatus,
       },
@@ -734,7 +797,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account: selectedAccount,
             balanceStatus,
-            mobUrl: `mob:///b58/${selectedAccount.accountId}`,
           },
           walletStatus,
         },
@@ -801,7 +863,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           selectedAccount: {
             account: selectedAccount.account,
             balanceStatus,
-            mobUrl: `mob:///b58/${accountId}`,
           },
           walletStatus,
         },
@@ -835,6 +896,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         fetchAllTransactionLogsForAccount,
         fetchAllTxosForAccount,
         importAccount,
+        importLegacyAccount,
         retrieveEntropy,
         submitGiftCode,
         submitTransaction,

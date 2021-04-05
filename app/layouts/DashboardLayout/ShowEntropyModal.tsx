@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   CardContent,
+  Container,
   Fab,
   Fade,
   makeStyles,
@@ -17,11 +18,10 @@ import { useTranslation } from 'react-i18next';
 
 import useFullService from '../../hooks/useFullService';
 import type { Theme } from '../../theme';
-import { entropyToMnemonic } from '../../utils/bip39Functions';
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: {
-    letterSpacing: 2.95,
+    color: theme.palette.background.paper,
   },
   modal: {
     alignItems: 'center',
@@ -35,9 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
   root: {},
-  shownEntropy: {
-    letterSpacing: 1,
-  },
+  shownEntropy: {},
 }));
 
 const ShowEntropyModal: FC = () => {
@@ -51,10 +49,8 @@ const ShowEntropyModal: FC = () => {
   const handleCloseModal = () => {
     confirmEntropyKnown();
   };
-  // TODO, i should start making a single util for all of this coercing logic
-  const entropyString = pendingSecrets?.entropy || '';
 
-  const mnemonicEntropy = entropyString ? entropyToMnemonic(entropyString) : '';
+  const mnemonicEntropy = pendingSecrets?.mnemonic;
 
   const toggleEntropy = () => {
     if (!canGoForward) {
@@ -100,7 +96,7 @@ const ShowEntropyModal: FC = () => {
               {t('header')}
             </Typography>
             <br />
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body2" color="textPrimary">
               {t('description')}
             </Typography>
             <br />
@@ -113,32 +109,15 @@ const ShowEntropyModal: FC = () => {
                       {showEntropy ? (t('hide') as string) : (t('show') as string)}
                     </Fab>
                   </Box>
-                  {showEntropy ? (
+                  <Container maxWidth="sm">
                     <Typography
-                      className={classes.shownEntropy}
+                      className={showEntropy ? classes.shownEntropy : classes.hiddenEntropy}
                       variant="body2"
                       color="textPrimary"
                     >
                       {mnemonicEntropy}
                     </Typography>
-                  ) : (
-                    <>
-                      <Typography
-                        className={classes.hiddenEntropy}
-                        variant="body2"
-                        color="textPrimary"
-                      >
-                        ****************************************************************
-                      </Typography>
-                      <Typography
-                        className={classes.hiddenEntropy}
-                        variant="body2"
-                        color="textPrimary"
-                      >
-                        ****************************************************************
-                      </Typography>
-                    </>
-                  )}
+                  </Container>
                 </Box>
               </CardContent>
             </Card>

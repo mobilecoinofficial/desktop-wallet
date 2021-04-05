@@ -1,41 +1,37 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box } from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 
 import { AccountCard } from '../../../components';
 import useFullService from '../../../hooks/useFullService';
-import BalanceIndicator from './BalanceIndicator';
 import CloseWalletModal from './CloseWalletModal';
 
-interface OverviewProps {
-  className?: string;
-}
+const useStyles = makeStyles(() => ({
+  root: {
+    padding: '0',
+  },
+}));
 
-const DashboardOverview: FC<OverviewProps> = () => {
+const DashboardOverview: FC = () => {
   const { selectedAccount } = useFullService();
+  const classes = useStyles();
 
   // TODO - figure out if we should calculate isSynced with a buffer.
   // We should pull that into a util
   return (
-    <Box data-testid="DashboardOverview">
-      <Box alignItems="center">
-        <BalanceIndicator
-          balance={selectedAccount.balanceStatus.unspentPmob}
-          isSynced={selectedAccount.balanceStatus.isSynced}
-        />
-      </Box>
+    <Container data-testid="DashboardOverview" className={classes.root} maxWidth="sm">
+      <Box alignItems="center" />
       <AccountCard
         account={{
           b58Code: selectedAccount.account.mainAddress,
           balance: selectedAccount.balanceStatus.unspentPmob,
-          mobUrl: selectedAccount.mobUrl,
           name: selectedAccount.account.name,
         }}
       />
       <Box py={2} />
       <CloseWalletModal />
-    </Box>
+    </Container>
   );
 };
 

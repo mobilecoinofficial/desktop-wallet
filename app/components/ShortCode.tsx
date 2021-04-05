@@ -10,6 +10,7 @@ import {
   SUPER_LUCKY_ARRAY_END_INDEX,
 } from '../constants/indicies';
 import { Theme } from '../theme';
+import isStringNumber from '../utils/isStringNumber';
 
 export interface ShortCodeProps {
   code: string;
@@ -25,9 +26,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   number: {
     color: theme.palette.longCode.number,
+    fontWeight: 'bolder',
   },
   uppercased: {
     color: theme.palette.longCode.uppercased,
+    fontWeight: 'bold',
   },
 }));
 
@@ -54,7 +57,7 @@ const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
       colorPairs.push(['-', classes.lowercased]);
     }
     let charColorClass = classes.lowercased;
-    if (!Number.isNaN(code.charAt(luck) * 1)) {
+    if (isStringNumber(code.charAt(luck))) {
       charColorClass = classes.number;
     } else if (code.charAt(luck) === code.charAt(luck).toUpperCase()) {
       charColorClass = classes.uppercased;

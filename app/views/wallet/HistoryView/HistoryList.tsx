@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Button, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { Box, Button, Container, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { HISTORY_PAGE_SIZE } from '../../../constants/app';
@@ -13,9 +13,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: '100%',
-    paddingBottom: theme.spacing(3),
-    paddingLeft: theme.spacing(5),
-    paddingRight: theme.spacing(5),
+    padding: theme.spacing(3, 5),
   },
 }));
 
@@ -33,7 +31,7 @@ const HistoryList: FC<HistoryListProps> = ({
 
   const { t } = useTranslation('HistoryView');
 
-  console.log('LIST...', transactionLogsList);
+  // console.log('LIST...', transactionLogsList);
 
   const handleChange = (_event: ChangeEvent<Record<string, unknown>>, newValue: number) => {
     setSelectedTabIndex(Number(newValue));
@@ -54,53 +52,53 @@ const HistoryList: FC<HistoryListProps> = ({
   };
 
   return (
-    <Box className={classes.root}>
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Tabs
-            variant="fullWidth"
-            value={selectedTabIndex}
-            indicatorColor="secondary"
-            textColor="secondary"
-            onChange={handleChange}
-          >
-            <Tab label={t('showAllTransactions')} />
-            <Tab label={t('showSentTransactions')} />
-            <Tab label={t('showReceivedTransactions')} />
-          </Tabs>
+    <Box>
+      <Tabs
+        variant="fullWidth"
+        value={selectedTabIndex}
+        indicatorColor="primary"
+        textColor="primary"
+        onChange={handleChange}
+      >
+        <Tab label={t('showAllTransactions')} />
+        <Tab label={t('showSentTransactions')} />
+        <Tab label={t('showReceivedTransactions')} />
+      </Tabs>
+      <Container className={classes.root} maxWidth="lg">
+        <Grid container spacing={3}>
+          {dataToShow
+            .filter((_v, i) => firstToShow <= i && i < firstToShow + HISTORY_PAGE_SIZE)
+            .map((transactionLog) => (
+              <HistoryItem
+                key={`historyitem_${transactionLog.transactionLogId}`}
+                onClick={() => onTransactionClick(transactionLog)}
+                transactionLog={transactionLog}
+              />
+            ))}
+          <Box width="100%" display="flex" justifyContent="flex-end" m={2}>
+            {firstToShow > 0 ? (
+              <Button
+                onClick={pageBack}
+                style={{ margin: '5px' }}
+                color="primary"
+                variant="contained"
+              >
+                &lt;
+              </Button>
+            ) : null}
+            {firstToShow + HISTORY_PAGE_SIZE < dataToShow.length ? (
+              <Button
+                onClick={pageForward}
+                style={{ margin: '5px' }}
+                color="primary"
+                variant="contained"
+              >
+                &gt;
+              </Button>
+            ) : null}
+          </Box>
         </Grid>
-        {dataToShow
-          .filter((_v, i) => firstToShow <= i && i < firstToShow + HISTORY_PAGE_SIZE)
-          .map((transactionLog) => (
-            <HistoryItem
-              key={`historyitem_${transactionLog.transactionLogId}`}
-              onClick={() => onTransactionClick(transactionLog)}
-              transactionLog={transactionLog}
-            />
-          ))}
-        <Box width="100%" display="flex" justifyContent="flex-end" m={2}>
-          {firstToShow > 0 ? (
-            <Button
-              onClick={pageBack}
-              style={{ margin: '5px' }}
-              color="secondary"
-              variant="contained"
-            >
-              &lt;
-            </Button>
-          ) : null}
-          {firstToShow + HISTORY_PAGE_SIZE < dataToShow.length ? (
-            <Button
-              onClick={pageForward}
-              style={{ margin: '5px' }}
-              color="secondary"
-              variant="contained"
-            >
-              &gt;
-            </Button>
-          ) : null}
-        </Box>
-      </Grid>
+      </Container>
     </Box>
   );
 };

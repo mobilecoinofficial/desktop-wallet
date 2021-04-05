@@ -17,7 +17,6 @@ function setupComponent() {
     return {
       accountName: 'account name',
       b58Code: 'b58 code',
-      mobUrl: 'string',
     };
   });
 

@@ -26,9 +26,9 @@ import * as Yup from 'yup';
 
 // import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
 import AccountCard from '../../../../components/AccountCard';
-import SubmitButton from '../../../../components/SubmitButton';
 import MOBNumberFormat from '../../../../components/MOBNumberFormat';
 import ShortCode from '../../../../components/ShortCode';
+import SubmitButton from '../../../../components/SubmitButton';
 import { MOBIcon } from '../../../../components/icons';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
@@ -133,7 +133,6 @@ const BuildGiftForm: FC = () => {
     {
       b58Code: selectedAccount.account.mainAddress,
       balance: selectedAccount.balanceStatus.unspentPmob,
-      mobUrl: selectedAccount.mobUrl,
       name: selectedAccount.account.name,
     },
   ];
@@ -210,33 +209,34 @@ const BuildGiftForm: FC = () => {
     );
   };
 
-  const renderSenderPublicAddressOptions = (accounts: Account[], isSubmitting: boolean) => (
-    <Box pt={2}>
-      <FormLabel className={classes.form} component="legend">
-        <Typography color="primary">{t('select')}</Typography>
-      </FormLabel>
-      <Field component={RadioGroup} name="senderPublicAddress">
-        <Box display="flex" justifyContent="space-between">
-          <Typography color="textPrimary">{t('accountName')}</Typography>
-          <Typography color="textPrimary">{t('accountBalance')}</Typography>
-        </Box>
-        {accounts.map((account: Account) => (
-          <FormControlLabel
-            key={account.b58Code}
-            value={account.b58Code}
-            control={<Radio disabled={isSubmitting} />}
-            label={createAccountLabel(account)}
-            labelPlacement="end"
-            disabled={isSubmitting}
-            classes={{
-              label: classes.label,
-              root: classes.formControlLabelRoot,
-            }}
-          />
-        ))}
-      </Field>
-    </Box>
-  );
+  // TODO - reintroduce with multiple accounts
+  // const renderSenderPublicAddressOptions = (accounts: Account[], isSubmitting: boolean) => (
+  //   <Box pt={2}>
+  //     <FormLabel className={classes.form} component="legend">
+  //       <Typography color="primary">{t('select')}</Typography>
+  //     </FormLabel>
+  //     <Field component={RadioGroup} name="senderPublicAddress">
+  //       <Box display="flex" justifyContent="space-between">
+  //         <Typography color="textPrimary">{t('accountName')}</Typography>
+  //         <Typography color="textPrimary">{t('accountBalance')}</Typography>
+  //       </Box>
+  //       {accounts.map((account: Account) => (
+  //         <FormControlLabel
+  //           key={account.b58Code}
+  //           value={account.b58Code}
+  //           control={<Radio disabled={isSubmitting} />}
+  //           label={createAccountLabel(account)}
+  //           labelPlacement="end"
+  //           disabled={isSubmitting}
+  //           classes={{
+  //             label: classes.label,
+  //             root: classes.formControlLabelRoot,
+  //           }}
+  //         />
+  //       ))}
+  //     </Field>
+  //   </Box>
+  // );
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
@@ -340,7 +340,7 @@ const BuildGiftForm: FC = () => {
 
         return (
           <Form>
-            {renderSenderPublicAddressOptions(mockMultipleAccounts, isSubmitting)}
+            {/* {renderSenderPublicAddressOptions(mockMultipleAccounts, isSubmitting)} */}
             <Box pt={4}>
               <FormLabel component="legend">
                 <Typography color="primary">{t('giftDetails')}</Typography>
@@ -482,7 +482,6 @@ const BuildGiftForm: FC = () => {
                       isGift
                       account={{
                         b58Code: confirmation?.giftCodeB58,
-                        mobUrl: `mob:///b58/${confirmation?.giftCodeB58}`,
                         name: t('pending'),
                       }}
                     />

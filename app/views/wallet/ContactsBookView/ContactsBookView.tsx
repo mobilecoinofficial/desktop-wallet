@@ -12,6 +12,11 @@ import ContactsList from './ContactsList';
 
 const listOfContacts = localStore.getContacts();
 
+const randomColor = () => {
+  const RANDOM_COLORS = ['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D969D', '#D82E26'];
+  return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
+};
+
 const ContactsBookView: FC = () => {
   const SHOW_ADD = 'SHOW_ADD';
   const SHOW_EDIT = 'SHOW_EDIT';
@@ -24,9 +29,15 @@ const ContactsBookView: FC = () => {
 
   const { t } = useTranslation('ContactsBookView');
 
-  const sortedContacts = listOfContacts.sort((a, b) =>
-    a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1
-  );
+  const sortedContacts = [...listOfContacts].sort((a, b) => {
+    if (a.isFavorite !== b.isFavorite) {
+      return a.isFavorite ? -1 : 1;
+    }
+    if (a.alias.toUpperCase() !== b.alias.toUpperCase()) {
+      return a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1;
+    }
+    return 0;
+  });
 
   switch (status) {
     case SHOW_LIST:
@@ -47,7 +58,7 @@ const ContactsBookView: FC = () => {
           onCancel={() => setStatus(SHOW_LIST)}
           onSaved={async ({ abbreviation, alias, isFavorite, recipientAddress }) => {
             const result = await assignAddressForAccount({
-              accountId: selectedAccount.account.accountId,
+              accountId: selectedAccount.account.accountId || Math.random(),
             });
 
             setStatus(SHOW_LIST);
@@ -55,6 +66,7 @@ const ContactsBookView: FC = () => {
               abbreviation,
               alias,
               assignedAddress: result.address.publicAddress,
+              color: randomColor(),
               isFavorite,
               recipientAddress,
             });
@@ -70,6 +82,7 @@ const ContactsBookView: FC = () => {
           abbreviation={current.abbreviation}
           alias={current.alias}
           assignedAddress={current.assignedAddress}
+          color={current.color}
           isFavorite={current.isFavorite}
           recipientAddress={current.recipientAddress}
           onCancel={() => setStatus(SHOW_LIST)}
@@ -82,13 +95,14 @@ const ContactsBookView: FC = () => {
             setStatus(SHOW_LIST);
             enqueueSnackbar(t('removed'), { variant: 'success' });
           }}
-          onSaved={({ abbreviation, alias, isFavorite, recipientAddress }) => {
+          onSaved={({ abbreviation, alias, color, isFavorite, recipientAddress }) => {
             listOfContacts[
               listOfContacts.findIndex((x) => x.assignedAddress === current.assignedAddress)
             ] = {
               abbreviation,
               alias,
               assignedAddress: current.assignedAddress,
+              color: color || randomColor(),
               isFavorite,
               recipientAddress,
             };

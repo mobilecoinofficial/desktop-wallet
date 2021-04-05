@@ -6,29 +6,28 @@ import {
   Box,
   Button,
   Fade,
-  FormControlLabel,
   FormHelperText,
   FormLabel,
   InputAdornment,
   LinearProgress,
   Slide,
   MenuItem,
+  ListItemIcon,
+  ListItemText,
   Modal,
-  Radio,
   Select,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { RadioGroup, TextField } from 'formik-material-ui';
+import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
 import LongCode from '../../../../components/LongCode';
-import ShortCode from '../../../../components/ShortCode';
-import { MOBIcon } from '../../../../components/icons';
+import { StarIcon, MOBIcon } from '../../../../components/icons';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
@@ -123,6 +122,7 @@ const SendMobForm: FC = () => {
   const { t } = useTranslation('SendMobForm');
 
   const [contactId, setContactId] = useState('');
+  const [contactName, setContactName] = useState('');
   const [open, setOpen] = useState(false);
   const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
   const [sendingOpen, setSendingOpen] = useState(false);
@@ -144,7 +144,6 @@ const SendMobForm: FC = () => {
     {
       b58Code: selectedAccount.account.mainAddress,
       balance: selectedAccount.balanceStatus.unspentPmob,
-      mobUrl: selectedAccount.mobUrl,
       name: selectedAccount.account.name,
     },
   ];
@@ -213,6 +212,7 @@ const SendMobForm: FC = () => {
     setConfirmation(EMPTY_CONFIRMATION);
   };
 
+  /* FK: COMMENTING OUT BECAUSE OF NOT BEING USED
   const createAccountLabel = (account: Account) => {
     const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}:`;
     return (
@@ -228,31 +228,33 @@ const SendMobForm: FC = () => {
       </Box>
     );
   };
+  */
 
-  const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
-    <Box pt={2}>
-      <FormLabel className={classes.form} component="legend">
-        <Typography color="primary">{t('select')}</Typography>
-      </FormLabel>
-      <Field component={RadioGroup} name="senderPublicAddress">
-        <Box display="flex" justifyContent="space-between">
-          <Typography color="textPrimary">{t('accountName')}</Typography>
-          <Typography color="textPrimary">{t('accountBalance')}</Typography>
-        </Box>
-        {accounts.map((account: Account) => (
-          <FormControlLabel
-            key={account.b58Code}
-            value={account.b58Code}
-            control={<Radio disabled={isSubmitting} />}
-            label={createAccountLabel(account)}
-            labelPlacement="end"
-            disabled={isSubmitting}
-            classes={{ label: classes.label }}
-          />
-        ))}
-      </Field>
-    </Box>
-  );
+  // TODO: Reintroduce with multiple accounts
+  // const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
+  //   <Box pt={2}>
+  //     <FormLabel className={classes.form} component="legend">
+  //       <Typography color="primary">{t('select')}</Typography>
+  //     </FormLabel>
+  //     <Field component={RadioGroup} name="senderPublicAddress">
+  //       <Box display="flex" justifyContent="space-between">
+  //         <Typography color="textPrimary">{t('accountName')}</Typography>
+  //         <Typography color="textPrimary">{t('accountBalance')}</Typography>
+  //       </Box>
+  //       {accounts.map((account: Account) => (
+  //         <FormControlLabel
+  //           key={account.b58Code}
+  //           value={account.b58Code}
+  //           control={<Radio disabled={isSubmitting} />}
+  //           label={createAccountLabel(account)}
+  //           labelPlacement="end"
+  //           disabled={isSubmitting}
+  //           classes={{ label: classes.label }}
+  //         />
+  //       ))}
+  //     </Field>
+  //   </Box>
+  // );
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
@@ -375,9 +377,23 @@ const SendMobForm: FC = () => {
           totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
+        const sortedContacts = [...listOfContacts].sort((a, b) => {
+          if (a.isFavorite !== b.isFavorite) {
+            return a.isFavorite ? -1 : 1;
+          }
+          return a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1;
+        });
+
+        const truncateContact = (contact: string, len: number) => {
+          if (contact.length > len) {
+            return `${contact.slice(0, len)}...`;
+          }
+          return contact;
+        };
+
         return (
           <Form>
-            {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)}
+            {/* {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)} */}
             <Box pt={4}>
               <FormLabel component="legend">
                 <Typography color="primary">{t('transaction')}</Typography>
@@ -393,22 +409,30 @@ const SendMobForm: FC = () => {
                   onChange={(x) => {
                     setContactId(x.target.value);
                     if (x.target.value !== NO_CONTACT_SELECTED) {
-                      setFieldValue(
-                        'recipientPublicAddress',
-                        listOfContacts.find((z) => z.assignedAddress === x.target.value)
-                          .recipientAddress
+                      const selectedContact = listOfContacts.find(
+                        (z) => z.assignedAddress === x.target.value
                       );
+                      setFieldValue('recipientPublicAddress', selectedContact.recipientAddress);
+                      setContactName(selectedContact.alias);
                     } else {
                       setFieldValue('recipientPublicAddress', '');
+                      setContactName('');
                     }
                   }}
                 >
                   <MenuItem value={NO_CONTACT_SELECTED} selected>
-                    Contact from list
+                    {t('pickContact')}
                   </MenuItem>
-                  {listOfContacts.map((contact) => (
+                  {sortedContacts.map((contact) => (
                     <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
-                      {contact.alias}
+                      {contact.isFavorite ? (
+                        <ListItemIcon style={{ margin: '0px' }}>
+                          <StarIcon />
+                          <ListItemText>{contact.alias} </ListItemText>
+                        </ListItemIcon>
+                      ) : (
+                        <ListItemText>{contact.alias} </ListItemText>
+                      )}
                     </MenuItem>
                   ))}
                 </Select>
@@ -545,7 +569,11 @@ const SendMobForm: FC = () => {
                   <Box display="flex">
                     <Box width="50%">
                       <Box>
-                        <p className={classes.center}>{t('recipientPlus1')}</p>
+                        {contactName !== '' ? (
+                          <p className={classes.center}>{truncateContact(contactName, 15)}</p>
+                        ) : (
+                          <p className={classes.center}>{t('recipientPlus1')}</p>
+                        )}
                         <p className={classes.center}>{t('recipientPlus2')}</p>
                         <LongCode
                           code={confirmation?.txProposalReceiverB58Code}
@@ -571,7 +599,7 @@ const SendMobForm: FC = () => {
                       type="text"
                     />
                   )}
-                  <Box display="flex" justifyContent="space-between">
+                  <Box display="flex" justifyContent="space-around" padding=".5em 0">
                     <Button
                       className={classes.button}
                       color="secondary"

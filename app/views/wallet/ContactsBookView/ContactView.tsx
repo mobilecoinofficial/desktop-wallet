@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Container, FormHelperText, makeStyles, Typography } from '@material-ui/core';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormHelperText,
+  Typography,
+  makeStyles,
+} from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
+import { CirclePicker } from 'react-color';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
-import { ContactIcon } from '../../../components/icons';
+import { SubmitButton, StarCheckbox } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { ContactViewProps } from './ContactView.d';
@@ -69,6 +83,7 @@ const ContactView: FC<ContactViewProps> = ({
   abbreviation,
   alias,
   assignedAddress,
+  color,
   isFavorite,
   recipientAddress,
   onCancel,
@@ -78,146 +93,189 @@ const ContactView: FC<ContactViewProps> = ({
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
 
+  const [showPicker, setShowPicker] = useState(false);
+
   const { t } = useTranslation('ContactView');
   const isNew = !assignedAddress;
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
-      <h3>{isNew ? t('addTitle') : t('editTitle')}</h3>
-      <Box flexGrow={1} mt={3}>
-        <Formik
-          initialValues={{
-            abbreviation: abbreviation || '',
-            alias: alias || '',
-            assignedAddress: assignedAddress || '',
-            button: '',
-            isFavorite: !!isFavorite,
-            recipientAddress: recipientAddress || '',
-            submit: null,
-          }}
-          validationSchema={Yup.object().shape({
-            abbreviation: Yup.string().max(3, t('maxAbbreviationLength')),
-            alias: Yup.string().required(t('aliasRequired')),
-            recipientAddress: Yup.string(),
-          })}
-          onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-            if (values.button === 'back') {
-              onCancel();
-              return;
-            }
-
-            try {
-              setSubmitting(true);
-              // save contact somewhere... on failure, an error should be thrown
-              if (isMountedRef.current) {
-                setSubmitting(false);
-                setStatus({ success: true });
-                onSaved({
-                  abbreviation: values.abbreviation,
-                  alias: values.alias,
-                  isFavorite: values.isFavorite,
-                  recipientAddress: values.recipientAddress,
-                });
-              }
-            } catch (err) {
-              if (isMountedRef.current) {
-                setStatus({ success: false });
-                setErrors({ submit: err.message });
-                setSubmitting(false);
-              }
-            }
-          }}
-        >
-          {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
-            <Form>
-              <Box>
-                <Box component="div" display="inline">
-                  <ContactIcon height={32} width={32} />
-                </Box>
-                &nbsp;&nbsp;&nbsp;
-                <Box component="div" display="inline">
-                  <Field type="checkbox" name="isFavorite" />
-                  <Typography display="inline">{t('isFavorite')}</Typography>
-                </Box>
-                <Field
-                  component={TextField}
-                  fullWidth
-                  label={t('alias')}
-                  margin="normal"
-                  name="alias"
-                  type="text"
-                />
-                <Field
-                  component={TextField}
-                  fullWidth
-                  label={t('abbreviation')}
-                  margin="normal"
-                  name="abbreviation"
-                  type="text"
-                />
-                {assignedAddress && (
-                  <Field
-                    disabled
-                    component={TextField}
-                    fullWidth
-                    multiline
-                    label={t('assignedAddress')}
-                    margin="normal"
-                    name="assignedAddress"
-                    type="text"
-                  />
-                )}{' '}
-                <Field
-                  component={TextField}
-                  fullWidth
-                  multiline
-                  label={t('recipientAddress')}
-                  margin="normal"
-                  name="recipientAddress"
-                  type="text"
-                />
-              </Box>
-              {errors.submit && (
-                <Box mt={3}>
-                  <FormHelperText error>{errors.submit}</FormHelperText>
-                </Box>
-              )}
-              <SubmitButton
-                disabled={false}
-                onClick={() => {
-                  setFieldValue('button', 'back');
+      <Card>
+        <CardContent>
+          <h3>{isNew ? t('addTitle') : t('editTitle')}</h3>
+          <Box flexGrow={1} mt={3}>
+            <Formik
+              initialValues={{
+                abbreviation: abbreviation || '',
+                alias: alias || '',
+                assignedAddress: assignedAddress || '',
+                button: '',
+                color: color || '',
+                isFavorite: !!isFavorite,
+                recipientAddress: recipientAddress || '',
+                submit: null,
+              }}
+              validationSchema={Yup.object().shape({
+                abbreviation: Yup.string().max(2, t('maxAbbreviationLength')),
+                alias: Yup.string().required(t('aliasRequired')),
+                recipientAddress: Yup.string().required(t('addressCodeRequired')),
+              })}
+              onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+                if (values.button === 'back') {
                   onCancel();
-                }}
-                isSubmitting={isSubmitting}
-              >
-                {t('cancel')}
-              </SubmitButton>
-              {!isNew && (
-                <SubmitButton
-                  disabled={false}
-                  onClick={() => {
-                    setFieldValue('button', 'back');
-                    onDelete();
-                  }}
-                  isSubmitting={isSubmitting}
-                >
-                  {t('removeContact')}
-                </SubmitButton>
+                  return;
+                }
+
+                try {
+                  setSubmitting(true);
+                  // save contact somewhere... on failure, an error should be thrown
+                  if (isMountedRef.current) {
+                    setSubmitting(false);
+                    setStatus({ success: true });
+                    onSaved({
+                      abbreviation: values.abbreviation,
+                      alias: values.alias,
+                      color: values.color,
+                      isFavorite: values.isFavorite,
+                      recipientAddress: values.recipientAddress,
+                    });
+                  }
+                } catch (err) {
+                  if (isMountedRef.current) {
+                    setStatus({ success: false });
+                    setErrors({ submit: err.message });
+                    setSubmitting(false);
+                  }
+                }
+              }}
+            >
+              {({ values, errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
+                <Form>
+                  <Box>
+                    <Box style={{ display: 'flex' }}>
+                      <Avatar
+                        style={{ backgroundColor: values.color || '#757575' }}
+                        onClick={() => setShowPicker(true)}
+                      >
+                        {values.abbreviation}
+                      </Avatar>
+                      <Field
+                        display="inline"
+                        type="checkbox"
+                        name="isFavorite"
+                        component={StarCheckbox}
+                      />
+                      <Typography display="inline" style={{ position: 'relative', top: '12px' }}>
+                        {t('isFavorite')}
+                      </Typography>
+                    </Box>
+                    {showPicker && (
+                      <Dialog open={showPicker}>
+                        <DialogTitle id="alert-dialog-title">{t('pickColor')}</DialogTitle>
+                        <DialogContent style={{ overflowY: 'hidden' }}>
+                          <CirclePicker
+                            colors={[
+                              '#8B35E0',
+                              '#1F639A',
+                              '#EAA520',
+                              '#15A389',
+                              '#8D969D',
+                              '#D82E26',
+                            ]}
+                            onChange={(pickedColor) => {
+                              setFieldValue('color', pickedColor.hex);
+                              setShowPicker(false);
+                            }}
+                          />
+                        </DialogContent>
+                        <DialogActions style={{ height: '100%' }}>
+                          <Button onClick={() => setShowPicker(false)} color="primary" autoFocus>
+                            {t('cancel')}
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    )}
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      label={t('alias')}
+                      margin="normal"
+                      name="alias"
+                      type="text"
+                    />
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      label={t('abbreviation')}
+                      margin="normal"
+                      name="abbreviation"
+                      type="text"
+                    />
+                    {assignedAddress && (
+                      <Field
+                        disabled
+                        component={TextField}
+                        fullWidth
+                        multiline
+                        label={t('assignedAddress')}
+                        margin="normal"
+                        name="assignedAddress"
+                        type="text"
+                      />
+                    )}{' '}
+                    <Field
+                      component={TextField}
+                      fullWidth
+                      multiline
+                      label={t('recipientAddress')}
+                      margin="normal"
+                      name="recipientAddress"
+                      type="text"
+                    />
+                  </Box>
+                  {errors.submit && (
+                    <Box mt={3}>
+                      <FormHelperText error>{errors.submit}</FormHelperText>
+                    </Box>
+                  )}
+                  <SubmitButton
+                    disabled={false}
+                    onClick={() => {
+                      setFieldValue('button', 'back');
+                      onCancel();
+                    }}
+                    isSubmitting={isSubmitting}
+                  >
+                    {t('cancel')}
+                  </SubmitButton>
+                  {!isNew && (
+                    <SubmitButton
+                      disabled={false}
+                      onClick={() => {
+                        setFieldValue('button', 'back');
+                        onDelete();
+                      }}
+                      isSubmitting={isSubmitting}
+                    >
+                      {t('removeContact')}
+                    </SubmitButton>
+                  )}
+                  <SubmitButton
+                    disabled={!dirty || !isValid || isSubmitting}
+                    onClick={() => {
+                      setFieldValue('button', 'save');
+                      submitForm();
+                    }}
+                    isSubmitting={isSubmitting}
+                  >
+                    {isNew ? t('addContact') : t('editContact')}
+                  </SubmitButton>
+                </Form>
               )}
-              <SubmitButton
-                disabled={!dirty || !isValid || isSubmitting}
-                onClick={() => {
-                  setFieldValue('button', 'save');
-                  submitForm();
-                }}
-                isSubmitting={isSubmitting}
-              >
-                {isNew ? t('addContact') : t('editContact')}
-              </SubmitButton>
-            </Form>
-          )}
-        </Formik>
-      </Box>
+            </Formik>
+          </Box>
+        </CardContent>
+      </Card>
     </Container>
   );
 };

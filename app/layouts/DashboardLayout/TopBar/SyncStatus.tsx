@@ -2,10 +2,11 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, makeStyles, Tooltip, CircularProgress } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 
 import { CircleMOBIcon } from '../../../components/icons';
-import { GREEN, GOLD_LIGHT, RED } from '../../../constants/colors';
+import { BLUE_DARK, GOLD_LIGHT, RED } from '../../../constants/colors';
 import useFullService from '../../../hooks/useFullService';
 import { Theme } from '../../../theme';
 import getPercentSyncedNew from '../../../utils/getPercentSyncedNew';
@@ -25,7 +26,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRadius: '35px',
     height: '70px',
     left: '-35px',
-    position: 'absolute',
     top: '-35px',
     width: '70px',
   },
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   statusProgress: {
     backgroundColor: 'rgba(53, 54, 58, 0.6)',
     borderRadius: '60px',
+    color: GOLD_LIGHT,
     left: '5px',
     position: 'absolute',
     top: '5px',
@@ -77,10 +78,11 @@ const SyncStatus: FC = () => {
     percentSynced = getPercentSyncedNew(networkBlockIndexBigInt, accountBlockIndexBigInt);
     statusCode = isSynced ? SYNCED : SYNCING;
   }
+  ipcRenderer.send('sync-status', statusCode);
 
   switch (statusCode) {
     case SYNCED: {
-      backgroundColor = GREEN;
+      backgroundColor = BLUE_DARK;
       title = t('synced');
       break;
     }

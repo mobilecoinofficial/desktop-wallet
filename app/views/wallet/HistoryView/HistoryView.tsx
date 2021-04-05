@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
 
+import { Box, Typography } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
@@ -10,12 +12,13 @@ import * as localStore from '../../../utils/LocalStore';
 import TransactionDetailsView from '../TransactionDetailsView';
 import HistoryList from './HistoryList';
 
-const HistoryView: FC = () => {
-  const HISTORY = 'history';
-  const DETAILS = 'details';
+const HISTORY = 'history';
+const DETAILS = 'details';
 
+const HistoryView: FC = () => {
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [showing, setShowing] = useState(HISTORY);
+  const { t } = useTranslation('HistoryView');
 
   const {
     addresses,
@@ -46,19 +49,29 @@ const HistoryView: FC = () => {
   }
 
   if (transactionLogs.transactionLogIds.length === 0) {
-    return <span>show empty state</span>;
+    return (
+      <Box display="flex" justifyContent="center">
+        <Typography>{t('emptyState')}</Typography>
+      </Box>
+    );
   }
 
   const buildList = (): TransactionLog[] =>
     transactionLogs.transactionLogIds
       .map((id) => transactionLogs.transactionLogMap[id])
-      .filter((txo) => txo.assignedAddressId !== addresses.addressIds[1])
-      .map((txo) => {
-        const contact = listOfContacts.find((x) => x.assignedAddress === txo.assignedAddressId);
+      .filter((transactionLog) => transactionLog.assignedAddressId !== addresses.addressIds[1])
+      .map((transactionLog) => {
+        // If any transaction is associated to a contact, let's attach the contact object.
+        // TODO - we can improve this greatly by changing how this information is stored.
+        const contact = listOfContacts.find(
+          (x) =>
+            x.assignedAddress === transactionLog.assignedAddressId ||
+            x.recipientAddress === transactionLog.recipientAddressId
+        );
         if (contact) {
-          txo.contactName = contact.alias; /* eslint-disable-line no-param-reassign */
+          transactionLog.contact = contact; /* eslint-disable-line no-param-reassign */
         }
-        return txo;
+        return transactionLog;
       })
       .sort((a, b) => b.offsetCount - a.offsetCount);
 
@@ -83,7 +96,7 @@ const HistoryView: FC = () => {
         <TransactionDetailsView
           comment="this should come from metadata"
           onClickBack={() => setShowing(HISTORY)}
-          onChangedComment={(t: string, c: string) => console.log(`t: ${t}, c: ${c}`)}
+          onChangedComment={() => {}}
           transactionLog={currentTransactionLog}
           txos={txos}
         />

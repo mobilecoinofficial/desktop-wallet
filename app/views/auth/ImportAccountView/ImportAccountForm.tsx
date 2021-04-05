@@ -13,7 +13,7 @@ import type { FullServiceContextValue } from '../../../contexts/FullServiceConte
 import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import {
-  convertMnemonicOrHexToEntropy,
+  isHex64,
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
 } from '../../../utils/bip39Functions';
@@ -30,6 +30,7 @@ export interface ImportAccountFormValues {
 interface ImportAccountFormPseudoProps {
   isMountedRef: { current: boolean };
   importAccount: FullServiceContextValue['importAccount'];
+  importLegacyAccount: FullServiceContextValue['importLegacyAccount'];
 }
 
 export const importAccountFormOnSubmit = async (
@@ -37,13 +38,18 @@ export const importAccountFormOnSubmit = async (
   values: ImportAccountFormValues,
   helpers: FormikHelpers<ImportAccountFormValues>
 ): Promise<void> => {
-  const { isMountedRef, importAccount } = pseudoProps;
+  const { isMountedRef, importAccount, importLegacyAccount } = pseudoProps;
   const { accountName, entropy, password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
 
   try {
-    const decodedEntropy = convertMnemonicOrHexToEntropy(entropy);
-    await importAccount(accountName, decodedEntropy, password);
+    // return isHex64(st) ? st : bip39.mnemonicToEntropy(st);
+
+    if (isHex64(entropy)) {
+      await importLegacyAccount(accountName, entropy, password);
+    } else {
+      await importAccount(accountName, entropy, password);
+    }
 
     if (isMountedRef.current) {
       setStatus({ success: true });
@@ -69,7 +75,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
 }: ImportAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ImportAccountForm');
-  const { importAccount } = useFullService();
+  const { importAccount, importLegacyAccount } = useFullService();
 
   const [canCheck, setCanCheck] = useState(false);
   const [open, setOpen] = useState(false);
@@ -87,7 +93,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     values: ImportAccountFormValues,
     helpers: FormikHelpers<ImportAccountFormValues>
   ) => {
-    const pseudoProps = { importAccount, isMountedRef };
+    const pseudoProps = { importAccount, importLegacyAccount, isMountedRef };
     onSubmit(pseudoProps, values, helpers);
   };
 

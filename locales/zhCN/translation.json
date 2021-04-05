@@ -102,6 +102,12 @@
         "pinSize": "PIN 码必须为 6 位数",
         "settingsBreadcrumb": "设置"
     },
+    "CloseApp": {
+        "confirm": "要在后台同步吗？",
+        "explain": "账簿并未完全同步，您需要它在后台继续同步吗？",
+        "no": "不需要，中止同步并退出",
+        "yes": "需要，退出并保持后台同步"
+    },
     "CloseWalletModal": {
         "closeVerifyBody": "是否要安全地退出钱包？",
         "closeVerifyConfirm": "确认退出",
@@ -124,7 +130,6 @@
         "confirmation": "红包已领取，正在更新余额。",
         "confirmationNotFound": "红包尚未确认",
         "error": "抱歉，出了点问题。",
-        "error13": "13 INTERNAL: transactions_manager.submit_tx_proposal: Connection(Operation { error: TransactionValidation(ContainsSpentKeyImage), total_delay: 0ns, tries: 1 })",
         "fee": "手续费",
         "giftB58Error": "无法找到红包。",
         "giftB58Validation": "需要一个有效的红包码。",
@@ -141,14 +146,18 @@
         "unnamed": "未命名账户"
     },
     "ConsumeGiftPanel": {
-        "balance": "账户余额",
-        "description": "请在下方输入红包码来收取红包。",
-        "syncMessage": "在钱包与账簿同步完成前显示的余额可能不准确。"
+        "title": "收取 MOB 红包",
+        "description": "请在下方输入红包码来收取红包。"
     },
     "ContactsBookView": {
         "added": "已添加联系人",
         "removed": "已删除联系人",
         "updated": "已更新联系人"
+    },
+    "ContactsList": {
+        "allContacts": "全部",
+        "favoriteContacts": "收藏夹",
+        "filter": "筛选"
     },
     "ContactView": {
         "abbreviation": "缩写（最多三个字符）",
@@ -164,6 +173,7 @@
         "enqueue": "成功添加联系人！",
         "isFavorite": "收藏联系人？",
         "maxAbbreviationLength": "联系人缩写最多只支持三个字符",
+        "pickColor": "选择任意颜色",
         "recipientAddress": "联系人的地址",
         "removeContact": "删除联系人"
     },
@@ -213,10 +223,11 @@
         }
     },
     "HistoryView": {
+        "emptyState": "您还没有任何进行过任何交易",
         "finalizedBlockHeight": "最终区块高度：",
         "historyItemReceived": "已收",
         "historyItemSent": "已发",
-        "orphaned": "??? 孤立节点",
+        "orphaned": "??? 孤立",
         "showAllTransactions": "全部交易",
         "showReceivedTransactions": "已收",
         "showSentTransactions": "已发"
@@ -245,9 +256,11 @@
         "createInstead": "创建新账户",
         "description": "请导入账户。如果您还没有账户，请创建一个新账户。",
         "header": "导入一个已有账户到本地钱包",
+        "legacyHex": "新版本的钱包备份口令是 24 个英语单词，旧版本的备份口令则是 64 位的 16 进制码。请勿转换以免导入错误的账户并丢失您的余额。",
         "overwriteWarning": "这个钱包里已经有一个账户了，导入新的账户会覆盖当前账户，请确保您已经妥善保管当前账户的备份口令以便找回该账户。",
         "title": "导入账户",
-        "unlockWalletButton": "解锁钱包"
+        "unlockWalletButton": "解锁钱包",
+        "warning": "请不要同时在多个钱包里使用同一个账户以免损坏您的本地历史记录。"
     },
     "InactivityDetect": {
         "confirmToStay": "鉴于您长时间没有操作，程序即将退出。",
@@ -348,6 +361,14 @@
         "privacyPolicy": "隐私条款",
         "settings": "设置"
     },
+    "ReceiveMobPanel": {
+        "assignedAddress": "指定地址",
+        "assignedAddressDetails": "如果您想记录来自特定发款人的转账记录，您需要创建一个联系人，每个联系人都有唯一的一个地址。您可以给联系人设置昵称和缩写。联系人可以为个人，公司，团体。您也可以把一个联系人当作一个普通的公共地址使用。同时您的联系人信息都是经过加密并只存储在本地的。",
+        "howTo": "如何接收 MOB",
+        "howToReceiveDetails": "如果要接收 MOB，您需要给发款人一个账户地址，您可以使用您的公共地址，或是给特定发款人的指定地址。",
+        "mainPublicAddress": "公共地址",
+        "mainPublicAddressDetails": "转账到公共地址将不会显示发款人。如果您不需要在交易历史中显示发款人的话，请使用公共地址。"
+    },
     "ResetLedger": {
         "cancelButton": "取消",
         "confirmButton": "确认",
@@ -372,7 +393,7 @@
     "SendMobForm": {
         "accountBalance": "账户余额",
         "accountName": "账户名",
-        "addressRequired": "请输入收款人的公开地址。",
+        "addressRequired": "请输入收款人的公共地址。",
         "amount": "金额",
         "cancel": "取消",
         "confirm": "确认转账",
@@ -385,17 +406,18 @@
         "mob": "MOB",
         "mobAmount": "MOB 金额",
         "mustSync": "在发送 MOB 前请与账簿同步。",
+        "pickContact": "Contact from list (optional)",
         "positiveValidation": "转账金额必须大于 0。",
         "positiveValidationRequired": "转账金额必须大于 0。",
-        "recipient": "收款人公开地址",
+        "recipient": "收款人公共地址",
         "recipientPlus": "收款人（对方）地址",
         "recipientPlus1": "收款人地址",
         "recipientPlus2": "（对方地址）",
         "remaining": "账户余额",
         "select": "选择账户",
         "send": "转账",
-        "senderPlus": "转账人（您的）地址",
-        "senderPlus1": "转账人地址",
+        "senderPlus": "发款人（您的）地址",
+        "senderPlus1": "发款人地址",
         "senderPlus2": "（您的地址）",
         "success": "转账成功",
         "syncing": "正在同步钱包……",
@@ -405,7 +427,8 @@
         "unnamed": "未命名账户"
     },
     "SendMobPanel": {
-        "header": "请输入转账金额（MOB）以及收款人的公开地址。"
+        "title": "发送 MOB 到地址",
+        "description": "请输入收款人的地址和转账金额"
     },
     "SettingsOptionsItem": {
         "changePassword": "修改密码",
@@ -449,9 +472,13 @@
             "save": "保存备注"
         },
         "changeComment": "修改备注",
+        "orphaned": "??? 孤立",
+        "orphanedTitle": "孤立交易",
+        "orphanedExplaination": "这是一个孤立交易，这说明发款人发送到了一个未知的指定地址。这可能是因为您在其他钱包中设置了指定地址，或是您进行了账户的导入/恢复。我们建议您只在一个钱包中使用一个账户。",
+        "recoveryInstructions": "如果要恢复这笔交易，您需要手动添加联系人。在您重新设置指定地址后，未来的交易将不再会需要手动恢复的过程。",
         "recipient": "收款人",
         "savedComment": "备注已保存",
-        "sender": "转账人",
+        "sender": "发款人",
         "transactionDetails": "交易详情",
         "txo": "交易输出",
         "txoDetails": "交易输出明细",

@@ -22,6 +22,7 @@ export { default as getTransactionLog } from './getTransactionLog';
 export { default as getTxo } from './getTxo';
 export { default as getWalletStatus } from './getWalletStatus';
 export { default as importAccount } from './importAccount';
+export { default as importLegacyAccount } from './importLegacyAccount';
 export { default as removeAccount } from './removeAccount';
 export { default as removeGiftCode } from './removeGiftCode';
 export { default as submitGiftCode } from './submitGiftCode';

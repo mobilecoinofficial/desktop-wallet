@@ -7,24 +7,21 @@ import {
   Button,
   Container,
   Fade,
-  FormControlLabel,
   FormHelperText,
   FormLabel,
   LinearProgress,
   Slide,
   Modal,
-  Radio,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { RadioGroup, TextField } from 'formik-material-ui';
+import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
-import ShortCode from '../../../../components/ShortCode';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
@@ -36,6 +33,9 @@ const EMPTY_CONFIRMATION = {
   giftCodeStatus: '',
   giftValue: 0,
 };
+
+const CLAIMED_GIFT_ERROR =
+  '13 INTERNAL: transactions_manager.submit_tx_proposal: Connection(Operation { error: TransactionValidation(ContainsSpentKeyImage), total_delay: 0ns, tries: 1 })';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -99,7 +99,6 @@ const ConsumeGiftForm: FC = () => {
     {
       b58Code: selectedAccount.account.mainAddress,
       balance: selectedAccount.balanceStatus.unspentPmob,
-      mobUrl: selectedAccount.mobUrl,
       name: selectedAccount.account.name,
     },
   ];
@@ -133,7 +132,7 @@ const ConsumeGiftForm: FC = () => {
       }
     } catch (err) {
       if (isMountedRef.current) {
-        const santitizedError = err.message === t('error13') ? t('giftClaimed') : err.message;
+        const santitizedError = err.message === CLAIMED_GIFT_ERROR ? t('giftClaimed') : err.message;
         setStatus({ success: false });
         setErrors({ submit: santitizedError });
         setSubmittingConfirmedGift(false);
@@ -146,52 +145,54 @@ const ConsumeGiftForm: FC = () => {
     }
   };
 
-  const createAccountLabel = (account: Account) => {
-    const name =
-      account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
-    return (
-      <Box display="flex" justifyContent="space-between">
-        <Typography color="textPrimary">
-          {name}
-          <ShortCode code={account.b58Code} />
-        </Typography>
-        <Typography color="textPrimary">
-          <MOBNumberFormat
-            value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
-            valueUnit="pMOB"
-          />
-        </Typography>
-      </Box>
-    );
-  };
+  // TODO - not sure what this is about. Should delete after confirming it's useless
+  // const createAccountLabel = (account: Account) => {
+  //   const name =
+  //     account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
+  //   return (
+  //     <Box display="flex" justifyContent="space-between">
+  //       <Typography color="textPrimary">
+  //         {name}
+  //         <ShortCode code={account.b58Code} />
+  //       </Typography>
+  //       <Typography color="textPrimary">
+  //         <MOBNumberFormat
+  //           value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
+  //           valueUnit="pMOB"
+  //         />
+  //       </Typography>
+  //     </Box>
+  //   );
+  // };
 
-  const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
-    <Box pt={2}>
-      <FormLabel className={classes.form} component="legend">
-        <Typography color="primary">{t('select')}</Typography>
-      </FormLabel>
-      <Field component={RadioGroup} name="senderPublicAddress">
-        <Box display="flex" justifyContent="space-between">
-          <Typography color="textPrimary">{t('accountName')}</Typography>
-          <Typography color="textPrimary">{t('accountBalance')}</Typography>
-        </Box>
-        {accounts.map((account: Account) => (
-          <FormControlLabel
-            key={account.b58Code}
-            value={account.b58Code}
-            control={<Radio disabled={isSubmitting} />}
-            label={createAccountLabel(account)}
-            labelPlacement="end"
-            disabled={isSubmitting}
-            classes={{
-              label: classes.label,
-              root: classes.formControlLabelRoot,
-            }}
-          />
-        ))}
-      </Field>
-    </Box>
-  );
+  // TODO Reintroduce with multiple accounts
+  // const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
+  //   <Box pt={2}>
+  //     <FormLabel className={classes.form} component="legend">
+  //       <Typography color="primary">{t('select')}</Typography>
+  //     </FormLabel>
+  //     <Field component={RadioGroup} name="senderPublicAddress">
+  //       <Box display="flex" justifyContent="space-between">
+  //         <Typography color="textPrimary">{t('accountName')}</Typography>
+  //         <Typography color="textPrimary">{t('accountBalance')}</Typography>
+  //       </Box>
+  //       {accounts.map((account: Account) => (
+  //         <FormControlLabel
+  //           key={account.b58Code}
+  //           value={account.b58Code}
+  //           control={<Radio disabled={isSubmitting} />}
+  //           label={createAccountLabel(account)}
+  //           labelPlacement="end"
+  //           disabled={isSubmitting}
+  //           classes={{
+  //             label: classes.label,
+  //             root: classes.formControlLabelRoot,
+  //           }}
+  //         />
+  //       ))}
+  //     </Field>
+  //   </Box>
+  // );
 
   return (
     <Formik
@@ -214,9 +215,9 @@ const ConsumeGiftForm: FC = () => {
           const { giftCodeStatus, giftCodeValue } = result;
 
           setConfirmation({
+            giftCodeB58: values.giftCodeB58,
             giftCodeStatus,
             giftValue: giftCodeValue,
-            giftCodeB58: values.giftCodeB58,
           });
 
           if (giftCodeStatus === 'GiftCodeAvailable') {
@@ -269,7 +270,7 @@ const ConsumeGiftForm: FC = () => {
 
         return (
           <Form>
-            {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)}
+            {/* {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)} */}
             <Box pt={4}>
               <FormLabel component="legend">
                 <Typography color="primary">{t('giftDetails')}</Typography>

@@ -1,6 +1,8 @@
 import Store from 'electron-store';
 import { SjclCipherEncrypted } from 'sjcl';
 
+import Contact from '../types/Contact';
+
 interface LocalStoreSchema {
   [key: string]: { type: 'string' | 'array' | 'boolean' };
 }
@@ -46,7 +48,9 @@ export const setStore = (newStore: Store): void => {
   store = newStore;
 };
 
-export const getContacts = (): [] => JSON.parse((store.get(schemaKeys.CONTACTS) as string) || '[]');
+// CBB not sure if this needs to be stringified.
+export const getContacts = (): Contact[] =>
+  JSON.parse((store.get(schemaKeys.CONTACTS) as string) || '[]') as Contact[];
 
 export const setContacts = (contacts: []): void => {
   store.set(schemaKeys.CONTACTS, JSON.stringify(contacts));
@@ -78,7 +82,7 @@ export const setLeaveFullServiceRunning = (leaveFullServiceRunning: boolean): vo
   store.set(schemaKeys.LEAVE_FULL_SERVICE_RUNNING, leaveFullServiceRunning);
 };
 
-export const getMinimumForPin = (): number => Number(store.get(schemaKeys.MINIMUM_FOR_PIN));
+export const getMinimumForPin = (): number => Number(store.get(schemaKeys.MINIMUM_FOR_PIN) || '0');
 
 export const setMinimumForPin = (minimumForPin: number | null): void => {
   store.set(schemaKeys.MINIMUM_FOR_PIN, String(minimumForPin) || '0');
@@ -126,7 +130,7 @@ export const getFullServiceDbPath = (): string => {
   return typeof fullServiceDbPath === 'string' ? fullServiceDbPath : '';
 };
 
-export const getFullServiceLedgerDbPath = () => store.get(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
+export const getFullServiceLedgerDbPath = () => store.get(schemaKeys.LEDGER_DB_PATH);
 
 export const setLedgerDbPath = (name: string): void => {
   store.set(schemaKeys.LEDGER_DB_PATH, name);

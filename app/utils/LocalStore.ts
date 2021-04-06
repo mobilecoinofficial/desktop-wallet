@@ -1,8 +1,6 @@
 import Store from 'electron-store';
 import { SjclCipherEncrypted } from 'sjcl';
 
-import Contact from '../types/Contact';
-
 interface LocalStoreSchema {
   [key: string]: { type: 'string' | 'array' | 'boolean' };
 }
@@ -10,13 +8,11 @@ interface LocalStoreSchema {
 const STORE_NAME = 'mobilecoin_config';
 
 export const schemaKeys = {
-  CONTACTS: 'contacts',
-  ENCRYPTED_ENTROPY: 'encryptedEntropy',
+  ENCRYPTED_CONTACTS: 'encryptedContacts',
+  ENCRYPTED_PASSPHRASE: 'encryptedPassphrase',
   FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
   FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   GIFT_CODES: 'giftCodes',
-  HASHED_PASSWORD: 'hashedPassword',
-  HASHED_PASSWORD_SALT: 'hashedPasswordSalt',
   HASHED_PIN: 'hashedPin',
   LEAVE_FULL_SERVICE_RUNNING: 'leaveFullServiceRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
@@ -27,13 +23,11 @@ export const schemaKeys = {
 };
 
 export const schema: LocalStoreSchema = {
-  [schemaKeys.CONTACTS]: { type: 'string' },
-  [schemaKeys.ENCRYPTED_ENTROPY]: { type: 'string' },
+  [schemaKeys.ENCRYPTED_CONTACTS]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_DB_PATH]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.GIFT_CODES]: { type: 'array' },
-  [schemaKeys.HASHED_PASSWORD]: { type: 'string' },
-  [schemaKeys.HASHED_PASSWORD_SALT]: { type: 'string' },
+  [schemaKeys.ENCRYPTED_PASSPHRASE]: { type: 'string' },
   [schemaKeys.HASHED_PIN]: { type: 'string' },
   [schemaKeys.LEAVE_FULL_SERVICE_RUNNING]: { type: 'boolean' },
   [schemaKeys.LEDGER_DB_PATH]: { type: 'string' },
@@ -48,19 +42,15 @@ export const setStore = (newStore: Store): void => {
   store = newStore;
 };
 
-// CBB not sure if this needs to be stringified.
-export const getContacts = (): Contact[] =>
-  JSON.parse((store.get(schemaKeys.CONTACTS) as string) || '[]') as Contact[];
+export const getEncryptedContacts = (): SjclCipherEncrypted =>
+  store.get(schemaKeys.ENCRYPTED_CONTACTS) as SjclCipherEncrypted;
 
-export const setContacts = (contacts: []): void => {
-  store.set(schemaKeys.CONTACTS, JSON.stringify(contacts));
+export const setEncryptedContacts = (encryptedContacts: SjclCipherEncrypted): void => {
+  store.set(schemaKeys.ENCRYPTED_CONTACTS, encryptedContacts);
 };
 
-export const getEncryptedEntropy = (): SjclCipherEncrypted =>
-  store.get(schemaKeys.ENCRYPTED_ENTROPY) as SjclCipherEncrypted;
-
-export const setEncryptedEntropy = (encryptedEntropy: SjclCipherEncrypted): void => {
-  store.set(schemaKeys.ENCRYPTED_ENTROPY, encryptedEntropy);
+export const deleteEncryptedContacts = (): void => {
+  store.delete(schemaKeys.ENCRYPTED_CONTACTS);
 };
 
 export const getGiftCodes = (): Array<string> => store.get(schemaKeys.GIFT_CODES) as Array<string>;
@@ -100,28 +90,12 @@ export const getTheme = (): string => {
   return typeof theme === 'string' ? theme : 'system';
 };
 
-export const getHashedPassword = (): string | null => {
-  const hashedPassword = store.get(schemaKeys.HASHED_PASSWORD);
-  return typeof hashedPassword === 'string' ? hashedPassword : null;
-};
+export const getEncryptedPassphrase = (): SjclCipherEncrypted | undefined =>
+  store.get(schemaKeys.ENCRYPTED_PASSPHRASE) as SjclCipherEncrypted | undefined;
 
-// TODO - add tests
-export const setHashedPassword = (hashedPassword: string): void => {
+export const setEncryptedPassphrase = (encryptedPassphrase: SjclCipherEncrypted): void => {
   store.set({
-    [schemaKeys.HASHED_PASSWORD]: hashedPassword,
-  });
-};
-
-// TODO - add tests
-export const getHashedPasswordSalt = (): string | null => {
-  const hashedPasswordSalt = store.get(schemaKeys.HASHED_PASSWORD_SALT);
-  return typeof hashedPasswordSalt === 'string' ? hashedPasswordSalt : null;
-};
-
-// TODO - add tests
-export const setHashedPasswordSalt = (hashedPasswordSalt: string): void => {
-  store.set({
-    [schemaKeys.HASHED_PASSWORD_SALT]: hashedPasswordSalt,
+    [schemaKeys.ENCRYPTED_PASSPHRASE]: encryptedPassphrase,
   });
 };
 

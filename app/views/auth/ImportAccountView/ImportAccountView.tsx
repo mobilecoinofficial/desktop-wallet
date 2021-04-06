@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ImportAccountView: FC<ImportAccountViewProps> = ({ isTest }: ImportAccountViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('ImportAccountView');
-  const { hashedPassword } = useFullService();
+  const { encryptedPassphrase } = useFullService();
 
   return (
     <Box data-testid="ImportAccountView" className={classes.root}>
@@ -66,7 +66,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({ isTest }: ImportAccount
           <Typography variant="body2" color="textPrimary" paragraph>
             {t('legacyHex')}
           </Typography>
-          {hashedPassword && (
+          {encryptedPassphrase && (
             <Box data-testid="overwrite-warning">
               <Typography variant="body2" paragraph>
                 {t('overwriteWarning')}

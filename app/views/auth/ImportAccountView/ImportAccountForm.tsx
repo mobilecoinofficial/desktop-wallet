@@ -41,6 +41,7 @@ export const importAccountFormOnSubmit = async (
   const { isMountedRef, importAccount, importLegacyAccount } = pseudoProps;
   const { accountName, entropy, password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
+  setSubmitting(true);
 
   try {
     // return isHex64(st) ? st : bip39.mnemonicToEntropy(st);
@@ -94,7 +95,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     helpers: FormikHelpers<ImportAccountFormValues>
   ) => {
     const pseudoProps = { importAccount, importLegacyAccount, isMountedRef };
-    onSubmit(pseudoProps, values, helpers);
+    await onSubmit(pseudoProps, values, helpers);
   };
 
   const initialValues = {

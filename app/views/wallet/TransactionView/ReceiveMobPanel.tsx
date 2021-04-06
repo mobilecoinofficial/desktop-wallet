@@ -16,22 +16,21 @@ import { useTranslation } from 'react-i18next';
 
 import AccountCard from '../../../components/AccountCard';
 import useFullService from '../../../hooks/useFullService';
-import * as localStore from '../../../utils/LocalStore';
 
 // CBB, really, we should just give the list and work by the indexes.
 const ReceiveMobPanel: FC = () => {
-  const { selectedAccount } = useFullService();
+  const { contacts, selectedAccount } = useFullService();
   const { mainAddress } = selectedAccount.account;
   const [selectedAddress, setSelectedAddress] = useState(mainAddress);
   const { t } = useTranslation('ReceiveMobPanel');
-  const listOfContacts = localStore.getContacts();
+
   const nameFromAddress =
     selectedAddress === mainAddress
       ? t('mainPublicAddress')
-      : listOfContacts.find((contact) => contact.assignedAddress === selectedAddress)?.alias;
+      : contacts.find((contact) => contact.assignedAddress === selectedAddress)?.alias;
 
   const dropDownValues = [{ alias: t('mainPublicAddress'), assignedAddress: mainAddress }].concat(
-    listOfContacts
+    contacts
   );
 
   return (

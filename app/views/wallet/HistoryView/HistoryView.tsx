@@ -8,7 +8,6 @@ import { Redirect } from 'react-router-dom';
 import { LoadingScreen } from '../../../components';
 import useFullService from '../../../hooks/useFullService';
 import type TransactionLog from '../../../types/TransactionLog';
-import * as localStore from '../../../utils/LocalStore';
 import TransactionDetailsView from '../TransactionDetailsView';
 import HistoryList from './HistoryList';
 
@@ -22,14 +21,13 @@ const HistoryView: FC = () => {
 
   const {
     addresses,
+    contacts,
     selectedAccount,
     transactionLogs,
     txos,
     fetchAllTransactionLogsForAccount,
     fetchAllTxosForAccount,
   } = useFullService();
-
-  const listOfContacts = localStore.getContacts();
 
   useEffect(() => {
     fetchAllTransactionLogsForAccount(selectedAccount.account.accountId);
@@ -63,7 +61,7 @@ const HistoryView: FC = () => {
       .map((transactionLog) => {
         // If any transaction is associated to a contact, let's attach the contact object.
         // TODO - we can improve this greatly by changing how this information is stored.
-        const contact = listOfContacts.find(
+        const contact = contacts.find(
           (x) =>
             x.assignedAddress === transactionLog.assignedAddressId ||
             x.recipientAddress === transactionLog.recipientAddressId

@@ -5,21 +5,23 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import routePaths from '../constants/routePaths';
-import SplashScreen from './SplashScreen';
 import useFullService from '../hooks/useFullService';
+import SplashScreen from './SplashScreen';
 
 interface UnlockWalletGuardProps {
   children?: ReactNode;
 }
 
 const UnlockWalletGuard: FC<UnlockWalletGuardProps> = ({ children }) => {
-  const { hashedPassword, isAuthenticated, isInitialized } = useFullService();
+  const { encryptedPassphrase, isAuthenticated, isInitialized } = useFullService();
 
   if (!isInitialized) {
     return <SplashScreen />;
-  } else if (!hashedPassword) {
+  }
+  if (!encryptedPassphrase) {
     return <Redirect to={routePaths.CREATE} />;
-  } else if (isAuthenticated) {
+  }
+  if (isAuthenticated) {
     return <Redirect to={routePaths.APP_DASHBOARD} />;
   }
 

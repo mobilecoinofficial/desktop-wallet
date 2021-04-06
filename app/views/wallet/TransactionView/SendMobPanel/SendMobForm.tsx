@@ -504,8 +504,10 @@ const SendMobForm: FC = () => {
             >
               <Slide in={open} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <div className={classes.paper}>
-                  <h2 id="transition-modal-title">{t('confirm')}</h2>
-                  <p id="transition-modal-description">{t('intent')}:</p>
+                  <Typography variant="h2" id="transition-modal-title">
+                    {t('confirm')}
+                  </Typography>
+                  <Typography id="transition-modal-description">{t('intent')}:</Typography>
                   <br />
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('accountBalance')}:</Typography>
@@ -567,24 +569,26 @@ const SendMobForm: FC = () => {
                   </Box>
                   <br />
                   <Box display="flex">
-                    <Box width="50%">
+                    <Box width="50%" padding="1rem">
                       <Box>
                         {contactName !== '' ? (
-                          <p className={classes.center}>{truncateContact(contactName, 15)}</p>
+                          <Typography className={classes.center}>
+                            {truncateContact(contactName, 15)}
+                          </Typography>
                         ) : (
-                          <p className={classes.center}>{t('recipientPlus1')}</p>
+                          <Typography className={classes.center}>{t('recipientPlus1')}</Typography>
                         )}
-                        <p className={classes.center}>{t('recipientPlus2')}</p>
+                        <Typography className={classes.center}>{t('recipientPlus2')}</Typography>
                         <LongCode
                           code={confirmation?.txProposalReceiverB58Code}
                           codeClass={classes.code}
                         />
                       </Box>
                     </Box>
-                    <Box width="50%">
+                    <Box width="50%" padding="1rem">
                       <Box>
-                        <p className={classes.center}>{t('senderPlus1')}</p>
-                        <p className={classes.center}>{t('senderPlus2')}</p>
+                        <Typography className={classes.center}>{t('senderPlus1')}</Typography>
+                        <Typography className={classes.center}>{t('senderPlus2')}</Typography>
                         <LongCode code={values.senderPublicAddress} codeClass={classes.code} />
                       </Box>
                     </Box>

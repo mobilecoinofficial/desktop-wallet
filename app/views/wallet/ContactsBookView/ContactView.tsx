@@ -102,7 +102,7 @@ const ContactView: FC<ContactViewProps> = ({
     <Container className={classes.cardContainer} maxWidth="sm">
       <Card>
         <CardContent>
-          <h3>{isNew ? t('addTitle') : t('editTitle')}</h3>
+          <Typography variant="h3">{isNew ? t('addTitle') : t('editTitle')}</Typography>
           <Box flexGrow={1} mt={3}>
             <Formik
               initialValues={{

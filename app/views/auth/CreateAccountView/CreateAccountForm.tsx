@@ -34,6 +34,7 @@ export const createAccountFormOnSubmit = async (
   const { isMountedRef, createAccount } = pseudoProps;
   const { accountName, password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
+  setSubmitting(true);
 
   try {
     await createAccount(accountName, password);
@@ -81,7 +82,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
     helpers: FormikHelpers<CreateAccountFormValues>
   ) => {
     const pseduoProps = { createAccount, isMountedRef };
-    onSubmit(pseduoProps, values, helpers);
+    await onSubmit(pseduoProps, values, helpers);
   };
 
   const initialValues = {

@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const CreateAccountView: FC<CreateAccountViewProps> = ({ isTest }: CreateAccountViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('CreateAccountView');
-  const { hashedPassword } = useFullService();
+  const { encryptedPassphrase } = useFullService();
 
   return (
     <Box data-testid="CreateAccountView" className={classes.root}>
@@ -60,7 +60,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({ isTest }: CreateAccount
           <Typography variant="body2" color="textSecondary" paragraph>
             {t('description')}
           </Typography>
-          {hashedPassword && (
+          {encryptedPassphrase && (
             <Box data-testid="overwrite-warning">
               <Typography variant="body2" paragraph>
                 {t('overwriteWarning')}

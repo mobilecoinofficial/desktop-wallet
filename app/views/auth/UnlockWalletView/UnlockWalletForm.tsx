@@ -31,6 +31,7 @@ export const unlockWalletFormOnSubmit = async (
   const { isMountedRef, unlockWallet } = pseudoProps;
   const { password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
+  setSubmitting(true);
 
   try {
     await unlockWallet(password);
@@ -61,7 +62,7 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
     helpers: FormikHelpers<UnlockWalletFormValues>
   ) => {
     const pseduoProps = { isMountedRef, unlockWallet };
-    onSubmit(pseduoProps, values, helpers);
+    await onSubmit(pseduoProps, values, helpers);
   };
 
   const initialValues = {

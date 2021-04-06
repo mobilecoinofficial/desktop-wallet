@@ -25,7 +25,6 @@ const ensureSalt = (): string => {
 };
 
 const argon2Key = async (passphrase: string): Promise<{ secretKey: string }> => {
-  const t0 = performance.now();
   const saltHex = ensureSalt();
 
   const salt = Buffer.from(saltHex, 'hex');
@@ -39,8 +38,6 @@ const argon2Key = async (passphrase: string): Promise<{ secretKey: string }> => 
     type: argon2id,
   });
   const secretKey = cryptoBufferToHex(secretKeyBuffer);
-  const t1 = performance.now();
-  console.log(t1 - t0);
   return {
     secretKey,
   };

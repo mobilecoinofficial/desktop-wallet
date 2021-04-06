@@ -2,7 +2,7 @@
 
 Do not build from main without full confidence in the state of the application. If there is no official release, please contact an admin for the correct branch. Self-package at your own risk.
 
-Be viligent for phishing attempts.
+Be vigilant for phishing attempts.
 
 
 ## MobileCoin Electron Wallet [Beta]

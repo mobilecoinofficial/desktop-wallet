@@ -1,6 +1,8 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import type { FC, ReactNode } from 'react';
 
+import { SjclCipherEncrypted } from 'sjcl';
+
 import * as fullServiceApi from '../fullService/api';
 import type { BuildGiftCodeParams, BuildGiftCodeResult } from '../fullService/api/buildGiftCode';
 import type { BuildTransactionParams } from '../fullService/api/buildTransaction';
@@ -11,9 +13,13 @@ import type {
 import type { ClaimGiftCodeParams, ClaimGiftCodeResult } from '../fullService/api/claimGiftCode';
 import type { RemoveAccountParams, RemoveAccountResult } from '../fullService/api/removeAccount';
 import type { SubmitGiftCodeParams, SubmitGiftCodeResult } from '../fullService/api/submitGiftCode';
+import decryptContacts from '../models/Contact/decryptContacts';
+import deleteAllContacts from '../models/Contact/deleteAllContacts';
+import encryptContacts from '../models/Contact/encryptContacts';
 import type { Accounts } from '../types/Account';
 import type { Addresses } from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
+import Contact from '../types/Contact';
 import type GiftCode from '../types/GiftCode';
 import type { StringHex } from '../types/SpecialStrings';
 import type { TransactionLogs } from '../types/TransactionLog';
@@ -21,8 +27,8 @@ import type TxProposal from '../types/TxProposal';
 import type { Txos } from '../types/Txo';
 import type WalletStatus from '../types/WalletStatus';
 import * as localStore from '../utils/LocalStore';
+import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authentication';
 import sameObject from '../utils/sameObject';
-import scryptKeys from '../utils/scryptKeys';
 
 type PendingSecrets = {
   entropy: StringHex;
@@ -37,12 +43,14 @@ type SelectedAccount = {
 interface FullServiceState {
   accounts: Accounts;
   addresses: Addresses;
+  contacts: Contact[];
   giftCodes: GiftCode[] | null;
-  hashedPassword: string | null;
+  encryptedPassphrase: SjclCipherEncrypted | undefined;
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
   isInitialized: boolean;
   pendingSecrets: PendingSecrets | null;
+  secretKey: string;
   selectedAccount: SelectedAccount;
   transactionLogs: TransactionLogs | null;
   txos: Txos;
@@ -60,23 +68,28 @@ export interface FullServiceContextValue extends FullServiceState {
   ) => Promise<CheckGiftCodeStatusResult | void>;
   claimGiftCode: (claimGiftCodeParams: ClaimGiftCodeParams) => Promise<ClaimGiftCodeResult | void>;
   confirmEntropyKnown: () => void;
-  createAccount: (accountName: string | null, password: string) => Promise<void>;
+  createAccount: (accountName: string | null, passphrase: string) => Promise<void>;
   deleteStoredGiftCodeB58: (storedGiftCodeB58: string) => void;
   fetchAllTransactionLogsForAccount: (accountId: StringHex) => void;
   fetchAllTxosForAccount: (accountId: StringHex) => void;
-  importAccount: (accountName: string | null, mnemonic: string, password: string) => Promise<void>;
+  importAccount: (
+    accountName: string | null,
+    mnemonic: string,
+    passphrase: string
+  ) => Promise<void>;
   importLegacyAccount: (
     accountName: string | null,
     entropy: string,
-    password: string
+    passphrase: string
   ) => Promise<void>;
   removeAccount: (removeAccountParams: RemoveAccountParams) => Promise<RemoveAccountResult | void>;
-  retrieveEntropy: (password: string) => Promise<string | void>;
+  retrieveEntropy: (passphrase: string) => Promise<string | void>;
   submitGiftCode: (
     submitGiftCodeParams: SubmitGiftCodeParams
   ) => Promise<SubmitGiftCodeResult | void>;
   submitTransaction: (txProposal: TxProposal) => Promise<void>;
-  unlockWallet: (password: string) => Promise<void>;
+  unlockWallet: (passphrase: string) => Promise<void>;
+  updateContacts: (contacts: Contact[]) => void;
 }
 
 interface FullServiceProviderProps {
@@ -86,7 +99,7 @@ interface FullServiceProviderProps {
 type InitializeAction = {
   type: 'INITIALIZE';
   payload: {
-    hashedPassword: string | null;
+    encryptedPassphrase: SjclCipherEncrypted | undefined;
     isAuthenticated: boolean;
   };
 };
@@ -128,7 +141,7 @@ type CreateAccountAction = {
   payload: {
     accounts: Accounts;
     addresses: Addresses;
-    hashedPassword: string;
+    encryptedPassphrase: SjclCipherEncrypted;
     pendingSecrets: PendingSecrets;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
@@ -141,7 +154,7 @@ type ImportAccountAction = {
   payload: {
     accounts: Accounts;
     addresses: Addresses;
-    hashedPassword: string;
+    encryptedPassphrase: SjclCipherEncrypted;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
@@ -161,8 +174,24 @@ type UnlockWalletAction = {
   payload: {
     accounts: Accounts;
     addresses: Addresses;
+    contacts: Contact[];
+    secretKey: string;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
+  };
+};
+
+type UpdateContacts = {
+  type: 'UPDATE_CONTACTS';
+  payload: {
+    contacts: Contact[];
+  };
+};
+
+type UpdatePassphrase = {
+  type: 'UPDATE_PASSPHRASE';
+  payload: {
+    encryptedPassphrase: SjclCipherEncrypted;
   };
 };
 
@@ -184,7 +213,9 @@ type Action =
   | InitializeAction
   | SyncLedgerAction
   | UnlockWalletAction
+  | UpdateContacts
   | UpdateGiftCodesAction
+  | UpdatePassphrase
   | UpdateStatusAction;
 
 // TODO -- check if initialized state is the only time thse values are null
@@ -194,10 +225,12 @@ type Action =
 const initialFullServiceState: FullServiceState = {
   accounts: { accountIds: [], accountMap: {} },
   addresses: { addressIds: [], addressMap: {} },
-  hashedPassword: null,
+  contacts: [],
+  encryptedPassphrase: undefined,
   isAuthenticated: false,
   isEntropyKnown: false,
   isInitialized: false,
+  secretKey: '',
   selectedAccount: {
     account: {
       accountHeight: '',
@@ -247,11 +280,11 @@ const initialFullServiceState: FullServiceState = {
 const reducer = (state: FullServiceState, action: Action): FullServiceState => {
   switch (action.type) {
     case 'INITIALIZE': {
-      const { hashedPassword, isAuthenticated } = action.payload;
+      const { encryptedPassphrase, isAuthenticated } = action.payload;
       // TODO - really, gift codes should be pulled when on the screen, not on startup
       return {
         ...state,
-        hashedPassword,
+        encryptedPassphrase,
         isAuthenticated,
         isInitialized: true,
       };
@@ -292,12 +325,18 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case 'IMPORT_ACCOUNT': {
-      const { accounts, addresses, hashedPassword, selectedAccount, walletStatus } = action.payload;
+      const {
+        accounts,
+        addresses,
+        encryptedPassphrase,
+        selectedAccount,
+        walletStatus,
+      } = action.payload;
       return {
         ...state,
         accounts,
         addresses,
-        hashedPassword,
+        encryptedPassphrase,
         isAuthenticated: true,
         isEntropyKnown: true,
         selectedAccount,
@@ -309,7 +348,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       const {
         accounts,
         addresses,
-        hashedPassword,
+        encryptedPassphrase,
         pendingSecrets,
         selectedAccount,
         walletStatus,
@@ -318,7 +357,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         ...state,
         accounts,
         addresses,
-        hashedPassword,
+        encryptedPassphrase,
         isAuthenticated: true,
         isEntropyKnown: false,
         pendingSecrets,
@@ -344,15 +383,42 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case 'UNLOCK_WALLET': {
-      const { accounts, addresses, selectedAccount, walletStatus } = action.payload;
+      const {
+        accounts,
+        addresses,
+        contacts,
+        secretKey,
+        selectedAccount,
+        walletStatus,
+      } = action.payload;
       return {
         ...state,
         accounts,
         addresses,
+        contacts,
         isAuthenticated: true,
         isEntropyKnown: true,
+        secretKey,
         selectedAccount,
         walletStatus,
+      };
+    }
+
+    case 'UPDATE_CONTACTS': {
+      const { contacts } = action.payload;
+
+      return {
+        ...state,
+        contacts,
+      };
+    }
+
+    case 'UPDATE_PASSPHRASE': {
+      const { encryptedPassphrase } = action.payload;
+
+      return {
+        ...state,
+        encryptedPassphrase,
       };
     }
 
@@ -393,6 +459,7 @@ const FullServiceContext = createContext<FullServiceContextValue>({
   submitGiftCode: () => Promise.resolve(),
   submitTransaction: () => Promise.resolve(),
   unlockWallet: () => Promise.resolve(),
+  updateContacts: () => Promise.resolve(),
 });
 
 export const FullServiceProvider: FC<FullServiceProviderProps> = ({
@@ -411,24 +478,19 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
   const changePassword = async (oldPassword: string, newPassword: string) => {
     try {
-      const { hashedPassword } = state;
-      const salt = localStore.getHashedPasswordSalt();
-      if (!hashedPassword || !salt) {
-        throw new Error('hashedPassword not found.');
+      const { encryptedPassphrase } = state;
+      if (encryptedPassphrase === undefined) {
+        throw new Error('encryptedPassphrase assertion failed');
       }
 
-      // Attempt to match password digest
-      const { secretKeyString } = await scryptKeys(oldPassword, salt);
-      if (secretKeyString !== hashedPassword) {
-        throw new Error('Incorrect Password');
-      } // TODO: i18n
+      await validatePassphrase(oldPassword, encryptedPassphrase);
 
-      // Set new password
-      const { publicSaltString, secretKeyString: newSecretKeyString } = await scryptKeys(
-        newPassword
-      );
-      localStore.setHashedPassword(newSecretKeyString);
-      localStore.setHashedPasswordSalt(publicSaltString);
+      const newEncryptedPassphrase = await encryptAndStorePassphrase(newPassword);
+
+      dispatch({
+        payload: { encryptedPassphrase: newEncryptedPassphrase },
+        type: 'UPDATE_PASSPHRASE',
+      });
     } catch (err) {
       throw new Error(err.message);
     }
@@ -491,11 +553,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  const createAccount = async (name: string | null, password: string) => {
+  const createAccount = async (name: string | null, passphrase: string) => {
     try {
       // Wipe Accounts and Contacts
       await removeAllAccounts([]);
-      localStore.setContacts([]);
+      deleteAllContacts();
 
       // Attempt create
       const { account } = await fullServiceApi.createAccount({ name });
@@ -513,12 +575,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       });
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
-      // After successful import, store password digest
-      // TODO - rename secret key as digest
-      const { publicSaltString, secretKeyString: hashedPassword } = await scryptKeys(password);
-      localStore.setHashedPassword(hashedPassword);
-      localStore.setHashedPasswordSalt(publicSaltString);
-
+      // After successful import, store encryptedPassphrase
+      const encryptedPassphrase = await encryptAndStorePassphrase(passphrase);
       dispatch({
         payload: {
           accounts: {
@@ -529,7 +587,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
-          hashedPassword,
+          encryptedPassphrase,
           pendingSecrets,
           selectedAccount: {
             account,
@@ -547,11 +605,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Import the wallet should initalize the basic wallet information
   // The wallet status
   // Accounts + status
-  const importAccount = async (name: string | null, mnemonic: string, password: string) => {
+  const importAccount = async (name: string | null, mnemonic: string, passphrase: string) => {
     try {
       // Wipe Accounts and Contacts
       await removeAllAccounts([]);
-      localStore.setContacts([]);
+      deleteAllContacts();
 
       // Attempt import
       const { account } = await fullServiceApi.importAccount({
@@ -564,16 +622,14 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       // Get basic wallet information
       const { walletStatus } = await fullServiceApi.getWalletStatus();
       const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-
       const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
         accountId,
       });
-
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-      // After successful import, store password digest
-      const { publicSaltString, secretKeyString: hashedPassword } = await scryptKeys(password);
-      localStore.setHashedPassword(hashedPassword);
-      localStore.setHashedPasswordSalt(publicSaltString);
+
+      // After successful import, store encryptedPassphrase
+      const encryptedPassphrase = await encryptAndStorePassphrase(passphrase);
+
       dispatch({
         payload: {
           accounts: {
@@ -584,7 +640,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
-          hashedPassword,
+          encryptedPassphrase,
           selectedAccount: {
             account,
             balanceStatus,
@@ -601,11 +657,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Import the wallet should initalize the basic wallet information
   // The wallet status
   // Accounts + status
-  const importLegacyAccount = async (name: string | null, entropy: string, password: string) => {
+  const importLegacyAccount = async (name: string | null, entropy: string, passphrase: string) => {
     try {
       // Wipe Accounts and Contacts
       await removeAllAccounts([]);
-      localStore.setContacts([]);
+      deleteAllContacts();
 
       // Attempt import
       const { account } = await fullServiceApi.importLegacyAccount({ entropy, name });
@@ -622,10 +678,10 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       });
 
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-      // After successful import, store password digest
-      const { publicSaltString, secretKeyString: hashedPassword } = await scryptKeys(password);
-      localStore.setHashedPassword(hashedPassword);
-      localStore.setHashedPasswordSalt(publicSaltString);
+
+      // After successful import, store encryptedPassphrase
+      const encryptedPassphrase = await encryptAndStorePassphrase(passphrase);
+
       dispatch({
         payload: {
           accounts: {
@@ -636,7 +692,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
-          hashedPassword,
+          encryptedPassphrase,
           selectedAccount: {
             account,
             balanceStatus,
@@ -690,25 +746,36 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  const retrieveEntropy = async (password: string) => {
+  const retrieveEntropy = async (passphrase: string) => {
     try {
-      const { hashedPassword, selectedAccount } = state;
-      const salt = localStore.getHashedPasswordSalt();
-      if (!hashedPassword || !salt) {
-        throw new Error('hashedPassword not found.');
+      const { encryptedPassphrase, selectedAccount } = state;
+      if (encryptedPassphrase === undefined) {
+        throw new Error('encryptedPassphrase assertion failed');
       }
 
-      // Attempt to match password digest
-      const { secretKeyString } = await scryptKeys(password, salt);
-      if (secretKeyString !== hashedPassword) {
-        throw new Error('Incorrect Password');
-      } // TODO: i18n
+      // TODO - use secretKey returned here to pass to Full-Service to get secrets.
+      await validatePassphrase(passphrase, encryptedPassphrase);
 
       const { accountSecrets } = await fullServiceApi.exportAccountSecrets({
         accountId: selectedAccount.account.accountId,
       });
 
       return accountSecrets.entropy ?? accountSecrets.mnemonic ?? '';
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
+  const updateContacts = (contacts: Contact[]) => {
+    try {
+      const { secretKey } = state;
+      encryptContacts(contacts, secretKey);
+      dispatch({
+        payload: {
+          contacts,
+        },
+        type: 'UPDATE_CONTACTS',
+      });
     } catch (err) {
       throw new Error(err.message);
     }
@@ -753,25 +820,22 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     });
   };
 
-  const unlockWallet = async (password: string): Promise<void> => {
+  const unlockWallet = async (passphrase: string): Promise<void> => {
     try {
-      // TODO -- remove scrypt for DB encryption w/ Argon2
-      const { hashedPassword } = state;
-      const salt = localStore.getHashedPasswordSalt();
-      if (!hashedPassword || !salt) {
-        throw new Error('hashedPassword not found.');
+      const { encryptedPassphrase } = state;
+      if (encryptedPassphrase === undefined) {
+        throw new Error('encryptedPassphrase assertion failed');
       }
 
-      // Attempt to match password digest
-      const { secretKeyString } = await scryptKeys(password, salt);
-      if (secretKeyString !== hashedPassword) {
-        throw new Error('Incorrect Password');
-      } // TODO: i18n
+      const { secretKey } = await validatePassphrase(passphrase, encryptedPassphrase);
 
       // Get main account id
       const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
       // TODO - need better metadata for this; come back and use config data
       const selectedAccount = accountMap[accountIds[0]];
+
+      // Decrypt Contacts
+      const contacts = await decryptContacts(secretKey);
 
       // Get basic wallet information
       const { walletStatus } = await fullServiceApi.getWalletStatus();
@@ -794,6 +858,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressIds,
             addressMap,
           },
+          contacts,
+          secretKey,
           selectedAccount: {
             account: selectedAccount,
             balanceStatus,
@@ -812,11 +878,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     const initialize = () => {
       // TODO - no real reason to try
       try {
-        const hashedPassword = localStore.getHashedPassword();
-        getAllGiftCodes();
+        const encryptedPassphrase = localStore.getEncryptedPassphrase();
+        getAllGiftCodes(); // TODO - this should not occur until unlock
         dispatch({
           payload: {
-            hashedPassword,
+            encryptedPassphrase,
             isAuthenticated: false,
           },
           type: 'INITIALIZE',
@@ -824,7 +890,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       } catch (err) {
         dispatch({
           payload: {
-            hashedPassword: null,
+            encryptedPassphrase: null,
             isAuthenticated: false,
           },
           type: 'INITIALIZE',
@@ -901,6 +967,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         submitGiftCode,
         submitTransaction,
         unlockWallet,
+        updateContacts,
       }}
     >
       {children}

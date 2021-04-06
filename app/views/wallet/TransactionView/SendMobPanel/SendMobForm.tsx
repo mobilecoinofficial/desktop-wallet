@@ -129,9 +129,7 @@ const SendMobForm: FC = () => {
   const [slideExitSpeed, setSlideExitSpeed] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const { buildTransaction, selectedAccount, submitTransaction } = useFullService();
-
-  const listOfContacts = localStore.getContacts().filter((x) => x.recipientAddress);
+  const { buildTransaction, contacts, selectedAccount, submitTransaction } = useFullService();
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
   const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
@@ -377,7 +375,7 @@ const SendMobForm: FC = () => {
           totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
-        const sortedContacts = [...listOfContacts].sort((a, b) => {
+        const sortedContacts = [...contacts].sort((a, b) => {
           if (a.isFavorite !== b.isFavorite) {
             return a.isFavorite ? -1 : 1;
           }
@@ -399,7 +397,7 @@ const SendMobForm: FC = () => {
                 <Typography color="primary">{t('transaction')}</Typography>
               </FormLabel>
 
-              {listOfContacts.length > 0 && (
+              {contacts.length > 0 && (
                 <Select
                   style={{ width: '100%' }}
                   labelId="contactsList"
@@ -409,7 +407,7 @@ const SendMobForm: FC = () => {
                   onChange={(x) => {
                     setContactId(x.target.value);
                     if (x.target.value !== NO_CONTACT_SELECTED) {
-                      const selectedContact = listOfContacts.find(
+                      const selectedContact = contacts.find(
                         (z) => z.assignedAddress === x.target.value
                       );
                       setFieldValue('recipientPublicAddress', selectedContact.recipientAddress);

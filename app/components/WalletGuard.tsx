@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import routePaths from '../constants/routePaths';
-import useMobileCoinD from '../hooks/useMobileCoinD';
+import useFullService from '../hooks/useFullService';
 
 interface WalletGuardProps {
   children?: ReactNode;
 }
 
 const WalletGuard: FC<WalletGuardProps> = ({ children }) => {
-  const { isAuthenticated } = useMobileCoinD();
+  const { isAuthenticated } = useFullService();
 
   if (!isAuthenticated) {
     return <Redirect to={routePaths.ROOT} />;

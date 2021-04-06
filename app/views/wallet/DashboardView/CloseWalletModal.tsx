@@ -1,36 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Container, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 
 import { SubmitButton } from '../../../components';
 import { Theme } from '../../../theme';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    button: {
-      maxWidth: 300,
-      width: '35vw',
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(3, 4),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  button: {
+    maxWidth: 300,
+    width: '35vw',
+  },
+  card: {
+    padding: theme.spacing(0, 3),
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(3, 4),
+  },
+}));
 
 const CloseWalletModal: FC = () => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const { t } = useTranslation('CloseWalletModal');
 
   const handleOpenModal = () => {
@@ -47,16 +48,18 @@ const CloseWalletModal: FC = () => {
 
   return (
     <>
-      <Container maxWidth="sm" style={{ padding: '0' }}>
-        <SubmitButton
-          testID="close-wallet-button"
-          disabled={false}
-          isSubmitting={false}
-          onClick={handleOpenModal}
-        >
-          {t('closeWalletButton')}
-        </SubmitButton>
-      </Container>
+      <Card className={classes.card}>
+        <CardContent>
+          <SubmitButton
+            testID="close-wallet-button"
+            disabled={false}
+            isSubmitting={false}
+            onClick={handleOpenModal}
+          >
+            {t('closeWalletButton')}
+          </SubmitButton>
+        </CardContent>
+      </Card>
       <Modal
         data-testid="close-wallet-modal"
         className={classes.modal}

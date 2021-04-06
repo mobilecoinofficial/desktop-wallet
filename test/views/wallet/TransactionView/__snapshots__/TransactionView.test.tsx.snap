@@ -106,12 +106,12 @@ exports[`TransactionView component render TransactionView renders correctly 1`] 
                       class="MuiBox-root MuiBox-root"
                     >
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 MuiTypography-colorTextPrimary"
                       >
                         Account Name
                       </p>
                       <p
-                        class="MuiTypography-root MuiTypography-body1"
+                        class="MuiTypography-root MuiTypography-body1 MuiTypography-colorTextPrimary"
                       >
                         Account Balance
                       </p>
@@ -169,65 +169,62 @@ exports[`TransactionView component render TransactionView renders correctly 1`] 
                           class="MuiBox-root MuiBox-root"
                         >
                           <p
-                            class="MuiTypography-root MuiTypography-body1"
+                            class="MuiTypography-root MuiTypography-body1 MuiTypography-colorTextPrimary"
                           >
-                             account name: 
+                             account name:
                             <span
                               class="MuiBox-root MuiBox-root"
                               data-testid="short-code"
                             >
                               <span
-                                class="MuiBox-root MuiBox-root"
+                                class="MuiBox-root MuiBox-root makeStyles-lowercased"
                               >
                                 b
                               </span>
                               <span
-                                class="MuiBox-root MuiBox-root"
-                                style="color: rgb(250, 207, 85);"
+                                class="MuiBox-root MuiBox-root makeStyles-number"
                               >
                                 5
                               </span>
                               <span
-                                class="MuiBox-root MuiBox-root"
-                                style="color: rgb(250, 207, 85);"
+                                class="MuiBox-root MuiBox-root makeStyles-number"
                               >
                                 8
                               </span>
                               <span
-                                class="MuiBox-root MuiBox-root"
-                                style="color: rgb(250, 207, 85);"
+                                class="MuiBox-root MuiBox-root makeStyles-number"
                               >
-                                 
+
                               </span>
                               <span
-                                class="MuiBox-root MuiBox-root"
+                                class="MuiBox-root MuiBox-root makeStyles-lowercased"
                               >
                                 -
                               </span>
                               <span
-                                class="MuiBox-root MuiBox-root"
+                                class="MuiBox-root MuiBox-root makeStyles-lowercased"
                               >
                                 c
                               </span>
                               <span
-                                class="MuiBox-root MuiBox-root"
+                                class="MuiBox-root MuiBox-root makeStyles-lowercased"
                               >
                                 o
                               </span>
                               <span
-                                class="MuiBox-root MuiBox-root"
+                                class="MuiBox-root MuiBox-root makeStyles-lowercased"
                               >
                                 d
                               </span>
                               <span
-                                class="MuiBox-root MuiBox-root"
+                                class="MuiBox-root MuiBox-root makeStyles-lowercased"
                               >
                                 e
                               </span>
                             </span>
                           </p>
                           <p
-                            class="MuiTypography-root MuiTypography-body1"
+                            class="MuiTypography-root MuiTypography-body1 MuiTypography-colorTextPrimary"
                           >
                             <span>
                               0.000088888888

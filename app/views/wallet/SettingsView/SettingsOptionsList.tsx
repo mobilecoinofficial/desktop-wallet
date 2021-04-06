@@ -12,18 +12,16 @@ export interface SettingsOptionsListProps {
 
 const SettingsOptionsList: FC<SettingsOptionsListProps> = ({
   settingOptionsList,
-}: SettingsOptionsListProps) => {
-  return (
-    <Grid container spacing={2}>
-      <Grid item sm={12}>
-        <Grid container justify="center" spacing={3}>
-          {settingOptionsList.map(({ Icon, label, path }) => {
-            return <SettingsOptionsItem Icon={Icon} key={label} label={label} path={path} />;
-          })}
-        </Grid>
+}: SettingsOptionsListProps) => (
+  <Grid container spacing={2}>
+    <Grid item sm={12}>
+      <Grid container justify="center" spacing={3}>
+        {settingOptionsList.map(({ Icon, label, path }) => (
+          <SettingsOptionsItem Icon={Icon} key={label} label={label} path={path} />
+        ))}
       </Grid>
     </Grid>
-  );
-};
+  </Grid>
+);
 
 export default SettingsOptionsList;

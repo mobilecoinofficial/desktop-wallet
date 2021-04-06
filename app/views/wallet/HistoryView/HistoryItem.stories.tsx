@@ -13,12 +13,12 @@ const Template: Story<ComponentProps<typeof HistoryItem>> = (args) => <HistoryIt
 
 export const Primary = Template.bind({});
 Primary.args = {
-  amount: 15,
-  comment: 'Some Comment',
-  dateTime: new Date(),
-  direction: 'received',
-  name: 'Bob Barker',
   onClick: () => {},
-  sign: '+',
-  status: 'succeeded',
+  transactionLog: {
+    assignedAddressId:
+      'dx6H3G2PJtmlcQDtBun3wRzw0lUkR5iqcIu7mGAZsfgi69X43u25VARu1ewpqy54siUae8kQcdLdA9tShh712qpZnAMicizvJ9s',
+    direction: 'tx_direction_received',
+    finalizedBlockIndex: '1234124',
+    valuePmob: '1520000',
+  },
 };

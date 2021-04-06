@@ -1,8 +1,9 @@
 import * as bip39 from 'bip39';
 
-const isHex64 = (st: string): boolean => st.length === 64 && st.match(/^[0-9a-f]{64}$/i) !== null;
+export const isHex64 = (st: string): boolean =>
+  st.length === 64 && st.match(/^[0-9a-f]{64}$/i) !== null;
 
-const isMnemonic = (st: string): boolean => st.match(/^(\w+\s+){11,}\w+$/) !== null;
+export const isMnemonic = (st: string): boolean => st.match(/^(\w+\s+){11,}\w+$/) !== null;
 
 export const isValidMnemonicOrHexFormat = (st: string | undefined): boolean =>
   !!st && (isHex64(st) || isMnemonic(st));

@@ -13,7 +13,7 @@ const TabPanel = (props: TabPanelProps): JSX.Element => {
 
   const Panel = panels[selectedTabIndex];
   return (
-    <Box p={3}>
+    <Box margin="auto">
       <Panel />
     </Box>
   );

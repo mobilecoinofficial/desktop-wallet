@@ -1,191 +1,110 @@
-import React, { Fragment, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
 
-import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import { Redirect } from 'react-router-dom';
 
-import type { Theme } from '../../../theme';
-import { differentYearMonth } from '../../../utils/dateFunctions';
+import { LoadingScreen } from '../../../components';
+import useFullService from '../../../hooks/useFullService';
+import type TransactionLog from '../../../types/TransactionLog';
+import * as localStore from '../../../utils/LocalStore';
 import TransactionDetailsView from '../TransactionDetailsView';
-import HistoryDateSeparator from './HistoryDateSeparator';
-import HistoryItem from './HistoryItem';
-
-/* FAKE DATA ***************************************************** */
-type Direction = 'received' | 'sent';
-type Status = 'pending' | 'received' | 'succeeded';
-
-const fake = (
-  id: string,
-  dateTime: Date,
-  name: string,
-  amount: number,
-  direction: Direction,
-  status: Status,
-  comment: string
-) => ({
-  amount,
-  comment,
-  dateTime,
-  direction,
-  id,
-  name,
-  status,
-});
-
-const FAKE_DATA = [
-  fake(
-    'lkj',
-    new Date('2022-02-04T16:32:00'),
-    'Peter Smithson',
-    4.6478654,
-    'sent',
-    'pending',
-    'First comment'
-  ),
-  fake('hjk', new Date('2021-01-30T20:49:00'), 'John Doe', 30.237, 'sent', 'succeeded', ''),
-  fake('asd', new Date('2021-01-16T18:46:00'), '7fg3-6ds2', 20.0, 'received', 'received', ''),
-  fake(
-    'mnb',
-    new Date('2020-12-22T23:54:00'),
-    '8gh5-3fh5',
-    5.645,
-    'sent',
-    'succeeded',
-    'No comment here'
-  ),
-  fake('vbn', new Date('2020-12-18T20:17:00'), '4hd2-2ahj4', 14.0, 'received', 'received', ''),
-  fake('rty', new Date('2020-11-28T16:32:00'), '3gh4-9jkl3', 1.356, 'received', 'received', ''),
-  fake('oiu', new Date('2020-11-14T08:56:00'), '5hj5-lcv3', 2.824, 'sent', 'succeeded', ''),
-  fake('poi', new Date('2020-11-11T19:11:00'), 'Ellaine Brisbane', 0.567, 'sent', 'succeeded', ''),
-  fake('qwe', new Date('2020-10-28T16:32:00'), '0vi4-s24k', 1.356, 'received', 'received', ''),
-  fake(
-    'ytr',
-    new Date('2020-10-14T20:56:00'),
-    '9kj3-vm3f',
-    2.824,
-    'sent',
-    'succeeded',
-    'Next to last comment'
-  ),
-  fake(
-    'rew',
-    new Date('2020-10-11T19:11:00'),
-    'Richard Simpson',
-    0.567,
-    'sent',
-    'succeeded',
-    'No more comments'
-  ),
-];
-
-/* FAKE DATA END ************************************************* */
-
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      minHeight: '100%',
-      paddingBottom: theme.spacing(3),
-      paddingLeft: theme.spacing(5),
-      paddingRight: theme.spacing(5),
-    },
-  };
-});
+import HistoryList from './HistoryList';
 
 const HISTORY = 'history';
 const DETAILS = 'details';
 
 const HistoryView: FC = () => {
-  const classes = useStyles();
-
-  const [currentTransaction, setCurrentTransaction] = React.useState(null);
-  const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
-  const [dataToShow, setDataToShow] = React.useState(FAKE_DATA);
+  const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [showing, setShowing] = useState(HISTORY);
-
   const { t } = useTranslation('HistoryView');
 
-  const handleChange = (_event: React.ChangeEvent<Record<string, unknown>>, newValue: number) => {
-    setSelectedTabIndex(Number(newValue));
-    switch (newValue) {
-      case 0:
-        setDataToShow(FAKE_DATA);
-        break;
-      case 1:
-        setDataToShow(FAKE_DATA.filter((x) => x.direction === 'sent'));
-        break;
-      case 2:
-        setDataToShow(FAKE_DATA.filter((x) => x.direction === 'received'));
-        break;
-      default:
-        throw new Error('WRONG TAB!');
-    }
-  };
+  const {
+    addresses,
+    selectedAccount,
+    transactionLogs,
+    txos,
+    fetchAllTransactionLogsForAccount,
+    fetchAllTxosForAccount,
+  } = useFullService();
 
-  if (showing === HISTORY) {
+  const listOfContacts = localStore.getContacts();
+
+  useEffect(() => {
+    fetchAllTransactionLogsForAccount(selectedAccount.account.accountId);
+    fetchAllTxosForAccount(selectedAccount.account.accountId);
+  }, [selectedAccount?.account?.accountId]); /* eslint-disable-line react-hooks/exhaustive-deps */
+
+  // TODO -- this error state is fine, we should reintroduce
+  // useEffect(() => {
+  //   try {
+  //   } catch (err) {
+  //     setShowing(ERROR);
+  //   }
+  // }, []);
+
+  if (transactionLogs === null) {
+    return <LoadingScreen />;
+  }
+
+  if (transactionLogs.transactionLogIds.length === 0) {
     return (
-      <Box className={classes.root}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <Tabs
-              variant="fullWidth"
-              value={selectedTabIndex}
-              indicatorColor="secondary"
-              textColor="secondary"
-              onChange={handleChange}
-            >
-              <Tab label={t('showAllTransactions')} />
-              <Tab label={t('showSentTransactions')} />
-              <Tab label={t('showReceivedTransactions')} />
-            </Tabs>
-          </Grid>
-          {dataToShow.map((trans, ind) => (
-            <Fragment key={trans.id}>
-              {(ind === 0 ||
-                differentYearMonth(dataToShow[ind - 1].dateTime, dataToShow[ind].dateTime)) && (
-                <HistoryDateSeparator dateTime={trans.dateTime} />
-              )}
-              <HistoryItem
-                amount={trans.amount}
-                comment={trans.comment}
-                dateTime={trans.dateTime}
-                direction={trans.direction}
-                id={trans.id}
-                name={trans.name}
-                onClick={() => {
-                  setCurrentTransaction(trans);
-                  setShowing(DETAILS);
-                }}
-                sign={trans.direction === 'sent' ? '-' : '+'}
-                status={trans.status}
-              />
-            </Fragment>
-          ))}
-        </Grid>
+      <Box display="flex" justifyContent="center">
+        <Typography>{t('emptyState')}</Typography>
       </Box>
     );
   }
 
-  return (
-    <Grid item xs={12} hidden={showing !== DETAILS}>
-      <TransactionDetailsView
-        amount={currentTransaction.amount}
-        comment={currentTransaction.comment}
-        dateTime={currentTransaction.dateTime}
-        direction={currentTransaction.direction}
-        id={currentTransaction.id}
-        name={currentTransaction.name}
-        onChangedComment={(i, v) => {
-          console.log('Supposedly changing comment to ', i, v);
+  const buildList = (): TransactionLog[] =>
+    transactionLogs.transactionLogIds
+      .map((id) => transactionLogs.transactionLogMap[id])
+      .filter((transactionLog) => transactionLog.assignedAddressId !== addresses.addressIds[1])
+      .map((transactionLog) => {
+        // If any transaction is associated to a contact, let's attach the contact object.
+        // TODO - we can improve this greatly by changing how this information is stored.
+        const contact = listOfContacts.find(
+          (x) =>
+            x.assignedAddress === transactionLog.assignedAddressId ||
+            x.recipientAddress === transactionLog.recipientAddressId
+        );
+        if (contact) {
+          transactionLog.contact = contact; /* eslint-disable-line no-param-reassign */
+        }
+        return transactionLog;
+      })
+      .sort((a, b) => b.offsetCount - a.offsetCount);
 
-          FAKE_DATA.find((x) => x.id === i).comment = v;
-        }}
-        onClickBack={() => setShowing(HISTORY)}
-        sign={currentTransaction.direction === 'sent' ? '-' : '+'}
-        status={currentTransaction.status}
-      />
-    </Grid>
-  );
+  switch (showing) {
+    case HISTORY:
+      return (
+        <HistoryList
+          transactionLogsList={buildList()}
+          onTransactionClick={(transactionLog) => {
+            setCurrentTransaction(transactionLog);
+            setShowing(DETAILS);
+          }}
+        />
+      );
+
+    case DETAILS:
+      /*
+            We should get the TXOs for the transaction
+          */
+
+      return (
+        <TransactionDetailsView
+          comment="this should come from metadata"
+          onClickBack={() => setShowing(HISTORY)}
+          onChangedComment={() => {}}
+          transactionLog={currentTransactionLog}
+          txos={txos}
+        />
+      );
+
+    default:
+      return <Redirect to="-" />;
+  }
 };
 
 export default HistoryView;

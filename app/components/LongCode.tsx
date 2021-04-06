@@ -1,33 +1,52 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 
-import { GOLD_DARK, GOLD_LIGHT, WHITE } from '../constants/colors';
+import type { Theme } from '../theme';
+import isStringNumber from '../utils/isStringNumber';
 
 interface LongCodeProps {
   code: string;
   codeClass?: string;
-  lastLineClass?: string;
+  isTruncated?: boolean;
 }
 
-const LongCode: FC<LongCodeProps> = ({ code, codeClass, lastLineClass }: LongCodeProps) => {
-  const colorCode = code.split('').map((char, i) => {
-    let charColor = WHITE;
-    if (!Number.isNaN(char * 1)) {
-      charColor = GOLD_LIGHT;
+const useStyles = makeStyles((theme: Theme) => ({
+  lastLine: {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  lowercased: {
+    color: theme.palette.longCode.lowercased,
+  },
+  number: {
+    color: theme.palette.longCode.number,
+    fontWeight: 'bolder',
+  },
+  uppercased: {
+    color: theme.palette.longCode.uppercased,
+    fontWeight: 'bold',
+  },
+}));
+
+const LongCode: FC<LongCodeProps> = ({ code, codeClass, isTruncated }: LongCodeProps) => {
+  const classes = useStyles();
+
+  // Remove the center of the code and replace with * *
+  const displayedCode = isTruncated
+    ? `${code.slice(0, 48)}•••${code.slice(code.length - 48, code.length)}`
+    : code;
+  const colorCode = displayedCode.split('').map((char, i) => {
+    let charColorClass = classes.lowercased;
+    if (isStringNumber(char)) {
+      charColorClass = classes.number;
     } else if (char === char.toUpperCase()) {
-      charColor = GOLD_DARK;
+      charColorClass = classes.uppercased;
     }
 
     return (
-      <Box
-        component="span"
-        key={[char, i].join('|')}
-        style={{
-          color: charColor,
-        }}
-      >
+      <Box component="span" key={[char, i].join('|')} className={charColorClass}>
         {char}
       </Box>
     );
@@ -38,7 +57,7 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass, lastLineClass }: LongCod
 
   colorCode.forEach((char, i) => {
     nextCodeLine.push(char);
-    if (i === code.length - 1) {
+    if (i === displayedCode.length - 1) {
       codeLines.push(nextCodeLine);
     } else if (nextCodeLine.length === 11) {
       codeLines.push(nextCodeLine);
@@ -48,24 +67,22 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass, lastLineClass }: LongCod
 
   return (
     <Box data-testid="long-code-code" className={codeClass} aria-hidden="true">
-      {codeLines.map((line, i) => {
-        return (
-          <Box
-            component="span"
-            key={[line, i].join('|')}
-            className={i === codeLines.length - 1 ? lastLineClass : ''}
-          >
-            {line}
-          </Box>
-        );
-      })}
+      {codeLines.map((line, i) => (
+        <Box
+          component="span"
+          key={[line, i].join('|')}
+          className={i === codeLines.length - 1 ? classes.lastLine : ''}
+        >
+          {line}
+        </Box>
+      ))}
     </Box>
   );
 };
 
 LongCode.defaultProps = {
   codeClass: '',
-  lastLineClass: '',
+  isTruncated: false,
 };
 
 export default LongCode;

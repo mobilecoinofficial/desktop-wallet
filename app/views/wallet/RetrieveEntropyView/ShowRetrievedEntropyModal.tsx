@@ -24,28 +24,26 @@ interface ShowRetrievedEntropyModalProps {
   onClose: () => void;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    hiddenEntropy: {
-      letterSpacing: 2.95,
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-    shownEntropy: {
-      letterSpacing: 1,
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  hiddenEntropy: {
+    letterSpacing: 2.95,
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+  shownEntropy: {
+    letterSpacing: 1,
+  },
+}));
 
 const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
   entropy,
@@ -56,7 +54,8 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
   const [showEntropy, setShowEntropy] = useState(false);
   const { t } = useTranslation('ShowRetrievedEntropyModal');
 
-  const passPhrase = entropy ? entropyToMnemonic(entropy) : '';
+  // const mnemonicEntropy = entropy ? entropyToMnemonic(entropy) : '';
+
 
   // TODO, i should start making a single util for all of this coercing logic
   const toggleEntropy = () => {
@@ -104,7 +103,7 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
                 </Box>
                 {showEntropy ? (
                   <Typography className={classes.shownEntropy} variant="body2" color="textPrimary">
-                    {passPhrase}
+                    {entropy}
                   </Typography>
                 ) : (
                   <>

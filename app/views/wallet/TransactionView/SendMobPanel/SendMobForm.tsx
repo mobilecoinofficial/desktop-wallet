@@ -6,33 +6,35 @@ import {
   Box,
   Button,
   Fade,
-  FormControlLabel,
   FormHelperText,
   FormLabel,
   InputAdornment,
   LinearProgress,
   Slide,
+  MenuItem,
+  ListItemIcon,
+  ListItemText,
   Modal,
-  Radio,
+  Select,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { RadioGroup, TextField } from 'formik-material-ui';
+import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../../components';
 import LongCode from '../../../../components/LongCode';
-import ShortCode from '../../../../components/ShortCode';
-import { MOBIcon } from '../../../../components/icons';
+import { StarIcon, MOBIcon } from '../../../../components/icons';
+import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
-import useMobileCoinD from '../../../../hooks/useMobileCoinD';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
-import LocalStore from '../../../../utils/LocalStore';
+import * as localStore from '../../../../utils/LocalStore';
 import { makeHash } from '../../../../utils/hashing';
+import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
@@ -42,44 +44,33 @@ const EMPTY_CONFIRMATION = {
   txProposalReceiverB58Code: '',
 };
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    button: { width: 175 },
-    center: {
-      display: 'flex',
-      fontWeight: 'bold',
-      justifyContent: 'center',
-      letterSpacing: '2px',
-    },
-    code: {
-      display: 'flex',
-      flexDirection: 'column',
-      letterSpacing: '.70rem',
-      margin: 'auto',
-      padding: theme.spacing(1),
-      width: 'fit-content',
-    },
-    form: { paddingBottom: theme.spacing(2) },
-    formControlLabelRoot: { marginRight: 0 },
-    label: { width: '100%' },
-    lastLine: {
-      display: 'flex',
-      justifyContent: 'space-between',
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  button: { width: 200 },
+  center: { display: 'flex', justifyContent: 'center' },
+  code: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    letterSpacing: '.70rem',
+    marginRight: '-.70rem',
+    padding: theme.spacing(1),
+  },
+  form: { paddingBottom: theme.spacing(2) },
+  formControlLabelRoot: { marginRight: 0 },
+  label: { width: '100%' },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+}));
 
 // TODO -- right now, we can show a progress bar for the sending modal
 // But, it would be nice to have a counter that parses up to, say, 10 seconds, before
@@ -88,9 +79,21 @@ const useStyles = makeStyles((theme: Theme) => {
 // this component managable.
 
 // TODO - ya, this definitely shouldn't live here
-const convertMobStringToPicoMobBigInt = (mobString: string): bigint => {
-  return BigInt(mobString.replace('.', ''));
+const PICO_MOB_PRECISION = 12;
+
+const ensureMobStringPrecision = (mobString: string): string => {
+  const num = Number(mobString);
+  if (Number.isNaN(num)) {
+    throw new Error('mobString is NaN');
+  }
+
+  return num.toFixed(PICO_MOB_PRECISION);
 };
+
+// This function assumes basic US style decimal places.
+// We'll need to revisit for differnet formats
+const convertMobStringToPicoMobString = (mobString: string): string =>
+  ensureMobStringPrecision(mobString).replace('.', '');
 
 const convertPicoMobStringToMob = (picoMobString: string): string => {
   if (picoMobString.length <= 12) {
@@ -118,151 +121,149 @@ const SendMobForm: FC = () => {
   const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
   const { t } = useTranslation('SendMobForm');
 
+  const [contactId, setContactId] = useState('');
+  const [contactName, setContactName] = useState('');
   const [open, setOpen] = useState(false);
   const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
   const [sendingOpen, setSendingOpen] = useState(false);
   const [slideExitSpeed, setSlideExitSpeed] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const {
-    accountName,
-    b58Code,
-    balance,
-    buildTransaction,
-    networkHighestBlockIndex,
-    nextBlock,
-    submitTransaction,
-  } = useMobileCoinD();
+  const { buildTransaction, selectedAccount, submitTransaction } = useFullService();
 
-  // TODO - this isSynced stuff should live in 1 location -- maybe as context state
-  let isSynced = false;
-  if (
-    networkHighestBlockIndex === null ||
-    nextBlock === null ||
-    Number(networkHighestBlockIndex) < 0 ||
-    Number(nextBlock) < 0 ||
-    Number(nextBlock) - 1 > Number(networkHighestBlockIndex)
-  ) {
-    isSynced = false;
-  } else {
-    isSynced = Number(networkHighestBlockIndex) - Number(nextBlock) < 2; // Let's say a diff of 1 is fine.
-  }
+  const listOfContacts = localStore.getContacts().filter((x) => x.recipientAddress);
+
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+
+  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   // We'll use this array in prep for future patterns with multiple accounts
+  // TODO - fix the type for Account
   const mockMultipleAccounts: Array<Account> = [
     {
-      b58Code: b58Code || '', // TODO -- This hack is to bypass the null state hack on initailization
-      // eslint-disable-next-line max-len
-      balance: balance || BigInt(0), // once we move to multiple accounts, we won't have to null the values of an account (better typing!)
-      name: accountName,
+      b58Code: selectedAccount.account.mainAddress,
+      balance: selectedAccount.balanceStatus.unspentPmob,
+      name: selectedAccount.account.name,
     },
   ];
 
-  const handleOpen = (values, setStatus, setErrors) => {
-    return async () => {
-      try {
-        setIsAwaitingConformation(true);
-        const result = await buildTransaction(
-          convertMobStringToPicoMobBigInt(values.mobAmount),
-          convertMobStringToPicoMobBigInt(values.feeAmount),
-          values.recipientPublicAddress
-        );
-        if (result === null || result === undefined) {
-          throw new Error(t('error'));
-        }
-
-        const {
-          feeConfirmation,
-          totalValueConfirmation,
-          txProposal,
-          txProposalReceiverB58Code,
-        } = result;
-        setConfirmation({
-          feeConfirmation,
-          totalValueConfirmation,
-          txProposal,
-          txProposalReceiverB58Code,
-        });
-
-        setOpen(true);
-      } catch (err) {
-        setStatus({ success: false });
-        setErrors({ submit: err.message });
-        setIsAwaitingConformation(false);
-        setConfirmation(EMPTY_CONFIRMATION);
-      }
-    };
-  };
-
-  const handleClose = (setSubmitting: (boolean: boolean) => void, resetForm: () => void) => {
-    return () => {
-      setSlideExitSpeed(0);
-      enqueueSnackbar(t('transactionCanceled'), {
-        variant: 'warning',
+  const handleOpen = (values, setStatus, setErrors) => async () => {
+    let result;
+    try {
+      setIsAwaitingConformation(true);
+      result = await buildTransaction({
+        accountId: selectedAccount.account.accountId,
+        fee: convertMobStringToPicoMobString(values.feeAmount),
+        recipientPublicAddress: values.recipientPublicAddress,
+        valuePmob: convertMobStringToPicoMobString(values.mobAmount),
       });
-      setOpen(false);
-      setSubmitting(false);
-      resetForm();
+      if (result === null || result === undefined) {
+        throw new Error('Could not build transaction.');
+      }
+
+      const {
+        feeConfirmation,
+        totalValueConfirmation,
+        txProposal,
+        txProposalReceiverB58Code,
+      } = result;
+
+      setConfirmation({
+        feeConfirmation,
+        totalValueConfirmation,
+        txProposal,
+        txProposalReceiverB58Code,
+      });
+
+      setOpen(true);
+    } catch (err) {
+      setStatus({ success: false });
+      setErrors({ submit: err.message });
       setIsAwaitingConformation(false);
       setConfirmation(EMPTY_CONFIRMATION);
-    };
+    }
+
+    const {
+      feeConfirmation,
+      totalValueConfirmation,
+      txProposal,
+      txProposalReceiverB58Code,
+    } = result;
+    setConfirmation({
+      feeConfirmation,
+      totalValueConfirmation,
+      txProposal,
+      txProposalReceiverB58Code,
+    });
+
+    setOpen(true);
   };
 
+  const handleClose = (setSubmitting: (boolean: boolean) => void, resetForm: () => void) => () => {
+    setSlideExitSpeed(0);
+    enqueueSnackbar(t('transactionCanceled'), {
+      variant: 'warning',
+    });
+    setOpen(false);
+    setSubmitting(false);
+    resetForm();
+    setIsAwaitingConformation(false);
+    setConfirmation(EMPTY_CONFIRMATION);
+  };
+
+  /* FK: COMMENTING OUT BECAUSE OF NOT BEING USED
   const createAccountLabel = (account: Account) => {
     const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}:`;
     return (
       <Box display="flex" justifyContent="space-between">
-        <Typography>
+        <Typography color="textPrimary">
           {' '}
           {name}
           <ShortCode code={account.b58Code} />
         </Typography>
-        <Typography>
+        <Typography color="textPrimary">
           <MOBNumberFormat value={account.balance.toString()} valueUnit="pMOB" />
         </Typography>
       </Box>
     );
   };
+  */
 
-  const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => {
-    return (
-      <Box pt={2}>
-        <FormLabel className={classes.form} component="legend">
-          <Typography color="primary">{t('select')}</Typography>
-        </FormLabel>
-        <Field component={RadioGroup} name="senderPublicAddress">
-          <Box display="flex" justifyContent="space-between">
-            <Typography>{t('accountName')}</Typography>
-            <Typography>{t('accountBalance')}</Typography>
-          </Box>
-          {accounts.map((account: Account) => {
-            return (
-              <FormControlLabel
-                key={account.b58Code}
-                value={account.b58Code}
-                control={<Radio disabled={isSubmitting} />}
-                label={createAccountLabel(account)}
-                labelPlacement="end"
-                disabled={isSubmitting}
-                classes={{ label: classes.label }}
-              />
-            );
-          })}
-        </Field>
-      </Box>
-    );
-  };
+  // TODO: Reintroduce with multiple accounts
+  // const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
+  //   <Box pt={2}>
+  //     <FormLabel className={classes.form} component="legend">
+  //       <Typography color="primary">{t('select')}</Typography>
+  //     </FormLabel>
+  //     <Field component={RadioGroup} name="senderPublicAddress">
+  //       <Box display="flex" justifyContent="space-between">
+  //         <Typography color="textPrimary">{t('accountName')}</Typography>
+  //         <Typography color="textPrimary">{t('accountBalance')}</Typography>
+  //       </Box>
+  //       {accounts.map((account: Account) => (
+  //         <FormControlLabel
+  //           key={account.b58Code}
+  //           value={account.b58Code}
+  //           control={<Radio disabled={isSubmitting} />}
+  //           label={createAccountLabel(account)}
+  //           labelPlacement="end"
+  //           disabled={isSubmitting}
+  //           classes={{ label: classes.label }}
+  //         />
+  //       ))}
+  //     </Field>
+  //   </Box>
+  // );
 
-  const validateAmount = (selectedBalance: bigint, fee: bigint) => {
-    return (valueString: string) => {
-      let error;
-      const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-      if (valueAsPicoMob + fee > selectedBalance) {
-        // TODO - probably want to replace this before launch
-        error = t('errorFee');
-      }
-      return error;
-    };
+  const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
+    let error;
+    const valueAsPicoMob = BigInt(valueString.replace('.', ''));
+    if (valueAsPicoMob + fee > selectedBalance) {
+      // TODO - probably want to replace this before launch
+      error = t('errorFee');
+    }
+    return error;
   };
 
   // We'll use this to auto-select all text when focused. This is a better user
@@ -272,13 +273,15 @@ const SendMobForm: FC = () => {
     event.target.select();
   };
 
-  const localStore = new LocalStore();
   const minimumForPin = String(localStore.getMinimumForPin());
   const hashedPin = localStore.getHashedPin();
+
+  const NO_CONTACT_SELECTED = '';
 
   return (
     <Formik
       initialValues={{
+        contactId: NO_CONTACT_SELECTED,
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
         hashedPin,
         minimumForPin,
@@ -346,6 +349,7 @@ const SendMobForm: FC = () => {
         isValid,
         resetForm,
         submitForm,
+        setFieldValue,
         setSubmitting,
         setStatus,
         setErrors,
@@ -359,9 +363,10 @@ const SendMobForm: FC = () => {
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
           // @ts-ignore
-          mockMultipleAccounts.find((account) => {
-            return account.b58Code === values.senderPublicAddress;
-          }).balance;
+          BigInt(
+            mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
+              .balance
+          );
 
         let remainingBalance;
         let totalSent;
@@ -372,15 +377,70 @@ const SendMobForm: FC = () => {
           totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
+        const sortedContacts = [...listOfContacts].sort((a, b) => {
+          if (a.isFavorite !== b.isFavorite) {
+            return a.isFavorite ? -1 : 1;
+          }
+          return a.alias.toUpperCase() > b.alias.toUpperCase() ? 1 : -1;
+        });
+
+        const truncateContact = (contact: string, len: number) => {
+          if (contact.length > len) {
+            return `${contact.slice(0, len)}...`;
+          }
+          return contact;
+        };
+
         return (
           <Form>
-            {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)}
+            {/* {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)} */}
             <Box pt={4}>
               <FormLabel component="legend">
                 <Typography color="primary">{t('transaction')}</Typography>
               </FormLabel>
+
+              {listOfContacts.length > 0 && (
+                <Select
+                  style={{ width: '100%' }}
+                  labelId="contactsList"
+                  id="contactsList"
+                  value={contactId}
+                  displayEmpty
+                  onChange={(x) => {
+                    setContactId(x.target.value);
+                    if (x.target.value !== NO_CONTACT_SELECTED) {
+                      const selectedContact = listOfContacts.find(
+                        (z) => z.assignedAddress === x.target.value
+                      );
+                      setFieldValue('recipientPublicAddress', selectedContact.recipientAddress);
+                      setContactName(selectedContact.alias);
+                    } else {
+                      setFieldValue('recipientPublicAddress', '');
+                      setContactName('');
+                    }
+                  }}
+                >
+                  <MenuItem value={NO_CONTACT_SELECTED} selected>
+                    {t('pickContact')}
+                  </MenuItem>
+                  {sortedContacts.map((contact) => (
+                    <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
+                      {contact.isFavorite ? (
+                        <ListItemIcon style={{ margin: '0px' }}>
+                          <StarIcon />
+                          <ListItemText>{contact.alias} </ListItemText>
+                        </ListItemIcon>
+                      ) : (
+                        <ListItemText>{contact.alias} </ListItemText>
+                      )}
+                    </MenuItem>
+                  ))}
+                </Select>
+              )}
               <Field
                 component={TextField}
+                multiline
+                disabled={contactId !== NO_CONTACT_SELECTED}
                 fullWidth
                 label={t('recipient')}
                 margin="normal"
@@ -444,8 +504,10 @@ const SendMobForm: FC = () => {
             >
               <Slide in={open} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <div className={classes.paper}>
-                  <h2 id="transition-modal-title">{t('confirm')}</h2>
-                  <p id="transition-modal-description">{t('intent')}:</p>
+                  <Typography variant="h2" id="transition-modal-title">
+                    {t('confirm')}
+                  </Typography>
+                  <Typography id="transition-modal-description">{t('intent')}:</Typography>
                   <br />
                   <Box display="flex" justifyContent="space-between">
                     <Typography>{t('accountBalance')}:</Typography>
@@ -507,26 +569,27 @@ const SendMobForm: FC = () => {
                   </Box>
                   <br />
                   <Box display="flex">
-                    <Box width="50%">
+                    <Box width="50%" padding="1rem">
                       <Box>
-                        <p className={classes.center}>{t('recipientPlus1')}</p>
-                        <p className={classes.center}>{t('recipientPlus2')}</p>
+                        {contactName !== '' ? (
+                          <Typography className={classes.center}>
+                            {truncateContact(contactName, 15)}
+                          </Typography>
+                        ) : (
+                          <Typography className={classes.center}>{t('recipientPlus1')}</Typography>
+                        )}
+                        <Typography className={classes.center}>{t('recipientPlus2')}</Typography>
                         <LongCode
                           code={confirmation?.txProposalReceiverB58Code}
                           codeClass={classes.code}
-                          lastLineClass={classes.lastLine}
                         />
                       </Box>
                     </Box>
-                    <Box width="50%">
+                    <Box width="50%" padding="1rem">
                       <Box>
-                        <p className={classes.center}>{t('senderPlus1')}</p>
-                        <p className={classes.center}>{t('senderPlus2')}</p>
-                        <LongCode
-                          code={values.senderPublicAddress}
-                          codeClass={classes.code}
-                          lastLineClass={classes.lastLine}
-                        />
+                        <Typography className={classes.center}>{t('senderPlus1')}</Typography>
+                        <Typography className={classes.center}>{t('senderPlus2')}</Typography>
+                        <LongCode code={values.senderPublicAddress} codeClass={classes.code} />
                       </Box>
                     </Box>
                   </Box>

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 
 import { Switch, Redirect, Route } from 'react-router-dom';
 
@@ -12,7 +12,8 @@ import NotFoundView from './views/errors/NotFoundView';
 import {
   ChangePasswordView,
   ChangePinView,
-  ConfigureMobilecoindView,
+  ConfigureFullServiceView,
+  ContactsBookView,
   DashboardView,
   GiftingView,
   HistoryView,
@@ -26,56 +27,43 @@ import {
 type Routes = {
   Component?: any;
   exact?: boolean;
-  guard?: React.FC;
-  layout?: React.FC;
+  guard?: FC;
+  layout?: FC;
   path?: string | string[];
   routes?: Routes;
 }[];
 
-const RedirectToNotFound = (): JSX.Element => {
-  return <Redirect to={routePaths.NOT_FOUND} />;
-};
+const RedirectToNotFound = (): JSX.Element => <Redirect to={routePaths.NOT_FOUND} />;
 RedirectToNotFound.displayName = 'RedirectToNotFound';
 
-export const renderRoutes = (routes: Routes = [], testComponent?: JSX.Element): JSX.Element => {
-  return (
-    <Switch>
-      {testComponent && (
+export const renderRoutes = (routes: Routes = [], testComponent?: JSX.Element): JSX.Element => (
+  <Switch>
+    {testComponent && (
+      <Route key="test-component" path="/test" exact render={() => testComponent} />
+    )}
+    {routes.map((route, i) => {
+      const { Component, guard, layout, exact, path, routes: nestedRoutes } = route;
+
+      const Guard = guard || Fragment;
+      const Layout = layout || Fragment;
+
+      return (
         <Route
-          key="test-component"
-          path="/test"
-          exact
-          render={() => {
-            return testComponent;
-          }}
+          key={[path, i].join('|')}
+          path={path}
+          exact={exact}
+          render={(props) => (
+            <Guard>
+              <Layout>
+                {nestedRoutes ? renderRoutes(nestedRoutes) : <Component {...props} />}
+              </Layout>
+            </Guard>
+          )}
         />
-      )}
-      {routes.map((route, i) => {
-        const { Component, guard, layout, exact, path, routes: nestedRoutes } = route;
-
-        const Guard = guard || Fragment;
-        const Layout = layout || Fragment;
-
-        return (
-          <Route
-            key={[path, i].join('|')}
-            path={path}
-            exact={exact}
-            render={(props) => {
-              return (
-                <Guard>
-                  <Layout>
-                    {nestedRoutes ? renderRoutes(nestedRoutes) : <Component {...props} />}
-                  </Layout>
-                </Guard>
-              );
-            }}
-          />
-        );
-      })}
-    </Switch>
-  );
-};
+      );
+    })}
+  </Switch>
+);
 
 const routes: Routes = [
   {
@@ -127,6 +115,11 @@ const routes: Routes = [
         path: routePaths.APP_HISTORY,
       },
       {
+        Component: ContactsBookView,
+        exact: true,
+        path: routePaths.APP_CONTACTS,
+      },
+      {
         Component: SettingsView,
         exact: true,
         path: routePaths.APP_SETTINGS,
@@ -147,9 +140,9 @@ const routes: Routes = [
         path: routePaths.APP_SETTINGS_RETRIEVE_ENTROPY,
       },
       {
-        Component: ConfigureMobilecoindView,
+        Component: ConfigureFullServiceView,
         exact: true,
-        path: routePaths.APP_SETTINGS_CONFIGURE_MOBILECOIND,
+        path: routePaths.APP_SETTINGS_CONFIGURE_FULL_SERVICE,
       },
       {
         Component: TermsOfUseView,

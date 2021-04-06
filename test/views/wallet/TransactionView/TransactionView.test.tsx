@@ -3,21 +3,20 @@ import React from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import useMobileCoinD from '../../../../app/hooks/useMobileCoinD';
+import useFullService from '../../../../app/hooks/useFullService';
 import { TransactionView } from '../../../../app/views/wallet';
 import renderSnapshot from '../../../renderSnapshot';
 
-jest.mock('../../../../app/hooks/useMobileCoinD');
+jest.mock('../../../../app/hooks/useFullService');
 
 function setupComponent() {
-  const mockUseMobileCoinD = useMobileCoinD as jest.MockedFunction<typeof useMobileCoinD>;
+  const mockUseFullService = useFullService as jest.MockedFunction<typeof useFullService>;
 
   // @ts-ignore mock
-  mockUseMobileCoinD.mockImplementation(() => {
+  mockUseFullService.mockImplementation(() => {
     return {
       accountName: 'account name',
       b58Code: 'b58 code',
-      mobUrl: 'string',
     };
   });
 
@@ -55,13 +54,13 @@ describe('TransactionView', () => {
       test('ReceiveMobPanel renders correctly', async () => {
         const { sendQuery } = setupComponent();
         userEvent.click(screen.getByText('Receive MOB'));
-        await waitFor(() => {
-          return expect(
+        await waitFor(() =>
+          expect(
             screen.queryByText(
               /To receive MOB, you must share your public address code to the sender./i
             )
-          ).toBeInTheDocument();
-        });
+          ).toBeInTheDocument()
+        );
         expect(sendQuery).not.toBeInTheDocument();
       });
     });

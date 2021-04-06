@@ -8,25 +8,23 @@ import { Link as RouterLink } from 'react-router-dom';
 import routePaths from '../../constants/routePaths';
 import type { Theme } from '../../theme';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    image: {
-      height: 'auto',
-      maxHeight: 300,
-      maxWidth: '100%',
-      width: 560,
-    },
-    root: {
-      alignItems: 'center',
-      backgroundColor: theme.palette.background.dark,
-      display: 'flex',
-      minHeight: '100%',
-      padding: theme.spacing(3),
-      paddingBottom: 80,
-      paddingTop: 80,
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  image: {
+    height: 'auto',
+    maxHeight: 300,
+    maxWidth: '100%',
+    width: 560,
+  },
+  root: {
+    alignItems: 'center',
+    backgroundColor: theme.palette.background.dark,
+    display: 'flex',
+    minHeight: '100%',
+    padding: theme.spacing(3),
+    paddingBottom: 80,
+    paddingTop: 80,
+  },
+}));
 
 const NotFoundView: FC = () => {
   const classes = useStyles();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
@@ -9,23 +9,24 @@ import type { Theme } from '../../../theme';
 import BuildGiftPanel from './BuildGiftPanel';
 import ConsumeGiftPanel from './ConsumeGiftPanel';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      minHeight: '100%',
-      paddingBottom: theme.spacing(3),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  padding: {
+    paddingBottom: theme.spacing(3),
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+  },
+}));
 
 const GiftingView: FC = () => {
   const classes = useStyles();
-  const [selectedTabIndex, setSelectedTabIndex] = React.useState(0);
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { t } = useTranslation('GiftingView');
 
   const handleChange = (
-    _event: React.ChangeEvent<Record<string, unknown>>,
+    _event: ChangeEvent<Record<string, unknown>>,
     newSelectedTabIndex: number
   ) => {
     setSelectedTabIndex(newSelectedTabIndex);
@@ -38,12 +39,13 @@ const GiftingView: FC = () => {
           <Tabs
             variant="fullWidth"
             value={selectedTabIndex}
-            indicatorColor="secondary"
-            textColor="secondary"
+            indicatorColor="primary"
+            textColor="primary"
             onChange={handleChange}
+            className={classes.padding}
           >
-            <Tab label={t('giftMOB')} />
-            <Tab label={t('openGift')} />
+            <Tab label={t('tabs.createGift')} />
+            <Tab label={t('tabs.openGift')} />
           </Tabs>
           <TabPanel
             panels={[BuildGiftPanel, ConsumeGiftPanel]}

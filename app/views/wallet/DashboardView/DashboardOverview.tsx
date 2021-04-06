@@ -1,52 +1,37 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box } from '@material-ui/core';
+import { Box, Container, makeStyles } from '@material-ui/core';
 
 import { AccountCard } from '../../../components';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
-import BalanceIndicator from './BalanceIndicator';
+import useFullService from '../../../hooks/useFullService';
 import CloseWalletModal from './CloseWalletModal';
 
-interface OverviewProps {
-  className?: string;
-}
+const useStyles = makeStyles(() => ({
+  root: {
+    padding: '0',
+  },
+}));
 
-const DashboardOverview: FC<OverviewProps> = () => {
-  const {
-    accountName,
-    b58Code,
-    balance,
-    mobUrl,
-    networkHighestBlockIndex,
-    nextBlock,
-  } = useMobileCoinD();
+const DashboardOverview: FC = () => {
+  const { selectedAccount } = useFullService();
+  const classes = useStyles();
 
-  // TODO consolidate the isSynced logic throughout app to one location.
-  // consider using a specific context when we split the MobileCoinDContext
-  const isSynced =
-    nextBlock === null || networkHighestBlockIndex === null
-      ? false
-      : Number(networkHighestBlockIndex) - Number(nextBlock) < 2;
-
+  // TODO - figure out if we should calculate isSynced with a buffer.
+  // We should pull that into a util
   return (
-    <Box data-testid="DashboardOverview">
-      <Box alignItems="center">
-        <BalanceIndicator balance={balance?.toString() || ''} isSynced={isSynced} />
-      </Box>
-      {b58Code !== null && mobUrl !== null && (
-        <AccountCard
-          account={{
-            b58Code,
-            balance: balance?.toString() || '',
-            mobUrl,
-            name: accountName,
-          }}
-        />
-      )}
+    <Container data-testid="DashboardOverview" className={classes.root} maxWidth="sm">
+      <Box alignItems="center" />
+      <AccountCard
+        account={{
+          b58Code: selectedAccount.account.mainAddress,
+          balance: selectedAccount.balanceStatus.unspentPmob,
+          name: selectedAccount.account.name,
+        }}
+      />
       <Box py={2} />
       <CloseWalletModal />
-    </Box>
+    </Container>
   );
 };
 

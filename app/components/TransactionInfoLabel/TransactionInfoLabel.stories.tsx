@@ -15,7 +15,14 @@ const Template: Story<ComponentProps<typeof TransactionInfoLabel>> = (args) => (
 
 export const Primary = Template.bind({});
 Primary.args = {
-  amount: 15,
-  label: 'MOB',
+  label: ' MOB',
   sign: '+',
+  valuePmob: 154,
+};
+
+export const Negative = Template.bind({});
+Negative.args = {
+  label: ' MOB',
+  sign: '-',
+  valuePmob: 229,
 };

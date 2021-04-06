@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
@@ -9,15 +9,16 @@ import type { Theme } from '../../../theme';
 import ReceiveMobPanel from './ReceiveMobPanel';
 import SendMobPanel from './SendMobPanel';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      minHeight: '100%',
-      paddingBottom: theme.spacing(3),
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  padding: {
+    paddingBottom: theme.spacing(3),
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    minHeight: '100%',
+    paddingBottom: theme.spacing(3),
+  },
+}));
 
 const TransactionView: FC = () => {
   const classes = useStyles();
@@ -25,7 +26,7 @@ const TransactionView: FC = () => {
   const { t } = useTranslation('TransactionView');
 
   const handleChange = (
-    _event: React.ChangeEvent<Record<string, unknown>>,
+    _event: ChangeEvent<Record<string, unknown>>,
     newSelectedTabIndex: number
   ) => {
     setSelectedTabIndex(newSelectedTabIndex);
@@ -38,9 +39,10 @@ const TransactionView: FC = () => {
           <Tabs
             variant="fullWidth"
             value={selectedTabIndex}
-            indicatorColor="secondary"
-            textColor="secondary"
+            indicatorColor="primary"
+            textColor="primary"
             onChange={handleChange}
+            className={classes.padding}
           >
             <Tab label={t('send')} />
             <Tab label={t('receive')} />

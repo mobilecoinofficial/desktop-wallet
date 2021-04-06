@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   CardContent,
+  Container,
   Fab,
   Fade,
   makeStyles,
@@ -15,47 +16,46 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useMobileCoinD from '../../hooks/useMobileCoinD';
+import useFullService from '../../hooks/useFullService';
 import type { Theme } from '../../theme';
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    hiddenEntropy: {
-      letterSpacing: 2.95,
-    },
-    modal: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    paper: {
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-    root: {},
-    shownEntropy: {
-      letterSpacing: 1,
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  hiddenEntropy: {
+    color: theme.palette.background.paper,
+  },
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  root: {},
+  shownEntropy: {},
+}));
 
 const ShowEntropyModal: FC = () => {
   const classes = useStyles();
   const [alertOpen, setAlertOpen] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [showEntropy, setShowEntropy] = useState(false);
-  const { entropy, isEntropyKnown, confirmEntropyKnown } = useMobileCoinD();
   const { t } = useTranslation('ShowEntropyModal');
+  const { pendingSecrets, isEntropyKnown, confirmEntropyKnown } = useFullService();
+
   const handleCloseModal = () => {
     confirmEntropyKnown();
   };
-  // TODO, i should start making a single util for all of this coercing logic
-  const entropyString = entropy ? Buffer.from(entropy).toString('hex') : '';
+
+  const mnemonicEntropy = pendingSecrets?.mnemonic;
 
   const toggleEntropy = () => {
-    if (!canGoForward) setCanGoForward(true);
+    if (!canGoForward) {
+      setCanGoForward(true);
+    }
     setShowEntropy(!showEntropy);
   };
 
@@ -96,7 +96,7 @@ const ShowEntropyModal: FC = () => {
               {t('header')}
             </Typography>
             <br />
-            <Typography variant="body2" color="textSecondary">
+            <Typography variant="body2" color="textPrimary">
               {t('description')}
             </Typography>
             <br />
@@ -106,26 +106,18 @@ const ShowEntropyModal: FC = () => {
                 <Box py={3} display="flex" alignItems="center" flexDirection="column">
                   <Box p={2}>
                     <Fab variant="extended" color="primary" onClick={toggleEntropy} size="small">
-                      {showEntropy ? t('hide') : t('show')}
+                      {showEntropy ? (t('hide') as string) : (t('show') as string)}
                     </Fab>
                   </Box>
-                  {showEntropy ? (
+                  <Container maxWidth="sm">
                     <Typography
-                      className={classes.shownEntropy}
+                      className={showEntropy ? classes.shownEntropy : classes.hiddenEntropy}
                       variant="body2"
                       color="textPrimary"
                     >
-                      {entropyString}
+                      {mnemonicEntropy}
                     </Typography>
-                  ) : (
-                    <Typography
-                      className={classes.hiddenEntropy}
-                      variant="body2"
-                      color="textPrimary"
-                    >
-                      ****************************************************************
-                    </Typography>
-                  )}
+                  </Container>
                 </Box>
               </CardContent>
             </Card>

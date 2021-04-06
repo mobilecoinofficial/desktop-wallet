@@ -12,20 +12,17 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../constants/app';
+import useFullService from '../../hooks/useFullService';
 
 let inactivityTimer: number;
 let reactionTimer: number;
 
 const InactivityDetect: FC = () => {
   const [inactiveTooLong, setInactiveTooLong] = useState(false);
+  const { selectedAccount } = useFullService();
   const { t } = useTranslation('InactivityDetect');
 
-  const prepareForLogout = () => {
-    setInactiveTooLong(true);
-    document.onmousemove = null;
-    document.onkeypress = null;
-    reactionTimer = window.setTimeout(() => window.close(), TIME_FOR_REACTION);
-  };
+  let prepareForLogout = (): void | undefined => undefined; // to avoid "use before defining" ESLint complaint
 
   const resetTimer = () => {
     if (inactivityTimer) {
@@ -40,6 +37,27 @@ const InactivityDetect: FC = () => {
     resetTimer();
     document.onmousemove = resetTimer;
     document.onkeypress = resetTimer;
+  };
+
+  prepareForLogout = () => {
+    const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+    const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex);
+    const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+    const acceptableDiffBigInt = BigInt(2);
+    const isSynced =
+      networkBlockIndexBigInt >= accountBlockIndexBigInt &&
+      networkBlockIndexBigInt >= localBlockIndexBigInt &&
+      localBlockIndexBigInt >= accountBlockIndexBigInt &&
+      networkBlockIndexBigInt - accountBlockIndexBigInt < acceptableDiffBigInt;
+
+    if (isSynced) {
+      setInactiveTooLong(true);
+      document.onmousemove = null;
+      document.onkeypress = null;
+      reactionTimer = window.setTimeout(() => window.close(), TIME_FOR_REACTION);
+    } else {
+      reenableTimer();
+    }
   };
 
   document.onmousemove = resetTimer;

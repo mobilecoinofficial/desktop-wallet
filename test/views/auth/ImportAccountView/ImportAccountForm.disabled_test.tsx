@@ -8,7 +8,7 @@ import ImportAccountForm, {
 } from '../../../../app/views/auth/ImportAccountView/ImportAccountForm';
 import renderSnapshot from '../../../renderSnapshot';
 
-jest.mock('../../../../app/hooks/useMobileCoinD');
+jest.mock('../../../../app/hooks/useFullService');
 
 function setupComponent() {
   // Variables
@@ -20,7 +20,7 @@ function setupComponent() {
   const validPassword99 =
     'longlonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglonglon';
 
-  const { mockUseMobileCoinDValues } = renderSnapshot(
+  const { mockUseFullServiceValues } = renderSnapshot(
     <ImportAccountForm onSubmit={importAccountFormOnSubmit} isTest />
   );
 
@@ -52,7 +52,7 @@ function setupComponent() {
     invalidAccountName65,
     invalidEntropy,
     invalidPasswordShort,
-    mockUseMobileCoinDValues,
+    mockUseFullServiceValues,
     passwordConfirmationField,
     passwordField,
     submitButton,
@@ -274,7 +274,7 @@ describe('ImportAccountForm', () => {
       //     accountNameField,
       //     checkTermsField,
       //     entropyField,
-      //     mockUseMobileCoinDValues,
+      //     mockUseFullServiceValues,
       //     passwordConfirmationField,
       //     passwordField,
       //     termsButton,
@@ -288,7 +288,7 @@ describe('ImportAccountForm', () => {
       //   expect(submitButton).toBeDisabled();
       //   userEvent.click(submitButton);
       //   await waitFor(() => {
-      //     expect(mockUseMobileCoinDValues.importAccount).not.toBeCalled();
+      //     expect(mockUseFullServiceValues.importAccount).not.toBeCalled();
       //   });
 
       //   // Enter valid form information
@@ -310,7 +310,7 @@ describe('ImportAccountForm', () => {
       //   userEvent.click(submitButton);
 
       //   await waitFor(() => {
-      //     expect(mockUseMobileCoinDValues.importAccount).toBeCalledWith(
+      //     expect(mockUseFullServiceValues.importAccount).toBeCalledWith(
       //       validAccountName64,
       //       validEntropy,
       //       validPassword99
@@ -324,7 +324,7 @@ describe('ImportAccountForm', () => {
           accountNameField,
           checkTermsField,
           entropyField,
-          mockUseMobileCoinDValues,
+          mockUseFullServiceValues,
           passwordConfirmationField,
           passwordField,
           termsButton,
@@ -334,7 +334,7 @@ describe('ImportAccountForm', () => {
           validPassword99,
         } = setupComponent();
         // @ts-ignore mock
-        mockUseMobileCoinDValues.importAccount.mockImplementation(() => {
+        mockUseFullServiceValues.importAccount.mockImplementation(() => {
           throw new Error(expectedErrorMessage);
         });
 

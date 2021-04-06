@@ -7,7 +7,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
-import useMobileCoinD from '../../../hooks/useMobileCoinD';
+import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 import ImportAccountForm, { importAccountFormOnSubmit } from './ImportAccountForm';
 
@@ -16,37 +16,35 @@ interface ImportAccountViewProps {
   isTest?: boolean;
 }
 
-const useStyles = makeStyles((theme: Theme) => {
-  return {
-    cardContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      marginTop: theme.spacing(5),
-      padding: theme.spacing(4),
-    },
-    logoIcon: {
-      height: 70,
-      width: 282,
-    },
-    root: {
-      backgroundColor: theme.palette.background.dark,
-      height: '100vh',
-      overflow: 'auto',
-      padding: `${theme.spacing(5)}px ${theme.spacing(3)}px`,
-    },
-    viewContainer: {
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-    },
-  };
-});
+const useStyles = makeStyles((theme: Theme) => ({
+  cardContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing(5),
+    padding: theme.spacing(4),
+  },
+  logoIcon: {
+    height: 70,
+    width: 282,
+  },
+  root: {
+    backgroundColor: theme.palette.background.dark,
+    height: '100vh',
+    overflow: 'auto',
+    padding: `${theme.spacing(5)}px ${theme.spacing(3)}px`,
+  },
+  viewContainer: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+}));
 
 const ImportAccountView: FC<ImportAccountViewProps> = ({ isTest }: ImportAccountViewProps) => {
   const classes = useStyles();
-  const { encryptedEntropy } = useMobileCoinD();
   const { t } = useTranslation('ImportAccountView');
+  const { hashedPassword } = useFullService();
 
   return (
     <Box data-testid="ImportAccountView" className={classes.root}>
@@ -62,7 +60,13 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({ isTest }: ImportAccount
           <Typography variant="body2" color="textSecondary" paragraph>
             {t('description')}
           </Typography>
-          {encryptedEntropy && (
+          <Typography variant="body2" color="textPrimary" paragraph>
+            {t('warning')}
+          </Typography>
+          <Typography variant="body2" color="textPrimary" paragraph>
+            {t('legacyHex')}
+          </Typography>
+          {hashedPassword && (
             <Box data-testid="overwrite-warning">
               <Typography variant="body2" paragraph>
                 {t('overwriteWarning')}

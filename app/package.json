@@ -15,5 +15,8 @@
   "license": "",
   "devDependencies": {
     "@types/i18next-node-fs-backend": "^2.1.0"
+  },
+  "dependencies": {
+    "argon2": "^0.27.2"
   }
 }

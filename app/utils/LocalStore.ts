@@ -1,6 +1,8 @@
 import Store from 'electron-store';
 import { SjclCipherEncrypted } from 'sjcl';
 
+import { StringUInt64 } from '../types/SpecialStrings';
+
 interface LocalStoreSchema {
   [key: string]: { type: 'string' | 'array' | 'boolean' };
 }
@@ -10,28 +12,29 @@ const STORE_NAME = 'mobilecoin_config';
 export const schemaKeys = {
   ENCRYPTED_CONTACTS: 'encryptedContacts',
   ENCRYPTED_PASSPHRASE: 'encryptedPassphrase',
+  ENCRYPTED_PIN: 'encryptedPin',
   FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
   FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   GIFT_CODES: 'giftCodes',
-  HASHED_PIN: 'hashedPin',
   LEAVE_FULL_SERVICE_RUNNING: 'leaveFullServiceRunning',
   LEDGER_DB_PATH: 'ledgerDbPath',
-  MINIMUM_FOR_PIN: 'minimumPin',
   NAME: 'name',
+  PIN_THRESHOLD_PMOB: 'pinThresholdPmob',
   SALT: 'salt',
   THEME: 'theme',
 };
 
 export const schema: LocalStoreSchema = {
   [schemaKeys.ENCRYPTED_CONTACTS]: { type: 'string' },
+  [schemaKeys.ENCRYPTED_PASSPHRASE]: { type: 'string' },
+  [schemaKeys.ENCRYPTED_PIN]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_DB_PATH]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.GIFT_CODES]: { type: 'array' },
-  [schemaKeys.ENCRYPTED_PASSPHRASE]: { type: 'string' },
-  [schemaKeys.HASHED_PIN]: { type: 'string' },
   [schemaKeys.LEAVE_FULL_SERVICE_RUNNING]: { type: 'boolean' },
   [schemaKeys.LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.NAME]: { type: 'string' },
+  [schemaKeys.PIN_THRESHOLD_PMOB]: { type: 'string' },
   [schemaKeys.SALT]: { type: 'string' },
   [schemaKeys.THEME]: { type: 'string' },
 };
@@ -59,10 +62,15 @@ export const setGiftCodes = (giftCodes: Array<string>): void => {
   store.set(schemaKeys.GIFT_CODES, giftCodes);
 };
 
-export const getHashedPin = (): string => (store.get(schemaKeys.HASHED_PIN) as string) || '';
+export const getEncryptedPin = (): SjclCipherEncrypted | undefined =>
+  store.get(schemaKeys.ENCRYPTED_PIN) as SjclCipherEncrypted | undefined;
 
-export const setHashedPin = (hashedPin: string | null): void => {
-  store.set(schemaKeys.HASHED_PIN, hashedPin || '');
+export const setEncryptedPin = (encryptedPin: SjclCipherEncrypted): void => {
+  store.set(schemaKeys.ENCRYPTED_PIN, encryptedPin);
+};
+
+export const deleteEncryptedPin = (): void => {
+  store.delete(schemaKeys.ENCRYPTED_PIN);
 };
 
 export const getLeaveFullServiceRunning = (): boolean =>
@@ -72,10 +80,15 @@ export const setLeaveFullServiceRunning = (leaveFullServiceRunning: boolean): vo
   store.set(schemaKeys.LEAVE_FULL_SERVICE_RUNNING, leaveFullServiceRunning);
 };
 
-export const getMinimumForPin = (): number => Number(store.get(schemaKeys.MINIMUM_FOR_PIN) || '0');
+export const getPinThresholdPmob = (): StringUInt64 =>
+  store.get(schemaKeys.PIN_THRESHOLD_PMOB) as StringUInt64;
 
-export const setMinimumForPin = (minimumForPin: number | null): void => {
-  store.set(schemaKeys.MINIMUM_FOR_PIN, String(minimumForPin) || '0');
+export const setPinThresholdPmob = (PinThresholdPmob: StringUInt64): void => {
+  store.set(schemaKeys.PIN_THRESHOLD_PMOB, PinThresholdPmob);
+};
+
+export const deletePinThresholdPmob = (): void => {
+  store.delete(schemaKeys.PIN_THRESHOLD_PMOB);
 };
 
 // TODO - add type guards to app

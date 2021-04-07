@@ -133,7 +133,7 @@ const ContactView: FC<ContactViewProps> = ({
                     setSubmitting(false);
                     setStatus({ success: true });
                     onSaved({
-                      abbreviation: values.abbreviation,
+                      abbreviation: values.abbreviation || values.alias[0],
                       alias: values.alias,
                       color: values.color,
                       isFavorite: values.isFavorite,

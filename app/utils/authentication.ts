@@ -6,12 +6,12 @@ import { decrypt, encrypt } from './encryption';
 
 export const encryptAndStorePassphrase = async (
   passphrase: string
-): Promise<SjclCipherEncrypted> => {
+): Promise<{ encryptedPassphrase: SjclCipherEncrypted; secretKey: string }> => {
   const { secretKey } = await argon2Key(passphrase);
 
   const encryptedPassphrase = await encrypt(passphrase, secretKey);
   localStore.setEncryptedPassphrase(encryptedPassphrase);
-  return encryptedPassphrase;
+  return { encryptedPassphrase, secretKey };
 };
 
 export const validatePassphrase = async (

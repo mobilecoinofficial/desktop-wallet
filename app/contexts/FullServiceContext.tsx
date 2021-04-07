@@ -148,6 +148,7 @@ type CreateAccountAction = {
     addresses: Addresses;
     encryptedPassphrase: SjclCipherEncrypted;
     pendingSecrets: PendingSecrets;
+    secretKey: string;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
@@ -160,6 +161,7 @@ type ImportAccountAction = {
     accounts: Accounts;
     addresses: Addresses;
     encryptedPassphrase: SjclCipherEncrypted;
+    secretKey: string;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
@@ -347,6 +349,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         accounts,
         addresses,
         encryptedPassphrase,
+        secretKey,
         selectedAccount,
         walletStatus,
       } = action.payload;
@@ -358,6 +361,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         isAuthenticated: true,
         isEntropyKnown: true,
         isPinRequired: true,
+        secretKey,
         selectedAccount,
         walletStatus,
       };
@@ -369,6 +373,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         addresses,
         encryptedPassphrase,
         pendingSecrets,
+        secretKey,
         selectedAccount,
         walletStatus,
       } = action.payload;
@@ -381,6 +386,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         isEntropyKnown: false,
         isPinRequired: true,
         pendingSecrets,
+        secretKey,
         selectedAccount,
         walletStatus,
       };
@@ -616,7 +622,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
       // After successful import, store encryptedPassphrase
-      const encryptedPassphrase = await encryptAndStorePassphrase(passphrase);
+      const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
       dispatch({
         payload: {
           accounts: {
@@ -629,6 +635,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           },
           encryptedPassphrase,
           pendingSecrets,
+          secretKey,
           selectedAccount: {
             account,
             balanceStatus,
@@ -670,7 +677,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
       // After successful import, store encryptedPassphrase
-      const encryptedPassphrase = await encryptAndStorePassphrase(passphrase);
+      const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
 
       dispatch({
         payload: {
@@ -683,6 +690,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressMap,
           },
           encryptedPassphrase,
+          secretKey,
           selectedAccount: {
             account,
             balanceStatus,
@@ -724,7 +732,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
       // After successful import, store encryptedPassphrase
-      const encryptedPassphrase = await encryptAndStorePassphrase(passphrase);
+      const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
 
       dispatch({
         payload: {
@@ -737,6 +745,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressMap,
           },
           encryptedPassphrase,
+          secretKey,
           selectedAccount: {
             account,
             balanceStatus,

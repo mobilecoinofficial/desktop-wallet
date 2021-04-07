@@ -83,8 +83,8 @@ export const setLeaveFullServiceRunning = (leaveFullServiceRunning: boolean): vo
 export const getPinThresholdPmob = (): StringUInt64 =>
   store.get(schemaKeys.PIN_THRESHOLD_PMOB) as StringUInt64;
 
-export const setPinThresholdPmob = (PinThresholdPmob: StringUInt64): void => {
-  store.set(schemaKeys.PIN_THRESHOLD_PMOB, PinThresholdPmob);
+export const setPinThresholdPmob = (pinThresholdPmob: StringUInt64): void => {
+  store.set(schemaKeys.PIN_THRESHOLD_PMOB, pinThresholdPmob);
 };
 
 export const deletePinThresholdPmob = (): void => {

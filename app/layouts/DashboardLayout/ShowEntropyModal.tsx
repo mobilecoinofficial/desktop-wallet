@@ -16,8 +16,13 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useFullService from '../../hooks/useFullService';
 import type { Theme } from '../../theme';
+
+interface ShowEntropyModalProps {
+  isShown: boolean;
+  mnemonic: string;
+  onEntropyConfirmed: () => void;
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: {
@@ -38,19 +43,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   shownEntropy: {},
 }));
 
-const ShowEntropyModal: FC = () => {
+const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
+  isShown,
+  mnemonic,
+  onEntropyConfirmed,
+}: ShowEntropyModalProps) => {
   const classes = useStyles();
   const [alertOpen, setAlertOpen] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [showEntropy, setShowEntropy] = useState(false);
   const { t } = useTranslation('ShowEntropyModal');
-  const { pendingSecrets, isEntropyKnown, confirmEntropyKnown } = useFullService();
 
   const handleCloseModal = () => {
-    confirmEntropyKnown();
+    onEntropyConfirmed();
   };
-
-  const mnemonicEntropy = pendingSecrets?.mnemonic;
 
   const toggleEntropy = () => {
     if (!canGoForward) {
@@ -69,7 +75,7 @@ const ShowEntropyModal: FC = () => {
   };
 
   const handleFinalConfirm = () => {
-    confirmEntropyKnown();
+    onEntropyConfirmed();
     setAlertOpen(false);
   };
 
@@ -78,7 +84,7 @@ const ShowEntropyModal: FC = () => {
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       className={classes.modal}
-      open={!isEntropyKnown}
+      open={isShown}
       onClose={handleCloseModal}
       closeAfterTransition
       BackdropComponent={Backdrop}
@@ -89,7 +95,7 @@ const ShowEntropyModal: FC = () => {
       disableEnforceFocus
       disableBackdropClick
     >
-      <Fade in={!isEntropyKnown}>
+      <Fade in={isShown}>
         {!alertOpen ? (
           <Box className={classes.paper} display="flex" flexDirection="column">
             <Typography color="textPrimary" gutterBottom variant="h2">
@@ -115,7 +121,7 @@ const ShowEntropyModal: FC = () => {
                       variant="body2"
                       color="textPrimary"
                     >
-                      {mnemonicEntropy}
+                      {mnemonic}
                     </Typography>
                   </Container>
                 </Box>

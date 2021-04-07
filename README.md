@@ -38,7 +38,7 @@ MobileCoin Desktop Wallet is available under open-source licenses. Look for the 
 
 ### Setup
 
-Depending on your local platform, you'll need to add the `full-service-testnet` and `ingest-enclave` binaries in the appropriate directory found in `./full-service-bin`. If you add the binaries, you will likely need to give permissions for the dev environment to run them. In the directory with the binaries, grant permission: ` chmod +x full-service-testnet`.
+Depending on your local platform, you'll need to add the `full-service-testnet` and `ingest-enclave` binaries in the appropriate directory found in `./full-service-bin` (examples of file location: `./full-service-bin/ingest-enclave.test.net.css` and `./full-service-bin/mac/full-service-testnet`. If you add the binaries, you will likely need to give permissions for the dev environment to run them. In the directory with the binaries, grant permission: ` chmod +x full-service-testnet`.
 
 ### Dev
 

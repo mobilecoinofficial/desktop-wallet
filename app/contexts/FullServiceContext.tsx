@@ -88,7 +88,7 @@ export interface FullServiceContextValue extends FullServiceState {
   ) => Promise<void>;
   removeAccount: (removeAccountParams: RemoveAccountParams) => Promise<RemoveAccountResult | void>;
   retrieveEntropy: (passphrase: string) => Promise<string | void>;
-  setPinWithoutPassword: (pin: string, pinThresholdPmob: StringUInt64) => Promise<void>;
+  setPin: (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => Promise<void>;
   submitGiftCode: (
     submitGiftCodeParams: SubmitGiftCodeParams
   ) => Promise<SubmitGiftCodeResult | void>;
@@ -499,7 +499,7 @@ const FullServiceContext = createContext<FullServiceContextValue>({
   importLegacyAccount: () => Promise.resolve(),
   removeAccount: () => Promise.resolve(),
   retrieveEntropy: () => Promise.resolve(),
-  setPinWithoutPassword: () => Promise.resolve(),
+  setPin: () => Promise.resolve(),
   submitGiftCode: () => Promise.resolve(),
   submitTransaction: () => Promise.resolve(),
   unlockWallet: () => Promise.resolve(),
@@ -835,12 +835,20 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   };
 
   // This call does not require a password. It should only be used when no PIN is set.
-  const setPinWithoutPassword = async (pin: string, pinThresholdPmob: StringUInt64) => {
-    const { pin: existingPin, secretKey } = state;
+  const setPin = async (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => {
+    const { pin: existingPin, secretKey, encryptedPassphrase } = state;
 
     try {
-      if (existingPin) {
-        throw new Error('Pin already exists');
+      if (encryptedPassphrase === undefined) {
+        throw new Error('encryptedPassphrase assertion failed');
+      }
+
+      if (passphrase) {
+        await validatePassphrase(passphrase, encryptedPassphrase);
+      } else if (existingPin) {
+        // This only triggers if attempting to set pin without passphrase.
+        // You cannot overwrite an existing PIN without the correct passphrase!
+        throw new Error('PIN already exists');
       }
 
       // encrypt and save PIN to local store
@@ -938,6 +946,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       let pin;
       const encryptedPin = localStore.getEncryptedPin();
       const pinThresholdPmob = localStore.getPinThresholdPmob();
+
       if (encryptedPin === undefined) {
         isPinRequired = true;
       } else {
@@ -1063,7 +1072,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         importAccount,
         importLegacyAccount,
         retrieveEntropy,
-        setPinWithoutPassword,
+        setPin,
         submitGiftCode,
         submitTransaction,
         unlockWallet,

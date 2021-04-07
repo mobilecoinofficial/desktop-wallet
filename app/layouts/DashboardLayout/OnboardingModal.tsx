@@ -11,7 +11,7 @@ const OnboardingModal: FC = () => {
     isEntropyKnown,
     isPinRequired,
     pendingSecrets,
-    setPinWithoutPassword,
+    setPin,
   } = useFullService();
 
   const isShowEntropyModalShown = !isEntropyKnown;
@@ -28,7 +28,7 @@ const OnboardingModal: FC = () => {
     );
   }
   if (isSetPinModalShown) {
-    return <SetPinModal isShown={isSetPinModalShown} onPinSubmit={setPinWithoutPassword} />;
+    return <SetPinModal isShown={isSetPinModalShown} onPinSubmit={setPin} />;
   }
   return null;
 };

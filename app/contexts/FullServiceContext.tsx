@@ -804,20 +804,24 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
     // TODO- right now, we're just using the selected account to refresh
     // this is obviously not ideal
-    const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-    const { walletStatus } = await fullServiceApi.getWalletStatus();
+    // const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
+    // const { walletStatus } = await fullServiceApi.getWalletStatus();
 
-    // TODO - get new balance (now that is it pending)
-    dispatch({
-      payload: {
-        selectedAccount: {
-          account: selectedAccount.account,
-          balanceStatus,
-        },
-        walletStatus,
-      },
-      type: 'UPDATE_STATUS',
-    });
+    // FIX-ME: Currently, Full-Service does not seperate pending change and pending outgoing.
+    // We will need Full-Service to clearly seperate these values for us to properly show pending.
+    // Until we have that, the balance may dip as long as the UTXO spent on the transaction before
+    // bouncing back up.
+    // Alternately, we can just make balance equal to balance + pending (for now)
+    // dispatch({
+    //   payload: {
+    //     selectedAccount: {
+    //       account: selectedAccount.account,
+    //       balanceStatus,
+    //     },
+    //     walletStatus,
+    //   },
+    //   type: 'UPDATE_STATUS',
+    // });
   };
 
   const unlockWallet = async (passphrase: string): Promise<void> => {

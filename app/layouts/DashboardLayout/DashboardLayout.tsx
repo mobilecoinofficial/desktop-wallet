@@ -8,7 +8,7 @@ import useFullService from '../../hooks/useFullService';
 import type { Theme } from '../../theme';
 import InactivityDetect from '../InactivityDetect';
 import BalanceIndicator from './BalanceIndicator';
-import ShowEntropyModal from './ShowEntropyModal';
+import OnboardingModal from './OnboardingModal';
 import SyncStatus from './TopBar/SyncStatus';
 import TopBar from './TopBar/index';
 
@@ -61,7 +61,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
         <Box className={classes.contentContainer}>
           <InactivityDetect />
           <Box className={classes.content}>{children}</Box>
-          <ShowEntropyModal />
+          <OnboardingModal />
         </Box>
       </Box>
     </Box>

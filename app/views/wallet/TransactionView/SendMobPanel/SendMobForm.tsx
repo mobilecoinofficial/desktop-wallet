@@ -32,8 +32,6 @@ import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
-import * as localStore from '../../../../utils/LocalStore';
-import { makeHash } from '../../../../utils/hashing';
 import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
 
 // CBB: Shouldn't have to use this hack to get around state issues
@@ -129,7 +127,14 @@ const SendMobForm: FC = () => {
   const [slideExitSpeed, setSlideExitSpeed] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const { buildTransaction, contacts, selectedAccount, submitTransaction } = useFullService();
+  const {
+    buildTransaction,
+    contacts,
+    pin: existingPin,
+    pinThresholdPmob,
+    selectedAccount,
+    submitTransaction,
+  } = useFullService();
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
   const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
@@ -271,9 +276,6 @@ const SendMobForm: FC = () => {
     event.target.select();
   };
 
-  const minimumForPin = String(localStore.getMinimumForPin());
-  const hashedPin = localStore.getHashedPin();
-
   const NO_CONTACT_SELECTED = '';
 
   return (
@@ -281,8 +283,6 @@ const SendMobForm: FC = () => {
       initialValues={{
         contactId: NO_CONTACT_SELECTED,
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
-        hashedPin,
-        minimumForPin,
         mobAmount: '0', // mobs
         pin: '',
         recipientPublicAddress: '',
@@ -365,6 +365,13 @@ const SendMobForm: FC = () => {
             mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
               .balance
           );
+
+        let isPinRequiredForTransaction = false;
+        if (confirmation.totalValueConfirmation) {
+          isPinRequiredForTransaction =
+            confirmation?.totalValueConfirmation + confirmation?.feeConfirmation >=
+            BigInt(pinThresholdPmob);
+        }
 
         let remainingBalance;
         let totalSent;
@@ -591,14 +598,14 @@ const SendMobForm: FC = () => {
                       </Box>
                     </Box>
                   </Box>
-                  {Number(values.mobAmount) >= Number(values.minimumForPin) && (
+                  {isPinRequiredForTransaction && (
                     <Field
                       component={TextField}
                       fullWidth
                       label={t('enterPin')}
                       margin="normal"
                       name="pin"
-                      type="text"
+                      type="password"
                     />
                   )}
                   <Box display="flex" justifyContent="space-around" padding=".5em 0">
@@ -620,8 +627,7 @@ const SendMobForm: FC = () => {
                       disabled={
                         !isValid ||
                         isSubmitting ||
-                        (Number(values.mobAmount) >= Number(values.minimumForPin) &&
-                          makeHash(values.pin) !== values.hashedPin)
+                        (isPinRequiredForTransaction && values.pin !== existingPin)
                       }
                       fullWidth
                       onClick={submitForm}

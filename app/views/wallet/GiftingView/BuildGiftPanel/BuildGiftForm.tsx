@@ -7,19 +7,17 @@ import {
   Button,
   Container,
   Fade,
-  FormControlLabel,
   FormHelperText,
   FormLabel,
   InputAdornment,
   LinearProgress,
   Slide,
   Modal,
-  Radio,
   Typography,
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { RadioGroup, TextField } from 'formik-material-ui';
+import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
@@ -27,15 +25,12 @@ import * as Yup from 'yup';
 // import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
 import AccountCard from '../../../../components/AccountCard';
 import MOBNumberFormat from '../../../../components/MOBNumberFormat';
-import ShortCode from '../../../../components/ShortCode';
 import SubmitButton from '../../../../components/SubmitButton';
 import { MOBIcon } from '../../../../components/icons';
 import useFullService from '../../../../hooks/useFullService';
 import useIsMountedRef from '../../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../../theme';
 import type Account from '../../../../types/Account';
-import * as localStore from '../../../../utils/LocalStore';
-import { makeHash } from '../../../../utils/hashing';
 import isSyncedBuffered from '../../../../utils/isSyncedBuffered';
 
 // CBB: Shouldn't have to use this hack to get around state issues
@@ -120,7 +115,13 @@ const BuildGiftForm: FC = () => {
   const isMountedRef = useIsMountedRef();
 
   const { t } = useTranslation('BuildGiftForm');
-  const { buildGiftCode, selectedAccount, submitGiftCode } = useFullService();
+  const {
+    buildGiftCode,
+    pin: existingPin,
+    pinThresholdPmob,
+    selectedAccount,
+    submitGiftCode,
+  } = useFullService();
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
   const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
@@ -160,7 +161,6 @@ const BuildGiftForm: FC = () => {
       if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
         throw new Error(t('confirmationNotFound'));
       }
-      console.log(selectedAccount.account.accountId);
 
       await submitGiftCode({
         fromAccountId: selectedAccount.account.accountId,
@@ -190,24 +190,24 @@ const BuildGiftForm: FC = () => {
     }
   };
 
-  const createAccountLabel = (account: Account) => {
-    const name =
-      account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
-    return (
-      <Box display="flex" justifyContent="space-between">
-        <Typography color="textPrimary">
-          {name}
-          <ShortCode code={account.b58Code} />
-        </Typography>
-        <Typography color="textPrimary">
-          <MOBNumberFormat
-            value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
-            valueUnit="pMOB"
-          />
-        </Typography>
-      </Box>
-    );
-  };
+  // const createAccountLabel = (account: Account) => {
+  //   const name =
+  //     account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
+  //   return (
+  //     <Box display="flex" justifyContent="space-between">
+  //       <Typography color="textPrimary">
+  //         {name}
+  //         <ShortCode code={account.b58Code} />
+  //       </Typography>
+  //       <Typography color="textPrimary">
+  //         <MOBNumberFormat
+  //           value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
+  //           valueUnit="pMOB"
+  //         />
+  //       </Typography>
+  //     </Box>
+  //   );
+  // };
 
   // TODO - reintroduce with multiple accounts
   // const renderSenderPublicAddressOptions = (accounts: Account[], isSubmitting: boolean) => (
@@ -255,15 +255,10 @@ const BuildGiftForm: FC = () => {
     event.target.select();
   };
 
-  const minimumForPin = String(localStore.getMinimumForPin());
-  const hashedPin = localStore.getHashedPin();
-
   return (
     <Formik
       initialValues={{
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
-        hashedPin,
-        minimumForPin,
         mobValue: '0', // mobs
         pin: '',
         senderPublicAddress: mockMultipleAccounts[0].b58Code,
@@ -328,6 +323,13 @@ const BuildGiftForm: FC = () => {
             mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
               .balance
           );
+
+        let isPinRequiredForTransaction = false;
+        if (confirmation.totalValueConfirmation) {
+          isPinRequiredForTransaction =
+            confirmation?.totalValueConfirmation + confirmation?.feeConfirmation >=
+            BigInt(pinThresholdPmob);
+        }
 
         let remainingBalance;
         let totalSent;
@@ -492,15 +494,14 @@ const BuildGiftForm: FC = () => {
                       </Button>
                     </Box>
                   )}
-                  {Number(confirmation.totalValueConfirmation) / 1_000_000_000_000 >=
-                    Number(values.minimumForPin) && (
+                  {isPinRequiredForTransaction && (
                     <Field
                       component={TextField}
                       fullWidth
                       label={t('enterPin')}
                       margin="normal"
                       name="pin"
-                      type="text"
+                      type="password"
                     />
                   )}
                   <Box display="flex" justifyContent="space-between">
@@ -519,10 +520,7 @@ const BuildGiftForm: FC = () => {
                       className={classes.button}
                       color="secondary"
                       disabled={
-                        !showCode ||
-                        (Number(confirmation.totalValueConfirmation) / 1_000_000_000_000 >=
-                          Number(values.minimumForPin) &&
-                          makeHash(values.pin) !== values.hashedPin)
+                        !showCode || (isPinRequiredForTransaction && values.pin !== existingPin)
                       }
                       fullWidth
                       onClick={handleConfirm(setErrors, setStatus)}

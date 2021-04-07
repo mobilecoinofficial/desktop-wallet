@@ -21,13 +21,14 @@ import type { Addresses } from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
 import Contact from '../types/Contact';
 import type GiftCode from '../types/GiftCode';
-import type { StringHex } from '../types/SpecialStrings';
+import type { StringHex, StringUInt64 } from '../types/SpecialStrings';
 import type { TransactionLogs } from '../types/TransactionLog';
 import type TxProposal from '../types/TxProposal';
 import type { Txos } from '../types/Txo';
 import type WalletStatus from '../types/WalletStatus';
 import * as localStore from '../utils/LocalStore';
 import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authentication';
+import { decrypt, encrypt } from '../utils/encryption';
 import sameObject from '../utils/sameObject';
 
 type PendingSecrets = {
@@ -49,10 +50,13 @@ interface FullServiceState {
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
   isInitialized: boolean;
+  isPinRequired: boolean;
   pendingSecrets: PendingSecrets | null;
   secretKey: string;
   selectedAccount: SelectedAccount;
   transactionLogs: TransactionLogs | null;
+  pinThresholdPmob: StringUInt64;
+  pin: string | undefined;
   txos: Txos;
   walletStatus: WalletStatus;
 }
@@ -84,6 +88,7 @@ export interface FullServiceContextValue extends FullServiceState {
   ) => Promise<void>;
   removeAccount: (removeAccountParams: RemoveAccountParams) => Promise<RemoveAccountResult | void>;
   retrieveEntropy: (passphrase: string) => Promise<string | void>;
+  setPin: (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => Promise<void>;
   submitGiftCode: (
     submitGiftCodeParams: SubmitGiftCodeParams
   ) => Promise<SubmitGiftCodeResult | void>;
@@ -143,6 +148,7 @@ type CreateAccountAction = {
     addresses: Addresses;
     encryptedPassphrase: SjclCipherEncrypted;
     pendingSecrets: PendingSecrets;
+    secretKey: string;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
@@ -155,6 +161,7 @@ type ImportAccountAction = {
     accounts: Accounts;
     addresses: Addresses;
     encryptedPassphrase: SjclCipherEncrypted;
+    secretKey: string;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
@@ -175,6 +182,9 @@ type UnlockWalletAction = {
     accounts: Accounts;
     addresses: Addresses;
     contacts: Contact[];
+    isPinRequired: boolean;
+    pin: string;
+    pinThresholdPmob: StringUInt64;
     secretKey: string;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
@@ -192,6 +202,14 @@ type UpdatePassphrase = {
   type: 'UPDATE_PASSPHRASE';
   payload: {
     encryptedPassphrase: SjclCipherEncrypted;
+  };
+};
+
+type UpdatePin = {
+  type: 'UPDATE_PIN';
+  payload: {
+    pin: string;
+    pinThresholdPmob: StringUInt64;
   };
 };
 
@@ -216,6 +234,7 @@ type Action =
   | UpdateContacts
   | UpdateGiftCodesAction
   | UpdatePassphrase
+  | UpdatePin
   | UpdateStatusAction;
 
 // TODO -- check if initialized state is the only time thse values are null
@@ -230,6 +249,7 @@ const initialFullServiceState: FullServiceState = {
   isAuthenticated: false,
   isEntropyKnown: false,
   isInitialized: false,
+  isPinRequired: false,
   secretKey: '',
   selectedAccount: {
     account: {
@@ -329,6 +349,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         accounts,
         addresses,
         encryptedPassphrase,
+        secretKey,
         selectedAccount,
         walletStatus,
       } = action.payload;
@@ -339,6 +360,8 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         encryptedPassphrase,
         isAuthenticated: true,
         isEntropyKnown: true,
+        isPinRequired: true,
+        secretKey,
         selectedAccount,
         walletStatus,
       };
@@ -350,6 +373,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         addresses,
         encryptedPassphrase,
         pendingSecrets,
+        secretKey,
         selectedAccount,
         walletStatus,
       } = action.payload;
@@ -360,7 +384,9 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         encryptedPassphrase,
         isAuthenticated: true,
         isEntropyKnown: false,
+        isPinRequired: true,
         pendingSecrets,
+        secretKey,
         selectedAccount,
         walletStatus,
       };
@@ -387,6 +413,9 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         accounts,
         addresses,
         contacts,
+        isPinRequired,
+        pin,
+        pinThresholdPmob,
         secretKey,
         selectedAccount,
         walletStatus,
@@ -398,6 +427,9 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         contacts,
         isAuthenticated: true,
         isEntropyKnown: true,
+        isPinRequired,
+        pin,
+        pinThresholdPmob,
         secretKey,
         selectedAccount,
         walletStatus,
@@ -419,6 +451,17 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       return {
         ...state,
         encryptedPassphrase,
+      };
+    }
+
+    case 'UPDATE_PIN': {
+      const { pin, pinThresholdPmob } = action.payload;
+
+      return {
+        ...state,
+        isPinRequired: false,
+        pin,
+        pinThresholdPmob,
       };
     }
 
@@ -456,6 +499,7 @@ const FullServiceContext = createContext<FullServiceContextValue>({
   importLegacyAccount: () => Promise.resolve(),
   removeAccount: () => Promise.resolve(),
   retrieveEntropy: () => Promise.resolve(),
+  setPin: () => Promise.resolve(),
   submitGiftCode: () => Promise.resolve(),
   submitTransaction: () => Promise.resolve(),
   unlockWallet: () => Promise.resolve(),
@@ -555,9 +599,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
   const createAccount = async (name: string | null, passphrase: string) => {
     try {
-      // Wipe Accounts and Contacts
+      // Wipe Accounts, Contacts, and PIN
       await removeAllAccounts([]);
       deleteAllContacts();
+      localStore.deletePinThresholdPmob();
+      localStore.deleteEncryptedPin();
 
       // Attempt create
       const { account } = await fullServiceApi.createAccount({ name });
@@ -576,7 +622,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
       // After successful import, store encryptedPassphrase
-      const encryptedPassphrase = await encryptAndStorePassphrase(passphrase);
+      const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
       dispatch({
         payload: {
           accounts: {
@@ -589,6 +635,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
           },
           encryptedPassphrase,
           pendingSecrets,
+          secretKey,
           selectedAccount: {
             account,
             balanceStatus,
@@ -607,9 +654,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Accounts + status
   const importAccount = async (name: string | null, mnemonic: string, passphrase: string) => {
     try {
-      // Wipe Accounts and Contacts
+      // Wipe Accounts, Contacts, and PIN
       await removeAllAccounts([]);
       deleteAllContacts();
+      localStore.deletePinThresholdPmob();
+      localStore.deleteEncryptedPin();
 
       // Attempt import
       const { account } = await fullServiceApi.importAccount({
@@ -628,7 +677,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
       // After successful import, store encryptedPassphrase
-      const encryptedPassphrase = await encryptAndStorePassphrase(passphrase);
+      const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
 
       dispatch({
         payload: {
@@ -641,6 +690,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressMap,
           },
           encryptedPassphrase,
+          secretKey,
           selectedAccount: {
             account,
             balanceStatus,
@@ -659,9 +709,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Accounts + status
   const importLegacyAccount = async (name: string | null, entropy: string, passphrase: string) => {
     try {
-      // Wipe Accounts and Contacts
+      // Wipe Accounts, Contacts, and PIN
       await removeAllAccounts([]);
       deleteAllContacts();
+      localStore.deletePinThresholdPmob();
+      localStore.deleteEncryptedPin();
 
       // Attempt import
       const { account } = await fullServiceApi.importLegacyAccount({ entropy, name });
@@ -680,7 +732,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
       // After successful import, store encryptedPassphrase
-      const encryptedPassphrase = await encryptAndStorePassphrase(passphrase);
+      const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
 
       dispatch({
         payload: {
@@ -693,6 +745,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressMap,
           },
           encryptedPassphrase,
+          secretKey,
           selectedAccount: {
             account,
             balanceStatus,
@@ -781,6 +834,42 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
+  // This call does not require a password. It should only be used when no PIN is set.
+  const setPin = async (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => {
+    const { pin: existingPin, secretKey, encryptedPassphrase } = state;
+
+    try {
+      if (encryptedPassphrase === undefined) {
+        throw new Error('encryptedPassphrase assertion failed');
+      }
+
+      if (passphrase) {
+        await validatePassphrase(passphrase, encryptedPassphrase);
+      } else if (existingPin) {
+        // This only triggers if attempting to set pin without passphrase.
+        // You cannot overwrite an existing PIN without the correct passphrase!
+        throw new Error('PIN already exists');
+      }
+
+      // encrypt and save PIN to local store
+      const encryptedPin = await encrypt(pin, secretKey);
+      localStore.setEncryptedPin(encryptedPin);
+
+      // save threshold to local store
+      localStore.setPinThresholdPmob(pinThresholdPmob);
+
+      dispatch({
+        payload: {
+          pin,
+          pinThresholdPmob,
+        },
+        type: 'UPDATE_PIN',
+      });
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
   const submitGiftCode = async (submitGiftCodeParams: SubmitGiftCodeParams) => {
     try {
       await fullServiceApi.submitGiftCode(submitGiftCodeParams);
@@ -804,20 +893,24 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
     // TODO- right now, we're just using the selected account to refresh
     // this is obviously not ideal
-    const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-    const { walletStatus } = await fullServiceApi.getWalletStatus();
+    // const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
+    // const { walletStatus } = await fullServiceApi.getWalletStatus();
 
-    // TODO - get new balance (now that is it pending)
-    dispatch({
-      payload: {
-        selectedAccount: {
-          account: selectedAccount.account,
-          balanceStatus,
-        },
-        walletStatus,
-      },
-      type: 'UPDATE_STATUS',
-    });
+    // FIX-ME: Currently, Full-Service does not seperate pending change and pending outgoing.
+    // We will need Full-Service to clearly seperate these values for us to properly show pending.
+    // Until we have that, the balance may dip as long as the UTXO spent on the transaction before
+    // bouncing back up.
+    // Alternately, we can just make balance equal to balance + pending (for now)
+    // dispatch({
+    //   payload: {
+    //     selectedAccount: {
+    //       account: selectedAccount.account,
+    //       balanceStatus,
+    //     },
+    //     walletStatus,
+    //   },
+    //   type: 'UPDATE_STATUS',
+    // });
   };
 
   const unlockWallet = async (passphrase: string): Promise<void> => {
@@ -848,6 +941,18 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         accountId: selectedAccount.accountId,
       });
 
+      // Determine if PIN needs to be set (edge case)
+      let isPinRequired = false;
+      let pin;
+      const encryptedPin = localStore.getEncryptedPin();
+      const pinThresholdPmob = localStore.getPinThresholdPmob();
+
+      if (encryptedPin === undefined) {
+        isPinRequired = true;
+      } else {
+        pin = await decrypt(encryptedPin, secretKey);
+      }
+
       dispatch({
         payload: {
           accounts: {
@@ -859,6 +964,9 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
             addressMap,
           },
           contacts,
+          isPinRequired,
+          pin,
+          pinThresholdPmob,
           secretKey,
           selectedAccount: {
             account: selectedAccount,
@@ -964,6 +1072,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
         importAccount,
         importLegacyAccount,
         retrieveEntropy,
+        setPin,
         submitGiftCode,
         submitTransaction,
         unlockWallet,

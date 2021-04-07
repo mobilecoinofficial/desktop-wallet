@@ -98,7 +98,7 @@
     "errorPin": "PIN MUST BE ALL DIGITS",
     "formLabel": "PIN",
     "instructions": "TO CHANGE YOUR PIN OR TO CREATE ONE, ENTER THE DESIRED PIN VALUE BELOW, AND THE MINIMUM AMOUNT IT APPLIES TO, AS WELL.",
-    "minimumForPin": "MINIMUM AMOUNT THAT REQUIRES A PIN",
+    "pinThreshold": "MINIMUM AMOUNT THAT REQUIRES A PIN",
     "newPinLabel": "PIN",
     "pinConfirmationLabel": "PIN CONFIRMATION",
     "pinConfirmationRef": "MUST MATCH PIN",
@@ -462,6 +462,21 @@
   "SendMobPanel": {
     "title": "SEND MOB TO AN ADDRESS",
     "description": "PLEASE ENTER THE RECIPIENT’S ADDRESS AND THE AMOUNT OF MOB TO SEND"
+  },
+
+  "SetPinModal": {
+    "changePinButton": "SET PIN",
+    "description": "YOUR TRANSACTION PIN IS USED AS AN EXTRA SAFETY MEASURE. IT IS REQUIRED IF A TRANSACTION VALUE IS HIGHER THAN THE THRESHOLD MOB AMOUNT.",
+    "errorPin": "PIN MUST BE ALL DIGITS",
+    "formLabel": "SET TRANSACTION PIN",
+    "instructions": "TO CHANGE YOUR PIN OR TO CREATE ONE, ENTER THE DESIRED PIN VALUE BELOW, AND THE MINIMUM AMOUNT IT APPLIES TO, AS WELL.",
+    "pinThreshold": "MINIMUM AMOUNT THAT REQUIRES A PIN",
+    "newPinLabel": "PIN",
+    "pinConfirmationLabel": "PIN CONFIRMATION",
+    "pinConfirmationRef": "MUST MATCH PIN",
+    "pinConfirmationRequired": "PIN CONFIRMATION IS REQUIRED",
+    "pinRequired": "PIN IS REQUIRED",
+    "pinSize": "PIN MUST BE AT LEAST 6 CHARACTERS LONG."
   },
 
   "SettingsOptionsItem": {

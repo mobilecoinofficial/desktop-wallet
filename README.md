@@ -1,9 +1,12 @@
 # WARNING
 
-Do not build from main without full confidence in the state of the application. If there is no official release, please contact an admin for the correct branch. Self-package at your own risk.
+Do not build from main without full confidence in the state of the application. If there is no official release, please contact an admin for the correct branch. This wallet is still in early Beta. Use at your own risk.
 
 Be vigilant for phishing attempts.
 
+## Upcoming Changes to Git Flow
+
+We will be shifting away from free-for-all, pre-release branch/commit pattern to a formalized Gitflow where the main branch is always ready. Please stay tuned!
 
 ## MobileCoin Electron Wallet [Beta]
 
@@ -39,7 +42,7 @@ Depending on your local platform, you'll need to add the `full-service-testnet` 
 
 ### Dev
 
-You'll need to start by installing the packages. At the root, run `yarn install` (or `yarn` if you're cool like that).
+You'll need to start by installing the packages. At the root, run `yarn install` (or `yarn` if you're cool like that). Because this wallet has native packages, you'll need to drop into the app/ directory `cd app/` and run `yarn install` here as well. Once done, hop back up to the root directory (I know you know this, but `cd ..`).
 
 Run the dev environment with `yarn dev`.
 

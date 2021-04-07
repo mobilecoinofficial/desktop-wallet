@@ -25,8 +25,6 @@ import routePaths from '../../../constants/routePaths';
 import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
-import * as localStore from '../../../utils/LocalStore';
-import { makeHash } from '../../../utils/hashing';
 import isValidPin from '../../../utils/isValidPin';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -84,7 +82,7 @@ const ChangePinView: FC = () => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const { retrieveEntropy } = useFullService();
+  const { pinThresholdPmob, pin, setPin } = useFullService();
 
   const { t } = useTranslation('ChangePinView');
 
@@ -92,6 +90,39 @@ const ChangePinView: FC = () => {
 
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.select();
+  };
+
+  // TODO - ya, this definitely shouldn't live here
+  const PICO_MOB_PRECISION = 12;
+
+  const ensureMobStringPrecision = (mobString: string): string => {
+    const num = Number(mobString);
+    if (Number.isNaN(num)) {
+      throw new Error('mobString is NaN');
+    }
+
+    return num.toFixed(PICO_MOB_PRECISION);
+  };
+
+  // FIX-ME: This logic should not live here.
+  // Right now, we are aggressively assuming the number format is US local.
+  // We should have a universal solution to this problem
+  // Likely a component similiar to MOBNumberFormat with the ability to get the
+  // picoMob string (StringUInt64) value as a ref
+  const convertMobStringToPicoMobString = (mobString: string): string =>
+    ensureMobStringPrecision(mobString).replace('.', '');
+
+  // FIX-ME - seriously should not live here!
+  const convertPicoMobStringToMob = (picoMobString: string): string => {
+    if (picoMobString.length <= 12) {
+      return `0.${'0'.repeat(12 - picoMobString.length)}${picoMobString}`;
+    }
+
+    return [
+      picoMobString.slice(0, picoMobString.length - 12),
+      '.',
+      picoMobString.slice(picoMobString.length - 12),
+    ].join('');
   };
 
   return (
@@ -121,9 +152,9 @@ const ChangePinView: FC = () => {
         <Formik
           initialValues={{
             currentPassword: '',
-            minimumForPin: String(localStore.getMinimumForPin()),
-            newPin: '',
+            newPin: pin || '',
             newPinConfirmation: '',
+            pinThresholdMob: convertPicoMobStringToMob(pinThresholdPmob),
             submit: null,
           }}
           validationSchema={Yup.object().shape({
@@ -133,21 +164,27 @@ const ChangePinView: FC = () => {
               .oneOf([Yup.ref('newPin')], t('pinConfirmationRef'))
               .required(t('pinConfirmationRequired')),
           })}
-          onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
-              setSubmitting(true);
-              const ignoreResult = await retrieveEntropy(values.currentPassword);
-              if (typeof ignoreResult !== 'string') {
-                throw new Error(t('error'));
-              }
+              await setPin(
+                values.newPin,
+                convertMobStringToPicoMobString(values.pinThresholdMob),
+                values.currentPassword
+              );
               if (isMountedRef.current) {
                 setSubmitting(false);
 
-                const hashedPin = makeHash(values.newPin);
-                localStore.setMinimumForPin(Number(values.minimumForPin));
-                localStore.setHashedPin(String(hashedPin));
                 enqueueSnackbar(t('enqueue'), { variant: 'success' });
                 setStatus({ success: true });
+                resetForm({
+                  values: {
+                    currentPassword: '',
+                    newPin: values.newPin,
+                    newPinConfirmation: '',
+                    pinThresholdMob: values.pinThresholdMob,
+                    submit: null,
+                  },
+                });
               }
             } catch (err) {
               if (isMountedRef.current) {
@@ -175,7 +212,7 @@ const ChangePinView: FC = () => {
                   label={t('newPinLabel')}
                   margin="normal"
                   name="newPin"
-                  type="Pin"
+                  type="password"
                   validate={validatePin}
                 />
                 <Field
@@ -184,16 +221,16 @@ const ChangePinView: FC = () => {
                   label={t('pinConfirmationLabel')}
                   margin="normal"
                   name="newPinConfirmation"
-                  type="Pin"
+                  type="password"
                   validate={validatePin}
                 />
                 <Field
                   component={TextField}
                   fullWidth
-                  label={t('minimumForPin')}
+                  label={t('pinThreshold')}
                   margin="normal"
-                  name="minimumForPin"
-                  id="minimumForPin"
+                  name="pinThresholdMob"
+                  id="pinThresholdMob"
                   type="text"
                   onFocus={handleSelect}
                   InputProps={{

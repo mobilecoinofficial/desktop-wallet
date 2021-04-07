@@ -98,7 +98,7 @@
     "errorPin": "PIN must be all digits",
     "formLabel": "PIN",
     "instructions": "To change your PIN or to create one, enter the desired PIN value below, and the minimum amount it applies to, as well.",
-    "minimumForPin": "Minimum amount that requires a PIN",
+    "pinThreshold": "Minimum amount that requires a PIN",
     "newPinLabel": "PIN",
     "pinConfirmationLabel": "PIN Confirmation",
     "pinConfirmationRef": "Must match PIN",
@@ -462,6 +462,21 @@
   "SendMobPanel": {
     "title": "Send MOB to an Address",
     "description": "Please enter the recipient’s address and the amount of MOB to send"
+  },
+
+  "SetPinModal": {
+    "changePinButton": "Set PIN",
+    "description": "Your Transaction PIN is used as an extra safety measure. It is required if a transaction value is higher than the threshold MOB amount.",
+    "instructions": "To change your PIN or to create one, enter the desired PIN value below, and the minimum amount it applies to, as well.",
+    "errorPin": "PIN must be all digits",
+    "formLabel": "Set Transaction PIN",
+    "pinThreshold": "Minimum amount that requires a PIN",
+    "newPinLabel": "PIN",
+    "pinConfirmationLabel": "PIN Confirmation",
+    "pinConfirmationRef": "Must match PIN",
+    "pinConfirmationRequired": "PIN Confirmation is required",
+    "pinRequired": "PIN is required",
+    "pinSize": "PIN must be at least 6 characters long."
   },
 
   "SettingsOptionsItem": {

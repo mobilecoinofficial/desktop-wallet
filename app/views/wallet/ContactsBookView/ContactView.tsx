@@ -123,7 +123,6 @@ const ContactView: FC<ContactViewProps> = ({
               validationSchema={Yup.object().shape({
                 abbreviation: Yup.string().max(2, t('maxAbbreviationLength')),
                 alias: Yup.string().required(t('aliasRequired')),
-                recipientAddress: Yup.string().required(t('addressCodeRequired')),
               })}
               onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 if (values.button === 'back') {

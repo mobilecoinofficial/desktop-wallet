@@ -50,7 +50,7 @@ const ContactsBookView: FC = () => {
           onCancel={() => setStatus(SHOW_LIST)}
           onSaved={async ({ abbreviation, alias, color, isFavorite, recipientAddress }) => {
             const result = await assignAddressForAccount({
-              accountId: selectedAccount.account.accountId || Math.random(),
+              accountId: selectedAccount.account.accountId,
             });
 
             setStatus(SHOW_LIST);

@@ -98,6 +98,11 @@ const ContactView: FC<ContactViewProps> = ({
   const { t } = useTranslation('ContactView');
   const isNew = !assignedAddress;
 
+  const randomColor = () => {
+    const RANDOM_COLORS = ['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D969D', '#D82E26'];
+    return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
+  };
+
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
       <Card>
@@ -110,7 +115,7 @@ const ContactView: FC<ContactViewProps> = ({
                 alias: alias || '',
                 assignedAddress: assignedAddress || '',
                 button: '',
-                color: color || '',
+                color: color || randomColor(),
                 isFavorite: !!isFavorite,
                 recipientAddress: recipientAddress || '',
                 submit: null,
@@ -133,7 +138,7 @@ const ContactView: FC<ContactViewProps> = ({
                     setSubmitting(false);
                     setStatus({ success: true });
                     onSaved({
-                      abbreviation: values.abbreviation || values.alias[0],
+                      abbreviation: values.abbreviation.toUpperCase() || values.alias[0],
                       alias: values.alias,
                       color: values.color,
                       isFavorite: values.isFavorite,
@@ -157,7 +162,7 @@ const ContactView: FC<ContactViewProps> = ({
                         style={{ backgroundColor: values.color || '#757575' }}
                         onClick={() => setShowPicker(true)}
                       >
-                        {values.abbreviation}
+                        {values.abbreviation.toUpperCase()}
                       </Avatar>
                       <Field
                         display="inline"

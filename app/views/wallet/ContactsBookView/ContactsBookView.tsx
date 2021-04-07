@@ -9,11 +9,6 @@ import useFullService from '../../../hooks/useFullService';
 import ContactView from './ContactView';
 import ContactsList from './ContactsList';
 
-const randomColor = () => {
-  const RANDOM_COLORS = ['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D969D', '#D82E26'];
-  return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
-};
-
 const ContactsBookView: FC = () => {
   const SHOW_ADD = 'SHOW_ADD';
   const SHOW_EDIT = 'SHOW_EDIT';
@@ -53,7 +48,7 @@ const ContactsBookView: FC = () => {
       return (
         <ContactView
           onCancel={() => setStatus(SHOW_LIST)}
-          onSaved={async ({ abbreviation, alias, isFavorite, recipientAddress }) => {
+          onSaved={async ({ abbreviation, alias, color, isFavorite, recipientAddress }) => {
             const result = await assignAddressForAccount({
               accountId: selectedAccount.account.accountId || Math.random(),
             });
@@ -63,7 +58,7 @@ const ContactsBookView: FC = () => {
               abbreviation,
               alias,
               assignedAddress: result.address.publicAddress,
-              color: randomColor(),
+              color,
               isFavorite,
               recipientAddress,
             });
@@ -98,7 +93,7 @@ const ContactsBookView: FC = () => {
               abbreviation,
               alias,
               assignedAddress: current.assignedAddress,
-              color: color || randomColor(),
+              color,
               isFavorite,
               recipientAddress,
             };

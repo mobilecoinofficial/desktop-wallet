@@ -1,7 +1,9 @@
 import React from 'react';
+import type { FC } from 'react';
 
 import { action } from '@storybook/addon-actions';
 
+import { ContactsListProps } from './ContactsList.d';
 import { ContactsList } from './ContactsList.view';
 
 export default {
@@ -9,7 +11,7 @@ export default {
   title: 'Contacts/List',
 };
 
-export const FullList = () => (
+export const FullList: FC<ContactsListProps> = () => (
   <ContactsList
     contactsList={[
       {
@@ -39,6 +41,6 @@ export const FullList = () => (
   />
 );
 
-export const EmptyList = () => (
+export const EmptyList: FC<ContactsListProps> = () => (
   <ContactsList contactsList={[]} onAdd={action('onadd click')} onEdit={action('onedit click')} />
 );

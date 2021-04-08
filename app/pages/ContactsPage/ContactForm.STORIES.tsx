@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import { Story } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 
 import ContactView from './ContactForm.view';
 
@@ -10,10 +10,7 @@ export default {
 };
 
 export const AddMode = () => (
-  <ContactView
-    onCancel={() => console.log('CANCELLED (from panel)')}
-    onSaved={() => console.log('CREATED (to panel)')}
-  />
+  <ContactView onCancel={action('oncancel click')} onSaved={action('onsaved click')} />
 );
 
 export const EditMode = () => (
@@ -21,8 +18,8 @@ export const EditMode = () => (
     abbreviation="FK"
     alias="My own person"
     isFavorite
-    onCancel={() => console.log('CANCELLED (from panel)')}
-    onSaved={() => console.log('CREATED (to panel)')}
+    onCancel={action('oncancel click')}
+    onSaved={action('onsaved click')}
     recipientAddress="220960ABCDEF"
   />
 );

@@ -84,7 +84,7 @@ const ContactsList: FC<ContactsListProps> = ({
           fullWidth
           onChange={(e) => setCurrentFilter(e.target.value)}
           inputProps={{
-            endAdornment: (
+            endadornment: (
               <InputAdornment>
                 <SearchIcon />
               </InputAdornment>

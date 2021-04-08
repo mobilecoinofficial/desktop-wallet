@@ -57,6 +57,7 @@ ContactCard.defaultProps = {
   abbreviation: '',
   alias: '',
   assignedAddress: '',
+  color: '#CCCCCC',
   isFavorite: false,
 };
 

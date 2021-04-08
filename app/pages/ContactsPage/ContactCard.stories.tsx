@@ -1,6 +1,6 @@
-import React, { ComponentProps } from 'react';
+import React from 'react';
 
-import { Story } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 
 import { ContactCard } from './ContactCard.view';
 
@@ -9,13 +9,13 @@ export default {
   title: 'Contacts/Card',
 };
 
-const Template: Story<ComponentProps<typeof ContactCard>> = (args) => <ContactCard {...args} />;
-
-export const StandardCard = Template.bind({});
-
-StandardCard.args = {
-  abbreviation: 'FK',
-  alias: 'My own person',
-  color: '#FF0000',
-  isFavorite: true,
-};
+export const Card = () => (
+  <ContactCard
+    abbreviation="FK"
+    alias="My own person"
+    assignedAddress="1234567890"
+    color="#FF0000"
+    isFavorite
+    onEdit={action('onedit click')}
+  />
+);

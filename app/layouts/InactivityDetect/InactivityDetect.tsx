@@ -16,9 +16,12 @@ import useFullService from '../../hooks/useFullService';
 
 let inactivityTimer: number;
 let reactionTimer: number;
+let countdownTimer: number;
 
 const InactivityDetect: FC = () => {
   const [inactiveTooLong, setInactiveTooLong] = useState(false);
+  const [startTime, setStartTime] = useState(0);
+  const [nowTime, setNowTime] = useState(0);
   const { selectedAccount } = useFullService();
   const { t } = useTranslation('InactivityDetect');
 
@@ -33,6 +36,7 @@ const InactivityDetect: FC = () => {
 
   const reenableTimer = () => {
     clearTimeout(reactionTimer);
+    clearTimeout(countdownTimer);
     setInactiveTooLong(false);
     resetTimer();
     document.onmousemove = resetTimer;
@@ -55,10 +59,20 @@ const InactivityDetect: FC = () => {
       document.onmousemove = null;
       document.onkeypress = null;
       reactionTimer = window.setTimeout(() => window.close(), TIME_FOR_REACTION);
+
+      const now = new Date().valueOf();
+      setStartTime(now);
+      setNowTime(now);
+      countdownTimer = window.setInterval(() => setNowTime(new Date().valueOf()), 500);
     } else {
       reenableTimer();
     }
   };
+
+  const msecondsToMMSS = (ms: number) =>
+    ms <= 0
+      ? '00:00'
+      : `${Math.floor(ms / 60_000)}:${String(Math.floor(100 + ((ms / 1000) % 60))).substr(1)}`;
 
   document.onmousemove = resetTimer;
   document.onkeypress = resetTimer;
@@ -69,7 +83,7 @@ const InactivityDetect: FC = () => {
       <DialogTitle id="alert-dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          {t('tooLong')}
+          {t('tooLong')} {msecondsToMMSS(TIME_FOR_REACTION - (nowTime - startTime))}s
           <br />
           {t('confirmToStay')}
         </DialogContentText>

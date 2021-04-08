@@ -25,5 +25,6 @@ test('Displays card', () => {
   expect(getByText('My own person')).toBeInTheDocument();
 
   fireEvent.click(screen.getByText('FK'));
-  expect(handleClick).toHaveBeenCalledTimes(1);
+  fireEvent.click(screen.getByText('My own person'));
+  expect(handleClick).toHaveBeenCalledTimes(2);
 });

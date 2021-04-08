@@ -15,12 +15,10 @@ function setupComponent() {
   const mockUseFullService = useFullService as jest.MockedFunction<typeof useFullService>;
 
   // @ts-ignore mock
-  mockUseFullService.mockImplementation(() => {
-    return {
-      encryptedEntropy: mockEncryptedEntropy,
-      isAuthenticated: mockIsAuthenticated,
-    };
-  });
+  mockUseFullService.mockImplementation(() => ({
+    encryptedEntropy: mockEncryptedEntropy,
+    isAuthenticated: mockIsAuthenticated,
+  }));
 
   const { asFragment } = renderSnapshot(<NotFoundView />);
 

@@ -13,12 +13,10 @@ function setupComponent() {
   const mockUseFullService = useFullService as jest.MockedFunction<typeof useFullService>;
 
   // @ts-ignore mock
-  mockUseFullService.mockImplementation(() => {
-    return {
-      accountName: 'account name',
-      b58Code: 'b58 code',
-    };
-  });
+  mockUseFullService.mockImplementation(() => ({
+    accountName: 'account name',
+    b58Code: 'b58 code',
+  }));
 
   const { asFragment } = renderSnapshot(<TransactionView />);
 

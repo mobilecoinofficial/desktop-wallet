@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-import axiosFullService, { handleError, handleResposne } from '../../app/fullService/axiosFullService';
+import axiosFullService, {
+  handleError,
+  handleResposne,
+} from '../../app/fullService/axiosFullService';
 
 jest.mock('axios');
 
@@ -20,9 +23,7 @@ const setup = () => {
   };
   const mockAxios = axios as jest.MockedFunction<typeof axios>;
   // @ts-ignore mock
-  mockAxios.create.mockImplementation(() => {
-    return mockAxiosInstance;
-  });
+  mockAxios.create.mockImplementation(() => mockAxiosInstance);
 
   return {
     fakeMethod,
@@ -35,9 +36,7 @@ const setup = () => {
 
 describe('axiosFullService', () => {
   test('creates an axios instance with full service config', async () => {
-    const {
-      fakeMethod, fakeParams, mockAxios, mockUse,
-    } = setup();
+    const { fakeMethod, fakeParams, mockAxios, mockUse } = setup();
     const expectedConfig = {
       baseURL: 'http://localhost:9090/wallet',
       headers: { 'Content-type': 'application/json' },
@@ -59,13 +58,9 @@ describe('axiosFullService', () => {
     };
     const expectedHappyResponse = 'happy path';
 
-    mockAxiosInstance.mockImplementation(() => {
-      return expectedHappyResponse;
-    });
+    mockAxiosInstance.mockImplementation(() => expectedHappyResponse);
 
-    expect(await axiosFullService(fakeMethod, fakeParams)).toBe(
-      expectedHappyResponse,
-    );
+    expect(await axiosFullService(fakeMethod, fakeParams)).toBe(expectedHappyResponse);
     expect(mockAxiosInstance).toBeCalledWith(expectedCall);
   });
 
@@ -78,17 +73,13 @@ describe('axiosFullService', () => {
       throw new Error(expectedErorrMessage);
     });
 
-    expect(await axiosFullService(fakeMethod, fakeParams)).toBe(
-      expectedErorrMessage,
-    );
+    expect(await axiosFullService(fakeMethod, fakeParams)).toBe(expectedErorrMessage);
 
     mockAxiosInstance.mockImplementationOnce(() => {
       throw new Error();
     });
 
-    expect(await axiosFullService(fakeMethod, fakeParams)).toBe(
-      expectedUnknownErrorMessage,
-    );
+    expect(await axiosFullService(fakeMethod, fakeParams)).toBe(expectedUnknownErrorMessage);
   });
 
   describe('handleResponse', () => {
@@ -110,11 +101,9 @@ describe('axiosFullService', () => {
       const expectedUnknownErrorMessage = 'Unknown Full Service error';
 
       await expect(handleError({ message: expectedErorrMessage })).rejects.toBe(
-        expectedErorrMessage,
+        expectedErorrMessage
       );
-      await expect(handleError({ message: null })).rejects.toBe(
-        expectedUnknownErrorMessage,
-      );
+      await expect(handleError({ message: null })).rejects.toBe(expectedUnknownErrorMessage);
     });
   });
 });

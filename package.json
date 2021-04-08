@@ -206,6 +206,7 @@
     "@types/react-transition-group": "^4.4.0",
     "@types/redux-logger": "^3.0.8",
     "@types/sjcl": "^1.0.29",
+    "@types/testing-library__jest-dom": "^5.9.5",
     "@types/webpack": "^4.41.21",
     "@types/webpack-env": "^1.15.2",
     "@types/yup": "^0.29.7",

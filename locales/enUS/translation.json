@@ -507,6 +507,7 @@
 
   "TransactionDetails": {
     "amount": "Amount",
+    "assignedAddress": "Assigned Address",
     "addComment": "Add comment",
     "blockHeight": "Block Height",
     "buttons": {

@@ -469,6 +469,7 @@
   },
   "TransactionDetails": {
     "amount": "金额",
+    "assignedAddress": "指定的地址",
     "addComment": "添加备注",
     "blockHeight": "区块高度",
     "buttons": {

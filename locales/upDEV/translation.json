@@ -507,6 +507,7 @@
 
   "TransactionDetails": {
     "amount": "AMOUNT",
+    "assignedAddress": "ASSIGNED ADDRESS",
     "addComment": "ADD COMMENT",
     "blockHeight": "BLOCK HEIGHT",
     "buttons": {
@@ -514,7 +515,6 @@
       "cancel": "CANCEL COMMENT",
       "save": "SAVE COMMENT"
     },
-
     "changeComment": "CHANGE COMMENT",
     "orphaned": "??? ORPHANED",
     "orphanedTitle": "ORPHANED TRANSACTION",

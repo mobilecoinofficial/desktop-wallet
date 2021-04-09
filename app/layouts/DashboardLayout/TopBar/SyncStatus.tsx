@@ -67,8 +67,7 @@ const SyncStatus: FC = () => {
 
   if (
     networkBlockIndexBigInt < accountBlockIndexBigInt ||
-    networkBlockIndexBigInt < localBlockIndexBigInt ||
-    localBlockIndexBigInt < accountBlockIndexBigInt
+    networkBlockIndexBigInt < localBlockIndexBigInt
   ) {
     isSynced = false;
     percentSynced = 0;

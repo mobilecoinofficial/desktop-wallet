@@ -45,8 +45,7 @@ const LedgerStatus: FC = () => {
       : getPercentSyncedNew(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   const percentLocalSynced =
-    networkBlockIndexBigInt < localBlockIndexBigInt ||
-    localBlockIndexBigInt < accountBlockIndexBigInt
+    networkBlockIndexBigInt < localBlockIndexBigInt
       ? 'Error'
       : getPercentSyncedNew(networkBlockIndexBigInt, localBlockIndexBigInt);
 

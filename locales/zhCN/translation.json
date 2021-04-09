@@ -369,15 +369,6 @@
     "mainPublicAddress": "公共地址",
     "mainPublicAddressDetails": "转账到公共地址将不会显示发款人。如果您不需要在交易历史中显示发款人的话，请使用公共地址。"
   },
-  "ResetLedger": {
-    "cancelButton": "取消",
-    "confirmButton": "确认",
-    "description": "在一些特殊情况下，您的本地数据库可能会损坏并永久地与账簿失去同步。在这种情况下请手动重置您的账簿。",
-    "formLabel": "重置账簿",
-    "resetButton": "重置账簿",
-    "resetLedgerModal": "是否重置账簿？",
-    "resetLedgerModalDescription": "重置账簿会重启钱包。您将需要重新同步整个账簿。并且在本程序刷新后，您将需要重新输入密码。"
-  },
   "RetrieveEntropyView": {
     "description": "备份口令可以用来解锁您的钱包并使用 MobileCoin。每组口令都是独一无二的。请勿公开您的备份口令并妥善保存在安全，可靠的地方。本程序会使用您的密码来加密并存储您的备份口令。",
     "entropyCanBeUsed": "备份口令可以在此设备损坏或丢失时把当前账户导入到其他钱包。",
@@ -477,8 +468,9 @@
     "syncing": "正在与账簿同步"
   },
   "TransactionDetails": {
-    "amount": "金额",
     "addComment": "添加备注",
+    "address": "地址",
+    "amount": "金额",
     "blockHeight": "区块高度",
     "buttons": {
       "back": "返回",

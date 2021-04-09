@@ -7,10 +7,9 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import routePaths from '../../../constants/routePaths';
 import type { Theme } from '../../../theme';
+import FullServiceDirectory from './FullServiceDirectory';
 import LeaveFullServiceRunning from './LeaveFullServiceRunning';
 import LedgerStatus from './LedgerStatus';
-import FullServiceDirectory from './FullServiceDirectory';
-import ResetLedger from './ResetLedger';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardContainer: {
@@ -69,7 +68,6 @@ const ConfigureFullServiceView: FC = () => {
       </Box>
       <LedgerStatus />
       <LeaveFullServiceRunning />
-      <ResetLedger />
       <FullServiceDirectory />
     </Container>
   );

@@ -16,7 +16,7 @@ import type { SubmitGiftCodeParams, SubmitGiftCodeResult } from '../fullService/
 import decryptContacts from '../models/Contact/decryptContacts';
 import deleteAllContacts from '../models/Contact/deleteAllContacts';
 import encryptContacts from '../models/Contact/encryptContacts';
-import type { Accounts } from '../types/Account';
+import Account, { Accounts } from '../types/Account';
 import type { Addresses } from '../types/Address';
 import type BalanceStatus from '../types/BalanceStatus';
 import Contact from '../types/Contact';

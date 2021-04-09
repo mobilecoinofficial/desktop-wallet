@@ -93,7 +93,12 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
       );
     }
 
-    return renderRow(`${sign === '+' ? t('sender') : t('recipient')}:`, aliasOrAddress);
+    let label = t('recipient');
+    if (sign === '+') {
+      label = contact ? t('sender') : t('address');
+    }
+
+    return renderRow(`${label}:`, aliasOrAddress);
   };
   return (
     <Container maxWidth="md" className={classes.root}>

@@ -468,9 +468,9 @@
     "syncing": "正在与账簿同步"
   },
   "TransactionDetails": {
-    "amount": "金额",
-    "assignedAddress": "指定的地址",
     "addComment": "添加备注",
+    "address": "地址",
+    "amount": "金额",
     "blockHeight": "区块高度",
     "buttons": {
       "back": "返回",

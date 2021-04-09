@@ -506,9 +506,9 @@
   },
 
   "TransactionDetails": {
-    "amount": "Amount",
-    "assignedAddress": "Assigned Address",
     "addComment": "Add comment",
+    "address": "Address",
+    "amount": "Amount",
     "blockHeight": "Block Height",
     "buttons": {
       "back": "Go Back",

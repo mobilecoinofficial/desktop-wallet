@@ -95,7 +95,7 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
 
     let label = t('recipient');
     if (sign === '+') {
-      label = contact ? t('sender') : t('assignedAddress');
+      label = contact ? t('sender') : t('address');
     }
 
     return renderRow(`${label}:`, aliasOrAddress);

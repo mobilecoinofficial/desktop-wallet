@@ -1,5 +1,5 @@
 {
-  "name": "mobile-coin-purse-beta",
+  "name": "mobilecoin-desktop-beta",
   "productName": "MobileCoin-Desktop-Wallet-beta",
   "version": "v0.2.5",
   "description": "Desktop hot wallet for your MobileCoin needs.",
@@ -17,6 +17,6 @@
     "@types/i18next-node-fs-backend": "^2.1.0"
   },
   "dependencies": {
-    "argon2": "^0.27.2"
+    "argon2": "^0.26.2"
   }
 }

@@ -16,22 +16,22 @@ killall full-service-testnet || true
 
 LEDGER_DB_DIR="$1"
 WALLET_DB_DIR="$2"
-WALLET_DB_FILE_DIR="$3"
+WALLET_DB_FILE="$3"
 
 mkdir -p "${LEDGER_DB_DIR}"
 mkdir -p "${WALLET_DB_DIR}"
 
-echo "Starting full-service-testnet with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR} and ${WALLET_DB_FILE_DIR}" > /tmp/mylog
+echo "Starting full-service-testnet with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR} and ${WALLET_DB_FILE}" > /tmp/mylog
 
-RUST_LOG=debug,mc_connection=info,mc_ledger_sync=info ./full-service-testnet \
+RUST_LOG=debug,mc_connection=error,mc_ledger_sync=error ./full-service-testnet \
         --ledger-db "${LEDGER_DB_DIR}" \
-        --wallet-db "${WALLET_DB_FILE_DIR}" \
+        --wallet-db "${WALLET_DB_FILE}" \
         --poll-interval 1 \
         --peer mc://node1.test.mobilecoin.com/ \
         --peer mc://node2.test.mobilecoin.com/ \
         --tx-source-url https://s3-us-west-1.amazonaws.com/mobilecoin.chain/node1.test.mobilecoin.com/ \
         --tx-source-url https://s3-us-west-1.amazonaws.com/mobilecoin.chain/node2.test.mobilecoin.com/ \
-        --fog-ingest-enclave-css ./ingest-enclave.testnet.css \
+        --fog-ingest-enclave-css ./../ingest-enclave.testnet.css \
         &> /tmp/full-service-$(date '+%Y-%m-%d-%H:%M:%S').log &
 
 pid=$!

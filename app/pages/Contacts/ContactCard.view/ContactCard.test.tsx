@@ -4,7 +4,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 
-import '../../testUtils/i18nForTests';
+import '../../../testUtils/i18nForTests';
 import { ContactCard } from './ContactCard.view';
 
 test('Displays card', () => {

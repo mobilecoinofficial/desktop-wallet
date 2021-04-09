@@ -22,11 +22,11 @@ import { CirclePicker } from 'react-color';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton, StarCheckbox } from '../../components';
-import { RANDOM_COLORS } from '../../constants/app';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
-import type { Theme } from '../../theme';
-import { ContactFormProps } from './ContactForm.d';
+import { SubmitButton, StarCheckbox } from '../../../components';
+import { RANDOM_COLORS } from '../../../constants/app';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import type { Theme } from '../../../theme';
+import { ContactFormProps } from './ContactForm';
 
 interface CirclePickerType {
   hex: string;
@@ -278,4 +278,3 @@ const ContactForm: FC<ContactFormProps> = ({
 };
 
 export default ContactForm;
-export { ContactForm };

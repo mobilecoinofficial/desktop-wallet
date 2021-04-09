@@ -3,8 +3,8 @@ import type { FC } from 'react';
 
 import { action } from '@storybook/addon-actions';
 
-import { ContactsListProps } from './ContactsList.d';
-import { ContactsList } from './ContactsList.view';
+import { ContactsListProps } from './ContactsList';
+import ContactsList from './ContactsList.view';
 
 export default {
   component: ContactsList,

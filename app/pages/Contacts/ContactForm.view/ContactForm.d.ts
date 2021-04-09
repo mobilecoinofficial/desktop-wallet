@@ -1,4 +1,4 @@
-import Contact from '../../types/Contact';
+import Contact from '../../../types/Contact';
 
 export interface ContactFormProps {
   abbreviation?: string;

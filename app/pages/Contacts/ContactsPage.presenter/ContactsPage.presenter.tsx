@@ -5,11 +5,11 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
-import { randomColor } from '../../constants/app';
-import useFullService from '../../hooks/useFullService';
-import type { Contact } from '../../types/Contact.d';
-import { ContactForm } from './ContactForm.view';
-import { ContactsList } from './ContactsList.view';
+import { randomColor } from '../../../constants/app';
+import useFullService from '../../../hooks/useFullService';
+import type { Contact } from '../../../types/Contact.d';
+import ContactForm from '../ContactForm.view';
+import ContactsList from '../ContactsList.view';
 
 const ContactsPage: FC = () => {
   enum PAGE {

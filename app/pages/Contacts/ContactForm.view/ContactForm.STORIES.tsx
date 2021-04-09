@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { action } from '@storybook/addon-actions';
 
 import { ContactFormProps } from './ContactForm';
-import { ContactForm } from './ContactForm.view';
+import ContactForm from './ContactForm.view';
 
 export default {
   component: ContactForm,

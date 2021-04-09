@@ -399,16 +399,6 @@
     "mainPublicAddressDetails": "Your Public Address can be shared with everyone. The sender will be unknown to the wallet. This is a feature, not a bug. If you do not care about explicit transaction history, or if you purposely want to keep your history ambiguous, use this address."
   },
 
-  "ResetLedger": {
-    "cancelButton": "Cancel",
-    "confirmButton": "Confirm",
-    "description": "In rare cases, your local databases may become corrupted and permanently out-of-sync with the public ledger. If this occurs, please manually reset the local ledger.",
-    "formLabel": "Reset Your Ledger",
-    "resetButton": "Reset Ledger",
-    "resetLedgerModal": "Reset the ledger?",
-    "resetLedgerModalDescription": "Resetting the ledger restarts the wallet. Re-sync the ledger from 0. Once the app refreshes, re-enter your passphrase."
-  },
-
   "RetrieveEntropyView": {
     "description": "that unlocks your wallet and allows you to use MOB. It is unique to your account. Never share this code. Use this code in a secure, safe manner.",
     "entropyCanBeUsed": "The Entropy can be used to import your wallet in case your device is damaged or lost. It also allows you to add your account to other wallets.",

@@ -9,7 +9,7 @@ import { CircleMOBIcon } from '../../../components/icons';
 import { BLUE_DARK, GOLD_LIGHT, RED } from '../../../constants/colors';
 import useFullService from '../../../hooks/useFullService';
 import { Theme } from '../../../theme';
-import getPercentSyncedNew from '../../../utils/getPercentSyncedNew';
+import getPercentSynced from '../../../utils/getPercentSynced';
 
 const ERROR = 'ERROR';
 const SYNCED = 'SYNCED';
@@ -74,7 +74,11 @@ const SyncStatus: FC = () => {
     statusCode = ERROR;
   } else {
     isSynced = networkBlockIndexBigInt - accountBlockIndexBigInt < acceptableDiffBigInt;
-    percentSynced = getPercentSyncedNew(networkBlockIndexBigInt, accountBlockIndexBigInt);
+    const blockBlockIndexBigInt =
+      accountBlockIndexBigInt < localBlockIndexBigInt
+        ? accountBlockIndexBigInt
+        : localBlockIndexBigInt;
+    percentSynced = getPercentSynced(networkBlockIndexBigInt, blockBlockIndexBigInt);
     statusCode = isSynced ? SYNCED : SYNCING;
   }
   ipcRenderer.send('sync-status', statusCode);

@@ -16,7 +16,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import useFullService from '../../../hooks/useFullService';
-import getPercentSyncedNew from '../../../utils/getPercentSyncedNew';
+import getPercentSynced from '../../../utils/getPercentSynced';
 
 const LedgerStatus: FC = () => {
   const { t } = useTranslation('LedgerStatus');
@@ -42,12 +42,12 @@ const LedgerStatus: FC = () => {
   const percentAccountSynced =
     networkBlockIndexBigInt < accountBlockIndexBigInt
       ? 'Error'
-      : getPercentSyncedNew(networkBlockIndexBigInt, accountBlockIndexBigInt);
+      : getPercentSynced(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   const percentLocalSynced =
     networkBlockIndexBigInt < localBlockIndexBigInt
       ? 'Error'
-      : getPercentSyncedNew(networkBlockIndexBigInt, localBlockIndexBigInt);
+      : getPercentSynced(networkBlockIndexBigInt, localBlockIndexBigInt);
 
   const rows = [
     createData(t('networkBlocks'), '', Number(networkBlockIndexBigInt), ''),

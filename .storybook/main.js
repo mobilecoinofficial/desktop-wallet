@@ -5,7 +5,6 @@ module.exports = {
     '../app/components/**/*.stories.@(js|jsx|ts|tsx)',
     '../app/pages/**/*.stories.@(js|jsx|ts|tsx)',
     '../app/views/**/*.stories.@(js|jsx|ts|tsx)',
-    '../app/views/**/**/*.stories.@(js|jsx|ts|tsx)',
   ],
-  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-actions'],
 };

@@ -278,3 +278,4 @@ const ContactForm: FC<ContactFormProps> = ({
 };
 
 export default ContactForm;
+export { ContactForm };

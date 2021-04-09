@@ -115,3 +115,4 @@ const ContactsList: FC<ContactsListProps> = ({
 };
 
 export default ContactsList;
+export { ContactsList };

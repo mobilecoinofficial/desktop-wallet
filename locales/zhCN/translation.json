@@ -93,11 +93,7 @@
     "errorPin": "PIN 码必须为数字",
     "formLabel": "在此处输入您的PIN",
     "instructions": "请在下方设置您的 PIN 码并设定触发 PIN 码的阈值。",
-<<<<<<< HEAD
     "pinThreshold": "需要 PIN 码的阈值",
-=======
-    "minimumForPin": "需要 PIN 码的阈值",
->>>>>>> 6e26aa3... Remove ResetLedger
     "newPinLabel": "您的 PIN 码",
     "pinConfirmationLabel": "确认您的 PIN 码",
     "pinConfirmationRef": "必须输入一致的 PIN 码",
@@ -425,7 +421,6 @@
     "title": "发送 MOB 到地址",
     "description": "请输入收款人的地址和转账金额"
   },
-<<<<<<< HEAD
   "SetPinModal": {
     "changePinButton": "设置 PIN 码",
     "description": "为了保证您的安全，当交易金额超过您设定的阈值时，您将需要使用您的 PIN 码来确认交易。",
@@ -440,8 +435,6 @@
     "pinRequired": "请输入 PIN 码",
     "pinSize": "PIN 码必须为 6 位数"
   },
-=======
->>>>>>> 6e26aa3... Remove ResetLedger
   "SettingsOptionsItem": {
     "changePassword": "修改密码",
     "changePin": "设置或修改 PIN 码",

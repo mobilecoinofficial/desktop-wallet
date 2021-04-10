@@ -73,12 +73,13 @@ const SyncStatus: FC = () => {
     percentSynced = 0;
     statusCode = ERROR;
   } else {
-    isSynced = networkBlockIndexBigInt - accountBlockIndexBigInt < acceptableDiffBigInt;
-    const blockBlockIndexBigInt =
+    const minBlockIndexBigInt =
       accountBlockIndexBigInt < localBlockIndexBigInt
         ? accountBlockIndexBigInt
         : localBlockIndexBigInt;
-    percentSynced = getPercentSynced(networkBlockIndexBigInt, blockBlockIndexBigInt);
+    percentSynced = getPercentSynced(networkBlockIndexBigInt, minBlockIndexBigInt);
+    isSynced = networkBlockIndexBigInt - minBlockIndexBigInt < acceptableDiffBigInt;
+
     statusCode = isSynced ? SYNCED : SYNCING;
   }
   ipcRenderer.send('sync-status', statusCode);

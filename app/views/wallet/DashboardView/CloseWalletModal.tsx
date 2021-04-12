@@ -71,10 +71,10 @@ const CloseWalletModal: FC = () => {
       >
         <Fade in={open}>
           <Box className={classes.paper}>
-            <Typography variant="h2" gutterBottom>
+            <Typography color="textPrimary" variant="h2" gutterBottom>
               {t('closeVerifyHeader')}
             </Typography>
-            <Typography variant="body2" gutterBottom>
+            <Typography color="textPrimary" variant="body2" gutterBottom>
               {t('closeVerifyBody')}
             </Typography>
             <Box display="flex">

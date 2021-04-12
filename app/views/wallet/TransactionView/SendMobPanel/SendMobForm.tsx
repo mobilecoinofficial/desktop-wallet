@@ -20,7 +20,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { TextField } from 'formik-material-ui';
+import { CheckboxWithLabel, TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
@@ -122,18 +122,21 @@ const SendMobForm: FC = () => {
   const [contactId, setContactId] = useState('');
   const [contactName, setContactName] = useState('');
   const [open, setOpen] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
   const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
   const [sendingOpen, setSendingOpen] = useState(false);
   const [slideExitSpeed, setSlideExitSpeed] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const {
+    assignAddressForAccount,
     buildTransaction,
     contacts,
     pin: existingPin,
     pinThresholdPmob,
     selectedAccount,
     submitTransaction,
+    updateContacts,
   } = useFullService();
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
@@ -150,6 +153,29 @@ const SendMobForm: FC = () => {
       name: selectedAccount.account.name,
     },
   ];
+
+  const handleChecked = () => {
+    setIsChecked(!isChecked);
+  };
+
+  const saveToContacts = async (alias: string, recipientAddress: string) => {
+    const result = await assignAddressForAccount({
+      accountId: selectedAccount.account.accountId,
+    });
+
+    contacts.push({
+      abbreviation: '',
+      alias,
+      assignedAddress: result.address.publicAddress,
+      color: '',
+      isFavorite: false,
+      recipientAddress,
+    });
+
+    updateContacts(contacts);
+    handleChecked();
+    // localStore.setContacts(listOfAllContacts);
+  };
 
   const handleOpen = (values, setStatus, setErrors) => async () => {
     let result;
@@ -281,6 +307,7 @@ const SendMobForm: FC = () => {
   return (
     <Formik
       initialValues={{
+        alias: '',
         contactId: NO_CONTACT_SELECTED,
         feeAmount: '0.010000000000', // TODO we need to pull this from constants
         mobAmount: '0', // mobs
@@ -315,7 +342,8 @@ const SendMobForm: FC = () => {
               confirmation?.totalValueConfirmation?.toString()
             );
             const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
-
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+            isChecked ? saveToContacts(values.alias, values.recipientPublicAddress) : null;
             enqueueSnackbar(`${t('success')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`, {
               variant: 'success',
             });
@@ -414,6 +442,8 @@ const SendMobForm: FC = () => {
                   onChange={(x) => {
                     setContactId(x.target.value);
                     if (x.target.value !== NO_CONTACT_SELECTED) {
+                      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+                      isChecked ? handleChecked() : null;
                       const selectedContact = contacts.find(
                         (z) => z.assignedAddress === x.target.value
                       );
@@ -474,6 +504,26 @@ const SendMobForm: FC = () => {
                   ),
                 }}
               />
+              <Field
+                component={CheckboxWithLabel}
+                type="checkbox"
+                name="checked"
+                checked={isChecked}
+                onChange={handleChecked}
+                disabled={contactId !== NO_CONTACT_SELECTED}
+                Label={{ label: 'Save to contacts' }}
+              />
+              {isChecked && values.recipientPublicAddress !== '' && (
+                <Field
+                  component={TextField}
+                  fullWidth
+                  autoFocus
+                  label="Contact Alias"
+                  margin="normal"
+                  name="alias"
+                  type="text"
+                />
+              )}
             </Box>
             {errors.submit && (
               <Box mt={3}>

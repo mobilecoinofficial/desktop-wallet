@@ -79,7 +79,7 @@ const InactivityDetect: FC = () => {
   resetTimer();
 
   return inactiveTooLong ? (
-    <Dialog open={inactiveTooLong}>
+    <Dialog open={inactiveTooLong} onClose={reenableTimer}>
       <DialogTitle id="alert-dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">

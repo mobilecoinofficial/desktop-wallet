@@ -313,13 +313,13 @@ const ConsumeGiftForm: FC = () => {
             >
               <Slide in={showModal} timeout={{ enter: 0, exit: 0 }}>
                 <Container className={classes.paper}>
-                  <Typography variant="h1" id="transition-modal-title">
+                  <Typography color="textPrimary" variant="h1" id="transition-modal-title">
                     {t('giftConfirmation')}
                   </Typography>
                   <Box py={2} />
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('accountBalance')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('accountBalance')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -328,12 +328,12 @@ const ConsumeGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>---</Typography>
-                    <Typography>---</Typography>
+                    <Typography color="textPrimary">---</Typography>
+                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('total')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('total')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -342,8 +342,8 @@ const ConsumeGiftForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('fee')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('fee')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"

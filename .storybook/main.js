@@ -1,10 +1,9 @@
-const path = require('path');
-
 module.exports = {
-  stories: [
-    '../app/components/**/*.stories.@(js|jsx|ts|tsx)',
-    '../app/pages/**/*.stories.@(js|jsx|ts|tsx)',
-    '../app/views/**/*.stories.@(js|jsx|ts|tsx)',
-  ],
+  stories: ['../app/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-actions'],
 };
+
+/*
+https://github.com/storybookjs/storybook/issues/6633
+https://github.com/storybookjs/storybook/issues/12967
+*/

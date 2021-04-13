@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   button: { width: 200 },
   center: { display: 'flex', justifyContent: 'center' },
   code: {
-    alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
     letterSpacing: '.70rem',
@@ -559,14 +558,16 @@ const SendMobForm: FC = () => {
             >
               <Slide in={open} timeout={{ enter: 0, exit: slideExitSpeed }}>
                 <div className={classes.paper}>
-                  <Typography variant="h2" id="transition-modal-title">
+                  <Typography color="textPrimary" variant="h2" id="transition-modal-title">
                     {t('confirm')}
                   </Typography>
-                  <Typography id="transition-modal-description">{t('intent')}:</Typography>
+                  <Typography color="textPrimary" id="transition-modal-description">
+                    {t('intent')}:
+                  </Typography>
                   <br />
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('accountBalance')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('accountBalance')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -575,8 +576,8 @@ const SendMobForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>---</Typography>
-                    <Typography>---</Typography>
+                    <Typography color="textPrimary">---</Typography>
+                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="primary">{t('amount')}:</Typography>
@@ -589,8 +590,8 @@ const SendMobForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('fee')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('fee')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -599,8 +600,8 @@ const SendMobForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('total')}:</Typography>
-                    <Typography>
+                    <Typography color="textPrimary">{t('total')}:</Typography>
+                    <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -609,12 +610,12 @@ const SendMobForm: FC = () => {
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>---</Typography>
-                    <Typography>---</Typography>
+                    <Typography color="textPrimary">---</Typography>
+                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography>{t('remaining')}:</Typography>
-                    <Typography>
+                    <Typography color="primary">{t('remaining')}:</Typography>
+                    <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -627,13 +628,17 @@ const SendMobForm: FC = () => {
                     <Box width="50%" padding="1rem">
                       <Box>
                         {contactName !== '' ? (
-                          <Typography className={classes.center}>
+                          <Typography color="textPrimary" className={classes.center}>
                             {truncateContact(contactName, 15)}
                           </Typography>
                         ) : (
-                          <Typography className={classes.center}>{t('recipientPlus1')}</Typography>
+                          <Typography color="textPrimary" className={classes.center}>
+                            {t('recipientPlus1')}
+                          </Typography>
                         )}
-                        <Typography className={classes.center}>{t('recipientPlus2')}</Typography>
+                        <Typography color="textPrimary" className={classes.center}>
+                          {t('recipientPlus2')}
+                        </Typography>
                         <LongCode
                           code={confirmation?.txProposalReceiverB58Code}
                           codeClass={classes.code}
@@ -642,8 +647,12 @@ const SendMobForm: FC = () => {
                     </Box>
                     <Box width="50%" padding="1rem">
                       <Box>
-                        <Typography className={classes.center}>{t('senderPlus1')}</Typography>
-                        <Typography className={classes.center}>{t('senderPlus2')}</Typography>
+                        <Typography color="textPrimary" className={classes.center}>
+                          {t('senderPlus1')}
+                        </Typography>
+                        <Typography color="textPrimary" className={classes.center}>
+                          {t('senderPlus2')}
+                        </Typography>
                         <LongCode code={values.senderPublicAddress} codeClass={classes.code} />
                       </Box>
                     </Box>

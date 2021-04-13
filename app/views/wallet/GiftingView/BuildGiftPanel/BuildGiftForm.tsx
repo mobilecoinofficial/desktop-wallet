@@ -76,7 +76,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
+    margin: '4rem',
+    maxHeight: '-webkit-fill-available',
     maxWidth: 800,
+    overflow: 'auto',
     padding: theme.spacing(2, 4, 3),
   },
   root: {},
@@ -407,9 +410,8 @@ const BuildGiftForm: FC = () => {
                     <Typography variant="h1" color="textPrimary">
                       {t('giftConfirmation')}
                     </Typography>
-                    <Typography variant="p" color="textPrimary">
-                      {t('giftConfirmationDescription')}:
-                    </Typography>
+                    {/* <Typography variant="p" color="textPrimary"> */}
+                    <Typography color="textPrimary">{t('giftConfirmationDescription')}:</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="textPrimary">{t('accountBalance')}:</Typography>
@@ -464,8 +466,8 @@ const BuildGiftForm: FC = () => {
                     <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
-                    <Typography color="textPrimary">{t('remaining')}:</Typography>
-                    <Typography color="textPrimary">
+                    <Typography color="primary">{t('remaining')}:</Typography>
+                    <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
                         valueUnit="pMOB"
@@ -504,7 +506,7 @@ const BuildGiftForm: FC = () => {
                       type="password"
                     />
                   )}
-                  <Box display="flex" justifyContent="space-between">
+                  <Box display="flex" justifyContent="space-between" style={{ padding: '1rem' }}>
                     <Button
                       className={classes.button}
                       color="secondary"

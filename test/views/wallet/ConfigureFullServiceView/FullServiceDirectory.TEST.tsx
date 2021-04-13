@@ -13,12 +13,10 @@ describe('FullServiceDirectory', () => {
   >;
 
   // @ts-ignore mock
-  mockUseFullServiceConfigs.mockImplementation(() => {
-    return {
-      ledgerDbPath: 'ledger/db/path',
-      fullServiceDbPath: 'mobilecoin/db/path',
-    };
-  });
+  mockUseFullServiceConfigs.mockImplementation(() => ({
+    fullServiceDbPath: 'mobilecoin/db/path',
+    ledgerDbPath: 'ledger/db/path',
+  }));
 
   test('FullServiceDirectory renders view and displays correct ledgerDbPath', () => {
     render(<FullServiceDirectory />);

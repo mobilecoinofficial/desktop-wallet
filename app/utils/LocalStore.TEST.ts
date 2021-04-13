@@ -65,29 +65,29 @@
 //       });
 //     });
 
-    // describe('.getFullServiceLedgerDbPath', () => {
-    //   test('return store.get for ledgerDbPath', () => {
-    //     const { MockLocalStoreInstance, mockStoreGet } = setup();
+// describe('.getFullServiceLedgerDbPath', () => {
+//   test('return store.get for ledgerDbPath', () => {
+//     const { MockLocalStoreInstance, mockStoreGet } = setup();
 
-    //     expect(MockLocalStoreInstance.getFullServiceLedgerDbPath()).toBe(
-    //       schemaKeys.FULL_SERVICE_LEDGER_DB_PATH
-    //     );
-    //     expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
-    //   });
-    // });
+//     expect(MockLocalStoreInstance.getFullServiceLedgerDbPath()).toBe(
+//       schemaKeys.FULL_SERVICE_LEDGER_DB_PATH
+//     );
+//     expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
+//   });
+// });
 
-    // describe('.getFullServiceDbPath', () => {
-    //   test('return store.get for fullServiceDbPath', () => {
-    //     const { MockLocalStoreInstance, mockStoreGet } = setup();
+// describe('.getFullServiceDbPath', () => {
+//   test('return store.get for fullServiceDbPath', () => {
+//     const { MockLocalStoreInstance, mockStoreGet } = setup();
 
-    //     expect(MockLocalStoreInstance.getFullServiceDbPath()).toBe(schemaKeys.FULL_SERVICE_DB_PATH);
-    //     expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_DB_PATH);
-    //   });
-    // });
+//     expect(MockLocalStoreInstance.getFullServiceDbPath()).toBe(schemaKeys.FULL_SERVICE_DB_PATH);
+//     expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_DB_PATH);
+//   });
+// });
 
-    // describe('.getGiftCodes', () => {
-    //   test('return store.get for giftCodes', () => {
-    //     const { MockLocalStoreInstance, mockStoreGet } = setup();
+// describe('.getGiftCodes', () => {
+//   test('return store.get for giftCodes', () => {
+//     const { MockLocalStoreInstance, mockStoreGet } = setup();
 
 //     describe('.getGiftCodes', () => {
 //       test('return store.get for giftCodes', () => {
@@ -103,70 +103,70 @@
 //         const { MockLocalStoreInstance, mockStoreSet } = setup();
 //         const fakeGiftCodes = ['fakeGiftCodes'];
 
-    // describe('.getLeaveFullServiceRunning', () => {
-    //   test('return store.get for leaveFullServiceRunning', () => {
-    //     const { MockLocalStoreInstance, mockStoreGet } = setup();
+// describe('.getLeaveFullServiceRunning', () => {
+//   test('return store.get for leaveFullServiceRunning', () => {
+//     const { MockLocalStoreInstance, mockStoreGet } = setup();
 
-    //     expect(MockLocalStoreInstance.getLeaveFullServiceRunning()).toBe(
-    //       schemaKeys.LEAVE_FULL_SERVICE_RUNNING
-    //     );
-    //     expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.LEAVE_FULL_SERVICE_RUNNING);
-    //   });
-    // });
+//     expect(MockLocalStoreInstance.getLeaveFullServiceRunning()).toBe(
+//       schemaKeys.LEAVE_FULL_SERVICE_RUNNING
+//     );
+//     expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.LEAVE_FULL_SERVICE_RUNNING);
+//   });
+// });
 
-    // describe('.setLeaveFullServiceRunning', () => {
-    //   test('return store.set for leaveFullServiceRunning', () => {
-    //     const { MockLocalStoreInstance, mockStoreSet } = setup();
-    //     const fakeLeaveFullServiceRunning = false;
+// describe('.setLeaveFullServiceRunning', () => {
+//   test('return store.set for leaveFullServiceRunning', () => {
+//     const { MockLocalStoreInstance, mockStoreSet } = setup();
+//     const fakeLeaveFullServiceRunning = false;
 
-    //     MockLocalStoreInstance.setLeaveFullServiceRunning(fakeLeaveFullServiceRunning);
-    //     expect(mockStoreSet).toHaveBeenCalledWith(
-    //       schemaKeys.LEAVE_FULL_SERVICE_RUNNING,
-    //       fakeLeaveFullServiceRunning
-    //     );
-    //   });
-    // });
+//     MockLocalStoreInstance.setLeaveFullServiceRunning(fakeLeaveFullServiceRunning);
+//     expect(mockStoreSet).toHaveBeenCalledWith(
+//       schemaKeys.LEAVE_FULL_SERVICE_RUNNING,
+//       fakeLeaveFullServiceRunning
+//     );
+//   });
+// });
 
-    // describe('.getFullServiceLedgerDbPath', () => {
-    //   test('return store.get for ledgerDbPath', () => {
-    //     const { MockLocalStoreInstance, mockStoreGet } = setup();
+// describe('.getFullServiceLedgerDbPath', () => {
+//   test('return store.get for ledgerDbPath', () => {
+//     const { MockLocalStoreInstance, mockStoreGet } = setup();
 
-    //     expect(MockLocalStoreInstance.getFullServiceLedgerDbPath()).toBe(
-    //       schemaKeys.FULL_SERVICE_LEDGER_DB_PATH
-    //     );
-    //     expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
-    //   });
-    // });
+//     expect(MockLocalStoreInstance.getFullServiceLedgerDbPath()).toBe(
+//       schemaKeys.FULL_SERVICE_LEDGER_DB_PATH
+//     );
+//     expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_LEDGER_DB_PATH);
+//   });
+// });
 
-    // describe('.getFullServiceDbPath', () => {
-    //   test('return store.get for fullServiceDbPath', () => {
-    //     const { MockLocalStoreInstance, mockStoreGet } = setup();
+// describe('.getFullServiceDbPath', () => {
+//   test('return store.get for fullServiceDbPath', () => {
+//     const { MockLocalStoreInstance, mockStoreGet } = setup();
 
-    //     expect(MockLocalStoreInstance.getFullServiceDbPath()).toBe(schemaKeys.FULL_SERVICE_DB_PATH);
-    //     expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_DB_PATH);
-    //   });
-    // });
+//     expect(MockLocalStoreInstance.getFullServiceDbPath()).toBe(schemaKeys.FULL_SERVICE_DB_PATH);
+//     expect(mockStoreGet).toHaveBeenCalledWith(schemaKeys.FULL_SERVICE_DB_PATH);
+//   });
+// });
 
-    // describe('.setLedgerDbPath', () => {
-    //   test('return store.set for setLedgerDbPath', () => {
-    //     const { MockLocalStoreInstance, mockStoreSet } = setup();
-    //     const fakeFullServiceLedgerDbPath = '/fake/full-service/ledger/';
-    //     const fakeFullServiceDbPath = '/fake/path/full-servide/db';
+// describe('.setLedgerDbPath', () => {
+//   test('return store.set for setLedgerDbPath', () => {
+//     const { MockLocalStoreInstance, mockStoreSet } = setup();
+//     const fakeFullServiceLedgerDbPath = '/fake/full-service/ledger/';
+//     const fakeFullServiceDbPath = '/fake/path/full-servide/db';
 
-    //     MockLocalStoreInstance.setDbPaths(
-    //       fakeFullServiceLedgerDbPath,
-    //       fakeFullServiceDbPath,
-    //       fakeFullServiceLedgerDbPath,
-    //       fakeFullServiceDbPath
-    //     );
-    //     expect(mockStoreSet).toHaveBeenCalledWith({
-    //       [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fakeFullServiceLedgerDbPath,
-    //       [schemaKeys.FULL_SERVICE_DB_PATH]: fakeFullServiceDbPath,
-    //       [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fakeFullServiceLedgerDbPath,
-    //       [schemaKeys.FULL_SERVICE_DB_PATH]: fakeFullServiceDbPath,
-    //     });
-    //   });
-    // });
+//     MockLocalStoreInstance.setDbPaths(
+//       fakeFullServiceLedgerDbPath,
+//       fakeFullServiceDbPath,
+//       fakeFullServiceLedgerDbPath,
+//       fakeFullServiceDbPath
+//     );
+//     expect(mockStoreSet).toHaveBeenCalledWith({
+//       [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fakeFullServiceLedgerDbPath,
+//       [schemaKeys.FULL_SERVICE_DB_PATH]: fakeFullServiceDbPath,
+//       [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: fakeFullServiceLedgerDbPath,
+//       [schemaKeys.FULL_SERVICE_DB_PATH]: fakeFullServiceDbPath,
+//     });
+//   });
+// });
 
 //         MockLocalStoreInstance.setMobilecoindDbPath(fakeMobilecoindDbPath);
 //         expect(mockStoreSet).toHaveBeenCalledWith(

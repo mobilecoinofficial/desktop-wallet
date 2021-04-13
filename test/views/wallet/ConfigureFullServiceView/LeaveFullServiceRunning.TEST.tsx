@@ -15,12 +15,10 @@ function setupComponent(isLeaveFullServiceRunning: boolean) {
     typeof useFullServiceConfigs
   >;
   // @ts-ignore mock
-  mockUseFullServiceConfigs.mockImplementation(() => {
-    return {
-      leaveFullServiceRunning: isLeaveFullServiceRunning,
-      toggleLeaveFullServiceRunning: mockToggleLeaveFullServiceRunning,
-    };
-  });
+  mockUseFullServiceConfigs.mockImplementation(() => ({
+    leaveFullServiceRunning: isLeaveFullServiceRunning,
+    toggleLeaveFullServiceRunning: mockToggleLeaveFullServiceRunning,
+  }));
   renderSnapshot(<LeaveFullServiceRunning />);
 
   // Render Elements

@@ -7,12 +7,8 @@ describe('getLockedStatus', () => {
   test('calls axiosFullService with method and returns response', async () => {
     const expectedMethod = 'get_locked_status';
     const mockReturn = 'anything';
-    const mockAxiosFullService = axiosFullService as jest.MockedFunction<
-      typeof axiosFullService
-    >;
-    mockAxiosFullService.mockImplementation(() => {
-      return Promise.resolve(mockReturn);
-    });
+    const mockAxiosFullService = axiosFullService as jest.MockedFunction<typeof axiosFullService>;
+    mockAxiosFullService.mockImplementation(() => Promise.resolve(mockReturn));
 
     expect(await getLockedStatus()).toBe(mockReturn);
     expect(mockAxiosFullService).toBeCalledWith(expectedMethod);

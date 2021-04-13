@@ -158,22 +158,26 @@ const SendMobForm: FC = () => {
   };
 
   const saveToContacts = async (alias: string, recipientAddress: string) => {
+    const randomColor = () => {
+      const RANDOM_COLORS = ['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D969D', '#D82E26'];
+      return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
+    };
+
     const result = await assignAddressForAccount({
       accountId: selectedAccount.account.accountId,
     });
 
     contacts.push({
-      abbreviation: '',
+      abbreviation: alias[0],
       alias,
       assignedAddress: result.address.publicAddress,
-      color: '',
+      color: randomColor(),
       isFavorite: false,
       recipientAddress,
     });
 
     updateContacts(contacts);
     handleChecked();
-    // localStore.setContacts(listOfAllContacts);
   };
 
   const handleOpen = (values, setStatus, setErrors) => async () => {
@@ -509,10 +513,10 @@ const SendMobForm: FC = () => {
                 name="checked"
                 checked={isChecked}
                 onChange={handleChecked}
-                disabled={contactId !== NO_CONTACT_SELECTED}
+                disabled={contactId !== NO_CONTACT_SELECTED || values.recipientPublicAddress === ''}
                 Label={{ label: 'Save to contacts' }}
               />
-              {isChecked && values.recipientPublicAddress !== '' && (
+              {isChecked && (
                 <Field
                   component={TextField}
                   fullWidth

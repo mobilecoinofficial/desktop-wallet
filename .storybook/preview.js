@@ -13,17 +13,17 @@ const theme = setTheme({
 });
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
   layout: 'centered',
-}
+};
 
 export const decorators = [
   (Story) => (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <I18nextProvider i18n={ i18n }>
+      <I18nextProvider i18n={i18n}>
         <Story />
       </I18nextProvider>
     </ThemeProvider>
-  )
+  ),
 ];

@@ -160,19 +160,7 @@
     "description": "Use this form to collect gift codes. Enter the gift code and confirm you want to accept the gift into your wallet."
   },
 
-  "ContactsBookView": {
-    "added": "Contact was added",
-    "removed": "Contact was removed",
-    "updated": "Contact was updated"
-  },
-
-  "ContactsList": {
-    "allContacts": "All",
-    "favoriteContacts": "Favorite",
-    "filter": "Filter"
-  },
-
-  "ContactView": {
+  "ContactForm": {
     "abbreviation": "Abbreviation (2 characters max)",
     "addContact": "Add Contact",
     "addressCodeRequired": "Address code is required",
@@ -189,6 +177,18 @@
     "pickColor": "Pick any color",
     "recipientAddress": "Contact's Address Code",
     "removeContact": "Remove Contact"
+  },
+
+  "ContactsPage": {
+    "added": "Contact was added",
+    "removed": "Contact was removed",
+    "updated": "Contact was updated"
+  },
+
+  "ContactsList": {
+    "allContacts": "All",
+    "favoriteContacts": "Favorite",
+    "filter": "Filter"
   },
 
   "CreateAccountForm": {
@@ -519,7 +519,7 @@
     "orphaned": "??? Orphaned",
     "orphanedTitle": "Orphaned Transaction",
     "orphanedExplaination": "This transaction is considered orphaned. This means that the assigned address that received this transaction is unknown to this wallet. This likely happens if you assign addresses for this account within other wallets. Other causes may be importing/recovering this account. We recommend to only use an account in a single wallet.",
-    "recoveryInstructions": "To recover this transaction, you can manually add contacts until you re-assign the lost address. Later updates to this wallet will include a less manual recovery process!",
+    "recoveryInstructions": "To recover this transaction, you can manually add fs until you re-assign the lost address. Later updates to this wallet will include a less manual recovery process!",
     "recipient": "Recipient",
     "savedComment": "Comment saved",
     "sender": "Sender",

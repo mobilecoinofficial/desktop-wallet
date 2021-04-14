@@ -168,7 +168,7 @@ const SendMobForm: FC = () => {
     });
 
     contacts.push({
-      abbreviation: alias[0],
+      abbreviation: alias[0].toUpperCase(),
       alias,
       assignedAddress: result.address.publicAddress,
       color: randomColor(),
@@ -239,6 +239,7 @@ const SendMobForm: FC = () => {
     });
     setOpen(false);
     setSubmitting(false);
+    handleChecked();
     resetForm();
     setIsAwaitingConformation(false);
     setConfirmation(EMPTY_CONFIRMATION);
@@ -510,7 +511,7 @@ const SendMobForm: FC = () => {
               <Field
                 component={CheckboxWithLabel}
                 type="checkbox"
-                name="checked"
+                name="showChecked"
                 checked={isChecked}
                 onChange={handleChecked}
                 disabled={contactId !== NO_CONTACT_SELECTED || values.recipientPublicAddress === ''}
@@ -539,7 +540,9 @@ const SendMobForm: FC = () => {
               </Box>
             )}
             <SubmitButton
-              disabled={!dirty || !isSynced || !isValid || isSubmitting}
+              disabled={
+                !dirty || !isSynced || !isValid || isSubmitting || (isChecked && !values.alias)
+              }
               onClick={handleOpen(values, setStatus, setErrors)}
               isSubmitting={isAwaitingConformation || isSubmitting}
             >

@@ -2806,7 +2806,7 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@^14.0.10":
+"@types/node@*", "@types/node@^14.0.10", "@types/node@^14.6.2":
   version "14.14.37"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.37.tgz#a3dd8da4eb84a996c36e331df98d82abd76b516e"
   integrity sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
@@ -2820,11 +2820,6 @@
   version "14.14.20"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.20.tgz#f7974863edd21d1f8a494a73e8e2b3658615c340"
   integrity sha512-Y93R97Ouif9JEOWPIUyU+eyIdyRqQR0I8Ez1dzku4hDx34NWh4HbtIc3WNzwB1Y9ULvNGeu5B8h8bVL5cAk4/A==
-
-"@types/node@^12.0.12":
-  version "12.20.7"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.20.7.tgz#1cb61fd0c85cb87e728c43107b5fd82b69bc9ef8"
-  integrity sha512-gWL8VUkg8VRaCAUgG9WmhefMqHmMblxe2rVpMF86nZY/+ZysU+BkAp+3cz03AixWDSSz0ks5WX59yAhv/cDwFA==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -6490,13 +6485,13 @@ electron-updater@^4.3.5:
     lodash.isequal "^4.5.0"
     semver "^7.3.4"
 
-electron@^11.1.1:
-  version "11.4.2"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-11.4.2.tgz#02005d9f5d77ea6485efeffdb5c5433c769ddda4"
-  integrity sha512-P0PRLH7cXp8ZdpA9yVPe7jRVM+QeiAtsadqmqS6XY3AYrsH+7bJnVrNuw6p/fcmp+b/UxWaCexobqQpyFJ5Qkw==
+electron@^12.0.2:
+  version "12.0.4"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-12.0.4.tgz#c2ca4710d0e4da7db6d31c4f55777b08bfcb08e5"
+  integrity sha512-A8Lq3YMZ1CaO1z5z5nsyFxIwkgwXLHUwL2pf9MVUHpq7fv3XUewCMD98EnLL3DdtiyCvw5KMkeT1WGsZh8qFug==
   dependencies:
     "@electron/get" "^1.0.1"
-    "@types/node" "^12.0.12"
+    "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
 element-resize-detector@^1.2.2:

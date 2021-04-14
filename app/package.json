@@ -12,11 +12,11 @@
     "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",
     "postinstall": "yarn electron-rebuild"
   },
-  "license": "",
+  "license": "GPL-3.0-only",
   "devDependencies": {
     "@types/i18next-node-fs-backend": "^2.1.0"
   },
   "dependencies": {
-    "argon2": "^0.26.2"
+    "argon2": "^0.27.2"
   }
 }

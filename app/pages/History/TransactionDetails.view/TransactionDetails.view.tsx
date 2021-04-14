@@ -2,15 +2,12 @@ import React from 'react';
 import type { FC, ReactNode } from 'react';
 
 import { Box, Card, CardContent, Container, makeStyles, Typography } from '@material-ui/core';
-// import { Formik, Form, Field } from 'formik';
-// import { TextField } from 'formik-material-ui';
-// import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import { ShortCode, SubmitButton } from '../../../components';
 import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
-import { TransactionDetailsViewProps } from './TransactionDetailsView.d';
+import { TransactionDetailsViewProps } from './TransactionDetails.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -89,7 +86,7 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
       aliasOrAddress = contact ? (
         contact.alias
       ) : (
-        <ShortCode code={assignedAddressId || recipientAddressId} />
+        <ShortCode code={assignedAddressId || recipientAddressId || ''} />
       );
     }
 
@@ -134,16 +131,6 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
           )}
         </CardContent>
       </Card>
-
-      {/* {assignedAddressId ||
-        (recipientAddressId && (
-          <AccountCard
-            account={{
-              b58Code: assignedAddressId || recipientAddressId || '',
-              name: 'test',
-            }}
-          />
-        ))} */}
 
       {sign === '+' && !assignedAddressId && (
         <Card className={classes.card}>
@@ -217,3 +204,4 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
 };
 
 export default TransactionDetailsView;
+export { TransactionDetailsView };

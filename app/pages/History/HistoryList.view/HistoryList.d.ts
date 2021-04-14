@@ -1,5 +1,3 @@
-// TODO - this shouldn't live here
-
 import TransactionLog from '../../../types/TransactionLog';
 
 export interface HistoryListProps {

@@ -120,3 +120,4 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
 };
 
 export default HistoryItem;
+export { HistoryItem };

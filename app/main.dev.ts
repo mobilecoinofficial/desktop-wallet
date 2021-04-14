@@ -131,6 +131,7 @@ const createWindow = async () => {
       (process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true') &&
       process.env.ERB_SECURE !== 'true'
         ? {
+            contextIsolation: false,
             disableBlinkFeatures: 'Auxclick',
             enableRemoteModule: true,
             nodeIntegration: true,

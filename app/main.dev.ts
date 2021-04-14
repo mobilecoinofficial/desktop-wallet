@@ -137,7 +137,7 @@ const createWindow = async () => {
             nodeIntegration: true,
           }
         : {
-            contextIsolation: false,
+            contextIsolation: true,
             disableBlinkFeatures: 'Auxclick',
             enableRemoteModule: true,
             nodeIntegration: false,

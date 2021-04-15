@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
 
-import ContactsList from './ContactsList.view';
+import { ContactsList } from './ContactsList.view';
 
 test('Displays list', () => {
   const handleAddClick = jest.fn();

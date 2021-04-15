@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexDirection: 'row',
   },
   negative: {
-    color: theme.palette.number.negative,
+    color: theme.palette.number?.negative || '#FF0000',
     fontWeight: 'bold',
   },
   root: {},

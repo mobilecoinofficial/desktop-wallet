@@ -1,4 +1,4 @@
-import xx from './HistoryItem.view';
+import { HistoryItem } from './HistoryItem.view';
 
-export default xx;
-export { xx as HistoryItem };
+export default HistoryItem;
+export { HistoryItem };

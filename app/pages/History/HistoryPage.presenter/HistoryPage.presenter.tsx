@@ -14,7 +14,7 @@ import TransactionDetailsView from '../TransactionDetails.view';
 const HISTORY = 'history';
 const DETAILS = 'details';
 
-const HistoryView: FC = () => {
+const HistoryPage: FC = () => {
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
@@ -103,5 +103,5 @@ const HistoryView: FC = () => {
   }
 };
 
-export default HistoryView;
-export { HistoryView };
+export default HistoryPage;
+export { HistoryPage };

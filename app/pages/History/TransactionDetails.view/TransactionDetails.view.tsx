@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   textRight: { textAlign: 'right' },
 }));
 
-const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
+const TransactionDetails: FC<TransactionDetailsViewProps> = ({
   // onChangedComment,
   onClickBack,
   transactionLog,
@@ -203,5 +203,5 @@ const TransactionDetailsView: FC<TransactionDetailsViewProps> = ({
   );
 };
 
-export default TransactionDetailsView;
-export { TransactionDetailsView };
+export default TransactionDetails;
+export { TransactionDetails };

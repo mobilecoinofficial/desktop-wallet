@@ -1,3 +1,4 @@
-import ContactsPage from './ContactsPage.presenter';
+import { ContactsPage } from './ContactsPage.presenter';
 
-export { ContactsPage }; /* eslint-disable-line import/prefer-default-export */
+export default ContactsPage;
+export { ContactsPage };

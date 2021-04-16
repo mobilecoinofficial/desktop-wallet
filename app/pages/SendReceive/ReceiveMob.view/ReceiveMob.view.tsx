@@ -15,11 +15,10 @@ import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
 
 import AccountCard from '../../../components/AccountCard';
-import useFullService from '../../../hooks/useFullService';
+import { ReceiveMobProps } from './ReceiveMob.d';
 
 // CBB, really, we should just give the list and work by the indexes.
-const ReceiveMobPanel: FC = () => {
-  const { contacts, selectedAccount } = useFullService();
+const ReceiveMob: FC<ReceiveMobProps> = ({ contacts, selectedAccount }: ReceiveMobProps) => {
   const { mainAddress } = selectedAccount.account;
   const [selectedAddress, setSelectedAddress] = useState(mainAddress);
   const { t } = useTranslation('ReceiveMobPanel');
@@ -69,9 +68,7 @@ const ReceiveMobPanel: FC = () => {
         value={selectedAddress}
         displayEmpty
         variant="outlined"
-        onChange={(x) => {
-          setSelectedAddress(x.target.value);
-        }}
+        onChange={(x) => setSelectedAddress(x.target.value)}
       >
         {dropDownValues.map((contact) => (
           <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
@@ -92,4 +89,7 @@ const ReceiveMobPanel: FC = () => {
   );
 };
 
-export default ReceiveMobPanel;
+ReceiveMob.defaultProps = {};
+
+export default ReceiveMob;
+export { ReceiveMob };

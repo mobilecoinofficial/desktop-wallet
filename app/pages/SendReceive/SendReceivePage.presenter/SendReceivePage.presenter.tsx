@@ -5,9 +5,10 @@ import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import TabPanel from '../../../components/TabPanel';
+import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
-import ReceiveMobPanel from './ReceiveMobPanel';
-import SendMobPanel from './SendMobPanel';
+import { ReceiveMob } from '../ReceiveMob.view';
+import { SendMob } from '../SendMob.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   padding: {
@@ -20,9 +21,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const TransactionView: FC = () => {
+const SendReceivePage: FC = () => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const {
+    assignAddressForAccount,
+    buildTransaction,
+    contacts,
+    pin: existingPin,
+    pinThresholdPmob,
+    selectedAccount,
+    submitTransaction,
+    updateContacts,
+  } = useFullService();
+
   const { t } = useTranslation('TransactionView');
 
   const handleChange = (
@@ -31,6 +43,23 @@ const TransactionView: FC = () => {
   ) => {
     setSelectedTabIndex(newSelectedTabIndex);
   };
+
+  const SendMobWithParams = () => (
+    <SendMob
+      assignAddressForAccount={assignAddressForAccount}
+      buildTransaction={buildTransaction}
+      contacts={contacts}
+      existingPin={existingPin}
+      pinThresholdPmob={pinThresholdPmob}
+      selectedAccount={selectedAccount}
+      submitTransaction={submitTransaction}
+      updateContacts={updateContacts}
+    />
+  );
+
+  const ReceiveMobWithParams = () => (
+    <ReceiveMob contacts={contacts} selectedAccount={selectedAccount} />
+  );
 
   return (
     <Box className={classes.root}>
@@ -47,11 +76,15 @@ const TransactionView: FC = () => {
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
           </Tabs>
-          <TabPanel panels={[SendMobPanel, ReceiveMobPanel]} selectedTabIndex={selectedTabIndex} />
+          <TabPanel
+            panels={[SendMobWithParams, ReceiveMobWithParams]}
+            selectedTabIndex={selectedTabIndex}
+          />
         </Grid>
       </Grid>
     </Box>
   );
 };
 
-export default TransactionView;
+export default SendReceivePage;
+export { SendReceivePage };

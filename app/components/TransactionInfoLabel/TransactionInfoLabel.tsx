@@ -9,10 +9,10 @@ import type { TransactionInfoLabelProps } from './TransactionInfoLabel.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   negative: {
-    color: theme.palette.number.negative,
+    color: theme.palette.number?.negative || '#FF0000',
   },
   positive: {
-    color: theme.palette.number.positive,
+    color: theme.palette.number?.positive || '#00FF00',
   },
   root: { position: 'relative' },
   textRight: { textAlign: 'right', width: '100%' },
@@ -28,7 +28,7 @@ const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
   return (
     <Typography
       className={`${classes.textRight}
-    ${sign === '+' ? classes.positive : classes.negative}`}
+    ${sign === '+' ? classes?.positive : classes?.negative}`}
       display="inline"
     >
       <MOBNumberFormat valueUnit="pMOB" value={valuePmob} prefix={sign} suffix={label} />

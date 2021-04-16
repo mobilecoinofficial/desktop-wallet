@@ -1,3 +1,4 @@
-import xx from './ContactsList.view';
+import { ContactsList } from './ContactsList.view';
 
-export default xx;
+export default ContactsList;
+export { ContactsList };

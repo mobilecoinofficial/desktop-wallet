@@ -36,12 +36,12 @@ import { StarIcon, MOBIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type Account from '../../../types/Account';
-import isSyncedBuffered from '../../../utils/isSyncedBuffered';
+import { SendMobProps } from './SendMob.d';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
-  feeConfirmation: null,
-  totalValueConfirmation: null,
+  feeConfirmation: 0,
+  totalValueConfirmation: 0,
   txProposal: null,
   txProposalReceiverB58Code: '',
 };
@@ -87,7 +87,6 @@ const ensureMobStringPrecision = (mobString: string): string => {
   if (Number.isNaN(num)) {
     throw new Error('mobString is NaN');
   }
-
   return num.toFixed(PICO_MOB_PRECISION);
 };
 
@@ -117,16 +116,17 @@ function commafy(num: string) {
   return str.join('.');
 }
 
-const SendMob: FC = ({
+const SendMob: FC<SendMobProps> = ({
   assignAddressForAccount,
   buildTransaction,
   contacts,
   existingPin,
+  isSyncedBuffered,
   pinThresholdPmob,
   selectedAccount,
   submitTransaction,
   updateContacts,
-}) => {
+}: SendMobProps) => {
   const classes = useStyles();
   const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
   const { t } = useTranslation('SendMobForm');
@@ -156,10 +156,7 @@ const SendMob: FC = ({
     },
   ];
 
-  const handleChecked = () => {
-    setIsChecked(!isChecked);
-  };
-
+  const handleChecked = () => setIsChecked(!isChecked);
   const saveToContacts = async (alias: string, recipientAddress: string) => {
     const randomColor = () => {
       const RANDOM_COLORS = ['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D969D', '#D82E26'];
@@ -361,7 +358,7 @@ const SendMob: FC = ({
 
                   if (isMountedRef.current) {
                     const totalValueConfirmationAsMob = convertPicoMobStringToMob(
-                      confirmation?.totalValueConfirmation?.toString()
+                      confirmation.totalValueConfirmation.toString()
                     );
                     const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
                     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -423,17 +420,17 @@ const SendMob: FC = ({
                 let isPinRequiredForTransaction = false;
                 if (confirmation.totalValueConfirmation) {
                   isPinRequiredForTransaction =
-                    confirmation?.totalValueConfirmation + confirmation?.feeConfirmation >=
+                    confirmation.totalValueConfirmation + confirmation.feeConfirmation >=
                     BigInt(pinThresholdPmob);
                 }
 
                 let remainingBalance;
-                let totalSent;
-                if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
+                let totalSent = 0;
+                if (confirmation.totalValueConfirmation && confirmation.feeConfirmation) {
                   remainingBalance =
                     selectedBalance -
-                    (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
-                  totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
+                    (confirmation.totalValueConfirmation + confirmation.feeConfirmation);
+                  totalSent = confirmation.totalValueConfirmation + confirmation.feeConfirmation;
                 }
 
                 const sortedContacts = [...contacts].sort((a, b) => {
@@ -522,7 +519,7 @@ const SendMob: FC = ({
                         onFocus={handleSelect}
                         validate={validateAmount(
                           selectedBalance,
-                          BigInt(values.feeAmount * 1_000_000_000_000)
+                          BigInt(Number(values.feeAmount) * 1_000_000_000_000)
                         )}
                         InputProps={{
                           inputComponent: MOBNumberFormat,
@@ -623,7 +620,7 @@ const SendMob: FC = ({
                               <MOBNumberFormat
                                 suffix=" MOB"
                                 valueUnit="pMOB"
-                                value={confirmation?.totalValueConfirmation?.toString()}
+                                value={confirmation.totalValueConfirmation.toString()}
                               />
                             </Typography>
                           </Box>
@@ -633,7 +630,7 @@ const SendMob: FC = ({
                               <MOBNumberFormat
                                 suffix=" MOB"
                                 valueUnit="pMOB"
-                                value={confirmation?.feeConfirmation?.toString()}
+                                value={confirmation.feeConfirmation.toString()}
                               />
                             </Typography>
                           </Box>
@@ -643,7 +640,7 @@ const SendMob: FC = ({
                               <MOBNumberFormat
                                 suffix=" MOB"
                                 valueUnit="pMOB"
-                                value={totalSent?.toString()}
+                                value={totalSent.toString()}
                               />
                             </Typography>
                           </Box>
@@ -678,7 +675,7 @@ const SendMob: FC = ({
                                   {t('recipientPlus2')}
                                 </Typography>
                                 <LongCode
-                                  code={confirmation?.txProposalReceiverB58Code}
+                                  code={confirmation.txProposalReceiverB58Code}
                                   codeClass={classes.code}
                                 />
                               </Box>

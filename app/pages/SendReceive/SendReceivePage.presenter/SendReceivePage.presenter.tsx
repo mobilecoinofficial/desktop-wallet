@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import TabPanel from '../../../components/TabPanel';
 import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
+import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob } from '../SendMob.view';
 
@@ -50,6 +51,7 @@ const SendReceivePage: FC = () => {
       buildTransaction={buildTransaction}
       contacts={contacts}
       existingPin={existingPin}
+      isSyncedBuffered={isSyncedBuffered}
       pinThresholdPmob={pinThresholdPmob}
       selectedAccount={selectedAccount}
       submitTransaction={submitTransaction}

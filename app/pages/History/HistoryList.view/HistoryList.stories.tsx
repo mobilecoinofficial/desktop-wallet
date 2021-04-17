@@ -2,7 +2,8 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import HistoryList from './HistoryList';
+import TransactionLog from '../../../types/TransactionLog';
+import { HistoryList } from './HistoryList.view';
 
 export default {
   component: HistoryList,
@@ -84,8 +85,7 @@ const FAKE_DATA = [
   ),
 ];
 
-export const Primary = Template.bind({});
-Primary.args = {
-  onTransactionClick: () => {},
-  transactionLogsList: FAKE_DATA,
+export const List = Template.bind({});
+List.args = {
+  transactionLogsList: FAKE_DATA as TransactionLog[],
 };

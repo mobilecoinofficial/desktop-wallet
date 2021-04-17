@@ -463,7 +463,7 @@ const SendMob: FC<SendMobProps> = ({
                           value={contactId}
                           displayEmpty
                           onChange={(x) => {
-                            setContactId(x.target.value);
+                            setContactId(x.target.value as string);
                             if (x.target.value !== NO_CONTACT_SELECTED) {
                               // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                               isChecked ? handleChecked() : null;
@@ -472,9 +472,9 @@ const SendMob: FC<SendMobProps> = ({
                               );
                               setFieldValue(
                                 'recipientPublicAddress',
-                                selectedContact.recipientAddress
+                                selectedContact?.recipientAddress
                               );
-                              setContactName(selectedContact.alias);
+                              setContactName(selectedContact?.alias as string);
                             } else {
                               setFieldValue('recipientPublicAddress', '');
                               setContactName('');

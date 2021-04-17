@@ -18,8 +18,8 @@ LEDGER_DB_DIR="$1"
 WALLET_DB_DIR="$2"
 WALLET_DB_FILE="$3"
 
-mkdir -p "${LEDGER_DB_DIR}"
-mkdir -p "${WALLET_DB_DIR}"
+### mkdir -p "${LEDGER_DB_DIR}"
+### mkdir -p "${WALLET_DB_DIR}"
 
 echo "Starting full-service-testnet with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR} and ${WALLET_DB_FILE}" > /tmp/mylog
 

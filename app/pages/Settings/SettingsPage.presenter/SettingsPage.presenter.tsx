@@ -12,7 +12,7 @@ import {
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
 import type { Theme } from '../../../theme';
-import SettingsOptionsList from '../SettingsOptionsList.view';
+import { SettingsOptionsList } from '../SettingsOptionsList.view';
 
 const settingsOptionsList = [
   {
@@ -69,3 +69,4 @@ const SettingsPage: FC = () => {
 };
 
 export default SettingsPage;
+export { SettingsPage };

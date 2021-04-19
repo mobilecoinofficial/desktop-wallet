@@ -1,4 +1,5 @@
-import ContactsPage from './Contacts/ContactsPage.presenter';
-import SettingsPage from './Settings/SettingsPage.presenter';
+import { ContactsPage } from './Contacts';
+import { HistoryPage } from './History';
+import { SettingsPage } from './Settings';
 
-export { ContactsPage, SettingsPage }; /* eslint-disable-line import/prefer-default-export */
+export { ContactsPage, HistoryPage, SettingsPage };

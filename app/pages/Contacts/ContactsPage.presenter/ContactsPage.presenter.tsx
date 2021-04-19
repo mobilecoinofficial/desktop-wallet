@@ -8,8 +8,8 @@ import { Redirect } from 'react-router-dom';
 import { randomColor } from '../../../constants/app';
 import useFullService from '../../../hooks/useFullService';
 import type { Contact } from '../../../types/Contact.d';
-import ContactForm from '../ContactForm.view';
-import ContactsList from '../ContactsList.view';
+import { ContactForm } from '../ContactForm.view';
+import { ContactsList } from '../ContactsList.view';
 
 const ContactsPage: FC = () => {
   enum PAGE {
@@ -117,3 +117,4 @@ const ContactsPage: FC = () => {
 };
 
 export default ContactsPage;
+export { ContactsPage };

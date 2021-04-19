@@ -237,6 +237,7 @@ const ContactForm: FC<ContactFormProps> = ({
                   )}
                   <SubmitButton
                     disabled={false}
+                    testID="cancelButton"
                     onClick={() => {
                       setFieldValue('button', 'back');
                       onCancel();
@@ -248,6 +249,7 @@ const ContactForm: FC<ContactFormProps> = ({
                   {!isNew && onDelete && (
                     <SubmitButton
                       disabled={false}
+                      testID="deleteButton"
                       onClick={() => {
                         setFieldValue('button', 'back');
                         onDelete();
@@ -259,6 +261,7 @@ const ContactForm: FC<ContactFormProps> = ({
                   )}
                   <SubmitButton
                     disabled={!dirty || !isValid || isSubmitting}
+                    testID="saveButton"
                     onClick={() => {
                       setFieldValue('button', 'save');
                       submitForm();

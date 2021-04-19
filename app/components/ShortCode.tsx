@@ -22,14 +22,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: 'space-between',
   },
   lowercased: {
-    color: theme.palette.longCode.lowercased,
+    color: theme.palette.longCode?.lowercased || '#FFFFFF',
   },
   number: {
-    color: theme.palette.longCode.number,
+    color: theme.palette.longCode?.number || '#FFFFFF',
     fontWeight: 'bolder',
   },
   uppercased: {
-    color: theme.palette.longCode.uppercased,
+    color: theme.palette.longCode?.uppercased || '#FFFFFF',
     fontWeight: 'bold',
   },
 }));

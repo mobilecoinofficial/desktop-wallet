@@ -15,6 +15,7 @@ import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
 
 import AccountCard from '../../../components/AccountCard';
+import type Contact from '../../../types/Contact';
 import { ReceiveMobProps } from './ReceiveMob.d';
 
 // CBB, really, we should just give the list and work by the indexes.
@@ -28,9 +29,9 @@ const ReceiveMob: FC<ReceiveMobProps> = ({ contacts, selectedAccount }: ReceiveM
       ? t('mainPublicAddress')
       : contacts.find((contact) => contact.assignedAddress === selectedAddress)?.alias;
 
-  const dropDownValues = [{ alias: t('mainPublicAddress'), assignedAddress: mainAddress }].concat(
-    contacts
-  );
+  const dropDownValues = [
+    { alias: t('mainPublicAddress'), assignedAddress: mainAddress } as Contact,
+  ].concat(contacts);
 
   return (
     <Container maxWidth="sm">
@@ -68,7 +69,7 @@ const ReceiveMob: FC<ReceiveMobProps> = ({ contacts, selectedAccount }: ReceiveM
         value={selectedAddress}
         displayEmpty
         variant="outlined"
-        onChange={(x) => setSelectedAddress(x.target.value)}
+        onChange={(x) => setSelectedAddress(x.target.value as string)}
       >
         {dropDownValues.map((contact) => (
           <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>

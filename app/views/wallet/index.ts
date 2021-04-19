@@ -8,4 +8,3 @@ export { default as PrivacyPolicyView } from './PrivacyPolicyView';
 export { default as RetrieveEntropyView } from './RetrieveEntropyView';
 export { default as SettingsView } from './SettingsView';
 export { default as TermsOfUseView } from './TermsOfUseView';
-export { default as TransactionDetailsView } from './TransactionDetailsView';

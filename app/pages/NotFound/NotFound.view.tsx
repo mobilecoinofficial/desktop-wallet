@@ -9,12 +9,6 @@ import routePaths from '../../constants/routePaths';
 import type { Theme } from '../../theme';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  image: {
-    height: 'auto',
-    maxHeight: 300,
-    maxWidth: '100%',
-    width: 560,
-  },
   root: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.dark,
@@ -26,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const NotFoundView: FC = () => {
+const NotFoundPage: FC = () => {
   const classes = useStyles();
   const { t } = useTranslation('NotFoundView');
 
@@ -49,4 +43,5 @@ const NotFoundView: FC = () => {
   );
 };
 
-export default NotFoundView;
+export default NotFoundPage;
+export { NotFoundPage };

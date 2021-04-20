@@ -420,6 +420,7 @@
     "cancel": "Cancel",
     "confirm": "Send MOB Confirmation",
     "confirmSend": "Confirm Send",
+    "description": "Please enter the recipient’s address and the amount of MOB to send",
     "enterPin": "For this amount your PIN is required",
     "error": "Could not build transaction.",
     "errorFee": "Please reserve 0.01 MOB for transaction fee.",
@@ -443,15 +444,11 @@
     "senderPlus2": "(Your Address)",
     "success": "Successfully sent ",
     "syncing": "Wallet syncing...",
+    "title": "Send MOB to an Address",
     "total": "Total",
     "transaction": "Transaction Details",
     "transactionCanceled": "Transaction Canceled",
     "unnamed": "Unnamed Account"
-  },
-
-  "SendMobPanel": {
-    "title": "Send MOB to an Address",
-    "description": "Please enter the recipient’s address and the amount of MOB to send"
   },
 
   "SetPinModal": {

@@ -7,7 +7,7 @@ import UnlockWalletGuard from './components/UnlockWalletGuard';
 import WalletGuard from './components/WalletGuard';
 import routePaths from './constants/routePaths';
 import DashboardLayout from './layouts/DashboardLayout';
-import { ContactsPage, HistoryPage, SettingsPage } from './pages';
+import { ContactsPage, HistoryPage, SendReceivePage, SettingsPage } from './pages';
 import { CreateAccountView, ImportAccountView, UnlockWalletView } from './views/auth';
 import NotFoundView from './views/errors/NotFoundView';
 import {
@@ -19,7 +19,6 @@ import {
   RetrieveEntropyView,
   PrivacyPolicyView,
   TermsOfUseView,
-  TransactionView,
 } from './views/wallet';
 
 type Routes = {
@@ -98,7 +97,7 @@ const routes: Routes = [
         path: routePaths.APP_DASHBOARD,
       },
       {
-        Component: TransactionView,
+        Component: SendReceivePage,
         exact: true,
         path: routePaths.APP_TRANSACTION,
       },

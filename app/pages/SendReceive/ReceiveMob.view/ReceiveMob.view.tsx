@@ -15,11 +15,11 @@ import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
 
 import AccountCard from '../../../components/AccountCard';
-import useFullService from '../../../hooks/useFullService';
+import type Contact from '../../../types/Contact';
+import { ReceiveMobProps } from './ReceiveMob.d';
 
 // CBB, really, we should just give the list and work by the indexes.
-const ReceiveMobPanel: FC = () => {
-  const { contacts, selectedAccount } = useFullService();
+const ReceiveMob: FC<ReceiveMobProps> = ({ contacts, selectedAccount }: ReceiveMobProps) => {
   const { mainAddress } = selectedAccount.account;
   const [selectedAddress, setSelectedAddress] = useState(mainAddress);
   const { t } = useTranslation('ReceiveMobPanel');
@@ -29,9 +29,9 @@ const ReceiveMobPanel: FC = () => {
       ? t('mainPublicAddress')
       : contacts.find((contact) => contact.assignedAddress === selectedAddress)?.alias;
 
-  const dropDownValues = [{ alias: t('mainPublicAddress'), assignedAddress: mainAddress }].concat(
-    contacts
-  );
+  const dropDownValues = [
+    { alias: t('mainPublicAddress'), assignedAddress: mainAddress } as Contact,
+  ].concat(contacts);
 
   return (
     <Container maxWidth="sm">
@@ -69,9 +69,7 @@ const ReceiveMobPanel: FC = () => {
         value={selectedAddress}
         displayEmpty
         variant="outlined"
-        onChange={(x) => {
-          setSelectedAddress(x.target.value);
-        }}
+        onChange={(x) => setSelectedAddress(x.target.value as string)}
       >
         {dropDownValues.map((contact) => (
           <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
@@ -92,4 +90,7 @@ const ReceiveMobPanel: FC = () => {
   );
 };
 
-export default ReceiveMobPanel;
+ReceiveMob.defaultProps = {};
+
+export default ReceiveMob;
+export { ReceiveMob };

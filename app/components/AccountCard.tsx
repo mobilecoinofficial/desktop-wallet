@@ -11,7 +11,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import clsx from 'clsx';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +23,6 @@ import { CodeTextIcon, LogoIcon, QRCodeIcon } from './icons';
 
 interface AccountCardProps {
   account: { b58Code: string; name?: string };
-  className?: string;
   isGift?: boolean;
 }
 
@@ -52,15 +50,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const AccountCard: FC<AccountCardProps> = ({
-  className,
-  account,
-  isGift,
-  ...rest
-}: AccountCardProps) => {
+const AccountCard: FC<AccountCardProps> = ({ account, isGift, ...rest }: AccountCardProps) => {
   const [isQRCode, setIsQRCode] = useState(false);
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
   const { t } = useTranslation('AccountCard');
 
   const { b58Code, name } = account;
@@ -87,7 +80,7 @@ const AccountCard: FC<AccountCardProps> = ({
 
   return (
     <Container className={classes.container} fixed maxWidth="sm">
-      <Card data-testid="account-card" className={clsx(classes.root, className)} {...rest}>
+      <Card data-testid="account-card" className={classes.root} {...rest}>
         <CardContent>
           <Box
             display="flex"
@@ -151,7 +144,6 @@ const AccountCard: FC<AccountCardProps> = ({
 };
 
 AccountCard.defaultProps = {
-  className: '',
   isGift: false,
 };
 

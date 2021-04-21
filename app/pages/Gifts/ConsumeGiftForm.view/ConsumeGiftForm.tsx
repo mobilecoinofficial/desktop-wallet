@@ -22,10 +22,10 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
-import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type Account from '../../../types/Account';
+import { ConsumeGiftFormProps } from './ConsumeGiftForm.d';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
@@ -82,7 +82,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 // warning that it's taking a bit long...
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component managable.
-const ConsumeGiftForm: FC = () => {
+const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
+  checkGiftCodeStatus,
+  claimGiftCode,
+  selectedAccount,
+}: ConsumeGiftFormProps) => {
   const classes = useStyles();
   const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
   const [showModal, setShowModal] = useState(false);
@@ -91,7 +95,6 @@ const ConsumeGiftForm: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ConsumeGiftForm');
-  const { checkGiftCodeStatus, claimGiftCode, selectedAccount } = useFullService();
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account

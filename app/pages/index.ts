@@ -1,6 +1,7 @@
 import { ContactsPage } from './Contacts';
+import { GiftsPage } from './Gifts';
 import { HistoryPage } from './History';
-import { SettingsPage } from './Settings';
 import { SendReceivePage } from './SendReceive';
+import { SettingsPage } from './Settings';
 
-export { ContactsPage, HistoryPage, SendReceivePage, SettingsPage };
+export { ContactsPage, GiftsPage, HistoryPage, SendReceivePage, SettingsPage };

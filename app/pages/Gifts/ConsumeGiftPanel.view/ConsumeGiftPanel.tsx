@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { Box, Card, CardContent, Container, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import ConsumeGiftForm from './ConsumeGiftForm';
+import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
 
 const useStyles = makeStyles(() => ({
   mobContainer: {
@@ -50,3 +50,4 @@ const ConsumeGiftPanel: FC = () => {
 };
 
 export default ConsumeGiftPanel;
+export { ConsumeGiftPanel };

@@ -27,12 +27,12 @@ import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import { AccountCard, MOBNumberFormat } from '../../../../components';
-import ShortCode from '../../../../components/ShortCode';
-import { CopyIcon, TrashcanIcon } from '../../../../components/icons';
-import useFullService from '../../../../hooks/useFullService';
-import useIsMountedRef from '../../../../hooks/useIsMountedRef';
-import BuildGiftForm from './BuildGiftForm';
+import { AccountCard, MOBNumberFormat } from '../../../components';
+import ShortCode from '../../../components/ShortCode';
+import { CopyIcon, TrashcanIcon } from '../../../components/icons';
+import useFullService from '../../../hooks/useFullService';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import { BuildGiftForm } from '../BuildGiftForm.view';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
 
@@ -148,7 +148,7 @@ const BuildGiftPanel: FC = () => {
                           </TableCell>
                           <TableCell align="right">
                             <Box display="flex" justifyContent="flex-end">
-                              <Tooltip title={t('clickToCopy')} placement="right" arrow>
+                              <Tooltip title={t('clickToCopy') as string} placement="right" arrow>
                                 <div
                                   className={classes.clickable}
                                   onClick={handleCopyClick(giftCode.giftCodeB58)}
@@ -159,7 +159,7 @@ const BuildGiftPanel: FC = () => {
                                   </IconButton>
                                 </div>
                               </Tooltip>
-                              <Tooltip title={t('clickToDelete')} placement="right" arrow>
+                              <Tooltip title={t('clickToDelete') as string} placement="right" arrow>
                                 <div
                                   className={classes.clickable}
                                   onClick={handleDialogOpen(
@@ -228,3 +228,4 @@ const BuildGiftPanel: FC = () => {
 };
 
 export default BuildGiftPanel;
+export { BuildGiftPanel };

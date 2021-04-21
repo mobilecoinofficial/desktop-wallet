@@ -6,8 +6,8 @@ import { useTranslation } from 'react-i18next';
 
 import TabPanel from '../../../components/TabPanel';
 import type { Theme } from '../../../theme';
-import BuildGiftPanel from './BuildGiftPanel';
-import ConsumeGiftPanel from './ConsumeGiftPanel';
+import { BuildGiftPanel } from '../BuildGiftPanel.view';
+import { ConsumeGiftPanel } from '../ConsumeGiftPanel.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   padding: {
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const GiftingView: FC = () => {
+const GiftsPage: FC = () => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { t } = useTranslation('GiftingView');
@@ -57,4 +57,5 @@ const GiftingView: FC = () => {
   );
 };
 
-export default GiftingView;
+export default GiftsPage;
+export { GiftsPage };

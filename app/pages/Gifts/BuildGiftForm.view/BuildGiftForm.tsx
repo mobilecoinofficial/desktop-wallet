@@ -27,11 +27,10 @@ import AccountCard from '../../../components/AccountCard';
 import MOBNumberFormat from '../../../components/MOBNumberFormat';
 import SubmitButton from '../../../components/SubmitButton';
 import { MOBIcon } from '../../../components/icons';
-import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type Account from '../../../types/Account';
-import isSyncedBuffered from '../../../utils/isSyncedBuffered';
+import { BuildGiftFormProps } from './BuildGiftForm.d';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
@@ -106,7 +105,14 @@ const convertMobStringToPicoMobString = (mobString: string): string =>
 // warning that it's taking a bit long...
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component manageable.
-const BuildGiftForm: FC = () => {
+const BuildGiftForm: FC<BuildGiftFormProps> = ({
+  buildGiftCode,
+  existingPin,
+  isSyncedBuffered,
+  pinThresholdPmob,
+  selectedAccount,
+  submitGiftCode,
+}: BuildGiftFormProps) => {
   const classes = useStyles();
   const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
   const [showModal, setShowModal] = useState(false);
@@ -118,13 +124,6 @@ const BuildGiftForm: FC = () => {
   const isMountedRef = useIsMountedRef();
 
   const { t } = useTranslation('BuildGiftForm');
-  const {
-    buildGiftCode,
-    pin: existingPin,
-    pinThresholdPmob,
-    selectedAccount,
-    submitGiftCode,
-  } = useFullService();
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
   const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);

@@ -5,7 +5,7 @@ import { Box, Card, CardContent, Container, Typography, makeStyles } from '@mate
 import { useTranslation } from 'react-i18next';
 
 import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
-import { ConsumeGiftPanelProps } from './ConsumeGiftPanel.d';
+import { ConsumeGiftPanelProps } from './ConsumeGiftPanel';
 
 const useStyles = makeStyles(() => ({
   mobContainer: {

@@ -1,4 +1,4 @@
-import { BuildGiftPanel } from './BuildGiftPanel';
+import { BuildGiftPanel } from './BuildGiftPanel.view';
 
 export default BuildGiftPanel;
 export { BuildGiftPanel };

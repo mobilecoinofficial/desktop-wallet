@@ -4,7 +4,8 @@ import type { FC } from 'react';
 import { Box, Card, CardContent, Container, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import ConsumeGiftForm from './ConsumeGiftForm';
+import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
+import { ConsumeGiftPanelProps } from './ConsumeGiftPanel';
 
 const useStyles = makeStyles(() => ({
   mobContainer: {
@@ -20,7 +21,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const ConsumeGiftPanel: FC = () => {
+const ConsumeGiftPanel: FC<ConsumeGiftPanelProps> = ({
+  checkGiftCodeStatus,
+  claimGiftCode,
+  selectedAccount,
+}: ConsumeGiftPanelProps) => {
   const classes = useStyles();
 
   const { t } = useTranslation('ConsumeGiftPanel');
@@ -41,7 +46,11 @@ const ConsumeGiftPanel: FC = () => {
             </Box>
           </Box>
           <Box flexGrow={1} mt={3}>
-            <ConsumeGiftForm />
+            <ConsumeGiftForm
+              checkGiftCodeStatus={checkGiftCodeStatus}
+              claimGiftCode={claimGiftCode}
+              selectedAccount={selectedAccount}
+            />
           </Box>
         </CardContent>
       </Card>
@@ -50,3 +59,4 @@ const ConsumeGiftPanel: FC = () => {
 };
 
 export default ConsumeGiftPanel;
+export { ConsumeGiftPanel };

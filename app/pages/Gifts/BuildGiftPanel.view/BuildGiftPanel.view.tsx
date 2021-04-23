@@ -27,12 +27,12 @@ import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import { AccountCard, MOBNumberFormat } from '../../../../components';
-import ShortCode from '../../../../components/ShortCode';
-import { CopyIcon, TrashcanIcon } from '../../../../components/icons';
-import useFullService from '../../../../hooks/useFullService';
-import useIsMountedRef from '../../../../hooks/useIsMountedRef';
-import BuildGiftForm from './BuildGiftForm';
+import { AccountCard, MOBNumberFormat } from '../../../components';
+import ShortCode from '../../../components/ShortCode';
+import { CopyIcon, TrashcanIcon } from '../../../components/icons';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import { BuildGiftForm } from '../BuildGiftForm.view';
+import { BuildGiftPanelProps } from './BuildGiftPanel.d';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
 
@@ -45,9 +45,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const BuildGiftPanel: FC = () => {
+const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
+  deleteStoredGiftCodeB58,
+  giftCodes,
+  buildGiftCode,
+  existingPin,
+  isSyncedBuffered,
+  pinThresholdPmob,
+  selectedAccount,
+  submitGiftCode,
+}: BuildGiftPanelProps) => {
   const classes = useStyles();
-  const { deleteStoredGiftCodeB58, giftCodes } = useFullService();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -104,7 +112,14 @@ const BuildGiftPanel: FC = () => {
             </Box>
           </Box>
           <Box flexGrow={1} mt={3}>
-            <BuildGiftForm />
+            <BuildGiftForm
+              buildGiftCode={buildGiftCode}
+              existingPin={existingPin}
+              isSyncedBuffered={isSyncedBuffered}
+              pinThresholdPmob={pinThresholdPmob}
+              selectedAccount={selectedAccount}
+              submitGiftCode={submitGiftCode}
+            />
           </Box>
         </CardContent>
       </Card>
@@ -148,7 +163,7 @@ const BuildGiftPanel: FC = () => {
                           </TableCell>
                           <TableCell align="right">
                             <Box display="flex" justifyContent="flex-end">
-                              <Tooltip title={t('clickToCopy')} placement="right" arrow>
+                              <Tooltip title={t('clickToCopy') as string} placement="right" arrow>
                                 <div
                                   className={classes.clickable}
                                   onClick={handleCopyClick(giftCode.giftCodeB58)}
@@ -159,7 +174,7 @@ const BuildGiftPanel: FC = () => {
                                   </IconButton>
                                 </div>
                               </Tooltip>
-                              <Tooltip title={t('clickToDelete')} placement="right" arrow>
+                              <Tooltip title={t('clickToDelete') as string} placement="right" arrow>
                                 <div
                                   className={classes.clickable}
                                   onClick={handleDialogOpen(
@@ -227,4 +242,10 @@ const BuildGiftPanel: FC = () => {
   );
 };
 
+BuildGiftPanel.defaultProps = {
+  deleteStoredGiftCodeB58: () => {},
+  giftCodes: [],
+};
+
 export default BuildGiftPanel;
+export { BuildGiftPanel };

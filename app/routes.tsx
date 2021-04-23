@@ -7,9 +7,8 @@ import UnlockWalletGuard from './components/UnlockWalletGuard';
 import WalletGuard from './components/WalletGuard';
 import routePaths from './constants/routePaths';
 import DashboardLayout from './layouts/DashboardLayout';
-import { ContactsPage, GiftsPage, HistoryPage, SendReceivePage, SettingsPage } from './pages';
+import { ContactsPage, GiftsPage, HistoryPage, SendReceivePage, SettingsPage, NotFoundPage } from './pages';
 import { CreateAccountView, ImportAccountView, UnlockWalletView } from './views/auth';
-import NotFoundView from './views/errors/NotFoundView';
 import {
   ChangePasswordView,
   ChangePinView,
@@ -63,7 +62,7 @@ export const renderRoutes = (routes: Routes = [], testComponent?: JSX.Element): 
 
 const routes: Routes = [
   {
-    Component: NotFoundView,
+    Component: NotFoundPage,
     exact: true,
     path: routePaths.NOT_FOUND,
   },

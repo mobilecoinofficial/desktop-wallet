@@ -49,3 +49,4 @@ const SettingsOptionsItem: FC<SettingsOptionsItemProps> = ({
 };
 
 export default SettingsOptionsItem;
+export { SettingsOptionsItem };

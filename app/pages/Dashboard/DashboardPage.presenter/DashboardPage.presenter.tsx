@@ -2,9 +2,11 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Container, Grid, makeStyles } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 
+import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
-import DashboardOverview from './DashboardOverview';
+import { DashboardView } from '../DashboardPage.view/DashboardPage.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -15,15 +17,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const DashboardView: FC = () => {
+const DashboardPage: FC = () => {
   const classes = useStyles();
+  const { selectedAccount } = useFullService();
+  const handleCloseApp = () => ipcRenderer.send('close-app');
 
   return (
-    <Box data-testid="DashboardView" className={classes.root}>
+    <Box data-testid="DashboardPage" className={classes.root}>
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <DashboardOverview />
+            <DashboardView selectedAccount={selectedAccount} onClose={handleCloseApp} />
           </Grid>
         </Grid>
       </Container>
@@ -31,4 +35,5 @@ const DashboardView: FC = () => {
   );
 };
 
-export default DashboardView;
+export default DashboardPage;
+export { DashboardPage };

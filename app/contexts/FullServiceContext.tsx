@@ -16,11 +16,11 @@ import type { SubmitGiftCodeParams, SubmitGiftCodeResult } from '../fullService/
 import decryptContacts from '../models/Contact/decryptContacts';
 import deleteAllContacts from '../models/Contact/deleteAllContacts';
 import encryptContacts from '../models/Contact/encryptContacts';
-import Account, { Accounts } from '../types/Account';
+import { Accounts } from '../types/Account';
 import type { Addresses } from '../types/Address';
-import type BalanceStatus from '../types/BalanceStatus';
 import Contact from '../types/Contact';
 import type GiftCode from '../types/GiftCode';
+import SelectedAccount from '../types/SelectedAccount';
 import type { StringHex, StringUInt64 } from '../types/SpecialStrings';
 import type { TransactionLogs } from '../types/TransactionLog';
 import type TxProposal from '../types/TxProposal';
@@ -34,11 +34,6 @@ import sameObject from '../utils/sameObject';
 type PendingSecrets = {
   entropy: StringHex;
   mnemonic: string;
-};
-
-type SelectedAccount = {
-  account: Account;
-  balanceStatus: BalanceStatus;
 };
 
 interface FullServiceState {

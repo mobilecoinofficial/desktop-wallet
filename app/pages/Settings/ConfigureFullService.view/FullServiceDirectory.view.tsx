@@ -38,3 +38,4 @@ const FullServiceDirectory: FC = () => {
 };
 
 export default FullServiceDirectory;
+export { FullServiceDirectory };

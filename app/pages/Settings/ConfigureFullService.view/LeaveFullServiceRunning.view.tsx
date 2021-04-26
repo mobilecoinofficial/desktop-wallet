@@ -50,3 +50,4 @@ const LeaveFullServiceRunning: FC = () => {
 };
 
 export default LeaveFullServiceRunning;
+export { LeaveFullServiceRunning };

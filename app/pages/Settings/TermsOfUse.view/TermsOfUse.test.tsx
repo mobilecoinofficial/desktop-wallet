@@ -1,29 +1,31 @@
 import React from 'react';
 
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import '@testing-library/jest-dom/extend-expect';
 
-import { TermsOfUseView } from '../../../../app/views/wallet';
-import renderSnapshot from '../../../renderSnapshot';
+import '../../../testUtils/i18nForTests';
+import { TermsOfUseView } from '.';
 
 describe('TermsOfUseView', () => {
   describe('component', () => {
+    const mockOnClickBack = jest.fn();
     describe('render', () => {
       test('it renders correctly', () => {
-        const { asFragment } = renderSnapshot(<TermsOfUseView />);
+        const { asFragment } = render(<TermsOfUseView onClickBack={mockOnClickBack} />);
         expect(asFragment()).toMatchSnapshot();
       });
     });
 
     describe('breadcrumb navigation', () => {
-      test('Settings breadcrumb navigates away from current view', () => {
-        renderSnapshot(<TermsOfUseView />);
+      test('Settings breadcrumb fires to navigate away from current view', () => {
+        render(<TermsOfUseView onClickBack={mockOnClickBack} />);
         const termsPanel = screen.queryByText(
           'MOBILECOIN TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS'
         );
         expect(termsPanel).toBeInTheDocument();
         userEvent.click(screen.getByText('Settings'));
-        expect(termsPanel).not.toBeInTheDocument();
+        expect(mockOnClickBack).toHaveBeenCalled();
       });
     });
   });

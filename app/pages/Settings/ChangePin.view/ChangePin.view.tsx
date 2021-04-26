@@ -15,17 +15,15 @@ import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
-import routePaths from '../../../constants/routePaths';
-import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import isValidPin from '../../../utils/isValidPin';
+import { ChangePinViewProps } from './ChangePin';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -78,12 +76,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const ChangePinView: FC = () => {
+const ChangePinView: FC<ChangePinViewProps> = ({
+  onClickBack,
+  pinThresholdPmob,
+  pin,
+  setPin,
+}: ChangePinViewProps) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-  const { pinThresholdPmob, pin, setPin } = useFullService();
-
   const { t } = useTranslation('ChangePinView');
 
   const validatePin = (st: string) => (isValidPin(st) ? '' : t('errorPin'));
@@ -128,7 +129,8 @@ const ChangePinView: FC = () => {
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
       <Breadcrumbs separator=">" aria-label="breadcrumb">
-        <Link color="inherit" to={routePaths.APP_SETTINGS} component={RouterLink}>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <Link color="inherit" onClick={onClickBack} component="button">
           <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
         </Link>
         <Typography color="textPrimary">{t('changePinBreadcrumb')}</Typography>
@@ -264,3 +266,4 @@ const ChangePinView: FC = () => {
 };
 
 export default ChangePinView;
+export { ChangePinView };

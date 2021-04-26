@@ -15,18 +15,16 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useFullService from '../../../hooks/useFullService';
 import getPercentSynced from '../../../utils/getPercentSynced';
+import { LedgerStatusProps } from './ConfigureFullService';
 
-const LedgerStatus: FC = () => {
+const LedgerStatus: FC<LedgerStatusProps> = ({ selectedAccount }: LedgerStatusProps) => {
   const { t } = useTranslation('LedgerStatus');
-  const { selectedAccount } = useFullService();
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
   const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex);
   const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
 
-  // TODO - check these types now
   const createData = (
     blockType: string,
     currentHeight: number | string | null,

@@ -15,15 +15,13 @@ import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { SubmitButton } from '../../../components';
 import { PASSWORD_MIN_SIZE, PASSWORD_MAX_SIZE } from '../../../constants/codes';
-import routePaths from '../../../constants/routePaths';
-import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
+import { ChangePasswordViewProps } from './ChangePassword';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -76,17 +74,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const ChangePasswordView: FC = () => {
+const ChangePasswordView: FC<ChangePasswordViewProps> = ({
+  onClickBack,
+  changePassword,
+}: ChangePasswordViewProps) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ChangePasswordView');
-  const { changePassword } = useFullService();
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
       <Breadcrumbs separator=">" aria-label="breadcrumb">
-        <Link color="inherit" to={routePaths.APP_SETTINGS} component={RouterLink}>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <Link color="inherit" onClick={onClickBack} component="button">
           <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
         </Link>
         <Typography color="textPrimary">{t('changePasswordBreadcrumb')}</Typography>
@@ -197,3 +198,4 @@ const ChangePasswordView: FC = () => {
 };
 
 export default ChangePasswordView;
+export { ChangePasswordView };

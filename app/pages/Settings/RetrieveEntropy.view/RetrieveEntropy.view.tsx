@@ -14,15 +14,13 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
 import * as Yup from 'yup';
 
 import { SubmitButton } from '../../../components';
-import routePaths from '../../../constants/routePaths';
-import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
-import ShowRetrievedEntropyModal from './ShowRetrievedEntropyModal';
+import { RetrieveEntropyViewProps } from './RetrieveEntropy';
+import ShowRetrievedEntropyModal from './ShowRetrievedEntropyModal.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -75,11 +73,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const RetrieveEntropyView: FC = () => {
+const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
+  onClickBack,
+  retrieveEntropy,
+}: RetrieveEntropyViewProps) => {
   const classes = useStyles();
   const [entropy, setEntropy] = useState('');
   const isMountedRef = useIsMountedRef();
-  const { retrieveEntropy } = useFullService();
   const handleCloseModal = () => {
     setEntropy('');
   };
@@ -88,7 +88,8 @@ const RetrieveEntropyView: FC = () => {
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
       <Breadcrumbs separator=">" aria-label="breadcrumb">
-        <Link color="inherit" to={routePaths.APP_SETTINGS} component={RouterLink}>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <Link color="inherit" onClick={onClickBack} component="button">
           <Typography color="textSecondary">{t('settings')}</Typography>
         </Link>
         <Typography color="textPrimary">{t('retrieveSecret')}</Typography>
@@ -191,3 +192,4 @@ const RetrieveEntropyView: FC = () => {
 };
 
 export default RetrieveEntropyView;
+export { RetrieveEntropyView };

@@ -6,4 +6,5 @@ export interface SettingsOptionsItemProps {
   Icon: FC<IconProps>;
   label: string;
   path: string;
+  handleOnClick: (path: string) => void;
 }

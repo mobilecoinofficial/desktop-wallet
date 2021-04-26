@@ -3,13 +3,12 @@ import type { FC } from 'react';
 
 import { Box, Breadcrumbs, Container, Link, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
 
-import routePaths from '../../../constants/routePaths';
 import type { Theme } from '../../../theme';
-import FullServiceDirectory from './FullServiceDirectory';
-import LeaveFullServiceRunning from './LeaveFullServiceRunning';
-import LedgerStatus from './LedgerStatus';
+import { ConfigureFullServiceViewProps } from './ConfigureFullService';
+import { FullServiceDirectory } from './FullServiceDirectory.view';
+import { LeaveFullServiceRunning } from './LeaveFullServiceRunning.view';
+import LedgerStatus from './LedgerStatus.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardContainer: {
@@ -35,14 +34,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const ConfigureFullServiceView: FC = () => {
+const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
+  onClickBack,
+  selectedAccount,
+}: ConfigureFullServiceViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('ConfigureFullServiceView');
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
       <Breadcrumbs separator=">" aria-label="breadcrumb">
-        <Link color="inherit" to={routePaths.APP_SETTINGS} component={RouterLink}>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <Link color="inherit" onClick={onClickBack} component="button">
           <Typography color="textSecondary">{t('settingsBreadcrumb')}</Typography>
         </Link>
         <Typography color="textPrimary">{t('configureFullServiceBreadcrumb')}</Typography>
@@ -66,7 +69,7 @@ const ConfigureFullServiceView: FC = () => {
           {t('daemonDescriptionContinued')}
         </Typography>
       </Box>
-      <LedgerStatus />
+      <LedgerStatus selectedAccount={selectedAccount} />
       <LeaveFullServiceRunning />
       <FullServiceDirectory />
     </Container>
@@ -74,3 +77,4 @@ const ConfigureFullServiceView: FC = () => {
 };
 
 export default ConfigureFullServiceView;
+export { ConfigureFullServiceView };

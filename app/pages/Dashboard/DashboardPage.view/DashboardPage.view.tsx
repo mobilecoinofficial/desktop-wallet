@@ -4,8 +4,8 @@ import type { FC } from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
 
 import { AccountCard } from '../../../components';
-import useFullService from '../../../hooks/useFullService';
-import CloseWalletModal from './CloseWalletModal';
+import { CloseWalletModal } from '../CloseWalletModal.view/CloseWalletModal.view';
+import { DashboardPageProps } from './DashboardPage.d';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -13,8 +13,10 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DashboardOverview: FC = () => {
-  const { selectedAccount } = useFullService();
+const DashboardView: FC<DashboardPageProps> = ({
+  selectedAccount,
+  onClose,
+}: DashboardPageProps) => {
   const classes = useStyles();
 
   // TODO - figure out if we should calculate isSynced with a buffer.
@@ -26,13 +28,14 @@ const DashboardOverview: FC = () => {
         account={{
           b58Code: selectedAccount.account.mainAddress,
           balance: selectedAccount.balanceStatus.unspentPmob,
-          name: selectedAccount.account.name,
+          name: selectedAccount.account.name as string,
         }}
       />
       <Box py={2} />
-      <CloseWalletModal />
+      <CloseWalletModal onClose={onClose} />
     </Container>
   );
 };
 
-export default DashboardOverview;
+export default DashboardView;
+export { DashboardView };

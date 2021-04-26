@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 
 import routePaths from '../constants/routePaths';
-import SplashScreen from './SplashScreen';
 import useFullService from '../hooks/useFullService';
+import SplashScreen from './SplashScreen';
 
 interface AuthFlowGuardProps {
   children?: ReactNode;

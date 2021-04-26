@@ -7,13 +7,20 @@ import UnlockWalletGuard from './components/UnlockWalletGuard';
 import WalletGuard from './components/WalletGuard';
 import routePaths from './constants/routePaths';
 import DashboardLayout from './layouts/DashboardLayout';
-import { ContactsPage, GiftsPage, HistoryPage, SendReceivePage, SettingsPage, NotFoundPage } from './pages';
+import {
+  ContactsPage,
+  DashboardPage,
+  GiftsPage,
+  HistoryPage,
+  SendReceivePage,
+  SettingsPage,
+  NotFoundPage,
+} from './pages';
 import { CreateAccountView, ImportAccountView, UnlockWalletView } from './views/auth';
 import {
   ChangePasswordView,
   ChangePinView,
   ConfigureFullServiceView,
-  DashboardView,
   RetrieveEntropyView,
   PrivacyPolicyView,
   TermsOfUseView,
@@ -90,7 +97,7 @@ const routes: Routes = [
     path: routePaths.APP,
     routes: [
       {
-        Component: DashboardView,
+        Component: DashboardPage,
         exact: true,
         path: routePaths.APP_DASHBOARD,
       },
@@ -159,7 +166,7 @@ const routes: Routes = [
     path: '*',
     routes: [
       {
-        Component: DashboardView,
+        Component: DashboardPage,
         exact: true,
         path: routePaths.ROOT,
       },

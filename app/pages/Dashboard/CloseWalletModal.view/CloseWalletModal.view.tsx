@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Card, CardContent, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 
 import { SubmitButton } from '../../../components';
 import { Theme } from '../../../theme';
+import { CloseWalletModalProps } from './CloseWalletModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -29,22 +29,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const CloseWalletModal: FC = () => {
+const CloseWalletModal: FC<CloseWalletModalProps> = ({ onClose }: CloseWalletModalProps) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const { t } = useTranslation('CloseWalletModal');
 
-  const handleOpenModal = () => {
-    setOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
-
-  const handleCloseApp = () => {
-    ipcRenderer.send('close-app');
-  };
+  const handleOpenModal = () => setOpen(true);
+  const handleCloseModal = () => setOpen(false);
 
   return (
     <>
@@ -91,7 +82,7 @@ const CloseWalletModal: FC = () => {
               <SubmitButton
                 testID="close-wallet-confirm"
                 buttonClass={classes.button}
-                onClick={handleCloseApp}
+                onClick={onClose}
                 isSubmitting={false}
                 disabled={!open}
               >
@@ -106,3 +97,4 @@ const CloseWalletModal: FC = () => {
 };
 
 export default CloseWalletModal;
+export { CloseWalletModal };

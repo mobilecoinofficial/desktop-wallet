@@ -54,6 +54,7 @@ export default interface Account {
   name: string | null;
   nextSubaddressIndex: StringUInt64;
   object: 'account';
+  recoveryMode: boolean;
 }
 
 export type Accounts = {

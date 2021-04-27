@@ -2,7 +2,6 @@ import React, { FC, Fragment } from 'react';
 
 import { Switch, Redirect, Route } from 'react-router-dom';
 
-// import AuthFlowGuard from './components/AuthFlowGuard';
 import UnlockWalletGuard from './components/UnlockWalletGuard';
 import WalletGuard from './components/WalletGuard';
 import routePaths from './constants/routePaths';

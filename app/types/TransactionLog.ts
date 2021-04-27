@@ -1,10 +1,11 @@
 import Contact from './Contact';
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
+import type TxoAbbrev from './TxoAbbrev';
 
 export default interface TransactionLog {
   accountId: StringHex;
   assignedAddressId: StringB58;
-  changeTxoIds: StringHex[];
+  changeTxos: TxoAbbrev[];
   comment: string;
   contact?: Contact; // FIX-ME this is not from the full-service API, we should remove.
   direction: 'tx_direction_received' | 'tx_direction_sent';
@@ -12,11 +13,11 @@ export default interface TransactionLog {
   failureMessage: string | null;
   feePmob: StringUInt64 | null;
   finalizedBlockIndex: StringUInt64 | null;
-  inputTxoIds: StringHex[];
+  inputTxos: TxoAbbrev[];
   isSentRecovered: boolean | null;
   object: 'transaction_log';
   offsetCount: number;
-  outputTxoIds: StringHex[];
+  outputTxos: TxoAbbrev[];
   recipientAddressId: StringB58 | null;
   sentTime: string | null; // FIX-ME: Confirm type
   status:

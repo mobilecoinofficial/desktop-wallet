@@ -22,7 +22,7 @@ import ShortCode from './ShortCode';
 import { CodeTextIcon, LogoIcon, QRCodeIcon } from './icons';
 
 interface AccountCardProps {
-  account: { b58Code: string; name?: string };
+  account: { b58Code: string; name?: string; balance: string };
   isGift?: boolean;
 }
 
@@ -93,7 +93,7 @@ const AccountCard: FC<AccountCardProps> = ({ account, isGift, ...rest }: Account
             <Box className={classes.corners}>
               <LogoIcon />
               <Tooltip
-                title={isQRCode ? t('accountTooltip') : t('mobUrlTooltip')}
+                title={(isQRCode ? t('accountTooltip') : t('mobUrlTooltip')) as string}
                 placement="right"
                 arrow
               >
@@ -117,7 +117,7 @@ const AccountCard: FC<AccountCardProps> = ({ account, isGift, ...rest }: Account
               {isQRCode ? (
                 <QRMob data-testid="account-card-qr-code" size={280} value={mobUrl} />
               ) : (
-                <Tooltip title={t('copyTooltip')} placement="right" arrow>
+                <Tooltip title={t('copyTooltip') as string} placement="right" arrow>
                   <Box data-testid="account-card-tooltip" onClick={handleCodeClick(b58Code)}>
                     <LongCode
                       data-testid="account-card-long-code"

@@ -7,10 +7,16 @@ import UnlockWalletGuard from './components/UnlockWalletGuard';
 import WalletGuard from './components/WalletGuard';
 import routePaths from './constants/routePaths';
 import DashboardLayout from './layouts/DashboardLayout';
-import { ContactsPage, HistoryPage, SendReceivePage, SettingsPage } from './pages';
+import {
+  ContactsPage,
+  DashboardPage,
+  GiftsPage,
+  HistoryPage,
+  SendReceivePage,
+  SettingsPage,
+  NotFoundPage,
+} from './pages';
 import { CreateAccountView, ImportAccountView, UnlockWalletView } from './views/auth';
-import NotFoundView from './views/errors/NotFoundView';
-import { DashboardView, GiftingView } from './views/wallet';
 
 type Routes = {
   Component?: any;
@@ -55,7 +61,7 @@ export const renderRoutes = (routes: Routes = [], testComponent?: JSX.Element): 
 
 const routes: Routes = [
   {
-    Component: NotFoundView,
+    Component: NotFoundPage,
     exact: true,
     path: routePaths.NOT_FOUND,
   },
@@ -83,7 +89,7 @@ const routes: Routes = [
     path: routePaths.APP,
     routes: [
       {
-        Component: DashboardView,
+        Component: DashboardPage,
         exact: true,
         path: routePaths.APP_DASHBOARD,
       },
@@ -93,7 +99,7 @@ const routes: Routes = [
         path: routePaths.APP_TRANSACTION,
       },
       {
-        Component: GiftingView,
+        Component: GiftsPage,
         exact: true,
         path: routePaths.APP_GIFTING,
       },
@@ -122,7 +128,7 @@ const routes: Routes = [
     path: '*',
     routes: [
       {
-        Component: DashboardView,
+        Component: DashboardPage,
         exact: true,
         path: routePaths.ROOT,
       },

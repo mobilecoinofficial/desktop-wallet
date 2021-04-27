@@ -24,7 +24,6 @@ const HistoryPage: FC = () => {
     contacts,
     selectedAccount,
     transactionLogs,
-    txos,
     fetchAllTransactionLogsForAccount,
     fetchAllTxosForAccount,
   } = useFullService();
@@ -52,11 +51,12 @@ const HistoryPage: FC = () => {
           }
           return transactionLog;
         })
-        .sort((a, b) => b.offsetCount - a.offsetCount);
+        .sort((a, b) => b.finalizedBlockIndex - a.finalizedBlockIndex);
     }
     return [] as TransactionLog[];
   };
 
+  console.log(buildList());
   // CREATE VIEW
 
   if (transactionLogs === null) {
@@ -84,17 +84,12 @@ const HistoryPage: FC = () => {
       );
 
     case DETAILS:
-      /*
-            We should get the TXOs for the transaction
-          */
-
       return (
         <TransactionDetailsView
           comment="this should come from metadata"
           onClickBack={() => setShowing(HISTORY)}
           onChangedComment={() => {}}
           transactionLog={currentTransactionLog}
-          txos={txos}
         />
       );
 

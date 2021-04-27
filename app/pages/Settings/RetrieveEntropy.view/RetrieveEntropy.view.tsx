@@ -117,7 +117,6 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
           {t('entropyCanBeUsed')}
         </Typography>
         <br />
-
         <Typography variant="body2" color="textSecondary">
           {t('misplacedYourEntropy')}
         </Typography>
@@ -134,7 +133,6 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
           onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
               setSubmitting(true);
-
               const entropyString = await retrieveEntropy(values.password);
 
               if (typeof entropyString !== 'string') {
@@ -162,6 +160,7 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
                   <Typography color="primary">{t('retrieveEntropy')}</Typography>
                 </FormLabel>
                 <Field
+                  id="RetrieveEntropyForm-passwordField"
                   component={TextField}
                   fullWidth
                   label={t('password')}

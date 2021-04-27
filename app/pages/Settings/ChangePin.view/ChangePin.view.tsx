@@ -201,6 +201,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
             <Form>
               <Box>
                 <Field
+                  id="ChangePinView-currentPasswordField"
                   component={TextField}
                   fullWidth
                   label={t('currentPasswordLabel')}
@@ -209,6 +210,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                   type="password"
                 />
                 <Field
+                  id="ChangePinView-newPinField"
                   component={TextField}
                   fullWidth
                   label={t('newPinLabel')}
@@ -218,6 +220,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                   validate={validatePin}
                 />
                 <Field
+                  id="ChangePinView-confirmPinField"
                   component={TextField}
                   fullWidth
                   label={t('pinConfirmationLabel')}

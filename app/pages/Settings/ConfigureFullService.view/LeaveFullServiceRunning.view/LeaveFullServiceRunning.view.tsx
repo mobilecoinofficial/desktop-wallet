@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { Box, FormLabel, Typography, Switch } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
+import useFullServiceConfigs from '../../../../hooks/useFullServiceConfigs';
 
 const LeaveFullServiceRunning: FC = () => {
   const { leaveFullServiceRunning, toggleLeaveFullServiceRunning } = useFullServiceConfigs();

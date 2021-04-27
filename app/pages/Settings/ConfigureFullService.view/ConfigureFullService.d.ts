@@ -10,7 +10,3 @@ export interface ConfigureFullServiceViewProps {
   selectedAccount: SelectedAccount;
   onClickBack: () => void;
 }
-
-export interface LedgerStatusProps {
-  selectedAccount: SelectedAccount;
-}

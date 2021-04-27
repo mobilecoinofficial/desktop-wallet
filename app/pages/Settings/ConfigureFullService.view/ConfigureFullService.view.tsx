@@ -8,7 +8,7 @@ import type { Theme } from '../../../theme';
 import { ConfigureFullServiceViewProps } from './ConfigureFullService';
 import { FullServiceDirectory } from './FullServiceDirectory.view';
 import { LeaveFullServiceRunning } from './LeaveFullServiceRunning.view';
-import LedgerStatus from './LedgerStatus.view';
+import { LedgerStatus } from './LedgerStatus.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardContainer: {

@@ -52,11 +52,12 @@ const HistoryPage: FC = () => {
           }
           return transactionLog;
         })
-        .sort((a, b) => b.offsetCount - a.offsetCount);
+        .sort((a, b) => b.finalizedBlockIndex - a.finalizedBlockIndex);
     }
     return [] as TransactionLog[];
   };
 
+  console.log(buildList());
   // CREATE VIEW
 
   if (transactionLogs === null) {

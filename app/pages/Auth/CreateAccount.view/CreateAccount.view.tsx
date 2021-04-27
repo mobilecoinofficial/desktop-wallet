@@ -12,45 +12,32 @@ import { SubmitButton, TermsOfUseDialog } from '../../../components';
 import type { FullServiceContextValue } from '../../../contexts/FullServiceContext';
 import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import {
-  isHex64,
-  isValidMnemonicOrHexFormat,
-  isValidMnemonicOrHexValue,
-} from '../../../utils/bip39Functions';
 
-export interface ImportAccountFormValues {
+export interface CreateAccountFormValues {
   accountName: string;
   checkedTerms: boolean;
-  entropy: string;
   password: string;
   passwordConfirmation: string;
   submit: null;
 }
 
-interface ImportAccountFormPseudoProps {
+interface CreateAccountFormPseudoProps {
   isMountedRef: { current: boolean };
-  importAccount: FullServiceContextValue['importAccount'];
-  importLegacyAccount: FullServiceContextValue['importLegacyAccount'];
+  createAccount: FullServiceContextValue['createAccount'];
 }
 
-export const importAccountFormOnSubmit = async (
-  pseudoProps: ImportAccountFormPseudoProps,
-  values: ImportAccountFormValues,
-  helpers: FormikHelpers<ImportAccountFormValues>
+export const createAccountFormOnSubmit = async (
+  pseudoProps: CreateAccountFormPseudoProps,
+  values: CreateAccountFormValues,
+  helpers: FormikHelpers<CreateAccountFormValues>
 ): Promise<void> => {
-  const { isMountedRef, importAccount, importLegacyAccount } = pseudoProps;
-  const { accountName, entropy, password } = values;
+  const { isMountedRef, createAccount } = pseudoProps;
+  const { accountName, password } = values;
   const { setStatus, setErrors, setSubmitting } = helpers;
   setSubmitting(true);
 
   try {
-    // return isHex64(st) ? st : bip39.mnemonicToEntropy(st);
-
-    if (isHex64(entropy)) {
-      await importLegacyAccount(accountName, entropy, password);
-    } else {
-      await importAccount(accountName, entropy, password);
-    }
+    await createAccount(accountName, password);
 
     if (isMountedRef.current) {
       setStatus({ success: true });
@@ -65,18 +52,18 @@ export const importAccountFormOnSubmit = async (
   }
 };
 
-interface ImportAccountFormProps {
+interface CreateAccountFormProps {
   isTest: boolean | undefined;
-  onSubmit: typeof importAccountFormOnSubmit;
+  onSubmit: typeof createAccountFormOnSubmit;
 }
 
-const ImportAccountForm: FC<ImportAccountFormProps> = ({
+const CreateAccountView: FC<CreateAccountFormProps> = ({
   isTest,
   onSubmit,
-}: ImportAccountFormProps) => {
+}: CreateAccountFormProps) => {
   const isMountedRef = useIsMountedRef();
-  const { t } = useTranslation('ImportAccountForm');
-  const { importAccount, importLegacyAccount } = useFullService();
+  const { t } = useTranslation('CreateAccountForm');
+  const { createAccount } = useFullService();
 
   const [canCheck, setCanCheck] = useState(false);
   const [open, setOpen] = useState(false);
@@ -91,17 +78,16 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
   const handleClickOpen = () => (isTest ? handleCloseTerms() : setOpen(true));
 
   const handleOnSubmit = async (
-    values: ImportAccountFormValues,
-    helpers: FormikHelpers<ImportAccountFormValues>
+    values: CreateAccountFormValues,
+    helpers: FormikHelpers<CreateAccountFormValues>
   ) => {
-    const pseudoProps = { importAccount, importLegacyAccount, isMountedRef };
+    const pseudoProps = { createAccount, isMountedRef };
     await onSubmit(pseudoProps, values, helpers);
   };
 
   const initialValues = {
     accountName: '',
     checkedTerms: false,
-    entropy: '',
     password: '',
     passwordConfirmation: '',
     submit: null,
@@ -111,10 +97,6 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     accountName: Yup.string().max(64, t('accountNameValidation')),
     // CBB: It appears that the checkedTerms error message is not working properly.
     checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
-    entropy: Yup.string()
-      .test('format', t('entropyMatches'), isValidMnemonicOrHexFormat)
-      .test('validEntropy', t('entropyIsWrong'), isValidMnemonicOrHexValue)
-      .required(t('entropyRequired')),
     password: Yup.string()
       .min(8, t('passwordMin'))
       .max(99, t('passwordMax'))
@@ -131,25 +113,16 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
       validationSchema={validationSchema}
     >
       {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
-        <Form name="ImportAccountFormName">
+        <Form name="CreateAccountFormName">
           <Field
-            id="ImportAccountForm-accountNameField"
+            id="CreateAccountForm-accountNameField"
             component={TextField}
             fullWidth
             label={t('nameLabel')}
             name="accountName"
           />
           <Field
-            id="ImportAccountForm-entropyField"
-            component={TextField}
-            fullWidth
-            label={t('entropyLabel')}
-            margin="dense"
-            multiline
-            name="entropy"
-          />
-          <Field
-            id="ImportAccountForm-passwordField"
+            id="CreateAccountForm-passwordField"
             component={TextField}
             fullWidth
             label={t('passwordLabel')}
@@ -158,7 +131,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
             type="password"
           />
           <Field
-            id="ImportAccountForm-passwordConfirmationField"
+            id="CreateAccountForm-passwordConfirmationField"
             component={TextField}
             fullWidth
             label={t('passwordConfirmationLabel')}
@@ -194,7 +167,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
             onClick={submitForm}
             isSubmitting={isSubmitting}
           >
-            {t('importAccountButton')}
+            {t('createAccountButton')}
           </SubmitButton>
           <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
         </Form>
@@ -203,4 +176,5 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
   );
 };
 
-export default ImportAccountForm;
+export default CreateAccountView;
+export { CreateAccountView };

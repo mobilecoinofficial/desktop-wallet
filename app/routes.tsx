@@ -2,12 +2,13 @@ import React, { FC, Fragment } from 'react';
 
 import { Switch, Redirect, Route } from 'react-router-dom';
 
-import AuthFlowGuard from './components/AuthFlowGuard';
+// import AuthFlowGuard from './components/AuthFlowGuard';
 import UnlockWalletGuard from './components/UnlockWalletGuard';
 import WalletGuard from './components/WalletGuard';
 import routePaths from './constants/routePaths';
 import DashboardLayout from './layouts/DashboardLayout';
 import {
+  AuthPage,
   ContactsPage,
   DashboardPage,
   GiftsPage,
@@ -16,7 +17,6 @@ import {
   SettingsPage,
   NotFoundPage,
 } from './pages';
-import { CreateAccountView, ImportAccountView, UnlockWalletView } from './views/auth';
 import {
   ChangePasswordView,
   ChangePinView,
@@ -74,22 +74,10 @@ const routes: Routes = [
     path: routePaths.NOT_FOUND,
   },
   {
-    Component: UnlockWalletView,
+    Component: AuthPage,
     exact: true,
     guard: UnlockWalletGuard,
     path: routePaths.ROOT,
-  },
-  {
-    Component: CreateAccountView,
-    exact: true,
-    guard: AuthFlowGuard,
-    path: routePaths.CREATE,
-  },
-  {
-    Component: ImportAccountView,
-    exact: true,
-    guard: AuthFlowGuard,
-    path: routePaths.IMPORT,
   },
   {
     guard: WalletGuard,

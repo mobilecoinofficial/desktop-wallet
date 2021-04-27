@@ -52,7 +52,7 @@ interface UnlockWalletFormProps {
   onSubmit: typeof unlockWalletFormOnSubmit;
 }
 
-const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletFormProps) => {
+const UnlockWalletView: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletFormProps) => {
   const isMountedRef = useIsMountedRef();
   const [t] = useTranslation('UnlockWalletForm');
   const { unlockWallet } = useFullService();
@@ -61,8 +61,8 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
     values: UnlockWalletFormValues,
     helpers: FormikHelpers<UnlockWalletFormValues>
   ) => {
-    const pseduoProps = { isMountedRef, unlockWallet };
-    await onSubmit(pseduoProps, values, helpers);
+    const pseudoProps = { isMountedRef, unlockWallet };
+    await onSubmit(pseudoProps, values, helpers);
   };
 
   const initialValues = {
@@ -108,4 +108,5 @@ const UnlockWalletForm: FC<UnlockWalletFormProps> = ({ onSubmit }: UnlockWalletF
   );
 };
 
-export default UnlockWalletForm;
+export default UnlockWalletView;
+export { UnlockWalletView };

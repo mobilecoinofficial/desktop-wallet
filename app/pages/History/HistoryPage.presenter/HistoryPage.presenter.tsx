@@ -24,6 +24,7 @@ const HistoryPage: FC = () => {
     contacts,
     selectedAccount,
     transactionLogs,
+    txos,
     fetchAllTransactionLogsForAccount,
     fetchAllTxosForAccount,
   } = useFullService();
@@ -84,12 +85,17 @@ const HistoryPage: FC = () => {
       );
 
     case DETAILS:
+      /*
+            We should get the TXOs for the transaction
+          */
+
       return (
         <TransactionDetailsView
           comment="this should come from metadata"
           onClickBack={() => setShowing(HISTORY)}
           onChangedComment={() => {}}
           transactionLog={currentTransactionLog}
+          txos={txos}
         />
       );
 

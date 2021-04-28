@@ -2,4 +2,5 @@ import { SettingsOptionsItemProps } from '../SettingsOptionsItem.view/SettingsOp
 
 export interface SettingsOptionsListProps {
   settingOptionsList: SettingsOptionsItemProps[];
+  handleOnClick: (path: string) => void;
 }

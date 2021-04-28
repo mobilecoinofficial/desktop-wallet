@@ -36,6 +36,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
   // onChangedComment,
   onClickBack,
   transactionLog,
+  txos,
 }: TransactionDetailsViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('TransactionDetails');
@@ -48,7 +49,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     finalizedBlockIndex,
     assignedAddressId,
     recipientAddressId,
-    outputTxos,
+    outputTxoIds,
     // transactionLogId,
     valuePmob,
   } = transactionLog;
@@ -117,10 +118,14 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
           {t('txoDetails')}
         </Typography>
         <CardContent>
-          {outputTxos.map((txo) =>
+          {outputTxoIds.map((txoId) =>
             renderRow(
-              txo.txoIdHex,
-              <TransactionInfoLabel valuePmob={txo.valuePmob} sign={sign} label=" MOB" />,
+              txoId,
+              <TransactionInfoLabel
+                valuePmob={txos.txoMap[txoId].valuePmob}
+                sign={sign}
+                label=" MOB"
+              />,
               true
             )
           )}

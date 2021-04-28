@@ -4,10 +4,12 @@ import type { FC } from 'react';
 import { Box, FormLabel, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useFullServiceConfigs from '../../../../hooks/useFullServiceConfigs';
+import { FullServiceDirectoryProps } from './FullServiceDirectory';
 
-const FullServiceDirectory: FC = () => {
-  const { ledgerDbPath, fullServiceDbPath } = useFullServiceConfigs();
+const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
+  ledgerDbPath,
+  fullServiceDbPath,
+}: FullServiceDirectoryProps) => {
   const { t } = useTranslation('FullServiceDirectory');
 
   return (

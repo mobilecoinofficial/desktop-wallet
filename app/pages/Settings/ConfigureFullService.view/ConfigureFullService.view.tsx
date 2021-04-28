@@ -35,11 +35,18 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
+  configureFullServiceConfigs,
   onClickBack,
   selectedAccount,
 }: ConfigureFullServiceViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('ConfigureFullServiceView');
+  const {
+    ledgerDbPath,
+    fullServiceDbPath,
+    leaveFullServiceRunning,
+    toggleLeaveFullServiceRunning,
+  } = configureFullServiceConfigs;
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -70,8 +77,11 @@ const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
         </Typography>
       </Box>
       <LedgerStatus selectedAccount={selectedAccount} />
-      <LeaveFullServiceRunning />
-      <FullServiceDirectory />
+      <LeaveFullServiceRunning
+        leaveFullServiceRunning={leaveFullServiceRunning}
+        toggleLeaveFullServiceRunning={toggleLeaveFullServiceRunning}
+      />
+      <FullServiceDirectory ledgerDbPath={ledgerDbPath} fullServiceDbPath={fullServiceDbPath} />
     </Container>
   );
 };

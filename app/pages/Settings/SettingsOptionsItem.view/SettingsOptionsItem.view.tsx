@@ -5,7 +5,7 @@ import { Card, CardActionArea, CardContent, Grid, makeStyles, Typography } from 
 import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../../../theme';
-import { SettingsOptionsItemProps } from './SettingsOptionsItem.d';
+import { SettingsOptionsItemProps } from './SettingsOptionsItem';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {

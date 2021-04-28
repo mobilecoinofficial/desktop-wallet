@@ -20,7 +20,7 @@ import { SubmitButton } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { RetrieveEntropyViewProps } from './RetrieveEntropy';
-import ShowRetrievedEntropyModal from './ShowRetrievedEntropyModal.view';
+import { ShowRetrievedEntropyModal } from './ShowRetrievedEntropyModal.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

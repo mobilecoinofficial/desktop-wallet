@@ -15,8 +15,8 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import type { Theme } from '../../../theme';
-import { ShowRetrievedEntropyModalProps } from './RetrieveEntropy';
+import type { Theme } from '../../../../theme';
+import { ShowRetrievedEntropyModalProps } from './ShowRetrievedEntropyModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: {
@@ -134,3 +134,4 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
 };
 
 export default ShowRetrievedEntropyModal;
+export { ShowRetrievedEntropyModal };

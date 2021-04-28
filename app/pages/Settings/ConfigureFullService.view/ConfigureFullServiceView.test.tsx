@@ -9,6 +9,7 @@ import { ConfigureFullServiceView } from './ConfigureFullService.view';
 
 describe('ConfigureFullServiceView', () => {
   const mockOnClickBack = jest.fn();
+  const mockToggle = jest.fn();
   const selectedAccount = {
     account: {
       accountId: '1234',
@@ -32,6 +33,12 @@ describe('ConfigureFullServiceView', () => {
       unspentPmob: '1234',
     },
   };
+  const configureFullServiceConfigs = {
+    fullServiceDbPath: 'fullService/path',
+    leaveFullServiceRunning: false,
+    ledgerDbPath: 'ledger/path',
+    toggleLeaveFullServiceRunning: mockToggle,
+  };
 
   describe('component', () => {
     describe('render', () => {
@@ -40,6 +47,7 @@ describe('ConfigureFullServiceView', () => {
           <ConfigureFullServiceView
             onClickBack={mockOnClickBack}
             selectedAccount={selectedAccount}
+            configureFullServiceConfigs={configureFullServiceConfigs}
           />
         );
 
@@ -53,6 +61,7 @@ describe('ConfigureFullServiceView', () => {
           <ConfigureFullServiceView
             onClickBack={mockOnClickBack}
             selectedAccount={selectedAccount}
+            configureFullServiceConfigs={configureFullServiceConfigs}
           />
         );
 

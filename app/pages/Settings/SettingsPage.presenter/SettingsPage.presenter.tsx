@@ -12,6 +12,7 @@ import {
   ToolsIcon,
 } from '../../../components/icons';
 import useFullService from '../../../hooks/useFullService';
+import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
 import type { Theme } from '../../../theme';
 import { ChangePasswordView } from '../ChangePassword.view';
 import { ChangePinView } from '../ChangePin.view';
@@ -49,6 +50,19 @@ const SettingsPage: FC = () => {
     retrieveEntropy,
     selectedAccount,
   } = useFullService();
+
+  const {
+    ledgerDbPath,
+    fullServiceDbPath,
+    leaveFullServiceRunning,
+    toggleLeaveFullServiceRunning,
+  } = useFullServiceConfigs();
+  const configureFullServiceConfigs = {
+    fullServiceDbPath,
+    leaveFullServiceRunning,
+    ledgerDbPath,
+    toggleLeaveFullServiceRunning,
+  };
 
   const handleOnClick = (path: string) => {
     if (path) {
@@ -134,7 +148,11 @@ const SettingsPage: FC = () => {
 
     case CONFIGURE_FULL_SERVICE:
       return (
-        <ConfigureFullServiceView onClickBack={onClickBack} selectedAccount={selectedAccount} />
+        <ConfigureFullServiceView
+          onClickBack={onClickBack}
+          selectedAccount={selectedAccount}
+          configureFullServiceConfigs={configureFullServiceConfigs}
+        />
       );
 
     default:

@@ -6,7 +6,15 @@ type SelectedAccount = {
   balanceStatus: BalanceStatus;
 };
 
+type ConfigureFullServiceConfigs = {
+  ledgerDbPath: string;
+  fullServiceDbPath: string;
+  leaveFullServiceRunning: boolean;
+  toggleLeaveFullServiceRunning: () => void;
+};
+
 export interface ConfigureFullServiceViewProps {
+  configureFullServiceConfigs: ConfigureFullServiceConfigs;
   selectedAccount: SelectedAccount;
   onClickBack: () => void;
 }

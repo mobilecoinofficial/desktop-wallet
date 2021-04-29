@@ -4,10 +4,12 @@ import type { FC } from 'react';
 import { Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import UnlockWalletForm, { unlockWalletFormOnSubmit } from '../UnlockWallet.view/UnlockWallet.view';
+import useFullService from '../../../hooks/useFullService';
+import { UnlockWalletView } from '../UnlockWallet.view';
 
 const UnlockWalletPresenter: FC = () => {
-  const [t] = useTranslation('UnlockWalletView');
+  const { t } = useTranslation('UnlockWalletView');
+  const { unlockWallet } = useFullService();
 
   return (
     <>
@@ -17,7 +19,7 @@ const UnlockWalletPresenter: FC = () => {
       <Typography variant="body2" color="textSecondary" paragraph>
         {t('description')}
       </Typography>
-      <UnlockWalletForm onSubmit={unlockWalletFormOnSubmit} />
+      <UnlockWalletView unlockWallet={unlockWallet} />
     </>
   );
 };

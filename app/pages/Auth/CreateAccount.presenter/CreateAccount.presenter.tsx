@@ -4,17 +4,12 @@ import type { FC } from 'react';
 import { Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import {
-  CreateAccountView,
-  createAccountFormOnSubmit,
-} from '../CreateAccount.view/CreateAccount.view';
+import useFullService from '../../../hooks/useFullService';
+import { CreateAccountView } from '../CreateAccount.view/CreateAccount.view';
 
-export interface CreateAccountViewProps {
-  isTest?: boolean;
-}
-
-const CreateAccountPresenter: FC<CreateAccountViewProps> = ({ isTest }: CreateAccountViewProps) => {
+const CreateAccountPresenter: FC = () => {
   const { t } = useTranslation('CreateAccountView');
+  const { createAccount } = useFullService();
 
   return (
     <>
@@ -27,13 +22,9 @@ const CreateAccountPresenter: FC<CreateAccountViewProps> = ({ isTest }: CreateAc
       <Typography variant="body2" color="textSecondary" paragraph>
         {t('description')}
       </Typography>
-      <CreateAccountView isTest={isTest} onSubmit={createAccountFormOnSubmit} />
+      <CreateAccountView createAccount={createAccount} />
     </>
   );
-};
-
-CreateAccountPresenter.defaultProps = {
-  isTest: false,
 };
 
 export default CreateAccountPresenter;

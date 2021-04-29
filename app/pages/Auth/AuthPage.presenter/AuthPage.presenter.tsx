@@ -53,7 +53,7 @@ const AuthPage: FC = () => {
     );
 
   return (
-    <Box data-testid="UnlockWalletView" className={classes.root}>
+    <Box data-testid="AuthPageId" className={classes.root}>
       <Container className={classes.viewContainer} maxWidth="sm">
         <LogoIcon className={classes.logoIcon} />
         <Card className={classes.cardContainer}>

@@ -4,18 +4,12 @@ import type { FC } from 'react';
 import { Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import {
-  ImportAccountView,
-  importAccountFormOnSubmit,
-} from '../ImportAccount.view/ImportAccount.view';
+import useFullService from '../../../hooks/useFullService';
+import { ImportAccountView } from '../ImportAccount.view/ImportAccount.view';
 
-// CBB: this isTest pattern would be better managed with context and hooks.
-interface ImportAccountViewProps {
-  isTest?: boolean;
-}
-
-const ImportAccountPresenter: FC<ImportAccountViewProps> = ({ isTest }: ImportAccountViewProps) => {
+const ImportAccountPresenter: FC = () => {
   const { t } = useTranslation('ImportAccountView');
+  const { importAccount, importLegacyAccount } = useFullService();
 
   return (
     <>
@@ -34,13 +28,9 @@ const ImportAccountPresenter: FC<ImportAccountViewProps> = ({ isTest }: ImportAc
       <Typography variant="body2" color="textPrimary" paragraph>
         {t('legacyHex')}
       </Typography>
-      <ImportAccountView isTest={isTest} onSubmit={importAccountFormOnSubmit} />
+      <ImportAccountView importAccount={importAccount} importLegacyAccount={importLegacyAccount} />
     </>
   );
-};
-
-ImportAccountPresenter.defaultProps = {
-  isTest: false,
 };
 
 export default ImportAccountPresenter;

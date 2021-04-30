@@ -1,20 +1,17 @@
 import React from 'react';
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-import useFullService from '../../hooks/useFullService';
-import type { Theme } from '../../theme';
-import InactivityDetect from '../InactivityDetect';
-import BalanceIndicator from './BalanceIndicator';
-import OnboardingModal from './OnboardingModal';
-import SyncStatus from './TopBar/SyncStatus';
-import TopBar from './TopBar/index';
-
-interface DashboardLayoutProps {
-  children?: ReactNode;
-}
+import useFullService from '../../../hooks/useFullService';
+import type { Theme } from '../../../theme';
+import { BalanceIndicator } from '../BalanceIndicator.view';
+import { InactivityDetect } from '../InactivityDetect';
+import { OnboardingModal } from '../OnboardingModal.view';
+import { SyncStatus } from '../SyncStatus.view';
+import { TopBar } from '../TopBar';
+import { DashboardLayoutProps } from './DashboardLayout';
 
 const useStyles = makeStyles((theme: Theme) => ({
   content: {
@@ -44,7 +41,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
-  const { selectedAccount } = useFullService();
+  const {
+    selectedAccount,
+    confirmEntropyKnown,
+    isEntropyKnown,
+    isPinRequired,
+    pendingSecrets,
+    setPin,
+  } = useFullService();
   const classes = useStyles();
 
   return (
@@ -52,16 +56,22 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
       <TopBar />
       <Box className={classes.wrapper}>
         <Box display="flex" flexDirection="column" p={3}>
-          <SyncStatus />
+          <SyncStatus selectedAccount={selectedAccount} />
           <BalanceIndicator
             balance={selectedAccount.balanceStatus.unspentPmob}
             isSynced={selectedAccount.balanceStatus.isSynced}
           />
         </Box>
         <Box className={classes.contentContainer}>
-          <InactivityDetect />
+          <InactivityDetect selectedAccount={selectedAccount} />
           <Box className={classes.content}>{children}</Box>
-          <OnboardingModal />
+          <OnboardingModal
+            confirmEntropyKnown={confirmEntropyKnown}
+            isEntropyKnown={isEntropyKnown}
+            isPinRequired={isPinRequired}
+            pendingSecrets={pendingSecrets}
+            setPin={setPin}
+          />
         </Box>
       </Box>
     </Box>
@@ -73,3 +83,4 @@ DashboardLayout.propTypes = {
 };
 
 export default DashboardLayout;
+export { DashboardLayout };

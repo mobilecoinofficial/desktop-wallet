@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import { AppBar, makeStyles } from '@material-ui/core';
 
-import NavBar from './NavBar';
+import { NavBar } from '../NavBar.view';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,3 +22,4 @@ const TopBar: FC = () => {
 };
 
 export default TopBar;
+export { TopBar };

@@ -12,20 +12,10 @@ import {
   TransactionIcon,
   WalletIcon,
   WalletHomeIcon,
-} from '../../../components/icons';
-import { IconProps } from '../../../components/icons/IconProps';
-import { BLUE_DARK, GREY_LIGHT } from '../../../constants/colors';
-import routePaths from '../../../constants/routePaths';
-
-interface NavBarProps {
-  className?: string;
-}
-
-interface Section {
-  Icon: FC<IconProps>;
-  label: string;
-  path: string;
-}
+} from '../../../../components/icons';
+import { BLUE_DARK, GREY_LIGHT } from '../../../../constants/colors';
+import routePaths from '../../../../constants/routePaths';
+import { NavBarProps, Section } from './NavBar';
 
 const sections: Section[] = [
   {
@@ -93,3 +83,4 @@ const NavBar: FC<NavBarProps> = () => {
 };
 
 export default NavBar;
+export { NavBar };

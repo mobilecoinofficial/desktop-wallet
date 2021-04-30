@@ -16,13 +16,8 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import type { Theme } from '../../theme';
-
-interface ShowEntropyModalProps {
-  isShown: boolean;
-  mnemonic: string;
-  onEntropyConfirmed: () => void;
-}
+import type { Theme } from '../../../theme';
+import { ShowEntropyModalProps } from './ShowEntropyModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: {
@@ -186,3 +181,4 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
 };
 
 export default ShowEntropyModal;
+export { ShowEntropyModal };

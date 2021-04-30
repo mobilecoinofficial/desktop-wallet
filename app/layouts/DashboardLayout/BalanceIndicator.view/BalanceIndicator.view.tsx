@@ -4,14 +4,10 @@ import type { FC } from 'react';
 import { Box, makeStyles, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { MOBNumberFormat } from '../../components';
-import { MOBIcon } from '../../components/icons';
-import { Theme } from '../../theme';
-
-interface BalanceProps {
-  balance: string | '';
-  isSynced: boolean;
-}
+import { MOBNumberFormat } from '../../../components';
+import { MOBIcon } from '../../../components/icons';
+import { Theme } from '../../../theme';
+import { BalanceIndicatorProps } from './BalanceIndicator';
 
 const useStyles = makeStyles((theme: Theme) => ({
   icon: {
@@ -30,7 +26,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const BalanceIndicator: FC<BalanceProps> = ({ balance, isSynced }: BalanceProps) => {
+const BalanceIndicator: FC<BalanceIndicatorProps> = ({
+  balance,
+  isSynced,
+}: BalanceIndicatorProps) => {
   const classes = useStyles();
   const { t } = useTranslation('BalanceIndicator');
 
@@ -55,3 +54,4 @@ const BalanceIndicator: FC<BalanceProps> = ({ balance, isSynced }: BalanceProps)
 };
 
 export default BalanceIndicator;
+export { BalanceIndicator };

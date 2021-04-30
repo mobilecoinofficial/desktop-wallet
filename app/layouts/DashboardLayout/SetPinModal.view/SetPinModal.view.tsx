@@ -17,18 +17,13 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { MOBNumberFormat, SubmitButton } from '../../components';
-import { MOBIcon } from '../../components/icons';
-import { PIN_MIN_SIZE } from '../../constants/codes';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
-import type { Theme } from '../../theme';
-import { StringUInt64 } from '../../types/SpecialStrings';
-import isValidPin from '../../utils/isValidPin';
-
-interface SetPinModalProps {
-  isShown: boolean;
-  onPinSubmit: (pin: string, pinThreshold: StringUInt64) => void;
-}
+import { MOBNumberFormat, SubmitButton } from '../../../components';
+import { MOBIcon } from '../../../components/icons';
+import { PIN_MIN_SIZE } from '../../../constants/codes';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import type { Theme } from '../../../theme';
+import isValidPin from '../../../utils/isValidPin';
+import { SetPinModalProps } from './SetPinModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: {
@@ -211,3 +206,4 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
 };
 
 export default SetPinModal;
+export { SetPinModal };

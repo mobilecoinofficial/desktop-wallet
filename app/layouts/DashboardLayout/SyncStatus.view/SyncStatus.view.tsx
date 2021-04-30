@@ -7,9 +7,9 @@ import { useTranslation } from 'react-i18next';
 
 import { CircleMOBIcon } from '../../../components/icons';
 import { BLUE_DARK, GOLD_LIGHT, RED } from '../../../constants/colors';
-import useFullService from '../../../hooks/useFullService';
 import { Theme } from '../../../theme';
 import getPercentSynced from '../../../utils/getPercentSynced';
+import { SyncStatusProps } from './SyncStatus';
 
 const ERROR = 'ERROR';
 const SYNCED = 'SYNCED';
@@ -46,10 +46,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   tooltip: { margin: 'auto', position: 'relative' },
 }));
 
-const SyncStatus: FC = () => {
+const SyncStatus: FC<SyncStatusProps> = ({ selectedAccount }: SyncStatusProps) => {
   const classes = useStyles();
   const { t } = useTranslation('SyncStatus');
-  const { selectedAccount } = useFullService();
 
   // Note: right now, we're only checking for the wallet and the selectedAccount.
   // We'll need a redesign where we are syncing for each account.
@@ -126,3 +125,4 @@ const SyncStatus: FC = () => {
 };
 
 export default SyncStatus;
+export { SyncStatus };

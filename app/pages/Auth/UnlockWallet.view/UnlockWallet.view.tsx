@@ -53,7 +53,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
       {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
         <Form name="UnlockWalletInnerForm">
           <Field
-            id="passwordField"
+            data-testid="passwordField"
             component={TextField}
             fullWidth
             label={t('passwordLabel')}
@@ -66,6 +66,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
             </Box>
           )}
           <SubmitButton
+            data-testid="submit-button"
             disabled={!dirty || !isValid || isSubmitting}
             isSubmitting={isSubmitting}
             onClick={submitForm}
@@ -80,3 +81,58 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
 
 export default UnlockWalletView;
 export { UnlockWalletView };
+
+/*
+      SCREEN IS {
+        debug: [Function: debug],
+        findAllByAltText: [Function: bound ],
+        findAllByDisplayValue: [Function: bound ],
+        findAllByLabelText: [Function: bound ],
+        findAllByPlaceholderText: [Function: bound ],
+        findAllByRole: [Function: bound ],
+        findAllByTestId: [Function: bound ],
+        findAllByText: [Function: bound ],
+        findAllByTitle: [Function: bound ],
+        findByAltText: [Function: bound ],
+        findByDisplayValue: [Function: bound ],
+        findByLabelText: [Function: bound ],
+        findByPlaceholderText: [Function: bound ],
+        findByRole: [Function: bound ],
+        findByTestId: [Function: bound ]
+        findByText: [Function: bound ],
+        findByTitle: [Function: bound ],
+        getAllByAltText: [Function: bound ],
+        getAllByDisplayValue: [Function: bound ],
+        getAllByLabelText: [Function: bound ],
+        getAllByPlaceholderText: [Function: bound ],
+        getAllByRole: [Function: bound ],
+        getAllByTestId: [Function: bound ],
+        getAllByText: [Function: bound ],
+        getAllByTitle: [Function: bound ],
+        getByAltText: [Function: bound ],
+        getByDisplayValue: [Function: bound ],
+        getByLabelText: [Function: bound ],
+        getByPlaceholderText: [Function: bound ],
+        getByRole: [Function: bound ],
+        getByTestId: [Function: bound ],
+        getByText: [Function: bound ],
+        getByTitle: [Function: bound ],
+        logTestingPlaygroundURL: [Function: logTestingPlaygroundURL],
+        queryAllByAltText: [Function: bound ],
+        queryAllByDisplayValue: [Function: bound ],
+        queryAllByLabelText: [Function: bound ],
+        queryAllByPlaceholderText: [Function: bound ],
+        queryAllByRole: [Function: bound ],
+        queryAllByTestId: [Function: bound ],
+        queryAllByText: [Function: bound ],
+        queryAllByTitle: [Function: bound ],
+        queryByAltText: [Function: bound ],
+        queryByDisplayValue: [Function: bound ],
+        queryByLabelText: [Function: bound ],
+        queryByPlaceholderText: [Function: bound ],
+        queryByRole: [Function: bound ],
+        queryByTestId: [Function: bound ],
+        queryByText: [Function: bound ],
+        queryByTitle: [Function: bound ],
+      }
+*/

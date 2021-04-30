@@ -2,8 +2,6 @@ import React, { FC, Fragment } from 'react';
 
 import { Switch, Redirect, Route } from 'react-router-dom';
 
-import UnlockWalletGuard from './components/UnlockWalletGuard';
-import WalletGuard from './components/WalletGuard';
 import routePaths from './constants/routePaths';
 import DashboardLayout from './layouts/DashboardLayout';
 import {
@@ -28,7 +26,6 @@ import {
 type Routes = {
   Component?: any;
   exact?: boolean;
-  guard?: FC;
   layout?: FC;
   path?: string | string[];
   routes?: Routes;
@@ -43,9 +40,8 @@ export const renderRoutes = (routes: Routes = [], testComponent?: JSX.Element): 
       <Route key="test-component" path="/test" exact render={() => testComponent} />
     )}
     {routes.map((route, i) => {
-      const { Component, guard, layout, exact, path, routes: nestedRoutes } = route;
+      const { Component, layout, exact, path, routes: nestedRoutes } = route;
 
-      const Guard = guard || Fragment;
       const Layout = layout || Fragment;
 
       return (
@@ -54,11 +50,7 @@ export const renderRoutes = (routes: Routes = [], testComponent?: JSX.Element): 
           path={path}
           exact={exact}
           render={(props) => (
-            <Guard>
-              <Layout>
-                {nestedRoutes ? renderRoutes(nestedRoutes) : <Component {...props} />}
-              </Layout>
-            </Guard>
+            <Layout>{nestedRoutes ? renderRoutes(nestedRoutes) : <Component {...props} />}</Layout>
           )}
         />
       );
@@ -75,11 +67,9 @@ const routes: Routes = [
   {
     Component: AuthPage,
     exact: true,
-    guard: UnlockWalletGuard,
     path: routePaths.ROOT,
   },
   {
-    guard: WalletGuard,
     layout: DashboardLayout,
     path: routePaths.APP,
     routes: [

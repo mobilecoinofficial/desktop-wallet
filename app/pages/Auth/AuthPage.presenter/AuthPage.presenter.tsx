@@ -3,8 +3,12 @@ import type { FC } from 'react';
 
 import { Box, Button, Card, Container, Divider, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import { Redirect } from 'react-router-dom';
 
+import { SplashScreen } from '../../../components/SplashScreen';
 import LogoIcon from '../../../components/icons/LogoIcon';
+import routePaths from '../../../constants/routePaths';
+import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 import { CreateAccountPresenter } from '../CreateAccount.presenter';
 import { ImportAccountPresenter } from '../ImportAccount.presenter';
@@ -37,8 +41,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AuthPage: FC = () => {
   const classes = useStyles();
+  const { isAuthenticated, isInitialized } = useFullService();
   const [selectedView, setView] = useState(0);
   const { t } = useTranslation('AuthPage');
+
+  if (!isInitialized) {
+    return <SplashScreen />;
+  }
+
+  if (isAuthenticated) {
+    return <Redirect to={routePaths.APP_DASHBOARD} />;
+  }
 
   const optButton = (n: number, st: string) =>
     selectedView !== n && (
@@ -48,7 +61,7 @@ const AuthPage: FC = () => {
         variant="outlined"
         style={{ margin: '5px' }}
       >
-        {t(st)}
+        {st}
       </Button>
     );
 
@@ -65,9 +78,9 @@ const AuthPage: FC = () => {
             <Divider />
           </Box>
 
-          {optButton(0, 'unlockInstead')}
-          {optButton(1, 'createInstead')}
-          {optButton(2, 'importInstead')}
+          {optButton(0, t('unlockInstead'))}
+          {optButton(1, t('createInstead'))}
+          {optButton(2, t('importInstead'))}
         </Card>
       </Container>
     </Box>

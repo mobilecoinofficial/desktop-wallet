@@ -104,36 +104,6 @@ const routes: Routes = [
         path: routePaths.APP_SETTINGS,
       },
       {
-        Component: ChangePasswordView,
-        exact: true,
-        path: routePaths.APP_SETTINGS_CHANGE_PASSWORD,
-      },
-      {
-        Component: ChangePinView,
-        exact: true,
-        path: routePaths.APP_SETTINGS_CHANGE_PIN,
-      },
-      {
-        Component: RetrieveEntropyView,
-        exact: true,
-        path: routePaths.APP_SETTINGS_RETRIEVE_ENTROPY,
-      },
-      {
-        Component: ConfigureFullServiceView,
-        exact: true,
-        path: routePaths.APP_SETTINGS_CONFIGURE_FULL_SERVICE,
-      },
-      {
-        Component: TermsOfUseView,
-        exact: true,
-        path: routePaths.APP_SETTINGS_TERMS_OF_USE,
-      },
-      {
-        Component: PrivacyPolicyView,
-        exact: true,
-        path: routePaths.APP_SETTINGS_PRIVACY_POLICY,
-      },
-      {
         Component: RedirectToNotFound,
       },
     ],

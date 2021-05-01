@@ -110,7 +110,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
             <Box display="flex" alignItems="center" flexDirection="row-reverse">
               <Box>
                 <Typography display="inline">{t('acceptTerms')}</Typography>
-                <Button color="primary" onClick={() => setOpen(true)}>
+                <Button color="primary" onClick={() => setOpen(true)} id="openTerms">
                   {t('acceptTermsButton')}
                 </Button>
               </Box>

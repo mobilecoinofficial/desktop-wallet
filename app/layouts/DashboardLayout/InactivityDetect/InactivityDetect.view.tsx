@@ -11,7 +11,6 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
 import { InactivityDetectProps } from './InactivityDetect';
 
 let inactivityTimer: number;
@@ -19,6 +18,8 @@ let reactionTimer: number;
 
 const InactivityDetect: FC<InactivityDetectProps> = ({
   selectedAccount,
+  TIME_FOR_INACTIVITY,
+  TIME_FOR_REACTION,
 }: InactivityDetectProps) => {
   const [inactiveTooLong, setInactiveTooLong] = useState(false);
   const { t } = useTranslation('InactivityDetect');

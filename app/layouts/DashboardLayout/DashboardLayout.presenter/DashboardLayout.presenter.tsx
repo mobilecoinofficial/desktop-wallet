@@ -4,6 +4,7 @@ import type { FC } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
+import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
 import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 import { BalanceIndicator } from '../BalanceIndicator.view';
@@ -63,7 +64,11 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
           />
         </Box>
         <Box className={classes.contentContainer}>
-          <InactivityDetect selectedAccount={selectedAccount} />
+          <InactivityDetect
+            selectedAccount={selectedAccount}
+            TIME_FOR_INACTIVITY={TIME_FOR_INACTIVITY}
+            TIME_FOR_REACTION={TIME_FOR_REACTION}
+          />
           <Box className={classes.content}>{children}</Box>
           <OnboardingModal
             confirmEntropyKnown={confirmEntropyKnown}

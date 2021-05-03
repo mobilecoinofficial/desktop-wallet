@@ -147,6 +147,7 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
                 <Form>
                   <Box>
                     <Field
+                      id="SetPinModal-newPinField"
                       component={TextField}
                       fullWidth
                       label={t('newPinLabel')}
@@ -156,6 +157,7 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
                       validate={validatePin}
                     />
                     <Field
+                      id="SetPinModal-newPinConfirmationField"
                       component={TextField}
                       fullWidth
                       label={t('pinConfirmationLabel')}

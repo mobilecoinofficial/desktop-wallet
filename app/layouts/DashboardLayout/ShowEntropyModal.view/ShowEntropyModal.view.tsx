@@ -101,7 +101,6 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
               {t('description')}
             </Typography>
             <br />
-
             <Card>
               <CardContent>
                 <Box py={3} display="flex" alignItems="center" flexDirection="column">
@@ -149,7 +148,6 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
               {t('recommend')}
             </Typography>
             <br />
-
             <Box display="flex" justifyContent="space-between">
               <Button
                 color="secondary"

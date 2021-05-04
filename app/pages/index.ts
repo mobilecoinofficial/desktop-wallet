@@ -1,3 +1,4 @@
+import { AuthPage } from './Auth';
 import { ContactsPage } from './Contacts';
 import { DashboardPage } from './Dashboard';
 import { GiftsPage } from './Gifts';
@@ -7,6 +8,7 @@ import { SendReceivePage } from './SendReceive';
 import { SettingsPage } from './Settings';
 
 export {
+  AuthPage,
   ContactsPage,
   DashboardPage,
   GiftsPage,

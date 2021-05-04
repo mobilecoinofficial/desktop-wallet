@@ -49,3 +49,4 @@ const SplashScreen: FC = () => {
 };
 
 export default SplashScreen;
+export { SplashScreen };

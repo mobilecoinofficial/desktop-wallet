@@ -57,7 +57,6 @@ const HistoryPage: FC = () => {
     return [] as TransactionLog[];
   };
 
-  console.log(buildList());
   // CREATE VIEW
 
   if (transactionLogs === null) {

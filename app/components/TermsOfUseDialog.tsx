@@ -19,7 +19,13 @@ const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
       <Container maxWidth="md">
         <TermsOfUse />
         <Box p={2}>
-          <Button color="secondary" onClick={handleCloseTerms} variant="contained" fullWidth>
+          <Button
+            color="secondary"
+            onClick={handleCloseTerms}
+            variant="contained"
+            fullWidth
+            id="closeTerms"
+          >
             {t('close')}
           </Button>
         </Box>

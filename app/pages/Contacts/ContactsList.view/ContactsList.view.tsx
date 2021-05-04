@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 
 import { SearchIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
-import ContactCard from '../ContactCard.view';
+import { ContactCard } from '../ContactCard.view';
 import { ContactsListProps } from './ContactsList';
 
 const useStyles = makeStyles((theme: Theme) => ({

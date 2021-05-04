@@ -12,8 +12,6 @@ const routePaths = {
   APP_SETTINGS_RETRIEVE_ENTROPY: '/app/settings/retrieve_entropy',
   APP_SETTINGS_TERMS_OF_USE: '/app/settings/terms_of_use',
   APP_TRANSACTION: '/app/transaction',
-  CREATE: '/create',
-  IMPORT: '/import',
   NOT_FOUND: '/404',
   ROOT: '/',
 };

@@ -2,7 +2,6 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, makeStyles, Tooltip, CircularProgress } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 
 import { CircleMOBIcon } from '../../../components/icons';
@@ -46,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   tooltip: { margin: 'auto', position: 'relative' },
 }));
 
-const SyncStatus: FC<SyncStatusProps> = ({ selectedAccount }: SyncStatusProps) => {
+const SyncStatus: FC<SyncStatusProps> = ({ selectedAccount, sendSyncStatus }: SyncStatusProps) => {
   const classes = useStyles();
   const { t } = useTranslation('SyncStatus');
 
@@ -81,7 +80,7 @@ const SyncStatus: FC<SyncStatusProps> = ({ selectedAccount }: SyncStatusProps) =
 
     statusCode = isSynced ? SYNCED : SYNCING;
   }
-  ipcRenderer.send('sync-status', statusCode);
+  sendSyncStatus(statusCode);
 
   switch (statusCode) {
     case SYNCED: {
@@ -100,7 +99,13 @@ const SyncStatus: FC<SyncStatusProps> = ({ selectedAccount }: SyncStatusProps) =
     }
   }
   return (
-    <Tooltip title={title} placement="right" arrow className={classes.tooltip}>
+    <Tooltip
+      title={title}
+      placement="right"
+      arrow
+      className={classes.tooltip}
+      data-testid="tooltip-title"
+    >
       <Box className={classes.statusContainer}>
         <Box className={classes.statusIconContainer}>
           <CircleMOBIcon

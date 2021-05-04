@@ -17,6 +17,7 @@ let inactivityTimer: number;
 let reactionTimer: number;
 
 const InactivityDetect: FC<InactivityDetectProps> = ({
+  handleCloseApp,
   selectedAccount,
   TIME_FOR_INACTIVITY,
   TIME_FOR_REACTION,
@@ -56,7 +57,7 @@ const InactivityDetect: FC<InactivityDetectProps> = ({
       setInactiveTooLong(true);
       document.onmousemove = null;
       document.onkeypress = null;
-      reactionTimer = window.setTimeout(() => window.close(), TIME_FOR_REACTION);
+      reactionTimer = window.setTimeout(() => handleCloseApp(), TIME_FOR_REACTION);
     } else {
       reenableTimer();
     }

@@ -2,6 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import PropTypes from 'prop-types';
 
 import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
@@ -51,13 +52,15 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     setPin,
   } = useFullService();
   const classes = useStyles();
+  const sendSyncStatus = (statusCode: string) => ipcRenderer.send('sync-status', statusCode);
+  const handleCloseApp = () => ipcRenderer.send('close-app');
 
   return (
     <Box className={classes.root}>
       <TopBar />
       <Box className={classes.wrapper}>
         <Box display="flex" flexDirection="column" p={3}>
-          <SyncStatus selectedAccount={selectedAccount} />
+          <SyncStatus selectedAccount={selectedAccount} sendSyncStatus={sendSyncStatus} />
           <BalanceIndicator
             balance={selectedAccount.balanceStatus.unspentPmob}
             isSynced={selectedAccount.balanceStatus.isSynced}
@@ -65,6 +68,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
         </Box>
         <Box className={classes.contentContainer}>
           <InactivityDetect
+            handleCloseApp={handleCloseApp}
             selectedAccount={selectedAccount}
             TIME_FOR_INACTIVITY={TIME_FOR_INACTIVITY}
             TIME_FOR_REACTION={TIME_FOR_REACTION}

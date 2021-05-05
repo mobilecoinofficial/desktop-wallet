@@ -9,16 +9,15 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
-import type { FullServiceContextValue } from '../../../contexts/FullServiceContext';
-import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import {
   isHex64,
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
 } from '../../../utils/bip39Functions';
+import { ImportAccountViewProps } from './ImportAccount.d';
 
-export interface ImportAccountFormValues {
+interface ImportAccountFormValues {
   accountName: string;
   checkedTerms: boolean;
   entropy: string;
@@ -27,56 +26,12 @@ export interface ImportAccountFormValues {
   submit: null;
 }
 
-interface ImportAccountFormPseudoProps {
-  isMountedRef: { current: boolean };
-  importAccount: FullServiceContextValue['importAccount'];
-  importLegacyAccount: FullServiceContextValue['importLegacyAccount'];
-}
-
-export const importAccountFormOnSubmit = async (
-  pseudoProps: ImportAccountFormPseudoProps,
-  values: ImportAccountFormValues,
-  helpers: FormikHelpers<ImportAccountFormValues>
-): Promise<void> => {
-  const { isMountedRef, importAccount, importLegacyAccount } = pseudoProps;
-  const { accountName, entropy, password } = values;
-  const { setStatus, setErrors, setSubmitting } = helpers;
-  setSubmitting(true);
-
-  try {
-    // return isHex64(st) ? st : bip39.mnemonicToEntropy(st);
-
-    if (isHex64(entropy)) {
-      await importLegacyAccount(accountName, entropy, password);
-    } else {
-      await importAccount(accountName, entropy, password);
-    }
-
-    if (isMountedRef.current) {
-      setStatus({ success: true });
-      setSubmitting(false);
-    }
-  } catch (err) {
-    if (isMountedRef.current) {
-      setStatus({ success: false });
-      setErrors({ submit: err.message });
-      setSubmitting(false);
-    }
-  }
-};
-
-interface ImportAccountFormProps {
-  isTest: boolean | undefined;
-  onSubmit: typeof importAccountFormOnSubmit;
-}
-
-const ImportAccountForm: FC<ImportAccountFormProps> = ({
-  isTest,
-  onSubmit,
-}: ImportAccountFormProps) => {
+const ImportAccountView: FC<ImportAccountViewProps> = ({
+  importAccount,
+  importLegacyAccount,
+}: ImportAccountViewProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ImportAccountForm');
-  const { importAccount, importLegacyAccount } = useFullService();
 
   const [canCheck, setCanCheck] = useState(false);
   const [open, setOpen] = useState(false);
@@ -86,49 +41,61 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
     setOpen(false);
   };
 
-  // FIX-ME: This hack is to avoid opening the Dialog -- which is causing some
-  // headaches in testing.
-  const handleClickOpen = () => (isTest ? handleCloseTerms() : setOpen(true));
-
   const handleOnSubmit = async (
     values: ImportAccountFormValues,
     helpers: FormikHelpers<ImportAccountFormValues>
   ) => {
-    const pseudoProps = { importAccount, importLegacyAccount, isMountedRef };
-    await onSubmit(pseudoProps, values, helpers);
-  };
+    const { accountName, entropy, password } = values;
+    const { setStatus, setErrors, setSubmitting } = helpers;
+    setSubmitting(true);
 
-  const initialValues = {
-    accountName: '',
-    checkedTerms: false,
-    entropy: '',
-    password: '',
-    passwordConfirmation: '',
-    submit: null,
-  };
+    try {
+      if (isHex64(entropy)) {
+        await importLegacyAccount(accountName, entropy, password);
+      } else {
+        await importAccount(accountName, entropy, password);
+      }
 
-  const validationSchema = Yup.object().shape({
-    accountName: Yup.string().max(64, t('accountNameValidation')),
-    // CBB: It appears that the checkedTerms error message is not working properly.
-    checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
-    entropy: Yup.string()
-      .test('format', t('entropyMatches'), isValidMnemonicOrHexFormat)
-      .test('validEntropy', t('entropyIsWrong'), isValidMnemonicOrHexValue)
-      .required(t('entropyRequired')),
-    password: Yup.string()
-      .min(8, t('passwordMin'))
-      .max(99, t('passwordMax'))
-      .required(t('passwordRequired')),
-    passwordConfirmation: Yup.string()
-      .oneOf([Yup.ref('password')], t('passwordConfirmationRef'))
-      .required(t('passwordConfirmationRequired')),
-  });
+      if (isMountedRef.current) {
+        setStatus({ success: true });
+        setSubmitting(false);
+      }
+    } catch (err) {
+      if (isMountedRef.current) {
+        setStatus({ success: false });
+        setErrors({ submit: err.message });
+        setSubmitting(false);
+      }
+    }
+  };
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={{
+        accountName: '',
+        checkedTerms: false,
+        entropy: '',
+        password: '',
+        passwordConfirmation: '',
+        submit: null,
+      }}
       onSubmit={handleOnSubmit}
-      validationSchema={validationSchema}
+      validationSchema={Yup.object().shape({
+        accountName: Yup.string().max(64, t('accountNameValidation')),
+        // CBB: It appears that the checkedTerms error message is not working properly.
+        checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
+        entropy: Yup.string()
+          .test('format', t('entropyMatches'), isValidMnemonicOrHexFormat)
+          .test('validEntropy', t('entropyIsWrong'), isValidMnemonicOrHexValue)
+          .required(t('entropyRequired')),
+        password: Yup.string()
+          .min(8, t('passwordMin'))
+          .max(99, t('passwordMax'))
+          .required(t('passwordRequired')),
+        passwordConfirmation: Yup.string()
+          .oneOf([Yup.ref('password')], t('passwordConfirmationRef'))
+          .required(t('passwordConfirmationRequired')),
+      })}
     >
       {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
         <Form name="ImportAccountFormName">
@@ -170,7 +137,7 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
             <Box display="flex" alignItems="center" flexDirection="row-reverse">
               <Box>
                 <Typography display="inline">{t('acceptTerms')}</Typography>
-                <Button color="primary" onClick={handleClickOpen}>
+                <Button color="primary" onClick={() => setOpen(true)} id="openTerms">
                   {t('acceptTermsButton')}
                 </Button>
               </Box>
@@ -203,4 +170,5 @@ const ImportAccountForm: FC<ImportAccountFormProps> = ({
   );
 };
 
-export default ImportAccountForm;
+export default ImportAccountView;
+export { ImportAccountView };

@@ -9,11 +9,10 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
-import type { FullServiceContextValue } from '../../../contexts/FullServiceContext';
-import useFullService from '../../../hooks/useFullService';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import { CreateAccountViewProps } from './CreateAccount.d';
 
-export interface CreateAccountFormValues {
+interface CreateAccountFormValues {
   accountName: string;
   checkedTerms: boolean;
   password: string;
@@ -21,50 +20,11 @@ export interface CreateAccountFormValues {
   submit: null;
 }
 
-interface CreateAccountFormPseudoProps {
-  isMountedRef: { current: boolean };
-  createAccount: FullServiceContextValue['createAccount'];
-}
-
-export const createAccountFormOnSubmit = async (
-  pseudoProps: CreateAccountFormPseudoProps,
-  values: CreateAccountFormValues,
-  helpers: FormikHelpers<CreateAccountFormValues>
-): Promise<void> => {
-  const { isMountedRef, createAccount } = pseudoProps;
-  const { accountName, password } = values;
-  const { setStatus, setErrors, setSubmitting } = helpers;
-  setSubmitting(true);
-
-  try {
-    await createAccount(accountName, password);
-
-    if (isMountedRef.current) {
-      setStatus({ success: true });
-      setSubmitting(false);
-    }
-  } catch (err) {
-    if (isMountedRef.current) {
-      setStatus({ success: false });
-      setErrors({ submit: err.message });
-      setSubmitting(false);
-    }
-  }
-};
-
-interface CreateAccountFormProps {
-  isTest: boolean | undefined;
-  onSubmit: typeof createAccountFormOnSubmit;
-}
-
-const CreateAccountForm: FC<CreateAccountFormProps> = ({
-  isTest,
-  onSubmit,
-}: CreateAccountFormProps) => {
+const CreateAccountView: FC<CreateAccountViewProps> = ({
+  createAccount,
+}: CreateAccountViewProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('CreateAccountForm');
-  const { createAccount } = useFullService();
-
   const [canCheck, setCanCheck] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -73,44 +33,51 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
     setOpen(false);
   };
 
-  // FIX-ME: This hack is to avoid opening the Dialog -- which is causing some
-  // headaches in testing.
-  const handleClickOpen = () => (isTest ? handleCloseTerms() : setOpen(true));
-
   const handleOnSubmit = async (
     values: CreateAccountFormValues,
     helpers: FormikHelpers<CreateAccountFormValues>
   ) => {
-    const pseduoProps = { createAccount, isMountedRef };
-    await onSubmit(pseduoProps, values, helpers);
-  };
+    const { setStatus, setErrors, setSubmitting } = helpers;
+    setSubmitting(true);
 
-  const initialValues = {
-    accountName: '',
-    checkedTerms: false,
-    password: '',
-    passwordConfirmation: '',
-    submit: null,
-  };
+    try {
+      await createAccount(values.accountName, values.password);
 
-  const validationSchema = Yup.object().shape({
-    accountName: Yup.string().max(64, t('accountNameValidation')),
-    // CBB: It appears that the checkedTerms error message is not working properly.
-    checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
-    password: Yup.string()
-      .min(8, t('passwordMin'))
-      .max(99, t('passwordMax'))
-      .required(t('passwordRequired')),
-    passwordConfirmation: Yup.string()
-      .oneOf([Yup.ref('password')], t('passwordConfirmationRef'))
-      .required(t('passwordConfirmationRequired')),
-  });
+      if (isMountedRef.current) {
+        setStatus({ success: true });
+        setSubmitting(false);
+      }
+    } catch (err) {
+      if (isMountedRef.current) {
+        setStatus({ success: false });
+        setErrors({ submit: err.message });
+        setSubmitting(false);
+      }
+    }
+  };
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={{
+        accountName: '',
+        checkedTerms: false,
+        password: '',
+        passwordConfirmation: '',
+        submit: null,
+      }}
       onSubmit={handleOnSubmit}
-      validationSchema={validationSchema}
+      validationSchema={Yup.object().shape({
+        accountName: Yup.string().max(64, t('accountNameValidation')),
+        // CBB: It appears that the checkedTerms error message is not working properly.
+        checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
+        password: Yup.string()
+          .min(8, t('passwordMin'))
+          .max(99, t('passwordMax'))
+          .required(t('passwordRequired')),
+        passwordConfirmation: Yup.string()
+          .oneOf([Yup.ref('password')], t('passwordConfirmationRef'))
+          .required(t('passwordConfirmationRequired')),
+      })}
     >
       {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
         <Form name="CreateAccountFormName">
@@ -143,7 +110,7 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
             <Box display="flex" alignItems="center" flexDirection="row-reverse">
               <Box>
                 <Typography display="inline">{t('acceptTerms')}</Typography>
-                <Button color="primary" onClick={handleClickOpen}>
+                <Button color="primary" onClick={() => setOpen(true)} id="openTerms">
                   {t('acceptTermsButton')}
                 </Button>
               </Box>
@@ -176,4 +143,5 @@ const CreateAccountForm: FC<CreateAccountFormProps> = ({
   );
 };
 
-export default CreateAccountForm;
+export default CreateAccountView;
+export { CreateAccountView };

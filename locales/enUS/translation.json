@@ -12,6 +12,12 @@
     "unnamed": "Unnamed Account"
   },
 
+  "AuthPage": {
+    "createInstead": "Create account instead",
+    "importInstead": "Import account instead",
+    "unlockInstead": "Unlock wallet instead"
+  },
+
   "BalanceIndicator": {
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger.",
     "title": "Balance"

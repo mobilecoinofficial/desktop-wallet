@@ -1,27 +1,33 @@
+/* eslint-disable jest/no-commented-out-tests */
 import React from 'react';
 
 import 'jest-canvas-mock';
 
-import { screen } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { SnackbarProvider } from 'notistack';
 
-import AccountCard from '../../../app/components/AccountCard';
-import renderSnapshot from '../../renderSnapshot';
+import { AccountCard } from './AccountCard.view';
+
+import '@testing-library/jest-dom/extend-expect';
+
+import '../../testUtils/i18nForTests';
 
 const MOCK_LONG_CODE = 'mockLongCode';
 
 function setupComponent(props?) {
-  // @ts-ignore mock
-  renderSnapshot(
-    <AccountCard
-      account={{
-        ...{
-          b58Code: MOCK_LONG_CODE,
-          balance: 'one million',
-        },
-        ...props,
-      }}
-    />
+  render(
+    <SnackbarProvider>
+      <AccountCard
+        account={{
+          ...{
+            b58Code: MOCK_LONG_CODE,
+            balance: 'one million',
+          },
+          ...props,
+        }}
+      />
+    </SnackbarProvider>
   );
 }
 
@@ -33,7 +39,7 @@ describe('AccountCard', () => {
     expect(screen.queryByTestId('long-code-code')).not.toBeNull();
     expect(screen.queryByTestId('account-card-tooltip')).toHaveAttribute(
       'title',
-      'Click to copy to clipboard.'
+      'Click to copy to clipboard'
     );
     expect(screen.queryByTestId('account-card-qr-code')).toBeNull();
 
@@ -62,10 +68,18 @@ describe('AccountCard', () => {
 
     const toggle = screen.getByTestId('account-card-toggle');
 
-    expect(toggle).toHaveAttribute('title', 'Show MobURL QR Code');
+    expect(toggle).toHaveAttribute('title', 'Show MOB URL QR Code');
 
     userEvent.click(screen.getByTestId('account-card-toggle'));
 
-    expect(toggle).toHaveAttribute('title', 'Show Account Address Code');
+    expect(toggle).toHaveAttribute('title', 'Show account address code');
   });
+
+  // test('copies LongCode to clipboard and shows success message', async () => {
+  //   setupComponent();
+
+  //   userEvent.click(screen.getByTestId('account-card-tooltip'));
+
+  //   await waitFor(() => expect(screen.getByText('Address code copied to clipboard.')).toBeInTheDocument());
+  // });
 });

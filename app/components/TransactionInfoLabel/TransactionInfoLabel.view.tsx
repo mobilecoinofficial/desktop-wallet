@@ -5,7 +5,7 @@ import { makeStyles, Typography } from '@material-ui/core';
 
 import type { Theme } from '../../theme';
 import MOBNumberFormat from '../MOBNumberFormat';
-import type { TransactionInfoLabelProps } from './TransactionInfoLabel.d';
+import type { TransactionInfoLabelProps } from './TransactionInfoLabel';
 
 const useStyles = makeStyles((theme: Theme) => ({
   negative: {
@@ -41,3 +41,4 @@ TransactionInfoLabel.defaultProps = {
 };
 
 export default TransactionInfoLabel;
+export { TransactionInfoLabel };

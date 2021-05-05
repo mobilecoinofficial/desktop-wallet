@@ -3,8 +3,8 @@ import type { FC } from 'react';
 
 import { Box, LinearProgress, makeStyles } from '@material-ui/core';
 
-import type { Theme } from '../theme';
-import { LogoIcon } from './icons';
+import type { Theme } from '../../theme';
+import { LogoIcon } from '../icons';
 
 const useStyles = makeStyles((theme: Theme) => ({
   progressBar: {
@@ -49,3 +49,4 @@ const SplashScreen: FC = () => {
 };
 
 export default SplashScreen;
+export { SplashScreen };

@@ -3,14 +3,9 @@ import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 
-import type { Theme } from '../theme';
-import isStringNumber from '../utils/isStringNumber';
-
-interface LongCodeProps {
-  code: string;
-  codeClass?: string;
-  isTruncated?: boolean;
-}
+import type { Theme } from '../../theme';
+import isStringNumber from '../../utils/isStringNumber';
+import { LongCodeProps } from './LongCode';
 
 const useStyles = makeStyles((theme: Theme) => ({
   lastLine: {
@@ -86,3 +81,4 @@ LongCode.defaultProps = {
 };
 
 export default LongCode;
+export { LongCode };

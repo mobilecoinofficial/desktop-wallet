@@ -2,7 +2,7 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import ShortCode from './ShortCode';
+import { ShortCode } from './ShortCode.view';
 
 export default {
   component: ShortCode,

@@ -1,16 +1,9 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
 
-interface SubmitButtonProps {
-  buttonClass?: string;
-  disabled: boolean;
-  isSubmitting: boolean;
-  children?: ReactNode;
-  onClick: () => void;
-  testID?: string;
-}
+import { SubmitButtonProps } from './SubmitButton';
 
 const useStyles = makeStyles(() => ({
   buttonProgress: {
@@ -59,3 +52,4 @@ SubmitButton.defaultProps = {
 };
 
 export default SubmitButton;
+export { SubmitButton };

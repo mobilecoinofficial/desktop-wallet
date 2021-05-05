@@ -2,7 +2,7 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 
-import ShortCode from '../../../app/components/ShortCode';
+import { ShortCode } from './ShortCode.view';
 
 describe('ShortCode', () => {
   test('renders the correct short code', () => {
@@ -12,5 +12,13 @@ describe('ShortCode', () => {
 
     const shortCode = screen.getByTestId('short-code');
     expect(shortCode.textContent).toEqual('dx6H-vJ9s');
+  });
+
+  test('renders nothing if no code passed to component', () => {
+    const mockCode = '';
+    render(<ShortCode code={mockCode} />);
+
+    const shortCode = screen.queryByTestId('short-code');
+    expect(shortCode).toBe(null);
   });
 });

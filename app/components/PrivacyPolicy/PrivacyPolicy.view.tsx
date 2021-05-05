@@ -934,3 +934,4 @@ const PrivacyPolicy = (): JSX.Element => (
 );
 
 export default PrivacyPolicy;
+export { PrivacyPolicy };

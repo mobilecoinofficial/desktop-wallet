@@ -2,11 +2,10 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 
-import PrivacyPolicy from '../../../app/components/PrivacyPolicy';
+import { PrivacyPolicy } from './PrivacyPolicy.view';
 
 describe('PrivacyPolicy', () => {
   test('renders top of privacy policy', () => {
-    // @ts-ignore mock
     render(<PrivacyPolicy />);
 
     expect(screen.getByTestId('privacy-header').textContent).toEqual('Privacy Policy');

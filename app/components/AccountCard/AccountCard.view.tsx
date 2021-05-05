@@ -15,16 +15,12 @@ import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import type { Theme } from '../theme';
-import LongCode from './LongCode';
-import QRMob from './QRMob';
-import ShortCode from './ShortCode';
-import { CodeTextIcon, LogoIcon, QRCodeIcon } from './icons';
-
-interface AccountCardProps {
-  account: { b58Code: string; name?: string; balance: string };
-  isGift?: boolean;
-}
+import type { Theme } from '../../theme';
+import { LongCode } from '../LongCode';
+import QRMob from '../QRMob';
+import { ShortCode } from '../ShortCode';
+import { CodeTextIcon, LogoIcon, QRCodeIcon } from '../icons';
+import { AccountCardProps } from './AccountCard';
 
 const useStyles = makeStyles((theme: Theme) => ({
   code: {
@@ -148,3 +144,4 @@ AccountCard.defaultProps = {
 };
 
 export default AccountCard;
+export { AccountCard };

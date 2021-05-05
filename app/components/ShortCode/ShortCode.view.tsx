@@ -8,13 +8,10 @@ import {
   LUCKY_ARRAY_END_INDEX,
   SUPER_LUCKY_ARRAY_INDEX,
   SUPER_LUCKY_ARRAY_END_INDEX,
-} from '../constants/indicies';
-import { Theme } from '../theme';
-import isStringNumber from '../utils/isStringNumber';
-
-export interface ShortCodeProps {
-  code: string;
-}
+} from '../../constants/indicies';
+import { Theme } from '../../theme';
+import isStringNumber from '../../utils/isStringNumber';
+import { ShortCodeProps } from './ShortCode';
 
 const useStyles = makeStyles((theme: Theme) => ({
   lastLine: {
@@ -78,3 +75,4 @@ const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
 };
 
 export default ShortCode;
+export { ShortCode };

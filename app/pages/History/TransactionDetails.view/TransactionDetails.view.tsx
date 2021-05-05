@@ -5,7 +5,7 @@ import { Box, Card, CardContent, Container, makeStyles, Typography } from '@mate
 import { useTranslation } from 'react-i18next';
 
 import { ShortCode, SubmitButton } from '../../../components';
-import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
+import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
 import { TransactionDetailsViewProps } from './TransactionDetails.d';
 

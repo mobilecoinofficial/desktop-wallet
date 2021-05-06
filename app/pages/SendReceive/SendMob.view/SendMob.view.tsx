@@ -349,7 +349,6 @@ const SendMob: FC<SendMobProps> = ({
                 // (not what the UI thinks it is telling mobilecoind).
                 // But it looks like we're going to have to gut payAddressCode and use 2
                 // calls instead.
-
                 try {
                   setSlideExitSpeed(1000);
                   setOpen(false);
@@ -487,7 +486,7 @@ const SendMob: FC<SendMobProps> = ({
                           {sortedContacts.map((contact) => (
                             <MenuItem
                               value={contact.assignedAddress}
-                              id={`contact_${contact.assignedAddress || contact.recipientAddress}`}
+                              id={`contact_${contact.assignedAddress}`}
                               key={contact.assignedAddress}
                             >
                               {contact.isFavorite ? (

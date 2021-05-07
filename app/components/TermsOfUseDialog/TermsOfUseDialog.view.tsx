@@ -3,12 +3,8 @@ import React from 'react';
 import { Box, Button, Container, Dialog } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import TermsOfUse from './TermsOfUse';
-
-interface TermsOfUseDialogProps {
-  open: boolean;
-  handleCloseTerms: () => void;
-}
+import { TermsOfUse } from '../TermsOfUse';
+import { TermsOfUseDialogProps } from './TermsOfUseDialog';
 
 const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
   const { open, handleCloseTerms } = props;
@@ -36,3 +32,4 @@ const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
 };
 
 export default TermsOfUseDialog;
+export { TermsOfUseDialog };

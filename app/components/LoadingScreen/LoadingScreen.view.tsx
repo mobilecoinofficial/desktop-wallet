@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { Box, LinearProgress, makeStyles } from '@material-ui/core';
 import NProgress from 'nprogress';
 
-import type { Theme } from '../theme';
+import type { Theme } from '../../theme';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -39,3 +39,4 @@ const LoadingScreen: FC = () => {
 };
 
 export default LoadingScreen;
+export { LoadingScreen };

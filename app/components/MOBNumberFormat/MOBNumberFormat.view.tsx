@@ -3,15 +3,7 @@ import React from 'react';
 import NumberFormat from 'react-number-format';
 import type { NumberFormatValues } from 'react-number-format';
 
-interface MOBNumberFormatProps {
-  inputRef?: (instance: NumberFormat | null) => void | null;
-  onChange?: (event: { target: { name: string; value: string } }) => void | null;
-  name?: string;
-  prefix?: string;
-  suffix?: string;
-  valueUnit: 'pMOB' | 'MOB';
-  value: string | number;
-}
+import { MOBNumberFormatProps } from './MOBNumberFormat';
 
 // TODO, handle value of BigInt -- this should live in a util
 const convertPicoMobStringToMob = (picoMobString: string): string => {
@@ -72,3 +64,4 @@ MOBNumberFormat.defaultProps = {
 };
 
 export default MOBNumberFormat;
+export { MOBNumberFormat };

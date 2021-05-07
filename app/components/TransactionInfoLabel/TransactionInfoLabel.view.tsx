@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
 
 import type { Theme } from '../../theme';
-import MOBNumberFormat from '../MOBNumberFormat';
+import { MOBNumberFormat } from '../MOBNumberFormat';
 import type { TransactionInfoLabelProps } from './TransactionInfoLabel';
 
 const useStyles = makeStyles((theme: Theme) => ({

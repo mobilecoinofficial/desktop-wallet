@@ -2,15 +2,12 @@
 import React from 'react';
 
 import 'jest-canvas-mock';
-
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 
 import { AccountCard } from './AccountCard.view';
-
 import '@testing-library/jest-dom/extend-expect';
-
 import '../../testUtils/i18nForTests';
 
 const MOCK_LONG_CODE = 'mockLongCode';

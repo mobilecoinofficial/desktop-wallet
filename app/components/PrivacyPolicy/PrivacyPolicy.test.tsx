@@ -10,6 +10,7 @@ describe('PrivacyPolicy', () => {
 
     expect(screen.getByTestId('privacy-header').textContent).toEqual('Privacy Policy');
   });
+
   test('renders middle of privacy policy', () => {
     render(<PrivacyPolicy />);
 

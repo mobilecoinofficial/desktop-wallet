@@ -1,12 +1,8 @@
 import React from 'react';
-import type { FC } from 'react';
 
 import { Box } from '@material-ui/core';
 
-interface TabPanelProps {
-  panels: FC[];
-  selectedTabIndex: number;
-}
+import { TabPanelProps } from './TabPanel';
 
 const TabPanel = (props: TabPanelProps): JSX.Element => {
   const { panels, selectedTabIndex } = props;
@@ -20,3 +16,4 @@ const TabPanel = (props: TabPanelProps): JSX.Element => {
 };
 
 export default TabPanel;
+export { TabPanel };

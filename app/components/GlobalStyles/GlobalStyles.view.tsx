@@ -36,3 +36,4 @@ const GlobalStyles: FC = () => {
 };
 
 export default GlobalStyles;
+export { GlobalStyles };

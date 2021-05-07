@@ -4,7 +4,7 @@ import { Box, Typography } from '@material-ui/core';
 
 const TermsOfUse = (): JSX.Element => (
   <Box p={3} color="text.primary">
-    <Box p={2} component={Typography} textAlign="center">
+    <Box p={2} component={Typography} textAlign="center" data-testid="tos-header">
       MOBILECOIN TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS
     </Box>
     <Box p={2} component={Typography} textAlign="justify">
@@ -243,7 +243,13 @@ const TermsOfUse = (): JSX.Element => (
       These third parties, and not any Compliance Entity, are responsible for any product or service
       warranties, whether express or implied by law, provided to you.
     </Box>
-    <Box p={2} component={Typography} textAlign="justify" style={{ textDecoration: 'underline' }}>
+    <Box
+      p={2}
+      component={Typography}
+      textAlign="justify"
+      style={{ textDecoration: 'underline' }}
+      data-testid="nature-of-mob"
+    >
       Nature of MobileCoins and Transactions in MobileCoins
     </Box>
     <Box p={2} component={Typography} textAlign="justify">
@@ -688,7 +694,13 @@ const TermsOfUse = (): JSX.Element => (
       THEREOF, ANY USE OR ATTEMPTED USE OR TRANSFER OF MOBILECOINS OR USE OR ATTEMPTED USE OF A
       MOBILECOIN WALLET BY YOU, AND/OR ANY OTHER MATTER INVOLVING THE PARTIES.
     </Box>
-    <Box p={2} component={Typography} textAlign="justify" style={{ textDecoration: 'underline' }}>
+    <Box
+      p={2}
+      component={Typography}
+      textAlign="justify"
+      style={{ textDecoration: 'underline' }}
+      data-testid="end-of-tos"
+    >
       Language and Contact
     </Box>
     <Box p={2} component={Typography} textAlign="justify">
@@ -704,3 +716,4 @@ const TermsOfUse = (): JSX.Element => (
 );
 
 export default TermsOfUse;
+export { TermsOfUse };

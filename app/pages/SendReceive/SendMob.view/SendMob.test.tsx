@@ -9,6 +9,8 @@ import Contact from '../../../types/Contact';
 import SelectedAccount from '../../../types/SelectedAccount';
 import { SendMob } from './SendMob.view';
 
+jest.setTimeout(30000);
+
 const AMOUNT_TO_SEND = 44;
 const INITIAL_BALANCE = 229;
 const ACCOUNT_NEW_NAME = 'SOMEONE';

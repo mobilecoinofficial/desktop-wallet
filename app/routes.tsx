@@ -14,14 +14,6 @@ import {
   SettingsPage,
   NotFoundPage,
 } from './pages';
-import {
-  ChangePasswordView,
-  ChangePinView,
-  ConfigureFullServiceView,
-  RetrieveEntropyView,
-  PrivacyPolicyView,
-  TermsOfUseView,
-} from './views/wallet';
 
 type Routes = {
   Component?: any;

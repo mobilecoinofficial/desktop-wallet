@@ -349,7 +349,6 @@ const SendMob: FC<SendMobProps> = ({
                 // (not what the UI thinks it is telling mobilecoind).
                 // But it looks like we're going to have to gut payAddressCode and use 2
                 // calls instead.
-
                 try {
                   setSlideExitSpeed(1000);
                   setOpen(false);
@@ -481,11 +480,15 @@ const SendMob: FC<SendMobProps> = ({
                             }
                           }}
                         >
-                          <MenuItem value={NO_CONTACT_SELECTED} selected>
+                          <MenuItem value={NO_CONTACT_SELECTED} key="nocontact" selected>
                             {t('pickContact')}
                           </MenuItem>
                           {sortedContacts.map((contact) => (
-                            <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
+                            <MenuItem
+                              value={contact.assignedAddress}
+                              id={`contact_${contact.assignedAddress}`}
+                              key={contact.assignedAddress}
+                            >
                               {contact.isFavorite ? (
                                 <ListItemIcon style={{ margin: '0px' }}>
                                   <StarIcon />
@@ -604,6 +607,7 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">{t('accountBalance')}:</Typography>
                             <Typography color="textPrimary">
                               <MOBNumberFormat
+                                id="balanceValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
                                 value={selectedBalance?.toString()}
@@ -618,6 +622,7 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="primary">{t('amount')}:</Typography>
                             <Typography color="primary">
                               <MOBNumberFormat
+                                id="totalValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
                                 value={confirmation.totalValueConfirmation.toString()}
@@ -628,6 +633,7 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">{t('fee')}:</Typography>
                             <Typography color="textPrimary">
                               <MOBNumberFormat
+                                id="feeValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
                                 value={confirmation.feeConfirmation.toString()}
@@ -638,6 +644,7 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">{t('total')}:</Typography>
                             <Typography color="textPrimary">
                               <MOBNumberFormat
+                                id="sentValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
                                 value={totalSent.toString()}
@@ -652,6 +659,7 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="primary">{t('remaining')}:</Typography>
                             <Typography color="primary">
                               <MOBNumberFormat
+                                id="remainingValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
                                 value={remainingBalance?.toString()}
@@ -707,6 +715,7 @@ const SendMob: FC<SendMobProps> = ({
                           )}
                           <Box display="flex" justifyContent="space-around" padding=".5em 0">
                             <Button
+                              id="cancelSend"
                               className={classes.button}
                               color="secondary"
                               disabled={!isValid || isSubmitting}
@@ -719,6 +728,7 @@ const SendMob: FC<SendMobProps> = ({
                               {t('cancel')}
                             </Button>
                             <Button
+                              id="submitSend"
                               className={classes.button}
                               color="secondary"
                               disabled={

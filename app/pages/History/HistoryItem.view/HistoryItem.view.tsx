@@ -13,8 +13,8 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import ShortCode from '../../../components/ShortCode';
-import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
+import { ShortCode } from '../../../components/ShortCode';
+import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import MOBIcon from '../../../components/icons/MOBIcon';
 import type { Theme } from '../../../theme';
 import { HistoryItemProps } from './HistoryItem.d';

@@ -244,8 +244,8 @@ test('Submit and save to contact are enabled, submit sends the transaction', asy
   await waitFor(() => expect(cancelSendButton).not.toBeFalsy());
   await waitFor(() => expect(submitSendButton).not.toBeFalsy());
   await waitFor(() => expect(submitTransaction).not.toHaveBeenCalled());
-  // FK THIS CRASHES ... await act(async () => userEvent.click(submitSendButton));
-  // FK THIS CRASHES ... await waitFor(() => expect(submitTransaction).toHaveBeenCalled());
+  await act(async () => userEvent.click(submitSendButton));
+  await waitFor(() => expect(submitTransaction).toHaveBeenCalled());
 });
 
 test('Submit and save to contact are enabled, cancel does nothing', async () => {
@@ -265,11 +265,11 @@ test('Submit and save to contact are enabled, cancel does nothing', async () => 
 
 test('Can create an account when sending', async () => {
   const {
-    // FK assignAddressForAccount,
+    assignAddressForAccount,
     container,
     mobAmount,
     recipientAddress,
-    // FK submitTransaction,
+    submitTransaction,
     submitButton,
     saveToContactsCheck,
   } = setUpTest({
@@ -294,9 +294,9 @@ test('Can create an account when sending', async () => {
   const { submitSendButton } = getModalData(container.parentElement as HTMLElement);
   await waitFor(() => expect(submitSendButton.disabled).toBeFalsy());
 
-  // FK THIS CRASHES await act(async () => userEvent.click(submitSendButton));
-  // FK THIS CRASHES await waitFor(() => expect(submitTransaction).toHaveBeenCalled());
-  // FK THIS CRASHES await waitFor(() => expect(assignAddressForAccount).toHaveBeenCalled());
+  await act(async () => userEvent.click(submitSendButton));
+  await waitFor(() => expect(submitTransaction).toHaveBeenCalled());
+  await waitFor(() => expect(assignAddressForAccount).toHaveBeenCalled());
 });
 
 test('Can pick a contact to send MOBs to', async () => {

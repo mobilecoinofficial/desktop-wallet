@@ -1,20 +1,26 @@
-/*
-
 import React from 'react';
 
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import '../../../testUtils/i18nForTests';
 
-import BalanceIndicator from '../../../../app/views/wallet/DashboardView/BalanceIndicator';
+import { BalanceIndicator } from './BalanceIndicator.view';
 
-const MOCK_BALANCE = '1234230000000';
+const MOCK_BALANCE = '10.000000000000';
 
 describe('BalanceIndicator', () => {
   test('renders the correct balance', () => {
     render(<BalanceIndicator balance={MOCK_BALANCE} isSynced />);
 
     const balanceIndicator = screen.getByTestId('balance-figure');
+    expect(balanceIndicator).toHaveTextContent('10.000000000000');
+  });
 
-    expect(balanceIndicator).toHaveTextContent('1.234230000000');
+  test('renders 0 balance when balance prop is empty string', () => {
+    render(<BalanceIndicator balance="" isSynced />);
+
+    const balanceIndicator = screen.getByTestId('balance-figure');
+    expect(balanceIndicator).toHaveTextContent('0.000000000000');
   });
 
   test('renders no sync message if synced to ledger', () => {
@@ -29,5 +35,3 @@ describe('BalanceIndicator', () => {
     expect(screen.queryByTestId('balance-sync-message')).not.toBeNull();
   });
 });
-
-*/

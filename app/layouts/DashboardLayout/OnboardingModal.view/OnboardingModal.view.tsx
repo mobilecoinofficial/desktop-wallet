@@ -1,19 +1,17 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import useFullService from '../../hooks/useFullService';
-import SetPinModal from './SetPinModal';
-import ShowEntropyModal from './ShowEntropyModal';
+import { SetPinModal } from '../SetPinModal.view';
+import { ShowEntropyModal } from '../ShowEntropyModal.view';
+import { OnboardingModalProps } from './OnboardingModal';
 
-const OnboardingModal: FC = () => {
-  const {
-    confirmEntropyKnown,
-    isEntropyKnown,
-    isPinRequired,
-    pendingSecrets,
-    setPin,
-  } = useFullService();
-
+const OnboardingModal: FC<OnboardingModalProps> = ({
+  confirmEntropyKnown,
+  isEntropyKnown,
+  isPinRequired,
+  pendingSecrets,
+  setPin,
+}: OnboardingModalProps) => {
   const isShowEntropyModalShown = !isEntropyKnown;
   const isSetPinModalShown = isPinRequired;
   const mnemonic = pendingSecrets?.mnemonic || '';
@@ -34,3 +32,4 @@ const OnboardingModal: FC = () => {
 };
 
 export default OnboardingModal;
+export { OnboardingModal };

@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { act, render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import '../../../testUtils/i18nForTests';
 import { ImportAccountView } from './ImportAccount.view';
+
+jest.setTimeout(30000);
 
 const VALID_LEGACY_ENTROPY = 'cfd48cb6f8c5e70a67a4377e4ac1bf78edaa52cfcc2b50a235778b35e845f4ae';
 const VALID_PHRASE_ENTROPY =
@@ -86,38 +88,44 @@ test('Submit button is enabled when all required fields (legacy entropy) are ent
   } = setUpTest();
 
   await act(async () => userEvent.type(nameField, SOME_NAME, { delay: 1 }));
-  expect(nameField.value).toEqual(SOME_NAME);
-  expect(submitButton.disabled).toBeTruthy();
+  await waitFor(() => expect(nameField.value).toEqual(SOME_NAME));
+  await waitFor(() => expect(submitButton.disabled).toBeTruthy());
 
   await act(async () => userEvent.type(entropyField, VALID_LEGACY_ENTROPY, { delay: 1 }));
-  expect(entropyField.value).toEqual(VALID_LEGACY_ENTROPY);
-  expect(submitButton.disabled).toBeTruthy();
+  await waitFor(() => expect(entropyField.value).toEqual(VALID_LEGACY_ENTROPY));
+  await waitFor(() => expect(submitButton.disabled).toBeTruthy());
 
   await act(async () => userEvent.type(pass1Field, VALID_PASSWORD, { delay: 1 }));
-  expect(pass1Field.value).toEqual(VALID_PASSWORD);
-  expect(submitButton.disabled).toBeTruthy();
+  await waitFor(() => expect(pass1Field.value).toEqual(VALID_PASSWORD));
+  await waitFor(() => expect(submitButton.disabled).toBeTruthy());
 
   await act(async () => userEvent.type(pass2Field, VALID_PASSWORD, { delay: 1 }));
-  expect(pass2Field.value).toEqual(VALID_PASSWORD);
-  expect(submitButton.disabled).toBeTruthy();
-  expect(termsCheckbox.disabled).toBeTruthy();
+  await waitFor(() => expect(pass2Field.value).toEqual(VALID_PASSWORD));
+  await waitFor(() => expect(submitButton.disabled).toBeTruthy());
+  await waitFor(() => expect(termsCheckbox.disabled).toBeTruthy());
 
   await act(async () => userEvent.click(openTermsButton));
   const closeTermsButton = container.parentElement?.querySelector(
     '[id="closeTerms"]'
   ) as HTMLInputElement;
-  expect(closeTermsButton).not.toBeFalsy();
+  await waitFor(() => expect(closeTermsButton).not.toBeFalsy());
 
   await act(async () => userEvent.click(closeTermsButton));
-  expect(termsCheckbox.disabled).toBeFalsy();
-  expect(submitButton.disabled).toBeTruthy();
+  await waitFor(() => expect(termsCheckbox.disabled).toBeFalsy());
+  await waitFor(() => expect(submitButton.disabled).toBeTruthy());
 
   await act(async () => userEvent.click(termsCheckbox));
-  expect(submitButton.disabled).toBeFalsy();
+  await waitFor(() => expect(submitButton.disabled).toBeFalsy());
 
   await act(async () => userEvent.click(submitButton));
-  expect(importAccount).not.toHaveBeenCalled();
-  expect(importLegacyAccount).toHaveBeenCalledWith(SOME_NAME, VALID_LEGACY_ENTROPY, VALID_PASSWORD);
+  await waitFor(() => expect(importAccount).not.toHaveBeenCalled());
+  await waitFor(() =>
+    expect(importLegacyAccount).toHaveBeenCalledWith(
+      SOME_NAME,
+      VALID_LEGACY_ENTROPY,
+      VALID_PASSWORD
+    )
+  );
 });
 
 test('Submit button is enabled when all required fields (phrase entropy) are entered', async () => {
@@ -145,8 +153,10 @@ test('Submit button is enabled when all required fields (phrase entropy) are ent
   await act(async () => userEvent.click(closeTermsButton));
   await act(async () => userEvent.click(termsCheckbox));
   await act(async () => userEvent.click(submitButton));
-  expect(importAccount).toHaveBeenCalledWith(SOME_NAME, VALID_PHRASE_ENTROPY, VALID_PASSWORD);
-  expect(importLegacyAccount).not.toHaveBeenCalled();
+  await waitFor(() =>
+    expect(importAccount).toHaveBeenCalledWith(SOME_NAME, VALID_PHRASE_ENTROPY, VALID_PASSWORD)
+  );
+  await waitFor(() => expect(importLegacyAccount).not.toHaveBeenCalled());
 });
 
 test('Wrong legacy entropy is not accepted', async () => {
@@ -154,9 +164,9 @@ test('Wrong legacy entropy is not accepted', async () => {
 
   await act(async () => userEvent.type(entropyField, WRONG_LEGACY_ENTROPY, { delay: 1 }));
   await act(async () => userEvent.tab());
-  expect(entropyField.value).toEqual(WRONG_LEGACY_ENTROPY);
-  expect(submitButton.disabled).toBeTruthy();
-  expect(container.innerHTML.includes('A valid Entropy is')).toBeTruthy();
+  await waitFor(() => expect(entropyField.value).toEqual(WRONG_LEGACY_ENTROPY));
+  await waitFor(() => expect(submitButton.disabled).toBeTruthy());
+  await waitFor(() => expect(container.innerHTML.includes('A valid Entropy is')).toBeTruthy());
 });
 
 test('Wrong phrase entropy is not accepted', async () => {
@@ -164,9 +174,9 @@ test('Wrong phrase entropy is not accepted', async () => {
 
   await act(async () => userEvent.type(entropyField, WRONG_PHRASE_ENTROPY, { delay: 1 }));
   await act(async () => userEvent.tab());
-  expect(entropyField.value).toEqual(WRONG_PHRASE_ENTROPY);
-  expect(submitButton.disabled).toBeTruthy();
-  expect(container.innerHTML.includes('A valid Entropy is 12')).toBeTruthy();
+  await waitFor(() => expect(entropyField.value).toEqual(WRONG_PHRASE_ENTROPY));
+  await waitFor(() => expect(submitButton.disabled).toBeTruthy());
+  await waitFor(() => expect(container.innerHTML.includes('A valid Entropy is 12')).toBeTruthy());
 });
 
 test('Too short password is not accepted', async () => {
@@ -174,9 +184,11 @@ test('Too short password is not accepted', async () => {
 
   await act(async () => userEvent.type(pass1Field, SHORT_PASSWORD, { delay: 1 }));
   await act(async () => userEvent.tab());
-  expect(pass1Field.value).toEqual(SHORT_PASSWORD);
-  expect(submitButton.disabled).toBeTruthy();
-  expect(container.innerHTML.includes('Passphrase must be at least 8')).toBeTruthy();
+  await waitFor(() => expect(pass1Field.value).toEqual(SHORT_PASSWORD));
+  await waitFor(() => expect(submitButton.disabled).toBeTruthy());
+  await waitFor(() =>
+    expect(container.innerHTML.includes('Passphrase must be at least 8')).toBeTruthy()
+  );
 });
 
 test('Non-matching passwords are not accepted', async () => {
@@ -184,12 +196,10 @@ test('Non-matching passwords are not accepted', async () => {
 
   await act(async () => userEvent.type(pass1Field, VALID_PASSWORD, { delay: 1 }));
   await act(async () => userEvent.tab());
-  expect(pass1Field.value).toEqual(VALID_PASSWORD);
-
+  await waitFor(() => expect(pass1Field.value).toEqual(VALID_PASSWORD));
   await act(async () => userEvent.type(pass2Field, WRONG_PASSWORD, { delay: 1 }));
   await act(async () => userEvent.tab());
-  expect(pass2Field.value).toEqual(WRONG_PASSWORD);
-
-  expect(submitButton.disabled).toBeTruthy();
-  expect(container.innerHTML.includes('Must match Passphrase')).toBeTruthy();
+  await waitFor(() => expect(pass2Field.value).toEqual(WRONG_PASSWORD));
+  await waitFor(() => expect(submitButton.disabled).toBeTruthy());
+  await waitFor(() => expect(container.innerHTML.includes('Must match Passphrase')).toBeTruthy());
 });

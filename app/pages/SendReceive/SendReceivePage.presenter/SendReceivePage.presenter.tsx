@@ -50,9 +50,9 @@ const SendReceivePage: FC = () => {
       assignAddressForAccount={assignAddressForAccount}
       buildTransaction={buildTransaction}
       contacts={contacts}
-      existingPin={existingPin}
+      existingPin={existingPin as string}
       isSyncedBuffered={isSyncedBuffered}
-      pinThresholdPmob={pinThresholdPmob}
+      pinThresholdPmob={parseFloat(pinThresholdPmob)}
       selectedAccount={selectedAccount}
       submitTransaction={submitTransaction}
       updateContacts={updateContacts}

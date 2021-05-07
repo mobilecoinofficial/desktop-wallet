@@ -1,4 +1,4 @@
 export interface BalanceIndicatorProps {
-  balance: string | '';
+  balance: string;
   isSynced: boolean;
 }

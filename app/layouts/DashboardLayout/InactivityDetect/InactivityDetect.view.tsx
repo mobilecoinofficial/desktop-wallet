@@ -11,15 +11,18 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../constants/app';
-import useFullService from '../../hooks/useFullService';
+import { InactivityDetectProps } from './InactivityDetect';
 
 let inactivityTimer: number;
 let reactionTimer: number;
 
-const InactivityDetect: FC = () => {
+const InactivityDetect: FC<InactivityDetectProps> = ({
+  handleCloseApp,
+  selectedAccount,
+  TIME_FOR_INACTIVITY,
+  TIME_FOR_REACTION,
+}: InactivityDetectProps) => {
   const [inactiveTooLong, setInactiveTooLong] = useState(false);
-  const { selectedAccount } = useFullService();
   const { t } = useTranslation('InactivityDetect');
 
   let prepareForLogout = (): void | undefined => undefined; // to avoid "use before defining" ESLint complaint
@@ -54,7 +57,7 @@ const InactivityDetect: FC = () => {
       setInactiveTooLong(true);
       document.onmousemove = null;
       document.onkeypress = null;
-      reactionTimer = window.setTimeout(() => window.close(), TIME_FOR_REACTION);
+      reactionTimer = window.setTimeout(() => handleCloseApp(), TIME_FOR_REACTION);
     } else {
       reenableTimer();
     }
@@ -84,3 +87,4 @@ const InactivityDetect: FC = () => {
 };
 
 export default InactivityDetect;
+export { InactivityDetect };

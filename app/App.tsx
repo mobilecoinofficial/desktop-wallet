@@ -7,7 +7,7 @@ import { SnackbarProvider } from 'notistack';
 import { hot } from 'react-hot-loader/root';
 import { MemoryRouter } from 'react-router-dom';
 
-import GlobalStyles from './components/GlobalStyles';
+import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
 import { FullServiceProvider } from './contexts/FullServiceContext';
 import routes, { renderRoutes } from './routes';

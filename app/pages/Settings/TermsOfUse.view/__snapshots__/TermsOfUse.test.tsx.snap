@@ -50,6 +50,7 @@ exports[`TermsOfUseView component render it renders correctly 1`] = `
       >
         <p
           class="MuiTypography-root MuiBox-root MuiBox-root-13 MuiTypography-body1"
+          data-testid="tos-header"
         >
           MOBILECOIN TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS
         </p>
@@ -295,6 +296,7 @@ exports[`TermsOfUseView component render it renders correctly 1`] = `
         </p>
         <p
           class="MuiTypography-root MuiBox-root MuiBox-root-48 MuiTypography-body1"
+          data-testid="nature-of-mob"
           style="text-decoration: underline;"
         >
           Nature of MobileCoins and Transactions in MobileCoins
@@ -732,6 +734,7 @@ exports[`TermsOfUseView component render it renders correctly 1`] = `
         </p>
         <p
           class="MuiTypography-root MuiBox-root MuiBox-root-113 MuiTypography-body1"
+          data-testid="end-of-tos"
           style="text-decoration: underline;"
         >
           Language and Contact

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoadingScreen renders to screen when called 1`] = `
+<DocumentFragment>
+  <div
+    class="makeStyles-root-1"
+  >
+    <div
+      class="MuiBox-root MuiBox-root-2"
+    >
+      <div
+        class="MuiLinearProgress-root MuiLinearProgress-colorPrimary MuiLinearProgress-indeterminate"
+        role="progressbar"
+      >
+        <div
+          class="MuiLinearProgress-bar MuiLinearProgress-barColorPrimary MuiLinearProgress-bar1Indeterminate"
+        />
+        <div
+          class="MuiLinearProgress-bar MuiLinearProgress-bar2Indeterminate MuiLinearProgress-barColorPrimary"
+        />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

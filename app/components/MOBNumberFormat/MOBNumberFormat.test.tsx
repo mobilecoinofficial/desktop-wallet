@@ -4,11 +4,9 @@ import { screen, render } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
 import { MOBNumberFormat } from './MOBNumberFormat.view';
-// import '../../testUtils/i18nForTests';
-// inputRef, onChange, name, value, valueUnit
 
 describe('MOBNumberFormat', () => {
-  test('renders positive transaction info label', () => {
+  test('renders formatted pMob value', () => {
     render(<MOBNumberFormat value="10" valueUnit="pMOB" prefix="+" suffix="received" />);
 
     expect(screen.getByText('+0.000000000010received')).toBeInTheDocument();

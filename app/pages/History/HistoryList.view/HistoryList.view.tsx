@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { HISTORY_PAGE_SIZE } from '../../../constants/app';
 import type { Theme } from '../../../theme';
 import { HistoryItem } from '../HistoryItem.view';
-import { HistoryListProps } from './HistoryList.d';
+import type { HistoryListProps } from './HistoryList.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -31,7 +31,7 @@ const HistoryList: FC<HistoryListProps> = ({
 
   const { t } = useTranslation('HistoryView');
 
-  const handleChange = (_event: ChangeEvent<Record<string, unknown>>, newValue: number) => {
+  const handleChange = (_event: ChangeEvent<HTMLElement>, newValue: number) => {
     setSelectedTabIndex(Number(newValue));
     setFirstToShow(0);
     switch (newValue) {

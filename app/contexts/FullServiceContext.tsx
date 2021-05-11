@@ -16,16 +16,16 @@ import type { SubmitGiftCodeParams, SubmitGiftCodeResult } from '../fullService/
 import decryptContacts from '../models/Contact/decryptContacts';
 import deleteAllContacts from '../models/Contact/deleteAllContacts';
 import encryptContacts from '../models/Contact/encryptContacts';
-import { Accounts } from '../types/Account';
-import type { Addresses } from '../types/Address';
-import Contact from '../types/Contact';
-import type GiftCode from '../types/GiftCode';
-import SelectedAccount from '../types/SelectedAccount';
-import type { StringHex, StringUInt64 } from '../types/SpecialStrings';
-import type { TransactionLogs } from '../types/TransactionLog';
-import type TxProposal from '../types/TxProposal';
-import type { Txos } from '../types/Txo';
-import type WalletStatus from '../types/WalletStatus';
+import type { Accounts } from '../types/Account.d';
+import type { Addresses } from '../types/Address.d';
+import type { Contact } from '../types/Contact.d';
+import type { GiftCode } from '../types/GiftCode.d';
+import type { SelectedAccount } from '../types/SelectedAccount.d';
+import type { StringHex, StringUInt64 } from '../types/SpecialStrings.d';
+import type { TransactionLogs } from '../types/TransactionLog.d';
+import type { TxProposal } from '../types/TxProposal.d';
+import type { Txos } from '../types/Txo.d';
+import type { WalletStatus } from '../types/WalletStatus.d';
 import * as localStore from '../utils/LocalStore';
 import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authentication';
 import { decrypt, encrypt } from '../utils/encryption';
@@ -58,7 +58,7 @@ interface FullServiceState {
 
 // TODO - context can be broken down into seperate files
 export interface FullServiceContextValue extends FullServiceState {
-  assignAddressForAccount: (x: unknown) => Promise<unknown>;
+  assignAddressForAccount: (x: StringHex) => Promise<unknown>;
   buildGiftCode: (buildGiftCodeParams: BuildGiftCodeParams) => Promise<BuildGiftCodeResult | void>; // include object
   buildTransaction: (buildTransactionParams: BuildTransactionParams) => Promise<TxProposal | void>;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
@@ -506,7 +506,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 }: FullServiceProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialFullServiceState);
 
-  const assignAddressForAccount = async (x: unknown) => fullServiceApi.assignAddressForAccount(x);
+  const assignAddressForAccount = async (x: StringHex) => fullServiceApi.assignAddressForAccount(x);
 
   const buildGiftCode = async (buildGiftCodeParams: BuildGiftCodeParams) =>
     fullServiceApi.buildGiftCode(buildGiftCodeParams);

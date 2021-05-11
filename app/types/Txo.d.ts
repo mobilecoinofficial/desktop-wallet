@@ -1,6 +1,6 @@
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
-export default interface Txo {
+export interface Txo {
   accountStatusMap: {
     [accountId: string]: {
       txoStatus: 'unspent' | 'pending' | 'spent' | 'secreted' | 'orphaned';

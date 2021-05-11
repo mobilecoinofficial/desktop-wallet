@@ -10,7 +10,7 @@ type AccountKey = {
   spendPrivateKey: StringHex;
   viewPrivateKey: StringHex;
 };
-export default interface AccountSecrets {
+export interface AccountSecrets {
   object: 'account_key';
   accountId: StringHex;
   entropy?: StringHex;

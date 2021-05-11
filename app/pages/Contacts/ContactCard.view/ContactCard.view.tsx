@@ -6,7 +6,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import { StarIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
-import { ContactCardProps } from './ContactCard.d';
+import type { ContactCardProps } from './ContactCard.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   action: { margin: 'auto' },

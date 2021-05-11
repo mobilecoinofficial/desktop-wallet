@@ -1,10 +1,10 @@
-import type WalletStatus from '../../types/WalletStatus';
+import type { WalletStatus } from '../../types/WalletStatus.d';
 import axiosFullService from '../axiosFullService';
 
 const GET_WALLET_STATUS_METHOD = 'get_wallet_status';
 
 type GetWalletStatusResult = {
-  walletStatus: WalletStatus
+  walletStatus: WalletStatus;
 };
 
 const getWalletStatus = async (): Promise<GetWalletStatusResult> => {

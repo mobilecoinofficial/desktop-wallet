@@ -3,7 +3,7 @@ import axiosFullService from '../axiosFullService';
 const GET_LOCKED_STATUS_METHOD = 'get_locked_status';
 
 type GetLockedStatusResult = {
-  status: 'NeverLocked' | 'isLocked' | 'Unlocked',
+  status: 'NeverLocked' | 'isLocked' | 'Unlocked';
 };
 
 const getLockedStatus = async (): Promise<GetLockedStatusResult> => {

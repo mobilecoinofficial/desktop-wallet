@@ -1,4 +1,4 @@
-import type { Accounts } from '../../types/Account';
+import type { Accounts } from '../../types/Account.d';
 import axiosFullService from '../axiosFullService';
 
 const GET_ALL_ACCOUNTS_METHOD = 'get_all_accounts';

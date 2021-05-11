@@ -1,6 +1,6 @@
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
-export default interface GiftCode {
+export interface GiftCode {
   accountId: StringHex;
   entropy: StringHex;
   giftCodeB58: StringB58;

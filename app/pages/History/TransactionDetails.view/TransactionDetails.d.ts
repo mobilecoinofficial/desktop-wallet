@@ -1,5 +1,5 @@
-import type TransactionLog from '../../../types/TransactionLog';
-import type { Txos } from '../../../types/Txo';
+import type { TransactionLog } from '../../../types/TransactionLog.d';
+import type { Txos } from '../../../types/Txo.d';
 
 export interface TransactionDetailsViewProps {
   comment: string; // this should be from metadata

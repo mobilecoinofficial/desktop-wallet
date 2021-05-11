@@ -28,11 +28,11 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import { AccountCard, MOBNumberFormat } from '../../../components';
-import ShortCode from '../../../components/ShortCode';
+import { ShortCode } from '../../../components/ShortCode';
 import { CopyIcon, TrashcanIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import { BuildGiftForm } from '../BuildGiftForm.view';
-import { BuildGiftPanelProps } from './BuildGiftPanel.d';
+import type { BuildGiftPanelProps } from './BuildGiftPanel.d';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
 

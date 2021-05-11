@@ -80,8 +80,8 @@ type Tx = {
   signature: SignatureRctBulletproofs;
 };
 
-// TODO decide if i want to conver to camelCase, or even ignore the unused type
-export default interface TxProposal {
+// TODO decide if i want to convert to camelCase, or even ignore the unused type
+export interface TxProposal {
   fee: StringUInt64;
   inputList: UnspentTxOut[];
   outlayConfirmationNumbers: number[][];

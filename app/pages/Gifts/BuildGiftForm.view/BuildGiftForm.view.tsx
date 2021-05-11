@@ -23,13 +23,13 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 // import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
-import AccountCard from '../../../components/AccountCard';
-import MOBNumberFormat from '../../../components/MOBNumberFormat';
-import SubmitButton from '../../../components/SubmitButton';
+import { AccountCard } from '../../../components/AccountCard';
+import { MOBNumberFormat } from '../../../components/MOBNumberFormat';
+import { SubmitButton } from '../../../components/SubmitButton';
 import { MOBIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
-import type Account from '../../../types/Account';
+import type { Account } from '../../../types/Account.d';
 import { BuildGiftFormProps } from './BuildGiftForm';
 
 // CBB: Shouldn't have to use this hack to get around state issues

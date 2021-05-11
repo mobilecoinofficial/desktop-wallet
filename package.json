@@ -153,6 +153,9 @@
     ],
     "setupFilesAfterEnv": [
       "./test/setupTests.js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "./app/components/icons"
     ]
   },
   "devDependencies": {

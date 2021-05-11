@@ -1,4 +1,4 @@
-import type GiftCode from '../../types/GiftCode';
+import type { GiftCode } from '../../types/GiftCode.d';
 import axiosFullService from '../axiosFullService';
 
 const GET_ALL_GIFT_CODES_METHOD = 'get_all_gift_codes';

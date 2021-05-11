@@ -5,7 +5,7 @@ import { Box, Container, makeStyles } from '@material-ui/core';
 
 import { AccountCard } from '../../../components';
 import { CloseWalletModal } from '../CloseWalletModal.view/CloseWalletModal.view';
-import { DashboardPageProps } from './DashboardPage.d';
+import type { DashboardPageProps } from './DashboardPage.d';
 
 const useStyles = makeStyles(() => ({
   root: {

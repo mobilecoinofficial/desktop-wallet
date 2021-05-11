@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../../theme';
 import { LongCode } from '../LongCode';
-import QRMob from '../QRMob';
+import { QRMob } from '../QRMob';
 import { ShortCode } from '../ShortCode';
 import { CodeTextIcon, LogoIcon, QRCodeIcon } from '../icons';
 import { AccountCardProps } from './AccountCard';

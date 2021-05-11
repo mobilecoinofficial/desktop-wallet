@@ -5,8 +5,8 @@ import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 
 import '../../../testUtils/i18nForTests';
-import Contact from '../../../types/Contact';
-import SelectedAccount from '../../../types/SelectedAccount';
+import type { Contact } from '../../../types/Contact.d';
+import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 import { SendMob } from './SendMob.view';
 
 jest.setTimeout(30000);

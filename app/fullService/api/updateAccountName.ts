@@ -1,5 +1,5 @@
-import type Account from '../../types/Account';
-import type { StringHex } from '../../types/SpecialStrings';
+import type { Account } from '../../types/Account.d';
+import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService from '../axiosFullService';
 
 const UPDATE_ACCOUNT_NAME = 'update_account_name';

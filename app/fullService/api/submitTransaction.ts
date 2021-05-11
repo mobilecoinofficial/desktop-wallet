@@ -1,6 +1,6 @@
-import { StringHex } from '../../types/SpecialStrings';
-import type TransactionLog from '../../types/TransactionLog';
-import type TxProposal from '../../types/TxProposal';
+import type { StringHex } from '../../types/SpecialStrings.d';
+import type { TransactionLog } from '../../types/TransactionLog.d';
+import type { TxProposal } from '../../types/TxProposal.d';
 import axiosFullService from '../axiosFullService';
 
 const SUBMIT_TRANSACTION_METHOD = 'submit_transaction';

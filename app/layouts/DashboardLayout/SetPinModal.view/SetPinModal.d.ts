@@ -1,4 +1,4 @@
-import { StringUInt64 } from '../../../types/SpecialStrings';
+import type { StringUInt64 } from '../../../types/SpecialStrings.d';
 
 export interface SetPinModalProps {
   isShown: boolean;

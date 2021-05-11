@@ -1,4 +1,4 @@
-import Contact from '../../types/Contact';
+import type { Contact } from '../../types/Contact.d';
 import * as localStore from '../../utils/LocalStore';
 import { encrypt } from '../../utils/encryption';
 

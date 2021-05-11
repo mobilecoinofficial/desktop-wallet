@@ -1,5 +1,5 @@
-import Contact from '../../../types/Contact';
-import SelectedAccount from '../../../types/SelectedAccount';
+import type { Contact } from '../../../types/Contact.d';
+import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export interface SendMobProps {
   assignAddressForAccount: (a1: Record<string, unknown>) => void;

@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import { UnlockWalletViewProps } from './UnlockWallet.d';
+import type { UnlockWalletViewProps } from './UnlockWallet.d';
 
 interface UnlockWalletFormValues {
   password: string;

@@ -14,9 +14,9 @@ import {
 import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
 
-import AccountCard from '../../../components/AccountCard';
-import type Contact from '../../../types/Contact';
-import { ReceiveMobProps } from './ReceiveMob.d';
+import { AccountCard } from '../../../components/AccountCard';
+import type { Contact } from '../../../types/Contact.d';
+import type { ReceiveMobProps } from './ReceiveMob.d';
 
 // CBB, really, we should just give the list and work by the indexes.
 const ReceiveMob: FC<ReceiveMobProps> = ({ contacts, selectedAccount }: ReceiveMobProps) => {

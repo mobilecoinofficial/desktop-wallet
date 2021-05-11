@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import { CreateAccountViewProps } from './CreateAccount.d';
+import type { CreateAccountViewProps } from './CreateAccount.d';
 
 interface CreateAccountFormValues {
   accountName: string;

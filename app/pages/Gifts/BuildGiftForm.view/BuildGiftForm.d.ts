@@ -1,4 +1,4 @@
-import SelectedAccount from '../../../types/SelectedAccount';
+import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export interface BuildGiftFormProps {
   buildGiftCode: () => unknown;

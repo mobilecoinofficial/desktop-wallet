@@ -1,5 +1,5 @@
-import type AccountSecrets from '../../types/AccountSecrets';
-import type { StringHex } from '../../types/SpecialStrings';
+import type { AccountSecrets } from '../../types/AccountSecrets.d';
+import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService from '../axiosFullService';
 
 const EXPORT_ACCOUNT_SECRETS_METHOD = 'export_account_secrets';

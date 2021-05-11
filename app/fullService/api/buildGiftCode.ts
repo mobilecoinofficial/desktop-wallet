@@ -1,6 +1,6 @@
-import type GiftCode from '../../types/GiftCode';
-import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings';
-import type TxProposal from '../../types/TxProposal';
+import type { GiftCode } from '../../types/GiftCode.d';
+import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
+import type { TxProposal } from '../../types/TxProposal';
 import axiosFullService from '../axiosFullService';
 
 const BUILD_GIFT_CODE_METHOD = 'build_gift_code';

@@ -1,7 +1,7 @@
-import Contact from './Contact';
+import type { Contact } from './Contact';
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
-export default interface TransactionLog {
+export interface TransactionLog {
   accountId: StringHex;
   assignedAddressId: StringB58;
   changeTxoIds: StringHex[];

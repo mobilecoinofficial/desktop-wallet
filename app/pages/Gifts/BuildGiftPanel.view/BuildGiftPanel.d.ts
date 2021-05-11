@@ -1,5 +1,5 @@
-import GiftCode from '../../../types/GiftCode';
-import SelectedAccount from '../../../types/SelectedAccount';
+import type { GiftCode } from '../../../types/GiftCode.d';
+import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export interface BuildGiftPanelProps {
   buildGiftCode: (x: unknown) => unknown;

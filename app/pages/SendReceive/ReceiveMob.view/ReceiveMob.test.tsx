@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 import '../../../testUtils/i18nForTests';
-import SelectedAccount from '../../../types/SelectedAccount';
+import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 import { ReceiveMob } from './ReceiveMob.view';
 
 const SELECTED_ACCOUNT = {

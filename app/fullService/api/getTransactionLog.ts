@@ -1,5 +1,5 @@
-import type { StringHex } from '../../types/SpecialStrings';
-import type TransactionLog from '../../types/TransactionLog';
+import type { StringHex } from '../../types/SpecialStrings.d';
+import type { TransactionLog } from '../../types/TransactionLog.d';
 import axiosFullService from '../axiosFullService';
 
 const GET_TRANSACTION_LOG_METHOD = 'get_transaction_LOG';

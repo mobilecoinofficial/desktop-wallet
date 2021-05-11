@@ -35,13 +35,13 @@ import { LongCode } from '../../../components/LongCode';
 import { StarIcon, MOBIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
-import type Account from '../../../types/Account';
+import type { Account } from '../../../types/Account.d';
 import {
   commafy,
   convertMobStringToPicoMobString,
   convertPicoMobStringToMob,
 } from '../../../utils/convertMob';
-import { SendMobProps } from './SendMob.d';
+import type { SendMobProps } from './SendMob.d';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
@@ -421,7 +421,6 @@ const SendMob: FC<SendMobProps> = ({
                       <FormLabel component="legend">
                         <Typography color="primary">{t('transaction')}</Typography>
                       </FormLabel>
-
                       {contacts.length > 0 && (
                         <Select
                           style={{ width: '100%' }}

@@ -2,8 +2,8 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import { ContactCardProps } from './ContactCard.d';
-import { ContactCard } from './ContactCard.view';
+import type { ContactCardProps } from './ContactCard.d';
+import type { ContactCard } from './ContactCard.view';
 
 export default {
   component: ContactCard,

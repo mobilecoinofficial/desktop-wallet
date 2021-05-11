@@ -1,6 +1,6 @@
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
-export default interface Address {
+export interface Address {
   accountId: StringHex;
   addressBookEntryId: number | null;
   addressId: StringB58;

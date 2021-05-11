@@ -1,4 +1,4 @@
-import type { StringB58 } from '../../types/SpecialStrings';
+import type { StringB58 } from '../../types/SpecialStrings.d';
 import axiosFullService from '../axiosFullService';
 
 const CHECK_GIFT_CODE_STATUS_METHOD = 'check_gift_code_status';

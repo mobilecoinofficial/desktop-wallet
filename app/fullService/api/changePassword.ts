@@ -15,11 +15,9 @@ type ChangePasswordResponse = {
 const changePassword = async ({
   newPassword,
   oldPassword,
-}: ChangePasswordParams): Promise<ChangePasswordResponse> => {
-  return axiosFullService(CHANGE_PASSWORD_METHOD, {
+}: ChangePasswordParams): Promise<ChangePasswordResponse> =>
+  axiosFullService(CHANGE_PASSWORD_METHOD, {
     newPassword,
     oldPassword,
   });
-};
-
 export default changePassword;

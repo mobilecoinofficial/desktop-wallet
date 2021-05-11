@@ -1,4 +1,4 @@
-import type { StringB58, StringHex } from '../../types/SpecialStrings';
+import type { StringB58, StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService from '../axiosFullService';
 
 const CLAIM_GIFT_CODE_METHOD = 'claim_gift_code';

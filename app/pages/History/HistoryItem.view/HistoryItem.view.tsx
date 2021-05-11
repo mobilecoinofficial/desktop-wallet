@@ -17,7 +17,7 @@ import { ShortCode } from '../../../components/ShortCode';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import MOBIcon from '../../../components/icons/MOBIcon';
 import type { Theme } from '../../../theme';
-import { HistoryItemProps } from './HistoryItem.d';
+import type { HistoryItemProps } from './HistoryItem.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   action: { margin: 'unset' },
@@ -82,7 +82,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
         {t('orphaned')}
       </Typography>
     );
-    // Else the alias is unknown (on purpose)
+    // Else the alias is not known (on purpose)
   } else {
     aliasOrAddress = (
       <Typography display="inline" color="textPrimary">

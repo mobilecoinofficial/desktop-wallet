@@ -4,25 +4,11 @@ import type { FC } from 'react';
 import { Checkbox } from '@material-ui/core';
 
 import { StarIcon, StarOutlineIcon } from '../icons';
+import type { StarCheckboxProps } from './StarCheckbox.d';
 
-interface StarCheckboxProps {
-  formik?: unknown;
-}
-
-/* eslint-disable react/destructuring-assignment */
-const StarCheckbox: FC<StarCheckboxProps> = (formik) => (
-  <Checkbox
-    checkedIcon={<StarIcon />}
-    icon={<StarOutlineIcon />}
-    name="starcheckbox"
-    {...formik?.field}
-    {...formik?.props}
-  />
+const StarCheckbox: FC<StarCheckboxProps> = ({ field }: StarCheckboxProps) => (
+  <Checkbox checkedIcon={<StarIcon />} icon={<StarOutlineIcon />} {...field} />
 );
-
-StarCheckbox.defaultProps = {
-  formik: {},
-};
 
 export default StarCheckbox;
 export { StarCheckbox };

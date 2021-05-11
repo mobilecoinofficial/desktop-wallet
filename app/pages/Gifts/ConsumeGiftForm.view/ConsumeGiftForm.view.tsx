@@ -24,7 +24,7 @@ import * as Yup from 'yup';
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
-import type Account from '../../../types/Account';
+import type { Account } from '../../../types/Account.d';
 import { ConsumeGiftFormProps } from './ConsumeGiftForm';
 
 // CBB: Shouldn't have to use this hack to get around state issues

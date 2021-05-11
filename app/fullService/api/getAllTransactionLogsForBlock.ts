@@ -1,5 +1,5 @@
-import type { StringUInt64 } from '../../types/SpecialStrings';
-import type { TransactionLogs } from '../../types/TransactionLog';
+import type { StringUInt64 } from '../../types/SpecialStrings.d';
+import type { TransactionLogs } from '../../types/TransactionLog.d';
 import axiosFullService from '../axiosFullService';
 
 const GET_ALL_TRANSACTION_LOGS_FOR_BLOCK_METHOD = 'get_all_transaction_logs_for_block';

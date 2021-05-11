@@ -4,5 +4,5 @@ export interface ContactCardProps {
   alias: string;
   color: string;
   isFavorite: boolean;
-  onEdit: (x: string) => unknown;
+  onEdit: (x: string) => void;
 }

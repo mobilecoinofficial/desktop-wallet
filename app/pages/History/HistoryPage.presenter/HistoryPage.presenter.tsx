@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
 import useFullService from '../../../hooks/useFullService';
-import type TransactionLog from '../../../types/TransactionLog';
+import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { HistoryList } from '../HistoryList.view';
 import TransactionDetailsView from '../TransactionDetails.view';
 

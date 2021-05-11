@@ -15,7 +15,7 @@ import {
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
 } from '../../../utils/bip39Functions';
-import { ImportAccountViewProps } from './ImportAccount.d';
+import type { ImportAccountViewProps } from './ImportAccount.d';
 
 interface ImportAccountFormValues {
   accountName: string;

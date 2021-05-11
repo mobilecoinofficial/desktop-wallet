@@ -18,17 +18,13 @@ interface AxiosFullServiceResponse {
   error?: string;
 }
 
-export const handleResponse = (
-  response: AxiosResponse<FullServiceResponse>
-): FullServiceResponse => {
-  return response.data;
-};
+export const handleResponse = (response: AxiosResponse<FullServiceResponse>): FullServiceResponse =>
+  response.data;
 
-export const handleError = (error: { message?: string }) => {
+export const handleError = (error: { message?: string }) =>
   // This handles errors from Rocket
   // Usually, bad urls (404) or incorrect methods (422).
-  return Promise.reject(error.message || 'Unknown Full-Service error');
-};
+  Promise.reject(error.message || 'Unknown Full-Service error');
 
 const axiosFullService = async (
   method: string,

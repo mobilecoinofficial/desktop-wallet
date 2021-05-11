@@ -10,9 +10,7 @@ type SetPasswordResult = {
   success: boolean;
 };
 
-const setPassword = async (
-  { password }: SetPasswordParams,
-): Promise<SetPasswordResult> => {
+const setPassword = async ({ password }: SetPasswordParams): Promise<SetPasswordResult> => {
   const { result, error } = await axiosFullService(SET_PASSWORD_METHOD, {
     password,
   });

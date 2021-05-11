@@ -1,4 +1,4 @@
-import { StringHex, StringUInt64 } from '../../../types/SpecialStrings';
+import type { StringHex, StringUInt64 } from '../../../types/SpecialStrings.d';
 
 type PendingSecrets = {
   entropy: StringHex;

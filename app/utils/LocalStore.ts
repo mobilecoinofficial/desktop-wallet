@@ -1,7 +1,7 @@
 import Store from 'electron-store';
 import { SjclCipherEncrypted } from 'sjcl';
 
-import { StringUInt64 } from '../types/SpecialStrings';
+import type { StringUInt64 } from '../types/SpecialStrings.d';
 
 interface LocalStoreSchema {
   [key: string]: { type: 'string' | 'array' | 'boolean' };

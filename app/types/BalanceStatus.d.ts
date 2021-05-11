@@ -1,6 +1,6 @@
 import type { StringUInt64 } from './SpecialStrings';
 
-export default interface BalanceStatus {
+export interface BalanceStatus {
   accountBlockIndex: StringUInt64;
   isSynced: boolean;
   localBlockIndex: StringUInt64;

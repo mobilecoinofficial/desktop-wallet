@@ -31,12 +31,12 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
-import LongCode from '../../../components/LongCode';
+import { LongCode } from '../../../components/LongCode';
 import { StarIcon, MOBIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
-import type Account from '../../../types/Account';
-import { SendMobProps } from './SendMob.d';
+import type { Account } from '../../../types/Account.d';
+import type { SendMobProps } from './SendMob.d';
 
 // CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {

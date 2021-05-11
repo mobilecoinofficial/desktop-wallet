@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import TabPanel from '../../../components/TabPanel';
+import { TabPanel } from '../../../components/TabPanel';
 import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const GiftsPage: FC<unknown> = () => {
+const GiftsPage: FC = () => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { t } = useTranslation('GiftingView');
@@ -42,10 +42,7 @@ const GiftsPage: FC<unknown> = () => {
     selectedAccount,
   } = useFullService();
 
-  const handleChange = (
-    _event: ChangeEvent<Record<string, unknown>>,
-    newSelectedTabIndex: number
-  ) => {
+  const handleChange = (_event: ChangeEvent<HTMLElement>, newSelectedTabIndex: number) => {
     setSelectedTabIndex(newSelectedTabIndex);
   };
 

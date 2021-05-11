@@ -1,5 +1,5 @@
-import type { StringHex } from '../../types/SpecialStrings';
-import type { Txos } from '../../types/Txo';
+import type { StringHex } from '../../types/SpecialStrings.d';
+import type { Txos } from '../../types/Txo.d';
 import axiosFullService from '../axiosFullService';
 
 const GET_ALL_TXOS_FOR_ACCOUNT_METHOD = 'get_all_txos_for_account';

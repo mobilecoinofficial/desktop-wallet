@@ -3,7 +3,7 @@ import React, { FC, Fragment } from 'react';
 import { Switch, Redirect, Route } from 'react-router-dom';
 
 import routePaths from './constants/routePaths';
-import DashboardLayout from './layouts/DashboardLayout';
+import { DashboardLayout } from './layouts/DashboardLayout';
 import {
   AuthPage,
   ContactsPage,

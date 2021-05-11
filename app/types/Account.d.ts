@@ -45,7 +45,7 @@ import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 //   recoveryMode: boolean;
 // }
 
-export default interface Account {
+export interface Account {
   // metadata: string used as a wildcard, stringified json object?
   accountId: StringHex;
   firstBlockIndex: StringUInt64;

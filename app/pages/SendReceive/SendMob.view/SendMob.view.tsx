@@ -31,11 +31,16 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
-import LongCode from '../../../components/LongCode';
+import { LongCode } from '../../../components/LongCode';
 import { StarIcon, MOBIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type Account from '../../../types/Account';
+import {
+  commafy,
+  convertMobStringToPicoMobString,
+  convertPicoMobStringToMob,
+} from '../../../utils/convertMob';
 import { SendMobProps } from './SendMob.d';
 
 // CBB: Shouldn't have to use this hack to get around state issues
@@ -78,43 +83,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 // warning that it's taking a bit long...
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component managable.
-
-// TODO - ya, this definitely shouldn't live here
-const PICO_MOB_PRECISION = 12;
-
-const ensureMobStringPrecision = (mobString: string): string => {
-  const num = Number(mobString);
-  if (Number.isNaN(num)) {
-    throw new Error('mobString is NaN');
-  }
-  return num.toFixed(PICO_MOB_PRECISION);
-};
-
-// This function assumes basic US style decimal places.
-// We'll need to revisit for differnet formats
-const convertMobStringToPicoMobString = (mobString: string): string =>
-  ensureMobStringPrecision(mobString).replace('.', '');
-
-const convertPicoMobStringToMob = (picoMobString: string): string => {
-  if (picoMobString.length <= 12) {
-    return `0.${'0'.repeat(12 - picoMobString.length)}${picoMobString}`;
-  }
-
-  return [
-    picoMobString.slice(0, picoMobString.length - 12),
-    '.',
-    picoMobString.slice(picoMobString.length - 12),
-  ].join('');
-};
-
-// MOVE LATER
-function commafy(num: string) {
-  const str = num.split('.');
-  if (str[0].length >= 4) {
-    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
-  }
-  return str.join('.');
-}
 
 const SendMob: FC<SendMobProps> = ({
   assignAddressForAccount,

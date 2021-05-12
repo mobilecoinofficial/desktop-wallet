@@ -3,7 +3,6 @@ import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
-import PropTypes from 'prop-types';
 
 import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
 import useFullService from '../../../hooks/useFullService';
@@ -42,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
+const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: DashboardLayoutProps) => {
   const {
     selectedAccount,
     confirmEntropyKnown,
@@ -53,7 +52,6 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
   } = useFullService();
   const classes = useStyles();
   const sendSyncStatus = (statusCode: string) => ipcRenderer.send('sync-status', statusCode);
-  const handleCloseApp = () => ipcRenderer.send('close-app');
 
   return (
     <Box className={classes.root}>
@@ -68,7 +66,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
         </Box>
         <Box className={classes.contentContainer}>
           <InactivityDetect
-            handleCloseApp={handleCloseApp}
+            handleCloseApp={onClose}
             selectedAccount={selectedAccount}
             TIME_FOR_INACTIVITY={TIME_FOR_INACTIVITY}
             TIME_FOR_REACTION={TIME_FOR_REACTION}
@@ -85,10 +83,6 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
       </Box>
     </Box>
   );
-};
-
-DashboardLayout.propTypes = {
-  children: PropTypes.node.isRequired,
 };
 
 export default DashboardLayout;

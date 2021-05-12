@@ -11,8 +11,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { clipboard } from 'electron';
-import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../../theme';
@@ -46,21 +44,22 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const AccountCard: FC<AccountCardProps> = ({ account, isGift, ...rest }: AccountCardProps) => {
+const AccountCard: FC<AccountCardProps> = ({
+  account,
+  isGift,
+  codeClicked,
+  ...rest
+}: AccountCardProps) => {
   const [isQRCode, setIsQRCode] = useState(false);
   const classes = useStyles();
-  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
   const { t } = useTranslation('AccountCard');
 
   const { b58Code, name } = account;
 
   const mobUrl = `mob:///b58/${b58Code}`;
 
-  const handleCodeClick = (code: string) => () => {
-    clipboard.writeText(code);
-    enqueueSnackbar(isGift ? t('clipboardGift') : t('clipboardAddress'), {
-      variant: 'success',
-    });
+  const handleCodeClicked = () => {
+    codeClicked(b58Code, isGift ? t('clipboardGift') : t('clipboardAddress'));
   };
 
   const handleToggleClick = () => {
@@ -114,7 +113,7 @@ const AccountCard: FC<AccountCardProps> = ({ account, isGift, ...rest }: Account
                 <QRMob data-testid="account-card-qr-code" size={280} value={mobUrl} />
               ) : (
                 <Tooltip title={t('copyTooltip') as string} placement="right" arrow>
-                  <Box data-testid="account-card-tooltip" onClick={handleCodeClick(b58Code)}>
+                  <Box data-testid="account-card-tooltip" onClick={handleCodeClicked}>
                     <LongCode
                       data-testid="account-card-long-code"
                       codeClass={classes.code}

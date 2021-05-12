@@ -22,7 +22,6 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-// import { AccountCard, SubmitButton, MOBNumberFormat } from '../../../../components';
 import { AccountCard } from '../../../components/AccountCard';
 import { MOBNumberFormat } from '../../../components/MOBNumberFormat';
 import { SubmitButton } from '../../../components/SubmitButton';
@@ -30,6 +29,7 @@ import { MOBIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
+import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { BuildGiftFormProps } from './BuildGiftForm';
 
 // CBB: Shouldn't have to use this hack to get around state issues
@@ -83,22 +83,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   root: {},
 }));
-
-// TODO - ya, this definitely shouldn't live here
-const PICO_MOB_PRECISION = 12;
-
-const ensureMobStringPrecision = (mobString: string): string => {
-  const num = Number(mobString);
-  if (Number.isNaN(num)) {
-    throw new Error('mobString is NaN');
-  }
-
-  return num.toFixed(PICO_MOB_PRECISION);
-};
-
-// TODO - ya, this definitely shouldn't live here
-const convertMobStringToPicoMobString = (mobString: string): string =>
-  ensureMobStringPrecision(mobString).replace('.', '');
 
 // TODO -- right now, we can show a progress bar for the sending modal
 // But, it would be nice to have a counter that parses up to, say, 10 seconds, before

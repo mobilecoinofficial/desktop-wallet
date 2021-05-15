@@ -1,7 +1,3 @@
-// export { default as changePassword } from './changePassword';
-// export { default as getLockedStatus } from './getLockedStatus';
-// export { default as setPassword } from './setPassword';
-// export { default as unlock } from './unlock';
 export { default as assignAddressForAccount } from './assignAddressForAccount';
 export { default as buildGiftCode } from './buildGiftCode';
 export { default as buildTransaction } from './buildTransaction';

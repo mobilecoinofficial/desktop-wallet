@@ -112,7 +112,6 @@ interface FullServiceState {
   walletStatus: WalletStatus;
 }
 
-// TODO - context can be broken down into seperate files
 export interface FullServiceContextValue extends FullServiceState {
   assignAddressForAccount: (x: StringHex) => Promise<unknown>;
   buildGiftCode: (buildGiftCodeParams: BuildGiftCodeParams) => Promise<BuildGiftCodeResult | void>; // include object
@@ -229,7 +228,6 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
   switch (action.type) {
     case INITIALIZE: {
       const { encryptedPassphrase, isAuthenticated } = (action as InitializeActionType).payload;
-      // TODO - really, gift codes should be pulled when on the screen, not on startup
       return {
         ...state,
         encryptedPassphrase,
@@ -390,27 +388,29 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
   }
 };
 
-const FullServiceContext = createContext<FullServiceContextValue>({
+const FullServiceContext = createContext<FullServiceContextValue>(({
   ...initialFullServiceState,
-  assignAddressForAccount: () => Promise.resolve(),
-  buildGiftCode: () => Promise.resolve(),
-  buildTransaction: () => Promise.resolve(),
-  changePassword: () => Promise.resolve(),
-  checkGiftCodeStatus: () => Promise.resolve(),
-  claimGiftCode: () => Promise.resolve(),
-  confirmEntropyKnown: () => {},
-  createAccount: () => Promise.resolve(),
-  deleteStoredGiftCodeB58: () => undefined,
-  importAccount: () => Promise.resolve(),
-  importLegacyAccount: () => Promise.resolve(),
-  removeAccount: () => Promise.resolve(),
-  retrieveEntropy: () => Promise.resolve(),
-  setPin: () => Promise.resolve(),
-  submitGiftCode: () => Promise.resolve(),
-  submitTransaction: () => Promise.resolve(),
-  unlockWallet: () => Promise.resolve(),
-  updateContacts: () => Promise.resolve(),
-});
+  assignAddressForAccount: undefined,
+  buildGiftCode: undefined,
+  buildTransaction: undefined,
+  changePassword: undefined,
+  checkGiftCodeStatus: undefined,
+  claimGiftCode: undefined,
+  confirmEntropyKnown: undefined,
+  createAccount: undefined,
+  deleteStoredGiftCodeB58: undefined,
+  fetchAllTransactionLogsForAccount: undefined,
+  fetchAllTxosForAccount: undefined,
+  importAccount: undefined,
+  importLegacyAccount: undefined,
+  removeAccount: undefined,
+  retrieveEntropy: undefined,
+  setPin: undefined,
+  submitGiftCode: undefined,
+  submitTransaction: undefined,
+  unlockWallet: undefined,
+  updateContacts: undefined,
+} as unknown) as FullServiceContextValue);
 
 export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   children,
@@ -688,8 +688,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
   const updateContacts = (contacts: Contact[]) => {
     try {
-      const { secretKey } = state;
-      encryptContacts(contacts, secretKey);
+      encryptContacts(contacts, state.secretKey);
       dispatch(updateContactsAction(contacts));
     } catch (err) {
       throw new Error(err.message);

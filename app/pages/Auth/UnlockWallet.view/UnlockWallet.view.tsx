@@ -19,10 +19,15 @@ interface UnlockWalletFormValues {
 
 const UnlockWalletView: FC<UnlockWalletViewProps> = ({
   unlockWallet,
+  makePassword,
+  getPassword,
   testSubmit,
 }: UnlockWalletViewProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('UnlockWalletForm');
+  getPassword('user')
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 
   const handleOnSubmit =
     testSubmit ||
@@ -31,6 +36,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
       setSubmitting(true);
       try {
         await unlockWallet(values.password);
+        makePassword('user', values.password);
         if (isMountedRef.current) {
           setStatus({ success: true });
           setSubmitting(false);

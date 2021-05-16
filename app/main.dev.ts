@@ -17,6 +17,7 @@ import path from 'path';
 import { app, BrowserWindow, dialog, ipcMain, nativeTheme } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
+import keytar from 'keytar';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
@@ -310,6 +311,16 @@ ipcMain.on('get-initial-translations', (event) => {
     // eslint-disable-next-line no-param-reassign
     event.returnValue = initial;
   });
+});
+
+ipcMain.on('set-password', (_, accountName, password) => {
+  keytar.setPassword('Mobile Coin', accountName, password);
+});
+
+ipcMain.handle('get-password', async (_, accountName) => {
+  const pw = await keytar.getPassword('Mobile Coin', accountName);
+  console.log(pw);
+  return pw;
 });
 
 const shutDownFullService = () => {

@@ -22,6 +22,7 @@ interface CreateAccountFormValues {
 
 const CreateAccountView: FC<CreateAccountViewProps> = ({
   createAccount,
+  setPassword,
 }: CreateAccountViewProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('CreateAccountForm');
@@ -46,6 +47,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmitting(false);
+        setPassword(values.accountName, values.password);
       }
     } catch (err) {
       if (isMountedRef.current) {

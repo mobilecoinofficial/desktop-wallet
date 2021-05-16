@@ -2,6 +2,8 @@ import React, { ChangeEvent, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { clipboard } from 'electron';
+import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import { TabPanel } from '../../../components/TabPanel';
@@ -37,9 +39,17 @@ const SendReceivePage: FC = () => {
   } = useFullService();
 
   const { t } = useTranslation('TransactionView');
+  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
 
   const handleChange = (_event: ChangeEvent<HTMLElement>, newSelectedTabIndex: number) => {
     setSelectedTabIndex(newSelectedTabIndex);
+  };
+
+  const handleCodeClicked = (code: string, text: string) => {
+    clipboard.writeText(code);
+    enqueueSnackbar(text, {
+      variant: 'success',
+    });
   };
 
   const SendMobWithParams = () => (
@@ -57,7 +67,11 @@ const SendReceivePage: FC = () => {
   );
 
   const ReceiveMobWithParams = () => (
-    <ReceiveMob contacts={contacts} selectedAccount={selectedAccount} />
+    <ReceiveMob
+      codeClicked={handleCodeClicked}
+      contacts={contacts}
+      selectedAccount={selectedAccount}
+    />
   );
 
   return (

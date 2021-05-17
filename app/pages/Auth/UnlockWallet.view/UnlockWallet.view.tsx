@@ -17,32 +17,30 @@ interface UnlockWalletFormValues {
   submit: null;
 }
 
-const UnlockWalletView: FC<UnlockWalletViewProps> = ({
-  unlockWallet,
-  testSubmit,
-}: UnlockWalletViewProps) => {
+const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWalletViewProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('UnlockWalletForm');
 
-  const handleOnSubmit =
-    testSubmit ||
-    (async (values: UnlockWalletFormValues, helpers: FormikHelpers<UnlockWalletFormValues>) => {
-      const { setStatus, setErrors, setSubmitting } = helpers;
-      setSubmitting(true);
-      try {
-        await unlockWallet(values.password);
-        if (isMountedRef.current) {
-          setStatus({ success: true });
-          setSubmitting(false);
-        }
-      } catch (err) {
-        if (isMountedRef.current) {
-          setStatus({ success: false });
-          setErrors({ submit: err.message });
-          setSubmitting(false);
-        }
+  const handleOnSubmit = async (
+    values: UnlockWalletFormValues,
+    helpers: FormikHelpers<UnlockWalletFormValues>
+  ) => {
+    const { setStatus, setErrors, setSubmitting } = helpers;
+    setSubmitting(true);
+    try {
+      await unlockWallet(values.password);
+      if (isMountedRef.current) {
+        setStatus({ success: true });
+        setSubmitting(false);
       }
-    });
+    } catch (err) {
+      if (isMountedRef.current) {
+        setStatus({ success: false });
+        setErrors({ submit: err.message });
+        setSubmitting(false);
+      }
+    }
+  };
 
   return (
     <Formik

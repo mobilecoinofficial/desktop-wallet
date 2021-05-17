@@ -8,8 +8,9 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
+import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import { getKeychainAccounts } from '../../../utils/keytarService';
 import type { UnlockWalletViewProps } from './UnlockWallet.d';
 
 interface UnlockWalletFormValues {
@@ -19,15 +20,16 @@ interface UnlockWalletFormValues {
 
 const UnlockWalletView: FC<UnlockWalletViewProps> = ({
   unlockWallet,
-  makePassword,
-  getPassword,
+  // makePassword,
+  // getPassword,
   testSubmit,
 }: UnlockWalletViewProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('UnlockWalletForm');
-  getPassword('user')
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err));
+  // console.log(getPassword('user'));
+  // getPassword('user')
+  //   .then((res) => console.log(res))
+  //   .catch((err) => console.log(err));
 
   const handleOnSubmit =
     testSubmit ||
@@ -35,13 +37,15 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
       const { setStatus, setErrors, setSubmitting } = helpers;
       setSubmitting(true);
       try {
+        console.log('values', values.password);
         await unlockWallet(values.password);
-        makePassword('user', values.password);
+        // makePassword('user', values.password);
         if (isMountedRef.current) {
           setStatus({ success: true });
           setSubmitting(false);
         }
       } catch (err) {
+        console.log(err);
         if (isMountedRef.current) {
           setStatus({ success: false });
           setErrors({ submit: err.message });
@@ -49,6 +53,19 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
         }
       }
     });
+
+  const accounts = getKeychainAccounts();
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (accounts.length === 0) {
+      return;
+    }
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <Formik
@@ -58,7 +75,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
       })}
       onSubmit={handleOnSubmit}
     >
-      {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+      {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
         <Form name="UnlockWalletInnerForm">
           <Field
             data-testid="passwordField"
@@ -67,6 +84,13 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
             label={t('passwordLabel')}
             name="password"
             type="password"
+            onClick={handleClick}
+          />
+          <SavedPasswordsModal
+            accounts={accounts}
+            anchorEl={anchorEl}
+            handleClose={handleClose}
+            setFieldValue={setFieldValue}
           />
           {errors.submit && (
             <Box mt={3}>

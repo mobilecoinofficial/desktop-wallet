@@ -15,6 +15,7 @@ import type { CreateAccountViewProps } from './CreateAccount.d';
 interface CreateAccountFormValues {
   accountName: string;
   checkedTerms: boolean;
+  checkedSavePassword: boolean;
   password: string;
   passwordConfirmation: string;
   submit: null;
@@ -39,15 +40,15 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
     helpers: FormikHelpers<CreateAccountFormValues>
   ) => {
     const { setStatus, setErrors, setSubmitting } = helpers;
-    setSubmitting(true);
 
     try {
       await createAccount(values.accountName, values.password);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      values.checkedSavePassword ? setPassword(values.accountName, values.password) : null;
 
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmitting(false);
-        setPassword(values.accountName, values.password);
       }
     } catch (err) {
       if (isMountedRef.current) {
@@ -62,6 +63,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
     <Formik
       initialValues={{
         accountName: '',
+        checkedSavePassword: false,
         checkedTerms: false,
         password: '',
         passwordConfirmation: '',
@@ -69,7 +71,12 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
       }}
       onSubmit={handleOnSubmit}
       validationSchema={Yup.object().shape({
-        accountName: Yup.string().max(64, t('accountNameValidation')),
+        accountName: Yup.string()
+          .max(64, t('accountNameValidation'))
+          .when('checkedSavePassword', {
+            is: true,
+            then: Yup.string().required('Account Name is required to save password'),
+          }),
         // CBB: It appears that the checkedTerms error message is not working properly.
         checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
         password: Yup.string()
@@ -81,7 +88,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
           .required(t('passwordConfirmationRequired')),
       })}
     >
-      {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+      {({ errors, isSubmitting, dirty, isValid, submitForm, values }) => (
         <Form name="CreateAccountFormName">
           <Field
             id="CreateAccountForm-accountNameField"
@@ -108,6 +115,26 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
             name="passwordConfirmation"
             type="password"
           />
+          <Box pt={1} display="flex">
+            <Box display="flex" alignItems="center" flexDirection="row-reverse">
+              <Box>
+                <Typography display="inline">Save password to keychain?</Typography>
+              </Box>
+              <Field
+                component={Checkbox}
+                type="checkbox"
+                name="checkedSavePassword"
+                disabled={
+                  values.passwordConfirmation === '' ||
+                  values.passwordConfirmation !== values.password
+                }
+                indeterminate={
+                  values.passwordConfirmation === '' ||
+                  values.passwordConfirmation !== values.password
+                }
+              />
+            </Box>
+          </Box>
           <Box pt={1} display="flex">
             <Box display="flex" alignItems="center" flexDirection="row-reverse">
               <Box>

@@ -107,9 +107,14 @@ export const getEncryptedPassphrase = (): SjclCipherEncrypted | undefined =>
   store.get(schemaKeys.ENCRYPTED_PASSPHRASE) as SjclCipherEncrypted | undefined;
 
 export const setEncryptedPassphrase = (encryptedPassphrase: SjclCipherEncrypted): void => {
-  store.set({
-    [schemaKeys.ENCRYPTED_PASSPHRASE]: encryptedPassphrase,
-  });
+  // store.set({
+  //   [schemaKeys.ENCRYPTED_PASSPHRASE]: encryptedPassphrase,
+  // });
+  store.set(schemaKeys.ENCRYPTED_PASSPHRASE, encryptedPassphrase);
+};
+
+export const deleteEncryptedPassphrase = (): void => {
+  store.delete(schemaKeys.ENCRYPTED_PASSPHRASE);
 };
 
 export const getFullServiceDbPath = (): string => {

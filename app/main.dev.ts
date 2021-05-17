@@ -313,14 +313,38 @@ ipcMain.on('get-initial-translations', (event) => {
   });
 });
 
-ipcMain.on('set-password', (_, accountName, password) => {
+ipcMain.on('set-password', (_event, accountName, password) => {
+  keytar.setPassword('MobileCoin', accountName, password);
+});
+
+// ipcMain.handle('get-password', (_, accountName) => {
+//   // const pw = await keytar.getPassword('Mobile Coin', accountName);
+//   return keytar.getPassword('MobileCoin', accountName);
+//   console.log(pw);
+//   return pw;
+// });
+
+ipcMain.on('set-account', (_event, accountName, password) => {
   keytar.setPassword('Mobile Coin', accountName, password);
 });
 
-ipcMain.handle('get-password', async (_, accountName) => {
-  const pw = await keytar.getPassword('Mobile Coin', accountName);
-  console.log(pw);
-  return pw;
+ipcMain.on('fetch-accounts', (event) => {
+  keytar
+    .findCredentials('MobileCoin')
+    // eslint-disable-next-line promise/always-return
+    .then((accounts) => {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = accounts;
+    })
+    .catch(() => {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = [];
+    });
+});
+
+ipcMain.on('open-save-password-modal', (_, accountName: string, password: string) => {
+  console.log(`ipcMain accountName: ${accountName}`);
+  mainWindow?.webContents.send('open-save-password-modal', accountName, password);
 });
 
 const shutDownFullService = () => {

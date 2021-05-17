@@ -127,7 +127,6 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
-              setSubmitting(true);
               await changePassword(values.oldPassword, values.newPassword);
               if (isMountedRef.current) {
                 enqueueSnackbar(t('enqueue'), {

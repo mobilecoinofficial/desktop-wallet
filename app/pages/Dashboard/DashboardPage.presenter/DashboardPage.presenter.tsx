@@ -24,7 +24,7 @@ const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) 
   const { selectedAccount } = useFullService();
   const { enqueueSnackbar = () => {} } = useSnackbar() || {};
 
-  const handleCodeClicked = (code: string, text: string) => () => {
+  const handleCodeClicked = (code: string, text: string) => {
     clipboard.writeText(code);
     enqueueSnackbar(text, {
       variant: 'success',

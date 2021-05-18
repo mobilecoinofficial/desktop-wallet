@@ -40,7 +40,6 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
 }: TransactionDetailsViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('TransactionDetails');
-  // const { enqueueSnackbar } = useSnackbar();
 
   const {
     // comment,
@@ -53,10 +52,6 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     // transactionLogId,
     valuePmob,
   } = transactionLog;
-  // const { selectedAccount, txos, fetchAllTxosForAccount } = useFullService(); // ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8
-
-  // fetchAllTxosForAccount(selectedAccount.account.accountId);
-  // TODO -- make this view an actual view
 
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
 

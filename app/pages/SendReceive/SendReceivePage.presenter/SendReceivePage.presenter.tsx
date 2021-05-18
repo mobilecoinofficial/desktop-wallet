@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import { TabPanel } from '../../../components/TabPanel';
 import useFullService from '../../../hooks/useFullService';
+import { updateContacts } from '../../../services';
 import type { Theme } from '../../../theme';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { ReceiveMob } from '../ReceiveMob.view';
@@ -35,7 +36,6 @@ const SendReceivePage: FC = () => {
     pinThresholdPmob,
     selectedAccount,
     submitTransaction,
-    updateContacts,
   } = useFullService();
 
   const { t } = useTranslation('TransactionView');

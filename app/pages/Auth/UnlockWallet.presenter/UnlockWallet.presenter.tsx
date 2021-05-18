@@ -4,12 +4,11 @@ import type { FC } from 'react';
 import { Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useFullService from '../../../hooks/useFullService';
+import { unlockWallet } from '../../../services/unlockWallet.service';
 import { UnlockWalletView } from '../UnlockWallet.view';
 
 const UnlockWalletPresenter: FC = () => {
   const { t } = useTranslation('UnlockWalletView');
-  const { unlockWallet } = useFullService();
 
   return (
     <>

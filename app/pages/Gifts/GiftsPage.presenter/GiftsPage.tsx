@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { TabPanel } from '../../../components/TabPanel';
 import useFullService from '../../../hooks/useFullService';
+import { buildGiftCode, checkGiftCodeStatus, claimGiftCode } from '../../../services';
 import type { Theme } from '../../../theme';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
@@ -28,16 +29,11 @@ const GiftsPage: FC = () => {
   const { t } = useTranslation('GiftingView');
 
   const {
-    // next ones for BuildGift
     deleteStoredGiftCodeB58,
     giftCodes,
-    buildGiftCode,
     pin: existingPin,
     pinThresholdPmob,
     submitGiftCode,
-    // next ones for ConsumeGift
-    checkGiftCodeStatus,
-    claimGiftCode,
     // next for both
     selectedAccount,
   } = useFullService();

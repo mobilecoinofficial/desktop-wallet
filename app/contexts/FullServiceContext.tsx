@@ -4,18 +4,10 @@ import type { FC, ReactNode } from 'react';
 import type { SjclCipherEncrypted } from 'sjcl';
 
 import * as fullServiceApi from '../fullService/api';
-import type { BuildGiftCodeParams, BuildGiftCodeResult } from '../fullService/api/buildGiftCode';
 import type { BuildTransactionParams } from '../fullService/api/buildTransaction';
-import type {
-  CheckGiftCodeStatusParams,
-  CheckGiftCodeStatusResult,
-} from '../fullService/api/checkGiftCodeStatus';
-import type { ClaimGiftCodeParams, ClaimGiftCodeResult } from '../fullService/api/claimGiftCode';
 import type { RemoveAccountParams, RemoveAccountResult } from '../fullService/api/removeAccount';
 import type { SubmitGiftCodeParams, SubmitGiftCodeResult } from '../fullService/api/submitGiftCode';
-import decryptContacts from '../models/Contact/decryptContacts';
 import deleteAllContacts from '../models/Contact/deleteAllContacts';
-import encryptContacts from '../models/Contact/encryptContacts';
 import type { Accounts } from '../types/Account.d';
 import type { Addresses } from '../types/Address.d';
 import type { Contact } from '../types/Contact.d';
@@ -29,14 +21,13 @@ import type { Txos } from '../types/Txo.d';
 import type { WalletStatus } from '../types/WalletStatus.d';
 import * as localStore from '../utils/LocalStore';
 import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authentication';
-import { decrypt, encrypt } from '../utils/encryption';
+import { encrypt } from '../utils/encryption';
 import sameObject from '../utils/sameObject';
 //
 // NEW DUCKS-STYLE ACTIONS, ACTION BUILDERS, AND CONSTANTS
 //
 import {
   CONFIRM_ENTROPY_KNOWN,
-  confirmEntropyKnownAction,
   ConfirmEntropyKnownActionType,
 } from './actions/confirmEntropyKnown.action';
 import {
@@ -46,12 +37,10 @@ import {
 } from './actions/createAccount.action';
 import {
   FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
-  fetchAllTransactionLogsForAccountAction,
   FetchAllTransactionLogsForAccountActionType,
 } from './actions/fetchAllTransactionLogsForAccount.action';
 import {
   FETCH_ALL_TXOS_FOR_ACCOUNT,
-  fetchAllTxosForAccountAction,
   FetchAllTxosForAccountActionType,
 } from './actions/fetchAllTxosForAccount.action';
 import {
@@ -59,22 +48,9 @@ import {
   importAccountAction,
   ImportAccountActionType,
 } from './actions/importAccount.action';
-import {
-  //
-  INITIALIZE,
-  initializeAction,
-  InitializeActionType,
-} from './actions/initialize.action';
-import {
-  UNLOCK_WALLET,
-  unlockWalletAction,
-  UnlockWalletActionType,
-} from './actions/unlockWallet.action';
-import {
-  UPDATE_CONTACTS,
-  updateContactsAction,
-  UpdateContactsActionType,
-} from './actions/updateContacts.action';
+import { INITIALIZE, initializeAction, InitializeActionType } from './actions/initialize.action';
+import { UNLOCK_WALLET, UnlockWalletActionType } from './actions/unlockWallet.action';
+import { UPDATE_CONTACTS, UpdateContactsActionType } from './actions/updateContacts.action';
 import {
   UPDATE_GIFT_CODES,
   updateGiftCodesAction,
@@ -114,18 +90,10 @@ interface FullServiceState {
 
 export interface FullServiceContextValue extends FullServiceState {
   assignAddressForAccount: (x: StringHex) => Promise<unknown>;
-  buildGiftCode: (buildGiftCodeParams: BuildGiftCodeParams) => Promise<BuildGiftCodeResult | void>; // include object
   buildTransaction: (buildTransactionParams: BuildTransactionParams) => Promise<TxProposal | void>;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
-  checkGiftCodeStatus: (
-    checkGiftCodeStatusParams: CheckGiftCodeStatusParams
-  ) => Promise<CheckGiftCodeStatusResult | void>;
-  claimGiftCode: (claimGiftCodeParams: ClaimGiftCodeParams) => Promise<ClaimGiftCodeResult | void>;
-  confirmEntropyKnown: () => void;
   createAccount: (accountName: string | null, passphrase: string) => Promise<void>;
   deleteStoredGiftCodeB58: (storedGiftCodeB58: string) => void;
-  fetchAllTransactionLogsForAccount: (accountId: StringHex) => void;
-  fetchAllTxosForAccount: (accountId: StringHex) => void;
   importAccount: (
     accountName: string | null,
     mnemonic: string,
@@ -137,14 +105,11 @@ export interface FullServiceContextValue extends FullServiceState {
     passphrase: string
   ) => Promise<void>;
   removeAccount: (removeAccountParams: RemoveAccountParams) => Promise<RemoveAccountResult | void>;
-  retrieveEntropy: (passphrase: string) => Promise<string | void>;
   setPin: (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => Promise<void>;
   submitGiftCode: (
     submitGiftCodeParams: SubmitGiftCodeParams
   ) => Promise<SubmitGiftCodeResult | void>;
   submitTransaction: (txProposal: TxProposal) => Promise<void>;
-  unlockWallet: (passphrase: string) => Promise<void>;
-  updateContacts: (contacts: Contact[]) => void;
 }
 
 interface FullServiceProviderProps {
@@ -391,36 +356,31 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
 const FullServiceContext = createContext<FullServiceContextValue>(({
   ...initialFullServiceState,
   assignAddressForAccount: undefined,
-  buildGiftCode: undefined,
   buildTransaction: undefined,
   changePassword: undefined,
-  checkGiftCodeStatus: undefined,
-  claimGiftCode: undefined,
-  confirmEntropyKnown: undefined,
   createAccount: undefined,
   deleteStoredGiftCodeB58: undefined,
-  fetchAllTransactionLogsForAccount: undefined,
-  fetchAllTxosForAccount: undefined,
   importAccount: undefined,
   importLegacyAccount: undefined,
   removeAccount: undefined,
-  retrieveEntropy: undefined,
   setPin: undefined,
   submitGiftCode: undefined,
   submitTransaction: undefined,
-  unlockWallet: undefined,
-  updateContacts: undefined,
 } as unknown) as FullServiceContextValue);
+
+export const store = {
+  dispatch: (() => {}) as React.Dispatch<Action>,
+  state: {} as FullServiceState,
+};
 
 export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   children,
 }: FullServiceProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialFullServiceState);
+  store.state = state;
+  store.dispatch = dispatch;
 
   const assignAddressForAccount = async (x: StringHex) => fullServiceApi.assignAddressForAccount(x);
-
-  const buildGiftCode = async (buildGiftCodeParams: BuildGiftCodeParams) =>
-    fullServiceApi.buildGiftCode(buildGiftCodeParams);
 
   // TODO, better error handling
   const buildTransaction = async (buildTransactionParams: BuildTransactionParams) =>
@@ -441,14 +401,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       throw new Error(err.message);
     }
   };
-
-  const checkGiftCodeStatus = async (checkGiftCodeStatusParams: CheckGiftCodeStatusParams) =>
-    fullServiceApi.checkGiftCodeStatus(checkGiftCodeStatusParams);
-
-  const claimGiftCode = async (claimGiftCodeParams: ClaimGiftCodeParams) =>
-    fullServiceApi.claimGiftCode(claimGiftCodeParams);
-
-  const confirmEntropyKnown = () => dispatch(confirmEntropyKnownAction());
 
   const getAllGiftCodes = async () => {
     const result = await fullServiceApi.getAllGiftCodes();
@@ -636,65 +588,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  const fetchAllTransactionLogsForAccount = async (accountId: StringHex) => {
-    try {
-      // TODO - allow this once we're setup again!
-      // Attempt import
-      const transactionLogs = await fullServiceApi.getAllTransactionLogsForAccount({
-        accountId,
-      });
-
-      // TODO add logic to only trigger if different object
-      dispatch(fetchAllTransactionLogsForAccountAction(transactionLogs));
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  const fetchAllTxosForAccount = async (accountId: StringHex) => {
-    try {
-      // TODO - allow this once we're setup again!
-      // Attempt import
-      const txos = await fullServiceApi.getAllTxosForAccount({
-        accountId,
-      });
-
-      // TODO add logic to only trigger if different object
-      dispatch(fetchAllTxosForAccountAction(txos));
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  const retrieveEntropy = async (passphrase: string) => {
-    try {
-      const { encryptedPassphrase, selectedAccount } = state;
-      if (encryptedPassphrase === undefined) {
-        throw new Error('encryptedPassphrase assertion failed');
-      }
-
-      // TODO - use secretKey returned here to pass to Full-Service to get secrets.
-      await validatePassphrase(passphrase, encryptedPassphrase);
-
-      const { accountSecrets } = await fullServiceApi.exportAccountSecrets({
-        accountId: selectedAccount.account.accountId,
-      });
-
-      return accountSecrets.entropy ?? accountSecrets.mnemonic ?? '';
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  const updateContacts = (contacts: Contact[]) => {
-    try {
-      encryptContacts(contacts, state.secretKey);
-      dispatch(updateContactsAction(contacts));
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
   // This call does not require a password. It should only be used when no PIN is set.
   const setPin = async (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => {
     const { pin: existingPin, secretKey, encryptedPassphrase } = state;
@@ -768,67 +661,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     // });
   };
 
-  const unlockWallet = async (passphrase: string): Promise<void> => {
-    try {
-      const { encryptedPassphrase } = state;
-      if (encryptedPassphrase === undefined) {
-        throw new Error('encryptedPassphrase assertion failed');
-      }
-
-      const { secretKey } = await validatePassphrase(passphrase, encryptedPassphrase);
-
-      // Get main account id
-      const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-      // TODO - need better metadata for this; come back and use config data
-      const selectedAccount = accountMap[accountIds[0]];
-
-      // Decrypt Contacts
-      const contacts = await decryptContacts(secretKey);
-
-      // Get basic wallet information
-      const { walletStatus } = await fullServiceApi.getWalletStatus();
-
-      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
-        accountId: selectedAccount.accountId,
-      });
-
-      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({
-        accountId: selectedAccount.accountId,
-      });
-
-      // Determine if PIN needs to be set (edge case)
-      let isPinRequired = false;
-      let pin;
-      const encryptedPin = localStore.getEncryptedPin();
-      const pinThresholdPmob = localStore.getPinThresholdPmob();
-
-      if (encryptedPin === undefined) {
-        isPinRequired = true;
-      } else {
-        pin = (await decrypt(encryptedPin, secretKey)) as string;
-      }
-
-      dispatch(
-        unlockWalletAction(
-          accountIds,
-          accountMap,
-          addressIds,
-          addressMap,
-          contacts,
-          isPinRequired,
-          pin,
-          pinThresholdPmob,
-          secretKey,
-          selectedAccount,
-          balanceStatus,
-          walletStatus
-        )
-      );
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
   // Initialize App On Startup
   useEffect(() => {
     try {
@@ -882,24 +714,15 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       value={{
         ...state,
         assignAddressForAccount,
-        buildGiftCode,
         buildTransaction,
         changePassword,
-        checkGiftCodeStatus,
-        claimGiftCode,
-        confirmEntropyKnown,
         createAccount,
         deleteStoredGiftCodeB58,
-        fetchAllTransactionLogsForAccount,
-        fetchAllTxosForAccount,
         importAccount,
         importLegacyAccount,
-        retrieveEntropy,
         setPin,
         submitGiftCode,
         submitTransaction,
-        unlockWallet,
-        updateContacts,
       }}
     >
       {children}

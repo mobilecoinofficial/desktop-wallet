@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
 import useFullService from '../../../hooks/useFullService';
+import { fetchAllTransactionLogsForAccount, fetchAllTxosForAccount } from '../../../services';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { HistoryList } from '../HistoryList.view';
 import TransactionDetailsView from '../TransactionDetails.view';
@@ -19,15 +20,7 @@ const HistoryPage: FC = () => {
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
 
-  const {
-    addresses,
-    contacts,
-    selectedAccount,
-    transactionLogs,
-    txos,
-    fetchAllTransactionLogsForAccount,
-    fetchAllTxosForAccount,
-  } = useFullService();
+  const { addresses, contacts, selectedAccount, transactionLogs, txos } = useFullService();
 
   useEffect(() => {
     fetchAllTransactionLogsForAccount(selectedAccount.account.accountId);

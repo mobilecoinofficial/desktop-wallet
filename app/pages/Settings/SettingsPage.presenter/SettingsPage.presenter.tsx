@@ -14,6 +14,7 @@ import {
 import useFullService from '../../../hooks/useFullService';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
 import type { Theme } from '../../../theme';
+import { getKeychainAccounts, setKeychainAccount } from '../../../utils/keytarService';
 import { ChangePasswordView } from '../ChangePassword.view';
 import { ChangePinView } from '../ChangePin.view';
 import { ConfigureFullServiceView } from '../ConfigureFullService.view';
@@ -50,7 +51,6 @@ const SettingsPage: FC = () => {
     retrieveEntropy,
     selectedAccount,
   } = useFullService();
-
   const {
     ledgerDbPath,
     fullServiceDbPath,
@@ -63,6 +63,8 @@ const SettingsPage: FC = () => {
     ledgerDbPath,
     toggleLeaveFullServiceRunning,
   };
+
+  const accounts = getKeychainAccounts();
 
   const handleOnClick = (path: string) => {
     if (path) {
@@ -125,11 +127,18 @@ const SettingsPage: FC = () => {
       );
 
     case CHANGE_PASSWORD:
-      return <ChangePasswordView onClickBack={onClickBack} changePassword={changePassword} />;
+      return (
+        <ChangePasswordView
+          onClickBack={onClickBack}
+          changePassword={changePassword}
+          setKeychainAccount={setKeychainAccount}
+        />
+      );
 
     case CHANGE_PIN:
       return (
         <ChangePinView
+          accounts={accounts}
           onClickBack={onClickBack}
           pinThresholdPmob={pinThresholdPmob}
           pin={pin}
@@ -138,7 +147,13 @@ const SettingsPage: FC = () => {
       );
 
     case RETRIEVE_ENTROPY:
-      return <RetrieveEntropyView onClickBack={onClickBack} retrieveEntropy={retrieveEntropy} />;
+      return (
+        <RetrieveEntropyView
+          onClickBack={onClickBack}
+          retrieveEntropy={retrieveEntropy}
+          accounts={accounts}
+        />
+      );
 
     case TERMS:
       return <TermsOfUseView onClickBack={onClickBack} />;

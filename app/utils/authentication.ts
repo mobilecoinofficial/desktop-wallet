@@ -21,11 +21,7 @@ export const validatePassphrase = async (
   try {
     const { secretKey } = await argon2Key(passphrase);
     const decryptedPassphrase = await decrypt(encryptedPassphrase, secretKey);
-    console.log(secretKey);
-    console.log(passphrase);
-    console.log(encryptedPassphrase);
-    console.log(decryptedPassphrase);
-    console.log(localStore.getEncryptedPassphrase());
+
     // This logic should be uncessary, but just in case the library changes.
     if (decryptedPassphrase === passphrase) {
       return { secretKey };

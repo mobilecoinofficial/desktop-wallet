@@ -27,7 +27,6 @@ export interface SavedPasswordsModalProps {
 const StyledMenu = withStyles({
   paper: {
     border: '1px solid #d3d4d5',
-    width: 390,
   },
 })((props: MenuProps) => (
   <Menu
@@ -61,6 +60,7 @@ const SavedPasswordsModal: FC<SavedPasswordsModalProps> = ({
     keepMounted
     open={Boolean(anchorEl)}
     onClose={handleClose}
+    PaperProps={{ style: { width: anchorEl?.offsetWidth } }}
   >
     {accounts.map((account: { account: string; password: string }) => (
       <StyledMenuItem

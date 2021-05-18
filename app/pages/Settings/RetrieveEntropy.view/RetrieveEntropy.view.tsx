@@ -19,7 +19,6 @@ import * as Yup from 'yup';
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
-import { getKeychainAccounts } from '../../../utils/keytarService';
 import { RetrieveEntropyViewProps } from './RetrieveEntropy';
 import { ShowRetrievedEntropyModal } from './ShowRetrievedEntropyModal.view';
 
@@ -75,6 +74,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
+  accounts,
   onClickBack,
   retrieveEntropy,
 }: RetrieveEntropyViewProps) => {
@@ -85,16 +85,13 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
     setEntropy('');
   };
   const { t } = useTranslation('RetrieveEntropyView');
-  const accounts = getKeychainAccounts();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (accounts.length === 0) {
-      return;
+    if (accounts.length > 0) {
+      setAnchorEl(event.currentTarget);
     }
-
-    setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => setAnchorEl(null);
@@ -146,7 +143,7 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
-              setSubmitting(true);
+              // setSubmitting(true);
               const entropyString = await retrieveEntropy(values.password);
 
               if (typeof entropyString !== 'string') {

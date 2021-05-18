@@ -3,4 +3,5 @@ import type { FullServiceContextValue } from '../../../contexts/FullServiceConte
 export interface ImportAccountViewProps {
   importAccount: FullServiceContextValue['importAccount'];
   importLegacyAccount: FullServiceContextValue['importLegacyAccount'];
+  setKeychainAccount: (account: string, password: string) => void;
 }

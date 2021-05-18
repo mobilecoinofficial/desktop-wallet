@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import useFullService from '../../../hooks/useFullService';
+import { setKeychainAccount } from '../../../utils/keytarService';
 import { ImportAccountView } from '../ImportAccount.view/ImportAccount.view';
 
 const ImportAccountPresenter: FC = () => {
@@ -28,7 +29,11 @@ const ImportAccountPresenter: FC = () => {
       <Typography variant="body2" color="textPrimary" paragraph>
         {t('legacyHex')}
       </Typography>
-      <ImportAccountView importAccount={importAccount} importLegacyAccount={importLegacyAccount} />
+      <ImportAccountView
+        importAccount={importAccount}
+        importLegacyAccount={importLegacyAccount}
+        setKeychainAccount={setKeychainAccount}
+      />
     </>
   );
 };

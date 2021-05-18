@@ -23,7 +23,7 @@ interface CreateAccountFormValues {
 
 const CreateAccountView: FC<CreateAccountViewProps> = ({
   createAccount,
-  setPassword,
+  setKeychainAccount,
 }: CreateAccountViewProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('CreateAccountForm');
@@ -44,7 +44,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
     try {
       await createAccount(values.accountName, values.password);
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      values.checkedSavePassword ? setPassword(values.accountName, values.password) : null;
+      values.checkedSavePassword ? setKeychainAccount(values.accountName, values.password) : null;
 
       if (isMountedRef.current) {
         setStatus({ success: true });
@@ -75,7 +75,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
           .max(64, t('accountNameValidation'))
           .when('checkedSavePassword', {
             is: true,
-            then: Yup.string().required('Account Name is required to save password'),
+            then: Yup.string().required('Account Name is required to save passphrase'),
           }),
         // CBB: It appears that the checkedTerms error message is not working properly.
         checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
@@ -118,7 +118,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
           <Box pt={1} display="flex">
             <Box display="flex" alignItems="center" flexDirection="row-reverse">
               <Box>
-                <Typography display="inline">Save password to keychain?</Typography>
+                <Typography display="inline">Save passphrase to keychain?</Typography>
               </Box>
               <Field
                 component={Checkbox}

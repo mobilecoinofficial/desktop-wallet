@@ -2,5 +2,5 @@ import type { FullServiceContextValue } from '../../../contexts/FullServiceConte
 
 export interface CreateAccountViewProps {
   createAccount: FullServiceContextValue['createAccount'];
-  setPassword: (accountName: string, password: string) => void;
+  setKeychainAccount: (account: string, password: string) => void;
 }

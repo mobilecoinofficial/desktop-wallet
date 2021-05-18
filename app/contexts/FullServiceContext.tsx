@@ -29,6 +29,7 @@ import type { WalletStatus } from '../types/WalletStatus.d';
 import * as localStore from '../utils/LocalStore';
 import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authentication';
 import { decrypt, encrypt } from '../utils/encryption';
+import { removeKeychainAccounts } from '../utils/keytarService';
 import sameObject from '../utils/sameObject';
 
 type PendingSecrets = {
@@ -526,6 +527,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
       await validatePassphrase(oldPassword, encryptedPassphrase);
       localStore.deleteEncryptedPassphrase();
+      removeKeychainAccounts();
       const {
         encryptedPassphrase: newEncryptedPassphrase,
         secretKey,
@@ -535,6 +537,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       localStore.deleteEncryptedPin();
       const encryptedPin = await encrypt(pin, secretKey);
       localStore.setEncryptedPin(encryptedPin);
+
       dispatch({
         payload: {
           encryptedPassphrase: newEncryptedPassphrase,
@@ -593,6 +596,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   const removeAllAccounts = async (excludedAccountIds: string[]) => {
     try {
       const { accountIds } = await fullServiceApi.getAllAccounts();
+      removeKeychainAccounts();
       accountIds.forEach(async (accountId) => {
         if (excludedAccountIds.includes(accountId)) {
           return;
@@ -926,10 +930,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       if (encryptedPassphrase === undefined) {
         throw new Error('encryptedPassphrase assertion failed');
       }
-      console.log(encryptedPassphrase);
 
       const { secretKey } = await validatePassphrase(passphrase, encryptedPassphrase);
-      console.log(secretKey);
       // Get main account id
       const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
       // TODO - need better metadata for this; come back and use config data
@@ -937,15 +939,12 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
       // Decrypt Contacts
       const contacts = await decryptContacts(secretKey);
-      console.log(contacts);
       // Get basic wallet information
       const { walletStatus } = await fullServiceApi.getWalletStatus();
-      console.log('wallet status:', walletStatus);
 
       const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
         accountId: selectedAccount.accountId,
       });
-      console.log(addressIds, addressMap);
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({
         accountId: selectedAccount.accountId,
       });
@@ -955,13 +954,10 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       let pin;
       const encryptedPin = localStore.getEncryptedPin();
       const pinThresholdPmob = localStore.getPinThresholdPmob();
-      console.log(encryptedPin);
-      console.log(pinThresholdPmob);
       if (encryptedPin === undefined) {
         isPinRequired = true;
       } else {
         pin = await decrypt(encryptedPin, secretKey);
-        console.log(pin);
       }
 
       dispatch({

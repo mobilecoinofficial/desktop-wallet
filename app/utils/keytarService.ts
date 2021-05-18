@@ -6,3 +6,7 @@ export const getKeychainAccounts = (): { account: string; password: string }[] =
 export const setKeychainAccount = (account: string, password: string): void => {
   ipcRenderer.send('set-account', account, password);
 };
+
+export const removeKeychainAccounts = (): void => {
+  ipcRenderer.send('remove-accounts');
+};

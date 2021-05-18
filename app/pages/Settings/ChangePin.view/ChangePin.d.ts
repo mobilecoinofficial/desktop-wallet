@@ -5,4 +5,5 @@ export interface ChangePinViewProps {
   pin: string | undefined;
   setPin: (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => Promise<void>;
   onClickBack: () => void;
+  accounts: { account: string; password: string }[];
 }

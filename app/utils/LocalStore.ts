@@ -107,9 +107,6 @@ export const getEncryptedPassphrase = (): SjclCipherEncrypted | undefined =>
   store.get(schemaKeys.ENCRYPTED_PASSPHRASE) as SjclCipherEncrypted | undefined;
 
 export const setEncryptedPassphrase = (encryptedPassphrase: SjclCipherEncrypted): void => {
-  // store.set({
-  //   [schemaKeys.ENCRYPTED_PASSPHRASE]: encryptedPassphrase,
-  // });
   store.set(schemaKeys.ENCRYPTED_PASSPHRASE, encryptedPassphrase);
 };
 

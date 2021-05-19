@@ -19,7 +19,11 @@ import type { Contact } from '../../../types/Contact.d';
 import type { ReceiveMobProps } from './ReceiveMob.d';
 
 // CBB, really, we should just give the list and work by the indexes.
-const ReceiveMob: FC<ReceiveMobProps> = ({ contacts, selectedAccount }: ReceiveMobProps) => {
+const ReceiveMob: FC<ReceiveMobProps> = ({
+  codeClicked,
+  contacts,
+  selectedAccount,
+}: ReceiveMobProps) => {
   const { mainAddress } = selectedAccount.account;
   const [selectedAddress, setSelectedAddress] = useState(mainAddress);
   const { t } = useTranslation('ReceiveMobPanel');
@@ -84,6 +88,7 @@ const ReceiveMob: FC<ReceiveMobProps> = ({ contacts, selectedAccount }: ReceiveM
             b58Code: selectedAddress,
             name: nameFromAddress,
           }}
+          codeClicked={codeClicked}
         />
       </Box>
     </Container>

@@ -1,9 +1,11 @@
 import React, { FC, Fragment } from 'react';
 
+import { ipcRenderer } from 'electron';
 import { Switch, Redirect, Route } from 'react-router-dom';
 
 import routePaths from './constants/routePaths';
 import { DashboardLayout } from './layouts/DashboardLayout';
+import type { DashboardLayoutProps } from './layouts/DashboardLayout';
 import {
   AuthPage,
   ContactsPage,
@@ -50,6 +52,14 @@ export const renderRoutes = (routes: Routes = [], testComponent?: JSX.Element): 
   </Switch>
 );
 
+const closeApp = () => ipcRenderer.send('close-app');
+
+const DashboardLayoutWithClose: FC<DashboardLayoutProps> = ({ children }: DashboardLayoutProps) => (
+  <DashboardLayout onClose={closeApp}>{children}</DashboardLayout>
+);
+
+const DashboardPageWithClose: FC = () => <DashboardPage onClose={closeApp} />;
+
 const routes: Routes = [
   {
     Component: NotFoundPage,
@@ -62,11 +72,11 @@ const routes: Routes = [
     path: routePaths.ROOT,
   },
   {
-    layout: DashboardLayout,
+    layout: DashboardLayoutWithClose,
     path: routePaths.APP,
     routes: [
       {
-        Component: DashboardPage,
+        Component: DashboardPageWithClose,
         exact: true,
         path: routePaths.APP_DASHBOARD,
       },
@@ -101,11 +111,11 @@ const routes: Routes = [
     ],
   },
   {
-    layout: DashboardLayout,
+    layout: DashboardLayoutWithClose,
     path: '*',
     routes: [
       {
-        Component: DashboardPage,
+        Component: DashboardPageWithClose,
         exact: true,
         path: routePaths.ROOT,
       },

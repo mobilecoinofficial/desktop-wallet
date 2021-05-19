@@ -20,30 +20,30 @@ interface UnlockWalletFormValues {
 const UnlockWalletView: FC<UnlockWalletViewProps> = ({
   unlockWallet,
   accounts,
-  testSubmit,
 }: UnlockWalletViewProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('UnlockWalletForm');
 
-  const handleOnSubmit =
-    testSubmit ||
-    (async (values: UnlockWalletFormValues, helpers: FormikHelpers<UnlockWalletFormValues>) => {
-      const { setStatus, setErrors, setSubmitting } = helpers;
-      setSubmitting(true);
-      try {
-        await unlockWallet(values.password);
-        if (isMountedRef.current) {
-          setStatus({ success: true });
-          setSubmitting(false);
-        }
-      } catch (err) {
-        if (isMountedRef.current) {
-          setStatus({ success: false });
-          setErrors({ submit: err.message });
-          setSubmitting(false);
-        }
+  const handleOnSubmit = async (
+    values: UnlockWalletFormValues,
+    helpers: FormikHelpers<UnlockWalletFormValues>
+  ) => {
+    const { setStatus, setErrors, setSubmitting } = helpers;
+    setSubmitting(true);
+    try {
+      await unlockWallet(values.password);
+      if (isMountedRef.current) {
+        setStatus({ success: true });
+        setSubmitting(false);
       }
-    });
+    } catch (err) {
+      if (isMountedRef.current) {
+        setStatus({ success: false });
+        setErrors({ submit: err.message });
+        setSubmitting(false);
+      }
+    }
+  };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

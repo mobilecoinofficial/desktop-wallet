@@ -48,6 +48,9 @@ import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 export interface Account {
   // metadata: string used as a wildcard, stringified json object?
   accountId: StringHex;
+  accountHeight?: StringUInt64;
+  accountKey?: AccountKey;
+  entropy?: StringHex;
   firstBlockIndex: StringUInt64;
   key_derivation_version: string;
   mainAddress: StringB58;

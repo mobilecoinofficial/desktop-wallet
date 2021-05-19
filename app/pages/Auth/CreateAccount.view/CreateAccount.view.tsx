@@ -135,7 +135,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
               />
             </Box>
           </Box>
-          <Box pt={1} display="flex">
+          <Box display="flex">
             <Box display="flex" alignItems="center" flexDirection="row-reverse">
               <Box>
                 <Typography display="inline">{t('acceptTerms')}</Typography>

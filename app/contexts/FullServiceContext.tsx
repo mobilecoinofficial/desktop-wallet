@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import type { FC, ReactNode } from 'react';
 
-import { SjclCipherEncrypted } from 'sjcl';
+import type { SjclCipherEncrypted } from 'sjcl';
 
 import * as fullServiceApi from '../fullService/api';
 import type { BuildGiftCodeParams, BuildGiftCodeResult } from '../fullService/api/buildGiftCode';
@@ -20,6 +20,7 @@ import type { Accounts } from '../types/Account.d';
 import type { Addresses } from '../types/Address.d';
 import type { Contact } from '../types/Contact.d';
 import type { GiftCode } from '../types/GiftCode.d';
+import type { PendingSecrets } from '../types/PendingSecrets.d';
 import type { SelectedAccount } from '../types/SelectedAccount.d';
 import type { StringHex, StringUInt64 } from '../types/SpecialStrings.d';
 import type { TransactionLogs } from '../types/TransactionLog.d';
@@ -31,11 +32,66 @@ import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authenti
 import { decrypt, encrypt } from '../utils/encryption';
 import { removeKeychainAccounts } from '../utils/keytarService';
 import sameObject from '../utils/sameObject';
-
-type PendingSecrets = {
-  entropy: StringHex;
-  mnemonic: string;
-};
+//
+// NEW DUCKS-STYLE ACTIONS, ACTION BUILDERS, AND CONSTANTS
+//
+import {
+  CONFIRM_ENTROPY_KNOWN,
+  confirmEntropyKnownAction,
+  ConfirmEntropyKnownActionType,
+} from './actions/confirmEntropyKnown.action';
+import {
+  CREATE_ACCOUNT,
+  createAccountAction,
+  CreateAccountActionType,
+} from './actions/createAccount.action';
+import {
+  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
+  fetchAllTransactionLogsForAccountAction,
+  FetchAllTransactionLogsForAccountActionType,
+} from './actions/fetchAllTransactionLogsForAccount.action';
+import {
+  FETCH_ALL_TXOS_FOR_ACCOUNT,
+  fetchAllTxosForAccountAction,
+  FetchAllTxosForAccountActionType,
+} from './actions/fetchAllTxosForAccount.action';
+import {
+  IMPORT_ACCOUNT,
+  importAccountAction,
+  ImportAccountActionType,
+} from './actions/importAccount.action';
+import {
+  //
+  INITIALIZE,
+  initializeAction,
+  InitializeActionType,
+} from './actions/initialize.action';
+import {
+  UNLOCK_WALLET,
+  unlockWalletAction,
+  UnlockWalletActionType,
+} from './actions/unlockWallet.action';
+import {
+  UPDATE_CONTACTS,
+  updateContactsAction,
+  UpdateContactsActionType,
+} from './actions/updateContacts.action';
+import {
+  UPDATE_GIFT_CODES,
+  updateGiftCodesAction,
+  UpdateGiftCodesActionType,
+} from './actions/updateGiftCodes.action';
+import {
+  UPDATE_PASSPHRASE,
+  updatePassphraseAction,
+  UpdatePassphraseActionType,
+} from './actions/updatePassphrase.action';
+import { UPDATE_PIN, updatePinAction, UpdatePinActionType } from './actions/updatePin.action';
+import {
+  UPDATE_STATUS,
+  updateStatusAction,
+  UpdateStatusActionType,
+} from './actions/updateStatus.action';
 
 interface FullServiceState {
   accounts: Accounts;
@@ -57,7 +113,6 @@ interface FullServiceState {
   walletStatus: WalletStatus;
 }
 
-// TODO - context can be broken down into seperate files
 export interface FullServiceContextValue extends FullServiceState {
   assignAddressForAccount: (x: StringHex) => Promise<unknown>;
   buildGiftCode: (buildGiftCodeParams: BuildGiftCodeParams) => Promise<BuildGiftCodeResult | void>; // include object
@@ -97,142 +152,19 @@ interface FullServiceProviderProps {
   children: ReactNode;
 }
 
-type InitializeAction = {
-  type: 'INITIALIZE';
-  payload: {
-    encryptedPassphrase: SjclCipherEncrypted | undefined;
-    isAuthenticated: boolean;
-  };
-};
-
-type UpdateGiftCodesAction = {
-  type: 'UPDATE_GIFT_CODES';
-  payload: {
-    giftCodes: GiftCode[];
-  };
-};
-
-type ConfirmEntropyKnownAction = {
-  type: 'CONFIRM_ENTROPY_KNOWN';
-};
-
-type FetchBalanceAction = {
-  type: 'FETCH_BALANCE';
-  payload: {
-    balance: bigint;
-  };
-};
-
-type FetchAllTransactionLogsForAccountAction = {
-  type: 'FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT';
-  payload: {
-    transactionLogs: TransactionLogs;
-  };
-};
-
-type FetchAllTxosForAccountAction = {
-  type: 'FETCH_ALL_TXOS_FOR_ACCOUNT';
-  payload: {
-    txos: Txos;
-  };
-};
-
-type CreateAccountAction = {
-  type: 'CREATE_ACCOUNT';
-  payload: {
-    accounts: Accounts;
-    addresses: Addresses;
-    encryptedPassphrase: SjclCipherEncrypted;
-    pendingSecrets: PendingSecrets;
-    secretKey: string;
-    selectedAccount: SelectedAccount;
-    walletStatus: WalletStatus;
-  };
-};
-
-// TODO - we should move wallet status under account
-type ImportAccountAction = {
-  type: 'IMPORT_ACCOUNT';
-  payload: {
-    accounts: Accounts;
-    addresses: Addresses;
-    encryptedPassphrase: SjclCipherEncrypted;
-    secretKey: string;
-    selectedAccount: SelectedAccount;
-    walletStatus: WalletStatus;
-  };
-};
-
-type SyncLedgerAction = {
-  type: 'SYNC_LEDGER';
-  payload: {
-    localBlockIndex: string;
-    networkHighestBlockIndex: string;
-    nextBlock: string;
-  };
-};
-
-type UnlockWalletAction = {
-  type: 'UNLOCK_WALLET';
-  payload: {
-    accounts: Accounts;
-    addresses: Addresses;
-    contacts: Contact[];
-    isPinRequired: boolean;
-    pin: string;
-    pinThresholdPmob: StringUInt64;
-    secretKey: string;
-    selectedAccount: SelectedAccount;
-    walletStatus: WalletStatus;
-  };
-};
-
-type UpdateContacts = {
-  type: 'UPDATE_CONTACTS';
-  payload: {
-    contacts: Contact[];
-  };
-};
-
-type UpdatePassphrase = {
-  type: 'UPDATE_PASSPHRASE';
-  payload: {
-    encryptedPassphrase: SjclCipherEncrypted;
-    secretKey: string;
-  };
-};
-
-type UpdatePin = {
-  type: 'UPDATE_PIN';
-  payload: {
-    pin: string;
-    pinThresholdPmob: StringUInt64;
-  };
-};
-
-type UpdateStatusAction = {
-  type: 'UPDATE_STATUS';
-  payload: {
-    selectedAccount: SelectedAccount;
-    walletStatus: WalletStatus;
-  };
-};
-
 type Action =
-  | ConfirmEntropyKnownAction
-  | CreateAccountAction
-  | FetchAllTransactionLogsForAccountAction
-  | FetchAllTxosForAccountAction
-  | FetchBalanceAction
-  | ImportAccountAction
-  | InitializeAction
-  | SyncLedgerAction
-  | UnlockWalletAction
-  | UpdateContacts
-  | UpdateGiftCodesAction
-  | UpdatePassphrase
-  | UpdatePin
-  | UpdateStatusAction;
+  | ConfirmEntropyKnownActionType
+  | CreateAccountActionType
+  | FetchAllTransactionLogsForAccountActionType
+  | FetchAllTxosForAccountActionType
+  | ImportAccountActionType
+  | InitializeActionType
+  | UnlockWalletActionType
+  | UpdateContactsActionType
+  | UpdateGiftCodesActionType
+  | UpdatePassphraseActionType
+  | UpdatePinActionType
+  | UpdateStatusActionType;
 
 // TODO -- check if initialized state is the only time thse values are null
 // If so, the state type should either be the expected object or empty
@@ -284,7 +216,6 @@ const initialFullServiceState: FullServiceState = {
     localBlockCount: '',
     minSyncedBlockIndex: '',
     networkBlockCount: '',
-    networkHeight: '',
     totalOrphanedPmob: '',
     totalPendingPmob: '',
     totalSecretedPmob: '',
@@ -296,9 +227,8 @@ const initialFullServiceState: FullServiceState = {
 // TODO - i should clean up this reducer
 const reducer = (state: FullServiceState, action: Action): FullServiceState => {
   switch (action.type) {
-    case 'INITIALIZE': {
-      const { encryptedPassphrase, isAuthenticated } = action.payload;
-      // TODO - really, gift codes should be pulled when on the screen, not on startup
+    case INITIALIZE: {
+      const { encryptedPassphrase, isAuthenticated } = (action as InitializeActionType).payload;
       return {
         ...state,
         encryptedPassphrase,
@@ -307,41 +237,23 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case 'SYNC_LEDGER': {
-      const { localBlockIndex, networkHighestBlockIndex, nextBlock } = action.payload;
-      return {
-        ...state,
-        localBlockIndex,
-        networkHighestBlockIndex,
-        nextBlock,
-      };
-    }
-
-    case 'FETCH_BALANCE': {
-      const { balance } = action.payload;
-      return {
-        ...state,
-        balance,
-      };
-    }
-
-    case 'FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT': {
-      const { transactionLogs } = action.payload;
+    case FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT: {
+      const { transactionLogs } = (action as FetchAllTransactionLogsForAccountActionType).payload;
       return {
         ...state,
         transactionLogs,
       };
     }
 
-    case 'FETCH_ALL_TXOS_FOR_ACCOUNT': {
-      const { txos } = action.payload;
+    case FETCH_ALL_TXOS_FOR_ACCOUNT: {
+      const { txos } = (action as FetchAllTxosForAccountActionType).payload;
       return {
         ...state,
         txos,
       };
     }
 
-    case 'IMPORT_ACCOUNT': {
+    case IMPORT_ACCOUNT: {
       const {
         accounts,
         addresses,
@@ -349,7 +261,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         secretKey,
         selectedAccount,
         walletStatus,
-      } = action.payload;
+      } = (action as ImportAccountActionType).payload;
       return {
         ...state,
         accounts,
@@ -364,7 +276,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case 'CREATE_ACCOUNT': {
+    case CREATE_ACCOUNT: {
       const {
         accounts,
         addresses,
@@ -373,7 +285,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         secretKey,
         selectedAccount,
         walletStatus,
-      } = action.payload;
+      } = (action as CreateAccountActionType).payload;
       return {
         ...state,
         accounts,
@@ -389,15 +301,15 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case 'UPDATE_GIFT_CODES': {
-      const { giftCodes } = action.payload;
+    case UPDATE_GIFT_CODES: {
+      const { giftCodes } = (action as UpdateGiftCodesActionType).payload;
       return {
         ...state,
         giftCodes,
       };
     }
 
-    case 'CONFIRM_ENTROPY_KNOWN': {
+    case CONFIRM_ENTROPY_KNOWN: {
       return {
         ...state,
         isEntropyKnown: true,
@@ -405,7 +317,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case 'UNLOCK_WALLET': {
+    case UNLOCK_WALLET: {
       const {
         accounts,
         addresses,
@@ -416,7 +328,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         secretKey,
         selectedAccount,
         walletStatus,
-      } = action.payload;
+      } = (action as UnlockWalletActionType).payload;
       return {
         ...state,
         accounts,
@@ -433,18 +345,16 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case 'UPDATE_CONTACTS': {
-      const { contacts } = action.payload;
-
+    case UPDATE_CONTACTS: {
+      const { contacts } = (action as UpdateContactsActionType).payload;
       return {
         ...state,
         contacts,
       };
     }
 
-    case 'UPDATE_PASSPHRASE': {
-      const { encryptedPassphrase, secretKey } = action.payload;
-
+    case UPDATE_PASSPHRASE: {
+      const { encryptedPassphrase, secretKey } = (action as UpdatePassphraseActionType).payload;
       return {
         ...state,
         encryptedPassphrase,
@@ -452,9 +362,8 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case 'UPDATE_PIN': {
-      const { pin, pinThresholdPmob } = action.payload;
-
+    case UPDATE_PIN: {
+      const { pin, pinThresholdPmob } = (action as UpdatePinActionType).payload;
       return {
         ...state,
         isPinRequired: false,
@@ -463,9 +372,8 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case 'UPDATE_STATUS': {
-      const { selectedAccount, walletStatus } = action.payload;
-
+    case UPDATE_STATUS: {
+      const { selectedAccount, walletStatus } = (action as UpdateStatusActionType).payload;
       return sameObject(selectedAccount, state.selectedAccount) &&
         sameObject(walletStatus, state.walletStatus)
         ? state
@@ -482,27 +390,29 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
   }
 };
 
-const FullServiceContext = createContext<FullServiceContextValue>({
+const FullServiceContext = createContext<FullServiceContextValue>(({
   ...initialFullServiceState,
-  assignAddressForAccount: () => Promise.resolve(),
-  buildGiftCode: () => Promise.resolve(),
-  buildTransaction: () => Promise.resolve(),
-  changePassword: () => Promise.resolve(),
-  checkGiftCodeStatus: () => Promise.resolve(),
-  claimGiftCode: () => Promise.resolve(),
-  confirmEntropyKnown: () => {},
-  createAccount: () => Promise.resolve(),
-  deleteStoredGiftCodeB58: () => undefined,
-  importAccount: () => Promise.resolve(),
-  importLegacyAccount: () => Promise.resolve(),
-  removeAccount: () => Promise.resolve(),
-  retrieveEntropy: () => Promise.resolve(),
-  setPin: () => Promise.resolve(),
-  submitGiftCode: () => Promise.resolve(),
-  submitTransaction: () => Promise.resolve(),
-  unlockWallet: () => Promise.resolve(),
-  updateContacts: () => Promise.resolve(),
-});
+  assignAddressForAccount: undefined,
+  buildGiftCode: undefined,
+  buildTransaction: undefined,
+  changePassword: undefined,
+  checkGiftCodeStatus: undefined,
+  claimGiftCode: undefined,
+  confirmEntropyKnown: undefined,
+  createAccount: undefined,
+  deleteStoredGiftCodeB58: undefined,
+  fetchAllTransactionLogsForAccount: undefined,
+  fetchAllTxosForAccount: undefined,
+  importAccount: undefined,
+  importLegacyAccount: undefined,
+  removeAccount: undefined,
+  retrieveEntropy: undefined,
+  setPin: undefined,
+  submitGiftCode: undefined,
+  submitTransaction: undefined,
+  unlockWallet: undefined,
+  updateContacts: undefined,
+} as unknown) as FullServiceContextValue);
 
 export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   children,
@@ -538,13 +448,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const encryptedPin = await encrypt(pin, secretKey);
       localStore.setEncryptedPin(encryptedPin);
 
-      dispatch({
-        payload: {
-          encryptedPassphrase: newEncryptedPassphrase,
-          secretKey,
-        },
-        type: 'UPDATE_PASSPHRASE',
-      });
+      dispatch(updatePassphraseAction(newEncryptedPassphrase, secretKey));
     } catch (err) {
       throw new Error(err.message);
     }
@@ -556,15 +460,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   const claimGiftCode = async (claimGiftCodeParams: ClaimGiftCodeParams) =>
     fullServiceApi.claimGiftCode(claimGiftCodeParams);
 
-  const confirmEntropyKnown = () => dispatch({ type: 'CONFIRM_ENTROPY_KNOWN' });
+  const confirmEntropyKnown = () => dispatch(confirmEntropyKnownAction());
 
   const getAllGiftCodes = async () => {
     const result = await fullServiceApi.getAllGiftCodes();
-
-    dispatch({
-      payload: { giftCodes: result.giftCodes },
-      type: 'UPDATE_GIFT_CODES',
-    });
+    dispatch(updateGiftCodesAction(result.giftCodes));
   };
 
   const deleteStoredGiftCodeB58 = async (storedGiftCodeB58: string) => {
@@ -634,27 +534,20 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
       // After successful import, store encryptedPassphrase
       const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
-      dispatch({
-        payload: {
-          accounts: {
-            accountIds,
-            accountMap,
-          },
-          addresses: {
-            addressIds,
-            addressMap,
-          },
+      dispatch(
+        createAccountAction(
+          accountIds,
+          accountMap,
+          addressIds,
+          addressMap,
           encryptedPassphrase,
-          pendingSecrets,
+          pendingSecrets as PendingSecrets,
           secretKey,
-          selectedAccount: {
-            account,
-            balanceStatus,
-          },
-          walletStatus,
-        },
-        type: 'CREATE_ACCOUNT',
-      });
+          account,
+          balanceStatus,
+          walletStatus
+        )
+      );
     } catch (err) {
       throw new Error(err.message);
     }
@@ -690,26 +583,19 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       // After successful import, store encryptedPassphrase
       const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
 
-      dispatch({
-        payload: {
-          accounts: {
-            accountIds,
-            accountMap,
-          },
-          addresses: {
-            addressIds,
-            addressMap,
-          },
+      dispatch(
+        importAccountAction(
+          accountIds,
+          accountMap,
+          addressIds,
+          addressMap,
           encryptedPassphrase,
           secretKey,
-          selectedAccount: {
-            account,
-            balanceStatus,
-          },
-          walletStatus,
-        },
-        type: 'IMPORT_ACCOUNT',
-      });
+          account,
+          balanceStatus,
+          walletStatus
+        )
+      );
     } catch (err) {
       throw new Error(err.message);
     }
@@ -745,26 +631,19 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       // After successful import, store encryptedPassphrase
       const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
 
-      dispatch({
-        payload: {
-          accounts: {
-            accountIds,
-            accountMap,
-          },
-          addresses: {
-            addressIds,
-            addressMap,
-          },
+      dispatch(
+        importAccountAction(
+          accountIds,
+          accountMap,
+          addressIds,
+          addressMap,
           encryptedPassphrase,
           secretKey,
-          selectedAccount: {
-            account,
-            balanceStatus,
-          },
-          walletStatus,
-        },
-        type: 'IMPORT_ACCOUNT',
-      });
+          account,
+          balanceStatus,
+          walletStatus
+        )
+      );
     } catch (err) {
       throw new Error(err.message);
     }
@@ -779,13 +658,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       });
 
       // TODO add logic to only trigger if different object
-
-      dispatch({
-        payload: {
-          transactionLogs,
-        },
-        type: 'FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT',
-      });
+      dispatch(fetchAllTransactionLogsForAccountAction(transactionLogs));
     } catch (err) {
       throw new Error(err.message);
     }
@@ -800,11 +673,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       });
 
       // TODO add logic to only trigger if different object
-
-      dispatch({
-        payload: { txos },
-        type: 'FETCH_ALL_TXOS_FOR_ACCOUNT',
-      });
+      dispatch(fetchAllTxosForAccountAction(txos));
     } catch (err) {
       throw new Error(err.message);
     }
@@ -832,14 +701,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
   const updateContacts = (contacts: Contact[]) => {
     try {
-      const { secretKey } = state;
-      encryptContacts(contacts, secretKey);
-      dispatch({
-        payload: {
-          contacts,
-        },
-        type: 'UPDATE_CONTACTS',
-      });
+      encryptContacts(contacts, state.secretKey);
+      dispatch(updateContactsAction(contacts));
     } catch (err) {
       throw new Error(err.message);
     }
@@ -869,13 +732,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       // save threshold to local store
       localStore.setPinThresholdPmob(pinThresholdPmob);
 
-      dispatch({
-        payload: {
-          pin,
-          pinThresholdPmob,
-        },
-        type: 'UPDATE_PIN',
-      });
+      dispatch(updatePinAction(pin, pinThresholdPmob));
     } catch (err) {
       throw new Error(err.message);
     }
@@ -957,63 +814,40 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       if (encryptedPin === undefined) {
         isPinRequired = true;
       } else {
-        pin = await decrypt(encryptedPin, secretKey);
+        pin = (await decrypt(encryptedPin, secretKey)) as string;
       }
 
-      dispatch({
-        payload: {
-          accounts: {
-            accountIds,
-            accountMap,
-          },
-          addresses: {
-            addressIds,
-            addressMap,
-          },
+      dispatch(
+        unlockWalletAction(
+          accountIds,
+          accountMap,
+          addressIds,
+          addressMap,
           contacts,
           isPinRequired,
           pin,
           pinThresholdPmob,
           secretKey,
-          selectedAccount: {
-            account: selectedAccount,
-            balanceStatus,
-          },
-          walletStatus,
-        },
-        type: 'UNLOCK_WALLET',
-      });
+          selectedAccount,
+          balanceStatus,
+          walletStatus
+        )
+      );
     } catch (err) {
       throw new Error(err.message);
     }
   };
 
-  // Inialize App On Startup
+  // Initialize App On Startup
   useEffect(() => {
-    const initialize = () => {
-      // TODO - no real reason to try
-      try {
-        const encryptedPassphrase = localStore.getEncryptedPassphrase();
-        getAllGiftCodes(); // TODO - this should not occur until unlock
-        dispatch({
-          payload: {
-            encryptedPassphrase,
-            isAuthenticated: false,
-          },
-          type: 'INITIALIZE',
-        });
-      } catch (err) {
-        dispatch({
-          payload: {
-            encryptedPassphrase: null,
-            isAuthenticated: false,
-          },
-          type: 'INITIALIZE',
-        });
-      }
-    };
+    try {
+      const encryptedPassphrase = localStore.getEncryptedPassphrase();
+      getAllGiftCodes(); // TODO - this should not occur until unlock
 
-    initialize();
+      dispatch(initializeAction(encryptedPassphrase));
+    } catch (err) {
+      dispatch(initializeAction(undefined));
+    }
   }, []);
 
   // Poll Status
@@ -1039,16 +873,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       const { walletStatus } = await fullServiceApi.getWalletStatus();
       // TODO - get new balance (now that is it pending)
 
-      dispatch({
-        payload: {
-          selectedAccount: {
-            account: selectedAccount.account,
-            balanceStatus,
-          },
-          walletStatus,
-        },
-        type: 'UPDATE_STATUS',
-      });
+      dispatch(updateStatusAction(selectedAccount.account, balanceStatus, walletStatus));
     };
 
     fetchBalance();

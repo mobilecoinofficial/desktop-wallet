@@ -2,8 +2,6 @@ import { store } from '../contexts/FullServiceContext';
 import * as fullServiceApi from '../fullService/api';
 import type { TxProposal } from '../types/TxProposal.d';
 
-// submitTransaction: (txProposal: TxProposal) => Promise<void>;
-
 const submitTransaction = async (txProposal: TxProposal): Promise<void> => {
   const { selectedAccount } = store.state;
   const { accountId } = selectedAccount.account;
@@ -38,3 +36,4 @@ const submitTransaction = async (txProposal: TxProposal): Promise<void> => {
 
 export default submitTransaction;
 export { submitTransaction };
+export type SubmitTransactionService = typeof submitTransaction;

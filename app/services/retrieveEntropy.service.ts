@@ -24,3 +24,4 @@ const retrieveEntropy = async (passphrase: string): Promise<string> => {
 
 export default retrieveEntropy;
 export { retrieveEntropy };
+export type RetrieveEntropyService = typeof retrieveEntropy;

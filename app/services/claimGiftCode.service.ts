@@ -7,3 +7,4 @@ const claimGiftCode = async (
 
 export default claimGiftCode;
 export { claimGiftCode };
+export type ClaimGiftCodeService = typeof claimGiftCode;

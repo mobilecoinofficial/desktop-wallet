@@ -15,7 +15,6 @@ import type { TransactionLogs } from '../types/TransactionLog.d';
 import type { Txos } from '../types/Txo.d';
 import type { WalletStatus } from '../types/WalletStatus.d';
 import * as localStore from '../utils/LocalStore';
-import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authentication';
 import sameObject from '../utils/sameObject';
 //
 // NEW DUCKS-STYLE ACTIONS, ACTION BUILDERS, AND CONSTANTS
@@ -24,11 +23,7 @@ import {
   CONFIRM_ENTROPY_KNOWN,
   ConfirmEntropyKnownActionType,
 } from './actions/confirmEntropyKnown.action';
-import {
-  CREATE_ACCOUNT,
-  createAccountAction,
-  CreateAccountActionType,
-} from './actions/createAccount.action';
+import { CREATE_ACCOUNT, CreateAccountActionType } from './actions/createAccount.action';
 import {
   FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   FetchAllTransactionLogsForAccountActionType,
@@ -37,20 +32,12 @@ import {
   FETCH_ALL_TXOS_FOR_ACCOUNT,
   FetchAllTxosForAccountActionType,
 } from './actions/fetchAllTxosForAccount.action';
-import {
-  IMPORT_ACCOUNT,
-  importAccountAction,
-  ImportAccountActionType,
-} from './actions/importAccount.action';
+import { IMPORT_ACCOUNT, ImportAccountActionType } from './actions/importAccount.action';
 import { INITIALIZE, initializeAction, InitializeActionType } from './actions/initialize.action';
 import { UNLOCK_WALLET, UnlockWalletActionType } from './actions/unlockWallet.action';
 import { UPDATE_CONTACTS, UpdateContactsActionType } from './actions/updateContacts.action';
 import { UPDATE_GIFT_CODES, UpdateGiftCodesActionType } from './actions/updateGiftCodes.action';
-import {
-  UPDATE_PASSPHRASE,
-  updatePassphraseAction,
-  UpdatePassphraseActionType,
-} from './actions/updatePassphrase.action';
+import { UPDATE_PASSPHRASE, UpdatePassphraseActionType } from './actions/updatePassphrase.action';
 import { UPDATE_PIN, UpdatePinActionType } from './actions/updatePin.action';
 import {
   UPDATE_STATUS,
@@ -58,7 +45,7 @@ import {
   UpdateStatusActionType,
 } from './actions/updateStatus.action';
 
-interface FullServiceState {
+export interface FullServiceState {
   accounts: Accounts;
   addresses: Addresses;
   contacts: Contact[];
@@ -76,22 +63,6 @@ interface FullServiceState {
   pin: string | undefined;
   txos: Txos;
   walletStatus: WalletStatus;
-}
-
-export interface FullServiceContextValue extends FullServiceState {
-  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
-  createAccount: (accountName: string | null, passphrase: string) => Promise<void>;
-  importAccount: (
-    accountName: string | null,
-    mnemonic: string,
-    passphrase: string
-  ) => Promise<void>;
-  importLegacyAccount: (
-    accountName: string | null,
-    entropy: string,
-    passphrase: string
-  ) => Promise<void>;
-  wipeAccountContactAndPin: () => Promise<void>;
 }
 
 interface FullServiceProviderProps {
@@ -170,7 +141,6 @@ const initialFullServiceState: FullServiceState = {
   },
 };
 
-// TODO - i should clean up this reducer
 const reducer = (state: FullServiceState, action: Action): FullServiceState => {
   switch (action.type) {
     case INITIALIZE: {
@@ -335,18 +305,47 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
   }
 };
 
-const FullServiceContext = createContext<FullServiceContextValue>(({
-  ...initialFullServiceState,
-  changePassword: undefined,
-  createAccount: undefined,
-  importAccount: undefined,
-  importLegacyAccount: undefined,
-  wipeAccountContactsAndPin: undefined,
-} as unknown) as FullServiceContextValue);
+const FullServiceContext = createContext<FullServiceState>({ ...initialFullServiceState });
 
 export const store = {
   dispatch: (() => {}) as React.Dispatch<Action>,
   state: {} as FullServiceState,
+};
+
+const removeAllAccounts = async (excludedAccountIds: string[]) => {
+  const removeAccount = async (accountId: string) => {
+    try {
+      const removed = await fullServiceApi.removeAccount({ accountId });
+
+      return removed;
+      // Now we need to reflect the fact that we just removed an account from Full Service
+      // wallet_db in our Desktop Wallet's FullServiceContext state to then get passed on
+      // to any UI elements that care about it.
+      // const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
+  try {
+    const { accountIds } = await fullServiceApi.getAllAccounts();
+    accountIds.forEach(async (accountId) => {
+      if (excludedAccountIds.includes(accountId)) {
+        return;
+      }
+      await removeAccount(accountId);
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+export const wipeAccountContactAndPin = async () => {
+  // Wipe Accounts, Contacts, and PIN
+  removeAllAccounts([]);
+  localStore.deleteEncryptedContacts();
+  localStore.deletePinThresholdPmob();
+  localStore.deleteEncryptedPin();
 };
 
 export const FullServiceProvider: FC<FullServiceProviderProps> = ({
@@ -355,184 +354,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   const [state, dispatch] = useReducer(reducer, initialFullServiceState);
   store.state = state;
   store.dispatch = dispatch;
-
-  const changePassword = async (oldPassword: string, newPassword: string) => {
-    try {
-      const { encryptedPassphrase } = state;
-      if (encryptedPassphrase === undefined) {
-        throw new Error('encryptedPassphrase assertion failed');
-      }
-
-      await validatePassphrase(oldPassword, encryptedPassphrase);
-      const newEncryptedPassphrase = await encryptAndStorePassphrase(newPassword);
-
-      dispatch(updatePassphraseAction(newEncryptedPassphrase));
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  const removeAllAccounts = async (excludedAccountIds: string[]) => {
-    const removeAccount = async (accountId: string) => {
-      try {
-        const removed = await fullServiceApi.removeAccount({ accountId });
-
-        return removed;
-        // Now we need to reflect the fact that we just removed an account from Full Service
-        // wallet_db in our Desktop Wallet's FullServiceContext state to then get passed on
-        // to any UI elements that care about it.
-        // const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-      } catch (err) {
-        throw new Error(err.message);
-      }
-    };
-
-    try {
-      const { accountIds } = await fullServiceApi.getAllAccounts();
-      accountIds.forEach(async (accountId) => {
-        if (excludedAccountIds.includes(accountId)) {
-          return;
-        }
-        await removeAccount(accountId);
-      });
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  const wipeAccountContactAndPin = async () => {
-    // Wipe Accounts, Contacts, and PIN
-    removeAllAccounts([]);
-    localStore.deleteEncryptedContacts();
-    localStore.deletePinThresholdPmob();
-    localStore.deleteEncryptedPin();
-  };
-
-  const createAccount = async (name: string | null, passphrase: string) => {
-    try {
-      await wipeAccountContactAndPin();
-
-      // Attempt create
-      const { account } = await fullServiceApi.createAccount({ name });
-      const { accountId } = account;
-
-      // Get basic wallet information
-      const { accountSecrets: pendingSecrets } = await fullServiceApi.exportAccountSecrets({
-        accountId,
-      });
-
-      const { walletStatus } = await fullServiceApi.getWalletStatus();
-      const { accountIds, accountMap } = walletStatus;
-      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
-        accountId,
-      });
-      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-
-      // After successful import, store encryptedPassphrase
-      const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
-      dispatch(
-        createAccountAction(
-          accountIds,
-          accountMap,
-          addressIds,
-          addressMap,
-          encryptedPassphrase,
-          pendingSecrets as PendingSecrets,
-          secretKey,
-          account,
-          balanceStatus,
-          walletStatus
-        )
-      );
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  // Import the wallet should initalize the basic wallet information
-  // The wallet status
-  // Accounts + status
-  const importAccount = async (name: string | null, mnemonic: string, passphrase: string) => {
-    try {
-      await wipeAccountContactAndPin();
-
-      // Attempt import
-      const { account } = await fullServiceApi.importAccount({
-        keyDerivationVersion: '2',
-        mnemonic,
-        name,
-      });
-      const { accountId } = account;
-
-      // Get basic wallet information
-      const { walletStatus } = await fullServiceApi.getWalletStatus();
-      const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
-        accountId,
-      });
-      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-
-      // After successful import, store encryptedPassphrase
-      const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
-
-      dispatch(
-        importAccountAction(
-          accountIds,
-          accountMap,
-          addressIds,
-          addressMap,
-          encryptedPassphrase,
-          secretKey,
-          account,
-          balanceStatus,
-          walletStatus
-        )
-      );
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  // Import the wallet should initalize the basic wallet information
-  // The wallet status
-  // Accounts + status
-  const importLegacyAccount = async (name: string | null, entropy: string, passphrase: string) => {
-    try {
-      await wipeAccountContactAndPin();
-
-      // Attempt import
-      const { account } = await fullServiceApi.importLegacyAccount({ entropy, name });
-      const { accountId } = account;
-
-      // Get basic wallet information
-      const { walletStatus } = await fullServiceApi.getWalletStatus();
-      const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-      const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
-        accountId,
-      });
-
-      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-
-      // After successful import, store encryptedPassphrase
-      const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
-
-      dispatch(
-        importAccountAction(
-          accountIds,
-          accountMap,
-          addressIds,
-          addressMap,
-          encryptedPassphrase,
-          secretKey,
-          account,
-          balanceStatus,
-          walletStatus
-        )
-      );
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
 
   // Initialize App On Startup
   useEffect(() => {
@@ -580,20 +401,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     // an array of monitorIds and return a balance for each.
   }, [state]);
 
-  return (
-    <FullServiceContext.Provider
-      value={{
-        ...state,
-        changePassword,
-        createAccount,
-        importAccount,
-        importLegacyAccount,
-        wipeAccountContactAndPin,
-      }}
-    >
-      {children}
-    </FullServiceContext.Provider>
-  );
+  return <FullServiceContext.Provider value={{ ...state }}>{children}</FullServiceContext.Provider>;
 };
 
 export default FullServiceContext;

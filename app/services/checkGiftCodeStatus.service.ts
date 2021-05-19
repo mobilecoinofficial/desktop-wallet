@@ -11,3 +11,4 @@ const checkGiftCodeStatus = async (
 
 export default checkGiftCodeStatus;
 export { checkGiftCodeStatus };
+export type CheckGiftCodeStatusService = typeof checkGiftCodeStatus;

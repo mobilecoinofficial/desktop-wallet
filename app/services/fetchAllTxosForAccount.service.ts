@@ -5,9 +5,7 @@ import type { StringHex } from '../types/SpecialStrings';
 
 const fetchAllTxosForAccount = async (accountId: StringHex): Promise<void> => {
   try {
-    const txos = await fullServiceApi.getAllTxosForAccount({
-      accountId,
-    });
+    const txos = await fullServiceApi.getAllTxosForAccount({ accountId });
 
     // TODO add logic to only trigger if different object
     store.dispatch(fetchAllTxosForAccountAction(txos));
@@ -18,3 +16,4 @@ const fetchAllTxosForAccount = async (accountId: StringHex): Promise<void> => {
 
 export default fetchAllTxosForAccount;
 export { fetchAllTxosForAccount };
+export type FetchAllTxosForAccountService = typeof fetchAllTxosForAccount;

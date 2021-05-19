@@ -6,8 +6,6 @@ import * as localStore from '../utils/LocalStore';
 import { validatePassphrase } from '../utils/authentication';
 import { decrypt } from '../utils/encryption';
 
-//   unlockWallet: (passphrase: string) => Promise<void>;
-
 const unlockWallet = async (passphrase: string): Promise<void> => {
   try {
     const { encryptedPassphrase } = store.state;
@@ -71,3 +69,4 @@ const unlockWallet = async (passphrase: string): Promise<void> => {
 
 export default unlockWallet;
 export { unlockWallet };
+export type UnlockWalletService = typeof unlockWallet;

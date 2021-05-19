@@ -5,8 +5,6 @@ import * as localStore from '../utils/LocalStore';
 import { validatePassphrase } from '../utils/authentication';
 import { encrypt } from '../utils/encryption';
 
-//   setPin: (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => Promise<void>;
-
 // This call does not require a password. It should only be used when no PIN is set.
 const setPin = async (
   pin: string,
@@ -43,3 +41,4 @@ const setPin = async (
 
 export default setPin;
 export { setPin };
+export type SetPinService = typeof setPin;

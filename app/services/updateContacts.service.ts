@@ -14,3 +14,4 @@ const updateContacts = (contacts: Contact[]): void => {
 
 export default updateContacts;
 export { updateContacts };
+export type UpdateContactsService = typeof updateContacts;

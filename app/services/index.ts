@@ -1,35 +1,78 @@
-import { assignAddressForAccount } from './assignAddressForAccount.SERVICE';
-import { buildGiftCode } from './buildGiftCode.service';
-import { buildTransaction } from './buildTransaction.service';
-import { checkGiftCodeStatus } from './checkGiftCodeStatus.service';
-import { claimGiftCode } from './claimGiftCode.service';
-import { confirmEntropyKnown } from './confirmEntropyKnown.service';
-import { deleteStoredGiftCodeB58 } from './deleteStoredGiftCodeB58.service';
-import { fetchAllTransactionLogsForAccount } from './fetchAllTransactionLogsForAccount.service';
-import { fetchAllTxosForAccount } from './fetchAllTxosForAccount.service';
-import { getAllGiftCodes } from './getAllGiftCodes.service';
-import { retrieveEntropy } from './retrieveEntropy.service';
-import { setPin } from './setPin.service';
-import { submitGiftCode } from './submitGiftCode.service';
-import { submitTransaction } from './submitTransaction.service';
-import { unlockWallet } from './unlockWallet.service';
-import { updateContacts } from './updateContacts.service';
+import {
+  assignAddressForAccount,
+  AssignAddressForAccountService,
+} from './assignAddressForAccount.service';
+import { buildGiftCode, BuildGiftCodeService } from './buildGiftCode.service';
+import { buildTransaction, BuildTransactionService } from './buildTransaction.service';
+import { changePassword, ChangePasswordService } from './changePassword.service';
+import { checkGiftCodeStatus, CheckGiftCodeStatusService } from './checkGiftCodeStatus.service';
+import { claimGiftCode, ClaimGiftCodeService } from './claimGiftCode.service';
+import { confirmEntropyKnown, ConfirmEntropyKnownService } from './confirmEntropyKnown.service';
+import { createAccount, CreateAccountService } from './createAccount.service';
+import {
+  deleteStoredGiftCodeB58,
+  DeleteStoredGiftCodeB58Service,
+} from './deleteStoredGiftCodeB58.service';
+import {
+  fetchAllTransactionLogsForAccount,
+  FetchAllTransactionLogsForAccountService,
+} from './fetchAllTransactionLogsForAccount.service';
+import {
+  fetchAllTxosForAccount,
+  FetchAllTxosForAccountService,
+} from './fetchAllTxosForAccount.service';
+import { getAllGiftCodes, GetAllGiftCodesService } from './getAllGiftCodes.service';
+import { importAccount, ImportAccountService } from './importAccount.service';
+import { importLegacyAccount, ImportLegacyAccountService } from './importLegacyAccount.service';
+import { retrieveEntropy, RetrieveEntropyService } from './retrieveEntropy.service';
+import { setPin, SetPinService } from './setPin.service';
+import { submitGiftCode, SubmitGiftCodeService } from './submitGiftCode.service';
+import { submitTransaction, SubmitTransactionService } from './submitTransaction.service';
+import { unlockWallet, UnlockWalletService } from './unlockWallet.service';
+import { updateContacts, UpdateContactsService } from './updateContacts.service';
 
 export {
   assignAddressForAccount,
   buildGiftCode,
   buildTransaction,
+  changePassword,
   checkGiftCodeStatus,
   claimGiftCode,
   confirmEntropyKnown,
+  createAccount,
   deleteStoredGiftCodeB58,
   fetchAllTransactionLogsForAccount,
   fetchAllTxosForAccount,
   getAllGiftCodes,
+  importAccount,
+  importLegacyAccount,
   retrieveEntropy,
   setPin,
   submitGiftCode,
   submitTransaction,
   unlockWallet,
   updateContacts,
+};
+
+export type {
+  AssignAddressForAccountService,
+  BuildGiftCodeService,
+  BuildTransactionService,
+  ChangePasswordService,
+  CheckGiftCodeStatusService,
+  ClaimGiftCodeService,
+  ConfirmEntropyKnownService,
+  CreateAccountService,
+  DeleteStoredGiftCodeB58Service,
+  FetchAllTransactionLogsForAccountService,
+  FetchAllTxosForAccountService,
+  GetAllGiftCodesService,
+  ImportAccountService,
+  ImportLegacyAccountService,
+  RetrieveEntropyService,
+  SetPinService,
+  SubmitGiftCodeService,
+  SubmitTransactionService,
+  UnlockWalletService,
+  UpdateContactsService,
 };

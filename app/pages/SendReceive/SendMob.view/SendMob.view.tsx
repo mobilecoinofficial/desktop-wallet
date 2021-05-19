@@ -212,7 +212,7 @@ const SendMob: FC<SendMobProps> = ({
     setConfirmation(EMPTY_CONFIRMATION);
   };
 
-  /* FK: COMMENTING OUT BECAUSE OF NOT BEING USED
+  /* FK: COMMENTING OUT ON ACCOUNT OF NOT BEING USED
   const createAccountLabel = (account: Account) => {
     const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}:`;
     return (

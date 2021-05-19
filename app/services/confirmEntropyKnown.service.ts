@@ -5,3 +5,4 @@ const confirmEntropyKnown = (): void => store.dispatch(confirmEntropyKnownAction
 
 export default confirmEntropyKnown;
 export { confirmEntropyKnown };
+export type ConfirmEntropyKnownService = typeof confirmEntropyKnown;

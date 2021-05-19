@@ -7,3 +7,4 @@ const buildGiftCode = async (
 
 export default buildGiftCode;
 export { buildGiftCode };
+export type BuildGiftCodeService = typeof buildGiftCode;

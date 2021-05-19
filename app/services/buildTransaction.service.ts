@@ -2,8 +2,6 @@ import * as fullServiceApi from '../fullService/api';
 import type { BuildTransactionParams } from '../fullService/api/buildTransaction';
 import type { TxProposal } from '../types/TxProposal.d';
 
-//   buildTransaction: (buildTransactionParams: BuildTransactionParams) => Promise<TxProposal | void>;
-
 // TODO, better error handling
 const buildTransaction = async (
   buildTransactionParams: BuildTransactionParams
@@ -11,3 +9,4 @@ const buildTransaction = async (
 
 export default buildTransaction;
 export { buildTransaction };
+export type BuildTransactionService = typeof buildTransaction;

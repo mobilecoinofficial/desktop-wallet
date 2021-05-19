@@ -1,5 +1,5 @@
-import type { FullServiceContextValue } from '../../../contexts/FullServiceContext';
+import type { UnlockWalletService } from '../../../services';
 
 export interface UnlockWalletViewProps {
-  unlockWallet: FullServiceContextValue['unlockWallet'];
+  unlockWallet: UnlockWalletService;
 }

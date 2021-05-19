@@ -13,7 +13,7 @@ import {
 } from '../../../components/icons';
 import useFullService from '../../../hooks/useFullService';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
-import { retrieveEntropy } from '../../../services';
+import { retrieveEntropy, setPin } from '../../../services';
 import type { Theme } from '../../../theme';
 import { ChangePasswordView } from '../ChangePassword.view';
 import { ChangePinView } from '../ChangePin.view';
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SettingsPage: FC = () => {
   const classes = useStyles();
   const [showing, setShowing] = useState(SETTINGS);
-  const { changePassword, pinThresholdPmob, pin, setPin, selectedAccount } = useFullService();
+  const { changePassword, pinThresholdPmob, pin, selectedAccount } = useFullService();
 
   const {
     ledgerDbPath,

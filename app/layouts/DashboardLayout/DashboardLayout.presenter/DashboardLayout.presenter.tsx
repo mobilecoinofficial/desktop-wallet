@@ -6,7 +6,7 @@ import { ipcRenderer } from 'electron';
 
 import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
 import useFullService from '../../../hooks/useFullService';
-import { confirmEntropyKnown } from '../../../services';
+import { confirmEntropyKnown, setPin } from '../../../services';
 import type { Theme } from '../../../theme';
 import { BalanceIndicator } from '../BalanceIndicator.view';
 import { InactivityDetect } from '../InactivityDetect';
@@ -43,13 +43,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: DashboardLayoutProps) => {
-  const {
-    selectedAccount,
-    isEntropyKnown,
-    isPinRequired,
-    pendingSecrets,
-    setPin,
-  } = useFullService();
+  const { selectedAccount, isEntropyKnown, isPinRequired, pendingSecrets } = useFullService();
   const classes = useStyles();
   const sendSyncStatus = (statusCode: string) => ipcRenderer.send('sync-status', statusCode);
 

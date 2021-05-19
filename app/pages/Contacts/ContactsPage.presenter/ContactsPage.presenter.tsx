@@ -7,7 +7,7 @@ import { Redirect } from 'react-router-dom';
 
 import { randomColor } from '../../../constants/app';
 import useFullService from '../../../hooks/useFullService';
-import { updateContacts } from '../../../services';
+import { assignAddressForAccount, updateContacts } from '../../../services';
 import type { Contact } from '../../../types/Contact.d';
 import { ContactForm } from '../ContactForm.view';
 import { ContactsList } from '../ContactsList.view';
@@ -22,7 +22,7 @@ const ContactsPage: FC = () => {
   const [status, setStatus] = useState(PAGE.LIST);
   const [current, setCurrent] = useState({} as Contact);
   const { enqueueSnackbar } = useSnackbar();
-  const { contacts, selectedAccount, assignAddressForAccount } = useFullService();
+  const { contacts, selectedAccount } = useFullService();
 
   const { t } = useTranslation('ContactsPage');
 
@@ -37,9 +37,9 @@ const ContactsPage: FC = () => {
   }) as Contact[];
 
   const addNewContact = async ({ abbreviation, alias, isFavorite, recipientAddress }: Contact) => {
-    const result = await assignAddressForAccount({
-      accountId: selectedAccount.account.accountId || Math.random(),
-    });
+    const result = await assignAddressForAccount(
+      selectedAccount.account.accountId || Math.random()
+    );
 
     setStatus(PAGE.LIST);
     contacts.push({

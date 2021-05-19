@@ -4,24 +4,18 @@ import type { FC, ReactNode } from 'react';
 import type { SjclCipherEncrypted } from 'sjcl';
 
 import * as fullServiceApi from '../fullService/api';
-import type { BuildTransactionParams } from '../fullService/api/buildTransaction';
-import type { RemoveAccountParams, RemoveAccountResult } from '../fullService/api/removeAccount';
-import type { SubmitGiftCodeParams, SubmitGiftCodeResult } from '../fullService/api/submitGiftCode';
-import deleteAllContacts from '../models/Contact/deleteAllContacts';
 import type { Accounts } from '../types/Account.d';
 import type { Addresses } from '../types/Address.d';
 import type { Contact } from '../types/Contact.d';
 import type { GiftCode } from '../types/GiftCode.d';
 import type { PendingSecrets } from '../types/PendingSecrets.d';
 import type { SelectedAccount } from '../types/SelectedAccount.d';
-import type { StringHex, StringUInt64 } from '../types/SpecialStrings.d';
+import type { StringUInt64 } from '../types/SpecialStrings.d';
 import type { TransactionLogs } from '../types/TransactionLog.d';
-import type { TxProposal } from '../types/TxProposal.d';
 import type { Txos } from '../types/Txo.d';
 import type { WalletStatus } from '../types/WalletStatus.d';
 import * as localStore from '../utils/LocalStore';
 import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authentication';
-import { encrypt } from '../utils/encryption';
 import sameObject from '../utils/sameObject';
 //
 // NEW DUCKS-STYLE ACTIONS, ACTION BUILDERS, AND CONSTANTS
@@ -51,17 +45,13 @@ import {
 import { INITIALIZE, initializeAction, InitializeActionType } from './actions/initialize.action';
 import { UNLOCK_WALLET, UnlockWalletActionType } from './actions/unlockWallet.action';
 import { UPDATE_CONTACTS, UpdateContactsActionType } from './actions/updateContacts.action';
-import {
-  UPDATE_GIFT_CODES,
-  updateGiftCodesAction,
-  UpdateGiftCodesActionType,
-} from './actions/updateGiftCodes.action';
+import { UPDATE_GIFT_CODES, UpdateGiftCodesActionType } from './actions/updateGiftCodes.action';
 import {
   UPDATE_PASSPHRASE,
   updatePassphraseAction,
   UpdatePassphraseActionType,
 } from './actions/updatePassphrase.action';
-import { UPDATE_PIN, updatePinAction, UpdatePinActionType } from './actions/updatePin.action';
+import { UPDATE_PIN, UpdatePinActionType } from './actions/updatePin.action';
 import {
   UPDATE_STATUS,
   updateStatusAction,
@@ -89,11 +79,8 @@ interface FullServiceState {
 }
 
 export interface FullServiceContextValue extends FullServiceState {
-  assignAddressForAccount: (x: StringHex) => Promise<unknown>;
-  buildTransaction: (buildTransactionParams: BuildTransactionParams) => Promise<TxProposal | void>;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
   createAccount: (accountName: string | null, passphrase: string) => Promise<void>;
-  deleteStoredGiftCodeB58: (storedGiftCodeB58: string) => void;
   importAccount: (
     accountName: string | null,
     mnemonic: string,
@@ -104,12 +91,7 @@ export interface FullServiceContextValue extends FullServiceState {
     entropy: string,
     passphrase: string
   ) => Promise<void>;
-  removeAccount: (removeAccountParams: RemoveAccountParams) => Promise<RemoveAccountResult | void>;
-  setPin: (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => Promise<void>;
-  submitGiftCode: (
-    submitGiftCodeParams: SubmitGiftCodeParams
-  ) => Promise<SubmitGiftCodeResult | void>;
-  submitTransaction: (txProposal: TxProposal) => Promise<void>;
+  wipeAccountContactAndPin: () => Promise<void>;
 }
 
 interface FullServiceProviderProps {
@@ -355,17 +337,11 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
 
 const FullServiceContext = createContext<FullServiceContextValue>(({
   ...initialFullServiceState,
-  assignAddressForAccount: undefined,
-  buildTransaction: undefined,
   changePassword: undefined,
   createAccount: undefined,
-  deleteStoredGiftCodeB58: undefined,
   importAccount: undefined,
   importLegacyAccount: undefined,
-  removeAccount: undefined,
-  setPin: undefined,
-  submitGiftCode: undefined,
-  submitTransaction: undefined,
+  wipeAccountContactsAndPin: undefined,
 } as unknown) as FullServiceContextValue);
 
 export const store = {
@@ -379,12 +355,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   const [state, dispatch] = useReducer(reducer, initialFullServiceState);
   store.state = state;
   store.dispatch = dispatch;
-
-  const assignAddressForAccount = async (x: StringHex) => fullServiceApi.assignAddressForAccount(x);
-
-  // TODO, better error handling
-  const buildTransaction = async (buildTransactionParams: BuildTransactionParams) =>
-    fullServiceApi.buildTransaction(buildTransactionParams);
 
   const changePassword = async (oldPassword: string, newPassword: string) => {
     try {
@@ -402,38 +372,21 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  const getAllGiftCodes = async () => {
-    const result = await fullServiceApi.getAllGiftCodes();
-    dispatch(updateGiftCodesAction(result.giftCodes));
-  };
-
-  const deleteStoredGiftCodeB58 = async (storedGiftCodeB58: string) => {
-    try {
-      // TO DO - Hook into full service delete gift code API call
-      await fullServiceApi.removeGiftCode({ giftCodeB58: storedGiftCodeB58 });
-      getAllGiftCodes();
-
-      return '';
-    } catch (err) {
-      return err.message;
-    }
-  };
-
-  const removeAccount = async (accountId: string) => {
-    try {
-      const removed = await fullServiceApi.removeAccount({ accountId });
-
-      return removed;
-      // Now we need to reflect the fact that we just removed an account from Full Service
-      // wallet_db in our Desktop Wallet's FullServiceContext state to then get passed on
-      // to any UI elements that care about it.
-      // const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
   const removeAllAccounts = async (excludedAccountIds: string[]) => {
+    const removeAccount = async (accountId: string) => {
+      try {
+        const removed = await fullServiceApi.removeAccount({ accountId });
+
+        return removed;
+        // Now we need to reflect the fact that we just removed an account from Full Service
+        // wallet_db in our Desktop Wallet's FullServiceContext state to then get passed on
+        // to any UI elements that care about it.
+        // const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
+      } catch (err) {
+        throw new Error(err.message);
+      }
+    };
+
     try {
       const { accountIds } = await fullServiceApi.getAllAccounts();
       accountIds.forEach(async (accountId) => {
@@ -447,13 +400,17 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
+  const wipeAccountContactAndPin = async () => {
+    // Wipe Accounts, Contacts, and PIN
+    removeAllAccounts([]);
+    localStore.deleteEncryptedContacts();
+    localStore.deletePinThresholdPmob();
+    localStore.deleteEncryptedPin();
+  };
+
   const createAccount = async (name: string | null, passphrase: string) => {
     try {
-      // Wipe Accounts, Contacts, and PIN
-      await removeAllAccounts([]);
-      deleteAllContacts();
-      localStore.deletePinThresholdPmob();
-      localStore.deleteEncryptedPin();
+      await wipeAccountContactAndPin();
 
       // Attempt create
       const { account } = await fullServiceApi.createAccount({ name });
@@ -497,11 +454,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Accounts + status
   const importAccount = async (name: string | null, mnemonic: string, passphrase: string) => {
     try {
-      // Wipe Accounts, Contacts, and PIN
-      await removeAllAccounts([]);
-      deleteAllContacts();
-      localStore.deletePinThresholdPmob();
-      localStore.deleteEncryptedPin();
+      await wipeAccountContactAndPin();
 
       // Attempt import
       const { account } = await fullServiceApi.importAccount({
@@ -545,11 +498,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Accounts + status
   const importLegacyAccount = async (name: string | null, entropy: string, passphrase: string) => {
     try {
-      // Wipe Accounts, Contacts, and PIN
-      await removeAllAccounts([]);
-      deleteAllContacts();
-      localStore.deletePinThresholdPmob();
-      localStore.deleteEncryptedPin();
+      await wipeAccountContactAndPin();
 
       // Attempt import
       const { account } = await fullServiceApi.importLegacyAccount({ entropy, name });
@@ -558,9 +507,6 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
       // Get basic wallet information
       const { walletStatus } = await fullServiceApi.getWalletStatus();
       const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-      // const accountId = accountIds[0];
-      // const account = accountMap[accountId];
-
       const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
         accountId,
       });
@@ -588,85 +534,10 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   };
 
-  // This call does not require a password. It should only be used when no PIN is set.
-  const setPin = async (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => {
-    const { pin: existingPin, secretKey, encryptedPassphrase } = state;
-
-    try {
-      if (encryptedPassphrase === undefined) {
-        throw new Error('encryptedPassphrase assertion failed');
-      }
-
-      if (passphrase) {
-        await validatePassphrase(passphrase, encryptedPassphrase);
-      } else if (existingPin) {
-        // This only triggers if attempting to set pin without passphrase.
-        // You cannot overwrite an existing PIN without the correct passphrase!
-        throw new Error('PIN already exists');
-      }
-
-      // encrypt and save PIN to local store
-      const encryptedPin = await encrypt(pin, secretKey);
-      localStore.setEncryptedPin(encryptedPin);
-
-      // save threshold to local store
-      localStore.setPinThresholdPmob(pinThresholdPmob);
-
-      dispatch(updatePinAction(pin, pinThresholdPmob));
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  const submitGiftCode = async (submitGiftCodeParams: SubmitGiftCodeParams) => {
-    try {
-      await fullServiceApi.submitGiftCode(submitGiftCodeParams);
-      getAllGiftCodes();
-
-      return '';
-    } catch (err) {
-      return err.message;
-    }
-  };
-
-  const submitTransaction = async (txProposal: TxProposal): Promise<void> => {
-    const { selectedAccount } = state;
-    const { accountId } = selectedAccount.account;
-    // submit transaction
-    // TODO probably want to figure out what I want to save about this transaction log
-    await fullServiceApi.submitTransaction({
-      accountId,
-      txProposal,
-    });
-
-    // TODO- right now, we're just using the selected account to refresh
-    // this is obviously not ideal
-    // const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-    // const { walletStatus } = await fullServiceApi.getWalletStatus();
-
-    // FIX-ME: Currently, Full-Service does not seperate pending change and pending outgoing.
-    // We will need Full-Service to clearly seperate these values for us to properly show pending.
-    // Until we have that, the balance may dip as long as the UTXO spent on the transaction before
-    // bouncing back up.
-    // Alternately, we can just make balance equal to balance + pending (for now)
-    // dispatch({
-    //   payload: {
-    //     selectedAccount: {
-    //       account: selectedAccount.account,
-    //       balanceStatus,
-    //     },
-    //     walletStatus,
-    //   },
-    //   type: 'UPDATE_STATUS',
-    // });
-  };
-
   // Initialize App On Startup
   useEffect(() => {
     try {
       const encryptedPassphrase = localStore.getEncryptedPassphrase();
-      getAllGiftCodes(); // TODO - this should not occur until unlock
-
       dispatch(initializeAction(encryptedPassphrase));
     } catch (err) {
       dispatch(initializeAction(undefined));
@@ -713,16 +584,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     <FullServiceContext.Provider
       value={{
         ...state,
-        assignAddressForAccount,
-        buildTransaction,
         changePassword,
         createAccount,
-        deleteStoredGiftCodeB58,
         importAccount,
         importLegacyAccount,
-        setPin,
-        submitGiftCode,
-        submitTransaction,
+        wipeAccountContactAndPin,
       }}
     >
       {children}

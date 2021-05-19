@@ -47,6 +47,7 @@ const useStyles = makeStyles(() => ({
 
 const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   deleteStoredGiftCodeB58,
+  getAllGiftCodes,
   giftCodes,
   buildGiftCode,
   existingPin,
@@ -80,10 +81,11 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
     });
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     handleDialogClose();
     try {
-      deleteStoredGiftCodeB58(pendingDeleteCode[0]);
+      await deleteStoredGiftCodeB58(pendingDeleteCode[0]);
+      await getAllGiftCodes();
       enqueueSnackbar(t('deleted'), {
         variant: 'success',
       });
@@ -115,6 +117,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
             <BuildGiftForm
               buildGiftCode={buildGiftCode}
               existingPin={existingPin}
+              getAllGiftCodes={getAllGiftCodes}
               isSyncedBuffered={isSyncedBuffered}
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}

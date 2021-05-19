@@ -1,8 +1,9 @@
 import type { Contact } from '../../../types/Contact.d';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
+import { StringHex } from '../../../types/SpecialStrings';
 
 export interface SendMobProps {
-  assignAddressForAccount: (a1: Record<string, unknown>) => void;
+  assignAddressForAccount: (a1: StringHex) => void;
   buildTransaction: (a1: Record<string, unknown>) => void;
   contacts: Contact[];
   existingPin: string;

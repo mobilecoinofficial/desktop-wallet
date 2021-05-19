@@ -36,6 +36,7 @@ import { StarIcon, MOBIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
+import type { StringHex } from '../../../types/SpecialStrings';
 import {
   commafy,
   convertMobStringToPicoMobString,
@@ -131,9 +132,7 @@ const SendMob: FC<SendMobProps> = ({
       return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
     };
 
-    const result = await assignAddressForAccount({
-      accountId: selectedAccount.account.accountId,
-    });
+    const result = await assignAddressForAccount(selectedAccount.account.accountId as StringHex);
 
     contacts.push({
       abbreviation: alias[0].toUpperCase(),

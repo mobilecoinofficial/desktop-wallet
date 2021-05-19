@@ -2,6 +2,7 @@ import type {
   AssignAddressForAccountService,
   BuildTransactionService,
   SubmitTransactionService,
+  UpdateContactsService,
 } from '../../../services';
 import type { Contact } from '../../../types/Contact.d';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
@@ -15,5 +16,5 @@ export interface SendMobProps {
   pinThresholdPmob: number;
   selectedAccount: SelectedAccount;
   submitTransaction: SubmitTransactionService;
-  updateContacts: () => void;
+  updateContacts: UpdateContactsService;
 }

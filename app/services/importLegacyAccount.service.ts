@@ -6,7 +6,11 @@ import { encryptAndStorePassphrase } from '../utils/authentication';
 // Import the wallet should initalize the basic wallet information
 // The wallet status
 // Accounts + status
-const importLegacyAccount = async (name: string | null, entropy: string, passphrase: string) => {
+const importLegacyAccount = async (
+  name: string | null,
+  entropy: string,
+  passphrase: string
+): Promise<void> => {
   try {
     await wipeAccountContactAndPin();
 

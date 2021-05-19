@@ -9,7 +9,7 @@ jobs:
     steps:
       - checkout
       - node/install:
-          node-version: '14.13.1'
+          node-version: '15.8.0'
           install-yarn: true
           install-npm: false
       # Install dependencies - the node Orb takes care of installation and dependency caching

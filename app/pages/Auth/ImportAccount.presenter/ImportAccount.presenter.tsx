@@ -4,12 +4,11 @@ import type { FC } from 'react';
 import { Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useFullService from '../../../hooks/useFullService';
+import { importAccount, importLegacyAccount } from '../../../services';
 import { ImportAccountView } from '../ImportAccount.view/ImportAccount.view';
 
 const ImportAccountPresenter: FC = () => {
   const { t } = useTranslation('ImportAccountView');
-  const { importAccount, importLegacyAccount } = useFullService();
 
   return (
     <>

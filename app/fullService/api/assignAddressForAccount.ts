@@ -9,7 +9,7 @@ type AssignAddressForAccountParams = {
   metadata?: string;
 };
 
-type AssignAddressForAccountResult = {
+export type AssignAddressForAccountResult = {
   address: Address;
 };
 

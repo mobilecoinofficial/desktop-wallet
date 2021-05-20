@@ -8,6 +8,12 @@ import { useTranslation } from 'react-i18next';
 
 import { TabPanel } from '../../../components/TabPanel';
 import useFullService from '../../../hooks/useFullService';
+import {
+  assignAddressForAccount,
+  buildTransaction,
+  submitTransaction,
+  updateContacts,
+} from '../../../services';
 import type { Theme } from '../../../theme';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { ReceiveMob } from '../ReceiveMob.view';
@@ -27,16 +33,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SendReceivePage: FC = () => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
-  const {
-    assignAddressForAccount,
-    buildTransaction,
-    contacts,
-    pin: existingPin,
-    pinThresholdPmob,
-    selectedAccount,
-    submitTransaction,
-    updateContacts,
-  } = useFullService();
+  const { contacts, pin: existingPin, pinThresholdPmob, selectedAccount } = useFullService();
 
   const { t } = useTranslation('TransactionView');
   const { enqueueSnackbar = () => {} } = useSnackbar() || {};

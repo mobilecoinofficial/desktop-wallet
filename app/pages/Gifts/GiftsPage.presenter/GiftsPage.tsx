@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
@@ -6,6 +6,14 @@ import { useTranslation } from 'react-i18next';
 
 import { TabPanel } from '../../../components/TabPanel';
 import useFullService from '../../../hooks/useFullService';
+import {
+  buildGiftCode,
+  checkGiftCodeStatus,
+  claimGiftCode,
+  deleteStoredGiftCodeB58,
+  getAllGiftCodes,
+  submitGiftCode,
+} from '../../../services';
 import type { Theme } from '../../../theme';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
@@ -28,16 +36,9 @@ const GiftsPage: FC = () => {
   const { t } = useTranslation('GiftingView');
 
   const {
-    // next ones for BuildGift
-    deleteStoredGiftCodeB58,
     giftCodes,
-    buildGiftCode,
     pin: existingPin,
     pinThresholdPmob,
-    submitGiftCode,
-    // next ones for ConsumeGift
-    checkGiftCodeStatus,
-    claimGiftCode,
     // next for both
     selectedAccount,
   } = useFullService();
@@ -48,10 +49,11 @@ const GiftsPage: FC = () => {
 
   const BuildGift = () => (
     <BuildGiftPanel
-      deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
-      giftCodes={giftCodes}
       buildGiftCode={buildGiftCode}
+      deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
       existingPin={existingPin as string}
+      getAllGiftCodes={getAllGiftCodes}
+      giftCodes={giftCodes}
       isSyncedBuffered={isSyncedBuffered}
       pinThresholdPmob={pinThresholdPmob}
       selectedAccount={selectedAccount}
@@ -66,6 +68,11 @@ const GiftsPage: FC = () => {
       selectedAccount={selectedAccount}
     />
   );
+
+  useEffect(() => {
+    getAllGiftCodes();
+  }, []);
+
   return (
     <Box className={classes.root}>
       <Grid container spacing={3}>

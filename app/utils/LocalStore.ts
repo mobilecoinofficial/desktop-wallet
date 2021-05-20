@@ -112,6 +112,10 @@ export const setEncryptedPassphrase = (encryptedPassphrase: SjclCipherEncrypted)
   });
 };
 
+export const deleteEncryptedPassphrase = (): void => {
+  store.delete(schemaKeys.ENCRYPTED_PASSPHRASE);
+};
+
 export const getFullServiceDbPath = (): string => {
   const fullServiceDbPath = store.get(schemaKeys.FULL_SERVICE_DB_PATH);
   return typeof fullServiceDbPath === 'string' ? fullServiceDbPath : '';

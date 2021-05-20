@@ -10,7 +10,7 @@ import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
 
 import { FullServiceProvider } from '../app/contexts/FullServiceContext';
-import type { FullServiceContextValue } from '../app/contexts/FullServiceContext';
+import type { FullServiceState } from '../app/contexts/FullServiceContext';
 import useFullService from '../app/hooks/useFullService';
 import i18n from '../app/i18n';
 import routes, { renderRoutes } from '../app/routes';
@@ -26,7 +26,7 @@ const generateClassName: StylesOptions['generateClassName'] = (rule, sheet): str
 // We should consider setting up the testing environment in an easier, unified way.
 const renderSnapshot = (
   testComponent: ReactElement,
-  fullServiceContextOverrides?: FullServiceContextValue
+  fullServiceContextOverrides?: FullServiceState
 ): RenderResult => {
   const theme = setTheme({
     responsiveFontSizes: true,
@@ -41,7 +41,7 @@ const renderSnapshot = (
     unlockWallet: jest.fn(),
   };
 
-  const mockUseFullServiceValues: FullServiceContextValue = {
+  const mockUseFullServiceValues: FullServiceState = {
     accountName: 'account name',
     b58Code: 'b58 code',
     balance: BigInt(88888888),

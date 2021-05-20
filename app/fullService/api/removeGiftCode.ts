@@ -4,11 +4,11 @@ import axiosFullService from '../axiosFullService';
 
 const REMOVE_GIFT_CODE_METHOD = 'remove_gift_code';
 
-type RemoveGiftCodeParams = {
+export type RemoveGiftCodeParams = {
   giftCodeB58: StringB58;
 };
 
-type RemoveGiftCodeResult = {
+export type RemoveGiftCodeResult = {
   giftCode: GiftCode;
 };
 

@@ -1,5 +1,5 @@
-import type { FullServiceContextValue } from '../../../contexts/FullServiceContext';
+import type { CreateAccountService } from '../../../services';
 
 export interface CreateAccountViewProps {
-  createAccount: FullServiceContextValue['createAccount'];
+  createAccount: CreateAccountService;
 }

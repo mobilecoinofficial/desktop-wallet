@@ -36,6 +36,7 @@ import { StarIcon, MOBIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
+import type { StringHex } from '../../../types/SpecialStrings';
 import {
   commafy,
   convertMobStringToPicoMobString,
@@ -131,9 +132,7 @@ const SendMob: FC<SendMobProps> = ({
       return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
     };
 
-    const result = await assignAddressForAccount({
-      accountId: selectedAccount.account.accountId,
-    });
+    const result = await assignAddressForAccount(selectedAccount.account.accountId as StringHex);
 
     contacts.push({
       abbreviation: alias[0].toUpperCase(),
@@ -213,7 +212,7 @@ const SendMob: FC<SendMobProps> = ({
     setConfirmation(EMPTY_CONFIRMATION);
   };
 
-  /* FK: COMMENTING OUT BECAUSE OF NOT BEING USED
+  /* FK: COMMENTING OUT ON ACCOUNT OF NOT BEING USED
   const createAccountLabel = (account: Account) => {
     const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}:`;
     return (

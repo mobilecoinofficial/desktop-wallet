@@ -91,6 +91,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // this component manageable.
 const BuildGiftForm: FC<BuildGiftFormProps> = ({
   buildGiftCode,
+  getAllGiftCodes,
   existingPin,
   isSyncedBuffered,
   pinThresholdPmob,
@@ -153,6 +154,8 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
         giftCodeB58: confirmation.giftCodeB58,
         txProposal: confirmation.txProposal,
       });
+      await getAllGiftCodes();
+
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmittingConfirmedGift(false);

@@ -270,10 +270,11 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case UPDATE_PASSPHRASE: {
-      const { encryptedPassphrase } = (action as UpdatePassphraseActionType).payload;
+      const { encryptedPassphrase, secretKey } = (action as UpdatePassphraseActionType).payload;
       return {
         ...state,
         encryptedPassphrase,
+        secretKey,
       };
     }
 

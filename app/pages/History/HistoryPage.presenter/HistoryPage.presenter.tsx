@@ -59,7 +59,7 @@ const HistoryPage: FC = () => {
   if (transactionLogs.transactionLogIds.length === 0) {
     return (
       <Box display="flex" justifyContent="center">
-        <Typography>{t('emptyState')}</Typography>
+        <Typography color="primary">{t('emptyState')}</Typography>
       </Box>
     );
   }

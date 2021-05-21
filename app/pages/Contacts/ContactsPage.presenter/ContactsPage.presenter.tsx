@@ -50,17 +50,17 @@ const ContactsPage: FC = () => {
       isFavorite,
       recipientAddress,
     });
-    updateContacts(contacts);
+    await updateContacts(contacts);
 
     enqueueSnackbar(t('added'), { variant: 'success' });
   };
 
-  const deleteContact = () => {
+  const deleteContact = async () => {
     contacts.splice(
       contacts.findIndex((x) => x.assignedAddress === current.assignedAddress),
       1
     );
-    updateContacts(contacts);
+    await updateContacts(contacts);
     setStatus(PAGE.LIST);
     enqueueSnackbar(t('removed'), { variant: 'success' });
   };
@@ -70,7 +70,13 @@ const ContactsPage: FC = () => {
     setStatus(PAGE.EDIT);
   };
 
-  const updateContact = ({ abbreviation, alias, color, isFavorite, recipientAddress }: Contact) => {
+  const updateContact = async ({
+    abbreviation,
+    alias,
+    color,
+    isFavorite,
+    recipientAddress,
+  }: Contact) => {
     contacts[contacts.findIndex((x) => x.assignedAddress === current.assignedAddress)] = {
       abbreviation,
       alias,
@@ -79,7 +85,7 @@ const ContactsPage: FC = () => {
       isFavorite,
       recipientAddress,
     };
-    updateContacts(contacts);
+    await updateContacts(contacts);
     setStatus(PAGE.LIST);
     enqueueSnackbar(t('updated'), { variant: 'success' });
   };

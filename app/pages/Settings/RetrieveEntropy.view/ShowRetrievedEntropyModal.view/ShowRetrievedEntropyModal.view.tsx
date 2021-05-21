@@ -19,14 +19,8 @@ import type { Theme } from '../../../../theme';
 import { ShowRetrievedEntropyModalProps } from './ShowRetrievedEntropyModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  hiddenEntropy: {
-    letterSpacing: 2.95,
-  },
-  modal: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-  },
+  hiddenEntropy: { letterSpacing: 2.95 },
+  modal: { alignItems: 'center', display: 'flex', justifyContent: 'center' },
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
@@ -34,9 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
   root: {},
-  shownEntropy: {
-    letterSpacing: 1,
-  },
+  shownEntropy: { letterSpacing: 1 },
 }));
 
 const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
@@ -87,7 +79,13 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
             <CardContent>
               <Box py={3} display="flex" alignItems="center" flexDirection="column">
                 <Box p={2}>
-                  <Fab variant="extended" color="primary" onClick={toggleEntropy} size="small">
+                  <Fab
+                    id="show-hide-button"
+                    variant="extended"
+                    color="primary"
+                    onClick={toggleEntropy}
+                    size="small"
+                  >
                     {(showEntropy ? t('hide') : t('show')) as string}
                   </Fab>
                 </Box>
@@ -124,6 +122,7 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
             fullWidth
             type="submit"
             variant="contained"
+            id="secured-button"
           >
             {t('secured')}
           </Button>

@@ -1,10 +1,10 @@
 import { store } from '../contexts/FullServiceContext';
 import { unlockWalletAction } from '../contexts/actions/unlockWallet.action';
 import * as fullServiceApi from '../fullService/api';
-import decryptContacts from '../models/Contact/decryptContacts';
 import * as localStore from '../utils/LocalStore';
 import { validatePassphrase } from '../utils/authentication';
 import { decrypt } from '../utils/encryption';
+import { decryptContacts } from './decryptContacts.service';
 
 const unlockWallet = async (passphrase: string): Promise<void> => {
   try {

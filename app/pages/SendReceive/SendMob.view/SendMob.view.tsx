@@ -143,7 +143,7 @@ const SendMob: FC<SendMobProps> = ({
       recipientAddress,
     });
 
-    updateContacts(contacts);
+    await updateContacts(contacts);
     handleChecked();
   };
 

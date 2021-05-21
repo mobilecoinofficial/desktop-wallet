@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import {
+  Backdrop,
   Box,
   Breadcrumbs,
   Container,
   FormHelperText,
   FormLabel,
   Link,
+  Modal,
   Typography,
   makeStyles,
 } from '@material-ui/core';
@@ -20,7 +22,7 @@ import { SubmitButton } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { RetrieveEntropyViewProps } from './RetrieveEntropy';
-import { ShowRetrievedEntropyModal } from './ShowRetrievedEntropyModal.view';
+import { ShowRetrievedEntropyModal } from './ShowRetrievedEntropy.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -80,9 +82,7 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
   const classes = useStyles();
   const [entropy, setEntropy] = useState('');
   const isMountedRef = useIsMountedRef();
-  const handleCloseModal = () => {
-    setEntropy('');
-  };
+  const handleCloseModal = () => setEntropy('');
   const { t } = useTranslation('RetrieveEntropyView');
 
   return (
@@ -185,7 +185,29 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
           )}
         </Formik>
       </Box>
-      <ShowRetrievedEntropyModal open={!!entropy} entropy={entropy} onClose={handleCloseModal} />
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        className={classes.modal}
+        open={!!entropy}
+        onClose={handleCloseModal}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 1000,
+        }}
+        disableAutoFocus
+        disableEnforceFocus
+        disableBackdropClick
+      >
+        <div>
+          <ShowRetrievedEntropyModal
+            open={!!entropy}
+            entropy={entropy}
+            onClose={handleCloseModal}
+          />
+        </div>
+      </Modal>
     </Container>
   );
 };

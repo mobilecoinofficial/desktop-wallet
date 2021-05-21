@@ -4,7 +4,7 @@ import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import '../../../../testUtils/i18nForTests';
-import { ShowRetrievedEntropyModal } from './ShowRetrievedEntropyModal.view';
+import { ShowRetrievedEntropyModal } from './ShowRetrievedEntropy.view';
 
 jest.setTimeout(30000);
 

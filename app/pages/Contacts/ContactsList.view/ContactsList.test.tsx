@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, userEvent } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
 
@@ -10,7 +10,7 @@ test('Displays list', () => {
   const handleAddClick = jest.fn();
   const handleEditClick = jest.fn();
 
-  const { getByText } = render(
+  const { container } = render(
     <ContactsList
       contactsList={[
         {
@@ -40,13 +40,13 @@ test('Displays list', () => {
     />
   );
 
-  expect(getByText('Foxtrot Golf')).toBeInTheDocument();
-  expect(getByText('Kilo Lima')).toBeInTheDocument();
-  expect(getByText('Sierra Tango')).toBeInTheDocument();
+  expect(container.innerHTML.includes('Foxtrot Golf')).toBeTruthy();
+  expect(container.innerHTML.includes('Kilo Lima')).toBeTruthy();
+  expect(container.innerHTML.includes('Sierra Tango')).toBeTruthy();
 
-  expect(getByText('F1')).toBeInTheDocument();
-  expect(getByText('K2')).toBeInTheDocument();
-  expect(getByText('ST')).toBeInTheDocument();
+  expect(container.innerHTML.includes('F1')).toBeTruthy();
+  expect(container.innerHTML.includes('K2')).toBeTruthy();
+  expect(container.innerHTML.includes('ST')).toBeTruthy();
 
   fireEvent.click(screen.getByText('Foxtrot Golf'));
   expect(handleEditClick).toHaveBeenCalledWith('11111');
@@ -59,4 +59,19 @@ test('Displays list', () => {
 
   fireEvent.click(screen.getByText('+'));
   expect(handleAddClick).toHaveBeenCalledTimes(1);
+
+  fireEvent.click(container.querySelector('[id="show_fav"]') as HTMLInputElement);
+  expect(container.innerHTML.includes('K2')).not.toBeTruthy();
+  expect(container.innerHTML.includes('F1')).toBeTruthy();
+  expect(container.innerHTML.includes('ST')).toBeTruthy();
+
+  fireEvent.click(container.querySelector('[id="show_all"]') as HTMLInputElement);
+  expect(container.innerHTML.includes('F1')).toBeTruthy();
+  expect(container.innerHTML.includes('K2')).toBeTruthy();
+  expect(container.innerHTML.includes('ST')).toBeTruthy();
+
+  userEvent.type(container.querySelector('[id="standard-basic"]') as HTMLInputElement, 'T');
+  expect(container.innerHTML.includes('K2')).not.toBeTruthy();
+  expect(container.innerHTML.includes('F1')).toBeTruthy();
+  expect(container.innerHTML.includes('ST')).toBeTruthy();
 });

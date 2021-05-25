@@ -8,7 +8,7 @@ import { ConsumeGiftForm } from './ConsumeGiftForm.view';
 
 export default {
   component: ConsumeGiftForm,
-  title: 'Gift/Build Form',
+  title: 'Gift/Consume Gift Form',
 };
 
 const Template: Story<ComponentProps<typeof ConsumeGiftForm>> = (args: ConsumeGiftFormProps) => (

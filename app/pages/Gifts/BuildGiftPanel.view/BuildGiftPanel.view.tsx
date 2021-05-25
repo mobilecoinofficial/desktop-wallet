@@ -23,7 +23,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
@@ -46,6 +45,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
+  codeClicked,
   deleteStoredGiftCodeB58,
   getAllGiftCodes,
   giftCodes,
@@ -74,11 +74,8 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
     setPendingDeleteCode(EMPTY_PENDING_DELETE_CODE);
   };
 
-  const handleCopyClick = (code: string) => () => {
-    clipboard.writeText(code);
-    enqueueSnackbar(t('giftCodeCopied'), {
-      variant: 'success',
-    });
+  const handleCopyClick = (code: string) => {
+    codeClicked(code, t('giftCodeCopied'));
   };
 
   const handleConfirmDelete = async () => {
@@ -122,6 +119,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}
               submitGiftCode={submitGiftCode}
+              codeClicked={codeClicked}
             />
           </Box>
         </CardContent>
@@ -169,7 +167,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                               <Tooltip title={t('clickToCopy') as string} placement="right" arrow>
                                 <div
                                   className={classes.clickable}
-                                  onClick={handleCopyClick(giftCode.giftCodeB58)}
+                                  onClick={() => handleCopyClick(giftCode.giftCodeB58)}
                                   aria-hidden="true"
                                 >
                                   <IconButton>
@@ -216,6 +214,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                       b58Code: pendingDeleteCode[0],
                       name: 'Gift Code',
                     }}
+                    codeClicked={codeClicked}
                   />
                   <Box py={2} display="flex" justifyContent="space-between">
                     <Typography color="textPrimary">{t('giftValue')}</Typography>

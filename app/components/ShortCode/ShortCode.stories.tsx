@@ -6,7 +6,7 @@ import { ShortCode } from './ShortCode.view';
 
 export default {
   component: ShortCode,
-  title: 'ShortCode',
+  title: 'Components/Short Code',
 };
 
 const Template: Story<ComponentProps<typeof ShortCode>> = (args) => <ShortCode {...args} />;

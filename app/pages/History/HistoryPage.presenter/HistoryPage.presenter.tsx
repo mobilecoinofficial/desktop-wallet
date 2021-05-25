@@ -10,7 +10,7 @@ import useFullService from '../../../hooks/useFullService';
 import { fetchAllTransactionLogsForAccount, fetchAllTxosForAccount } from '../../../services';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { HistoryList } from '../HistoryList.view';
-import TransactionDetailsView from '../TransactionDetails.view';
+import { TransactionDetails } from '../TransactionDetails.view';
 
 const HISTORY = 'history';
 const DETAILS = 'details';
@@ -49,7 +49,6 @@ const HistoryPage: FC = () => {
     }
     return [] as TransactionLog[];
   };
-
   // CREATE VIEW
 
   if (transactionLogs === null) {
@@ -82,7 +81,7 @@ const HistoryPage: FC = () => {
           */
 
       return (
-        <TransactionDetailsView
+        <TransactionDetails
           comment="this should come from metadata"
           onClickBack={() => setShowing(HISTORY)}
           onChangedComment={() => {}}

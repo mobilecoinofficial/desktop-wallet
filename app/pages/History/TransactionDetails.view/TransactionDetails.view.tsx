@@ -72,16 +72,18 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
   );
 
   const renderSenderOrReceiver = () => {
-    let aliasOrAddress: string | ReactNode = (
-      <Typography className={classes.negative} display="inline">
-        {t('orphaned')}
-      </Typography>
-    );
+    let aliasOrAddress: string | ReactNode;
     if (assignedAddressId || recipientAddressId) {
       aliasOrAddress = contact ? (
         contact.alias
       ) : (
         <ShortCode code={assignedAddressId || recipientAddressId || ''} />
+      );
+    } else {
+      aliasOrAddress = (
+        <Typography className={classes?.negative} display="inline">
+          {t('orphaned')}
+        </Typography>
       );
     }
 
@@ -129,7 +131,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
 
       {sign === '+' && !assignedAddressId && (
         <Card className={classes.card}>
-          <Typography variant="body2" color="textPrimary" className={classes.negative}>
+          <Typography variant="body2" className={classes?.negative}>
             {t('orphanedTitle')}
           </Typography>
           <CardContent>

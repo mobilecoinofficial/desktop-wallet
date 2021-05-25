@@ -2,6 +2,8 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { clipboard } from 'electron';
+import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import { TabPanel } from '../../../components/TabPanel';
@@ -47,9 +49,19 @@ const GiftsPage: FC = () => {
     setSelectedTabIndex(newSelectedTabIndex);
   };
 
+  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
+
+  const handleCodeClicked = (code: string, text: string) => {
+    clipboard.writeText(code);
+    enqueueSnackbar(text, {
+      variant: 'success',
+    });
+  };
+
   const BuildGift = () => (
     <BuildGiftPanel
       buildGiftCode={buildGiftCode}
+      codeClicked={handleCodeClicked}
       deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
       existingPin={existingPin as string}
       getAllGiftCodes={getAllGiftCodes}

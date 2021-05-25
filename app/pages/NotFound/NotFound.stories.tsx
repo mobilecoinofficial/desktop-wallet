@@ -7,7 +7,7 @@ import { NotFoundPage } from './NotFound.view';
 
 export default {
   component: NotFoundPage,
-  title: 'Not Found',
+  title: 'NotFound/Not Found',
 };
 
 const Template: Story<ComponentProps<typeof NotFoundPage>> = (args) => (

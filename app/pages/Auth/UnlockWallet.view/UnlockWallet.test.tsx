@@ -9,7 +9,7 @@ import { UnlockWalletView } from './UnlockWallet.view';
 const FAKE_PASSWORD = 'fakepassword';
 
 const setUpTest = (unlockWallet = jest.fn()) => {
-  const { container } = render(<UnlockWalletView unlockWallet={unlockWallet} />);
+  const { container } = render(<UnlockWalletView unlockWallet={unlockWallet} accounts={[]} />);
   const passwordField = container.querySelector('[name="password"]') as HTMLInputElement;
   const submitButton = container.querySelector('[data-testid="submit-button"]') as HTMLInputElement;
   return { container, passwordField, submitButton, unlockWallet };

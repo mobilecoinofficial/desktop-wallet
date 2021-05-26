@@ -15,6 +15,7 @@ import useFullService from '../../../hooks/useFullService';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
 import { changePassword, retrieveEntropy, setPin } from '../../../services';
 import type { Theme } from '../../../theme';
+import { getKeychainAccounts, setKeychainAccount } from '../../../utils/keytarService';
 import { ChangePasswordView } from '../ChangePassword.view';
 import { ChangePinView } from '../ChangePin.view';
 import { ConfigureFullServiceView } from '../ConfigureFullService.view';
@@ -63,6 +64,8 @@ const SettingsPage: FC = () => {
       setShowing(path);
     }
   };
+
+  const accounts = getKeychainAccounts();
 
   const settingsOptionsList = [
     {
@@ -119,7 +122,14 @@ const SettingsPage: FC = () => {
       );
 
     case CHANGE_PASSWORD:
-      return <ChangePasswordView onClickBack={onClickBack} changePassword={changePassword} />;
+      return (
+        <ChangePasswordView
+          accounts={accounts}
+          onClickBack={onClickBack}
+          changePassword={changePassword}
+          setKeychainAccount={setKeychainAccount}
+        />
+      );
 
     case CHANGE_PIN:
       return (

@@ -138,6 +138,7 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
               if (typeof entropyString !== 'string') {
                 throw new Error(t('error'));
               }
+              /* istanbul ignore next */
               if (isMountedRef.current) {
                 setStatus({ success: true });
                 setSubmitting(false);
@@ -145,6 +146,7 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
                 setEntropy(entropyString);
               }
             } catch (err) {
+              /* istanbul ignore next */
               if (isMountedRef.current) {
                 setStatus({ success: false });
                 setErrors({ submit: err.message });

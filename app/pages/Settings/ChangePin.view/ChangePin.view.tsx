@@ -144,6 +144,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                 convertMobStringToPicoMobString(values.pinThresholdMob),
                 values.currentPassword
               );
+              /* istanbul ignore next */
               if (isMountedRef.current) {
                 setSubmitting(false);
                 enqueueSnackbar(t('enqueue'), { variant: 'success' });
@@ -159,6 +160,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                 });
               }
             } catch (err) {
+              /* istanbul ignore next */
               if (isMountedRef.current) {
                 setStatus({ success: false });
                 setErrors({ submit: err.message });

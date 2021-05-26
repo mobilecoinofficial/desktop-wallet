@@ -108,6 +108,7 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
               onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 try {
                   setSubmitting(true);
+                  /* istanbul ignore next */
                   if (isMountedRef.current) {
                     setSubmitting(false);
                     const { newPin, pinThresholdMob } = values;
@@ -116,6 +117,7 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
                     setStatus({ success: true });
                   }
                 } catch (err) {
+                  /* istanbul ignore next */
                   if (isMountedRef.current) {
                     setStatus({ success: false });
                     setErrors({ submit: err.message });

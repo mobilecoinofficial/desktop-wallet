@@ -56,11 +56,13 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
         await importAccount(accountName, entropy, password);
       }
 
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmitting(false);
       }
     } catch (err) {
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: false });
         setErrors({ submit: err.message });

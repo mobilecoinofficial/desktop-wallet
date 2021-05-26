@@ -43,11 +43,13 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
     try {
       await createAccount(values.accountName, values.password);
 
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmitting(false);
       }
     } catch (err) {
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: false });
         setErrors({ submit: err.message });

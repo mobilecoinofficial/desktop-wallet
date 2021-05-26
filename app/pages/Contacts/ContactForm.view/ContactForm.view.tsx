@@ -133,6 +133,7 @@ const ContactForm: FC<ContactFormProps> = ({
 
                 try {
                   setSubmitting(true);
+                  /* istanbul ignore next */
                   if (isMountedRef.current) {
                     setSubmitting(false);
                     setStatus({ success: true });
@@ -145,6 +146,7 @@ const ContactForm: FC<ContactFormProps> = ({
                     });
                   }
                 } catch (err) {
+                  /* istanbul ignore next */
                   if (isMountedRef.current) {
                     setStatus({ success: false });
                     setErrors({ submit: err.message });

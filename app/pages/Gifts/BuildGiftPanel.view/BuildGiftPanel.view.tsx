@@ -90,6 +90,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
         variant: 'success',
       });
     } catch (err) {
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         enqueueSnackbar(err.message, {
           variant: 'error',

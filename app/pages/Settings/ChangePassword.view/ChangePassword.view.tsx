@@ -129,6 +129,7 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
             try {
               setSubmitting(true);
               await changePassword(values.oldPassword, values.newPassword);
+              /* istanbul ignore next */
               if (isMountedRef.current) {
                 enqueueSnackbar(t('enqueue'), {
                   variant: 'success',
@@ -138,6 +139,7 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
                 resetForm();
               }
             } catch (err) {
+              /* istanbul ignore next */
               if (isMountedRef.current) {
                 setStatus({ success: false });
                 setErrors({ submit: err.message });

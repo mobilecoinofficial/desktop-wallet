@@ -2,6 +2,8 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { clipboard } from 'electron';
+import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import { TabPanel } from '../../../components/TabPanel';
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const GiftsPage: FC = () => {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { t } = useTranslation('GiftingView');
 
@@ -47,6 +50,13 @@ const GiftsPage: FC = () => {
     setSelectedTabIndex(newSelectedTabIndex);
   };
 
+  const handleCopyClick = (code: string) => () => {
+    clipboard.writeText(code);
+    enqueueSnackbar(t('giftCodeCopied'), {
+      variant: 'success',
+    });
+  };
+
   const BuildGift = () => (
     <BuildGiftPanel
       buildGiftCode={buildGiftCode}
@@ -54,6 +64,7 @@ const GiftsPage: FC = () => {
       existingPin={existingPin as string}
       getAllGiftCodes={getAllGiftCodes}
       giftCodes={giftCodes}
+      handleCopyClick={handleCopyClick}
       isSyncedBuffered={isSyncedBuffered}
       pinThresholdPmob={pinThresholdPmob}
       selectedAccount={selectedAccount}

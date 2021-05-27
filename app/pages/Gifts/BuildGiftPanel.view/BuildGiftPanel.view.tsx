@@ -23,7 +23,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
@@ -51,6 +50,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   giftCodes,
   buildGiftCode,
   existingPin,
+  handleCopyClick,
   isSyncedBuffered,
   pinThresholdPmob,
   selectedAccount,
@@ -72,13 +72,6 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   const handleDialogClose = () => {
     setDialogOpen(false);
     setPendingDeleteCode(EMPTY_PENDING_DELETE_CODE);
-  };
-
-  const handleCopyClick = (code: string) => () => {
-    clipboard.writeText(code);
-    enqueueSnackbar(t('giftCodeCopied'), {
-      variant: 'success',
-    });
   };
 
   const handleConfirmDelete = async () => {
@@ -151,7 +144,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {giftCodes?.map((giftCode) => (
+                      {giftCodes?.map((giftCode, ind) => (
                         <TableRow key={giftCode.giftCodeB58}>
                           <TableCell component="th" scope="row">
                             <ShortCode code={giftCode.giftCodeB58} />
@@ -170,10 +163,10 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                               <Tooltip title={t('clickToCopy') as string} placement="right" arrow>
                                 <div
                                   className={classes.clickable}
-                                  onClick={handleCopyClick(giftCode.giftCodeB58)}
+                                  onClick={() => handleCopyClick(giftCode.giftCodeB58)}
                                   aria-hidden="true"
                                 >
-                                  <IconButton>
+                                  <IconButton id={`copy-${ind}`}>
                                     <CopyIcon />
                                   </IconButton>
                                 </div>
@@ -187,7 +180,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                                   )}
                                   aria-hidden="true"
                                 >
-                                  <IconButton>
+                                  <IconButton id={`delete-${ind}`}>
                                     <TrashcanIcon />
                                   </IconButton>
                                 </div>
@@ -230,10 +223,10 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                   <DialogContentText color="textPrimary">{t('deleteDialogText')}</DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={handleDialogClose} color="primary" autoFocus>
+                  <Button onClick={handleDialogClose} color="primary" autoFocus id="cancel-delete">
                     {t('cancelButton')}
                   </Button>
-                  <Button onClick={handleConfirmDelete} color="primary">
+                  <Button onClick={handleConfirmDelete} color="primary" id="confirm-delete">
                     {t('deleteButton')}
                   </Button>
                 </DialogActions>

@@ -75,10 +75,6 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
     setPendingDeleteCode(EMPTY_PENDING_DELETE_CODE);
   };
 
-  const handleCopyClick = (code: string) => {
-    codeClicked(code, t('giftCodeCopied'));
-  };
-
   const handleConfirmDelete = async () => {
     handleDialogClose();
     try {

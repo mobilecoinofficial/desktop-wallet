@@ -149,14 +149,13 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
       if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
         throw new Error(t('confirmationNotFound'));
       }
-
       await submitGiftCode({
         fromAccountId: selectedAccount.account.accountId,
         giftCodeB58: confirmation.giftCodeB58,
         txProposal: confirmation.txProposal,
       });
-      await getAllGiftCodes();
 
+      await getAllGiftCodes();
       /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: true });

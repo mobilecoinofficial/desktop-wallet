@@ -52,9 +52,11 @@ const GiftsPage: FC = () => {
 
   const handleCodeClicked = (code: string, text: string) => {
     clipboard.writeText(code);
-    enqueueSnackbar(text, {
-      variant: 'success',
-    });
+    if (text) {
+      enqueueSnackbar(text, {
+        variant: 'success',
+      });
+    }
   };
 
   const BuildGift = () => (
@@ -65,7 +67,7 @@ const GiftsPage: FC = () => {
       existingPin={existingPin as string}
       getAllGiftCodes={getAllGiftCodes}
       giftCodes={giftCodes}
-      handleCopyClick={handleCopyClick}
+      handleCopyClick={handleCodeClicked}
       isSyncedBuffered={isSyncedBuffered}
       pinThresholdPmob={pinThresholdPmob}
       selectedAccount={selectedAccount}

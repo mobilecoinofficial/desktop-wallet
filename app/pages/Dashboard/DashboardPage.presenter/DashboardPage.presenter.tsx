@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) => {
   const classes = useStyles();
   const { selectedAccount } = useFullService();
-  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleCodeClicked = (code: string, text: string) => {
     clipboard.writeText(code);

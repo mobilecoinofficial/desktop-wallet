@@ -37,7 +37,6 @@ const GiftsPage: FC = () => {
   const { enqueueSnackbar = () => {} } = useSnackbar() || {};
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { t } = useTranslation('GiftingView');
-
   const {
     giftCodes,
     pin: existingPin,

@@ -8,6 +8,27 @@ jobs:
     resource_class: xlarge
     steps:
       - checkout
+      - run:
+          name: Update system package lists
+          command: sudo apt-get update
+      - run:
+          name: Install some pre-requisite packages
+          command: sudo apt-get --assume-yes --quiet install curl xvfb
+      - run:
+          name: Start display server for Atom
+          command: /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1024x768x16 +extension RANDR
+          background: true
+      - run:
+          name: Download Atom build script
+          command: curl -s -O https://raw.githubusercontent.com/atom/ci/master/build-package.sh
+      - run:
+          name: Make build script executable
+          command: chmod u+x build-package.sh
+      - run:
+          name: Run package tests
+          command: ./build-package.sh
+      # On MacOS:
+      # - run: caffeinate -s build-package.sh
       - node/install:
           node-version: '15.8.0'
           install-yarn: true

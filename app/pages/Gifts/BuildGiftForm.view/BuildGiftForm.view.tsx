@@ -91,6 +91,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // this component manageable.
 const BuildGiftForm: FC<BuildGiftFormProps> = ({
   buildGiftCode,
+  codeClicked,
   getAllGiftCodes,
   existingPin,
   isSyncedBuffered,
@@ -478,6 +479,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                         b58Code: confirmation?.giftCodeB58,
                         name: t('pending'),
                       }}
+                      codeClicked={codeClicked}
                     />
                   ) : (
                     <Box display="flex" justifyContent="center" py={27}>

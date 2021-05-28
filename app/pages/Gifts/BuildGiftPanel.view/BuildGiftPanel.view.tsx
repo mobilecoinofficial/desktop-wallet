@@ -45,6 +45,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
+  codeClicked,
   deleteStoredGiftCodeB58,
   getAllGiftCodes,
   giftCodes,
@@ -72,6 +73,10 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   const handleDialogClose = () => {
     setDialogOpen(false);
     setPendingDeleteCode(EMPTY_PENDING_DELETE_CODE);
+  };
+
+  const handleCopyClick = (code: string) => {
+    codeClicked(code, t('giftCodeCopied'));
   };
 
   const handleConfirmDelete = async () => {
@@ -116,6 +121,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}
               submitGiftCode={submitGiftCode}
+              codeClicked={codeClicked}
             />
           </Box>
         </CardContent>
@@ -210,6 +216,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                       b58Code: pendingDeleteCode[0],
                       name: 'Gift Code',
                     }}
+                    codeClicked={codeClicked}
                   />
                   <Box py={2} display="flex" justifyContent="space-between">
                     <Typography color="textPrimary">{t('giftValue')}</Typography>

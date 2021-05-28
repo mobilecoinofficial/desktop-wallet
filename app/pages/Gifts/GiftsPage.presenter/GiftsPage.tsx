@@ -50,9 +50,11 @@ const GiftsPage: FC = () => {
     setSelectedTabIndex(newSelectedTabIndex);
   };
 
-  const handleCopyClick = (code: string) => () => {
+  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
+
+  const handleCodeClicked = (code: string, text: string) => {
     clipboard.writeText(code);
-    enqueueSnackbar(t('giftCodeCopied'), {
+    enqueueSnackbar(text, {
       variant: 'success',
     });
   };
@@ -60,6 +62,7 @@ const GiftsPage: FC = () => {
   const BuildGift = () => (
     <BuildGiftPanel
       buildGiftCode={buildGiftCode}
+      codeClicked={handleCodeClicked}
       deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
       existingPin={existingPin as string}
       getAllGiftCodes={getAllGiftCodes}

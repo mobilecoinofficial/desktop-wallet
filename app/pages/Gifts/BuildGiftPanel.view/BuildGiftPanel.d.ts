@@ -9,6 +9,7 @@ import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export interface BuildGiftPanelProps {
   buildGiftCode: BuildGiftCodeService;
+  codeClicked: (code: string, text: string) => void;
   deleteStoredGiftCodeB58: DeleteStoredGiftCodeB58Service;
   getAllGiftCodes: GetAllGiftCodesService;
   existingPin: string;

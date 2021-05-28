@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const GiftsPage: FC = () => {
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { t } = useTranslation('GiftingView');
 
@@ -49,8 +49,6 @@ const GiftsPage: FC = () => {
   const handleChange = (_event: ChangeEvent<HTMLElement>, newSelectedTabIndex: number) => {
     setSelectedTabIndex(newSelectedTabIndex);
   };
-
-  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
 
   const handleCodeClicked = (code: string, text: string) => {
     clipboard.writeText(code);

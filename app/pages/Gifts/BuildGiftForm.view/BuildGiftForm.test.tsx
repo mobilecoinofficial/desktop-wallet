@@ -91,7 +91,6 @@ describe('Build Gift Form', () => {
 
     await act(async () => userEvent.click(showGiftCode));
     await waitFor(() => expect(parent.innerHTML.includes('Gift Code (Pending)')).toBeTruthy());
-    console.log(parent.innerHTML);
     await waitFor(() => expect(confirmModal.disabled).toBeFalsy());
 
     await act(async () => userEvent.click(confirmModal));

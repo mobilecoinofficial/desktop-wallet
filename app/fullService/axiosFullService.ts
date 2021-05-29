@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import snakeCaseKeys from 'snakecase-keys';
 
-import skipKeysCamelCase from './utils/skipKeysCamelCase';
+import { skipKeysCamelCase } from './utils';
 
 interface FullServiceResponse extends AxiosResponse {
   data: {

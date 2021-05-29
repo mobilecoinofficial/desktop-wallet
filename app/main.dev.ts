@@ -25,6 +25,7 @@ import getPlatform from './get-platform';
 import i18n from './i18next.config';
 import menuFactoryService from './menuFactory';
 import * as localStore from './utils/LocalStore';
+import { initLog, writeLog } from './utils/logger';
 
 import './utils/autoupdate';
 
@@ -194,6 +195,8 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
+  initLog(mainWindow);
+
   i18n.on('loaded', () => {
     i18n.changeLanguage(languages.EN_US);
     i18n.off('loaded');
@@ -276,9 +279,7 @@ app.on('activate', () => {
  * Add custom message listeners...
  */
 
-ipcMain.on('close-app', () => {
-  app.quit();
-});
+ipcMain.on('close-app', () => app.quit());
 
 ipcMain.on('sync-status', (_e, status) => {
   syncStatus = status;
@@ -314,7 +315,7 @@ ipcMain.on('get-initial-translations', (event) => {
 
 const shutDownFullService = () => {
   const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
-  console.log('Leave Full-Service running:', leaveFullServiceRunning);
+  writeLog(`Leave Full-Service running: ${leaveFullServiceRunning}`);
   if (!leaveFullServiceRunning) {
     // TODO -- probably should make the binaries a little more specific
     // e.g., mobilecoin-full-service
@@ -322,9 +323,7 @@ const shutDownFullService = () => {
   }
 };
 
-app.on('will-quit', () => {
-  shutDownFullService();
-});
+app.on('will-quit', shutDownFullService);
 
 // Filter the remote module
 const allowedModules = new Set(['electron-log']);

@@ -435,6 +435,13 @@
     "settings": "Settings"
   },
 
+  "SavePasswordModal": {
+    "accountNameRequired": "Account Name Required",
+    "notNow": "Not Now",
+    "save": "Save",
+    "saveToKeychain": "Save Password to Keychain?"
+  },
+
   "SendMobForm": {
     "accountBalance": "Account Balance",
     "accountName": "Account Name",

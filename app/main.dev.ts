@@ -17,6 +17,7 @@ import path from 'path';
 import { app, BrowserWindow, dialog, ipcMain, nativeTheme } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
+import keytar from 'keytar';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
@@ -307,10 +308,39 @@ ipcMain.on('get-initial-translations', (event) => {
         translation: i18n.getResourceBundle(languages.EN_US, config.namespace),
       },
     };
-
     // eslint-disable-next-line no-param-reassign
     event.returnValue = initial;
   });
+});
+
+ipcMain.on('set-account', (_event, accountName, password) => {
+  keytar.setPassword('MobileCoin', accountName, password);
+});
+
+ipcMain.on('fetch-accounts', (event) => {
+  keytar
+    .findCredentials('MobileCoin')
+    // eslint-disable-next-line promise/always-return
+    .then((accounts) => {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = accounts;
+    })
+    .catch(() => {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = [];
+    });
+});
+
+ipcMain.on('remove-accounts', (event) => {
+  keytar
+    .findCredentials('MobileCoin')
+    .then((accounts) =>
+      accounts.forEach(({ account }) => keytar.deletePassword('MobileCoin', account))
+    )
+    .catch(() => {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = [];
+    });
 });
 
 const shutDownFullService = () => {

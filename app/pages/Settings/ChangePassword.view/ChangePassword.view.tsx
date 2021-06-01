@@ -12,12 +12,12 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { TextField } from 'formik-material-ui';
+import { Checkbox, TextField } from 'formik-material-ui';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
+import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import { PASSWORD_MIN_SIZE, PASSWORD_MAX_SIZE } from '../../../constants/codes';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
@@ -75,13 +75,24 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ChangePasswordView: FC<ChangePasswordViewProps> = ({
+  accounts,
   onClickBack,
   changePassword,
+  setKeychainAccount,
 }: ChangePasswordViewProps) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ChangePasswordView');
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (accounts.length > 0) {
+      setAnchorEl(event.currentTarget);
+    }
+  };
+
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -110,9 +121,11 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
       <Box flexGrow={1} mt={3}>
         <Formik
           initialValues={{
+            checkedSavePassword: false,
             newPassword: '',
             newPasswordConfirmation: '',
-            oldPassword: '',
+            password: '',
+
             submit: null,
           }}
           validationSchema={Yup.object().shape({
@@ -123,13 +136,18 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
             newPasswordConfirmation: Yup.string()
               .oneOf([Yup.ref('newPassword')], t('passwordConfirmationRef'))
               .required(t('passwordConfirmationRequired')),
-            oldPassword: Yup.string().required(t('oldPasswordRequired')),
+            password: Yup.string().required(t('oldPasswordRequired')),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
               setSubmitting(true);
-              await changePassword(values.oldPassword, values.newPassword);
-              /* istanbul ignore next */
+              if (values.checkedSavePassword) {
+                const currentAccount = accounts[0].account;
+                await changePassword(values.password, values.newPassword);
+                setKeychainAccount(currentAccount, values.newPassword);
+              } else {
+                await changePassword(values.password, values.newPassword);
+              }
               if (isMountedRef.current) {
                 enqueueSnackbar(t('enqueue'), {
                   variant: 'success',
@@ -148,7 +166,7 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
             }
           }}
         >
-          {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+          {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm, values }) => (
             <Form>
               <Box pt={4}>
                 <FormLabel component="legend">
@@ -159,8 +177,9 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
                   fullWidth
                   label={t('oldPasswordLabel')}
                   margin="normal"
-                  name="oldPassword"
+                  name="password"
                   type="password"
+                  onClick={handleClick}
                 />
                 <Field
                   component={TextField}
@@ -179,6 +198,36 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
                   type="password"
                 />
               </Box>
+              {accounts.length > 0 && (
+                <Box pt={1} display="flex">
+                  <Box display="flex" alignItems="center" flexDirection="row-reverse">
+                    <Box>
+                      <Typography display="inline" color="textSecondary">
+                        Save passphrase to keychain?
+                      </Typography>
+                    </Box>
+                    <Field
+                      component={Checkbox}
+                      type="checkbox"
+                      name="checkedSavePassword"
+                      disabled={
+                        values.newPasswordConfirmation === '' ||
+                        values.newPasswordConfirmation !== values.newPassword
+                      }
+                      indeterminate={
+                        values.newPasswordConfirmation === '' ||
+                        values.newPasswordConfirmation !== values.newPassword
+                      }
+                    />
+                  </Box>
+                </Box>
+              )}
+              <SavedPasswordsModal
+                accounts={accounts}
+                anchorEl={anchorEl}
+                handleClose={handleClose}
+                setFieldValue={setFieldValue}
+              />
               {errors.submit && (
                 <Box mt={3}>
                   <FormHelperText error>{errors.submit}</FormHelperText>

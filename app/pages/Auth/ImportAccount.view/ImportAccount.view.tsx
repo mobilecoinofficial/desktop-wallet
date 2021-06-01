@@ -19,6 +19,7 @@ import type { ImportAccountViewProps } from './ImportAccount.d';
 
 interface ImportAccountFormValues {
   accountName: string;
+  checkedSavePassword: boolean;
   checkedTerms: boolean;
   entropy: string;
   password: string;
@@ -29,6 +30,7 @@ interface ImportAccountFormValues {
 const ImportAccountView: FC<ImportAccountViewProps> = ({
   importAccount,
   importLegacyAccount,
+  setKeychainAccount,
 }: ImportAccountViewProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ImportAccountForm');
@@ -45,7 +47,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
     values: ImportAccountFormValues,
     helpers: FormikHelpers<ImportAccountFormValues>
   ) => {
-    const { accountName, entropy, password } = values;
+    const { accountName, checkedSavePassword, entropy, password } = values;
     const { setStatus, setErrors, setSubmitting } = helpers;
     setSubmitting(true);
 
@@ -55,6 +57,8 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
       } else {
         await importAccount(accountName, entropy, password);
       }
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      checkedSavePassword ? setKeychainAccount(accountName, password) : null;
 
       /* istanbul ignore next */
       if (isMountedRef.current) {
@@ -75,6 +79,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
     <Formik
       initialValues={{
         accountName: '',
+        checkedSavePassword: false,
         checkedTerms: false,
         entropy: '',
         password: '',
@@ -83,7 +88,12 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
       }}
       onSubmit={handleOnSubmit}
       validationSchema={Yup.object().shape({
-        accountName: Yup.string().max(64, t('accountNameValidation')),
+        accountName: Yup.string()
+          .max(64, t('accountNameValidation'))
+          .when('checkedSavePassword', {
+            is: true,
+            then: Yup.string().required('Account Name is required to save password'),
+          }),
         // CBB: It appears that the checkedTerms error message is not working properly.
         checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
         entropy: Yup.string()
@@ -99,7 +109,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
           .required(t('passwordConfirmationRequired')),
       })}
     >
-      {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+      {({ errors, isSubmitting, dirty, isValid, values, submitForm }) => (
         <Form name="ImportAccountFormName">
           <Field
             id="ImportAccountForm-accountNameField"
@@ -108,6 +118,11 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
             label={t('nameLabel')}
             name="accountName"
           />
+          {values.checkedSavePassword && !values.accountName && (
+            <FormHelperText focused>
+              Account Name is optional, but required to save passphrase
+            </FormHelperText>
+          )}
           <Field
             id="ImportAccountForm-entropyField"
             component={TextField}
@@ -135,6 +150,26 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
             name="passwordConfirmation"
             type="password"
           />
+          <Box pt={1} display="flex">
+            <Box display="flex" alignItems="center" flexDirection="row-reverse">
+              <Box>
+                <Typography display="inline">Save passphrase to keychain?</Typography>
+              </Box>
+              <Field
+                component={Checkbox}
+                type="checkbox"
+                name="checkedSavePassword"
+                disabled={
+                  values.passwordConfirmation === '' ||
+                  values.passwordConfirmation !== values.password
+                }
+                indeterminate={
+                  values.passwordConfirmation === '' ||
+                  values.passwordConfirmation !== values.password
+                }
+              />
+            </Box>
+          </Box>
           <Box pt={1} display="flex">
             <Box display="flex" alignItems="center" flexDirection="row-reverse">
               <Box>

@@ -8,7 +8,7 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
+import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { UnlockWalletViewProps } from './UnlockWallet.d';
 
@@ -17,7 +17,10 @@ interface UnlockWalletFormValues {
   submit: null;
 }
 
-const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWalletViewProps) => {
+const UnlockWalletView: FC<UnlockWalletViewProps> = ({
+  unlockWallet,
+  accounts,
+}: UnlockWalletViewProps) => {
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('UnlockWalletForm');
 
@@ -44,6 +47,14 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
     }
   };
 
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (accounts.length > 0) {
+      setAnchorEl(event.currentTarget);
+    }
+  };
+  const handleClose = () => setAnchorEl(null);
+
   return (
     <Formik
       initialValues={{ password: '', submit: null }}
@@ -52,7 +63,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
       })}
       onSubmit={handleOnSubmit}
     >
-      {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+      {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
         <Form name="UnlockWalletInnerForm">
           <Field
             data-testid="passwordField"
@@ -61,6 +72,13 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
             label={t('passwordLabel')}
             name="password"
             type="password"
+            onClick={handleClick}
+          />
+          <SavedPasswordsModal
+            accounts={accounts}
+            anchorEl={anchorEl}
+            handleClose={handleClose}
+            setFieldValue={setFieldValue}
           />
           {errors.submit && (
             <Box mt={3}>

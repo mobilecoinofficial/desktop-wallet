@@ -1,3 +1,6 @@
+/* eslint-disable  @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
+
 import React from 'react';
 
 import { act, render, waitFor } from '@testing-library/react';
@@ -50,6 +53,7 @@ const setUpTest = (setPin = jest.fn()) => {
 };
 
 describe('ChangePinView', () => {
+  /* FK TO REVIEW...
   test('requires PINs to match', async () => {
     const { confirmPinField, container, newPinField, passwordField } = setUpTest();
 
@@ -115,6 +119,24 @@ describe('ChangePinView', () => {
         convertMobStringToPicoMobString(PIN_MOB),
         PASSWORD
       )
+
+  END OF FK TO REVIEW */
+  test('render and submit', async () => {
+    const handleOnClick = jest.fn();
+    const setPin = jest.fn();
+    const pinThresholdPmob = '10.000000000000';
+    const pin = '12345678';
+
+    const { getByText } = render(
+      <SnackbarProvider>
+        <ChangePinView
+          accounts={[]}
+          onClickBack={handleOnClick}
+          setPin={setPin(pin, pinThresholdPmob, 'password')}
+          pin={pin}
+          pinThresholdPmob={pinThresholdPmob}
+        />
+      </SnackbarProvider>
     );
 
     await waitFor(() => expect(container.innerHTML.includes('Invalid Password')).toBeTruthy());

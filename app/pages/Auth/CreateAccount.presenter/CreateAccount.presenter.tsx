@@ -5,6 +5,7 @@ import { Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { createAccount } from '../../../services';
+import { setKeychainAccount } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view/CreateAccount.view';
 
 const CreateAccountPresenter: FC = () => {
@@ -21,7 +22,7 @@ const CreateAccountPresenter: FC = () => {
       <Typography variant="body2" color="textSecondary" paragraph>
         {t('description')}
       </Typography>
-      <CreateAccountView createAccount={createAccount} />
+      <CreateAccountView createAccount={createAccount} setKeychainAccount={setKeychainAccount} />
     </>
   );
 };

@@ -1,3 +1,4 @@
+import { removeKeychainAccounts } from '../../utils/keytarService';
 import axiosFullService from '../axiosFullService';
 
 const REMOVE_ACCOUNT_METHOD = 'remove_account';
@@ -18,6 +19,7 @@ const removeAccount = async ({ accountId }: RemoveAccountParams): Promise<Remove
     // TODO - I'll write up a better error handler
     throw new Error(error);
   } else {
+    removeKeychainAccounts();
     return result;
   }
 };

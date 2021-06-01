@@ -9,7 +9,6 @@
     "email": "wallet@mobilecoin.com"
   },
   "scripts": {
-    "preinstall": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/CheckOs.js",
     "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",
     "postinstall": "yarn electron-rebuild"
   },

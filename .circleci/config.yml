@@ -7,21 +7,24 @@ jobs:
     resource_class: xlarge
     steps:
       - checkout
+      # Linux specific dependencies
       - run:
           name: Update system package lists
           command: sudo apt-get update
-      - run:
-          name: Install some pre-requisite packages
-          command: sudo apt-get --assume-yes --quiet install curl xvfb
+      - run: sudo apt-get install libsecret-1-dev
       - node/install:
           node-version: '15.8.0'
           install-yarn: true
           install-npm: false
       # Install dependencies - the node Orb takes care of installation and dependency caching
       - node/install-packages:
-          cache-version: v2
+          cache-version: v3
           pkg-manager: yarn
           override-ci-command: yarn install --ignore-engines
+      - node/install-packages:
+          pkg-manager: yarn
+          override-ci-command: yarn install --ignore-engines
+          app-dir: ~/project/app
       # Save workspace for subsequent jobs (i.e. test)
       - persist_to_workspace:
           root: .
@@ -37,9 +40,9 @@ jobs:
       # Reuse the workspace from the build job
       - attach_workspace:
           at: .
-      - checkout
-      - node/install-packages:
-          pkg-manager: yarn
+      # - checkout
+      # - node/install-packages:
+      #     pkg-manager: yarn
       - run:
           command: |
             yarn build

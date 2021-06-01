@@ -1,6 +1,4 @@
-// const { exec } = require('child_process');
 import { execSync } from 'child_process';
-// import os from 'os';
 import path from 'path';
 
 // const os = require('os');
@@ -10,7 +8,6 @@ import path from 'path';
 // function puts(error, stdout) {
 //   sys.puts(stdout);
 // }
-console.log(process.platform);
 console.warn(`This platform is ${process.platform}`);
 // Run command depending on the OS
 if (process.platform === 'linux') {

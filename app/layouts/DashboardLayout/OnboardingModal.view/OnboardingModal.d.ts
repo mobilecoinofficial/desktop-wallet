@@ -1,4 +1,5 @@
-import type { StringHex, StringUInt64 } from '../../../types/SpecialStrings.d';
+import type { ConfirmEntropyKnownService, SetPinService } from '../../../services';
+import type { StringHex } from '../../../types/SpecialStrings.d';
 
 type PendingSecrets = {
   entropy: StringHex;
@@ -6,9 +7,9 @@ type PendingSecrets = {
 };
 
 export interface OnboardingModalProps {
-  confirmEntropyKnown: () => void;
+  confirmEntropyKnown: ConfirmEntropyKnownService;
   isEntropyKnown: boolean;
   isPinRequired: boolean;
   pendingSecrets: PendingSecrets | null;
-  setPin: (pin: string, pinThresholdPmob: StringUInt64, passphrase?: string) => Promise<void>;
+  setPin: SetPinService;
 }

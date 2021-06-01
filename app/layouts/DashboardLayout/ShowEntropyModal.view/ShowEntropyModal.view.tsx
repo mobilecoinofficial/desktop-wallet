@@ -49,9 +49,7 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
   const [showEntropy, setShowEntropy] = useState(false);
   const { t } = useTranslation('ShowEntropyModal');
 
-  const handleCloseModal = () => {
-    onEntropyConfirmed();
-  };
+  const handleCloseModal = () => onEntropyConfirmed();
 
   const toggleEntropy = () => {
     if (!canGoForward) {
@@ -65,9 +63,7 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
     setShowEntropy(false);
   };
 
-  const handleGoBack = () => {
-    setAlertOpen(false);
-  };
+  const handleGoBack = () => setAlertOpen(false);
 
   const handleFinalConfirm = () => {
     onEntropyConfirmed();

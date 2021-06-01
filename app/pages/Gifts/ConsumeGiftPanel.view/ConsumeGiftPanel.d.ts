@@ -1,7 +1,8 @@
+import type { CheckGiftCodeStatusService, ClaimGiftCodeService } from '../../../services';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export interface ConsumeGiftPanelProps {
-  checkGiftCodeStatus: () => unknown;
-  claimGiftCode: () => unknown;
+  checkGiftCodeStatus: CheckGiftCodeStatusService;
+  claimGiftCode: ClaimGiftCodeService;
   selectedAccount: SelectedAccount;
 }

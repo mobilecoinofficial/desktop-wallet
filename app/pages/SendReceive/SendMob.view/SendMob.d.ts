@@ -1,14 +1,20 @@
+import type {
+  AssignAddressForAccountService,
+  BuildTransactionService,
+  SubmitTransactionService,
+  UpdateContactsService,
+} from '../../../services';
 import type { Contact } from '../../../types/Contact.d';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export interface SendMobProps {
-  assignAddressForAccount: (a1: Record<string, unknown>) => void;
-  buildTransaction: (a1: Record<string, unknown>) => void;
+  assignAddressForAccount: AssignAddressForAccountService;
+  buildTransaction: BuildTransactionService;
   contacts: Contact[];
   existingPin: string;
   isSyncedBuffered: (a0: bigint, a1: bigint) => boolean;
   pinThresholdPmob: number;
   selectedAccount: SelectedAccount;
-  submitTransaction: (a1: Record<string, unknown>) => void;
-  updateContacts: () => void;
+  submitTransaction: SubmitTransactionService;
+  updateContacts: UpdateContactsService;
 }

@@ -17,11 +17,15 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton, MOBNumberFormat } from '../../../components';
+import { SubmitButton, MOBNumberFormat, SavedPasswordsModal } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
+import {
+  convertMobStringToPicoMobString,
+  convertPicoMobStringToMob,
+} from '../../../utils/convertMob';
 import isValidPin from '../../../utils/isValidPin';
 import { ChangePinViewProps } from './ChangePin';
 
@@ -77,6 +81,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ChangePinView: FC<ChangePinViewProps> = ({
+  accounts,
   onClickBack,
   pinThresholdPmob,
   pin,
@@ -93,38 +98,13 @@ const ChangePinView: FC<ChangePinViewProps> = ({
     event.target.select();
   };
 
-  // TODO - ya, this definitely shouldn't live here
-  const PICO_MOB_PRECISION = 12;
-
-  const ensureMobStringPrecision = (mobString: string): string => {
-    const num = Number(mobString);
-    if (Number.isNaN(num)) {
-      throw new Error('mobString is NaN');
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (accounts.length > 0) {
+      setAnchorEl(event.currentTarget);
     }
-
-    return num.toFixed(PICO_MOB_PRECISION);
   };
-
-  // FIX-ME: This logic should not live here.
-  // Right now, we are aggressively assuming the number format is US local.
-  // We should have a universal solution to this problem
-  // Likely a component similiar to MOBNumberFormat with the ability to get the
-  // picoMob string (StringUInt64) value as a ref
-  const convertMobStringToPicoMobString = (mobString: string): string =>
-    ensureMobStringPrecision(mobString).replace('.', '');
-
-  // FIX-ME - seriously should not live here!
-  const convertPicoMobStringToMob = (picoMobString: string): string => {
-    if (picoMobString.length <= 12) {
-      return `0.${'0'.repeat(12 - picoMobString.length)}${picoMobString}`;
-    }
-
-    return [
-      picoMobString.slice(0, picoMobString.length - 12),
-      '.',
-      picoMobString.slice(picoMobString.length - 12),
-    ].join('');
-  };
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -153,25 +133,25 @@ const ChangePinView: FC<ChangePinViewProps> = ({
       <Box flexGrow={1} mt={3}>
         <Formik
           initialValues={{
-            currentPassword: '',
             newPin: pin || '',
             newPinConfirmation: '',
+            password: '',
             pinThresholdMob: convertPicoMobStringToMob(pinThresholdPmob),
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-            currentPassword: Yup.string().required(t('currentPasswordRequired')),
             newPin: Yup.string().min(PIN_MIN_SIZE, t('pinSize')).required(t('pinRequired')),
             newPinConfirmation: Yup.string()
               .oneOf([Yup.ref('newPin')], t('pinConfirmationRef'))
               .required(t('pinConfirmationRequired')),
+            password: Yup.string().required(t('currentPasswordRequired')),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
               await setPin(
                 values.newPin,
                 convertMobStringToPicoMobString(values.pinThresholdMob),
-                values.currentPassword
+                values.password
               );
               if (isMountedRef.current) {
                 setSubmitting(false);
@@ -180,9 +160,9 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                 setStatus({ success: true });
                 resetForm({
                   values: {
-                    currentPassword: '',
                     newPin: values.newPin,
                     newPinConfirmation: '',
+                    password: '',
                     pinThresholdMob: values.pinThresholdMob,
                     submit: null,
                   },
@@ -197,7 +177,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
             }
           }}
         >
-          {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+          {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
             <Form>
               <Box>
                 <Field
@@ -206,8 +186,9 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                   fullWidth
                   label={t('currentPasswordLabel')}
                   margin="normal"
-                  name="currentPassword"
+                  name="password"
                   type="password"
+                  onClick={handleClick}
                 />
                 <Field
                   id="ChangePinView-newPinField"
@@ -248,6 +229,12 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                   }}
                 />
               </Box>
+              <SavedPasswordsModal
+                accounts={accounts}
+                anchorEl={anchorEl}
+                handleClose={handleClose}
+                setFieldValue={setFieldValue}
+              />
               {errors.submit && (
                 <Box mt={3}>
                   <FormHelperText error>{errors.submit}</FormHelperText>

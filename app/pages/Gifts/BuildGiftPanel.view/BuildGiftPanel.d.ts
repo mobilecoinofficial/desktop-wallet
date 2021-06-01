@@ -1,13 +1,21 @@
+import type {
+  BuildGiftCodeService,
+  DeleteStoredGiftCodeB58Service,
+  GetAllGiftCodesService,
+  SubmitGiftCodeService,
+} from '../../../services';
 import type { GiftCode } from '../../../types/GiftCode.d';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export interface BuildGiftPanelProps {
-  buildGiftCode: (x: unknown) => unknown;
-  deleteStoredGiftCodeB58: (x: string) => unknown;
+  buildGiftCode: BuildGiftCodeService;
+  codeClicked: (code: string, text: string) => void;
+  deleteStoredGiftCodeB58: DeleteStoredGiftCodeB58Service;
+  getAllGiftCodes: GetAllGiftCodesService;
   existingPin: string;
   giftCodes: GiftCode[];
   isSyncedBuffered: (x: bigint, y: bigint) => boolean;
   pinThresholdPmob: string;
   selectedAccount: SelectedAccount;
-  submitGiftCode: (x: unknown) => unknown;
+  submitGiftCode: SubmitGiftCodeService;
 }

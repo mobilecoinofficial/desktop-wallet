@@ -5,7 +5,7 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from '../app/i18n';
 import { setTheme } from '../app/theme';
 import GlobalStyles from '../app/components/GlobalStyles';
-import { MOBILE_COIN_DARK } from '../app/constants/themes';
+import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from '../app/constants/themes';
 
 const theme = setTheme({
   responsiveFontSizes: true,

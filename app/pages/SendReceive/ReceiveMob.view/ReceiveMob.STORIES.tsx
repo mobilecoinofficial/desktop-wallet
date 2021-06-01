@@ -6,13 +6,14 @@ import { ReceiveMob } from './ReceiveMob.view';
 
 export default {
   component: ReceiveMob,
-  title: 'ReceiveMob',
+  title: 'SendReceive/Receive Mob',
 };
 
 const Template: Story<ComponentProps<typeof ReceiveMob>> = (args) => <ReceiveMob {...args} />;
 
 export const Item = Template.bind({});
 Item.args = {
+  codeClicked: () => console.log('codeClicked!'),
   contacts: [
     {
       abbreviation: 'F1',

@@ -1,4 +1,8 @@
+import type { ChangePasswordService } from '../../../services';
+
 export interface ChangePasswordViewProps {
-  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
+  accounts: { account: string; password: string }[];
+  changePassword: ChangePasswordService;
   onClickBack: () => void;
+  setKeychainAccount: (account: string, password: string) => void;
 }

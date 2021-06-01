@@ -13,7 +13,9 @@ import {
 } from '../../../components/icons';
 import useFullService from '../../../hooks/useFullService';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
+import { changePassword, retrieveEntropy, setPin } from '../../../services';
 import type { Theme } from '../../../theme';
+import { getKeychainAccounts, setKeychainAccount } from '../../../utils/keytarService';
 import { ChangePasswordView } from '../ChangePassword.view';
 import { ChangePinView } from '../ChangePin.view';
 import { ConfigureFullServiceView } from '../ConfigureFullService.view';
@@ -42,14 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SettingsPage: FC = () => {
   const classes = useStyles();
   const [showing, setShowing] = useState(SETTINGS);
-  const {
-    changePassword,
-    pinThresholdPmob,
-    pin,
-    setPin,
-    retrieveEntropy,
-    selectedAccount,
-  } = useFullService();
+  const { pinThresholdPmob, pin, selectedAccount } = useFullService();
 
   const {
     ledgerDbPath,
@@ -69,6 +64,8 @@ const SettingsPage: FC = () => {
       setShowing(path);
     }
   };
+
+  const accounts = getKeychainAccounts();
 
   const settingsOptionsList = [
     {
@@ -125,11 +122,19 @@ const SettingsPage: FC = () => {
       );
 
     case CHANGE_PASSWORD:
-      return <ChangePasswordView onClickBack={onClickBack} changePassword={changePassword} />;
+      return (
+        <ChangePasswordView
+          accounts={accounts}
+          onClickBack={onClickBack}
+          changePassword={changePassword}
+          setKeychainAccount={setKeychainAccount}
+        />
+      );
 
     case CHANGE_PIN:
       return (
         <ChangePinView
+          accounts={accounts}
           onClickBack={onClickBack}
           pinThresholdPmob={pinThresholdPmob}
           pin={pin}
@@ -138,7 +143,13 @@ const SettingsPage: FC = () => {
       );
 
     case RETRIEVE_ENTROPY:
-      return <RetrieveEntropyView onClickBack={onClickBack} retrieveEntropy={retrieveEntropy} />;
+      return (
+        <RetrieveEntropyView
+          accounts={accounts}
+          onClickBack={onClickBack}
+          retrieveEntropy={retrieveEntropy}
+        />
+      );
 
     case TERMS:
       return <TermsOfUseView onClickBack={onClickBack} />;

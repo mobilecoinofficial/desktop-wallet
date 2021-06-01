@@ -16,7 +16,7 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
+import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { RetrieveEntropyViewProps } from './RetrieveEntropy';
@@ -74,6 +74,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
+  accounts,
   onClickBack,
   retrieveEntropy,
 }: RetrieveEntropyViewProps) => {
@@ -84,6 +85,14 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
     setEntropy('');
   };
   const { t } = useTranslation('RetrieveEntropyView');
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (accounts.length > 0) {
+      setAnchorEl(event.currentTarget);
+    }
+  };
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -153,7 +162,7 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
             }
           }}
         >
-          {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+          {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
             <Form>
               <Box pt={4}>
                 <FormLabel component="legend">
@@ -167,8 +176,15 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
                   margin="normal"
                   name="password"
                   type="password"
+                  onClick={handleClick}
                 />
               </Box>
+              <SavedPasswordsModal
+                accounts={accounts}
+                anchorEl={anchorEl}
+                handleClose={handleClose}
+                setFieldValue={setFieldValue}
+              />
               {errors.submit && (
                 <Box mt={3}>
                   <FormHelperText error>{errors.submit}</FormHelperText>

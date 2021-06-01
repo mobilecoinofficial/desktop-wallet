@@ -22,6 +22,7 @@ import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
+import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import isValidPin from '../../../utils/isValidPin';
 import { SetPinModalProps } from './SetPinModal';
 
@@ -54,26 +55,6 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.select();
   };
-
-  // TODO - ya, this definitely shouldn't live here
-  const PICO_MOB_PRECISION = 12;
-
-  const ensureMobStringPrecision = (mobString: string): string => {
-    const num = Number(mobString);
-    if (Number.isNaN(num)) {
-      throw new Error('mobString is NaN');
-    }
-
-    return num.toFixed(PICO_MOB_PRECISION);
-  };
-
-  // FIX-ME: This logic should not live here.
-  // Right now, we are aggressively assuming the number format is US local.
-  // We should have a universal solution to this problem
-  // Likely a component similiar to MOBNumberFormat with the ability to get the
-  // picoMob string (StringUInt64) value as a ref
-  const convertMobStringToPicoMobString = (mobString: string): string =>
-    ensureMobStringPrecision(mobString).replace('.', '');
 
   return (
     <Modal

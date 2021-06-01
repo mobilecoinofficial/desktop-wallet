@@ -8,7 +8,7 @@ import { BuildGiftForm } from './BuildGiftForm.view';
 
 export default {
   component: BuildGiftForm,
-  title: 'Gift/Build Form',
+  title: 'Gift/Build Gift Form',
 };
 
 const Template: Story<ComponentProps<typeof BuildGiftForm>> = (args: BuildGiftFormProps) => (

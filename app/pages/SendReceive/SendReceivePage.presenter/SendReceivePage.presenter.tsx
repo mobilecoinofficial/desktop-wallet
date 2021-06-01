@@ -2,10 +2,18 @@ import React, { ChangeEvent, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { clipboard } from 'electron';
+import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import { TabPanel } from '../../../components/TabPanel';
 import useFullService from '../../../hooks/useFullService';
+import {
+  assignAddressForAccount,
+  buildTransaction,
+  submitTransaction,
+  updateContacts,
+} from '../../../services';
 import type { Theme } from '../../../theme';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { ReceiveMob } from '../ReceiveMob.view';
@@ -25,21 +33,20 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SendReceivePage: FC = () => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
-  const {
-    assignAddressForAccount,
-    buildTransaction,
-    contacts,
-    pin: existingPin,
-    pinThresholdPmob,
-    selectedAccount,
-    submitTransaction,
-    updateContacts,
-  } = useFullService();
+  const { contacts, pin: existingPin, pinThresholdPmob, selectedAccount } = useFullService();
 
   const { t } = useTranslation('TransactionView');
+  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
 
   const handleChange = (_event: ChangeEvent<HTMLElement>, newSelectedTabIndex: number) => {
     setSelectedTabIndex(newSelectedTabIndex);
+  };
+
+  const handleCodeClicked = (code: string, text: string) => {
+    clipboard.writeText(code);
+    enqueueSnackbar(text, {
+      variant: 'success',
+    });
   };
 
   const SendMobWithParams = () => (
@@ -57,7 +64,11 @@ const SendReceivePage: FC = () => {
   );
 
   const ReceiveMobWithParams = () => (
-    <ReceiveMob contacts={contacts} selectedAccount={selectedAccount} />
+    <ReceiveMob
+      codeClicked={handleCodeClicked}
+      contacts={contacts}
+      selectedAccount={selectedAccount}
+    />
   );
 
   return (

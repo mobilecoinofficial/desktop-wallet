@@ -8,7 +8,7 @@ import { ConsumeGiftPanel } from './ConsumeGiftPanel.view';
 
 export default {
   component: ConsumeGiftPanel,
-  title: 'Gift/Build Form',
+  title: 'Gift/Consume Gift Panel',
 };
 
 const Template: Story<ComponentProps<typeof ConsumeGiftPanel>> = (args: ConsumeGiftPanelProps) => (

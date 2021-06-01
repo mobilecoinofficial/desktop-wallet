@@ -3,20 +3,9 @@ import React from 'react';
 import NumberFormat from 'react-number-format';
 import type { NumberFormatValues } from 'react-number-format';
 
+import { convertPicoMobStringToMob } from '../../utils/convertMob';
 import { MOBNumberFormatProps } from './MOBNumberFormat';
 
-// TODO, handle value of BigInt -- this should live in a util
-const convertPicoMobStringToMob = (picoMobString: string): string => {
-  if (picoMobString.length <= 12) {
-    return `0.${'0'.repeat(12 - picoMobString.length)}${picoMobString}`;
-  }
-
-  return [
-    picoMobString.slice(0, picoMobString.length - 12),
-    '.',
-    picoMobString.slice(picoMobString.length - 12),
-  ].join('');
-};
 // This component handles converting incoming pico-mobs and mobs into mobs.
 // All values from FullService are in pico-mobs, but once it hits our frontend,
 // it's more sensible have the display value be mobs. (Sensible my be a strong

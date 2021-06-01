@@ -4,12 +4,12 @@ import type { FC } from 'react';
 import { Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import useFullService from '../../../hooks/useFullService';
+import { importAccount, importLegacyAccount } from '../../../services';
+import { setKeychainAccount } from '../../../utils/keytarService';
 import { ImportAccountView } from '../ImportAccount.view/ImportAccount.view';
 
 const ImportAccountPresenter: FC = () => {
   const { t } = useTranslation('ImportAccountView');
-  const { importAccount, importLegacyAccount } = useFullService();
 
   return (
     <>
@@ -28,7 +28,11 @@ const ImportAccountPresenter: FC = () => {
       <Typography variant="body2" color="textPrimary" paragraph>
         {t('legacyHex')}
       </Typography>
-      <ImportAccountView importAccount={importAccount} importLegacyAccount={importLegacyAccount} />
+      <ImportAccountView
+        importAccount={importAccount}
+        importLegacyAccount={importLegacyAccount}
+        setKeychainAccount={setKeychainAccount}
+      />
     </>
   );
 };

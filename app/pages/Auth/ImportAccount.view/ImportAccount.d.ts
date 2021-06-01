@@ -3,4 +3,5 @@ import type { ImportAccountService, ImportLegacyAccountService } from '../../../
 export interface ImportAccountViewProps {
   importAccount: ImportAccountService;
   importLegacyAccount: ImportLegacyAccountService;
+  setKeychainAccount: (account: string, password: string) => void;
 }

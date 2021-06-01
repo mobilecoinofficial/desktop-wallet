@@ -9,6 +9,7 @@ import type { DashboardLayoutProps } from './layouts/DashboardLayout';
 import {
   AuthPage,
   ContactsPage,
+  CrashReportPage,
   DashboardPage,
   GiftsPage,
   HistoryPage,
@@ -104,6 +105,11 @@ const routes: Routes = [
         Component: SettingsPage,
         exact: true,
         path: routePaths.APP_SETTINGS,
+      },
+      {
+        Component: CrashReportPage,
+        exact: true,
+        path: routePaths.APP_CRASH_LOG,
       },
       {
         Component: RedirectToNotFound,

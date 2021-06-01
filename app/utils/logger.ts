@@ -7,6 +7,8 @@ const logStream = fs.createWriteStream(FILENAME, { flags: 'a' });
 
 let mainWindow: Electron.BrowserWindow;
 
+const readLog = (): string => fs.readFileSync(FILENAME, { encoding: 'utf8', flag: 'r' });
+
 const writeLog = (msg: string, lvl = 'INFO'): void => {
   if (!mainWindow) {
     throw new Error('Logger was not initialized');
@@ -29,7 +31,12 @@ const initLog = (mw: Electron.BrowserWindow): void => {
     writeLog(obj.msg, obj.lvl);
   });
 
+  ipcMain.on('get-error-log', (event) => {
+    // eslint-disable-next-line no-param-reassign
+    event.returnValue = readLog();
+  });
+
   mainWindow.on('closed', () => writeLog('CLOSING LOGGER'));
 };
 
-export { initLog, writeLog };
+export { initLog, writeLog, readLog };

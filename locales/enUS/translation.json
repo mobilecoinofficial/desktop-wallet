@@ -197,6 +197,23 @@
     "filter": "Filter"
   },
 
+  "CrashReportPage": {
+    "encounteredAnIssue": "It seems we've encountered an issue that's causing the app the crash!",
+    "here": "here",
+    "quitApplication": "Quit Desktop Wallet",
+    "sendDebugLog": "If you'd like to also send us a copy of the debug log, you can find a copy of it",
+    "sendDebugLog2": "so feel free to check it out.",
+    "sendReport": "It would be super helpful if you sent the crash report to us, but we totally understand if you'd rather not :)",
+    "uhOh": "Uh Oh!"
+  },
+
+  "CrashShowLog": {
+    "debugLogs": "Debug Logs",
+    "openLogsDir": "Open Logs Folder",
+    "submit": "Submit",
+    "title": "This log will be posted publicly online for contributors to view. You may examine and edit it before submitting."
+  },
+
   "CreateAccountForm": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",

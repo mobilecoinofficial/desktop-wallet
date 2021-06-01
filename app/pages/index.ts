@@ -1,5 +1,6 @@
 import { AuthPage } from './Auth';
 import { ContactsPage } from './Contacts';
+import { CrashReportPage } from './CrashReport';
 import { DashboardPage } from './Dashboard';
 import { GiftsPage } from './Gifts';
 import { HistoryPage } from './History';
@@ -10,6 +11,7 @@ import { SettingsPage } from './Settings';
 export {
   AuthPage,
   ContactsPage,
+  CrashReportPage,
   DashboardPage,
   GiftsPage,
   HistoryPage,

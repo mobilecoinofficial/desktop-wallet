@@ -1,6 +1,7 @@
 const routePaths = {
   APP: '/app',
   APP_CONTACTS: '/app/contacts',
+  APP_CRASH_LOG: '/app/crashlog',
   APP_DASHBOARD: '/app/dashboard',
   APP_GIFTING: '/app/gifting',
   APP_HISTORY: '/app/history',

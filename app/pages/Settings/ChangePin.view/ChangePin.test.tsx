@@ -18,6 +18,7 @@ describe('ChangePinView', () => {
     const { getByText } = render(
       <SnackbarProvider>
         <ChangePinView
+          accounts={[]}
           onClickBack={handleOnClick}
           setPin={setPin(pin, pinThresholdPmob, 'password')}
           pin={pin}

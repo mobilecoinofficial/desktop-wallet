@@ -40,9 +40,6 @@ jobs:
       # Reuse the workspace from the build job
       - attach_workspace:
           at: .
-      # - checkout
-      # - node/install-packages:
-      #     pkg-manager: yarn
       - run:
           command: |
             yarn build

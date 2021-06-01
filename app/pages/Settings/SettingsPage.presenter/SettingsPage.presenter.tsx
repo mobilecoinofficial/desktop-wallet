@@ -134,6 +134,7 @@ const SettingsPage: FC = () => {
     case CHANGE_PIN:
       return (
         <ChangePinView
+          accounts={accounts}
           onClickBack={onClickBack}
           pinThresholdPmob={pinThresholdPmob}
           pin={pin}
@@ -142,7 +143,13 @@ const SettingsPage: FC = () => {
       );
 
     case RETRIEVE_ENTROPY:
-      return <RetrieveEntropyView onClickBack={onClickBack} retrieveEntropy={retrieveEntropy} />;
+      return (
+        <RetrieveEntropyView
+          accounts={accounts}
+          onClickBack={onClickBack}
+          retrieveEntropy={retrieveEntropy}
+        />
+      );
 
     case TERMS:
       return <TermsOfUseView onClickBack={onClickBack} />;

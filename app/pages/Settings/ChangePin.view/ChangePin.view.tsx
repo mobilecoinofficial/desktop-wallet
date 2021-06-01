@@ -17,7 +17,7 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton, MOBNumberFormat } from '../../../components';
+import { SubmitButton, MOBNumberFormat, SavedPasswordsModal } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -81,6 +81,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const ChangePinView: FC<ChangePinViewProps> = ({
+  accounts,
   onClickBack,
   pinThresholdPmob,
   pin,
@@ -96,6 +97,14 @@ const ChangePinView: FC<ChangePinViewProps> = ({
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.select();
   };
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (accounts.length > 0) {
+      setAnchorEl(event.currentTarget);
+    }
+  };
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -124,25 +133,25 @@ const ChangePinView: FC<ChangePinViewProps> = ({
       <Box flexGrow={1} mt={3}>
         <Formik
           initialValues={{
-            currentPassword: '',
             newPin: pin || '',
             newPinConfirmation: '',
+            password: '',
             pinThresholdMob: convertPicoMobStringToMob(pinThresholdPmob),
             submit: null,
           }}
           validationSchema={Yup.object().shape({
-            currentPassword: Yup.string().required(t('currentPasswordRequired')),
             newPin: Yup.string().min(PIN_MIN_SIZE, t('pinSize')).required(t('pinRequired')),
             newPinConfirmation: Yup.string()
               .oneOf([Yup.ref('newPin')], t('pinConfirmationRef'))
               .required(t('pinConfirmationRequired')),
+            password: Yup.string().required(t('currentPasswordRequired')),
           })}
           onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
             try {
               await setPin(
                 values.newPin,
                 convertMobStringToPicoMobString(values.pinThresholdMob),
-                values.currentPassword
+                values.password
               );
               if (isMountedRef.current) {
                 setSubmitting(false);
@@ -151,9 +160,9 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                 setStatus({ success: true });
                 resetForm({
                   values: {
-                    currentPassword: '',
                     newPin: values.newPin,
                     newPinConfirmation: '',
+                    password: '',
                     pinThresholdMob: values.pinThresholdMob,
                     submit: null,
                   },
@@ -168,7 +177,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
             }
           }}
         >
-          {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+          {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
             <Form>
               <Box>
                 <Field
@@ -177,8 +186,9 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                   fullWidth
                   label={t('currentPasswordLabel')}
                   margin="normal"
-                  name="currentPassword"
+                  name="password"
                   type="password"
+                  onClick={handleClick}
                 />
                 <Field
                   id="ChangePinView-newPinField"
@@ -219,6 +229,12 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                   }}
                 />
               </Box>
+              <SavedPasswordsModal
+                accounts={accounts}
+                anchorEl={anchorEl}
+                handleClose={handleClose}
+                setFieldValue={setFieldValue}
+              />
               {errors.submit && (
                 <Box mt={3}>
                   <FormHelperText error>{errors.submit}</FormHelperText>

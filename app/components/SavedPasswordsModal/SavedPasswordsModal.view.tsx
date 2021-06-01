@@ -10,19 +10,9 @@ import {
   withStyles,
 } from '@material-ui/core';
 
+import { Theme } from '../../theme';
 import { MOBIcon } from '../icons';
-
-export interface UserAccount {
-  account: string;
-  password: string;
-}
-
-export interface SavedPasswordsModalProps {
-  accounts: UserAccount[];
-  setFieldValue: (field: string, value: string) => void;
-  handleClose: () => void;
-  anchorEl: HTMLElement | null;
-}
+import { SavedPasswordsModalProps } from './SavedPasswordsModal';
 
 const StyledMenu = withStyles({
   paper: {
@@ -38,7 +28,7 @@ const StyledMenu = withStyles({
   />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
+const StyledMenuItem = withStyles((theme: Theme) => ({
   root: {
     '&:focus': {
       '& .MuiListItemIcon-root, & .MuiListItemText-primary': {

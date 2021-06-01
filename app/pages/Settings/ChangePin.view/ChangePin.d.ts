@@ -6,4 +6,5 @@ export interface ChangePinViewProps {
   pin: string | undefined;
   setPin: SetPinService;
   onClickBack: () => void;
+  accounts: { account: string; password: string }[];
 }

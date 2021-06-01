@@ -98,6 +98,11 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
             label={t('nameLabel')}
             name="accountName"
           />
+          {values.checkedSavePassword && !values.accountName && (
+            <FormHelperText focused>
+              Account Name is optional, but required to save passphrase
+            </FormHelperText>
+          )}
           <Field
             id="CreateAccountForm-passwordField"
             component={TextField}

@@ -307,7 +307,6 @@ ipcMain.on('get-initial-translations', (event) => {
         translation: i18n.getResourceBundle(languages.EN_US, config.namespace),
       },
     };
-
     // eslint-disable-next-line no-param-reassign
     event.returnValue = initial;
   });
@@ -334,9 +333,8 @@ ipcMain.on('fetch-accounts', (event) => {
 ipcMain.on('remove-accounts', (event) => {
   keytar
     .findCredentials('MobileCoin')
-    .then(
-      (accounts) => accounts.forEach(({ account }) => keytar.deletePassword('MobileCoin', account))
-      // event.returnValue = accounts;
+    .then((accounts) =>
+      accounts.forEach(({ account }) => keytar.deletePassword('MobileCoin', account))
     )
     .catch(() => {
       // eslint-disable-next-line no-param-reassign

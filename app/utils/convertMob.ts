@@ -1,6 +1,6 @@
-export const PICO_MOB_PRECISION = 12;
+const PICO_MOB_PRECISION = 12;
 
-export const ensureMobStringPrecision = (mobString: string): string => {
+const ensureMobStringPrecision = (mobString: string): string => {
   const num = Number(mobString);
   if (Number.isNaN(num)) {
     throw new Error('mobString is NaN');
@@ -9,7 +9,7 @@ export const ensureMobStringPrecision = (mobString: string): string => {
 };
 
 // This function assumes basic US style decimal places.
-// We'll need to revisit for differnet formats
+// We'll need to revisit for different formats
 // Right now, we are aggressively assuming the number format is US local.
 // We should have a universal solution to this problem
 // Likely a component similiar to MOBNumberFormat with the ability to get the

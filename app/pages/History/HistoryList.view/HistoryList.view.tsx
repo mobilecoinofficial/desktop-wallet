@@ -58,9 +58,9 @@ const HistoryList: FC<HistoryListProps> = ({
         textColor="primary"
         onChange={handleChange}
       >
-        <Tab label={t('showAllTransactions')} />
-        <Tab label={t('showSentTransactions')} />
-        <Tab label={t('showReceivedTransactions')} />
+        <Tab label={t('showAllTransactions')} id="show-all" />
+        <Tab label={t('showSentTransactions')} id="show-sent" />
+        <Tab label={t('showReceivedTransactions')} id="show-received" />
       </Tabs>
       <Container className={classes.root} maxWidth="lg">
         <Grid container spacing={3}>

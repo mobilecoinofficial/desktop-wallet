@@ -60,11 +60,13 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       checkedSavePassword ? setKeychainAccount(accountName, password) : null;
 
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmitting(false);
       }
     } catch (err) {
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: false });
         setErrors({ submit: err.message });

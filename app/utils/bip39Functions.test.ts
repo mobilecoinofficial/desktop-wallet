@@ -16,7 +16,6 @@ const validEntropy = 'cfd48cb6f8c5e70a67a4377e4ac1bf78edaa52cfcc2b50a235778b35e8
 const validMnemonic =
   'sound piece color various fury lunch ozone manage layer figure hurt vault ' +
   'survey city dish lyrics expose balance fuel biology future carry sport text';
-
 const mnemonicBad = `${validMnemonic} plus extra words`;
 
 describe('an entropy has correct format', () => {
@@ -46,6 +45,10 @@ describe('an entropy', () => {
     expect(isValidMnemonicOrHexValue(hexBad2)).not.toBe(validEntropy);
     expect(isValidMnemonicOrHexValue('too short')).not.toBe(validEntropy);
     expect(isValidMnemonicOrHexValue(mnemonicBad)).not.toBe(validEntropy);
+  });
+
+  test('not if empty', () => {
+    expect(isValidMnemonicOrHexValue('')).toBeFalsy();
   });
 });
 

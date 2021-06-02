@@ -149,14 +149,14 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
       if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
         throw new Error(t('confirmationNotFound'));
       }
-
       await submitGiftCode({
         fromAccountId: selectedAccount.account.accountId,
         giftCodeB58: confirmation.giftCodeB58,
         txProposal: confirmation.txProposal,
       });
-      await getAllGiftCodes();
 
+      await getAllGiftCodes();
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmittingConfirmedGift(false);
@@ -167,6 +167,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
         });
       }
     } catch (err) {
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: false });
         setErrors({ submit: err.message });
@@ -290,11 +291,13 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
 
           setShowModal(true);
 
+          /* istanbul ignore next */
           if (isMountedRef.current) {
             setSubmitting(false);
             resetForm();
           }
         } catch (err) {
+          /* istanbul ignore next */
           if (isMountedRef.current) {
             setStatus({ success: false });
             setErrors({ submit: err.message });
@@ -479,7 +482,12 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     />
                   ) : (
                     <Box display="flex" justifyContent="center" py={27}>
-                      <Button color="secondary" size="large" onClick={handleShowCode}>
+                      <Button
+                        color="secondary"
+                        size="large"
+                        onClick={handleShowCode}
+                        id="show-code-modal"
+                      >
                         {t('showCode')}
                       </Button>
                     </Box>
@@ -502,6 +510,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                       size="large"
                       fullWidth
                       variant="contained"
+                      id="cancel-modal"
                     >
                       {t('cancel')}
                     </Button>
@@ -515,6 +524,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                       fullWidth
                       onClick={handleConfirm(setErrors, setStatus)}
                       variant="contained"
+                      id="confirm-modal"
                     >
                       {showCode ? t('confirmGift') : t('secureCode')}
                     </Button>

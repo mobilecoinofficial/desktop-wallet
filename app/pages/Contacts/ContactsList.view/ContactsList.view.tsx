@@ -45,21 +45,15 @@ const ContactsList: FC<ContactsListProps> = ({
   const [dataToShow, setDataToShow] = useState(contactsList);
 
   const { t } = useTranslation('ContactsList');
-
   useEffect(() => {
     const filteredByName = contactsList.filter((x) =>
       x.alias.toUpperCase().includes(currentFilter.toUpperCase())
     );
 
-    switch (selectedTabIndex) {
-      case 0:
-        setDataToShow(filteredByName);
-        break;
-      case 1:
-        setDataToShow(filteredByName.filter((x) => x.isFavorite));
-        break;
-      default:
-        throw new Error('WRONG TAB!');
+    if (selectedTabIndex === 0) {
+      setDataToShow(filteredByName);
+    } else if (selectedTabIndex === 1) {
+      setDataToShow(filteredByName.filter((x) => x.isFavorite));
     }
   }, [currentFilter, selectedTabIndex, contactsList]);
 
@@ -73,8 +67,8 @@ const ContactsList: FC<ContactsListProps> = ({
           textColor="primary"
           onChange={(_e, n) => setSelectedTabIndex(n)}
         >
-          <Tab label={t('allContacts')} />
-          <Tab label={t('favoriteContacts')} />
+          <Tab label={t('allContacts')} id="show_all" />
+          <Tab label={t('favoriteContacts')} id="show_fav" />
         </Tabs>
       </Box>
       <Box pl={5} pr={5} pt={2}>

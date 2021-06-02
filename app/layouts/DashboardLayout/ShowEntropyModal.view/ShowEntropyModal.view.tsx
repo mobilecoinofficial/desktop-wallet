@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
   isShown,
   mnemonic,
-  onEntropyConfirmed,
+  confirmEntropyKnown,
 }: ShowEntropyModalProps) => {
   const classes = useStyles();
   const [alertOpen, setAlertOpen] = useState(false);
@@ -49,7 +49,7 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
   const [showEntropy, setShowEntropy] = useState(false);
   const { t } = useTranslation('ShowEntropyModal');
 
-  const handleCloseModal = () => onEntropyConfirmed();
+  const handleCloseModal = () => confirmEntropyKnown();
 
   const toggleEntropy = () => {
     if (!canGoForward) {
@@ -65,8 +65,8 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
 
   const handleGoBack = () => setAlertOpen(false);
 
-  const handleFinalConfirm = () => {
-    onEntropyConfirmed();
+  const handleFinalConfirm = async () => {
+    await confirmEntropyKnown();
     setAlertOpen(false);
   };
 

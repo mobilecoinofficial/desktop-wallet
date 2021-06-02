@@ -54,6 +54,7 @@ module.exports = {
         pathGroupsExcludedImportTypes: ['react'],
       },
     ],
+    'no-plusplus': ['off'],
     'no-unused-vars': [
       'error',
       {

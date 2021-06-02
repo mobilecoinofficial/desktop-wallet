@@ -34,9 +34,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const GiftsPage: FC = () => {
   const classes = useStyles();
+  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { t } = useTranslation('GiftingView');
-
   const {
     giftCodes,
     pin: existingPin,
@@ -49,13 +49,13 @@ const GiftsPage: FC = () => {
     setSelectedTabIndex(newSelectedTabIndex);
   };
 
-  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
-
   const handleCodeClicked = (code: string, text: string) => {
     clipboard.writeText(code);
-    enqueueSnackbar(text, {
-      variant: 'success',
-    });
+    if (text) {
+      enqueueSnackbar(text, {
+        variant: 'success',
+      });
+    }
   };
 
   const BuildGift = () => (
@@ -66,6 +66,7 @@ const GiftsPage: FC = () => {
       existingPin={existingPin as string}
       getAllGiftCodes={getAllGiftCodes}
       giftCodes={giftCodes}
+      handleCopyClick={handleCodeClicked}
       isSyncedBuffered={isSyncedBuffered}
       pinThresholdPmob={pinThresholdPmob}
       selectedAccount={selectedAccount}

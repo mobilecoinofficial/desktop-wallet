@@ -91,7 +91,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
   const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
   const [showModal, setShowModal] = useState(false);
   const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
-  const [submittingConfimedGift, setSubmittingConfirmedGift] = useState(false);
+  const [submittingConfirmedGift, setSubmittingConfirmedGift] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ConsumeGiftForm');
@@ -124,6 +124,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
         giftCodeB58: confirmation.giftCodeB58,
       });
 
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmittingConfirmedGift(false);
@@ -134,10 +135,11 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
         });
       }
     } catch (err) {
+      /* istanbul ignore next */
       if (isMountedRef.current) {
-        const santitizedError = err.message === CLAIMED_GIFT_ERROR ? t('giftClaimed') : err.message;
+        const sanitizedError = err.message === CLAIMED_GIFT_ERROR ? t('giftClaimed') : err.message;
         setStatus({ success: false });
-        setErrors({ submit: santitizedError });
+        setErrors({ submit: sanitizedError });
         setSubmittingConfirmedGift(false);
         setIsAwaitingConformation(false);
         setConfirmation(EMPTY_CONFIRMATION);
@@ -211,6 +213,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
         try {
           setIsAwaitingConformation(true);
           const result = await checkGiftCodeStatus({ giftCodeB58: values.giftCodeB58 });
+
           if (result === null || result === undefined) {
             throw new Error(t('giftB58Error'));
           }
@@ -242,11 +245,13 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
             }
           }
 
+          /* istanbul ignore next */
           if (isMountedRef.current) {
             setSubmitting(false);
             resetForm();
           }
         } catch (err) {
+          /* istanbul ignore next */
           if (isMountedRef.current) {
             setStatus({ success: false });
             setErrors({ submit: err.message });
@@ -387,6 +392,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                       size="large"
                       fullWidth
                       variant="contained"
+                      id="cancel-modal"
                     >
                       {t('cancel')}
                     </Button>
@@ -397,6 +403,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                       fullWidth
                       onClick={handleConfirm(setErrors, setStatus)}
                       variant="contained"
+                      id="claim-modal"
                     >
                       {t('claimGift')}
                     </Button>
@@ -406,7 +413,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
             </Modal>
             <Modal
               className={classes.modal}
-              open={submittingConfimedGift}
+              open={submittingConfirmedGift}
               closeAfterTransition
               disableAutoFocus
               disableEnforceFocus
@@ -416,7 +423,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                 timeout: 1000,
               }}
             >
-              <Fade in={submittingConfimedGift} timeout={{ enter: 15000, exit: 0 }}>
+              <Fade in={submittingConfirmedGift} timeout={{ enter: 15000, exit: 0 }}>
                 <Box width="100%" p={3}>
                   <LinearProgress />
                 </Box>

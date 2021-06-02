@@ -1,13 +1,14 @@
 import React from 'react';
 
-import { render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 
 import '../../../testUtils/i18nForTests';
 import { BuildGiftPanel } from './BuildGiftPanel.view';
 
-const giftCodes = [
+const GIFT_CODES = [
   {
     accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
     entropy: '2b25a1535454226a70bd999fbe36a7dd2a53fc3fee3dc48b0c9fb7b088ee305c',
@@ -30,7 +31,7 @@ const giftCodes = [
   },
 ];
 
-const selectedAccount = {
+const SELECTED_ACCOUNT = {
   account: {
     accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
     firstBlockIndex: '0',
@@ -56,46 +57,111 @@ const selectedAccount = {
   },
 };
 
-test('Displays gift form with gift codes', () => {
-  const { container } = render(
-    <SnackbarProvider>
-      <BuildGiftPanel
-        buildGiftCode={() => undefined}
-        deleteStoredGiftCodeB58={() => undefined}
-        existingPin="111111"
-        giftCodes={giftCodes}
-        isSyncedBuffered={() => true}
-        pinThresholdPmob="1"
-        selectedAccount={selectedAccount}
-        submitGiftCode={() => undefined}
-      />
-    </SnackbarProvider>
-  );
+describe('Build gift form', () => {
+  test('is shown correctly without gift codes', async () => {
+    const { container } = render(
+      <SnackbarProvider>
+        <BuildGiftPanel
+          buildGiftCode={() => undefined}
+          deleteStoredGiftCodeB58={() => undefined}
+          existingPin="111111"
+          getAllGiftCodes={() => undefined}
+          giftCodes={[]}
+          isSyncedBuffered={() => true}
+          pinThresholdPmob="1"
+          selectedAccount={SELECTED_ACCOUNT}
+          submitGiftCode={() => undefined}
+        />
+      </SnackbarProvider>
+    );
 
-  expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
-  expect(container.innerHTML.includes('Manage Gift Codes')).toBeTruthy();
-  expect(container.innerHTML.includes('2.0000000')).toBeTruthy();
-  expect(container.innerHTML.includes('3.0000000')).toBeTruthy();
-});
+    expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
+    expect(container.innerHTML.includes('Manage Gift Codes')).toBeFalsy();
+    expect(container.innerHTML.includes('2.0000000')).toBeFalsy();
+    expect(container.innerHTML.includes('3.0000000')).toBeFalsy();
 
-test('Displays gift form without gift codes', () => {
-  const { container } = render(
-    <SnackbarProvider>
-      <BuildGiftPanel
-        buildGiftCode={() => undefined}
-        deleteStoredGiftCodeB58={() => undefined}
-        existingPin="111111"
-        giftCodes={[]}
-        isSyncedBuffered={() => true}
-        pinThresholdPmob="1"
-        selectedAccount={selectedAccount}
-        submitGiftCode={() => undefined}
-      />
-    </SnackbarProvider>
-  );
+    const mobValue = container.querySelector('[id="mobValue"]') as HTMLInputElement;
+    const submitButton = container.querySelector(
+      '[data-testid="submit-button"]'
+    ) as HTMLInputElement;
 
-  expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
-  expect(container.innerHTML.includes('Manage Gift Codes')).toBeFalsy();
-  expect(container.innerHTML.includes('2.0000000')).toBeFalsy();
-  expect(container.innerHTML.includes('3.0000000')).toBeFalsy();
+    expect(mobValue).not.toBeFalsy();
+    expect(submitButton).not.toBeFalsy();
+
+    await waitFor(() => expect(submitButton.disabled).toBeTruthy());
+    await act(async () => userEvent.type(mobValue, '5', { delay: 1 }));
+    await waitFor(() => expect(Number(mobValue.value)).toEqual(5));
+    await waitFor(() => expect(submitButton.disabled).toBeFalsy());
+    await act(async () => userEvent.click(submitButton));
+  });
+
+  test('has actions in the gift codes part', async () => {
+    const fakeHandleClick = jest.fn();
+    const fakeDeleteStoredGiftCodeB58 = jest.fn().mockResolvedValue(true);
+    const fakeGetAllGiftCodes = jest.fn().mockResolvedValue([]);
+
+    const { container } = render(
+      <SnackbarProvider>
+        <BuildGiftPanel
+          buildGiftCode={() => undefined}
+          deleteStoredGiftCodeB58={fakeDeleteStoredGiftCodeB58}
+          existingPin="111111"
+          getAllGiftCodes={fakeGetAllGiftCodes}
+          giftCodes={GIFT_CODES}
+          handleCopyClick={fakeHandleClick}
+          isSyncedBuffered={() => true}
+          pinThresholdPmob="1"
+          selectedAccount={SELECTED_ACCOUNT}
+          submitGiftCode={() => undefined}
+        />
+      </SnackbarProvider>
+    );
+
+    expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
+    expect(container.innerHTML.includes('Manage Gift Codes')).toBeTruthy();
+    const copy1 = container.querySelector('[id="copy-1"]') as HTMLInputElement;
+    expect(copy1).not.toBeFalsy();
+    await act(async () => userEvent.click(copy1));
+    expect(fakeHandleClick).toHaveBeenCalled();
+
+    const delete0 = container.querySelector('[id="delete-0"]') as HTMLInputElement;
+    expect(delete0).not.toBeFalsy();
+    await act(async () => userEvent.click(delete0));
+
+    const parent = container.parentElement as HTMLElement;
+    expect(parent).not.toBeFalsy();
+    await waitFor(() => expect(parent.innerHTML.includes('Delete Gift Code?')).toBeTruthy());
+
+    const cancelDelete = parent.querySelector('[id="cancel-delete"]') as HTMLInputElement;
+    const confirmDelete = parent.querySelector('[id="confirm-delete"]') as HTMLInputElement;
+    expect(cancelDelete).not.toBeFalsy();
+    expect(confirmDelete).not.toBeFalsy();
+
+    await act(async () => userEvent.click(confirmDelete));
+
+    await waitFor(() => expect(fakeDeleteStoredGiftCodeB58).toHaveBeenCalled());
+    await waitFor(() => expect(fakeGetAllGiftCodes).toHaveBeenCalled());
+  });
+
+  test('is shown correctly with gift codes', () => {
+    const { container } = render(
+      <SnackbarProvider>
+        <BuildGiftPanel
+          buildGiftCode={() => undefined}
+          deleteStoredGiftCodeB58={() => undefined}
+          existingPin="111111"
+          giftCodes={GIFT_CODES}
+          isSyncedBuffered={() => true}
+          pinThresholdPmob="1"
+          selectedAccount={SELECTED_ACCOUNT}
+          submitGiftCode={() => undefined}
+        />
+      </SnackbarProvider>
+    );
+
+    expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
+    expect(container.innerHTML.includes('Manage Gift Codes')).toBeTruthy();
+    expect(container.innerHTML.includes('2.0000000')).toBeTruthy();
+    expect(container.innerHTML.includes('3.0000000')).toBeTruthy();
+  });
 });

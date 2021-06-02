@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import getPercentSynced from '../../../../utils/getPercentSynced';
+import { getPercentSynced } from '../../../../utils/getPercentSynced';
 import { LedgerStatusProps } from './LedgerStatus';
 
 const LedgerStatus: FC<LedgerStatusProps> = ({ selectedAccount }: LedgerStatusProps) => {

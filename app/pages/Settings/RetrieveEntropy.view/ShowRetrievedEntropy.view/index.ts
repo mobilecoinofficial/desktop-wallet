@@ -1,4 +1,4 @@
-import { ShowRetrievedEntropyModal } from './ShowRetrievedEntropyModal.view';
+import { ShowRetrievedEntropyModal } from './ShowRetrievedEntropy.view';
 
 export default ShowRetrievedEntropyModal;
 export { ShowRetrievedEntropyModal };

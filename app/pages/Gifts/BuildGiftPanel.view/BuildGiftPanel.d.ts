@@ -14,6 +14,7 @@ export interface BuildGiftPanelProps {
   getAllGiftCodes: GetAllGiftCodesService;
   existingPin: string;
   giftCodes: GiftCode[];
+  handleCopyClick: unknown;
   isSyncedBuffered: (x: bigint, y: bigint) => boolean;
   pinThresholdPmob: string;
   selectedAccount: SelectedAccount;

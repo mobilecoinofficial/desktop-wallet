@@ -133,6 +133,7 @@ const ContactForm: FC<ContactFormProps> = ({
 
                 try {
                   setSubmitting(true);
+                  /* istanbul ignore next */
                   if (isMountedRef.current) {
                     setSubmitting(false);
                     setStatus({ success: true });
@@ -145,6 +146,7 @@ const ContactForm: FC<ContactFormProps> = ({
                     });
                   }
                 } catch (err) {
+                  /* istanbul ignore next */
                   if (isMountedRef.current) {
                     setStatus({ success: false });
                     setErrors({ submit: err.message });
@@ -160,6 +162,7 @@ const ContactForm: FC<ContactFormProps> = ({
                       <Avatar
                         style={{ backgroundColor: values.color || '#757575' }}
                         onClick={() => setShowPicker(true)}
+                        id="color-avatar"
                       >
                         {values.abbreviation}
                       </Avatar>
@@ -186,7 +189,12 @@ const ContactForm: FC<ContactFormProps> = ({
                           />
                         </DialogContent>
                         <DialogActions style={{ height: '100%' }}>
-                          <Button onClick={() => setShowPicker(false)} color="primary" autoFocus>
+                          <Button
+                            onClick={() => setShowPicker(false)}
+                            color="primary"
+                            autoFocus
+                            id="cancel-picker"
+                          >
                             {t('cancel')}
                           </Button>
                         </DialogActions>
@@ -199,6 +207,7 @@ const ContactForm: FC<ContactFormProps> = ({
                       margin="normal"
                       name="alias"
                       type="text"
+                      id="contact-alias"
                     />
                     <Field
                       component={TextField}
@@ -207,6 +216,7 @@ const ContactForm: FC<ContactFormProps> = ({
                       margin="normal"
                       name="abbreviation"
                       type="text"
+                      id="contact-abbreviation"
                     />
                     {assignedAddress && (
                       <Field
@@ -218,8 +228,9 @@ const ContactForm: FC<ContactFormProps> = ({
                         margin="normal"
                         name="assignedAddress"
                         type="text"
+                        id="contact-assigned-address"
                       />
-                    )}{' '}
+                    )}
                     <Field
                       component={TextField}
                       fullWidth
@@ -228,6 +239,7 @@ const ContactForm: FC<ContactFormProps> = ({
                       margin="normal"
                       name="recipientAddress"
                       type="text"
+                      id="contact-recipient-address"
                     />
                   </Box>
                   {errors.submit && (

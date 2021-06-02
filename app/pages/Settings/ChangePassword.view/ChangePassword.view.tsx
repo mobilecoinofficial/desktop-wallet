@@ -157,6 +157,7 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
                 resetForm();
               }
             } catch (err) {
+              /* istanbul ignore next */
               if (isMountedRef.current) {
                 setStatus({ success: false });
                 setErrors({ submit: err.message });

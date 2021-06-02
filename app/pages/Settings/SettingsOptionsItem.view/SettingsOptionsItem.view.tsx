@@ -30,7 +30,11 @@ const SettingsOptionsItem: FC<SettingsOptionsItemProps> = ({
   return (
     <Grid item xs={6}>
       <Card className={classes.card}>
-        <CardActionArea onClick={() => handleOnClick(path)} className={classes.cardArea}>
+        <CardActionArea
+          name="card-action"
+          onClick={() => handleOnClick(path)}
+          className={classes.cardArea}
+        >
           <CardContent>
             <Icon height={34} width={34} />
             <Typography variant="body2" color="textSecondary" component="p">

@@ -32,11 +32,13 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
     setSubmitting(true);
     try {
       await unlockWallet(values.password);
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmitting(false);
       }
     } catch (err) {
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: false });
         setErrors({ submit: err.message });

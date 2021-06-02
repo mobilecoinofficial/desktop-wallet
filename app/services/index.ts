@@ -9,10 +9,12 @@ import { checkGiftCodeStatus, CheckGiftCodeStatusService } from './checkGiftCode
 import { claimGiftCode, ClaimGiftCodeService } from './claimGiftCode.service';
 import { confirmEntropyKnown, ConfirmEntropyKnownService } from './confirmEntropyKnown.service';
 import { createAccount, CreateAccountService } from './createAccount.service';
+import { decryptContacts, DecryptContactsService } from './decryptContacts.service';
 import {
   deleteStoredGiftCodeB58,
   DeleteStoredGiftCodeB58Service,
 } from './deleteStoredGiftCodeB58.service';
+import { encryptContacts, EncryptContactsService } from './encryptContacts.service';
 import {
   fetchAllTransactionLogsForAccount,
   FetchAllTransactionLogsForAccountService,
@@ -40,7 +42,9 @@ export {
   claimGiftCode,
   confirmEntropyKnown,
   createAccount,
+  decryptContacts,
   deleteStoredGiftCodeB58,
+  encryptContacts,
   fetchAllTransactionLogsForAccount,
   fetchAllTxosForAccount,
   getAllGiftCodes,
@@ -63,7 +67,9 @@ export type {
   ClaimGiftCodeService,
   ConfirmEntropyKnownService,
   CreateAccountService,
+  DecryptContactsService,
   DeleteStoredGiftCodeB58Service,
+  EncryptContactsService,
   FetchAllTransactionLogsForAccountService,
   FetchAllTxosForAccountService,
   GetAllGiftCodesService,

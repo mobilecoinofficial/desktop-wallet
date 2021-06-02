@@ -153,9 +153,9 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                 convertMobStringToPicoMobString(values.pinThresholdMob),
                 values.password
               );
+              /* istanbul ignore next */
               if (isMountedRef.current) {
                 setSubmitting(false);
-
                 enqueueSnackbar(t('enqueue'), { variant: 'success' });
                 setStatus({ success: true });
                 resetForm({
@@ -169,6 +169,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                 });
               }
             } catch (err) {
+              /* istanbul ignore next */
               if (isMountedRef.current) {
                 setStatus({ success: false });
                 setErrors({ submit: err.message });
@@ -181,7 +182,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
             <Form>
               <Box>
                 <Field
-                  id="ChangePinView-currentPasswordField"
+                  id="CPV-currentPasswordField"
                   component={TextField}
                   fullWidth
                   label={t('currentPasswordLabel')}
@@ -191,7 +192,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                   onClick={handleClick}
                 />
                 <Field
-                  id="ChangePinView-newPinField"
+                  id="CPV-newPinField"
                   component={TextField}
                   fullWidth
                   label={t('newPinLabel')}
@@ -201,7 +202,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                   validate={validatePin}
                 />
                 <Field
-                  id="ChangePinView-confirmPinField"
+                  id="CPV-confirmPinField"
                   component={TextField}
                   fullWidth
                   label={t('pinConfirmationLabel')}
@@ -216,7 +217,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                   label={t('pinThreshold')}
                   margin="normal"
                   name="pinThresholdMob"
-                  id="pinThresholdMob"
+                  id="CPV-pinThresholdMob"
                   type="text"
                   onFocus={handleSelect}
                   InputProps={{

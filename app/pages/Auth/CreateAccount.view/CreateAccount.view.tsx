@@ -47,11 +47,13 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       values.checkedSavePassword ? setKeychainAccount(values.accountName, values.password) : null;
 
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: true });
         setSubmitting(false);
       }
     } catch (err) {
+      /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: false });
         setErrors({ submit: err.message });

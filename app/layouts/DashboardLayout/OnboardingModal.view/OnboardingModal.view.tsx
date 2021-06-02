@@ -21,7 +21,7 @@ const OnboardingModal: FC<OnboardingModalProps> = ({
       <ShowEntropyModal
         isShown={isShowEntropyModalShown}
         mnemonic={mnemonic}
-        onEntropyConfirmed={confirmEntropyKnown}
+        confirmEntropyKnown={confirmEntropyKnown}
       />
     );
   }

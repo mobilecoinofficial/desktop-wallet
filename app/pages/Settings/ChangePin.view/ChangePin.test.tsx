@@ -121,6 +121,7 @@ describe('ChangePinView', () => {
       )
 
   END OF FK TO REVIEW */
+  /* JOHN CODE 
   test('render and submit', async () => {
     const handleOnClick = jest.fn();
     const setPin = jest.fn();
@@ -141,4 +142,5 @@ describe('ChangePinView', () => {
 
     await waitFor(() => expect(container.innerHTML.includes('Invalid Password')).toBeTruthy());
   });
+  */
 });

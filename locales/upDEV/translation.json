@@ -12,6 +12,12 @@
     "unnamed": "UNNAMED ACCOUNT"
   },
 
+  "AuthPage": {
+    "createInstead": "CREATE ACCOUNT INSTEAD",
+    "importInstead": "IMPORT ACCOUNT INSTEAD",
+    "unlockInstead": "UNLOCK WALLET INSTEAD"
+  },
+
   "BalanceIndicator": {
     "syncMessage": "BALANCE MAY BE OUT-OF-DATE WHILE WALLET SYNCS WITH LEDGER.",
     "title": "BALANCE"
@@ -72,6 +78,7 @@
   "ChangePasswordView": {
     "changePasswordBreadcrumb": "CHANGE PASSPHRASE",
     "changePasswordButton": "CHANGE PASSPHRASE",
+    "checkSavePassword": "SAVE PASSPHRASE TO KEYCHAIN?",
     "description": "CHANGING YOUR PASSPHRASE WILL CHANGE HOW WE LOCK THIS WALLET. ALWAYS USE STRONG (UNGUESSABLE) PASSPHRASES AND CHANGE THEM REGULARLY.",
     "enqueue": "SUCCESSFULLY CHANGED PASSPHRASE.",
     "formLabel": "CHANGE PASSPHRASE",
@@ -192,20 +199,21 @@
   },
 
   "CrashReportPage": {
-    "encounteredAnIssue": "It seems we've encountered an issue that's causing the app the crash!",
-    "here": "here",
-    "quitApplication": "Quit Desktop Wallet",
-    "sendDebugLog": "If you'd like to also send us a copy of the debug log, you can find a copy of it",
-    "sendDebugLog2": "so feel free to check it out.",
-    "sendReport": "It would be super helpful if you sent the crash report to us, but we totally understand if you'd rather not :)",
-    "uhOh": "Uh Oh!"
+    "encounteredAnIssue": "IT SEEMS WE'VE ENCOUNTERED AN ISSUE THAT'S CAUSING THE APP THE CRASH!",
+    "here": "HERE",
+    "quitApplication": "QUIT DESKTOP WALLET",
+    "sendDebugLog": "IF YOU'D LIKE TO ALSO SEND US A COPY OF THE DEBUG LOG, YOU CAN FIND A COPY OF IT",
+    "sendDebugLog2": "SO FEEL FREE TO CHECK IT OUT.",
+    "sendReport": "IT WOULD BE SUPER HELPFUL IF YOU SENT THE CRASH REPORT TO US, BUT WE TOTALLY UNDERSTAND IF YOU'D RATHER NOT :)",
+    "uhOh": "UH OH!"
   },
 
   "CrashShowLog": {
-    "debugLogs": "Debug Logs",
-    "openLogsDir": "Open Logs Folder",
-    "submit": "Submit",
-    "title": "This log will be posted publicly online for contributors to view. You may examine and edit it before submitting."
+    "debugLogs": "DEBUG LOGS",
+    "openLogsDir": "OPEN LOGS FOLDER",
+    "sendLogsButton": "SEND LOGS",
+    "submit": "SUBMIT",
+    "title": "THIS LOG WILL BE POSTED PUBLICLY ONLINE FOR CONTRIBUTORS TO VIEW. YOU MAY EXAMINE AND EDIT IT BEFORE SUBMITTING."
   },
 
   "CreateAccountForm": {
@@ -213,6 +221,9 @@
     "acceptTermsButton": "TERMS OF USE",
     "acceptTermsFormHelper": "YOU MUST READ THE TERMS OF USE BEFORE USING THE WALLET.",
     "accountNameValidation": "ACCOUNT NAME CANNOT BE MORE THAN 64 CHARACTERS.",
+    "checkSavePassword": "SAVE PASSPHRASE TO KEYCHAIN?",
+    "checkedSavePasswordFormHelper": "ACCOUNT NAME IS OPTIONAL, BUT REQUIRED TO SAVE PASSPHRASE.",
+    "checkedSavePasswordValidation": "ACCOUNT NAME IS REQUIRED TO SAVE PASSPHRASE.",
     "checkedTermsValidation": "YOU MUST ACCEPT TERMS OF USE TO USE WALLET.",
     "createAccountButton": "CREATE ACCOUNT",
     "nameLabel": "ACCOUNT NAME (OPTIONAL)",
@@ -273,6 +284,9 @@
     "acceptTermsButton": "TERMS OF USE",
     "acceptTermsFormHelper": "YOU MUST READ THE TERMS OF USE BEFORE USING THE WALLET.",
     "accountNameValidation": "ACCOUNT NAME CANNOT BE MORE THAN 64 CHARACTERS.",
+    "checkSavePassword": "SAVE PASSPHRASE TO KEYCHAIN?",
+    "checkedSavePasswordFormHelper": "ACCOUNT NAME IS OPTIONAL, BUT REQUIRED TO SAVE PASSPHRASE.",
+    "checkedSavePasswordValidation": "ACCOUNT NAME IS REQUIRED TO SAVE PASSPHRASE.",
     "checkedTermsValidation": "YOU MUST ACCEPT TERMS OF USE TO USE WALLET.",
     "entropyLabel": "ENTROPY",
     "entropyMatches": "A VALID ENTROPY IS 12 OR MORE WORDS SEPARATED BY SPACES, OR 64 HEXADECIMALS.",
@@ -429,6 +443,13 @@
     "settings": "SETTINGS"
   },
 
+  "SavePasswordModal": {
+    "accountNameRequired": "ACCOUNT NAME REQUIRED",
+    "notNow": "NOT NOW",
+    "save": "SAVE",
+    "saveToKeychain": "SAVE PASSWORD TO KEYCHAIN?"
+  },
+
   "SendMobForm": {
     "accountBalance": "ACCOUNT BALANCE",
     "accountName": "ACCOUNT NAME",
@@ -437,6 +458,7 @@
     "cancel": "CANCEL",
     "confirm": "SEND MOB CONFIRMATION",
     "confirmSend": "CONFIRM SEND",
+    "description": "PLEASE ENTER THE RECIPIENT’S ADDRESS AND THE AMOUNT OF MOB TO SEND",
     "enterPin": "FOR THIS AMOUNT YOUR PIN IS NEEDED",
     "error": "COULD NOT BUILD TRANSACTION.",
     "errorFee": "PLEASE RESERVE 0.01 MOB FOR TRANSACTION FEE.",
@@ -460,6 +482,7 @@
     "senderPlus2": "(YOUR ADDRESS)",
     "success": "SUCCESSFULLY SENT ",
     "syncing": "WALLET SYNCING...",
+    "title": "SEND MOB TO AN ADDRESS",
     "total": "TOTAL",
     "transaction": "TRANSACTION DETAILS",
     "transactionCanceled": "TRANSACTION CANCELED",

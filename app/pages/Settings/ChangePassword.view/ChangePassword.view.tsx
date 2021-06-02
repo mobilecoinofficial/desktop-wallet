@@ -203,7 +203,7 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
                   <Box display="flex" alignItems="center" flexDirection="row-reverse">
                     <Box>
                       <Typography display="inline" color="textSecondary">
-                        Save passphrase to keychain?
+                        {t('checkSavePassword')}
                       </Typography>
                     </Box>
                     <Field

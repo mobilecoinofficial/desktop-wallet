@@ -78,7 +78,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
           .max(64, t('accountNameValidation'))
           .when('checkedSavePassword', {
             is: true,
-            then: Yup.string().required('Account Name is required to save passphrase'),
+            then: Yup.string().required(t('checkedSavePasswordValidation')),
           }),
         // CBB: It appears that the checkedTerms error message is not working properly.
         checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
@@ -101,9 +101,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
             name="accountName"
           />
           {values.checkedSavePassword && !values.accountName && (
-            <FormHelperText focused>
-              Account Name is optional, but required to save passphrase
-            </FormHelperText>
+            <FormHelperText focused>{t('checkedSavePasswordFormHelper')}</FormHelperText>
           )}
           <Field
             id="CreateAccountForm-passwordField"
@@ -126,7 +124,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
           <Box pt={1} display="flex">
             <Box display="flex" alignItems="center" flexDirection="row-reverse">
               <Box>
-                <Typography display="inline">Save passphrase to keychain?</Typography>
+                <Typography display="inline">{t('checkSavePassword')}</Typography>
               </Box>
               <Field
                 component={Checkbox}

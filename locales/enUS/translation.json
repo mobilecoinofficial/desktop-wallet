@@ -78,6 +78,7 @@
   "ChangePasswordView": {
     "changePasswordBreadcrumb": "Change Passphrase",
     "changePasswordButton": "Change Passphrase",
+    "checkSavePassword": "Save passphrase to keychain?",
     "description": "Changing your passphrase will change how we lock this wallet. Always use strong (unguessable) passphrases and change them regularly.",
     "enqueue": "Successfully changed passphrase.",
     "formLabel": "Change Passphrase",
@@ -210,6 +211,7 @@
   "CrashShowLog": {
     "debugLogs": "Debug Logs",
     "openLogsDir": "Open Logs Folder",
+    "sendLogsButton": "Send Logs",
     "submit": "Submit",
     "title": "This log will be posted publicly online for contributors to view. You may examine and edit it before submitting."
   },
@@ -219,6 +221,9 @@
     "acceptTermsButton": "Terms of Use",
     "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
     "accountNameValidation": "Account Name cannot be more than 64 characters.",
+    "checkSavePassword": "Save passphrase to keychain?",
+    "checkedSavePasswordFormHelper": "Account Name is optional, but required to save passphrase.",
+    "checkedSavePasswordValidation": "Account Name is required to save passphrase.",
     "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
     "createAccountButton": "Create Account",
     "nameLabel": "Account Name (optional)",
@@ -279,6 +284,9 @@
     "acceptTermsButton": "Terms of Use",
     "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
     "accountNameValidation": "Account Name cannot be more than 64 characters.",
+    "checkSavePassword": "Save passphrase to keychain?",
+    "checkedSavePasswordFormHelper": "Account Name is optional, but required to save passphrase.",
+    "checkedSavePasswordValidation": "Account Name is required to save passphrase.",
     "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
     "entropyLabel": "Entropy",
     "entropyMatches": "A valid Entropy is 12 or more words separated by spaces, or 64 hexadecimals.",

@@ -92,7 +92,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
           .max(64, t('accountNameValidation'))
           .when('checkedSavePassword', {
             is: true,
-            then: Yup.string().required('Account Name is required to save password'),
+            then: Yup.string().required(t('checkedSavePasswordValidation')),
           }),
         // CBB: It appears that the checkedTerms error message is not working properly.
         checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
@@ -119,9 +119,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
             name="accountName"
           />
           {values.checkedSavePassword && !values.accountName && (
-            <FormHelperText focused>
-              Account Name is optional, but required to save passphrase
-            </FormHelperText>
+            <FormHelperText focused>{t('checkedSavePasswordFormHelper')}</FormHelperText>
           )}
           <Field
             id="ImportAccountForm-entropyField"
@@ -153,7 +151,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
           <Box pt={1} display="flex">
             <Box display="flex" alignItems="center" flexDirection="row-reverse">
               <Box>
-                <Typography display="inline">Save passphrase to keychain?</Typography>
+                <Typography display="inline">{t('checkSavePassword')}</Typography>
               </Box>
               <Field
                 component={Checkbox}

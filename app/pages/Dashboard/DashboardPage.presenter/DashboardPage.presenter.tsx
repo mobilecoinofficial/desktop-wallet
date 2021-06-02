@@ -5,6 +5,7 @@ import { Box, Container, Grid, makeStyles } from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 
+import { logger } from '../../../fullService/utils';
 import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 import { DashboardView } from '../DashboardPage.view/DashboardPage.view';
@@ -25,11 +26,14 @@ const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) 
   const { enqueueSnackbar } = useSnackbar();
 
   const handleCodeClicked = (code: string, text: string) => {
+    logger('Code copied to clipboard from dashboard');
     clipboard.writeText(code);
     enqueueSnackbar(text, {
       variant: 'success',
     });
   };
+
+  logger('Showing Dashboard');
 
   return (
     <Box data-testid="DashboardPage" className={classes.root}>

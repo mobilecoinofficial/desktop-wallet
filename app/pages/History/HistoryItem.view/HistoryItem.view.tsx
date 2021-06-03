@@ -98,7 +98,9 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
       <Card className={classes.card}>
         <CardActionArea onClick={onClick}>
           <CardHeader
-            avatar={<Avatar>{avatar}</Avatar>}
+            avatar={
+              <Avatar style={{ backgroundColor: contact?.color || '#757575' }}>{avatar}</Avatar>
+            }
             title={aliasOrAddress}
             subheader={`${t('finalizedBlockHeight')}${finalizedBlockIndex}`}
             action={

@@ -18,9 +18,17 @@ const VALID_PASSWORD = '12345678';
 const WRONG_PASSWORD = '123456789012345';
 const SHORT_PASSWORD = '12345';
 
-const setUpTest = (importAccount = jest.fn(), importLegacyAccount = jest.fn()) => {
+const setUpTest = (
+  importAccount = jest.fn(),
+  importLegacyAccount = jest.fn(),
+  setKeychainAccount = jest.fn()
+) => {
   const { container } = render(
-    <ImportAccountView importAccount={importAccount} importLegacyAccount={importLegacyAccount} />
+    <ImportAccountView
+      setKeychainAccount={setKeychainAccount}
+      importAccount={importAccount}
+      importLegacyAccount={importLegacyAccount}
+    />
   );
   const nameField = container.querySelector(
     '[id="ImportAccountForm-accountNameField"]'
@@ -176,7 +184,7 @@ test('Wrong phrase entropy is not accepted', async () => {
   await act(async () => userEvent.tab());
   await waitFor(() => expect(entropyField.value).toEqual(WRONG_PHRASE_ENTROPY));
   await waitFor(() => expect(submitButton.disabled).toBeTruthy());
-  await waitFor(() => expect(container.innerHTML.includes('A valid Entropy is 12')).toBeTruthy());
+  await waitFor(() => expect(container.innerHTML.includes('A valid Entropy is 24')).toBeTruthy());
 });
 
 test('Too short password is not accepted', async () => {

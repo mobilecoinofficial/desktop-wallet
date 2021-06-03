@@ -22,7 +22,6 @@ import keytar from 'keytar';
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
 import languages from './constants/languages';
-import getPlatform from './get-platform';
 import i18n from './i18next.config';
 import menuFactoryService from './menuFactory';
 import * as localStore from './utils/LocalStore';
@@ -73,18 +72,17 @@ const installExtensions = async () => {
 
 // TODO: remane this function to full service after intergration
 // TODO: test
-const spawnAPIBinaries = () => {
+const startFullService = () => {
   // Start the full-service process in the background
   const IS_PROD = process.env.NODE_ENV === 'production';
   const root = process.cwd();
   const { isPackaged } = app;
 
   // TODO move these strings into constants/
-  const platform = getPlatform() || '';
   const fullServiceBinariesPath =
     IS_PROD && isPackaged
-      ? path.join(process.resourcesPath, '..', 'full-service-bin', platform)
-      : path.join(root, 'full-service-bin', platform);
+      ? path.join(process.resourcesPath, '..', 'full-service-bin')
+      : path.join(root, 'full-service-bin');
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   const fullServiceExecPath = path.resolve(
@@ -98,7 +96,6 @@ const spawnAPIBinaries = () => {
   ); // escape spaces in mac and linux (change logic for windows)
   const fullServiceDbPath = path.normalize(path.join(userDataPath, 'full-service', 'wallet-db')); // escape spaces in mac and linux (change logic for windows)
 
-  // TODO - delete the console logs
   console.log('ledgerFullServiceDbPath', ledgerFullServiceDbPath);
   console.log('fullServiceDbPath', fullServiceDbPath);
   spawn(
@@ -262,7 +259,7 @@ if (process.env.E2E_BUILD === 'true') {
     .catch(() => null);
 } else {
   app.on('ready', () => {
-    spawnAPIBinaries();
+    startFullService();
     createWindow();
   });
 }

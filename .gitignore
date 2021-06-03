@@ -58,3 +58,5 @@ full-service-bin/linux/full-service*
 full-service-bin/ingest-enclave*
 full-service-bin/**/*DEBUG*
 
+
+full-service-bin/

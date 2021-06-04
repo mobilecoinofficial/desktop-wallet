@@ -36,7 +36,13 @@ const ContactsPage: FC = () => {
     return 0;
   }) as Contact[];
 
-  const addNewContact = async ({ abbreviation, alias, isFavorite, recipientAddress }: Contact) => {
+  const addNewContact = async ({
+    abbreviation,
+    alias,
+    color,
+    isFavorite,
+    recipientAddress,
+  }: Contact) => {
     const result = await assignAddressForAccount(
       selectedAccount.account.accountId || Math.random()
     );
@@ -46,7 +52,7 @@ const ContactsPage: FC = () => {
       abbreviation,
       alias,
       assignedAddress: result.address.publicAddress,
-      color: randomColor(),
+      color,
       isFavorite,
       recipientAddress,
     });

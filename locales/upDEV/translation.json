@@ -275,7 +275,7 @@
     "accountNameValidation": "ACCOUNT NAME CANNOT BE MORE THAN 64 CHARACTERS.",
     "checkedTermsValidation": "YOU MUST ACCEPT TERMS OF USE TO USE WALLET.",
     "entropyLabel": "ENTROPY",
-    "entropyMatches": "A VALID ENTROPY IS 12 OR MORE WORDS SEPARATED BY SPACES, OR 64 HEXADECIMALS.",
+    "entropyMatches": "A VALID ENTROPY IS 24 WORDS SEPARATED BY SPACES, OR 64 HEXADECIMALS.",
     "entropyIsWrong": "THAT ENTROPY IS NOT CORRECT",
     "entropyRequired": "ENTROPY IS REQUIRED",
     "importAccountButton": "IMPORT ACCOUNT",
@@ -388,6 +388,7 @@
 
   "NavBar": {
     "contacts": "CONTACTS",
+    "crash": "CRASH",
     "gift": "GIFTING",
     "history": "HISTORY",
     "home": "HOME",

@@ -281,7 +281,7 @@
     "accountNameValidation": "Account Name cannot be more than 64 characters.",
     "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
     "entropyLabel": "Entropy",
-    "entropyMatches": "A valid Entropy is 12 or more words separated by spaces, or 64 hexadecimals.",
+    "entropyMatches": "A valid Entropy is 24 words separated by spaces, or 64 hexadecimals.",
     "entropyIsWrong": "That Entropy is not correct",
     "entropyRequired": "Entropy is required",
     "importAccountButton": "Import Account",
@@ -394,6 +394,7 @@
 
   "NavBar": {
     "contacts": "Contacts",
+    "crash": "CRASH",
     "gift": "Gifting",
     "history": "History",
     "home": "Home",

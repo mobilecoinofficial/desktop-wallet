@@ -23,6 +23,7 @@ const setUpTest = (setPin = jest.fn()) => {
   const { container } = render(
     <SnackbarProvider>
       <ChangePinView
+        accounts={[]}
         onClickBack={handleOnClick}
         setPin={setPin}
         pin=""
@@ -53,9 +54,6 @@ const setUpTest = (setPin = jest.fn()) => {
 };
 
 describe('ChangePinView', () => {
-  test('NULL', () => expect(1).toBeTruthy());
-  
-  /* FK TO REVIEW...
   test('requires PINs to match', async () => {
     const { confirmPinField, container, newPinField, passwordField } = setUpTest();
 
@@ -121,28 +119,7 @@ describe('ChangePinView', () => {
         convertMobStringToPicoMobString(PIN_MOB),
         PASSWORD
       )
-
-  END OF FK TO REVIEW */
-  /* JOHN CODE 
-  test('render and submit', async () => {
-    const handleOnClick = jest.fn();
-    const setPin = jest.fn();
-    const pinThresholdPmob = '10.000000000000';
-    const pin = '12345678';
-
-    const { getByText } = render(
-      <SnackbarProvider>
-        <ChangePinView
-          accounts={[]}
-          onClickBack={handleOnClick}
-          setPin={setPin(pin, pinThresholdPmob, 'password')}
-          pin={pin}
-          pinThresholdPmob={pinThresholdPmob}
-        />
-      </SnackbarProvider>
     );
-
     await waitFor(() => expect(container.innerHTML.includes('Invalid Password')).toBeTruthy());
   });
-  */
 });

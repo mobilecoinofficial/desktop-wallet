@@ -79,7 +79,7 @@ const CrashShowLog: FC<CrashShowLogProps> = ({
           variant="contained"
           id="send-button"
         >
-          Send Logs
+          {t('sendLogsButton')}
         </Button>
       </Box>
     </Box>

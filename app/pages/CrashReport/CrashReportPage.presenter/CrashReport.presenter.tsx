@@ -89,7 +89,7 @@ const CrashReportPage: FC = () => {
           type="submit"
           variant="contained"
         >
-          Quit Desktop Wallet
+          {t('quitApplication')}
         </Button>
       </Box>
       <Modal

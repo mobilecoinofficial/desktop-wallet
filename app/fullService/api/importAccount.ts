@@ -5,7 +5,7 @@ const IMPORT_ACCOUNT_METHOD = 'import_account';
 
 type ImportAccountParams = {
   mnemonic: string;
-  keyDerivationVersion: string;
+  key_derivation_version: string;
   firstBlockIndex?: string;
   name: string | null;
 };
@@ -16,13 +16,13 @@ type ImportAccountResult = {
 
 const importAccount = async ({
   mnemonic,
-  keyDerivationVersion,
+  key_derivation_version,
   firstBlockIndex,
   name,
 }: ImportAccountParams): Promise<ImportAccountResult> => {
   const { result, error } = await axiosFullService(IMPORT_ACCOUNT_METHOD, {
     firstBlockIndex,
-    keyDerivationVersion,
+    key_derivation_version,
     mnemonic,
     name,
   });

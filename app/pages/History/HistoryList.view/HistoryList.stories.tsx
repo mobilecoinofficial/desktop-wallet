@@ -7,7 +7,7 @@ import { HistoryList } from './HistoryList.view';
 
 export default {
   component: HistoryList,
-  title: 'History/List',
+  title: 'Pages/History/List',
 };
 
 const Template: Story<ComponentProps<typeof HistoryList>> = (args) => <HistoryList {...args} />;

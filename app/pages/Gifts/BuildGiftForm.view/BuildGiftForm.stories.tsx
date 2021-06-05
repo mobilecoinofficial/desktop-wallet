@@ -8,7 +8,7 @@ import { BuildGiftForm } from './BuildGiftForm.view';
 
 export default {
   component: BuildGiftForm,
-  title: 'Gift/Build Gift Form',
+  title: 'Pages/Gift/Build Gift Form',
 };
 
 const Template: Story<ComponentProps<typeof BuildGiftForm>> = (args: BuildGiftFormProps) => (
@@ -19,7 +19,7 @@ const Template: Story<ComponentProps<typeof BuildGiftForm>> = (args: BuildGiftFo
 
 export const GiftForm = Template.bind({});
 GiftForm.args = {
-  buildGiftCode: () => undefined,
+  buildGiftCode: () => Promise.resolve(undefined),
   existingPin: '111111',
   isSyncedBuffered: () => true,
   pinThresholdPmob: '1',
@@ -27,7 +27,7 @@ GiftForm.args = {
     account: {
       accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
       firstBlockIndex: '0',
-      keyDerivationVersion: '1',
+      key_derivation_version: '1',
       mainAddress:
         'syJAd2QoH7xSkZvMDV8Q6DdWhnRsmAKqx3LZ5BaLXKezCDjf6nUfps2b8ywm1scSMp5WDbYxNMu5mNniVkmb1fehAGaKQdNQWEEg4vHrCH',
       name: 'fktt22',

@@ -8,7 +8,7 @@ import { BuildGiftPanel } from './BuildGiftPanel.view';
 
 export default {
   component: BuildGiftPanel,
-  title: 'Gift/Build Gift Panel',
+  title: 'Pages/Gift/Build Gift Panel',
 };
 
 const Template: Story<ComponentProps<typeof BuildGiftPanel>> = (args: BuildGiftPanelProps) => (
@@ -32,7 +32,7 @@ GiftPanel.args = {
         'J4AsnTwog3dYpsxJ7hMT2xhtoRxJJ5zTZ9KtsEUC7nppfnJmTxQWx5uWevjevckVjrLn71XMNipgWABXbp78TcBEC5Jpd7Dpf55uwwaS',
       memo: '',
       object: 'gift_code',
-      txoIdHex: 'ef262c80940108ec2e988a1ef0f836bdff97a8aa4fe826cfde706b89f54dcc12',
+      txoId: 'ef262c80940108ec2e988a1ef0f836bdff97a8aa4fe826cfde706b89f54dcc12',
       valuePmob: '2010000000000',
     },
     {
@@ -42,7 +42,7 @@ GiftPanel.args = {
         'QExwRRQCbMZWLcN7qhxosP8MEceLHzZ79LuvHRUT28T8RUKxAXJhwMSuHFpjv3yHmAETTtPLJZ4sMSm7kGUvJy1BfuBGCZinhRKFsrBv',
       memo: '',
       object: 'gift_code',
-      txoIdHex: 'a6dff07163f7baee4d3dbd67b58b7f8537abd156505e385d2e51ecb434ea31f2',
+      txoId: 'a6dff07163f7baee4d3dbd67b58b7f8537abd156505e385d2e51ecb434ea31f2',
       valuePmob: '2010000000000',
     },
     {
@@ -52,7 +52,7 @@ GiftPanel.args = {
         'HcCU4VaCG8ykDx6tmH4tTprjQcnoLuTw9Xixhy7MKusTKTDW9o1eFB349UKKm4UZffaa9Nbzg5QXsBxJGZxyMEMonRfFaqm3FRxqu7q9',
       memo: '',
       object: 'gift_code',
-      txoIdHex: '82692dbaf5302bc1d3cb248e9dfc549550b8943384d143a231a3a53149088d82',
+      txoId: '82692dbaf5302bc1d3cb248e9dfc549550b8943384d143a231a3a53149088d82',
       valuePmob: '2010000000000',
     },
   ],
@@ -62,7 +62,7 @@ GiftPanel.args = {
     account: {
       accountId: '43ab3ec7d6c232a9ff89fb5112d9416fd150b9d977f1bc5ddf805d77122e6f55',
       firstBlockIndex: '159565',
-      keyDerivationVersion: '2',
+      key_derivation_version: '2',
       mainAddress:
         'eo7bLKA1kNNgLHGUMnf5sHZ5Hj52YqGNyia52eaacEqUimqxXUM91pDKJU22cca8S4rbSvrfJhkhyTWFRwvFQZKDE5p6M52B3dbVpgLo9z',
       name: 'Moe Mob',

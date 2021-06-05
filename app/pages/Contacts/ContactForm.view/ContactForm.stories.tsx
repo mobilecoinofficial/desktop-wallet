@@ -6,7 +6,7 @@ import { ContactForm } from './ContactForm.view';
 
 export default {
   component: ContactForm,
-  title: 'Contacts/Add or Edit',
+  title: 'Pages/Contacts/Add or Edit',
 };
 
 const Template: Story<ComponentProps<typeof ContactForm>> = (args) => <ContactForm {...args} />;

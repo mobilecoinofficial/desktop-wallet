@@ -6,7 +6,7 @@ import { TransactionInfoLabel } from './TransactionInfoLabel.view';
 
 export default {
   component: TransactionInfoLabel,
-  title: 'Components/Transaction Info Label',
+  title: 'General/Components/Transaction Info Label',
 };
 
 const Template: Story<ComponentProps<typeof TransactionInfoLabel>> = (args) => (

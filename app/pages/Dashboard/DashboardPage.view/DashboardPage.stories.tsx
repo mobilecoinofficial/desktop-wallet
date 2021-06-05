@@ -1,21 +1,14 @@
 import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
-import { SnackbarProvider } from 'notistack';
 
-import { ConsumeGiftPanelProps } from './ConsumeGiftPanel';
-import { ConsumeGiftPanel } from './ConsumeGiftPanel.view';
+import type { SelectedAccount } from '../../../types/SelectedAccount.d';
+import { DashboardView } from './DashboardPage.view';
 
 export default {
-  component: ConsumeGiftPanel,
-  title: 'Pages/Gift/Consume Gift Panel',
+  component: DashboardView,
+  title: 'Pages/Dashboard',
 };
-
-const Template: Story<ComponentProps<typeof ConsumeGiftPanel>> = (args: ConsumeGiftPanelProps) => (
-  <SnackbarProvider>
-    <ConsumeGiftPanel {...args} />
-  </SnackbarProvider>
-);
 
 const selectedAccount = {
   account: {
@@ -41,11 +34,9 @@ const selectedAccount = {
     spentPmob: '35410000000000',
     unspentPmob: '908298888888888',
   },
-};
+} as SelectedAccount;
 
-export const GiftForm = Template.bind({});
-GiftForm.args = {
-  checkGiftCodeStatus: () => undefined,
-  claimGiftCode: () => undefined,
-  selectedAccount,
-};
+const Template: Story<ComponentProps<typeof DashboardView>> = (args) => <DashboardView {...args} />;
+
+export const MainView = Template.bind({});
+MainView.args = { selectedAccount };

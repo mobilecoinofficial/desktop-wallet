@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import type { Theme } from '../../../../theme';
+import type { Theme } from '../../../theme';
 import { ShowRetrievedEntropyModalProps } from './ShowRetrievedEntropy';
 
 const useStyles = makeStyles((theme: Theme) => ({

@@ -5,10 +5,10 @@ import { Box, Breadcrumbs, Container, Link, Typography, makeStyles } from '@mate
 import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../../../theme';
-import { ConfigureFullServiceViewProps } from './ConfigureFullService';
-import { FullServiceDirectory } from './FullServiceDirectory.view';
-import { LeaveFullServiceRunning } from './LeaveFullServiceRunning.view';
-import { LedgerStatus } from './LedgerStatus.view';
+import { FullServiceDirectory } from '../FullServiceDirectory.view';
+import { LeaveFullServiceRunning } from '../LeaveFullServiceRunning.view';
+import { LedgerStatus } from '../LedgerStatus.view';
+import type { ConfigureFullServiceViewProps } from './ConfigureFullService.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardContainer: {

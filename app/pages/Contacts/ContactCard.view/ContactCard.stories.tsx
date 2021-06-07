@@ -3,11 +3,11 @@ import React, { ComponentProps } from 'react';
 import { Story } from '@storybook/react';
 
 import type { ContactCardProps } from './ContactCard.d';
-import type { ContactCard } from './ContactCard.view';
+import { ContactCard } from './ContactCard.view';
 
 export default {
   component: ContactCard,
-  title: 'Contacts/Card',
+  title: 'Pages/Contacts/Card',
 };
 
 const Template: Story<ComponentProps<typeof ContactCard>> = (args: ContactCardProps) => (

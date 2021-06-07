@@ -1,5 +1,5 @@
-import type { Account } from '../../../../types/Account.d';
-import type { BalanceStatus } from '../../../../types/BalanceStatus.d';
+import type { Account } from '../../../types/Account.d';
+import type { BalanceStatus } from '../../../types/BalanceStatus.d';
 
 type SelectedAccount = {
   account: Account;

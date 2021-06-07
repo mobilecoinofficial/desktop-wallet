@@ -6,12 +6,12 @@ import { ShortCode } from './ShortCode.view';
 
 export default {
   component: ShortCode,
-  title: 'Components/Short Code',
+  title: 'General/Components',
 };
 
 const Template: Story<ComponentProps<typeof ShortCode>> = (args) => <ShortCode {...args} />;
 
-export const Primary = Template.bind({});
-Primary.args = {
+export const ShortCodeExample = Template.bind({});
+ShortCodeExample.args = {
   code: '1241cm3g',
 };

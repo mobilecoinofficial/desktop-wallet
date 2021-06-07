@@ -21,8 +21,8 @@ import * as Yup from 'yup';
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
+import { ShowRetrievedEntropyModal } from '../ShowRetrievedEntropy.view';
 import { RetrieveEntropyViewProps } from './RetrieveEntropy';
-import { ShowRetrievedEntropyModal } from './ShowRetrievedEntropy.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

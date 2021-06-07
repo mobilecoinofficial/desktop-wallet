@@ -6,13 +6,13 @@ import { ReceiveMob } from './ReceiveMob.view';
 
 export default {
   component: ReceiveMob,
-  title: 'SendReceive/Receive Mob',
+  title: 'Pages/Send_Receive/Receive Mob',
 };
 
 const Template: Story<ComponentProps<typeof ReceiveMob>> = (args) => <ReceiveMob {...args} />;
 
-export const Item = Template.bind({});
-Item.args = {
+export const Standard = Template.bind({});
+Standard.args = {
   codeClicked: () => console.log('codeClicked!'),
   contacts: [
     {
@@ -42,7 +42,7 @@ Item.args = {
     account: {
       accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
       firstBlockIndex: '0',
-      keyDerivationVersion: '1',
+      key_derivation_version: '1',
       mainAddress:
         'syJAd2QoH7xSkZvMDV8Q6DdWhnRsmAKqx3LZ5BaLXKezCDjf6nUfps2b8ywm1scSMp5WDbYxNMu5mNniVkmb1fehAGaKQdNQWEEg4vHrCH',
       name: 'fktt22',

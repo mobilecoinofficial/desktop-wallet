@@ -8,7 +8,7 @@ import { TransactionDetails } from './TransactionDetails.view';
 
 export default {
   component: TransactionDetails,
-  title: 'History/Transaction Details View',
+  title: 'Pages/History/Transaction Details View',
 };
 
 const Template: Story<ComponentProps<typeof TransactionDetails>> = (args) => (

@@ -8,7 +8,7 @@ import { ConsumeGiftForm } from './ConsumeGiftForm.view';
 
 export default {
   component: ConsumeGiftForm,
-  title: 'Gift/Consume Gift Form',
+  title: 'Pages/Gift/Consume Gift Form',
 };
 
 const Template: Story<ComponentProps<typeof ConsumeGiftForm>> = (args: ConsumeGiftFormProps) => (
@@ -21,7 +21,7 @@ const selectedAccount = {
   account: {
     accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
     firstBlockIndex: '0',
-    keyDerivationVersion: '1',
+    key_derivation_version: '1',
     mainAddress:
       'syJAd2QoH7xSkZvMDV8Q6DdWhnRsmAKqx3LZ5BaLXKezCDjf6nUfps2b8ywm1scSMp5WDbYxNMu5mNniVkmb1fehAGaKQdNQWEEg4vHrCH',
     name: 'fktt22',

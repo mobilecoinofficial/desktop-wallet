@@ -16,7 +16,7 @@ const importAccount = async (
 
     // Attempt import
     const { account } = await fullServiceApi.importAccount({
-      keyDerivationVersion: '2',
+      key_derivation_version: '2',
       mnemonic,
       name,
     });

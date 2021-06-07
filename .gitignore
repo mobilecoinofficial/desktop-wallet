@@ -59,3 +59,5 @@ full-service-bin/ingest-enclave*
 full-service-bin/consensus-enclave*
 full-service-bin/**/*DEBUG*
 
+
+full-service-bin/

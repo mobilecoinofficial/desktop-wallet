@@ -8,6 +8,8 @@ import { SnackbarProvider } from 'notistack';
 import '../../../testUtils/i18nForTests';
 import { BuildGiftForm } from './BuildGiftForm.view';
 
+const FEE_PMOB = '3000000000';
+
 describe('Build Gift Form', () => {
   test('has a functioning happy path with no PIN needed', async () => {
     const fakeBuildGiftCode = jest.fn().mockResolvedValue({
@@ -25,7 +27,9 @@ describe('Build Gift Form', () => {
       <SnackbarProvider>
         <BuildGiftForm
           buildGiftCode={fakeBuildGiftCode}
+          codeClicked={() => {}}
           existingPin="111111"
+          feePmob={FEE_PMOB}
           isSyncedBuffered={() => true}
           pinThresholdPmob="99999999999999"
           selectedAccount={{

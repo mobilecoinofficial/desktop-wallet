@@ -10,6 +10,7 @@ export interface BuildGiftFormProps {
   getAllGiftCodes: GetAllGiftCodesService;
   codeClicked: (code: string, text: string) => void;
   existingPin: string;
+  feePmob: string;
   isSyncedBuffered: (x: bigint, y: bigint) => boolean;
   pinThresholdPmob: string;
   selectedAccount: SelectedAccount;

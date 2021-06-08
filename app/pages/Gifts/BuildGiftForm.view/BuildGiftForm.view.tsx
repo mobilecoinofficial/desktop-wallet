@@ -29,15 +29,18 @@ import { MOBIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
-import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
+import type { TxProposal } from '../../../types/TxProposal';
+import {
+  convertMobStringToPicoMobString,
+  convertPicoMobStringToMob,
+} from '../../../utils/convertMob';
 import { BuildGiftFormProps } from './BuildGiftForm';
 
-// CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
-  feeConfirmation: null,
+  feeConfirmation: 0n,
   giftCodeB58: '',
-  totalValueConfirmation: null,
-  txProposal: null,
+  totalValueConfirmation: 0n,
+  txProposal: {} as TxProposal,
 };
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -92,6 +95,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const BuildGiftForm: FC<BuildGiftFormProps> = ({
   buildGiftCode,
   codeClicked,
+  feePmob,
   getAllGiftCodes,
   existingPin,
   isSyncedBuffered,
@@ -249,7 +253,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
   return (
     <Formik
       initialValues={{
-        feeAmount: '0.010000000000', // TODO we need to pull this from constants
+        feeAmount: convertPicoMobStringToMob(feePmob),
         mobValue: '0', // mobs
         pin: '',
         senderPublicAddress: mockMultipleAccounts[0].b58Code,

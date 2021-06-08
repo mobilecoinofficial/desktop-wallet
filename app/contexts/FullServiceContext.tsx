@@ -36,6 +36,7 @@ import { IMPORT_ACCOUNT, ImportAccountActionType } from './actions/importAccount
 import { INITIALIZE, initializeAction, InitializeActionType } from './actions/initialize.action';
 import { UNLOCK_WALLET, UnlockWalletActionType } from './actions/unlockWallet.action';
 import { UPDATE_CONTACTS, UpdateContactsActionType } from './actions/updateContacts.action';
+import { UPDATE_FEE_PMOB, UpdateFeePmobActionType } from './actions/updateFeePmob.action';
 import { UPDATE_GIFT_CODES, UpdateGiftCodesActionType } from './actions/updateGiftCodes.action';
 import { UPDATE_PASSPHRASE, UpdatePassphraseActionType } from './actions/updatePassphrase.action';
 import { UPDATE_PIN, UpdatePinActionType } from './actions/updatePin.action';
@@ -51,6 +52,7 @@ export interface FullServiceState {
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
   encryptedPassphrase: SjclCipherEncrypted | undefined;
+  feePmob: StringUInt64;
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
   isInitialized: boolean;
@@ -78,6 +80,7 @@ type Action =
   | InitializeActionType
   | UnlockWalletActionType
   | UpdateContactsActionType
+  | UpdateFeePmobActionType
   | UpdateGiftCodesActionType
   | UpdatePassphraseActionType
   | UpdatePinActionType
@@ -266,6 +269,14 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       return {
         ...state,
         contacts,
+      };
+    }
+
+    case UPDATE_FEE_PMOB: {
+      const { feePmob } = (action as UpdateFeePmobActionType).payload;
+      return {
+        ...state,
+        feePmob,
       };
     }
 

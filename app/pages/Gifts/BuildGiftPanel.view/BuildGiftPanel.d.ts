@@ -11,6 +11,7 @@ export interface BuildGiftPanelProps {
   buildGiftCode: BuildGiftCodeService;
   codeClicked: (code: string, text: string) => void;
   deleteStoredGiftCodeB58: DeleteStoredGiftCodeB58Service;
+  feePmob: string;
   getAllGiftCodes: GetAllGiftCodesService;
   existingPin: string;
   giftCodes: GiftCode[];

@@ -21,6 +21,7 @@ export const GiftForm = Template.bind({});
 GiftForm.args = {
   buildGiftCode: () => Promise.resolve(undefined),
   existingPin: '111111',
+  feePmob: '3000000000',
   isSyncedBuffered: () => true,
   pinThresholdPmob: '1',
   selectedAccount: {

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
@@ -11,6 +11,7 @@ import useFullService from '../../../hooks/useFullService';
 import {
   assignAddressForAccount,
   buildTransaction,
+  getFeePmob,
   submitTransaction,
   updateContacts,
 } from '../../../services';
@@ -33,7 +34,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SendReceivePage: FC = () => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
-  const { contacts, pin: existingPin, pinThresholdPmob, selectedAccount } = useFullService();
+  const {
+    contacts,
+    pin: existingPin,
+    feePmob,
+    pinThresholdPmob,
+    selectedAccount,
+  } = useFullService();
 
   const { t } = useTranslation('TransactionView');
   const { enqueueSnackbar = () => {} } = useSnackbar() || {};
@@ -55,6 +62,7 @@ const SendReceivePage: FC = () => {
       buildTransaction={buildTransaction}
       contacts={contacts}
       existingPin={existingPin as string}
+      feePmob={feePmob}
       isSyncedBuffered={isSyncedBuffered}
       pinThresholdPmob={parseFloat(pinThresholdPmob)}
       selectedAccount={selectedAccount}
@@ -70,6 +78,8 @@ const SendReceivePage: FC = () => {
       selectedAccount={selectedAccount}
     />
   );
+
+  useEffect(() => getFeePmob(), []);
 
   return (
     <Box className={classes.root}>

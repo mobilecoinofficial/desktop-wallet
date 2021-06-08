@@ -23,6 +23,7 @@ GiftPanel.args = {
   codeClicked: () => console.log('codeClicked!'),
   deleteStoredGiftCodeB58: () => console.log('deleteStoredGiftCodeB58!'),
   existingPin: '12345678',
+  feePmob: '3000000000',
   getAllGiftCodes: () => console.log('getAllGiftCodes!'),
   giftCodes: [
     {

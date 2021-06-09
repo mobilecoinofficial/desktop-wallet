@@ -85,8 +85,8 @@ const GiftsPage: FC = () => {
     />
   );
 
-  useEffect(() => getAllGiftCodes(), []);
-  useEffect(() => getFeePmob(), []);
+  useEffect(getAllGiftCodes, []);
+  useEffect(getFeePmob, []);
 
   return (
     <Box className={classes.root}>

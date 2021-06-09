@@ -274,7 +274,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
         try {
           setIsAwaitingConformation(true);
 
-          const adjustedValue = Number(values.mobValue) + 0.01;
+          const adjustedValue = Number(values.mobValue) + Number(values.feeAmount);
 
           const result = await buildGiftCode({
             accountId: selectedAccount.account.accountId,

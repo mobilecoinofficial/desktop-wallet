@@ -66,7 +66,7 @@ const GiftsPage: FC = () => {
       codeClicked={handleCodeClicked}
       deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
       existingPin={existingPin as string}
-      feePmob={feePmob}
+      feePmob={feePmob || '0'}
       getAllGiftCodes={getAllGiftCodes}
       giftCodes={giftCodes}
       handleCopyClick={handleCodeClicked}

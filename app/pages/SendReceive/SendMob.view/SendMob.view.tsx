@@ -297,7 +297,7 @@ const SendMob: FC<SendMobProps> = ({
               initialValues={{
                 alias: '',
                 contactId: NO_CONTACT_SELECTED,
-                feeAmount: convertPicoMobStringToMob(feePmob || '0'), // TODO we need to pull this from constants
+                feeAmount: convertPicoMobStringToMob(feePmob), // TODO we need to pull this from constants
                 mobAmount: '0', // mobs
                 pin: '',
                 recipientPublicAddress: '',

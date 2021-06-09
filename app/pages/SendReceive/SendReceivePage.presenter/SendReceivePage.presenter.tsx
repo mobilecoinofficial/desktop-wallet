@@ -62,7 +62,7 @@ const SendReceivePage: FC = () => {
       buildTransaction={buildTransaction}
       contacts={contacts}
       existingPin={existingPin as string}
-      feePmob={feePmob}
+      feePmob={feePmob || '0'}
       isSyncedBuffered={isSyncedBuffered}
       pinThresholdPmob={parseFloat(pinThresholdPmob)}
       selectedAccount={selectedAccount}

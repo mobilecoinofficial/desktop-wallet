@@ -79,7 +79,7 @@ const SendReceivePage: FC = () => {
     />
   );
 
-  useEffect(() => getFeePmob(), []);
+  useEffect(getFeePmob, []);
 
   return (
     <Box className={classes.root}>

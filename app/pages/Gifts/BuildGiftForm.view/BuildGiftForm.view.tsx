@@ -280,6 +280,9 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
             accountId: selectedAccount.account.accountId,
             valuePmob: convertMobStringToPicoMobString(String(adjustedValue)),
           });
+
+          console.log('REAL LIFE ', result);
+
           if (result === null || result === undefined) {
             throw new Error(t('errorBuild'));
           }

@@ -8,6 +8,8 @@ import { SnackbarProvider } from 'notistack';
 import '../../../testUtils/i18nForTests';
 import { BuildGiftPanel } from './BuildGiftPanel.view';
 
+const FEE_PMOB = '3000000000';
+
 const GIFT_CODES = [
   {
     accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
@@ -17,7 +19,7 @@ const GIFT_CODES = [
     memo: '',
     object: 'gift_code',
     txoIdHex: 'db7845b3acc4db4161c770be0b5c10e65989224523e435b0e71a6ce1ab5e03f7',
-    valuePmob: '2010000000000',
+    valuePmob: '2003000000000',
   },
   {
     accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
@@ -27,7 +29,7 @@ const GIFT_CODES = [
     memo: 'some memo',
     object: 'gift_code',
     txoIdHex: '2a2c62ff6ad21073a561a4375fdd256a3b60a25a5e2d6524d4e4839d4d2a0d86',
-    valuePmob: '3010000000000',
+    valuePmob: '3003000000000',
   },
 ];
 
@@ -65,6 +67,7 @@ describe('Build gift form', () => {
           buildGiftCode={() => undefined}
           deleteStoredGiftCodeB58={() => undefined}
           existingPin="111111"
+          feePmob={FEE_PMOB}
           getAllGiftCodes={() => undefined}
           giftCodes={[]}
           isSyncedBuffered={() => true}
@@ -106,6 +109,7 @@ describe('Build gift form', () => {
           buildGiftCode={() => undefined}
           deleteStoredGiftCodeB58={fakeDeleteStoredGiftCodeB58}
           existingPin="111111"
+          feePmob={FEE_PMOB}
           getAllGiftCodes={fakeGetAllGiftCodes}
           giftCodes={GIFT_CODES}
           handleCopyClick={fakeHandleClick}
@@ -150,6 +154,7 @@ describe('Build gift form', () => {
           buildGiftCode={() => undefined}
           deleteStoredGiftCodeB58={() => undefined}
           existingPin="111111"
+          feePmob={FEE_PMOB}
           giftCodes={GIFT_CODES}
           isSyncedBuffered={() => true}
           pinThresholdPmob="1"
@@ -161,7 +166,7 @@ describe('Build gift form', () => {
 
     expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
     expect(container.innerHTML.includes('Manage Gift Codes')).toBeTruthy();
-    expect(container.innerHTML.includes('2.0000000')).toBeTruthy();
-    expect(container.innerHTML.includes('3.0000000')).toBeTruthy();
+    expect(container.innerHTML.includes('2.00000000')).toBeTruthy();
+    expect(container.innerHTML.includes('3.00000000')).toBeTruthy();
   });
 });

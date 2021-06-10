@@ -14,6 +14,7 @@ export { default as getAllTransactionLogsForAccount } from './getAllTransactionL
 export { default as getAllTxosForAccount } from './getAllTxosForAccount';
 export { default as getBalanceForAccount } from './getBalanceForAccount';
 export { default as getGiftCode } from './getGiftCode';
+export { default as getNetworkStatus } from './getNetworkStatus';
 export { default as getTransactionLog } from './getTransactionLog';
 export { default as getTxo } from './getTxo';
 export { default as getWalletStatus } from './getWalletStatus';

@@ -47,6 +47,7 @@ const useStyles = makeStyles(() => ({
 const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   codeClicked,
   deleteStoredGiftCodeB58,
+  feePmob,
   getAllGiftCodes,
   giftCodes,
   buildGiftCode,
@@ -112,6 +113,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
             <BuildGiftForm
               buildGiftCode={buildGiftCode}
               existingPin={existingPin}
+              feePmob={feePmob}
               getAllGiftCodes={getAllGiftCodes}
               isSyncedBuffered={isSyncedBuffered}
               pinThresholdPmob={pinThresholdPmob}
@@ -153,10 +155,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                           </TableCell>
                           <TableCell>
                             <MOBNumberFormat
-                              // FIX-ME right now, we subtract the hardcoded fee
-                              value={(
-                                BigInt(giftCode.valuePmob) - BigInt('10000000000')
-                              ).toString()}
+                              value={(BigInt(giftCode.valuePmob) - BigInt(feePmob)).toString()}
                               valueUnit="pMOB"
                             />
                           </TableCell>
@@ -216,9 +215,8 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                   />
                   <Box py={2} display="flex" justifyContent="space-between">
                     <Typography color="textPrimary">{t('giftValue')}</Typography>
-                    {/* FIX-ME right now, we subtract the hardcoded fee */}
                     <MOBNumberFormat
-                      value={(BigInt(pendingDeleteCode[1]) - BigInt('10000000000')).toString()}
+                      value={(BigInt(pendingDeleteCode[1]) - BigInt(feePmob)).toString()}
                       valueUnit="pMOB"
                       suffix=" MOB"
                     />

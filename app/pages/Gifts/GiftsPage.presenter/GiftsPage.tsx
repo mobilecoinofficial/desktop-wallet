@@ -14,6 +14,7 @@ import {
   claimGiftCode,
   deleteStoredGiftCodeB58,
   getAllGiftCodes,
+  getFeePmob,
   submitGiftCode,
 } from '../../../services';
 import type { Theme } from '../../../theme';
@@ -38,6 +39,7 @@ const GiftsPage: FC = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { t } = useTranslation('GiftingView');
   const {
+    feePmob,
     giftCodes,
     pin: existingPin,
     pinThresholdPmob,
@@ -64,6 +66,7 @@ const GiftsPage: FC = () => {
       codeClicked={handleCodeClicked}
       deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
       existingPin={existingPin as string}
+      feePmob={feePmob || '0'}
       getAllGiftCodes={getAllGiftCodes}
       giftCodes={giftCodes}
       handleCopyClick={handleCodeClicked}
@@ -82,9 +85,8 @@ const GiftsPage: FC = () => {
     />
   );
 
-  useEffect(() => {
-    getAllGiftCodes();
-  }, []);
+  useEffect(getAllGiftCodes, []);
+  useEffect(getFeePmob, []);
 
   return (
     <Box className={classes.root}>

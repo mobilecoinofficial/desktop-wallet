@@ -1,11 +1,13 @@
 import * as fullServiceApi from '../fullService/api';
-import type { BuildTransactionParams } from '../fullService/api/buildTransaction';
-import type { TxProposal } from '../types/TxProposal.d';
+import type {
+  BuildTransactionParams,
+  BuildTransactionResult,
+} from '../fullService/api/buildTransaction';
 
 // TODO, better error handling
 const buildTransaction = async (
   buildTransactionParams: BuildTransactionParams
-): Promise<TxProposal> => fullServiceApi.buildTransaction(buildTransactionParams);
+): Promise<BuildTransactionResult> => fullServiceApi.buildTransaction(buildTransactionParams);
 
 export default buildTransaction;
 export { buildTransaction };

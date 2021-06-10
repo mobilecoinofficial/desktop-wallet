@@ -10,7 +10,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
 import { FullServiceProvider } from './contexts/FullServiceContext';
-import routes, { renderRoutes } from './routes';
+import { renderRoutes } from './routes';
 import { setTheme } from './theme';
 
 const App: FC = () => {
@@ -51,7 +51,7 @@ const App: FC = () => {
         <SnackbarProvider dense maxSnack={5}>
           <FullServiceProvider>
             <GlobalStyles />
-            {renderRoutes(routes)}
+            {renderRoutes()}
           </FullServiceProvider>
         </SnackbarProvider>
       </ThemeProvider>

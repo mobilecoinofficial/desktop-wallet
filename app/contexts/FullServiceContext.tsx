@@ -331,17 +331,16 @@ const removeAllAccounts = async (excludedAccountIds: string[]) => {
   try {
     const { accountIds } = await fullServiceApi.getAllAccounts();
     accountIds.forEach(async (accountId) => {
-      if (excludedAccountIds.includes(accountId)) {
-        return;
+      if (!excludedAccountIds.includes(accountId)) {
+        await removeAccount(accountId);
       }
-      await removeAccount(accountId);
     });
   } catch (err) {
     throw new Error(err.message);
   }
 };
 
-export const wipeAccountContactAndPin = async () => {
+export const wipeAccountContactAndPin = async (): Promise<void> => {
   // Wipe Accounts, Contacts, and PIN
   removeAllAccounts([]);
   localStore.deleteEncryptedContacts();
@@ -398,7 +397,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     // TODO - consider rebuilding the setInterval based on roundtrip time
     // TODO - Right now, we have 1 monitorID. later, we may have multiple for
     // many accounts. We'll need to parse each monitorId and built a fetcher for each.
-    // Or Alternatievly (and I like this idea more), our GetBalanceService can take
+    // Or Alternatively (and I like this idea more), our GetBalanceService can take
     // an array of monitorIds and return a balance for each.
   }, [state]);
 

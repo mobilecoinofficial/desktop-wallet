@@ -15,7 +15,7 @@
   "AuthPage": {
     "createInstead": "CREATE ACCOUNT INSTEAD",
     "importInstead": "IMPORT ACCOUNT INSTEAD",
-    "unlockInstead": "UNLOCK WALLET INSTEAD"
+    "unlockInstead": "UNLOCK ACCOUNT INSTEAD"
   },
 
   "BalanceIndicator": {
@@ -584,15 +584,15 @@
     "send": "SEND MOB"
   },
 
-  "UnlockWalletForm": {
-    "passwordLabel": "PASSPHRASE",
-    "passwordRequired": "PASSPHRASE IS REQUIRED",
-    "unlockWalletButton": "UNLOCK WALLET"
-  },
-
-  "UnlockWalletView": {
+  "UnlockAccountPresenter": {
     "description": "PLEASE ENTER THE PASSPHRASE YOU USED TO SECURE YOUR WALLET.",
     "importInstead": "IMPORT ACCOUNT FROM ENTROPY INSTEAD",
-    "title": "UNLOCK WALLET"
+    "title": "UNLOCK ACCOUNT"
+  },
+
+  "UnlockAccountView": {
+    "passwordLabel": "PASSPHRASE",
+    "passwordRequired": "PASSPHRASE IS REQUIRED",
+    "unlockWalletButton": "UNLOCK ACCOUNT"
   }
 }

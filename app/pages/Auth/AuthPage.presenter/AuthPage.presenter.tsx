@@ -12,7 +12,7 @@ import useFullService from '../../../hooks/useFullService';
 import type { Theme } from '../../../theme';
 import { CreateAccountPresenter } from '../CreateAccount.presenter';
 import { ImportAccountPresenter } from '../ImportAccount.presenter';
-import { UnlockWalletPresenter } from '../UnlockWallet.presenter';
+import { UnlockAccountPresenter } from '../UnlockAccount.presenter';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardContainer: {
@@ -70,7 +70,7 @@ const AuthPage: FC = () => {
       <Container className={classes.viewContainer} maxWidth="sm">
         <LogoIcon className={classes.logoIcon} />
         <Card className={classes.cardContainer}>
-          {selectedView === 0 && <UnlockWalletPresenter />}
+          {selectedView === 0 && <UnlockAccountPresenter />}
           {selectedView === 1 && <CreateAccountPresenter />}
           {selectedView === 2 && <ImportAccountPresenter />}
 

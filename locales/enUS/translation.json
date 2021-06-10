@@ -15,7 +15,7 @@
   "AuthPage": {
     "createInstead": "Create account instead",
     "importInstead": "Import account instead",
-    "unlockInstead": "Unlock wallet instead"
+    "unlockInstead": "Unlock account instead"
   },
 
   "BalanceIndicator": {
@@ -579,15 +579,15 @@
     "send": "Send MOB"
   },
 
-  "UnlockWalletForm": {
-    "passwordLabel": "Passphrase",
-    "passwordRequired": "Passphrase is required",
-    "unlockWalletButton": "Unlock Wallet"
-  },
-
-  "UnlockWalletView": {
+  "UnlockAccountPresenter": {
     "description": "Please enter the passphrase you used to secure your wallet.",
     "importInstead": "Import account from Entropy instead",
-    "title": "Unlock Wallet"
+    "title": "Unlock Account"
+  },
+
+  "UnlockAccountView": {
+    "passwordLabel": "Passphrase",
+    "passwordRequired": "Passphrase is required",
+    "unlockWalletButton": "Unlock Account"
   }
 }

@@ -6,10 +6,10 @@ import { useTranslation } from 'react-i18next';
 
 import { unlockWallet } from '../../../services/unlockWallet.service';
 import { getKeychainAccounts } from '../../../utils/keytarService';
-import { UnlockWalletView } from '../UnlockWallet.view';
+import { UnlockAccountView } from '../UnlockAccount.view';
 
-const UnlockWalletPresenter: FC = () => {
-  const { t } = useTranslation('UnlockWalletView');
+const UnlockAccountPresenter: FC = () => {
+  const { t } = useTranslation('UnlockAccountPresenter');
   const accounts = getKeychainAccounts();
 
   return (
@@ -20,10 +20,10 @@ const UnlockWalletPresenter: FC = () => {
       <Typography variant="body2" color="textSecondary" paragraph>
         {t('description')}
       </Typography>
-      <UnlockWalletView unlockWallet={unlockWallet} accounts={accounts} />
+      <UnlockAccountView unlockWallet={unlockWallet} accounts={accounts} />
     </>
   );
 };
 
-export default UnlockWalletPresenter;
-export { UnlockWalletPresenter };
+export default UnlockAccountPresenter;
+export { UnlockAccountPresenter };

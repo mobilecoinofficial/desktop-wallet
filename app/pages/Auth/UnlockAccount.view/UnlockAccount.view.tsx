@@ -10,23 +10,23 @@ import * as Yup from 'yup';
 
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import type { UnlockWalletViewProps } from './UnlockWallet.d';
+import type { UnlockAccountViewProps } from './UnlockAccount';
 
-interface UnlockWalletFormValues {
+interface UnlockAccountFormValues {
   password: string;
   submit: null;
 }
 
-const UnlockWalletView: FC<UnlockWalletViewProps> = ({
+const UnlockAccountView: FC<UnlockAccountViewProps> = ({
   unlockWallet,
   accounts,
-}: UnlockWalletViewProps) => {
+}: UnlockAccountViewProps) => {
   const isMountedRef = useIsMountedRef();
-  const { t } = useTranslation('UnlockWalletForm');
+  const { t } = useTranslation('UnlockAccountView');
 
   const handleOnSubmit = async (
-    values: UnlockWalletFormValues,
-    helpers: FormikHelpers<UnlockWalletFormValues>
+    values: UnlockAccountFormValues,
+    helpers: FormikHelpers<UnlockAccountFormValues>
   ) => {
     const { setStatus, setErrors, setSubmitting } = helpers;
     setSubmitting(true);
@@ -64,7 +64,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
       onSubmit={handleOnSubmit}
     >
       {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
-        <Form name="UnlockWalletInnerForm">
+        <Form name="UnlockAccountInnerForm">
           <Field
             data-testid="passwordField"
             component={TextField}
@@ -99,5 +99,5 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
   );
 };
 
-export default UnlockWalletView;
-export { UnlockWalletView };
+export default UnlockAccountView;
+export { UnlockAccountView };

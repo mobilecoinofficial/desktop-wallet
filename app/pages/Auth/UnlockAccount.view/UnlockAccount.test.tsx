@@ -5,12 +5,12 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 import '../../../testUtils/i18nForTests';
-import { UnlockWalletView } from './UnlockWallet.view';
+import { UnlockAccountView } from './UnlockAccount.view';
 
 const FAKE_PASSWORD = 'fakepassword';
 
 const setUpTest = (unlockWallet = jest.fn()) => {
-  const { container } = render(<UnlockWalletView unlockWallet={unlockWallet} accounts={[]} />);
+  const { container } = render(<UnlockAccountView unlockWallet={unlockWallet} accounts={[]} />);
 
   const passwordField = container.querySelector('[name="password"]') as HTMLInputElement;
   const submitButton = container.querySelector('[data-testid="submit-button"]') as HTMLInputElement;
@@ -59,7 +59,7 @@ test('Entering wrong password produces an error', async () => {
 test('It renders some menu items', async () => {
   const unlockWallet = jest.fn();
   const { getByText } = render(
-    <UnlockWalletView
+    <UnlockAccountView
       unlockWallet={unlockWallet}
       accounts={[{ account: 'user', password: 'password' }]}
     />

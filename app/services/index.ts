@@ -24,6 +24,7 @@ import {
   FetchAllTxosForAccountService,
 } from './fetchAllTxosForAccount.service';
 import { getAllGiftCodes, GetAllGiftCodesService } from './getAllGiftCodes.service';
+import { getFeePmob, GetFeePmobService } from './getFeePmob.service';
 import { importAccount, ImportAccountService } from './importAccount.service';
 import { importLegacyAccount, ImportLegacyAccountService } from './importLegacyAccount.service';
 import { retrieveEntropy, RetrieveEntropyService } from './retrieveEntropy.service';
@@ -48,6 +49,7 @@ export {
   fetchAllTransactionLogsForAccount,
   fetchAllTxosForAccount,
   getAllGiftCodes,
+  getFeePmob,
   importAccount,
   importLegacyAccount,
   retrieveEntropy,
@@ -73,6 +75,7 @@ export type {
   FetchAllTransactionLogsForAccountService,
   FetchAllTxosForAccountService,
   GetAllGiftCodesService,
+  GetFeePmobService,
   ImportAccountService,
   ImportLegacyAccountService,
   RetrieveEntropyService,

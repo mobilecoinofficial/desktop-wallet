@@ -113,6 +113,7 @@ const setUpTest = ({
         buildTransaction={buildTransaction}
         contacts={contacts}
         existingPin={existingPin}
+        feePmob="3000000000"
         isSyncedBuffered={isSyncedBuffered}
         pinThresholdPmob={pinThresholdPmob}
         selectedAccount={selectedAccount}

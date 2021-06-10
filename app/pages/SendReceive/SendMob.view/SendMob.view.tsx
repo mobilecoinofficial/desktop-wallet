@@ -37,6 +37,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
 import type { StringHex } from '../../../types/SpecialStrings';
+import type { TxProposal } from '../../../types/TxProposal';
 import {
   commafy,
   convertMobStringToPicoMobString,
@@ -44,11 +45,10 @@ import {
 } from '../../../utils/convertMob';
 import type { SendMobProps } from './SendMob.d';
 
-// CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
-  feeConfirmation: 0,
-  totalValueConfirmation: 0,
-  txProposal: null,
+  feeConfirmation: 0n,
+  totalValueConfirmation: 0n,
+  txProposal: {} as TxProposal,
   txProposalReceiverB58Code: '',
 };
 
@@ -90,6 +90,7 @@ const SendMob: FC<SendMobProps> = ({
   buildTransaction,
   contacts,
   existingPin,
+  feePmob,
   isSyncedBuffered,
   pinThresholdPmob,
   selectedAccount,
@@ -157,6 +158,7 @@ const SendMob: FC<SendMobProps> = ({
         recipientPublicAddress: values.recipientPublicAddress,
         valuePmob: convertMobStringToPicoMobString(values.mobAmount),
       });
+
       if (result === null || result === undefined) {
         throw new Error('Could not build transaction.');
       }
@@ -295,7 +297,7 @@ const SendMob: FC<SendMobProps> = ({
               initialValues={{
                 alias: '',
                 contactId: NO_CONTACT_SELECTED,
-                feeAmount: '0.010000000000', // TODO we need to pull this from constants
+                feeAmount: convertPicoMobStringToMob(feePmob), // TODO we need to pull this from constants
                 mobAmount: '0', // mobs
                 pin: '',
                 recipientPublicAddress: '',
@@ -415,7 +417,7 @@ const SendMob: FC<SendMobProps> = ({
 
                 return (
                   <Form>
-                    {/* {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)} */}
+                    {/* {renderSenderPublicAddressOptions(mockMultipleAccounts, isSubmitting)} */}
                     <Box pt={4}>
                       <FormLabel component="legend">
                         <Typography color="primary">{t('transaction')}</Typography>

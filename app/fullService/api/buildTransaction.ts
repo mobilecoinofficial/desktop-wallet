@@ -15,7 +15,7 @@ export type BuildTransactionParams = {
   valuePmob: StringUInt64;
 };
 
-type BuildTransactionResult = {
+export type BuildTransactionResult = {
   feeConfirmation: bigint;
   totalValueConfirmation: bigint;
   txProposal: TxProposal;

@@ -580,14 +580,21 @@
   },
 
   "UnlockAccountPresenter": {
-    "description": "Please enter the passphrase you used to secure your wallet.",
-    "importInstead": "Import account from Entropy instead",
+    "description": "Please enter the passphrase you used to secure your account.",
     "title": "Unlock Account"
   },
 
   "UnlockAccountView": {
     "passwordLabel": "Passphrase",
     "passwordRequired": "Passphrase is required",
-    "unlockWalletButton": "Unlock Account"
+    "unlockAccountButton": "Unlock Account"
+  },
+
+  "UnlockWalletView": {
+    "description": "Please enter the passphrase you used to secure your wallet.",
+    "passwordLabel": "Passphrase",
+    "passwordRequired": "Passphrase is required",
+    "title": "Unlock Wallet",
+    "unlockWalletButton": "Unlock Wallet"
   }
 }

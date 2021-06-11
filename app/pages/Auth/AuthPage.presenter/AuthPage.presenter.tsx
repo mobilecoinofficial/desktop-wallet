@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, Card, Container, Divider, makeStyles } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
@@ -13,6 +14,7 @@ import type { Theme } from '../../../theme';
 import { CreateAccountPresenter } from '../CreateAccount.presenter';
 import { ImportAccountPresenter } from '../ImportAccount.presenter';
 import { UnlockAccountPresenter } from '../UnlockAccount.presenter';
+import { UnlockWalletView } from '../UnlockWallet.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardContainer: {
@@ -43,6 +45,7 @@ const AuthPage: FC = () => {
   const classes = useStyles();
   const { isAuthenticated, isInitialized } = useFullService();
   const [selectedView, setView] = useState(0);
+  const [isUnlocked, setUnlocked] = useState(false);
   const { t } = useTranslation('AuthPage');
 
   if (!isInitialized) {
@@ -65,22 +68,40 @@ const AuthPage: FC = () => {
       </Button>
     );
 
+  if (isUnlocked) {
+    return (
+      <Box data-testid="AuthPageId" className={classes.root}>
+        <Container className={classes.viewContainer} maxWidth="sm">
+          <LogoIcon className={classes.logoIcon} />
+          <Card className={classes.cardContainer}>
+            {selectedView === 0 && <UnlockAccountPresenter />}
+            {selectedView === 1 && <CreateAccountPresenter />}
+            {selectedView === 2 && <ImportAccountPresenter />}
+
+            <Box my={3}>
+              <Divider />
+            </Box>
+
+            {optButton(0, t('unlockInstead'))}
+            {optButton(1, t('createInstead'))}
+            {optButton(2, t('importInstead'))}
+          </Card>
+        </Container>
+      </Box>
+    );
+  }
+
+  const onUnlock = () => {
+    setUnlocked(true);
+    ipcRenderer.send('logged-in');
+  };
+
   return (
     <Box data-testid="AuthPageId" className={classes.root}>
       <Container className={classes.viewContainer} maxWidth="sm">
         <LogoIcon className={classes.logoIcon} />
         <Card className={classes.cardContainer}>
-          {selectedView === 0 && <UnlockAccountPresenter />}
-          {selectedView === 1 && <CreateAccountPresenter />}
-          {selectedView === 2 && <ImportAccountPresenter />}
-
-          <Box my={3}>
-            <Divider />
-          </Box>
-
-          {optButton(0, t('unlockInstead'))}
-          {optButton(1, t('createInstead'))}
-          {optButton(2, t('importInstead'))}
+          <UnlockWalletView unlockWallet={onUnlock} />
         </Card>
       </Container>
     </Box>

@@ -503,12 +503,18 @@
   },
   "UnlockAccountPresenter": {
     "description": "请输入钱包密码。如果您忘记了密码的话，可以通过您的备份口令重新导入账户。",
-    "importInstead": "使用备份口令导入账户",
     "title": "解锁钱包"
   },
   "UnlockAccountView": {
     "passwordLabel": "密码",
     "passwordRequired": "请输入密码",
+    "unlockAccountButton": "解锁钱包"
+  },
+  "UnlockWalletView": {
+    "description": "请输入钱包密码。如果您忘记了密码的话，可以通过您的备份口令重新导入账户。",
+    "passwordLabel": "密码",
+    "passwordRequired": "请输入密码",
+    "title": "解锁钱包",
     "unlockWalletButton": "解锁钱包"
   }
 }

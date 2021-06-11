@@ -585,14 +585,21 @@
   },
 
   "UnlockAccountPresenter": {
-    "description": "PLEASE ENTER THE PASSPHRASE YOU USED TO SECURE YOUR WALLET.",
-    "importInstead": "IMPORT ACCOUNT FROM ENTROPY INSTEAD",
+    "description": "PLEASE ENTER THE PASSPHRASE YOU USED TO SECURE YOUR ACCOUNT.",
     "title": "UNLOCK ACCOUNT"
   },
 
   "UnlockAccountView": {
     "passwordLabel": "PASSPHRASE",
     "passwordRequired": "PASSPHRASE IS REQUIRED",
-    "unlockWalletButton": "UNLOCK ACCOUNT"
+    "unlockAccountButton": "UNLOCK ACCOUNT"
+  },
+
+  "UnlockWalletView": {
+    "description": "PLEASE ENTER THE PASSPHRASE YOU USED TO SECURE YOUR WALLET.",
+    "passwordLabel": "PASSPHRASE",
+    "passwordRequired": "PASSPHRASE IS REQUIRED",
+    "title": "UNLOCK WALLET",
+    "unlockWalletButton": "UNLOCK WALLET"
   }
 }

@@ -63,16 +63,16 @@ const installExtensions = async () => {
   const extensions = [
     /* 'REACT_DEVELOPER_TOOLS', */
     /* , 'REDUX_DEVTOOLS' */
-  ];
+  ] as string[];
 
   return Promise.all(
     extensions.map((name) => installer.default(installer[name], forceDownload))
   ).catch(console.log);
 };
 
-// TODO: remane this function to full service after intergration
+// TODO: rename this function to full service after integration
 // TODO: test
-const startFullService = () => {
+const startFullService = (): void => {
   // Start the full-service process in the background
   const IS_PROD = process.env.NODE_ENV === 'production';
   const root = process.cwd();
@@ -227,6 +227,11 @@ const createWindow = async () => {
 
   nativeTheme.themeSource = (localStore.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
 
+  ipcMain.on('logged-in', () => {
+    console.log('STARTING SERVICE');
+    startFullService();
+  });
+
   ipcMain.on('get-theme', (event) => {
     // eslint-disable-next-line no-param-reassign
     event.returnValue = nativeTheme.shouldUseDarkColors ? 'dark' : 'light';
@@ -259,7 +264,7 @@ if (process.env.E2E_BUILD === 'true') {
     .catch(() => null);
 } else {
   app.on('ready', () => {
-    startFullService();
+    // FK //    startFullService();
     createWindow();
   });
 }

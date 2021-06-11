@@ -91,7 +91,7 @@ const UnlockAccountView: FC<UnlockAccountViewProps> = ({
             isSubmitting={isSubmitting}
             onClick={submitForm}
           >
-            {t('unlockWalletButton')}
+            {t('unlockAccountButton')}
           </SubmitButton>
         </Form>
       )}

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box, FormHelperText } from '@material-ui/core';
+import { Box, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import type { FormikHelpers } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -22,7 +22,7 @@ const UnlockAccountView: FC<UnlockAccountViewProps> = ({
   accounts,
 }: UnlockAccountViewProps) => {
   const isMountedRef = useIsMountedRef();
-  const { t } = useTranslation('UnlockAccountView');
+  const { t } = useTranslation('UnlockAccount');
 
   const handleOnSubmit = async (
     values: UnlockAccountFormValues,
@@ -56,46 +56,55 @@ const UnlockAccountView: FC<UnlockAccountViewProps> = ({
   const handleClose = () => setAnchorEl(null);
 
   return (
-    <Formik
-      initialValues={{ password: '', submit: null }}
-      validationSchema={Yup.object().shape({
-        password: Yup.string().required(t('passwordRequired')),
-      })}
-      onSubmit={handleOnSubmit}
-    >
-      {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
-        <Form name="UnlockAccountInnerForm">
-          <Field
-            data-testid="passwordField"
-            component={TextField}
-            fullWidth
-            label={t('passwordLabel')}
-            name="password"
-            type="password"
-            onClick={handleClick}
-          />
-          <SavedPasswordsModal
-            accounts={accounts}
-            anchorEl={anchorEl}
-            handleClose={handleClose}
-            setFieldValue={setFieldValue}
-          />
-          {errors.submit && (
-            <Box mt={3}>
-              <FormHelperText error>{errors.submit}</FormHelperText>
-            </Box>
-          )}
-          <SubmitButton
-            data-testid="submit-button"
-            disabled={!dirty || !isValid || isSubmitting}
-            isSubmitting={isSubmitting}
-            onClick={submitForm}
-          >
-            {t('unlockAccountButton')}
-          </SubmitButton>
-        </Form>
-      )}
-    </Formik>
+    <>
+      <Typography variant="h2" paragraph>
+        {t('title')}
+      </Typography>
+      <Typography variant="body2" color="textSecondary" paragraph>
+        {t('description')}
+      </Typography>
+
+      <Formik
+        initialValues={{ password: '', submit: null }}
+        validationSchema={Yup.object().shape({
+          password: Yup.string().required(t('passwordRequired')),
+        })}
+        onSubmit={handleOnSubmit}
+      >
+        {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
+          <Form name="UnlockAccountInnerForm">
+            <Field
+              data-testid="passwordField"
+              component={TextField}
+              fullWidth
+              label={t('passwordLabel')}
+              name="password"
+              type="password"
+              onClick={handleClick}
+            />
+            <SavedPasswordsModal
+              accounts={accounts}
+              anchorEl={anchorEl}
+              handleClose={handleClose}
+              setFieldValue={setFieldValue}
+            />
+            {errors.submit && (
+              <Box mt={3}>
+                <FormHelperText error>{errors.submit}</FormHelperText>
+              </Box>
+            )}
+            <SubmitButton
+              data-testid="submit-button"
+              disabled={!dirty || !isValid || isSubmitting}
+              isSubmitting={isSubmitting}
+              onClick={submitForm}
+            >
+              {t('unlockAccountButton')}
+            </SubmitButton>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 };
 

@@ -10,10 +10,13 @@ import { SplashScreen } from '../../../components/SplashScreen';
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
 import useFullService from '../../../hooks/useFullService';
+import { createAccount, importAccount, importLegacyAccount } from '../../../services';
+import { unlockWallet } from '../../../services/unlockWallet.service';
 import type { Theme } from '../../../theme';
-import { CreateAccountPresenter } from '../CreateAccount.presenter';
-import { ImportAccountPresenter } from '../ImportAccount.presenter';
-import { UnlockAccountPresenter } from '../UnlockAccount.presenter';
+import { setKeychainAccount, getKeychainAccounts } from '../../../utils/keytarService';
+import { CreateAccountView } from '../CreateAccount.view';
+import { ImportAccountView } from '../ImportAccount.view/ImportAccount.view';
+import { UnlockAccountView } from '../UnlockAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -74,9 +77,24 @@ const AuthPage: FC = () => {
         <Container className={classes.viewContainer} maxWidth="sm">
           <LogoIcon className={classes.logoIcon} />
           <Card className={classes.cardContainer}>
-            {selectedView === 0 && <UnlockAccountPresenter />}
-            {selectedView === 1 && <CreateAccountPresenter />}
-            {selectedView === 2 && <ImportAccountPresenter />}
+            {selectedView === 0 && (
+              <UnlockAccountView unlockWallet={unlockWallet} accounts={getKeychainAccounts()} />
+            )}
+
+            {selectedView === 1 && (
+              <CreateAccountView
+                createAccount={createAccount}
+                setKeychainAccount={setKeychainAccount}
+              />
+            )}
+
+            {selectedView === 2 && (
+              <ImportAccountView
+                importAccount={importAccount}
+                importLegacyAccount={importLegacyAccount}
+                setKeychainAccount={setKeychainAccount}
+              />
+            )}
 
             <Box my={3}>
               <Divider />

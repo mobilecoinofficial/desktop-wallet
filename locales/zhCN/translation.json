@@ -177,13 +177,16 @@
     "recipientAddress": "联系人的地址",
     "removeContact": "删除联系人"
   },
-  "CreateAccountForm": {
+
+  "CreateAccount": {
     "acceptTerms": "我已阅读并接受",
     "acceptTermsButton": "用户条款",
     "acceptTermsFormHelper": "您必须先阅读用户条款才能使用钱包。",
     "accountNameValidation": "账户名不能超过 64 个字符",
     "checkedTermsValidation": "您必须接受用户条款才能使用钱包。",
     "createAccountButton": "创建账户",
+    "description": "请创建账户。如果您想导入一个现有的账户，请选择导入已有账户。",
+    "header": "在本地钱包创建新账户。",
     "nameLabel": "账户名（选填）",
     "passwordConfirmationLabel": "确认密码",
     "passwordConfirmationRef": "必须和输入的密码一致",
@@ -191,16 +194,10 @@
     "passwordLabel": "密码",
     "passwordMax": "密码不能超过 99 个字符。",
     "passwordMin": "新密码至少需要 8 个字符。",
-    "passwordRequired": "请设置密码"
+    "passwordRequired": "请设置密码",
+    "title": "创建账户"
   },
-  "CreateAccountView": {
-    "description": "请创建账户。如果您想导入一个现有的账户，请选择导入已有账户。",
-    "header": "在本地钱包创建新账户。",
-    "importInstead": "导入已有账户",
-    "overwriteWarning": "这个钱包里已经有一个账户了，创建新的账户会覆盖当前账户，请确保您已经妥善保管当前账户的备份口令以便找回该账户。",
-    "title": "创建账户",
-    "unlockWalletButton": "解锁钱包"
-  },
+
   "Dates": {
     "m00": "一月",
     "m01": "二月",
@@ -232,17 +229,21 @@
     "showReceivedTransactions": "已收",
     "showSentTransactions": "已发"
   },
-  "ImportAccountForm": {
+
+  "ImportAccount": {
     "acceptTerms": "我已阅读并接受",
     "acceptTermsButton": "用户条款",
     "acceptTermsFormHelper": "您必须先阅读用户条款才能使用钱包。",
     "accountNameValidation": "账户名不能超过 64 个字符",
     "checkedTermsValidation": "您必须接受用户条款才能使用钱包。",
+    "description": "请导入账户。如果您还没有账户，请创建一个新账户。",
+    "entropyIsWrong": "备份口令有误",
     "entropyLabel": "备份口令",
     "entropyMatches": "一个有效的备份口令应该有至少 12 个由空格分割的英语单词组成，或者是 64 位的十六进制数。",
-    "entropyIsWrong": "备份口令有误",
     "entropyRequired": "请输入备份口令",
+    "header": "导入一个已有账户到本地钱包",
     "importAccountButton": "导入账户",
+    "legacyHex": "新版本的钱包备份口令是 24 个英语单词，旧版本的备份口令则是 64 位的 16 进制码。请勿转换以免导入错误的账户并丢失您的余额。",
     "nameLabel": "账户名（选填）",
     "passwordConfirmationLabel": "确认密码",
     "passwordConfirmationRef": "密码必须一致",
@@ -250,18 +251,12 @@
     "passwordLabel": "密码",
     "passwordMax": "密码不能超过 99 个字符。",
     "passwordMin": "新密码至少需要 8 个字符。",
-    "passwordRequired": "请输入密码"
-  },
-  "ImportAccountView": {
-    "createInstead": "创建新账户",
-    "description": "请导入账户。如果您还没有账户，请创建一个新账户。",
-    "header": "导入一个已有账户到本地钱包",
-    "legacyHex": "新版本的钱包备份口令是 24 个英语单词，旧版本的备份口令则是 64 位的 16 进制码。请勿转换以免导入错误的账户并丢失您的余额。",
-    "overwriteWarning": "这个钱包里已经有一个账户了，导入新的账户会覆盖当前账户，请确保您已经妥善保管当前账户的备份口令以便找回该账户。",
+    "passwordRequired": "请输入密码",
     "title": "导入账户",
     "unlockWalletButton": "解锁钱包",
     "warning": "请不要同时在多个钱包里使用同一个账户以免损坏您的本地历史记录。"
   },
+
   "InactivityDetect": {
     "confirmToStay": "鉴于您长时间没有操作，程序即将退出。",
     "keepWorking": "点击以保持程序运行",
@@ -501,16 +496,14 @@
     "receive": "收取 MOB",
     "send": "发送 MOB"
   },
-  "UnlockAccountPresenter": {
+  "UnlockAccount": {
     "description": "请输入钱包密码。如果您忘记了密码的话，可以通过您的备份口令重新导入账户。",
-    "title": "解锁钱包"
-  },
-  "UnlockAccountView": {
     "passwordLabel": "密码",
     "passwordRequired": "请输入密码",
+    "title": "解锁钱包",
     "unlockAccountButton": "解锁钱包"
   },
-  "UnlockWalletView": {
+  "UnlockWallet": {
     "description": "请输入钱包密码。如果您忘记了密码的话，可以通过您的备份口令重新导入账户。",
     "passwordLabel": "密码",
     "passwordRequired": "请输入密码",

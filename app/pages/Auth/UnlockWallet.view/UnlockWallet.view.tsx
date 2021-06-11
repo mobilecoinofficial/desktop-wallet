@@ -17,7 +17,7 @@ interface UnlockWalletFormValues {
 }
 
 const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWalletViewProps) => {
-  const { t } = useTranslation('UnlockWalletView');
+  const { t } = useTranslation('UnlockWallet');
 
   const handleOnSubmit = async (values: UnlockWalletFormValues) => {
     console.log('VALUES...', values);

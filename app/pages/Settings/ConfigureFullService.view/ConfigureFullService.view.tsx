@@ -42,9 +42,9 @@ const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
   const classes = useStyles();
   const { t } = useTranslation('ConfigureFullServiceView');
   const {
-    ledgerDbPath,
     fullServiceDbPath,
     leaveFullServiceRunning,
+    ledgerDbPath,
     toggleLeaveFullServiceRunning,
   } = configureFullServiceConfigs;
 

@@ -76,8 +76,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ChangePasswordView: FC<ChangePasswordViewProps> = ({
   accounts,
-  onClickBack,
   changePassword,
+  onClickBack,
   setKeychainAccount,
 }: ChangePasswordViewProps) => {
   const classes = useStyles();

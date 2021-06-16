@@ -7,7 +7,7 @@ import { ConfigureFullServiceView } from './ConfigureFullService.view';
 
 export default {
   component: ConfigureFullServiceView,
-  title: 'Settings/Configure Full Service',
+  title: 'Settings/Configure/Configure Full Service',
 };
 
 const Template: Story<ComponentProps<typeof ConfigureFullServiceView>> = (args) => (

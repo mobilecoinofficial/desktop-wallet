@@ -127,3 +127,4 @@ const LedgerStatus: FC<LedgerStatusProps> = ({ selectedAccount }: LedgerStatusPr
 };
 
 export default LedgerStatus;
+export { LedgerStatus };

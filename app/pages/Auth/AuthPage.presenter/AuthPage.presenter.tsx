@@ -59,9 +59,7 @@ const AuthPage: FC = () => {
         await unlockWallet(pwd);
         // setUnlocked(true); // not needed; unlockWallet(...) sets isAuthenticated
       } catch (e) {
-        if (e.message.includes('Invalid Password')) {
-          setUnlocked(false);
-        }
+        setUnlocked(!e.message.includes('Invalid Password'));
       }
     }
   };

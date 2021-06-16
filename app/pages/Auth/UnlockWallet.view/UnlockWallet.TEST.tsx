@@ -10,7 +10,7 @@ import { UnlockWalletView } from './UnlockWallet.view';
 const FAKE_PASSWORD = 'fakepassword';
 
 const setUpTest = (unlockWallet = jest.fn()) => {
-  const { container } = render(<UnlockWalletView unlockWallet={unlockWallet} accounts={[]} />);
+  const { container } = render(<UnlockWalletView unlockWallet={unlockWallet} />);
 
   const passwordField = container.querySelector('[name="password"]') as HTMLInputElement;
   const submitButton = container.querySelector('[data-testid="submit-button"]') as HTMLInputElement;
@@ -61,12 +61,7 @@ describe('Unlock wallet', () => {
 
   test('It renders some menu items', async () => {
     const unlockWallet = jest.fn();
-    const { getByText } = render(
-      <UnlockWalletView
-        unlockWallet={unlockWallet}
-        accounts={[{ account: 'user', password: 'password' }]}
-      />
-    );
+    const { getByText } = render(<UnlockWalletView unlockWallet={unlockWallet} />);
 
     expect(getByText('user')).toBeInTheDocument();
     expect(getByText('********')).toBeInTheDocument();

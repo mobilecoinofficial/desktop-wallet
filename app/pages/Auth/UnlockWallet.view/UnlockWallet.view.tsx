@@ -20,17 +20,14 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
   const { t } = useTranslation('UnlockWallet');
 
   const handleOnSubmit = async (values: UnlockWalletFormValues) => {
-    console.log('VALUES...', values);
-    unlockWallet();
+    await unlockWallet(values.password);
   };
 
   const getWallet = async () => {
-    console.log('GETTING WALLET');
     try {
-      const xxx = await getWalletStatus();
-      console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxx', xxx);
+      await getWalletStatus();
     } catch (e) {
-      console.log('FAILED... ', e);
+      // nothing!
     }
   };
   getWallet();

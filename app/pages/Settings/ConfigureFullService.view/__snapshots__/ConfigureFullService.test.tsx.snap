@@ -1,0 +1,366 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfigureFullServiceView component render ConfigureFullServiceView renders correctly 1`] = `
+<DocumentFragment>
+  <div
+    class="MuiContainer-root makeStyles-cardContainer-1 MuiContainer-maxWidthSm"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class="MuiTypography-root MuiBreadcrumbs-root MuiTypography-body1 MuiTypography-colorTextSecondary"
+    >
+      <ol
+        class="MuiBreadcrumbs-ol"
+      >
+        <li
+          class="MuiBreadcrumbs-li"
+        >
+          <button
+            class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiLink-button MuiTypography-colorInherit"
+          >
+            <p
+              class="MuiTypography-root MuiTypography-body1 MuiTypography-colorTextSecondary"
+            >
+              Settings
+            </p>
+          </button>
+        </li>
+        <li
+          aria-hidden="true"
+          class="MuiBreadcrumbs-separator"
+        >
+          &gt;
+        </li>
+        <li
+          class="MuiBreadcrumbs-li"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1 MuiTypography-colorTextPrimary"
+          >
+            Manage Ledger Database
+          </p>
+        </li>
+      </ol>
+    </nav>
+    <div
+      class="MuiBox-root MuiBox-root-5"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayInline"
+      >
+        This screen shows how to customize the behavior of background ledger processor (named Full-Service) as well as how to perform some basic resets.
+      </p>
+      <div
+        class="MuiBox-root MuiBox-root-6"
+      />
+      <p
+        class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+      >
+        Full-Service is a standalone executable which provides blockchain synchronization and wallet services.
+      </p>
+      <div
+        class="MuiBox-root MuiBox-root-7"
+      />
+      <p
+        class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+      >
+        It creates encrypted, attested connections to validator nodes that participate in federated voting for agreements on current block height, block headers, and to submitting transactions. These validator nodes are considered highly trusted due to their use of SGX, and they are used as a reliable source for block information, as well as for validating and processing the proposed transactions from Full-Service.
+      </p>
+    </div>
+    <div
+      class="MuiBox-root MuiBox-root-8"
+    >
+      <div
+        class="MuiBox-root MuiBox-root-9"
+      >
+        <legend
+          class="MuiFormLabel-root"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1 MuiTypography-colorPrimary"
+          >
+            Ledger Status
+          </p>
+        </legend>
+      </div>
+      <div
+        class="MuiBox-root MuiBox-root-10"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary MuiTypography-displayInline"
+        >
+          The ledger is synced.
+        </p>
+      </div>
+      <div
+        class="MuiBox-root MuiBox-root-11"
+      >
+        <div
+          class="MuiTableContainer-root"
+        >
+          <div
+            class="MuiPaper-root MuiTableHead-root MuiPaper-elevation1 MuiPaper-rounded"
+            role="rowgroup"
+          />
+          <table
+            aria-label="block status"
+            class="MuiTable-root"
+          >
+            <tbody>
+              <tr
+                class="MuiTableRow-root MuiTableRow-head"
+              >
+                <th
+                  class="MuiTableCell-root MuiTableCell-head MuiTableCell-sizeSmall"
+                  scope="col"
+                >
+                  Block Type
+                </th>
+                <th
+                  class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                  scope="col"
+                >
+                  Current Height
+                </th>
+                <th
+                  class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                  scope="col"
+                >
+                  Maximum Height
+                </th>
+                <th
+                  class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                  scope="col"
+                >
+                  % Synced
+                </th>
+              </tr>
+            </tbody>
+            <tbody
+              class="MuiTableBody-root"
+            >
+              <tr
+                class="MuiTableRow-root"
+              >
+                <th
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+                  role="cell"
+                  scope="row"
+                >
+                  Network Blocks
+                </th>
+                <td
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                />
+                <td
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                >
+                  1234
+                </td>
+                <td
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                />
+              </tr>
+              <tr
+                class="MuiTableRow-root"
+              >
+                <th
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+                  role="cell"
+                  scope="row"
+                >
+                  Local Blocks
+                </th>
+                <td
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                >
+                  1234
+                </td>
+                <td
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                >
+                  1234
+                </td>
+                <td
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                >
+                  100
+                </td>
+              </tr>
+              <tr
+                class="MuiTableRow-root"
+              >
+                <th
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-sizeSmall"
+                  role="cell"
+                  scope="row"
+                >
+                  Account Blocks
+                </th>
+                <td
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                >
+                  1234
+                </td>
+                <td
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                >
+                  1234
+                </td>
+                <td
+                  class="MuiTableCell-root MuiTableCell-body MuiTableCell-alignRight MuiTableCell-sizeSmall"
+                >
+                  100
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p
+        class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+      >
+        Network Blocks represent the total blocks within the MobileCoin Network. This is the value your Local Blocks and Account Blocks must equal the total amount of Network Blocks to be synced 100 percent.
+      </p>
+      <div
+        class="MuiBox-root MuiBox-root-12"
+      />
+      <p
+        class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+      >
+        Local Blocks shows the blocks your Full-Service has downloaded from ledger.
+      </p>
+      <div
+        class="MuiBox-root MuiBox-root-13"
+      />
+      <p
+        class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+      >
+        Account Blocks shows the blocks that a specific Account has synced. Each account has its own Account Blocks sync. Once this value is synced, you will immediately see the effects of transactions.
+      </p>
+    </div>
+    <div
+      class="MuiBox-root MuiBox-root-14"
+    >
+      <div
+        class="MuiBox-root MuiBox-root-15"
+      >
+        <legend
+          class="MuiFormLabel-root"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1 MuiTypography-colorPrimary"
+          >
+            Full-Service Background Process
+          </p>
+        </legend>
+      </div>
+      <div
+        class="MuiBox-root MuiBox-root-16"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-17"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+          >
+            Leave Full-Service Active is off
+          </p>
+          <div
+            class="MuiBox-root MuiBox-root-18"
+          >
+            <span
+              class="MuiSwitch-root"
+            >
+              <span
+                aria-disabled="false"
+                class="MuiButtonBase-root MuiIconButton-root PrivateSwitchBase-root-19 MuiSwitch-switchBase MuiSwitch-colorSecondary"
+              >
+                <span
+                  class="MuiIconButton-label"
+                >
+                  <input
+                    class="PrivateSwitchBase-input-22 MuiSwitch-input"
+                    name="checkedC"
+                    type="checkbox"
+                    value=""
+                  />
+                  <span
+                    class="MuiSwitch-thumb"
+                  />
+                </span>
+                <span
+                  class="MuiTouchRipple-root"
+                />
+              </span>
+              <span
+                class="MuiSwitch-track"
+              />
+            </span>
+          </div>
+        </div>
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary MuiTypography-displayInline"
+        >
+          Full-Service will not continue to sync when you exit the wallet.
+        </p>
+        <div
+          class="MuiBox-root MuiBox-root-23"
+        />
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+        >
+          By default, Full-Service terminates when you exit the wallet. This setting allows you to leave Full-Service syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches.
+        </p>
+      </div>
+    </div>
+    <div
+      class="MuiBox-root MuiBox-root-24"
+    >
+      <div
+        class="MuiBox-root MuiBox-root-25"
+      >
+        <legend
+          class="MuiFormLabel-root"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1 MuiTypography-colorPrimary"
+          >
+            Full-Service Directory
+          </p>
+        </legend>
+      </div>
+      <div
+        class="MuiBox-root MuiBox-root-26"
+      >
+        <div
+          class="MuiBox-root MuiBox-root-27"
+        />
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+        >
+          Ledger Database Path:
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+        >
+          ledger/path
+        </p>
+        <div
+          class="MuiBox-root MuiBox-root-28"
+        />
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+        >
+          Full-Service Database Path:
+        </p>
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+        >
+          fullService/path
+        </p>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

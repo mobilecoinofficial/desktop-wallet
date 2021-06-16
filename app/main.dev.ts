@@ -227,9 +227,10 @@ const createWindow = async () => {
 
   nativeTheme.themeSource = (localStore.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
 
-  ipcMain.on('logged-in', () => {
+  ipcMain.handle('logged-in', () => {
     console.log('STARTING SERVICE');
     startFullService();
+    return 'Service started';
   });
 
   ipcMain.on('get-theme', (event) => {
@@ -291,7 +292,7 @@ ipcMain.on('sync-status', (_e, status) => {
 ipcMain.on('reset-ledger', () => {
   const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
 
-  console.log('killing full-service');
+  console.log('KILLING SERVICE');
   // TODO -- probably should make the binaries a little more specific
   // e.g., mobilecoin-full-service
   exec('pkill -f full-service');

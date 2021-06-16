@@ -1,3 +1,3 @@
 export interface UnlockWalletViewProps {
-  unlockWallet: () => void;
+  unlockWallet: (s: string) => void;
 }

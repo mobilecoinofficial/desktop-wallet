@@ -248,6 +248,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         selectedAccount,
         walletStatus,
       } = (action as UnlockWalletActionType).payload;
+
       return {
         ...state,
         accounts,

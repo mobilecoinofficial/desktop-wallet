@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Button, Container, Dialog } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { TermsOfUse } from '../TermsOfUse';
+import { TermsOfUse } from '../TermsOfUse.component';
 import { TermsOfUseDialogProps } from './TermsOfUseDialog';
 
 const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {

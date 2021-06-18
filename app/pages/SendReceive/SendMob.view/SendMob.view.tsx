@@ -455,7 +455,7 @@ const SendMob: FC<SendMobProps> = ({
                             <MenuItem
                               value={contact.assignedAddress}
                               id={`contact_${contact.assignedAddress}`}
-                              key={contact.assignedAddress}
+                              key={contact.assignedAddress || contact.recipientAddress}
                             >
                               {contact.isFavorite ? (
                                 <ListItemIcon style={{ margin: '0px' }}>

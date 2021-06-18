@@ -5,7 +5,6 @@ import {
   Box,
   FormLabel,
   Typography,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -21,9 +20,9 @@ import { LedgerStatusProps } from './LedgerStatus';
 const LedgerStatus: FC<LedgerStatusProps> = ({ selectedAccount }: LedgerStatusProps) => {
   const { t } = useTranslation('LedgerStatus');
 
-  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
-  const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex);
-  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex as string);
+  const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex as string);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex as string);
 
   const createData = (
     blockType: string,
@@ -73,6 +72,7 @@ const LedgerStatus: FC<LedgerStatusProps> = ({ selectedAccount }: LedgerStatusPr
   } else {
     statusCopy = t('statusCopy100');
   }
+
   return (
     <Box flexGrow={1} mt={3}>
       <Box pt={3}>
@@ -88,7 +88,7 @@ const LedgerStatus: FC<LedgerStatusProps> = ({ selectedAccount }: LedgerStatusPr
       <Box py={2}>
         <TableContainer>
           <Table size="small" aria-label="block status">
-            <TableHead component={Paper}>
+            <TableHead>
               <TableRow>
                 <TableCell>{t('blockType')}</TableCell>
                 <TableCell align="right">{t('height')}</TableCell>

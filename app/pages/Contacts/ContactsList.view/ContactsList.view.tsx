@@ -35,8 +35,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ContactsList: FC<ContactsListProps> = ({
   contactsList,
-  onAdd,
-  onEdit,
+  onClickAdd,
+  onClickEdit,
 }: ContactsListProps) => {
   const classes = useStyles();
 
@@ -79,7 +79,7 @@ const ContactsList: FC<ContactsListProps> = ({
           onChange={(e) => setCurrentFilter(e.target.value)}
           inputProps={{
             endadornment: (
-              <InputAdornment>
+              <InputAdornment position="end">
                 <SearchIcon />
               </InputAdornment>
             ),
@@ -96,10 +96,10 @@ const ContactsList: FC<ContactsListProps> = ({
               alias={contact.alias}
               color={contact.color}
               isFavorite={contact.isFavorite}
-              onEdit={onEdit}
+              onClickEdit={onClickEdit}
             />
           ))}
-          <Fab color="primary" size="medium" className={classes.fab} onClick={onAdd}>
+          <Fab color="primary" size="medium" className={classes.fab} onClick={onClickAdd}>
             +
           </Fab>
         </Grid>

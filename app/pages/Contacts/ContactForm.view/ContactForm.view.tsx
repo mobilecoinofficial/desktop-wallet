@@ -91,9 +91,9 @@ const ContactForm: FC<ContactFormProps> = ({
   color,
   isFavorite,
   recipientAddress,
-  onCancel,
-  onDelete,
-  onSaved,
+  onClickCancel,
+  onClickDelete,
+  onClickSaved,
 }: ContactFormProps) => {
   const classes = useStyles();
   const isMountedRef = useIsMountedRef();
@@ -127,7 +127,7 @@ const ContactForm: FC<ContactFormProps> = ({
               })}
               onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 if (values.button === 'back') {
-                  onCancel();
+                  onClickCancel();
                   return;
                 }
 
@@ -137,7 +137,7 @@ const ContactForm: FC<ContactFormProps> = ({
                   if (isMountedRef.current) {
                     setSubmitting(false);
                     setStatus({ success: true });
-                    onSaved({
+                    onClickSaved({
                       abbreviation: values.abbreviation,
                       alias: values.alias,
                       color: values.color,
@@ -252,19 +252,19 @@ const ContactForm: FC<ContactFormProps> = ({
                     testID="cancelButton"
                     onClick={() => {
                       setFieldValue('button', 'back');
-                      onCancel();
+                      onClickCancel();
                     }}
                     isSubmitting={isSubmitting}
                   >
                     {t('cancel')}
                   </SubmitButton>
-                  {!isNew && onDelete && (
+                  {!isNew && onClickDelete && (
                     <SubmitButton
                       disabled={false}
                       testID="deleteButton"
                       onClick={() => {
                         setFieldValue('button', 'back');
-                        onDelete();
+                        onClickDelete();
                       }}
                       isSubmitting={isSubmitting}
                     >

@@ -44,7 +44,7 @@ const ContactsPage: FC = () => {
     recipientAddress,
   }: Contact) => {
     const result = await assignAddressForAccount(
-      selectedAccount.account.accountId || Math.random()
+      selectedAccount.account.accountId || String(Math.random())
     );
 
     setStatus(PAGE.LIST);
@@ -101,13 +101,15 @@ const ContactsPage: FC = () => {
       return (
         <ContactsList
           contactsList={sortedContacts}
-          onAdd={() => setStatus(PAGE.ADD)}
-          onEdit={editContact}
+          onClickAdd={() => setStatus(PAGE.ADD)}
+          onClickEdit={editContact}
         />
       );
 
     case PAGE.ADD:
-      return <ContactForm onCancel={() => setStatus(PAGE.LIST)} onSaved={addNewContact} />;
+      return (
+        <ContactForm onClickCancel={() => setStatus(PAGE.LIST)} onClickSaved={addNewContact} />
+      );
 
     case PAGE.EDIT:
       return (
@@ -118,9 +120,9 @@ const ContactsPage: FC = () => {
           color={current.color}
           isFavorite={current.isFavorite}
           recipientAddress={current.recipientAddress}
-          onCancel={() => setStatus(PAGE.LIST)}
-          onDelete={deleteContact}
-          onSaved={updateContact}
+          onClickCancel={() => setStatus(PAGE.LIST)}
+          onClickDelete={deleteContact}
+          onClickSaved={updateContact}
         />
       );
 

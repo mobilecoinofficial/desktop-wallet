@@ -24,7 +24,7 @@ const ContactCard: FC<ContactCardProps> = ({
   alias,
   color,
   isFavorite,
-  onEdit,
+  onClickEdit,
 }: ContactCardProps) => {
   const classes = useStyles();
 
@@ -33,7 +33,7 @@ const ContactCard: FC<ContactCardProps> = ({
   return (
     <Grid item xs={12}>
       <Card className={classes.card}>
-        <CardActionArea onClick={() => onEdit(assignedAddress as string)}>
+        <CardActionArea onClick={() => onClickEdit(assignedAddress as string)}>
           <CardHeader
             avatar={<Avatar style={{ backgroundColor: color || '#757575' }}>{avatar}</Avatar>}
             title={

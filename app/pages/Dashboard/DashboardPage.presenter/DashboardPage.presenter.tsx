@@ -28,9 +28,7 @@ const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) 
   const handleCodeClicked = (code: string, text: string) => {
     logger('Code copied to clipboard from dashboard');
     clipboard.writeText(code);
-    enqueueSnackbar(text, {
-      variant: 'success',
-    });
+    enqueueSnackbar(text, { variant: 'success' });
   };
 
   logger('Showing Dashboard');

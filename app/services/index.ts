@@ -25,6 +25,7 @@ import {
 } from './fetchAllTxosForAccount.service';
 import { getAllGiftCodes, GetAllGiftCodesService } from './getAllGiftCodes.service';
 import { getFeePmob, GetFeePmobService } from './getFeePmob.service';
+import { getWalletStatus, GetWalletStatusService } from './getWalletStatus.service';
 import { importAccount, ImportAccountService } from './importAccount.service';
 import { importLegacyAccount, ImportLegacyAccountService } from './importLegacyAccount.service';
 import { retrieveEntropy, RetrieveEntropyService } from './retrieveEntropy.service';
@@ -50,6 +51,7 @@ export {
   fetchAllTxosForAccount,
   getAllGiftCodes,
   getFeePmob,
+  getWalletStatus,
   importAccount,
   importLegacyAccount,
   retrieveEntropy,
@@ -76,6 +78,7 @@ export type {
   FetchAllTxosForAccountService,
   GetAllGiftCodesService,
   GetFeePmobService,
+  GetWalletStatusService,
   ImportAccountService,
   ImportLegacyAccountService,
   RetrieveEntropyService,

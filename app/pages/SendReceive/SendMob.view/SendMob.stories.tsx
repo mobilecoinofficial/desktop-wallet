@@ -1,15 +1,20 @@
 import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
+import { SnackbarProvider } from 'notistack';
 
-import { ReceiveMob } from './ReceiveMob.view';
+import { SendMob } from './SendMob.view';
 
 export default {
-  component: ReceiveMob,
-  title: 'Pages/Send_Receive/Receive Mob',
+  component: SendMob,
+  title: 'Pages/Send_Receive/Send Mob',
 };
 
-const Template: Story<ComponentProps<typeof ReceiveMob>> = (args) => <ReceiveMob {...args} />;
+const Template: Story<ComponentProps<typeof SendMob>> = (args) => (
+  <SnackbarProvider>
+    <SendMob {...args} />;
+  </SnackbarProvider>
+);
 
 export const Standard = Template.bind({});
 Standard.args = {
@@ -36,7 +41,9 @@ Standard.args = {
       isFavorite: true,
     },
   ],
-  onClickCode: () => console.log('codeClicked!'),
+  feePmob: '5000000000',
+  isSyncedBuffered: () => true,
+  pinThresholdPmob: 10,
   selectedAccount: {
     account: {
       accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',

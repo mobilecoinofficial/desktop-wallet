@@ -83,8 +83,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ChangePinView: FC<ChangePinViewProps> = ({
   accounts,
   onClickBack,
-  pinThresholdPmob,
   pin,
+  pinThresholdPmob,
   setPin,
 }: ChangePinViewProps) => {
   const classes = useStyles();

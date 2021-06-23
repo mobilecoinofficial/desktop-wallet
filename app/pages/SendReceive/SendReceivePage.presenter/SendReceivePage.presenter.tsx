@@ -42,6 +42,11 @@ const SendReceivePage: FC = () => {
     selectedAccount,
   } = useFullService();
 
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+
+  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
+
   const { t } = useTranslation('TransactionView');
   const { enqueueSnackbar = () => {} } = useSnackbar() || {};
 
@@ -63,7 +68,7 @@ const SendReceivePage: FC = () => {
       contacts={contacts}
       existingPin={existingPin as string}
       feePmob={feePmob || '0'}
-      isSyncedBuffered={isSyncedBuffered}
+      isSynced={isSynced}
       pinThresholdPmob={parseFloat(pinThresholdPmob)}
       selectedAccount={selectedAccount}
       submitTransaction={submitTransaction}
@@ -73,7 +78,7 @@ const SendReceivePage: FC = () => {
 
   const ReceiveMobWithParams = () => (
     <ReceiveMob
-      codeClicked={handleCodeClicked}
+      onClickCode={handleCodeClicked}
       contacts={contacts}
       selectedAccount={selectedAccount}
     />

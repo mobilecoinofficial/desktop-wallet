@@ -98,15 +98,13 @@ exports[`ConfigureFullServiceView component render ConfigureFullServiceView rend
         <div
           class="MuiTableContainer-root"
         >
-          <div
-            class="MuiPaper-root MuiTableHead-root MuiPaper-elevation1 MuiPaper-rounded"
-            role="rowgroup"
-          />
           <table
             aria-label="block status"
             class="MuiTable-root"
           >
-            <tbody>
+            <thead
+              class="MuiTableHead-root"
+            >
               <tr
                 class="MuiTableRow-root MuiTableRow-head"
               >
@@ -135,7 +133,7 @@ exports[`ConfigureFullServiceView component render ConfigureFullServiceView rend
                   % Synced
                 </th>
               </tr>
-            </tbody>
+            </thead>
             <tbody
               class="MuiTableBody-root"
             >

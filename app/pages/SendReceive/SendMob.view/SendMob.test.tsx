@@ -100,7 +100,7 @@ const setUpTest = ({
   ),
   contacts = [] as Contact[],
   existingPin = '',
-  isSyncedBuffered = jest.fn(() => true),
+  isSynced = true,
   pinThresholdPmob = 99999999999,
   selectedAccount = SELECTED_ACCOUNT,
   submitTransaction = jest.fn(),
@@ -114,7 +114,7 @@ const setUpTest = ({
         contacts={contacts}
         existingPin={existingPin}
         feePmob="3000000000"
-        isSyncedBuffered={isSyncedBuffered}
+        isSynced={isSynced}
         pinThresholdPmob={pinThresholdPmob}
         selectedAccount={selectedAccount}
         submitTransaction={submitTransaction}
@@ -136,7 +136,7 @@ const setUpTest = ({
     buildTransaction,
     contactsSelect,
     container,
-    isSyncedBuffered,
+    isSynced,
     mobAmount,
     recipientAddress,
     saveToContactsCheck,

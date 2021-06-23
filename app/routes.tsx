@@ -29,30 +29,6 @@ type Routes = {
 const RedirectToNotFound = (): JSX.Element => <Redirect to={routePaths.NOT_FOUND} />;
 RedirectToNotFound.displayName = 'RedirectToNotFound';
 
-export const renderRoutes = (routes: Routes = [], testComponent?: JSX.Element): JSX.Element => (
-  <Switch>
-    {testComponent && (
-      <Route key="test-component" path="/test" exact render={() => testComponent} />
-    )}
-    {routes.map((route, i) => {
-      const { Component, layout, exact, path, routes: nestedRoutes } = route;
-
-      const Layout = layout || Fragment;
-
-      return (
-        <Route
-          key={[path, i].join('|')}
-          path={path}
-          exact={exact}
-          render={(props) => (
-            <Layout>{nestedRoutes ? renderRoutes(nestedRoutes) : <Component {...props} />}</Layout>
-          )}
-        />
-      );
-    })}
-  </Switch>
-);
-
 const closeApp = () => ipcRenderer.send('close-app');
 
 const DashboardLayoutWithClose: FC<DashboardLayoutProps> = ({ children }: DashboardLayoutProps) => (
@@ -61,7 +37,7 @@ const DashboardLayoutWithClose: FC<DashboardLayoutProps> = ({ children }: Dashbo
 
 const DashboardPageWithClose: FC = () => <DashboardPage onClose={closeApp} />;
 
-const routes: Routes = [
+const internalRoutes: Routes = [
   {
     Component: NotFoundPage,
     exact: true,
@@ -137,4 +113,30 @@ const routes: Routes = [
   },
 ];
 
-export default routes;
+const renderInternalRoutes = (routes: Routes): JSX.Element => (
+  <Switch>
+    {routes.map((route, i) => {
+      const { Component, layout, exact, path, routes: nestedRoutes } = route;
+
+      const Layout = layout || Fragment;
+
+      return (
+        <Route
+          key={[path, i].join('|')}
+          path={path}
+          exact={exact}
+          render={(props) => (
+            <Layout>
+              {nestedRoutes ? renderInternalRoutes(nestedRoutes) : <Component {...props} />}
+            </Layout>
+          )}
+        />
+      );
+    })}
+  </Switch>
+);
+
+const renderRoutes = (): JSX.Element => renderInternalRoutes(internalRoutes);
+
+export default renderRoutes;
+export { renderRoutes };

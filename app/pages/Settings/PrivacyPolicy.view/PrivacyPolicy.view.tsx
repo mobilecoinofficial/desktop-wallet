@@ -4,8 +4,8 @@ import type { FC } from 'react';
 import { Box, Breadcrumbs, Container, Link, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { PrivacyPolicy } from '../../../components';
 import type { Theme } from '../../../theme';
+import { PrivacyPolicy } from '../PrivacyPolicy.component';
 import { PrivacyPolicyViewProps } from './PrivacyPolicy';
 
 const useStyles = makeStyles((theme: Theme) => ({

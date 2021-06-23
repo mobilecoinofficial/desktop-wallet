@@ -3,36 +3,56 @@ import type { FC } from 'react';
 
 import { Box, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
+import type { FormikHelpers } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
-import { getWalletStatus } from '../../../services';
-import type { UnlockWalletViewProps } from './UnlockWallet';
+import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import type { UnlockAccountViewProps } from './UnlockAccount';
 
-interface UnlockWalletFormValues {
+interface UnlockAccountFormValues {
   password: string;
   submit: null;
 }
 
-const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWalletViewProps) => {
-  const { t } = useTranslation('UnlockWallet');
+const UnlockAccountView: FC<UnlockAccountViewProps> = ({
+  unlockWallet,
+  accounts,
+}: UnlockAccountViewProps) => {
+  const isMountedRef = useIsMountedRef();
+  const { t } = useTranslation('UnlockAccount');
 
-  const handleOnSubmit = async (values: UnlockWalletFormValues) => {
-    await unlockWallet(values.password);
-  };
-
-  const getWallet = async () => {
+  const handleOnSubmit = async (
+    values: UnlockAccountFormValues,
+    helpers: FormikHelpers<UnlockAccountFormValues>
+  ) => {
+    const { setStatus, setErrors, setSubmitting } = helpers;
+    setSubmitting(true);
     try {
-      await getWalletStatus();
-    } catch (e) {
-      // nothing!
+      await unlockWallet(values.password);
+      /* istanbul ignore next */
+      if (isMountedRef.current) {
+        setStatus({ success: true });
+        setSubmitting(false);
+      }
+    } catch (err) {
+      /* istanbul ignore next */
+      if (isMountedRef.current) {
+        setStatus({ success: false });
+        setErrors({ submit: err.message });
+        setSubmitting(false);
+      }
     }
   };
-  getWallet();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (accounts.length > 0) {
+      setAnchorEl(event.currentTarget);
+    }
+  };
   const handleClose = () => setAnchorEl(null);
 
   return (
@@ -43,6 +63,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
       <Typography variant="body2" color="textSecondary" paragraph>
         {t('description')}
       </Typography>
+
       <Formik
         initialValues={{ password: '', submit: null }}
         validationSchema={Yup.object().shape({
@@ -51,7 +72,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
         onSubmit={handleOnSubmit}
       >
         {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
-          <Form name="UnlockWalletInnerForm">
+          <Form name="UnlockAccountInnerForm">
             <Field
               data-testid="passwordField"
               component={TextField}
@@ -59,9 +80,10 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
               label={t('passwordLabel')}
               name="password"
               type="password"
+              onClick={handleClick}
             />
             <SavedPasswordsModal
-              accounts={[]}
+              accounts={accounts}
               anchorEl={anchorEl}
               handleClose={handleClose}
               setFieldValue={setFieldValue}
@@ -77,7 +99,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
               isSubmitting={isSubmitting}
               onClick={submitForm}
             >
-              {t('unlockWalletButton')}
+              {t('unlockAccountButton')}
             </SubmitButton>
           </Form>
         )}
@@ -86,5 +108,5 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWal
   );
 };
 
-export default UnlockWalletView;
-export { UnlockWalletView };
+export default UnlockAccountView;
+export { UnlockAccountView };

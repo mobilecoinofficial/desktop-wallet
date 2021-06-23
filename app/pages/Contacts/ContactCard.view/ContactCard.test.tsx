@@ -16,7 +16,7 @@ test('Displays card', () => {
       assignedAddress="1234567890"
       color="#FF0000"
       isFavorite
-      onEdit={handleClick}
+      onClickEdit={handleClick}
     />
   );
 

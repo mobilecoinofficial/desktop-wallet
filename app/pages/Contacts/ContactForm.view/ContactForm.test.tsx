@@ -21,9 +21,9 @@ describe('Contact form', () => {
         color="#FF0000"
         isFavorite={false}
         recipientAddress="9127865938756293486"
-        onCancel={handleClick1}
-        onDelete={handleClick2}
-        onSaved={handleClick3}
+        onClickCancel={handleClick1}
+        onClickDelete={handleClick2}
+        onClickSaved={handleClick3}
       />
     );
 
@@ -93,9 +93,9 @@ describe('Contact form', () => {
         color="#FF0000"
         recipientAddress=""
         isFavorite={false}
-        onCancel={handleClick1}
-        onDelete={handleClick2}
-        onSaved={handleClick3}
+        onClickCancel={handleClick1}
+        onClickDelete={handleClick2}
+        onClickSaved={handleClick3}
       />
     );
 
@@ -158,9 +158,9 @@ describe('Contact form', () => {
         assignedAddress=""
         color=""
         isFavorite={false}
-        onCancel={handleClick1}
-        onDelete={handleClick2}
-        onSaved={handleClick3}
+        onClickCancel={handleClick1}
+        onClickDelete={handleClick2}
+        onClickSaved={handleClick3}
       />
     );
 

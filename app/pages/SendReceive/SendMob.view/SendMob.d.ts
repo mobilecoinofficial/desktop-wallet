@@ -13,7 +13,7 @@ export interface SendMobProps {
   contacts: Contact[];
   existingPin: string;
   feePmob: string;
-  isSyncedBuffered: (a0: bigint, a1: bigint) => boolean;
+  isSynced: boolean;
   pinThresholdPmob: number;
   selectedAccount: SelectedAccount;
   submitTransaction: SubmitTransactionService;

@@ -1,42 +1,29 @@
 import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
+import { SnackbarProvider } from 'notistack';
 
-import { ReceiveMob } from './ReceiveMob.view';
+import { ConfigureFullServiceView } from './ConfigureFullService.view';
 
 export default {
-  component: ReceiveMob,
-  title: 'Pages/Send_Receive/Receive Mob',
+  component: ConfigureFullServiceView,
+  title: 'Settings/Configure/Configure Full Service',
 };
 
-const Template: Story<ComponentProps<typeof ReceiveMob>> = (args) => <ReceiveMob {...args} />;
+const Template: Story<ComponentProps<typeof ConfigureFullServiceView>> = (args) => (
+  <SnackbarProvider>
+    <ConfigureFullServiceView {...args} />
+  </SnackbarProvider>
+);
 
-export const Standard = Template.bind({});
-Standard.args = {
-  contacts: [
-    {
-      abbreviation: 'F1',
-      alias: 'Foxtrot Golf',
-      assignedAddress: '11111',
-      color: '#FF0000',
-      isFavorite: true,
-    },
-    {
-      abbreviation: 'K2',
-      alias: 'Kilo Lima',
-      assignedAddress: '22222',
-      color: '#00FF00',
-      isFavorite: false,
-    },
-    {
-      abbreviation: 'ST',
-      alias: 'Sierra Tango',
-      assignedAddress: '33333',
-      color: '#0000FF',
-      isFavorite: true,
-    },
-  ],
-  onClickCode: () => console.log('codeClicked!'),
+export const ConfigureFullService = Template.bind({});
+ConfigureFullService.args = {
+  configureFullServiceConfigs: {
+    fullServiceDbPath: 'path/to/the/fullService',
+    leaveFullServiceRunning: false,
+    ledgerDbPath: 'path/to/the/ledger',
+    toggleLeaveFullServiceRunning: () => undefined,
+  },
   selectedAccount: {
     account: {
       accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',

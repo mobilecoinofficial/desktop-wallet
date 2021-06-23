@@ -281,8 +281,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
             valuePmob: convertMobStringToPicoMobString(String(adjustedValue)),
           });
 
-          console.log('REAL LIFE ', result);
-
           if (result === null || result === undefined) {
             throw new Error(t('errorBuild'));
           }

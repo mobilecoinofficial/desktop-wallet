@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { FullServiceDirectoryProps } from './FullServiceDirectory';
 
 const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
-  ledgerDbPath,
   fullServiceDbPath,
+  ledgerDbPath,
 }: FullServiceDirectoryProps) => {
   const { t } = useTranslation('FullServiceDirectory');
 

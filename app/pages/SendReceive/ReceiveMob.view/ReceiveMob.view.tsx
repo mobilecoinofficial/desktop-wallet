@@ -20,8 +20,8 @@ import type { ReceiveMobProps } from './ReceiveMob.d';
 
 // CBB, really, we should just give the list and work by the indexes.
 const ReceiveMob: FC<ReceiveMobProps> = ({
-  codeClicked,
   contacts,
+  onClickCode,
   selectedAccount,
 }: ReceiveMobProps) => {
   const { mainAddress } = selectedAccount.account;
@@ -88,7 +88,7 @@ const ReceiveMob: FC<ReceiveMobProps> = ({
             b58Code: selectedAddress,
             name: nameFromAddress,
           }}
-          codeClicked={codeClicked}
+          codeClicked={onClickCode}
         />
       </Box>
     </Container>

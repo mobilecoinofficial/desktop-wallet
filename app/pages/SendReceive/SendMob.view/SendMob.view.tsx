@@ -91,7 +91,7 @@ const SendMob: FC<SendMobProps> = ({
   contacts,
   existingPin,
   feePmob,
-  isSyncedBuffered,
+  isSynced,
   pinThresholdPmob,
   selectedAccount,
   submitTransaction,
@@ -110,11 +110,6 @@ const SendMob: FC<SendMobProps> = ({
   const [slideExitSpeed, setSlideExitSpeed] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
   const isMountedRef = useIsMountedRef();
-
-  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
-  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
-
-  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
@@ -329,8 +324,9 @@ const SendMob: FC<SendMobProps> = ({
                       confirmation.totalValueConfirmation.toString()
                     );
                     const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
-                    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                    isChecked ? saveToContacts(values.alias, values.recipientPublicAddress) : null;
+                    if (isChecked) {
+                      saveToContacts(values.alias, values.recipientPublicAddress);
+                    }
                     enqueueSnackbar(
                       `${t('success')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`,
                       {

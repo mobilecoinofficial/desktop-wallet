@@ -13,7 +13,6 @@ const Template: Story<ComponentProps<typeof ReceiveMob>> = (args) => <ReceiveMob
 
 export const Standard = Template.bind({});
 Standard.args = {
-  codeClicked: () => console.log('codeClicked!'),
   contacts: [
     {
       abbreviation: 'F1',
@@ -37,7 +36,7 @@ Standard.args = {
       isFavorite: true,
     },
   ],
-
+  onClickCode: () => console.log('codeClicked!'),
   selectedAccount: {
     account: {
       accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',

@@ -66,9 +66,8 @@ const SendReceivePage: FC = () => {
   const { t } = useTranslation('TransactionView');
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleChange = (_event: ChangeEvent<HTMLElement>, newSelectedTabIndex: number) => {
+  const handleChange = (_event: ChangeEvent<HTMLElement>, newSelectedTabIndex: number) =>
     setSelectedTabIndex(newSelectedTabIndex);
-  };
 
   const handleCodeClicked = (code: string, text: string) => {
     clipboard.writeText(code);

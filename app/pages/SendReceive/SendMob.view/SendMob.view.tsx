@@ -176,17 +176,7 @@ const SendMob: FC<SendMobProps> = ({
               })}
               onSubmit={() => {}}
             >
-              {({
-                errors,
-                isSubmitting,
-                dirty,
-                isValid,
-                setFieldValue,
-                setSubmitting,
-                setStatus,
-                setErrors,
-                values,
-              }) => {
+              {({ errors, isSubmitting, dirty, isValid, setFieldValue, setSubmitting, values }) => {
                 // NOTE: because this is just a display for the value up to 3 dec mob,
                 // We do not need the precision to be BigInt
 
@@ -358,7 +348,7 @@ const SendMob: FC<SendMobProps> = ({
                         isSubmitting ||
                         (isChecked && !values.alias)
                       }
-                      onClick={handleOpen(values, setStatus, setErrors)}
+                      onClick={handleOpen(values)}
                       isSubmitting={/* isAwaitingConformation || */ isSubmitting}
                     >
                       {isSynced ? t('send') : t('syncing')}

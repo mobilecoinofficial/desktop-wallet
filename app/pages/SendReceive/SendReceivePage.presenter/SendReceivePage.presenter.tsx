@@ -112,23 +112,9 @@ const SendReceivePage: FC = () => {
       enqueueSnackbar(`${t('success')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`, {
         variant: 'success',
       });
-      /*
-        setStatus({ success: true });
-        setSubmitting(false);
-        resetForm();
-        setIsAwaitingConformation(false);
-      */
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(err);
-      /* FK
-      if (isMountedRef.current) {
-        setStatus({ success: false });
-        setErrors({ submit: err.message });
-        setSubmitting(false);
-        setIsAwaitingConformation(false);
-      }
-      */
     }
     setConfirmation(EMPTY_CONFIRMATION);
     setSendingStatus(Showing.INPUT_FORM);
@@ -148,6 +134,13 @@ const SendReceivePage: FC = () => {
     isChecked,
     recipientPublicAddress,
     valuePmob,
+  }: {
+    accountId: string;
+    alias: string;
+    fee: string;
+    isChecked: boolean;
+    recipientPublicAddress: StringHex;
+    valuePmob: string;
   }) => {
     let result;
 
@@ -177,32 +170,9 @@ const SendReceivePage: FC = () => {
       });
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.log('ERROR!', e);
     }
-
-    /*
-
-    } catch (err) {
-      setStatus({ success: false });
-      setErrors({ submit: err.message });
-      setIsAwaitingConformation(false);
-      setConfirmation(EMPTY_CONFIRMATION);
-    }
-
-    const {
-      feeConfirmation,
-      totalValueConfirmation,
-      txProposal,
-      txProposalReceiverB58Code,
-    } = result;
-    setConfirmation({
-      feeConfirmation,
-      totalValueConfirmation,
-      txProposal,
-      txProposalReceiverB58Code,
-    });
-
-    */
   };
 
   const SendMobWithParams = () => (

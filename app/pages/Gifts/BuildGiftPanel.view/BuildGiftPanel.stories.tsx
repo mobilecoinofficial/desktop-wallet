@@ -58,7 +58,6 @@ GiftPanel.args = {
   ],
   isSyncedBuffered: () => true,
   onClickCode: () => console.log('onClickCode!'),
-
   pinThresholdPmob: '10000000000000',
   selectedAccount: {
     account: {

@@ -26,31 +26,20 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { CheckboxWithLabel, TextField } from 'formik-material-ui';
-import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
 import { StarIcon, MOBIcon } from '../../../components/icons';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
-import type { StringHex } from '../../../types/SpecialStrings';
-import type { TxProposal } from '../../../types/TxProposal';
 import {
-  commafy,
   convertMobStringToPicoMobString,
   convertPicoMobStringToMob,
 } from '../../../utils/convertMob';
 import type { SendMobProps } from './SendMob.d';
-
-const EMPTY_CONFIRMATION = {
-  feeConfirmation: 0n,
-  totalValueConfirmation: 0n,
-  txProposal: {} as TxProposal,
-  txProposalReceiverB58Code: '',
-};
+import { Showing } from './SendMob.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: { width: 200 },
@@ -86,30 +75,24 @@ const useStyles = makeStyles((theme: Theme) => ({
 // this component managable.
 
 const SendMob: FC<SendMobProps> = ({
-  assignAddressForAccount,
-  buildTransaction,
+  confirmation,
   contacts,
   existingPin,
   feePmob,
   isSynced,
+  onClickCancel,
+  onClickConfirm,
+  onClickSend,
   pinThresholdPmob,
   selectedAccount,
-  submitTransaction,
-  updateContacts,
+  showing,
 }: SendMobProps) => {
   const classes = useStyles();
-  const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
   const { t } = useTranslation('SendMobForm');
 
   const [contactId, setContactId] = useState('');
   const [contactName, setContactName] = useState('');
-  const [open, setOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
-  const [sendingOpen, setSendingOpen] = useState(false);
-  const [slideExitSpeed, setSlideExitSpeed] = useState(0);
-  const { enqueueSnackbar } = useSnackbar();
-  const isMountedRef = useIsMountedRef();
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
@@ -122,136 +105,22 @@ const SendMob: FC<SendMobProps> = ({
   ];
 
   const handleChecked = () => setIsChecked(!isChecked);
-  const saveToContacts = async (alias: string, recipientAddress: string) => {
-    const randomColor = () => {
-      const RANDOM_COLORS = ['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D969D', '#D82E26'];
-      return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
-    };
 
-    const result = await assignAddressForAccount(selectedAccount.account.accountId as StringHex);
-
-    contacts.push({
-      abbreviation: alias[0].toUpperCase(),
-      alias,
-      assignedAddress: result.address.publicAddress,
-      color: randomColor(),
-      isFavorite: false,
-      recipientAddress,
+  const handleOpen = (values) => async () => {
+    onClickSend({
+      accountId: selectedAccount.account.accountId,
+      alias: values.alias,
+      fee: convertMobStringToPicoMobString(values.feeAmount),
+      isChecked,
+      recipientPublicAddress: values.recipientPublicAddress,
+      valuePmob: convertMobStringToPicoMobString(values.mobAmount),
     });
-
-    await updateContacts(contacts);
-    handleChecked();
   };
 
-  const handleOpen = (values, setStatus, setErrors) => async () => {
-    let result;
-    try {
-      setIsAwaitingConformation(true);
-      result = await buildTransaction({
-        accountId: selectedAccount.account.accountId,
-        fee: convertMobStringToPicoMobString(values.feeAmount),
-        recipientPublicAddress: values.recipientPublicAddress,
-        valuePmob: convertMobStringToPicoMobString(values.mobAmount),
-      });
-
-      if (result === null || result === undefined) {
-        throw new Error('Could not build transaction.');
-      }
-
-      const {
-        feeConfirmation,
-        totalValueConfirmation,
-        txProposal,
-        txProposalReceiverB58Code,
-      } = result;
-
-      setConfirmation({
-        feeConfirmation,
-        totalValueConfirmation,
-        txProposal,
-        txProposalReceiverB58Code,
-      });
-
-      setOpen(true);
-    } catch (err) {
-      setStatus({ success: false });
-      setErrors({ submit: err.message });
-      setIsAwaitingConformation(false);
-      setConfirmation(EMPTY_CONFIRMATION);
-    }
-
-    const {
-      feeConfirmation,
-      totalValueConfirmation,
-      txProposal,
-      txProposalReceiverB58Code,
-    } = result;
-    setConfirmation({
-      feeConfirmation,
-      totalValueConfirmation,
-      txProposal,
-      txProposalReceiverB58Code,
-    });
-
-    setOpen(true);
-  };
-
-  const handleClose = (setSubmitting: (boolean: boolean) => void, resetForm: () => void) => () => {
-    setSlideExitSpeed(0);
-    enqueueSnackbar(t('transactionCanceled'), {
-      variant: 'warning',
-    });
-    setOpen(false);
+  const handleClose = (setSubmitting: (boolean: boolean) => void) => () => {
     setSubmitting(false);
-    handleChecked();
-    resetForm();
-    setIsAwaitingConformation(false);
-    setConfirmation(EMPTY_CONFIRMATION);
+    onClickCancel();
   };
-
-  /* FK: COMMENTING OUT ON ACCOUNT OF NOT BEING USED
-  const createAccountLabel = (account: Account) => {
-    const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}:`;
-    return (
-      <Box display="flex" justifyContent="space-between">
-        <Typography color="textPrimary">
-          {' '}
-          {name}
-          <ShortCode code={account.b58Code} />
-        </Typography>
-        <Typography color="textPrimary">
-          <MOBNumberFormat value={account.balance.toString()} valueUnit="pMOB" />
-        </Typography>
-      </Box>
-    );
-  };
-  */
-
-  // TODO: Reintroduce with multiple accounts
-  // const renderSenderPublicAdddressOptions = (accounts: Account[], isSubmitting: boolean) => (
-  //   <Box pt={2}>
-  //     <FormLabel className={classes.form} component="legend">
-  //       <Typography color="primary">{t('select')}</Typography>
-  //     </FormLabel>
-  //     <Field component={RadioGroup} name="senderPublicAddress">
-  //       <Box display="flex" justifyContent="space-between">
-  //         <Typography color="textPrimary">{t('accountName')}</Typography>
-  //         <Typography color="textPrimary">{t('accountBalance')}</Typography>
-  //       </Box>
-  //       {accounts.map((account: Account) => (
-  //         <FormControlLabel
-  //           key={account.b58Code}
-  //           value={account.b58Code}
-  //           control={<Radio disabled={isSubmitting} />}
-  //           label={createAccountLabel(account)}
-  //           labelPlacement="end"
-  //           disabled={isSubmitting}
-  //           classes={{ label: classes.label }}
-  //         />
-  //       ))}
-  //     </Field>
-  //   </Box>
-  // );
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
@@ -305,62 +174,13 @@ const SendMob: FC<SendMobProps> = ({
                   .required(t('positiveValidationRequired')),
                 recipientPublicAddress: Yup.string().required(t('addressRequired')),
               })}
-              onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
-                // TODO -- I don't like this flow. The cnvenience call skips verification.
-                // That means that we are "verifying" based on the front-end UI state --
-                // this is pretty horrendous for a verification step in any payment flow.
-                // We should, instead, display exactly what mobilecoind is about to send
-                // (not what the UI thinks it is telling mobilecoind).
-                // But it looks like we're going to have to gut payAddressCode and use 2
-                // calls instead.
-                try {
-                  setSlideExitSpeed(1000);
-                  setOpen(false);
-                  setSendingOpen(true);
-                  submitTransaction(confirmation.txProposal);
-
-                  if (isMountedRef.current) {
-                    const totalValueConfirmationAsMob = convertPicoMobStringToMob(
-                      confirmation.totalValueConfirmation.toString()
-                    );
-                    const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
-                    if (isChecked) {
-                      saveToContacts(values.alias, values.recipientPublicAddress);
-                    }
-                    enqueueSnackbar(
-                      `${t('success')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`,
-                      {
-                        variant: 'success',
-                      }
-                    );
-                    setStatus({ success: true });
-                    setSendingOpen(false);
-                    setSubmitting(false);
-                    resetForm();
-                    setIsAwaitingConformation(false);
-                    setConfirmation(EMPTY_CONFIRMATION);
-                  }
-                } catch (err) {
-                  // eslint-disable-next-line no-console
-                  console.error(err);
-                  if (isMountedRef.current) {
-                    setStatus({ success: false });
-                    setErrors({ submit: err.message });
-                    setSendingOpen(false);
-                    setSubmitting(false);
-                    setIsAwaitingConformation(false);
-                    setConfirmation(EMPTY_CONFIRMATION);
-                  }
-                }
-              }}
+              onSubmit={() => {}}
             >
               {({
                 errors,
                 isSubmitting,
                 dirty,
                 isValid,
-                resetForm,
-                submitForm,
                 setFieldValue,
                 setSubmitting,
                 setStatus,
@@ -539,7 +359,7 @@ const SendMob: FC<SendMobProps> = ({
                         (isChecked && !values.alias)
                       }
                       onClick={handleOpen(values, setStatus, setErrors)}
-                      isSubmitting={isAwaitingConformation || isSubmitting}
+                      isSubmitting={/* isAwaitingConformation || */ isSubmitting}
                     >
                       {isSynced ? t('send') : t('syncing')}
                     </SubmitButton>
@@ -548,8 +368,8 @@ const SendMob: FC<SendMobProps> = ({
                       aria-labelledby="transition-modal-title"
                       aria-describedby="transition-modal-description"
                       className={classes.modal}
-                      open={open}
-                      onClose={handleClose(setSubmitting, resetForm)}
+                      open={showing === Showing.CONFIRM_FORM}
+                      onClose={handleClose(setSubmitting)}
                       closeAfterTransition
                       BackdropComponent={Backdrop}
                       BackdropProps={{
@@ -558,7 +378,10 @@ const SendMob: FC<SendMobProps> = ({
                       disableAutoFocus
                       disableEnforceFocus
                     >
-                      <Slide in={open} timeout={{ enter: 0, exit: slideExitSpeed }}>
+                      <Slide
+                        in={showing === Showing.CONFIRM_FORM}
+                        timeout={{ enter: 0, exit: 0 /* slideExitSpeed */ }}
+                      >
                         <div className={classes.paper}>
                           <Typography color="textPrimary" variant="h2" id="transition-modal-title">
                             {t('confirm')}
@@ -626,7 +449,7 @@ const SendMob: FC<SendMobProps> = ({
                                 id="remainingValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
-                                value={remainingBalance?.toString()}
+                                value={remainingBalance?.toString() as string}
                               />
                             </Typography>
                           </Box>
@@ -683,7 +506,7 @@ const SendMob: FC<SendMobProps> = ({
                               className={classes.button}
                               color="secondary"
                               disabled={!isValid || isSubmitting}
-                              onClick={handleClose(setSubmitting, resetForm)}
+                              onClick={handleClose(setSubmitting)}
                               size="large"
                               fullWidth
                               type="submit"
@@ -701,7 +524,7 @@ const SendMob: FC<SendMobProps> = ({
                                 (isPinRequiredForTransaction && values.pin !== existingPin)
                               }
                               fullWidth
-                              onClick={submitForm}
+                              onClick={onClickConfirm}
                               size="large"
                               type="submit"
                               variant="contained"
@@ -714,7 +537,7 @@ const SendMob: FC<SendMobProps> = ({
                     </Modal>
                     <Modal
                       className={classes.modal}
-                      open={sendingOpen}
+                      open={showing === Showing.SEND_FORM}
                       closeAfterTransition
                       disableAutoFocus
                       disableEnforceFocus
@@ -724,7 +547,7 @@ const SendMob: FC<SendMobProps> = ({
                         timeout: 1000,
                       }}
                     >
-                      <Fade in={sendingOpen} timeout={{ enter: 15000, exit: 0 }}>
+                      <Fade in={showing === Showing.SEND_FORM} timeout={{ enter: 15000, exit: 0 }}>
                         <Box width="100%" p={3}>
                           <LinearProgress />
                         </Box>

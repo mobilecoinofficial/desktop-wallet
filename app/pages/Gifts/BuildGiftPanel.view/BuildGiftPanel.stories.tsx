@@ -20,7 +20,6 @@ const Template: Story<ComponentProps<typeof BuildGiftPanel>> = (args: BuildGiftP
 export const GiftPanel = Template.bind({});
 GiftPanel.args = {
   buildGiftCode: () => console.log('buildGiftCode!'),
-  codeClicked: () => console.log('codeClicked!'),
   deleteStoredGiftCodeB58: () => console.log('deleteStoredGiftCodeB58!'),
   existingPin: '12345678',
   feePmob: '3000000000',
@@ -58,6 +57,8 @@ GiftPanel.args = {
     },
   ],
   isSyncedBuffered: () => true,
+  onClickCode: () => console.log('onClickCode!'),
+
   pinThresholdPmob: '10000000000000',
   selectedAccount: {
     account: {

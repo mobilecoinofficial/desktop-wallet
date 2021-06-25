@@ -7,11 +7,11 @@ import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export interface BuildGiftFormProps {
   buildGiftCode: BuildGiftCodeService;
-  getAllGiftCodes: GetAllGiftCodesService;
-  codeClicked: (code: string, text: string) => void;
   existingPin: string;
   feePmob: string;
-  isSyncedBuffered: (x: bigint, y: bigint) => boolean;
+  getAllGiftCodes: GetAllGiftCodesService;
+  isSynced: boolean;
+  onClickCode: (code: string, text: string) => void;
   pinThresholdPmob: string;
   selectedAccount: SelectedAccount;
   submitGiftCode: SubmitGiftCodeService;

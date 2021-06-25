@@ -1,21 +1,22 @@
-import type {
-  AssignAddressForAccountService,
-  BuildTransactionService,
-  SubmitTransactionService,
-  UpdateContactsService,
-} from '../../../services';
 import type { Contact } from '../../../types/Contact.d';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
+export enum Showing {
+  INPUT_FORM,
+  CONFIRM_FORM,
+  SEND_FORM,
+}
+
 export interface SendMobProps {
-  assignAddressForAccount: AssignAddressForAccountService;
-  buildTransaction: BuildTransactionService;
+  confirmation?: unknown;
   contacts: Contact[];
   existingPin: string;
   feePmob: string;
   isSynced: boolean;
+  onClickCancel: unknown;
+  onClickConfirm: unknown;
+  onClickSend: unknown;
   pinThresholdPmob: number;
   selectedAccount: SelectedAccount;
-  submitTransaction: SubmitTransactionService;
-  updateContacts: UpdateContactsService;
+  showing: Showing;
 }

@@ -27,10 +27,10 @@ describe('Build Gift Form', () => {
       <SnackbarProvider>
         <BuildGiftForm
           buildGiftCode={fakeBuildGiftCode}
-          codeClicked={() => {}}
+          onClickCode={() => {}}
           existingPin="111111"
           feePmob={FEE_PMOB}
-          isSyncedBuffered={() => true}
+          isSynced
           pinThresholdPmob="99999999999999"
           selectedAccount={{
             account: {

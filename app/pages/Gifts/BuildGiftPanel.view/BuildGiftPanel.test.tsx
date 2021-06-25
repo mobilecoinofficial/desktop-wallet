@@ -70,7 +70,7 @@ describe('Build gift form', () => {
           feePmob={FEE_PMOB}
           getAllGiftCodes={() => undefined}
           giftCodes={[]}
-          isSyncedBuffered={() => true}
+          isSynced
           pinThresholdPmob="1"
           selectedAccount={SELECTED_ACCOUNT}
           submitGiftCode={() => undefined}
@@ -113,7 +113,7 @@ describe('Build gift form', () => {
           getAllGiftCodes={fakeGetAllGiftCodes}
           giftCodes={GIFT_CODES}
           handleCopyClick={fakeHandleClick}
-          isSyncedBuffered={() => true}
+          isSynced
           pinThresholdPmob="1"
           selectedAccount={SELECTED_ACCOUNT}
           submitGiftCode={() => undefined}
@@ -156,7 +156,7 @@ describe('Build gift form', () => {
           existingPin="111111"
           feePmob={FEE_PMOB}
           giftCodes={GIFT_CODES}
-          isSyncedBuffered={() => true}
+          isSynced
           pinThresholdPmob="1"
           selectedAccount={SELECTED_ACCOUNT}
           submitGiftCode={() => undefined}

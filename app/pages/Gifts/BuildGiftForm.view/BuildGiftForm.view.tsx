@@ -94,11 +94,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 // this component manageable.
 const BuildGiftForm: FC<BuildGiftFormProps> = ({
   buildGiftCode,
-  codeClicked,
+  onClickCode,
   feePmob,
   getAllGiftCodes,
   existingPin,
-  isSyncedBuffered,
+  isSynced,
   pinThresholdPmob,
   selectedAccount,
   submitGiftCode,
@@ -114,11 +114,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
   const isMountedRef = useIsMountedRef();
 
   const { t } = useTranslation('BuildGiftForm');
-
-  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
-  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
-
-  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   // TODO - consider adding minimum gift ~ 1 MOB
   // We'll use this array in prep for future patterns with multiple accounts
@@ -483,7 +478,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                         b58Code: confirmation?.giftCodeB58,
                         name: t('pending'),
                       }}
-                      codeClicked={codeClicked}
+                      onClickCode={onClickCode}
                     />
                   ) : (
                     <Box display="flex" justifyContent="center" py={27}>

@@ -47,6 +47,11 @@ const GiftsPage: FC = () => {
     selectedAccount,
   } = useFullService();
 
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+
+  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
+
   const handleChange = (_event: ChangeEvent<HTMLElement>, newSelectedTabIndex: number) => {
     setSelectedTabIndex(newSelectedTabIndex);
   };
@@ -63,14 +68,14 @@ const GiftsPage: FC = () => {
   const BuildGift = () => (
     <BuildGiftPanel
       buildGiftCode={buildGiftCode}
-      codeClicked={handleCodeClicked}
+      onClickCode={handleCodeClicked}
       deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
       existingPin={existingPin as string}
       feePmob={feePmob || '0'}
       getAllGiftCodes={getAllGiftCodes}
       giftCodes={giftCodes}
       handleCopyClick={handleCodeClicked}
-      isSyncedBuffered={isSyncedBuffered}
+      isSynced={isSynced}
       pinThresholdPmob={pinThresholdPmob}
       selectedAccount={selectedAccount}
       submitGiftCode={submitGiftCode}

@@ -45,7 +45,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
-  codeClicked,
+  onClickCode,
   deleteStoredGiftCodeB58,
   feePmob,
   getAllGiftCodes,
@@ -53,7 +53,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   buildGiftCode,
   existingPin,
   handleCopyClick,
-  isSyncedBuffered,
+  isSynced,
   pinThresholdPmob,
   selectedAccount,
   submitGiftCode,
@@ -115,11 +115,11 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
               existingPin={existingPin}
               feePmob={feePmob}
               getAllGiftCodes={getAllGiftCodes}
-              isSyncedBuffered={isSyncedBuffered}
+              isSynced={isSynced}
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}
               submitGiftCode={submitGiftCode}
-              codeClicked={codeClicked}
+              onClickCode={onClickCode}
             />
           </Box>
         </CardContent>
@@ -211,7 +211,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                       b58Code: pendingDeleteCode[0],
                       name: 'Gift Code',
                     }}
-                    codeClicked={codeClicked}
+                    onClickCode={onClickCode}
                   />
                   <Box py={2} display="flex" justifyContent="space-between">
                     <Typography color="textPrimary">{t('giftValue')}</Typography>

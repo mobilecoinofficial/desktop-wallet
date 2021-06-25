@@ -36,7 +36,7 @@ Standard.args = {
       isFavorite: true,
     },
   ],
-  onClickCode: () => console.log('codeClicked!'),
+  onClickCode: () => console.log('onClickCode!'),
   selectedAccount: {
     account: {
       accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',

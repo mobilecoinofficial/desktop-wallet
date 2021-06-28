@@ -7,9 +7,10 @@ import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
 import useFullService from '../../../hooks/useFullService';
-import type TransactionLog from '../../../types/TransactionLog';
+import { fetchAllTransactionLogsForAccount, fetchAllTxosForAccount } from '../../../services';
+import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { HistoryList } from '../HistoryList.view';
-import TransactionDetailsView from '../TransactionDetails.view';
+import { TransactionDetails } from '../TransactionDetails.view';
 
 const HISTORY = 'history';
 const DETAILS = 'details';
@@ -19,15 +20,7 @@ const HistoryPage: FC = () => {
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
 
-  const {
-    addresses,
-    contacts,
-    selectedAccount,
-    transactionLogs,
-    txos,
-    fetchAllTransactionLogsForAccount,
-    fetchAllTxosForAccount,
-  } = useFullService();
+  const { addresses, contacts, selectedAccount, transactionLogs, txos } = useFullService();
 
   useEffect(() => {
     fetchAllTransactionLogsForAccount(selectedAccount.account.accountId);
@@ -52,11 +45,10 @@ const HistoryPage: FC = () => {
           }
           return transactionLog;
         })
-        .sort((a, b) => b.offsetCount - a.offsetCount);
+        .sort((a, b) => b.finalizedBlockIndex - a.finalizedBlockIndex);
     }
     return [] as TransactionLog[];
   };
-
   // CREATE VIEW
 
   if (transactionLogs === null) {
@@ -66,7 +58,7 @@ const HistoryPage: FC = () => {
   if (transactionLogs.transactionLogIds.length === 0) {
     return (
       <Box display="flex" justifyContent="center">
-        <Typography>{t('emptyState')}</Typography>
+        <Typography color="primary">{t('emptyState')}</Typography>
       </Box>
     );
   }
@@ -89,7 +81,7 @@ const HistoryPage: FC = () => {
           */
 
       return (
-        <TransactionDetailsView
+        <TransactionDetails
           comment="this should come from metadata"
           onClickBack={() => setShowing(HISTORY)}
           onChangedComment={() => {}}

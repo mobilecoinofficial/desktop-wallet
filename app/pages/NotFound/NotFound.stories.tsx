@@ -7,7 +7,7 @@ import { NotFoundPage } from './NotFound.view';
 
 export default {
   component: NotFoundPage,
-  title: 'Not Found',
+  title: 'Pages/Dashboard',
 };
 
 const Template: Story<ComponentProps<typeof NotFoundPage>> = (args) => (
@@ -16,5 +16,5 @@ const Template: Story<ComponentProps<typeof NotFoundPage>> = (args) => (
   </MemoryRouter>
 );
 
-export const Item = Template.bind({});
-Item.args = {};
+export const NotFound = Template.bind({});
+NotFound.args = {};

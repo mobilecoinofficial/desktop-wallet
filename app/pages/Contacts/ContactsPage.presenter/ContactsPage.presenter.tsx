@@ -7,6 +7,7 @@ import { Redirect } from 'react-router-dom';
 
 import { randomColor } from '../../../constants/app';
 import useFullService from '../../../hooks/useFullService';
+import { assignAddressForAccount, updateContacts } from '../../../services';
 import type { Contact } from '../../../types/Contact.d';
 import { ContactForm } from '../ContactForm.view';
 import { ContactsList } from '../ContactsList.view';
@@ -21,7 +22,7 @@ const ContactsPage: FC = () => {
   const [status, setStatus] = useState(PAGE.LIST);
   const [current, setCurrent] = useState({} as Contact);
   const { enqueueSnackbar } = useSnackbar();
-  const { contacts, selectedAccount, assignAddressForAccount, updateContacts } = useFullService();
+  const { contacts, selectedAccount } = useFullService();
 
   const { t } = useTranslation('ContactsPage');
 
@@ -35,31 +36,37 @@ const ContactsPage: FC = () => {
     return 0;
   }) as Contact[];
 
-  const addNewContact = async ({ abbreviation, alias, isFavorite, recipientAddress }: Contact) => {
-    const result = await assignAddressForAccount({
-      accountId: selectedAccount.account.accountId || Math.random(),
-    });
+  const addNewContact = async ({
+    abbreviation,
+    alias,
+    color,
+    isFavorite,
+    recipientAddress,
+  }: Contact) => {
+    const result = await assignAddressForAccount(
+      selectedAccount.account.accountId || Math.random()
+    );
 
     setStatus(PAGE.LIST);
     contacts.push({
       abbreviation,
       alias,
       assignedAddress: result.address.publicAddress,
-      color: randomColor(),
+      color,
       isFavorite,
       recipientAddress,
     });
-    updateContacts(contacts);
+    await updateContacts(contacts);
 
     enqueueSnackbar(t('added'), { variant: 'success' });
   };
 
-  const deleteContact = () => {
+  const deleteContact = async () => {
     contacts.splice(
       contacts.findIndex((x) => x.assignedAddress === current.assignedAddress),
       1
     );
-    updateContacts(contacts);
+    await updateContacts(contacts);
     setStatus(PAGE.LIST);
     enqueueSnackbar(t('removed'), { variant: 'success' });
   };
@@ -69,7 +76,13 @@ const ContactsPage: FC = () => {
     setStatus(PAGE.EDIT);
   };
 
-  const updateContact = ({ abbreviation, alias, color, isFavorite, recipientAddress }: Contact) => {
+  const updateContact = async ({
+    abbreviation,
+    alias,
+    color,
+    isFavorite,
+    recipientAddress,
+  }: Contact) => {
     contacts[contacts.findIndex((x) => x.assignedAddress === current.assignedAddress)] = {
       abbreviation,
       alias,
@@ -78,7 +91,7 @@ const ContactsPage: FC = () => {
       isFavorite,
       recipientAddress,
     };
-    updateContacts(contacts);
+    await updateContacts(contacts);
     setStatus(PAGE.LIST);
     enqueueSnackbar(t('updated'), { variant: 'success' });
   };

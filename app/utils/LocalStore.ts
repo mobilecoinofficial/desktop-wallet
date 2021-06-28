@@ -1,7 +1,7 @@
 import Store from 'electron-store';
 import { SjclCipherEncrypted } from 'sjcl';
 
-import { StringUInt64 } from '../types/SpecialStrings';
+import type { StringUInt64 } from '../types/SpecialStrings.d';
 
 interface LocalStoreSchema {
   [key: string]: { type: 'string' | 'array' | 'boolean' };
@@ -110,6 +110,10 @@ export const setEncryptedPassphrase = (encryptedPassphrase: SjclCipherEncrypted)
   store.set({
     [schemaKeys.ENCRYPTED_PASSPHRASE]: encryptedPassphrase,
   });
+};
+
+export const deleteEncryptedPassphrase = (): void => {
+  store.delete(schemaKeys.ENCRYPTED_PASSPHRASE);
 };
 
 export const getFullServiceDbPath = (): string => {

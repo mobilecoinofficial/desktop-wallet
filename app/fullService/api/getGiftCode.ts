@@ -1,5 +1,5 @@
-import type GiftCode from '../../types/GiftCode';
-import type { StringB58 } from '../../types/SpecialStrings';
+import type { GiftCode } from '../../types/GiftCode.d';
+import type { StringB58 } from '../../types/SpecialStrings.d';
 import axiosFullService from '../axiosFullService';
 
 const GET_GIFT_CODE_METHOD = 'get_gift_code';

@@ -1,5 +1,5 @@
-import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings';
-import type TxProposal from '../../types/TxProposal';
+import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
+import type { TxProposal } from '../../types/TxProposal';
 import axiosFullService from '../axiosFullService';
 
 // TODO - fix the error handling at this level -- when giving the wrong method, for example
@@ -15,7 +15,7 @@ export type BuildTransactionParams = {
   valuePmob: StringUInt64;
 };
 
-type BuildTransactionResult = {
+export type BuildTransactionResult = {
   feeConfirmation: bigint;
   totalValueConfirmation: bigint;
   txProposal: TxProposal;
@@ -58,12 +58,8 @@ const buildTransaction = async ({
 
   // TODO fix type, right now it just matches what the component is expecting
   const totalValueConfirmation = txProposal.outlayList
-    .map((outlay) => {
-      return BigInt(outlay.value);
-    })
-    .reduce((acc, cur) => {
-      return acc + cur;
-    });
+    .map((outlay) => BigInt(outlay.value))
+    .reduce((acc, cur) => acc + cur, BigInt(0));
 
   const feeConfirmation = BigInt(txProposal.fee);
 

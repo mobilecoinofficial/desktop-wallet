@@ -1,4 +1,4 @@
-import TransactionLog from '../../../types/TransactionLog';
+import type { TransactionLog } from '../../../types/TransactionLog.d';
 
 export interface HistoryItemProps {
   onClick: () => void;

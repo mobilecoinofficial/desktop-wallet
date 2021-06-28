@@ -1,6 +1,7 @@
 const routePaths = {
   APP: '/app',
   APP_CONTACTS: '/app/contacts',
+  APP_CRASH_LOG: '/app/crashlog',
   APP_DASHBOARD: '/app/dashboard',
   APP_GIFTING: '/app/gifting',
   APP_HISTORY: '/app/history',
@@ -12,8 +13,6 @@ const routePaths = {
   APP_SETTINGS_RETRIEVE_ENTROPY: '/app/settings/retrieve_entropy',
   APP_SETTINGS_TERMS_OF_USE: '/app/settings/terms_of_use',
   APP_TRANSACTION: '/app/transaction',
-  CREATE: '/create',
-  IMPORT: '/import',
   NOT_FOUND: '/404',
   ROOT: '/',
 };

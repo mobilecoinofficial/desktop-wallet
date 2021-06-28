@@ -31,18 +31,24 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
-import LongCode from '../../../components/LongCode';
+import { LongCode } from '../../../components/LongCode';
 import { StarIcon, MOBIcon } from '../../../components/icons';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
-import type Account from '../../../types/Account';
-import { SendMobProps } from './SendMob.d';
+import type { Account } from '../../../types/Account.d';
+import type { StringHex } from '../../../types/SpecialStrings';
+import type { TxProposal } from '../../../types/TxProposal';
+import {
+  commafy,
+  convertMobStringToPicoMobString,
+  convertPicoMobStringToMob,
+} from '../../../utils/convertMob';
+import type { SendMobProps } from './SendMob.d';
 
-// CBB: Shouldn't have to use this hack to get around state issues
 const EMPTY_CONFIRMATION = {
-  feeConfirmation: 0,
-  totalValueConfirmation: 0,
-  txProposal: null,
+  feeConfirmation: 0n,
+  totalValueConfirmation: 0n,
+  txProposal: {} as TxProposal,
   txProposalReceiverB58Code: '',
 };
 
@@ -79,48 +85,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component managable.
 
-// TODO - ya, this definitely shouldn't live here
-const PICO_MOB_PRECISION = 12;
-
-const ensureMobStringPrecision = (mobString: string): string => {
-  const num = Number(mobString);
-  if (Number.isNaN(num)) {
-    throw new Error('mobString is NaN');
-  }
-  return num.toFixed(PICO_MOB_PRECISION);
-};
-
-// This function assumes basic US style decimal places.
-// We'll need to revisit for differnet formats
-const convertMobStringToPicoMobString = (mobString: string): string =>
-  ensureMobStringPrecision(mobString).replace('.', '');
-
-const convertPicoMobStringToMob = (picoMobString: string): string => {
-  if (picoMobString.length <= 12) {
-    return `0.${'0'.repeat(12 - picoMobString.length)}${picoMobString}`;
-  }
-
-  return [
-    picoMobString.slice(0, picoMobString.length - 12),
-    '.',
-    picoMobString.slice(picoMobString.length - 12),
-  ].join('');
-};
-
-// MOVE LATER
-function commafy(num: string) {
-  const str = num.split('.');
-  if (str[0].length >= 4) {
-    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
-  }
-  return str.join('.');
-}
-
 const SendMob: FC<SendMobProps> = ({
   assignAddressForAccount,
   buildTransaction,
   contacts,
   existingPin,
+  feePmob,
   isSyncedBuffered,
   pinThresholdPmob,
   selectedAccount,
@@ -163,9 +133,7 @@ const SendMob: FC<SendMobProps> = ({
       return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
     };
 
-    const result = await assignAddressForAccount({
-      accountId: selectedAccount.account.accountId,
-    });
+    const result = await assignAddressForAccount(selectedAccount.account.accountId as StringHex);
 
     contacts.push({
       abbreviation: alias[0].toUpperCase(),
@@ -176,7 +144,7 @@ const SendMob: FC<SendMobProps> = ({
       recipientAddress,
     });
 
-    updateContacts(contacts);
+    await updateContacts(contacts);
     handleChecked();
   };
 
@@ -190,6 +158,7 @@ const SendMob: FC<SendMobProps> = ({
         recipientPublicAddress: values.recipientPublicAddress,
         valuePmob: convertMobStringToPicoMobString(values.mobAmount),
       });
+
       if (result === null || result === undefined) {
         throw new Error('Could not build transaction.');
       }
@@ -245,7 +214,7 @@ const SendMob: FC<SendMobProps> = ({
     setConfirmation(EMPTY_CONFIRMATION);
   };
 
-  /* FK: COMMENTING OUT BECAUSE OF NOT BEING USED
+  /* FK: COMMENTING OUT ON ACCOUNT OF NOT BEING USED
   const createAccountLabel = (account: Account) => {
     const name = account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}:`;
     return (
@@ -328,7 +297,7 @@ const SendMob: FC<SendMobProps> = ({
               initialValues={{
                 alias: '',
                 contactId: NO_CONTACT_SELECTED,
-                feeAmount: '0.010000000000', // TODO we need to pull this from constants
+                feeAmount: convertPicoMobStringToMob(feePmob), // TODO we need to pull this from constants
                 mobAmount: '0', // mobs
                 pin: '',
                 recipientPublicAddress: '',
@@ -349,7 +318,6 @@ const SendMob: FC<SendMobProps> = ({
                 // (not what the UI thinks it is telling mobilecoind).
                 // But it looks like we're going to have to gut payAddressCode and use 2
                 // calls instead.
-
                 try {
                   setSlideExitSpeed(1000);
                   setOpen(false);
@@ -449,12 +417,11 @@ const SendMob: FC<SendMobProps> = ({
 
                 return (
                   <Form>
-                    {/* {renderSenderPublicAdddressOptions(mockMultipleAccounts, isSubmitting)} */}
+                    {/* {renderSenderPublicAddressOptions(mockMultipleAccounts, isSubmitting)} */}
                     <Box pt={4}>
                       <FormLabel component="legend">
                         <Typography color="primary">{t('transaction')}</Typography>
                       </FormLabel>
-
                       {contacts.length > 0 && (
                         <Select
                           style={{ width: '100%' }}
@@ -481,11 +448,15 @@ const SendMob: FC<SendMobProps> = ({
                             }
                           }}
                         >
-                          <MenuItem value={NO_CONTACT_SELECTED} selected>
+                          <MenuItem value={NO_CONTACT_SELECTED} key="nocontact" selected>
                             {t('pickContact')}
                           </MenuItem>
                           {sortedContacts.map((contact) => (
-                            <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
+                            <MenuItem
+                              value={contact.assignedAddress}
+                              id={`contact_${contact.assignedAddress}`}
+                              key={contact.assignedAddress}
+                            >
                               {contact.isFavorite ? (
                                 <ListItemIcon style={{ margin: '0px' }}>
                                   <StarIcon />
@@ -604,6 +575,7 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">{t('accountBalance')}:</Typography>
                             <Typography color="textPrimary">
                               <MOBNumberFormat
+                                id="balanceValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
                                 value={selectedBalance?.toString()}
@@ -618,6 +590,7 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="primary">{t('amount')}:</Typography>
                             <Typography color="primary">
                               <MOBNumberFormat
+                                id="totalValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
                                 value={confirmation.totalValueConfirmation.toString()}
@@ -628,6 +601,7 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">{t('fee')}:</Typography>
                             <Typography color="textPrimary">
                               <MOBNumberFormat
+                                id="feeValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
                                 value={confirmation.feeConfirmation.toString()}
@@ -638,6 +612,7 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">{t('total')}:</Typography>
                             <Typography color="textPrimary">
                               <MOBNumberFormat
+                                id="sentValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
                                 value={totalSent.toString()}
@@ -652,6 +627,7 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="primary">{t('remaining')}:</Typography>
                             <Typography color="primary">
                               <MOBNumberFormat
+                                id="remainingValue"
                                 suffix=" MOB"
                                 valueUnit="pMOB"
                                 value={remainingBalance?.toString()}
@@ -707,6 +683,7 @@ const SendMob: FC<SendMobProps> = ({
                           )}
                           <Box display="flex" justifyContent="space-around" padding=".5em 0">
                             <Button
+                              id="cancelSend"
                               className={classes.button}
                               color="secondary"
                               disabled={!isValid || isSubmitting}
@@ -719,6 +696,7 @@ const SendMob: FC<SendMobProps> = ({
                               {t('cancel')}
                             </Button>
                             <Button
+                              id="submitSend"
                               className={classes.button}
                               color="secondary"
                               disabled={

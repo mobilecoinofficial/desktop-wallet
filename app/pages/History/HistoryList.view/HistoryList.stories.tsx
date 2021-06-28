@@ -2,12 +2,12 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import TransactionLog from '../../../types/TransactionLog';
+import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { HistoryList } from './HistoryList.view';
 
 export default {
   component: HistoryList,
-  title: 'History/List',
+  title: 'Pages/History/List',
 };
 
 const Template: Story<ComponentProps<typeof HistoryList>> = (args) => <HistoryList {...args} />;

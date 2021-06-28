@@ -45,3 +45,4 @@ const skipKeysCamelCase = (response: any): Record<string, unknown> => {
 };
 
 export default skipKeysCamelCase;
+export { skipKeysCamelCase };

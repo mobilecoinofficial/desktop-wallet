@@ -1,22 +1,19 @@
 {
-  "name": "mobilecoin-desktop-wallet-beta-v030",
-  "productName": "MobileCoin-Desktop-Wallet-beta-v030",
-  "version": "v0.3.0",
+  "name": "mobilecoin-desktop-wallet-beta-v040",
+  "productName": "MobileCoin-Desktop-Wallet-beta-v040",
+  "version": "v0.4.0",
   "description": "Desktop hot wallet for your MobileCoin needs.",
   "main": "./main.prod.js",
   "author": {
     "name": "MobileCoin, Inc.",
     "email": "wallet@mobilecoin.com"
   },
-  "scripts": {
-    "electron-rebuild": "node -r ../internals/scripts/BabelRegister.js ../internals/scripts/ElectronRebuild.js",
-    "postinstall": "yarn electron-rebuild"
-  },
   "license": "GPL-3.0-only",
   "devDependencies": {
     "@types/i18next-node-fs-backend": "^2.1.0"
   },
   "dependencies": {
-    "argon2": "^0.27.2"
+    "argon2": "^0.27.2",
+    "keytar": "^7.7.0"
   }
 }

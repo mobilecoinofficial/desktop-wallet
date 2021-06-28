@@ -52,9 +52,4 @@ npm-debug.log.*
 *.sass.d.ts
 *.scss.d.ts
 
-# Full Service Binary
-full-service-bin/mac/full-service*
-full-service-bin/linux/full-service*
-full-service-bin/ingest-enclave*
-full-service-bin/**/*DEBUG*
-
+full-service-bin/*

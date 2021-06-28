@@ -2,12 +2,12 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import TransactionLog from '../../../types/TransactionLog';
+import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { HistoryItem } from './HistoryItem.view';
 
 export default {
   component: HistoryItem,
-  title: 'History/Item',
+  title: 'Pages/History/Item',
 };
 
 const Template: Story<ComponentProps<typeof HistoryItem>> = (args) => <HistoryItem {...args} />;

@@ -17,14 +17,15 @@ import path from 'path';
 import { app, BrowserWindow, dialog, ipcMain, nativeTheme } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
+import keytar from 'keytar';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
 import languages from './constants/languages';
-import getPlatform from './get-platform';
 import i18n from './i18next.config';
 import menuFactoryService from './menuFactory';
 import * as localStore from './utils/LocalStore';
+import { initLog, writeLog } from './utils/logger';
 
 import './utils/autoupdate';
 
@@ -71,18 +72,17 @@ const installExtensions = async () => {
 
 // TODO: remane this function to full service after intergration
 // TODO: test
-const spawnAPIBinaries = () => {
+const startFullService = () => {
   // Start the full-service process in the background
   const IS_PROD = process.env.NODE_ENV === 'production';
   const root = process.cwd();
   const { isPackaged } = app;
 
   // TODO move these strings into constants/
-  const platform = getPlatform() || '';
   const fullServiceBinariesPath =
     IS_PROD && isPackaged
-      ? path.join(process.resourcesPath, '..', 'full-service-bin', platform)
-      : path.join(root, 'full-service-bin', platform);
+      ? path.join(process.resourcesPath, '..', 'full-service-bin')
+      : path.join(root, 'full-service-bin');
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   const fullServiceExecPath = path.resolve(
@@ -96,7 +96,6 @@ const spawnAPIBinaries = () => {
   ); // escape spaces in mac and linux (change logic for windows)
   const fullServiceDbPath = path.normalize(path.join(userDataPath, 'full-service', 'wallet-db')); // escape spaces in mac and linux (change logic for windows)
 
-  // TODO - delete the console logs
   console.log('ledgerFullServiceDbPath', ledgerFullServiceDbPath);
   console.log('fullServiceDbPath', fullServiceDbPath);
   spawn(
@@ -194,6 +193,8 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
+  initLog(mainWindow);
+
   i18n.on('loaded', () => {
     i18n.changeLanguage(languages.EN_US);
     i18n.off('loaded');
@@ -258,7 +259,7 @@ if (process.env.E2E_BUILD === 'true') {
     .catch(() => null);
 } else {
   app.on('ready', () => {
-    spawnAPIBinaries();
+    startFullService();
     createWindow();
   });
 }
@@ -276,9 +277,7 @@ app.on('activate', () => {
  * Add custom message listeners...
  */
 
-ipcMain.on('close-app', () => {
-  app.quit();
-});
+ipcMain.on('close-app', () => app.quit());
 
 ipcMain.on('sync-status', (_e, status) => {
   syncStatus = status;
@@ -306,15 +305,44 @@ ipcMain.on('get-initial-translations', (event) => {
         translation: i18n.getResourceBundle(languages.EN_US, config.namespace),
       },
     };
-
     // eslint-disable-next-line no-param-reassign
     event.returnValue = initial;
   });
 });
 
+ipcMain.on('set-account', (_event, accountName, password) => {
+  keytar.setPassword('MobileCoin', accountName, password);
+});
+
+ipcMain.on('fetch-accounts', (event) => {
+  keytar
+    .findCredentials('MobileCoin')
+    // eslint-disable-next-line promise/always-return
+    .then((accounts) => {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = accounts;
+    })
+    .catch(() => {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = [];
+    });
+});
+
+ipcMain.on('remove-accounts', (event) => {
+  keytar
+    .findCredentials('MobileCoin')
+    .then((accounts) =>
+      accounts.forEach(({ account }) => keytar.deletePassword('MobileCoin', account))
+    )
+    .catch(() => {
+      // eslint-disable-next-line no-param-reassign
+      event.returnValue = [];
+    });
+});
+
 const shutDownFullService = () => {
   const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
-  console.log('Leave Full-Service running:', leaveFullServiceRunning);
+  writeLog(`Leave Full-Service running: ${leaveFullServiceRunning}`);
   if (!leaveFullServiceRunning) {
     // TODO -- probably should make the binaries a little more specific
     // e.g., mobilecoin-full-service
@@ -322,9 +350,7 @@ const shutDownFullService = () => {
   }
 };
 
-app.on('will-quit', () => {
-  shutDownFullService();
-});
+app.on('will-quit', shutDownFullService);
 
 // Filter the remote module
 const allowedModules = new Set(['electron-log']);

@@ -1,14 +1,14 @@
-import type GiftCode from '../../types/GiftCode';
-import type { StringB58 } from '../../types/SpecialStrings';
+import type { GiftCode } from '../../types/GiftCode.d';
+import type { StringB58 } from '../../types/SpecialStrings.d';
 import axiosFullService from '../axiosFullService';
 
 const REMOVE_GIFT_CODE_METHOD = 'remove_gift_code';
 
-type RemoveGiftCodeParams = {
+export type RemoveGiftCodeParams = {
   giftCodeB58: StringB58;
 };
 
-type RemoveGiftCodeResult = {
+export type RemoveGiftCodeResult = {
   giftCode: GiftCode;
 };
 

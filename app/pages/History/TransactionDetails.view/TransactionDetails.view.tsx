@@ -5,9 +5,9 @@ import { Box, Card, CardContent, Container, makeStyles, Typography } from '@mate
 import { useTranslation } from 'react-i18next';
 
 import { ShortCode, SubmitButton } from '../../../components';
-import TransactionInfoLabel from '../../../components/TransactionInfoLabel/TransactionInfoLabel';
+import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import type { Theme } from '../../../theme';
-import { TransactionDetailsViewProps } from './TransactionDetails.d';
+import type { TransactionDetailsViewProps } from './TransactionDetails.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {
@@ -40,7 +40,6 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
 }: TransactionDetailsViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('TransactionDetails');
-  // const { enqueueSnackbar } = useSnackbar();
 
   const {
     // comment,
@@ -53,10 +52,6 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     // transactionLogId,
     valuePmob,
   } = transactionLog;
-  // const { selectedAccount, txos, fetchAllTxosForAccount } = useFullService(); // ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8
-
-  // fetchAllTxosForAccount(selectedAccount.account.accountId);
-  // TODO -- make this view an actual view
 
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
 
@@ -77,16 +72,18 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
   );
 
   const renderSenderOrReceiver = () => {
-    let aliasOrAddress: string | ReactNode = (
-      <Typography className={classes.negative} display="inline">
-        {t('orphaned')}
-      </Typography>
-    );
+    let aliasOrAddress: string | ReactNode;
     if (assignedAddressId || recipientAddressId) {
       aliasOrAddress = contact ? (
         contact.alias
       ) : (
         <ShortCode code={assignedAddressId || recipientAddressId || ''} />
+      );
+    } else {
+      aliasOrAddress = (
+        <Typography className={classes?.negative} display="inline">
+          {t('orphaned')}
+        </Typography>
       );
     }
 
@@ -134,7 +131,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
 
       {sign === '+' && !assignedAddressId && (
         <Card className={classes.card}>
-          <Typography variant="body2" color="textPrimary" className={classes.negative}>
+          <Typography variant="body2" className={classes?.negative}>
             {t('orphanedTitle')}
           </Typography>
           <CardContent>

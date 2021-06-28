@@ -1,7 +1,3 @@
-// export { default as changePassword } from './changePassword';
-// export { default as getLockedStatus } from './getLockedStatus';
-// export { default as setPassword } from './setPassword';
-// export { default as unlock } from './unlock';
 export { default as assignAddressForAccount } from './assignAddressForAccount';
 export { default as buildGiftCode } from './buildGiftCode';
 export { default as buildTransaction } from './buildTransaction';
@@ -18,6 +14,7 @@ export { default as getAllTransactionLogsForAccount } from './getAllTransactionL
 export { default as getAllTxosForAccount } from './getAllTxosForAccount';
 export { default as getBalanceForAccount } from './getBalanceForAccount';
 export { default as getGiftCode } from './getGiftCode';
+export { default as getNetworkStatus } from './getNetworkStatus';
 export { default as getTransactionLog } from './getTransactionLog';
 export { default as getTxo } from './getTxo';
 export { default as getWalletStatus } from './getWalletStatus';

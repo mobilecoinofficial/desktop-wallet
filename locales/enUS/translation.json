@@ -12,6 +12,12 @@
     "unnamed": "Unnamed Account"
   },
 
+  "AuthPage": {
+    "createInstead": "Create account instead",
+    "importInstead": "Import account instead",
+    "unlockInstead": "Unlock wallet instead"
+  },
+
   "BalanceIndicator": {
     "syncMessage": "Balance may be out-of-date while wallet syncs with ledger.",
     "title": "Balance"
@@ -72,6 +78,7 @@
   "ChangePasswordView": {
     "changePasswordBreadcrumb": "Change Passphrase",
     "changePasswordButton": "Change Passphrase",
+    "checkSavePassword": "Save passphrase to keychain?",
     "description": "Changing your passphrase will change how we lock this wallet. Always use strong (unguessable) passphrases and change them regularly.",
     "enqueue": "Successfully changed passphrase.",
     "formLabel": "Change Passphrase",
@@ -191,11 +198,32 @@
     "filter": "Filter"
   },
 
+  "CrashReportPage": {
+    "encounteredAnIssue": "It seems we've encountered an issue that's causing the app the crash!",
+    "here": "here",
+    "quitApplication": "Quit Desktop Wallet",
+    "sendDebugLog": "If you'd like to also send us a copy of the debug log, you can find a copy of it",
+    "sendDebugLog2": "so feel free to check it out.",
+    "sendReport": "It would be super helpful if you sent the crash report to us, but we totally understand if you'd rather not :)",
+    "uhOh": "Uh Oh!"
+  },
+
+  "CrashShowLog": {
+    "debugLogs": "Debug Logs",
+    "openLogsDir": "Open Logs Folder",
+    "sendLogsButton": "Send Logs",
+    "submit": "Submit",
+    "title": "This log will be posted publicly online for contributors to view. You may examine and edit it before submitting."
+  },
+
   "CreateAccountForm": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",
     "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
     "accountNameValidation": "Account Name cannot be more than 64 characters.",
+    "checkSavePassword": "Save passphrase to keychain?",
+    "checkedSavePasswordFormHelper": "Account Name is optional, but required to save passphrase.",
+    "checkedSavePasswordValidation": "Account Name is required to save passphrase.",
     "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
     "createAccountButton": "Create Account",
     "nameLabel": "Account Name (optional)",
@@ -256,9 +284,12 @@
     "acceptTermsButton": "Terms of Use",
     "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
     "accountNameValidation": "Account Name cannot be more than 64 characters.",
+    "checkSavePassword": "Save passphrase to keychain?",
+    "checkedSavePasswordFormHelper": "Account Name is optional, but required to save passphrase.",
+    "checkedSavePasswordValidation": "Account Name is required to save passphrase.",
     "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
     "entropyLabel": "Entropy",
-    "entropyMatches": "A valid Entropy is 12 or more words separated by spaces, or 64 hexadecimals.",
+    "entropyMatches": "A valid Entropy is 24 words separated by spaces, or 64 hexadecimals.",
     "entropyIsWrong": "That Entropy is not correct",
     "entropyRequired": "Entropy is required",
     "importAccountButton": "Import Account",
@@ -371,6 +402,7 @@
 
   "NavBar": {
     "contacts": "Contacts",
+    "crash": "CRASH",
     "gift": "Gifting",
     "history": "History",
     "home": "Home",
@@ -410,6 +442,13 @@
     "retrieveEntropy": "Retrieve Entropy",
     "retrieveSecret": "Retrieve Secret Entropy",
     "settings": "Settings"
+  },
+
+  "SavePasswordModal": {
+    "accountNameRequired": "Account Name Required",
+    "notNow": "Not Now",
+    "save": "Save",
+    "saveToKeychain": "Save Password to Keychain?"
   },
 
   "SendMobForm": {

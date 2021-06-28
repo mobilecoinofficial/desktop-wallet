@@ -7,7 +7,7 @@ import { ContactsList } from './ContactsList.view';
 
 export default {
   component: ContactsList,
-  title: 'Contacts/List',
+  title: 'Pages/Contacts/List',
 };
 
 const Template: Story<ComponentProps<typeof ContactsList>> = (args: ContactsListProps) => (

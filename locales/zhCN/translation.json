@@ -129,6 +129,7 @@
     "claimGift": "领取红包",
     "confirmation": "红包已领取，正在更新余额。",
     "confirmationNotFound": "红包尚未确认",
+    "description": "请在下方输入红包码来收取红包。",
     "error": "抱歉，出了点问题。",
     "fee": "手续费",
     "giftB58Error": "无法找到红包。",
@@ -142,12 +143,9 @@
     "newBalance": "新余额",
     "openGift": "打开红包",
     "select": "选择账户",
+    "title": "收取 MOB 红包",
     "total": "总计",
     "unnamed": "未命名账户"
-  },
-  "ConsumeGiftPanel": {
-    "title": "收取 MOB 红包",
-    "description": "请在下方输入红包码来收取红包。"
   },
   "ContactsBookView": {
     "added": "已添加联系人",

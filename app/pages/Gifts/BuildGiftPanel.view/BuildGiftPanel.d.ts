@@ -1,7 +1,6 @@
 import type {
   BuildGiftCodeService,
   DeleteStoredGiftCodeB58Service,
-  GetAllGiftCodesService,
   SubmitGiftCodeService,
 } from '../../../services';
 import type { GiftCode } from '../../../types/GiftCode.d';
@@ -12,11 +11,11 @@ export interface BuildGiftPanelProps {
   onClickCode: (code: string, text: string) => void;
   deleteStoredGiftCodeB58: DeleteStoredGiftCodeB58Service;
   feePmob: string;
-  getAllGiftCodes: GetAllGiftCodesService;
   existingPin: string;
   giftCodes: GiftCode[];
   handleCopyClick: unknown;
   isSynced: boolean;
+  onClickDeleteGiftCode: (code: string) => void;
   pinThresholdPmob: string;
   selectedAccount: SelectedAccount;
   submitGiftCode: SubmitGiftCodeService;

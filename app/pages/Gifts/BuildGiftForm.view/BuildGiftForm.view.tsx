@@ -96,7 +96,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
   buildGiftCode,
   onClickCode,
   feePmob,
-  getAllGiftCodes,
   existingPin,
   isSynced,
   pinThresholdPmob,
@@ -154,7 +153,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
         txProposal: confirmation.txProposal,
       });
 
-      await getAllGiftCodes();
       /* istanbul ignore next */
       if (isMountedRef.current) {
         setStatus({ success: true });

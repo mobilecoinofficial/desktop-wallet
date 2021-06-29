@@ -20,7 +20,7 @@ import {
 import type { Theme } from '../../../theme';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
-import { ConsumeGiftPanel } from '../ConsumeGiftPanel.view';
+import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   padding: {
@@ -33,10 +33,20 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+// CBB: Shouldn't have to use this hack to get around state issues
+const EMPTY_CONFIRMATION = {
+  giftCodeB58: '',
+  giftCodeStatus: '',
+  giftValue: 0,
+};
+
 const GiftsPage: FC = () => {
   const classes = useStyles();
   const { enqueueSnackbar = () => {} } = useSnackbar() || {};
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [showModalConsume, setShowModalConsume] = useState(false);
+  const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
+
   const { t } = useTranslation('GiftingView');
   const {
     feePmob,
@@ -47,8 +57,8 @@ const GiftsPage: FC = () => {
     selectedAccount,
   } = useFullService();
 
-  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
-  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex as string);
+  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex as string);
 
   const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
@@ -82,11 +92,76 @@ const GiftsPage: FC = () => {
     />
   );
 
+  const onClickCancelConsume = () => {
+    setShowModalConsume(false);
+    enqueueSnackbar(t('giftCanceled'), {
+      variant: 'warning',
+    });
+  };
+
+  const onClickOpenGiftConsume = async (giftCodeB58) => {
+    try {
+      const result = await checkGiftCodeStatus({ giftCodeB58 });
+      if (result === null || result === undefined) {
+        throw new Error(t('giftB58Error'));
+      }
+
+      const { giftCodeStatus, giftCodeValue } = result;
+
+      setConfirmation({
+        giftCodeB58,
+        giftCodeStatus,
+        giftValue: giftCodeValue,
+      });
+
+      if (giftCodeStatus === 'GiftCodeAvailable') {
+        setShowModalConsume(true);
+      } else {
+        if (giftCodeStatus === 'GiftCodeSubmittedPending') {
+          enqueueSnackbar(t('giftB58Error'), {
+            variant: 'warning',
+          });
+        }
+
+        if (giftCodeStatus === 'GiftCodeClaimed') {
+          enqueueSnackbar(t('giftClaimed'), {
+            variant: 'warning',
+          });
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onClickClaimGiftConsume = async () => {
+    try {
+      await claimGiftCode({
+        accountId: selectedAccount.account.accountId,
+        giftCodeB58: confirmation.giftCodeB58,
+      });
+
+      enqueueSnackbar(t('confirmation'), {
+        variant: 'success',
+      });
+    } catch (err) {
+      enqueueSnackbar(t('error'), {
+        variant: 'error',
+      });
+    }
+
+    setShowModalConsume(false);
+  };
+
   const ConsumeGift = () => (
-    <ConsumeGiftPanel
-      checkGiftCodeStatus={checkGiftCodeStatus}
-      claimGiftCode={claimGiftCode}
+    <ConsumeGiftForm
+      confirmation={confirmation}
+      feePmob={feePmob || '0'}
+      onClickCancel={onClickCancelConsume}
+      onClickClaimGift={onClickClaimGiftConsume}
+      onClickOpenGift={onClickOpenGiftConsume}
       selectedAccount={selectedAccount}
+      showModal={showModalConsume}
     />
   );
 

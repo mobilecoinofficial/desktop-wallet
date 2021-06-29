@@ -48,7 +48,6 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   onClickCode,
   deleteStoredGiftCodeB58,
   feePmob,
-  getAllGiftCodes,
   giftCodes,
   buildGiftCode,
   existingPin,
@@ -80,7 +79,6 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
     handleDialogClose();
     try {
       await deleteStoredGiftCodeB58(pendingDeleteCode[0]);
-      await getAllGiftCodes();
       enqueueSnackbar(t('deleted'), {
         variant: 'success',
       });
@@ -114,7 +112,6 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
               buildGiftCode={buildGiftCode}
               existingPin={existingPin}
               feePmob={feePmob}
-              getAllGiftCodes={getAllGiftCodes}
               isSynced={isSynced}
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}

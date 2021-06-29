@@ -145,6 +145,7 @@
     "claimGift": "Claim Gift",
     "confirmation": "Gift Received. Your balance will update shortly.",
     "confirmationNotFound": "Could not find confirmation",
+    "description": "Use this form to collect gift codes. Enter the gift code and confirm you want to accept the gift into your wallet.",
     "error": "Hmm, something went wrong.",
     "fee": "Fee",
     "giftB58Error": "Could not find gift with code.",
@@ -159,12 +160,8 @@
     "openGift": "Open Gift",
     "select": "Select Account",
     "total": "Total",
-    "unnamed": "Unnamed Account"
-  },
-
-  "ConsumeGiftPanel": {
     "title": "Open Gifts of MOB",
-    "description": "Use this form to collect gift codes. Enter the gift code and confirm you want to accept the gift into your wallet."
+    "unnamed": "Unnamed Account"
   },
 
   "ContactForm": {

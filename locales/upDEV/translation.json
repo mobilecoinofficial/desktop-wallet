@@ -145,6 +145,7 @@
     "claimGift": "CLAIM GIFT",
     "confirmation": "GIFT RECEIVED. YOUR BALANCE WILL UPDATE SHORTLY.",
     "confirmationNotFound": "COULD NOT FIND CONFIRMATION",
+    "description": "USE THIS FORM TO COLLECT GIFT CODES. ENTER THE GIFT CODE AND CONFIRM YOU WANT TO ACCEPT THE GIFT INTO YOUR WALLET.",
     "error": "HMM, SOMETHING WENT WRONG.",
     "fee": "FEE",
     "giftB58Error": "COULD NOT FIND GIFT WITH CODE.",
@@ -158,13 +159,9 @@
     "newBalance": "NEW BALANCE",
     "openGift": "OPEN GIFT",
     "select": "SELECT ACCOUNT",
+    "title": "OPEN GIFTS OF MOB",
     "total": "TOTAL",
     "unnamed": "UNNAMED ACCOUNT"
-  },
-
-  "ConsumeGiftPanel": {
-    "title": "OPEN GIFTS OF MOB",
-    "description": "USE THIS FORM TO COLLECT GIFT CODES. ENTER THE GIFT CODE AND CONFIRM YOU WANT TO ACCEPT THE GIFT INTO YOUR WALLET."
   },
 
   "ContactsBookView": {

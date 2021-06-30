@@ -1,7 +1,11 @@
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export interface ConsumeGiftFormProps {
-  confirmation: unknown;
+  confirmation: {
+    giftCodeB58: string;
+    giftCodeStatus: string;
+    giftValue: number;
+  };
   feePmob: string;
   onClickCancel: () => void;
   onClickClaimGift: () => void;

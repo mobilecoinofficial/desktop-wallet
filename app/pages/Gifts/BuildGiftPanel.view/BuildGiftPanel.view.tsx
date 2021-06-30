@@ -23,13 +23,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import { AccountCard, MOBNumberFormat } from '../../../components';
 import { ShortCode } from '../../../components/ShortCode';
 import { CopyIcon, TrashcanIcon } from '../../../components/icons';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import { BuildGiftForm } from '../BuildGiftForm.view';
 import type { BuildGiftPanelProps } from './BuildGiftPanel.d';
 
@@ -45,21 +43,23 @@ const useStyles = makeStyles(() => ({
 }));
 
 const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
-  onClickCode,
-  deleteStoredGiftCodeB58,
+  confirmation,
+  existingPin,
   feePmob,
   giftCodes,
-  buildGiftCode,
-  existingPin,
   handleCopyClick,
   isSynced,
+  onClickCancelBuild,
+  onClickCode,
+  onClickConfirmBuild,
+  onClickCreateGift,
+  onClickDeleteGiftCode,
   pinThresholdPmob,
   selectedAccount,
+  showModal,
   submitGiftCode,
 }: BuildGiftPanelProps) => {
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
-  const isMountedRef = useIsMountedRef();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pendingDeleteCode, setPendingDeleteCode] = useState(EMPTY_PENDING_DELETE_CODE);
 
@@ -77,19 +77,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
 
   const handleConfirmDelete = async () => {
     handleDialogClose();
-    try {
-      await deleteStoredGiftCodeB58(pendingDeleteCode[0]);
-      enqueueSnackbar(t('deleted'), {
-        variant: 'success',
-      });
-    } catch (err) {
-      /* istanbul ignore next */
-      if (isMountedRef.current) {
-        enqueueSnackbar(err.message, {
-          variant: 'error',
-        });
-      }
-    }
+    onClickDeleteGiftCode(pendingDeleteCode[0]);
   };
 
   return (
@@ -109,14 +97,18 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
           </Box>
           <Box flexGrow={1} mt={3}>
             <BuildGiftForm
-              buildGiftCode={buildGiftCode}
+              confirmation={confirmation}
               existingPin={existingPin}
               feePmob={feePmob}
               isSynced={isSynced}
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}
               submitGiftCode={submitGiftCode}
+              onClickCancelBuild={onClickCancelBuild}
               onClickCode={onClickCode}
+              onClickConfirmBuild={onClickConfirmBuild}
+              onClickCreateGift={onClickCreateGift}
+              showModal={showModal}
             />
           </Box>
         </CardContent>

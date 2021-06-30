@@ -18,6 +18,8 @@ import {
   submitGiftCode,
 } from '../../../services';
 import type { Theme } from '../../../theme';
+import type { TxProposal } from '../../../types/TxProposal';
+import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
 import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
@@ -34,18 +36,27 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 // CBB: Shouldn't have to use this hack to get around state issues
-const EMPTY_CONFIRMATION = {
+const EMPTY_CONFIRMATION_CONSUME = {
   giftCodeB58: '',
   giftCodeStatus: '',
   giftValue: 0,
+};
+
+const EMPTY_CONFIRMATION_BUILD = {
+  feeConfirmation: 0n,
+  giftCodeB58: '',
+  totalValueConfirmation: 0n,
+  txProposal: {} as TxProposal,
 };
 
 const GiftsPage: FC = () => {
   const classes = useStyles();
   const { enqueueSnackbar = () => {} } = useSnackbar() || {};
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [showModalBuild, setShowModalBuild] = useState(false);
   const [showModalConsume, setShowModalConsume] = useState(false);
-  const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
+  const [confirmationBuild, setConfirmationBuild] = useState(EMPTY_CONFIRMATION_BUILD);
+  const [confirmationConsume, setConfirmationConsume] = useState(EMPTY_CONFIRMATION_CONSUME);
 
   const { t } = useTranslation('GiftingView');
   const {
@@ -75,10 +86,89 @@ const GiftsPage: FC = () => {
     }
   };
 
+  const onClickCreateGift = async (mobValue: string, feeAmount: string) => {
+    try {
+      const adjustedValue = Number(mobValue) + Number(feeAmount);
+
+      const result = await buildGiftCode({
+        accountId: selectedAccount.account.accountId,
+        valuePmob: convertMobStringToPicoMobString(String(adjustedValue)),
+      });
+
+      if (result === null || result === undefined) {
+        throw new Error(t('errorBuild'));
+      }
+
+      const { feeConfirmation, giftCodeB58, totalValueConfirmation, txProposal } = result;
+
+      setConfirmationBuild({
+        feeConfirmation,
+        giftCodeB58,
+        totalValueConfirmation,
+        txProposal,
+      });
+
+      setShowModalBuild(true);
+    } catch (err) {
+      /* nothing */
+    }
+  };
+
+  const onClickCancelBuild = () => {
+    /*
+    setSlideExitSpeed(0);
+    setShowCode(false);
+    setIsAwaitingConformation(false);
+    */
+    setShowModalBuild(false);
+    setConfirmationBuild(EMPTY_CONFIRMATION_BUILD);
+    enqueueSnackbar(t('giftCanceled'), {
+      variant: 'warning',
+    });
+  };
+
+  const onClickConfirmBuild = async () => {
+    setShowModalBuild(false);
+    try {
+      if (confirmationBuild.txProposal === null || confirmationBuild.txProposal === undefined) {
+        throw new Error(t('confirmationNotFound'));
+      }
+      await submitGiftCode({
+        fromAccountId: selectedAccount.account.accountId,
+        giftCodeB58: confirmationBuild.giftCodeB58,
+        txProposal: confirmationBuild.txProposal,
+      });
+
+      await getAllGiftCodes();
+      enqueueSnackbar(t('giftCreated'), {
+        variant: 'success',
+      });
+    } catch (err) {
+      enqueueSnackbar(t('error'), {
+        variant: 'error',
+      });
+    }
+    setConfirmationBuild(EMPTY_CONFIRMATION_BUILD);
+  };
+
+  const onClickDeleteGiftCodeBuild = async (giftCode: string) => {
+    try {
+      await deleteStoredGiftCodeB58(giftCode);
+      enqueueSnackbar(t('deleted'), {
+        variant: 'success',
+      });
+    } catch (err) {
+      enqueueSnackbar(err.message, {
+        variant: 'error',
+      });
+    }
+    getAllGiftCodes();
+  };
+
   const BuildGift = () => (
     <BuildGiftPanel
       buildGiftCode={buildGiftCode}
-      onClickCode={handleCodeClicked}
+      confirmation={confirmationBuild}
       deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
       existingPin={existingPin as string}
       feePmob={feePmob || '0'}
@@ -86,8 +176,14 @@ const GiftsPage: FC = () => {
       giftCodes={giftCodes}
       handleCopyClick={handleCodeClicked}
       isSynced={isSynced}
+      onClickCancelBuild={onClickCancelBuild}
+      onClickCode={handleCodeClicked}
+      onClickConfirmBuild={onClickConfirmBuild}
+      onClickCreateGift={onClickCreateGift}
+      onClickDeleteGiftCode={onClickDeleteGiftCodeBuild}
       pinThresholdPmob={pinThresholdPmob}
       selectedAccount={selectedAccount}
+      showModal={showModalBuild}
       submitGiftCode={submitGiftCode}
     />
   );
@@ -99,7 +195,7 @@ const GiftsPage: FC = () => {
     });
   };
 
-  const onClickOpenGiftConsume = async (giftCodeB58) => {
+  const onClickOpenGiftConsume = async (giftCodeB58: string) => {
     try {
       const result = await checkGiftCodeStatus({ giftCodeB58 });
       if (result === null || result === undefined) {
@@ -108,7 +204,7 @@ const GiftsPage: FC = () => {
 
       const { giftCodeStatus, giftCodeValue } = result;
 
-      setConfirmation({
+      setConfirmationConsume({
         giftCodeB58,
         giftCodeStatus,
         giftValue: giftCodeValue,
@@ -138,7 +234,7 @@ const GiftsPage: FC = () => {
     try {
       await claimGiftCode({
         accountId: selectedAccount.account.accountId,
-        giftCodeB58: confirmation.giftCodeB58,
+        giftCodeB58: confirmationConsume.giftCodeB58,
       });
 
       enqueueSnackbar(t('confirmation'), {
@@ -155,7 +251,7 @@ const GiftsPage: FC = () => {
 
   const ConsumeGift = () => (
     <ConsumeGiftForm
-      confirmation={confirmation}
+      confirmation={confirmationConsume}
       feePmob={feePmob || '0'}
       onClickCancel={onClickCancelConsume}
       onClickClaimGift={onClickClaimGiftConsume}

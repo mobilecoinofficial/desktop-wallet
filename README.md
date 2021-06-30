@@ -41,7 +41,7 @@ Depending on your local platform, you'll need to add the correct version of [ful
 
 ### Dev
 
-You'll need to start by installing the packages. At the root, run `yarn install` (or `yarn` if you're cool like that). Because this wallet has native packages, you'll need to drop into the app/ directory `cd app/` and run `yarn install` here as well. Once done, hop back up to the root directory (I know you know this, but `cd ..`).
+You'll need to start by installing the packages. At the root, run `yarn install`. Because this wallet has native packages, you'll need to drop into the app/ directory `cd app/` and run `yarn install` here as well. Once done, hop back up to the root directory (I know you know this, but `cd ..`).
 
 Run the dev environment with `yarn dev`.
 

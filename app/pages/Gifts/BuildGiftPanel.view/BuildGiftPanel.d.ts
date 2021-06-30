@@ -1,22 +1,28 @@
-import type {
-  BuildGiftCodeService,
-  DeleteStoredGiftCodeB58Service,
-  SubmitGiftCodeService,
-} from '../../../services';
+import type { BuildGiftCodeService, SubmitGiftCodeService } from '../../../services';
 import type { GiftCode } from '../../../types/GiftCode.d';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
+import type { TxProposal } from '../../../types/TxProposal';
 
 export interface BuildGiftPanelProps {
   buildGiftCode: BuildGiftCodeService;
-  onClickCode: (code: string, text: string) => void;
-  deleteStoredGiftCodeB58: DeleteStoredGiftCodeB58Service;
-  feePmob: string;
+  confirmation: {
+    feeConfirmation: number;
+    giftCodeB58: string;
+    totalValueConfirmation: number;
+    txProposal: TxProposal;
+  };
   existingPin: string;
+  feePmob: string;
   giftCodes: GiftCode[];
-  handleCopyClick: unknown;
+  handleCopyClick: (s1: string, s2?: string) => void;
   isSynced: boolean;
-  onClickDeleteGiftCode: (code: string) => void;
+  onClickCancelBuild: () => void;
+  onClickCode: (code: string, text: string) => void;
+  onClickConfirmBuild: () => void;
+  onClickCreateGift: (x: string, y: string) => void;
+  onClickDeleteGiftCode: (x: string) => void;
   pinThresholdPmob: string;
   selectedAccount: SelectedAccount;
+  showModal: boolean;
   submitGiftCode: SubmitGiftCodeService;
 }

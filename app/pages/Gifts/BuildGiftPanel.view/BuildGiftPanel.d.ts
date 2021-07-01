@@ -1,10 +1,8 @@
-import type { BuildGiftCodeService, SubmitGiftCodeService } from '../../../services';
 import type { GiftCode } from '../../../types/GiftCode.d';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 import type { TxProposal } from '../../../types/TxProposal';
 
 export interface BuildGiftPanelProps {
-  buildGiftCode: BuildGiftCodeService;
   confirmation: {
     feeConfirmation: number;
     giftCodeB58: string;
@@ -24,5 +22,4 @@ export interface BuildGiftPanelProps {
   pinThresholdPmob: string;
   selectedAccount: SelectedAccount;
   showModal: boolean;
-  submitGiftCode: SubmitGiftCodeService;
 }

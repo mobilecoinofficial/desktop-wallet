@@ -57,7 +57,6 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   pinThresholdPmob,
   selectedAccount,
   showModal,
-  submitGiftCode,
 }: BuildGiftPanelProps) => {
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -103,7 +102,6 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
               isSynced={isSynced}
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}
-              submitGiftCode={submitGiftCode}
               onClickCancelBuild={onClickCancelBuild}
               onClickCode={onClickCode}
               onClickConfirmBuild={onClickConfirmBuild}

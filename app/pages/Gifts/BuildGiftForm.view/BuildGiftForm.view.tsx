@@ -111,10 +111,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
     setShowCode(true);
   };
 
-  const handleClose = () => {
-    onClickCancelBuild();
-  };
-
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
@@ -228,7 +224,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
               aria-describedby="transition-modal-description"
               className={classes.modal}
               open={showModal}
-              onClose={handleClose}
+              onClose={onClickCancelBuild}
               closeAfterTransition
               BackdropComponent={Backdrop}
               BackdropProps={{
@@ -309,7 +305,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     </Typography>
                   </Box>
                   <Box py={1} />
-                  {/* TODO - after multiple accounts, we should actually store these gift codes. please check jira for full explation */}
+                  {/* TODO - after multiple accounts, we should actually store these gift codes. please check jira for full explanation */}
                   <Typography variant="body2" color="textPrimary">
                     {t('mobWillBeSent')}
                   </Typography>
@@ -349,7 +345,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     <Button
                       className={classes.button}
                       color="secondary"
-                      onClick={handleClose}
+                      onClick={onClickCancelBuild}
                       size="large"
                       fullWidth
                       variant="contained"

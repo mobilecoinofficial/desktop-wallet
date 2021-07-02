@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
-import { getWalletStatus } from '../../../services';
 import type { UnlockWalletViewProps } from './UnlockWallet';
 
 interface UnlockWalletFormValues {
@@ -16,24 +15,12 @@ interface UnlockWalletFormValues {
   submit: null;
 }
 
-const UnlockWalletView: FC<UnlockWalletViewProps> = ({ unlockWallet }: UnlockWalletViewProps) => {
+const UnlockWalletView: FC<UnlockWalletViewProps> = ({ onClickUnlock }: UnlockWalletViewProps) => {
   const { t } = useTranslation('UnlockWallet');
-
-  const handleOnSubmit = async (values: UnlockWalletFormValues) => {
-    await unlockWallet(values.password);
-  };
-
-  const getWallet = async () => {
-    try {
-      await getWalletStatus();
-    } catch (e) {
-      // nothing!
-    }
-  };
-  getWallet();
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
   const handleClose = () => setAnchorEl(null);
+  const handleOnSubmit = (values: UnlockWalletFormValues) => onClickUnlock(values.password);
 
   return (
     <>

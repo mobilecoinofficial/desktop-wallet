@@ -1,7 +1,8 @@
-import type { ImportAccountService, ImportLegacyAccountService } from '../../../services';
-
 export interface ImportAccountViewProps {
-  importAccount: ImportAccountService;
-  importLegacyAccount: ImportLegacyAccountService;
-  setKeychainAccount: (account: string, password: string) => void;
+  onClickImport: (
+    accountName: string,
+    checkedSavePassword: boolean,
+    entropy: string,
+    password: string
+  ) => void;
 }

@@ -10,12 +10,18 @@ import { SplashScreen } from '../../../components/SplashScreen';
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
 import useFullService from '../../../hooks/useFullService';
-import { createAccount, importAccount, importLegacyAccount, unlockWallet } from '../../../services';
+import {
+  createAccount,
+  getWalletStatus,
+  importAccount,
+  importLegacyAccount,
+  unlockWallet,
+} from '../../../services';
 import type { Theme } from '../../../theme';
+import { isHex64 } from '../../../utils/bip39Functions';
 import { setKeychainAccount /* , getKeychainAccounts */ } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { ImportAccountView } from '../ImportAccount.view';
-// import { UnlockAccountView } from '../UnlockAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -52,17 +58,14 @@ const AuthPage: FC = () => {
 
   useEffect(() => {}, [isUnlocked]);
 
-  const onUnlock = async (pwd: string) => {
-    if (pwd) {
-      try {
-        await ipcRenderer.invoke('logged-in');
-        await unlockWallet(pwd);
-        // setUnlocked(true); // not needed; unlockWallet(...) sets isAuthenticated
-      } catch (e) {
-        setUnlocked(!e.message.includes('Invalid Password'));
-      }
+  const getWallet = async () => {
+    try {
+      await getWalletStatus();
+    } catch (e) {
+      // nothing!
     }
   };
+  getWallet();
 
   if (!isInitialized) {
     return <SplashScreen />;
@@ -85,12 +88,23 @@ const AuthPage: FC = () => {
     );
 
   if (!isUnlocked) {
+    const onClickUnlock = async (pwd: string) => {
+      if (pwd) {
+        try {
+          await ipcRenderer.invoke('logged-in');
+          await unlockWallet(pwd);
+        } catch (e) {
+          setUnlocked(!e.message.includes('Invalid Password'));
+        }
+      }
+    };
+
     return (
       <Box data-testid="AuthPageId" className={classes.root}>
         <Container className={classes.viewContainer} maxWidth="sm">
           <LogoIcon className={classes.logoIcon} />
           <Card className={classes.cardContainer}>
-            <UnlockWalletView unlockWallet={onUnlock} />
+            <UnlockWalletView onClickUnlock={onClickUnlock} />
           </Card>
         </Container>
       </Box>
@@ -110,25 +124,47 @@ const AuthPage: FC = () => {
     );
   */
 
+  const onClickCreate = async (
+    accountName: string,
+    password: string,
+    checkedSavePassword: boolean
+  ) => {
+    try {
+      await createAccount(accountName, password);
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      checkedSavePassword ? setKeychainAccount(accountName, password) : null;
+    } catch (err) {
+      /* TODO: handle error */
+      console.log('ERROR!', err);
+    }
+  };
+
+  const onClickImport = async (
+    accountName: string,
+    checkedSavePassword: boolean,
+    entropy: string,
+    password: string
+  ) => {
+    try {
+      if (isHex64(entropy)) {
+        await importLegacyAccount(accountName, entropy, password);
+      } else {
+        await importAccount(accountName, entropy, password);
+      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      checkedSavePassword ? setKeychainAccount(accountName, password) : null;
+    } catch (err) {
+      /* nothing now... TODO: fix! */
+    }
+  };
+
   return (
     <Box data-testid="AuthPageId" className={classes.root}>
       <Container className={classes.viewContainer} maxWidth="sm">
         <LogoIcon className={classes.logoIcon} />
         <Card className={classes.cardContainer}>
-          {selectedView === 1 && (
-            <CreateAccountView
-              createAccount={createAccount}
-              setKeychainAccount={setKeychainAccount}
-            />
-          )}
-
-          {selectedView === 2 && (
-            <ImportAccountView
-              importAccount={importAccount}
-              importLegacyAccount={importLegacyAccount}
-              setKeychainAccount={setKeychainAccount}
-            />
-          )}
+          {selectedView === 1 && <CreateAccountView onClickCreate={onClickCreate} />}
+          {selectedView === 2 && <ImportAccountView onClickImport={onClickImport} />}
 
           <Box my={3}>
             <Divider />

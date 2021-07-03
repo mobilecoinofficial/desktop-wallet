@@ -80,7 +80,6 @@
     "changePasswordButton": "Change Passphrase",
     "checkSavePassword": "Save passphrase to keychain?",
     "description": "Changing your passphrase will change how we lock this wallet. Always use strong (unguessable) passphrases and change them regularly.",
-    "enqueue": "Successfully changed passphrase.",
     "formLabel": "Change Passphrase",
     "instructions": "To change your current passphrase, please enter your current passphrase and your new passphrase.",
     "newPasswordLabel": "New Passphrase",
@@ -101,7 +100,6 @@
     "currentPasswordLabel": "Current Passphrase",
     "currentPasswordRequired": "Your current passphrase is required to set or change your PIN",
     "description": "Your Transaction PIN is used as an extra safety measure. It is required if a transaction value is higher than the threshold MOB amount.",
-    "enqueue": "Successfully set PIN!",
     "errorPin": "PIN must be all digits",
     "formLabel": "PIN",
     "instructions": "To change your PIN or to create one, enter the desired PIN value below, and the minimum amount it applies to, as well.",
@@ -497,6 +495,11 @@
     "privacyPolicy": "Privacy Policy",
     "retrieveEntropy": "Retrieve Secret Entropy",
     "terms": "Terms of Use"
+  },
+
+  "SettingsPage": {
+    "changePasswordSuccess": "Successfully changed passphrase.",
+    "changePinSuccess": "Successfully set PIN!"
   },
 
   "ShowEntropyModal": {

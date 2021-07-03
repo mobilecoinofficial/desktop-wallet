@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { FC } from 'react';
 
 import {
@@ -19,7 +19,6 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { ShowRetrievedEntropyModal } from '../ShowRetrievedEntropy.view';
 import { RetrieveEntropyViewProps } from './RetrieveEntropy';
@@ -77,16 +76,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
   accounts,
+  entropy,
   onClickBack,
-  retrieveEntropy,
+  onClickClose,
+  onClickRetrieveEntropy,
 }: RetrieveEntropyViewProps) => {
   const classes = useStyles();
-  const [entropy, setEntropy] = useState('');
-  const isMountedRef = useIsMountedRef();
-  const handleCloseModal = () => setEntropy('');
   const { t } = useTranslation('RetrieveEntropyView');
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleCloseModal = () => onClickClose();
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (accounts.length > 0) {
       setAnchorEl(event.currentTarget);
@@ -139,30 +139,7 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
           validationSchema={Yup.object().shape({
             password: Yup.string().required(t('passwordRequired')),
           })}
-          onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
-            try {
-              setSubmitting(true);
-              const entropyString = await retrieveEntropy(values.password);
-
-              if (typeof entropyString !== 'string') {
-                throw new Error(t('error'));
-              }
-              /* istanbul ignore next */
-              if (isMountedRef.current) {
-                setStatus({ success: true });
-                setSubmitting(false);
-                resetForm();
-                setEntropy(entropyString);
-              }
-            } catch (err) {
-              /* istanbul ignore next */
-              if (isMountedRef.current) {
-                setStatus({ success: false });
-                setErrors({ submit: err.message });
-                setSubmitting(false);
-              }
-            }
-          }}
+          onSubmit={async (values) => onClickRetrieveEntropy(values.password)}
         >
           {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
             <Form>

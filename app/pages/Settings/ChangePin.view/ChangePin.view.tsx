@@ -13,19 +13,14 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat, SavedPasswordsModal } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
-import {
-  convertMobStringToPicoMobString,
-  convertPicoMobStringToMob,
-} from '../../../utils/convertMob';
+import { convertPicoMobStringToMob } from '../../../utils/convertMob';
 import isValidPin from '../../../utils/isValidPin';
 import { ChangePinViewProps } from './ChangePin';
 
@@ -83,13 +78,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ChangePinView: FC<ChangePinViewProps> = ({
   accounts,
   onClickBack,
+  onClickChangePin,
   pin,
   pinThresholdPmob,
-  setPin,
 }: ChangePinViewProps) => {
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
-  const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ChangePinView');
 
   const validatePin = (st: string) => (isValidPin(st) ? '' : t('errorPin'));
@@ -146,37 +139,9 @@ const ChangePinView: FC<ChangePinViewProps> = ({
               .required(t('pinConfirmationRequired')),
             password: Yup.string().required(t('currentPasswordRequired')),
           })}
-          onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
-            try {
-              await setPin(
-                values.newPin,
-                convertMobStringToPicoMobString(values.pinThresholdMob),
-                values.password
-              );
-              /* istanbul ignore next */
-              if (isMountedRef.current) {
-                setSubmitting(false);
-                enqueueSnackbar(t('enqueue'), { variant: 'success' });
-                setStatus({ success: true });
-                resetForm({
-                  values: {
-                    newPin: values.newPin,
-                    newPinConfirmation: '',
-                    password: '',
-                    pinThresholdMob: values.pinThresholdMob,
-                    submit: null,
-                  },
-                });
-              }
-            } catch (err) {
-              /* istanbul ignore next */
-              if (isMountedRef.current) {
-                setStatus({ success: false });
-                setErrors({ submit: err.message });
-                setSubmitting(false);
-              }
-            }
-          }}
+          onSubmit={async (values) =>
+            onClickChangePin(values.password, values.newPin, values.pinThresholdMob)
+          }
         >
           {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
             <Form>

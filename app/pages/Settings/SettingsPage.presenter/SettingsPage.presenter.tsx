@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Container, makeStyles } from '@material-ui/core';
+import { useSnackbar } from 'notistack';
+import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
 import {
@@ -15,6 +17,8 @@ import useFullService from '../../../hooks/useFullService';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
 import { changePassword, retrieveEntropy, setPin } from '../../../services';
 import type { Theme } from '../../../theme';
+import type { StringUInt64 } from '../../../types/SpecialStrings.d';
+import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { getKeychainAccounts, setKeychainAccount } from '../../../utils/keytarService';
 import { ChangePasswordView } from '../ChangePassword.view';
 import { ChangePinView } from '../ChangePin.view';
@@ -44,7 +48,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SettingsPage: FC = () => {
   const classes = useStyles();
   const [showing, setShowing] = useState(SETTINGS);
+  const [entropy, setEntropy] = useState('');
   const { pinThresholdPmob, pin, selectedAccount } = useFullService();
+  const { enqueueSnackbar } = useSnackbar();
+  const { t } = useTranslation('SettingsPage');
 
   const {
     ledgerDbPath,
@@ -52,6 +59,7 @@ const SettingsPage: FC = () => {
     leaveFullServiceRunning,
     toggleLeaveFullServiceRunning,
   } = useFullServiceConfigs();
+
   const configureFullServiceConfigs = {
     fullServiceDbPath,
     leaveFullServiceRunning,
@@ -59,13 +67,59 @@ const SettingsPage: FC = () => {
     toggleLeaveFullServiceRunning,
   };
 
+  const accounts = getKeychainAccounts();
+
   const handleOnClick = (path: string) => {
     if (path) {
       setShowing(path);
     }
   };
 
-  const accounts = getKeychainAccounts();
+  const onClickChangePassword = async (
+    password: string,
+    newPassword: string,
+    saveChecked: boolean
+  ) => {
+    try {
+      if (saveChecked) {
+        const currentAccount = accounts[0].account;
+        await changePassword(password, newPassword);
+        setKeychainAccount(currentAccount, newPassword);
+      } else {
+        await changePassword(password, newPassword);
+      }
+      enqueueSnackbar(t('changePasswordSuccess'), {
+        variant: 'success',
+      });
+    } catch (err) {
+      console.log('ERROR', err);
+    }
+  };
+
+  const onClickChangePin = async (password: string, newPin: string, newThreshold: StringUInt64) => {
+    try {
+      await setPin(newPin, convertMobStringToPicoMobString(newThreshold), password);
+      /* istanbul ignore next */
+      enqueueSnackbar(t('changePinSuccess'), { variant: 'success' });
+    } catch (err) {
+      console.log('ERROR!', err);
+    }
+  };
+
+  const onClickRetrieveEntropy = async (password: string) => {
+    console.log('RETRIEVING', password);
+    try {
+      const entropyString = await retrieveEntropy(password);
+
+      if (typeof entropyString !== 'string') {
+        throw new Error(t('error'));
+      }
+      console.log('GOT', entropyString);
+      setEntropy(entropyString);
+    } catch (err) {
+      console.log('ERROR!!!', err);
+    }
+  };
 
   const settingsOptionsList = [
     {
@@ -126,8 +180,7 @@ const SettingsPage: FC = () => {
         <ChangePasswordView
           accounts={accounts}
           onClickBack={onClickBack}
-          changePassword={changePassword}
-          setKeychainAccount={setKeychainAccount}
+          onClickChangePassword={onClickChangePassword}
         />
       );
 
@@ -136,9 +189,9 @@ const SettingsPage: FC = () => {
         <ChangePinView
           accounts={accounts}
           onClickBack={onClickBack}
+          onClickChangePin={onClickChangePin}
           pinThresholdPmob={pinThresholdPmob}
           pin={pin}
-          setPin={setPin}
         />
       );
 
@@ -146,8 +199,10 @@ const SettingsPage: FC = () => {
       return (
         <RetrieveEntropyView
           accounts={accounts}
+          entropy={entropy}
           onClickBack={onClickBack}
-          retrieveEntropy={retrieveEntropy}
+          onClickClose={() => setEntropy('')}
+          onClickRetrieveEntropy={onClickRetrieveEntropy}
         />
       );
 

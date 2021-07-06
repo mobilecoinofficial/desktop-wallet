@@ -51,7 +51,7 @@ const EMPTY_CONFIRMATION_BUILD = {
 
 const GiftsPage: FC = () => {
   const classes = useStyles();
-  const { enqueueSnackbar = () => {} } = useSnackbar() || {};
+  const { enqueueSnackbar } = useSnackbar();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [showModalBuild, setShowModalBuild] = useState(false);
   const [showModalConsume, setShowModalConsume] = useState(false);
@@ -80,9 +80,7 @@ const GiftsPage: FC = () => {
   const handleCodeClicked = (code: string, text: string) => {
     clipboard.writeText(code);
     if (text) {
-      enqueueSnackbar(text, {
-        variant: 'success',
-      });
+      enqueueSnackbar(text, { variant: 'success' });
     }
   };
 
@@ -110,21 +108,14 @@ const GiftsPage: FC = () => {
 
       setShowModalBuild(true);
     } catch (err) {
-      /* nothing */
+      enqueueSnackbar(err.message, { variant: 'error' });
     }
   };
 
   const onClickCancelBuild = () => {
-    /*
-    setSlideExitSpeed(0);
-    setShowCode(false);
-    setIsAwaitingConformation(false);
-    */
     setShowModalBuild(false);
     setConfirmationBuild(EMPTY_CONFIRMATION_BUILD);
-    enqueueSnackbar(t('giftCanceled'), {
-      variant: 'warning',
-    });
+    enqueueSnackbar(t('giftCanceled'), { variant: 'warning' });
   };
 
   const onClickConfirmBuild = async () => {
@@ -140,13 +131,9 @@ const GiftsPage: FC = () => {
       });
 
       await getAllGiftCodes();
-      enqueueSnackbar(t('giftCreated'), {
-        variant: 'success',
-      });
+      enqueueSnackbar(t('giftCreated'), { variant: 'success' });
     } catch (err) {
-      enqueueSnackbar(t('error'), {
-        variant: 'error',
-      });
+      enqueueSnackbar(t('errorCreate'), { variant: 'error' });
     }
     setConfirmationBuild(EMPTY_CONFIRMATION_BUILD);
   };
@@ -154,13 +141,9 @@ const GiftsPage: FC = () => {
   const onClickDeleteGiftCodeBuild = async (giftCode: string) => {
     try {
       await deleteStoredGiftCodeB58(giftCode);
-      enqueueSnackbar(t('deleted'), {
-        variant: 'success',
-      });
+      enqueueSnackbar(t('giftDeleted'), { variant: 'success' });
     } catch (err) {
-      enqueueSnackbar(err.message, {
-        variant: 'error',
-      });
+      enqueueSnackbar(err.message, { variant: 'error' });
     }
     getAllGiftCodes();
   };
@@ -190,9 +173,7 @@ const GiftsPage: FC = () => {
 
   const onClickCancelConsume = () => {
     setShowModalConsume(false);
-    enqueueSnackbar(t('giftCanceled'), {
-      variant: 'warning',
-    });
+    enqueueSnackbar(t('giftCanceled'), { variant: 'warning' });
   };
 
   const onClickOpenGiftConsume = async (giftCodeB58: string) => {
@@ -214,19 +195,15 @@ const GiftsPage: FC = () => {
         setShowModalConsume(true);
       } else {
         if (giftCodeStatus === 'GiftCodeSubmittedPending') {
-          enqueueSnackbar(t('giftB58Error'), {
-            variant: 'warning',
-          });
+          enqueueSnackbar(t('giftB58Error'), { variant: 'warning' });
         }
 
         if (giftCodeStatus === 'GiftCodeClaimed') {
-          enqueueSnackbar(t('giftClaimed'), {
-            variant: 'warning',
-          });
+          enqueueSnackbar(t('giftPreviouslyClaimed'), { variant: 'warning' });
         }
       }
     } catch (err) {
-      console.log(err);
+      enqueueSnackbar(err.message, { variant: 'warning' });
     }
   };
 
@@ -237,13 +214,9 @@ const GiftsPage: FC = () => {
         giftCodeB58: confirmationConsume.giftCodeB58,
       });
 
-      enqueueSnackbar(t('confirmation'), {
-        variant: 'success',
-      });
+      enqueueSnackbar(t('giftConsumed'), { variant: 'success' });
     } catch (err) {
-      enqueueSnackbar(t('error'), {
-        variant: 'error',
-      });
+      enqueueSnackbar(t('giftConsumeError'), { variant: 'error' });
     }
 
     setShowModalConsume(false);

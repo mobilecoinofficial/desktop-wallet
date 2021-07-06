@@ -1,3 +1,7 @@
+/*
+  It seems that stories involving BigInts do not run
+*/
+
 import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';

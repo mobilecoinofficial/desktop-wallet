@@ -13,19 +13,20 @@ import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { ChangePinView } from './ChangePin.view';
 
 const PASSWORD = 'password';
-const PIN_MOB = '10.000000000000';
+const PIN_MOB = '10';
 const NEW_PIN = '12345678';
 const WRONG_PIN = '987654';
 
-const setUpTest = (setPin = jest.fn()) => {
-  const handleOnClick = jest.fn();
+const setUpTest = () => {
+  const handleOnClickBack = jest.fn();
+  const handleOnClickChangePin = jest.fn();
 
   const { container } = render(
     <SnackbarProvider>
       <ChangePinView
         accounts={[]}
-        onClickBack={handleOnClick}
-        setPin={setPin}
+        onClickBack={handleOnClickBack}
+        onClickChangePin={handleOnClickChangePin}
         pin=""
         pinThresholdPmob="15.0000000"
       />
@@ -44,11 +45,11 @@ const setUpTest = (setPin = jest.fn()) => {
   return {
     confirmPinField,
     container,
-    handleOnClick,
+    handleOnClickBack,
+    handleOnClickChangePin,
     minPinMob,
     newPinField,
     passwordField,
-    setPin,
     submitButton,
   };
 };
@@ -69,57 +70,22 @@ describe('ChangePinView', () => {
   test('calls API if everything is OK', async () => {
     const {
       confirmPinField,
-      container,
+      handleOnClickChangePin,
       minPinMob,
       newPinField,
       passwordField,
-      setPin,
       submitButton,
-    } = setUpTest(jest.fn().mockResolvedValue(true));
+    } = setUpTest();
 
     await act(async () => userEvent.type(passwordField, PASSWORD, { delay: 1 }));
     await act(async () => userEvent.type(newPinField, NEW_PIN, { delay: 1 }));
     await act(async () => userEvent.type(confirmPinField, NEW_PIN, { delay: 1 }));
     await act(async () => userEvent.type(minPinMob, PIN_MOB, { delay: 1 }));
     await act(async () => userEvent.tab());
-    expect(setPin).not.toHaveBeenCalled();
+    expect(handleOnClickChangePin).not.toHaveBeenCalled();
 
     await waitFor(() => expect(submitButton.disabled).toBeFalsy());
     await act(async () => userEvent.click(submitButton));
-    await waitFor(() =>
-      expect(setPin).toHaveBeenCalledWith(
-        NEW_PIN,
-        convertMobStringToPicoMobString(PIN_MOB),
-        PASSWORD
-      )
-    );
-
-    expect(container.innerHTML.includes('Invalid Password')).toBeFalsy();
-  });
-
-  test('does not close on error', async () => {
-    const {
-      confirmPinField,
-      container,
-      minPinMob,
-      newPinField,
-      passwordField,
-      setPin,
-      submitButton,
-    } = setUpTest(jest.fn().mockRejectedValue(new Error('Invalid Password')));
-
-    await act(async () => userEvent.type(passwordField, PASSWORD, { delay: 1 }));
-    await act(async () => userEvent.type(newPinField, NEW_PIN, { delay: 1 }));
-    await act(async () => userEvent.type(confirmPinField, NEW_PIN, { delay: 1 }));
-    await act(async () => userEvent.type(minPinMob, PIN_MOB, { delay: 1 }));
-    await act(async () => userEvent.click(submitButton));
-    await waitFor(() =>
-      expect(setPin).toHaveBeenCalledWith(
-        NEW_PIN,
-        convertMobStringToPicoMobString(PIN_MOB),
-        PASSWORD
-      )
-    );
-    await waitFor(() => expect(container.innerHTML.includes('Invalid Password')).toBeTruthy());
+    await waitFor(() => expect(handleOnClickChangePin).toHaveBeenCalled());
   });
 });

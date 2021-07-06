@@ -1,7 +1,6 @@
 import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
-import { SnackbarProvider } from 'notistack';
 
 import { ConfigureFullServiceView } from './ConfigureFullService.view';
 
@@ -11,9 +10,7 @@ export default {
 };
 
 const Template: Story<ComponentProps<typeof ConfigureFullServiceView>> = (args) => (
-  <SnackbarProvider>
-    <ConfigureFullServiceView {...args} />
-  </SnackbarProvider>
+  <ConfigureFullServiceView {...args} />
 );
 
 export const ConfigureFullService = Template.bind({});

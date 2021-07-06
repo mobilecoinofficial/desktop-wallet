@@ -71,9 +71,7 @@ const SendReceivePage: FC = () => {
 
   const handleCodeClicked = (code: string, text: string) => {
     clipboard.writeText(code);
-    enqueueSnackbar(text, {
-      variant: 'success',
-    });
+    enqueueSnackbar(text, { variant: 'success' });
   };
 
   const saveToContacts = async () => {
@@ -108,12 +106,11 @@ const SendReceivePage: FC = () => {
       if (formIsChecked) {
         saveToContacts();
       }
-      enqueueSnackbar(`${t('success')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`, {
+      enqueueSnackbar(`${t('sendSuccess')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`, {
         variant: 'success',
       });
     } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error(err);
+      enqueueSnackbar(t('sendError'), { variant: 'error' });
     }
     setConfirmation(EMPTY_CONFIRMATION);
     setSendingStatus(Showing.INPUT_FORM);
@@ -121,9 +118,7 @@ const SendReceivePage: FC = () => {
 
   const onClickCancel = () => {
     setSendingStatus(Showing.INPUT_FORM);
-    enqueueSnackbar(t('transactionCanceled'), {
-      variant: 'warning',
-    });
+    enqueueSnackbar(t('transactionCanceled'), { variant: 'warning' });
   };
 
   const onClickSend = async ({
@@ -151,7 +146,7 @@ const SendReceivePage: FC = () => {
       result = await buildTransaction({ accountId, fee, recipientPublicAddress, valuePmob });
 
       if (result === null || result === undefined) {
-        throw new Error('Could not build transaction.');
+        throw new Error(t('sendBuildError'));
       }
 
       const {
@@ -168,9 +163,8 @@ const SendReceivePage: FC = () => {
         txProposalReceiverB58Code,
       });
       setSendingStatus(Showing.CONFIRM_FORM);
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.log('ERROR!', e);
+    } catch (err) {
+      enqueueSnackbar(err.message, { variant: 'error' });
     }
   };
 

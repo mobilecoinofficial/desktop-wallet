@@ -6,13 +6,13 @@ import { ReceiveMob } from './ReceiveMob.view';
 
 export default {
   component: ReceiveMob,
-  title: 'Pages/Send_Receive/Receive Mob',
+  title: 'Pages/Send Receive',
 };
 
 const Template: Story<ComponentProps<typeof ReceiveMob>> = (args) => <ReceiveMob {...args} />;
 
-export const Standard = Template.bind({});
-Standard.args = {
+export const ReceiveMobs = Template.bind({});
+ReceiveMobs.args = {
   contacts: [
     {
       abbreviation: 'F1',

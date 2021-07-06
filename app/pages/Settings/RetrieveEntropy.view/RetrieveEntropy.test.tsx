@@ -19,6 +19,7 @@ describe('RetrieveEntropyView', () => {
         onClickClose={onClickClose}
         onClickRetrieveEntropy={onClickRetrieveEntropy}
         accounts={[]}
+        entropy=""
       />
     );
 

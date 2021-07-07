@@ -7,9 +7,7 @@ import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
-import { SnackbarProvider } from 'notistack';
 
-import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { ChangePinView } from './ChangePin.view';
 
 const PASSWORD = 'password';
@@ -22,15 +20,13 @@ const setUpTest = () => {
   const handleOnClickChangePin = jest.fn();
 
   const { container } = render(
-    <SnackbarProvider>
-      <ChangePinView
-        accounts={[]}
-        onClickBack={handleOnClickBack}
-        onClickChangePin={handleOnClickChangePin}
-        pin=""
-        pinThresholdPmob="15.0000000"
-      />
-    </SnackbarProvider>
+    <ChangePinView
+      accounts={[]}
+      onClickBack={handleOnClickBack}
+      onClickChangePin={handleOnClickChangePin}
+      pin=""
+      pinThresholdPmob="15.0000000"
+    />
   );
 
   const passwordField = container.querySelector(

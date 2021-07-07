@@ -227,10 +227,5 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   );
 };
 
-BuildGiftPanel.defaultProps = {
-  deleteStoredGiftCodeB58: () => {},
-  giftCodes: [],
-};
-
 export default BuildGiftPanel;
 export { BuildGiftPanel };

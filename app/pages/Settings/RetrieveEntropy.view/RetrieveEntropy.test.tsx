@@ -32,4 +32,26 @@ describe('RetrieveEntropyView', () => {
     await waitFor(() => userEvent.click(submitButton));
     expect(onClickRetrieveEntropy).toHaveBeenCalled();
   });
+
+  test('shows entropy', async () => {
+    const onClickBack = jest.fn();
+    const onClickClose = jest.fn();
+    const onClickRetrieveEntropy = jest.fn();
+
+    const { container, getByText } = render(
+      <RetrieveEntropyView
+        onClickBack={onClickBack}
+        onClickClose={onClickClose}
+        onClickRetrieveEntropy={onClickRetrieveEntropy}
+        accounts={[]}
+        entropy="1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+      />
+    );
+
+    expect(getByText('Retrieve Secret Entropy')).toBeInTheDocument();
+
+    const parentHtml = container?.parentElement?.innerHTML;
+    expect(parentHtml?.includes('We decrypted your Entropy')).toBeTruthy();
+    expect(parentHtml?.includes('****************')).toBeTruthy();
+  });
 });

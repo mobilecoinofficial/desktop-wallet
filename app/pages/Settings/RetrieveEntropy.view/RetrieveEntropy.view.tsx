@@ -85,8 +85,6 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
   const { t } = useTranslation('RetrieveEntropyView');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const handleCloseModal = () => onClickClose();
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (accounts.length > 0) {
       setAnchorEl(event.currentTarget);
@@ -185,7 +183,7 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={!!entropy}
-        onClose={handleCloseModal}
+        onClose={onClickClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -196,11 +194,7 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
         disableBackdropClick
       >
         <div>
-          <ShowRetrievedEntropyModal
-            open={!!entropy}
-            entropy={entropy}
-            onClose={handleCloseModal}
-          />
+          <ShowRetrievedEntropyModal open={!!entropy} entropy={entropy} onClose={onClickClose} />
         </div>
       </Modal>
     </Container>

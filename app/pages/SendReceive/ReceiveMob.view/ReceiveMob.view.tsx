@@ -88,7 +88,7 @@ const ReceiveMob: FC<ReceiveMobProps> = ({
             b58Code: selectedAddress,
             name: nameFromAddress,
           }}
-          codeClicked={onClickCode}
+          onClickCode={onClickCode}
         />
       </Box>
     </Container>

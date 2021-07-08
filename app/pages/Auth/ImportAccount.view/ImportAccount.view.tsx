@@ -3,15 +3,12 @@ import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import {
-  isHex64,
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
 } from '../../../utils/bip39Functions';
@@ -28,11 +25,8 @@ interface ImportAccountFormValues {
 }
 
 const ImportAccountView: FC<ImportAccountViewProps> = ({
-  importAccount,
-  importLegacyAccount,
-  setKeychainAccount,
+  onClickImport,
 }: ImportAccountViewProps) => {
-  const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ImportAccount');
 
   const [canCheck, setCanCheck] = useState(false);
@@ -43,37 +37,8 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
     setOpen(false);
   };
 
-  const handleOnSubmit = async (
-    values: ImportAccountFormValues,
-    helpers: FormikHelpers<ImportAccountFormValues>
-  ) => {
-    const { accountName, checkedSavePassword, entropy, password } = values;
-    const { setStatus, setErrors, setSubmitting } = helpers;
-    setSubmitting(true);
-
-    try {
-      if (isHex64(entropy)) {
-        await importLegacyAccount(accountName, entropy, password);
-      } else {
-        await importAccount(accountName, entropy, password);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      checkedSavePassword ? setKeychainAccount(accountName, password) : null;
-
-      /* istanbul ignore next */
-      if (isMountedRef.current) {
-        setStatus({ success: true });
-        setSubmitting(false);
-      }
-    } catch (err) {
-      /* istanbul ignore next */
-      if (isMountedRef.current) {
-        setStatus({ success: false });
-        setErrors({ submit: err.message });
-        setSubmitting(false);
-      }
-    }
-  };
+  const handleOnSubmit = async (values: ImportAccountFormValues) =>
+    onClickImport(values.accountName, values.checkedSavePassword, values.entropy, values.password);
 
   return (
     <>

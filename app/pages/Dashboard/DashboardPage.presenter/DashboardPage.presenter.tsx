@@ -41,7 +41,7 @@ const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) 
             <DashboardView
               selectedAccount={selectedAccount}
               onClose={onClose}
-              codeClicked={handleCodeClicked}
+              onClickCode={handleCodeClicked}
             />
           </Grid>
         </Grid>

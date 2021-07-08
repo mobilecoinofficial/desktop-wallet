@@ -46,18 +46,29 @@ const selectedAccount = {
   },
 };
 
+const confirmation = {
+  giftCodeB58:
+    'KT2xjDefXi3g4ZS1hEiwZxSx7zS2WYxpkuXVgXPi7RHj3xxSeyL2JXvkytY9V4a1aNVuPGgmjCoMjiZhwCiWtc1rodSmV6jib92oWso5',
+  giftCodeStatus: 'GiftCodeAvailable',
+  giftValue: 1000400000000,
+};
+
 describe('Consume gift form', () => {
-  test('succeeds with available gift, allowing cancel', async () => {
-    const mockCheckGift = jest
-      .fn()
-      .mockResolvedValue({ giftCodeStatus: 'GiftCodeAvailable', giftCodeValue: 1010000000000 });
+  test('initial view', async () => {
+    const onClickCancel = jest.fn();
+    const onClickClaimGift = jest.fn();
+    const onClickOpenGift = jest.fn();
 
     const { container } = render(
       <SnackbarProvider>
         <ConsumeGiftForm
-          checkGiftCodeStatus={mockCheckGift}
-          claimGiftCode={jest.fn()}
+          confirmation={confirmation}
+          feePmob="4000000000"
+          onClickCancel={onClickCancel}
+          onClickClaimGift={onClickClaimGift}
+          onClickOpenGift={onClickOpenGift}
           selectedAccount={selectedAccount}
+          showModal={false}
         />
       </SnackbarProvider>
     );
@@ -67,7 +78,7 @@ describe('Consume gift form', () => {
     ) as HTMLInputElement;
     const giftCodeField = container.querySelector('[id="giftCodeB58"]') as HTMLInputElement;
 
-    expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
+    expect(container.innerHTML.includes('Open Gifts of MOB')).toBeTruthy();
     expect(openGiftButton).toBeTruthy();
     expect(openGiftButton.disabled).toBeTruthy();
     expect(giftCodeField).toBeTruthy();
@@ -79,165 +90,66 @@ describe('Consume gift form', () => {
     expect(openGiftButton.disabled).toBeFalsy();
 
     await act(async () => userEvent.click(openGiftButton));
-    const containerParent = container.parentElement as HTMLElement;
-    await waitFor(() =>
-      expect(containerParent.innerHTML.includes('Gift Confirmation')).toBeTruthy()
-    );
-    await waitFor(() => expect(containerParent.innerHTML.includes('1.0100000')).toBeTruthy());
-    expect(mockCheckGift).toHaveBeenCalled();
+    await waitFor(() => expect(onClickOpenGift).toHaveBeenCalledWith('1234567890'));
+  });
 
-    const cancelButton = containerParent.querySelector('[id="cancel-modal"]') as HTMLInputElement;
+  test('second view, cancelled', async () => {
+    const onClickCancel = jest.fn();
+    const onClickClaimGift = jest.fn();
+    const onClickOpenGift = jest.fn();
+
+    const { container } = render(
+      <SnackbarProvider>
+        <ConsumeGiftForm
+          confirmation={confirmation}
+          feePmob="4000000000"
+          onClickCancel={onClickCancel}
+          onClickClaimGift={onClickClaimGift}
+          onClickOpenGift={onClickOpenGift}
+          selectedAccount={selectedAccount}
+          showModal
+        />
+      </SnackbarProvider>
+    );
+
+    const cancelButton = container.parentElement.querySelector(
+      '[id="cancel-modal"]'
+    ) as HTMLInputElement;
+
+    expect(container.parentElement.innerHTML.includes('Confirmation')).toBeTruthy();
+    expect(cancelButton).toBeTruthy();
+
     await act(async () => userEvent.click(cancelButton));
-    await waitFor(() => expect(container.innerHTML.includes('Gift Confirmation')).toBeFalsy());
+    await waitFor(() => expect(onClickCancel).toHaveBeenCalled());
   });
 
-  test('succeeds with available gift, allowing opening', async () => {
-    const mockClaimGift = jest.fn().mockResolvedValue({});
-    const mockCheckGift = jest
-      .fn()
-      .mockResolvedValue({ giftCodeStatus: 'GiftCodeAvailable', giftCodeValue: 1010000000000 });
+  test('second view, confirmed', async () => {
+    const onClickCancel = jest.fn();
+    const onClickClaimGift = jest.fn();
+    const onClickOpenGift = jest.fn();
 
     const { container } = render(
       <SnackbarProvider>
         <ConsumeGiftForm
-          checkGiftCodeStatus={mockCheckGift}
-          claimGiftCode={mockClaimGift}
+          confirmation={confirmation}
+          feePmob="4000000000"
+          onClickCancel={onClickCancel}
+          onClickClaimGift={onClickClaimGift}
+          onClickOpenGift={onClickOpenGift}
           selectedAccount={selectedAccount}
+          showModal
         />
       </SnackbarProvider>
     );
 
-    const openGiftButton = container.querySelector(
-      '[data-testid="submit-button"]'
+    const claimButton = container.parentElement.querySelector(
+      '[id="claim-modal"]'
     ) as HTMLInputElement;
-    const giftCodeField = container.querySelector('[id="giftCodeB58"]') as HTMLInputElement;
 
-    expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
-    expect(openGiftButton).toBeTruthy();
-    expect(openGiftButton.disabled).toBeTruthy();
-    expect(giftCodeField).toBeTruthy();
-    expect(giftCodeField.value).toBeFalsy();
+    expect(container.parentElement.innerHTML.includes('Confirmation')).toBeTruthy();
+    expect(claimButton).toBeTruthy();
 
-    await act(async () => userEvent.type(giftCodeField, '1234567890', { delay: 1 }));
-    await act(async () => userEvent.tab());
-    await waitFor(() => expect(giftCodeField.value).toEqual('1234567890'));
-    expect(openGiftButton.disabled).toBeFalsy();
-
-    await act(async () => userEvent.click(openGiftButton));
-    const containerParent = container.parentElement as HTMLElement;
-    await waitFor(() =>
-      expect(containerParent.innerHTML.includes('Gift Confirmation')).toBeTruthy()
-    );
-    await waitFor(() => expect(containerParent.innerHTML.includes('1.0100000')).toBeTruthy());
-    expect(mockCheckGift).toHaveBeenCalled();
-
-    const claimButton = containerParent.querySelector('[id="claim-modal"]') as HTMLInputElement;
     await act(async () => userEvent.click(claimButton));
-    await waitFor(() => expect(container.innerHTML.includes('Gift Confirmation')).toBeFalsy());
-    expect(mockClaimGift).toHaveBeenCalled();
-  });
-
-  test('rejects already claimed gift', async () => {
-    const mockCheckGift = jest
-      .fn()
-      .mockResolvedValue({ giftCodeStatus: 'GiftCodeClaimed', giftCodeValue: 1010000000000 });
-
-    const { container } = render(
-      <SnackbarProvider>
-        <ConsumeGiftForm
-          checkGiftCodeStatus={mockCheckGift}
-          claimGiftCode={jest.fn()}
-          selectedAccount={selectedAccount}
-        />
-      </SnackbarProvider>
-    );
-
-    const openGiftButton = container.querySelector(
-      '[data-testid="submit-button"]'
-    ) as HTMLInputElement;
-    const giftCodeField = container.querySelector('[id="giftCodeB58"]') as HTMLInputElement;
-
-    expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
-    expect(openGiftButton).toBeTruthy();
-    expect(openGiftButton.disabled).toBeTruthy();
-    expect(giftCodeField).toBeTruthy();
-    expect(giftCodeField.value).toBeFalsy();
-
-    await act(async () => userEvent.type(giftCodeField, '1234567890', { delay: 1 }));
-    await act(async () => userEvent.tab());
-    await waitFor(() => expect(giftCodeField.value).toEqual('1234567890'));
-    expect(openGiftButton.disabled).toBeFalsy();
-
-    await act(async () => userEvent.click(openGiftButton));
-    await waitFor(() => expect(container.innerHTML.includes('Gift Confirmation')).toBeFalsy());
-  });
-
-  test('rejects submitted pending gift', async () => {
-    const mockCheckGift = jest.fn().mockResolvedValue({
-      giftCodeStatus: 'GiftCodeSubmittedPending',
-      giftCodeValue: 1010000000000,
-    });
-
-    const { container } = render(
-      <SnackbarProvider>
-        <ConsumeGiftForm
-          checkGiftCodeStatus={mockCheckGift}
-          claimGiftCode={jest.fn()}
-          selectedAccount={selectedAccount}
-        />
-      </SnackbarProvider>
-    );
-
-    const openGiftButton = container.querySelector(
-      '[data-testid="submit-button"]'
-    ) as HTMLInputElement;
-    const giftCodeField = container.querySelector('[id="giftCodeB58"]') as HTMLInputElement;
-
-    expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
-    expect(openGiftButton).toBeTruthy();
-    expect(openGiftButton.disabled).toBeTruthy();
-    expect(giftCodeField).toBeTruthy();
-    expect(giftCodeField.value).toBeFalsy();
-
-    await act(async () => userEvent.type(giftCodeField, '1234567890', { delay: 1 }));
-    await act(async () => userEvent.tab());
-    await waitFor(() => expect(giftCodeField.value).toEqual('1234567890'));
-    expect(openGiftButton.disabled).toBeFalsy();
-
-    await act(async () => userEvent.click(openGiftButton));
-    await waitFor(() => expect(container.innerHTML.includes('Gift Confirmation')).toBeFalsy());
-  });
-
-  test('rejects on claiming gift error', async () => {
-    const mockCheckGift = jest.fn().mockRejectedValue(new Error('SOMETHING WRONG'));
-
-    const { container } = render(
-      <SnackbarProvider>
-        <ConsumeGiftForm
-          checkGiftCodeStatus={mockCheckGift}
-          claimGiftCode={jest.fn()}
-          selectedAccount={selectedAccount}
-        />
-      </SnackbarProvider>
-    );
-
-    const openGiftButton = container.querySelector(
-      '[data-testid="submit-button"]'
-    ) as HTMLInputElement;
-    const giftCodeField = container.querySelector('[id="giftCodeB58"]') as HTMLInputElement;
-
-    expect(container.innerHTML.includes('Gift Details')).toBeTruthy();
-    expect(openGiftButton).toBeTruthy();
-    expect(openGiftButton.disabled).toBeTruthy();
-    expect(giftCodeField).toBeTruthy();
-    expect(giftCodeField.value).toBeFalsy();
-
-    await act(async () => userEvent.type(giftCodeField, '1234567890', { delay: 1 }));
-    await act(async () => userEvent.tab());
-    await waitFor(() => expect(giftCodeField.value).toEqual('1234567890'));
-    expect(openGiftButton.disabled).toBeFalsy();
-
-    await act(async () => userEvent.click(openGiftButton));
-    await waitFor(() => expect(container.innerHTML.includes('Gift Confirmation')).toBeFalsy());
+    await waitFor(() => expect(onClickClaimGift).toHaveBeenCalled());
   });
 });

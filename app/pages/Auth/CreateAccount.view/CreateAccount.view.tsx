@@ -3,13 +3,11 @@ import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import type { FormikHelpers } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, TermsOfUseDialog } from '../../../components';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { CreateAccountViewProps } from './CreateAccount.d';
 
 interface CreateAccountFormValues {
@@ -22,10 +20,8 @@ interface CreateAccountFormValues {
 }
 
 const CreateAccountView: FC<CreateAccountViewProps> = ({
-  createAccount,
-  setKeychainAccount,
+  onClickCreate,
 }: CreateAccountViewProps) => {
-  const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('CreateAccount');
   const [canCheck, setCanCheck] = useState(false);
   const [open, setOpen] = useState(false);
@@ -35,32 +31,8 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
     setOpen(false);
   };
 
-  const handleOnSubmit = async (
-    values: CreateAccountFormValues,
-    helpers: FormikHelpers<CreateAccountFormValues>
-  ) => {
-    const { setStatus, setErrors, setSubmitting } = helpers;
-    setSubmitting(true);
-
-    try {
-      await createAccount(values.accountName, values.password);
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      values.checkedSavePassword ? setKeychainAccount(values.accountName, values.password) : null;
-
-      /* istanbul ignore next */
-      if (isMountedRef.current) {
-        setStatus({ success: true });
-        setSubmitting(false);
-      }
-    } catch (err) {
-      /* istanbul ignore next */
-      if (isMountedRef.current) {
-        setStatus({ success: false });
-        setErrors({ submit: err.message });
-        setSubmitting(false);
-      }
-    }
-  };
+  const handleOnSubmit = async (values: CreateAccountFormValues) =>
+    onClickCreate(values.accountName, values.password, values.checkedSavePassword);
 
   return (
     <>

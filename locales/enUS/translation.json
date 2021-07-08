@@ -27,19 +27,15 @@
     "accountBalance": "Account Balance",
     "accountName": "Account Name",
     "cancel": "Cancel",
-    "confirmationNotFound": "Could not find confirmation",
     "confirmGift": "Confirm Gift",
     "createGift": "Create Gift",
     "enterPin": "For this amount your PIN is required",
     "error": "Hmm, something went wrong.",
-    "errorBuild": "Could not build gift code.",
     "errorFee": "Please reserve 0.01 MOB for transaction fee.",
     "errorSyncBeforeSending": "Wallet must sync with ledger before sending gifts.",
     "fee": "Fee",
-    "giftCanceled": "Gift Canceled",
     "giftConfirmation": "Gift Confirmation",
     "giftConfirmationDescription": "Please check and confirm the amount of the gift",
-    "giftCreated": "Gift created. Your balance will update shortly.",
     "giftDetails": "Gift Details",
     "giftValue": "Gift Value",
     "mobLabel": "MOB Amount",
@@ -61,7 +57,6 @@
     "clickToCopy": "Click to copy to clipboard",
     "clickToDelete": "Click to delete gift code",
     "deleteButton": "Delete",
-    "deleted": "Deleted.",
     "deleteDialogDescription": "If this gift has been claimed, or if you do not want to store the gift code and value anymore, you can delete the gift code here.",
     "deleteDialogText": "Deleting will not cancel the gift. A user must claim the gift with the gift code.",
     "deleteDialogTitle": "Delete Gift Code?",
@@ -80,7 +75,6 @@
     "changePasswordButton": "Change Passphrase",
     "checkSavePassword": "Save passphrase to keychain?",
     "description": "Changing your passphrase will change how we lock this wallet. Always use strong (unguessable) passphrases and change them regularly.",
-    "enqueue": "Successfully changed passphrase.",
     "formLabel": "Change Passphrase",
     "instructions": "To change your current passphrase, please enter your current passphrase and your new passphrase.",
     "newPasswordLabel": "New Passphrase",
@@ -101,7 +95,6 @@
     "currentPasswordLabel": "Current Passphrase",
     "currentPasswordRequired": "Your current passphrase is required to set or change your PIN",
     "description": "Your Transaction PIN is used as an extra safety measure. It is required if a transaction value is higher than the threshold MOB amount.",
-    "enqueue": "Successfully set PIN!",
     "errorPin": "PIN must be all digits",
     "formLabel": "PIN",
     "instructions": "To change your PIN or to create one, enter the desired PIN value below, and the minimum amount it applies to, as well.",
@@ -145,12 +138,10 @@
     "claimGift": "Claim Gift",
     "confirmation": "Gift Received. Your balance will update shortly.",
     "confirmationNotFound": "Could not find confirmation",
+    "description": "Use this form to collect gift codes. Enter the gift code and confirm you want to accept the gift into your wallet.",
     "error": "Hmm, something went wrong.",
     "fee": "Fee",
-    "giftB58Error": "Could not find gift with code.",
     "giftB58Validation": "You need a valid gift code to open a gift.",
-    "giftCanceled": "Gift Canceled",
-    "giftClaimed": "This gift has already been claimed!",
     "giftCode": "Gift Code",
     "giftConfirmation": "Gift Confirmation",
     "giftDetails": "Gift Details",
@@ -159,12 +150,8 @@
     "openGift": "Open Gift",
     "select": "Select Account",
     "total": "Total",
-    "unnamed": "Unnamed Account"
-  },
-
-  "ConsumeGiftPanel": {
     "title": "Open Gifts of MOB",
-    "description": "Use this form to collect gift codes. Enter the gift code and confirm you want to accept the gift into your wallet."
+    "unnamed": "Unnamed Account"
   },
 
   "ContactForm": {
@@ -255,6 +242,17 @@
   },
 
   "GiftingView": {
+    "confirmationNotFound": "Could not find confirmation",
+    "errorBuild": "Could not build gift code.",
+    "errorCreate": "Could not create gift.",
+    "giftB58Error": "Could not find gift with code.",
+    "giftCanceled": "Gift Canceled",
+    "giftConsumed": "Gift Consumed",
+    "giftClaimError": "Gift claim failed",
+    "giftConsumeError": "Gift consuming failed",
+    "giftCreated": "Gift created. Your balance will update shortly.",
+    "giftDeleted": "Deleted.",
+    "giftPreviouslyClaimed": "This gift has already been claimed!",
     "tabs": {
       "createGift": "Create Gift",
       "myGifts": "My Gifts",
@@ -449,7 +447,6 @@
     "confirmSend": "Confirm Send",
     "description": "Please enter the recipient’s address and the amount of MOB to send",
     "enterPin": "For this amount your PIN is required",
-    "error": "Could not build transaction.",
     "errorFee": "Please reserve 0.01 MOB for transaction fee.",
     "fee": "Fee",
     "intent": "Please check and confirm your payment amount",
@@ -469,12 +466,10 @@
     "senderPlus": "Sender Address (Your Address)",
     "senderPlus1": "Sender Address",
     "senderPlus2": "(Your Address)",
-    "success": "Successfully sent ",
     "syncing": "Wallet syncing...",
     "title": "Send MOB to an Address",
     "total": "Total",
     "transaction": "Transaction Details",
-    "transactionCanceled": "Transaction Canceled",
     "unnamed": "Unnamed Account"
   },
 
@@ -500,6 +495,11 @@
     "privacyPolicy": "Privacy Policy",
     "retrieveEntropy": "Retrieve Secret Entropy",
     "terms": "Terms of Use"
+  },
+
+  "SettingsPage": {
+    "changePasswordSuccess": "Successfully changed passphrase.",
+    "changePinSuccess": "Successfully set PIN!"
   },
 
   "ShowEntropyModal": {
@@ -564,7 +564,10 @@
 
   "TransactionView": {
     "receive": "Receive MOB",
-    "send": "Send MOB"
+    "send": "Send MOB",
+    "sendBuildError": "Could not build transaction.",
+    "sendSuccess": "Successfully sent ",
+    "transactionCanceled": "Transaction Canceled"
   },
 
   "UnlockAccount": {

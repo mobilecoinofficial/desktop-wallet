@@ -18,18 +18,8 @@ const VALID_PASSWORD = '12345678';
 const WRONG_PASSWORD = '123456789012345';
 const SHORT_PASSWORD = '12345';
 
-const setUpTest = (
-  importAccount = jest.fn(),
-  importLegacyAccount = jest.fn(),
-  setKeychainAccount = jest.fn()
-) => {
-  const { container } = render(
-    <ImportAccountView
-      setKeychainAccount={setKeychainAccount}
-      importAccount={importAccount}
-      importLegacyAccount={importLegacyAccount}
-    />
-  );
+const setUpTest = (onClickImport = jest.fn()) => {
+  const { container } = render(<ImportAccountView onClickImport={onClickImport} />);
   const nameField = container.querySelector(
     '[id="ImportAccountForm-accountNameField"]'
   ) as HTMLInputElement;
@@ -48,9 +38,8 @@ const setUpTest = (
   return {
     container,
     entropyField,
-    importAccount,
-    importLegacyAccount,
     nameField,
+    onClickImport,
     openTermsButton,
     pass1Field,
     pass2Field,
@@ -85,9 +74,8 @@ test('Submit button is enabled when all required fields (legacy entropy) are ent
   const {
     container,
     entropyField,
-    importAccount,
-    importLegacyAccount,
     nameField,
+    onClickImport,
     openTermsButton,
     pass1Field,
     pass2Field,
@@ -126,23 +114,15 @@ test('Submit button is enabled when all required fields (legacy entropy) are ent
   await waitFor(() => expect(submitButton.disabled).toBeFalsy());
 
   await act(async () => userEvent.click(submitButton));
-  await waitFor(() => expect(importAccount).not.toHaveBeenCalled());
-  await waitFor(() =>
-    expect(importLegacyAccount).toHaveBeenCalledWith(
-      SOME_NAME,
-      VALID_LEGACY_ENTROPY,
-      VALID_PASSWORD
-    )
-  );
+  await waitFor(() => expect(onClickImport).toHaveBeenCalled());
 });
 
 test('Submit button is enabled when all required fields (phrase entropy) are entered', async () => {
   const {
     container,
     entropyField,
-    importAccount,
-    importLegacyAccount,
     nameField,
+    onClickImport,
     openTermsButton,
     pass1Field,
     pass2Field,
@@ -161,10 +141,7 @@ test('Submit button is enabled when all required fields (phrase entropy) are ent
   await act(async () => userEvent.click(closeTermsButton));
   await act(async () => userEvent.click(termsCheckbox));
   await act(async () => userEvent.click(submitButton));
-  await waitFor(() =>
-    expect(importAccount).toHaveBeenCalledWith(SOME_NAME, VALID_PHRASE_ENTROPY, VALID_PASSWORD)
-  );
-  await waitFor(() => expect(importLegacyAccount).not.toHaveBeenCalled());
+  await waitFor(() => expect(onClickImport).toHaveBeenCalled());
 });
 
 test('Wrong legacy entropy is not accepted', async () => {

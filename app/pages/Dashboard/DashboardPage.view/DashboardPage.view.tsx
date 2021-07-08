@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const DashboardView: FC<DashboardPageProps> = ({
-  codeClicked,
+  onClickCode,
   onClose,
   selectedAccount,
 }: DashboardPageProps) => {
@@ -31,7 +31,7 @@ const DashboardView: FC<DashboardPageProps> = ({
           balance: selectedAccount.balanceStatus.unspentPmob,
           name: selectedAccount.account.name as string,
         }}
-        codeClicked={codeClicked}
+        onClickCode={onClickCode}
       />
       <Box py={2} />
       <CloseWalletModal onClose={onClose} />

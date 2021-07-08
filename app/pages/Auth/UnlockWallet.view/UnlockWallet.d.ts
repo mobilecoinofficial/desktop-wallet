@@ -1,3 +1,3 @@
 export interface UnlockWalletViewProps {
-  unlockWallet: (s: string) => void;
+  onClickUnlock: (password: string) => void;
 }

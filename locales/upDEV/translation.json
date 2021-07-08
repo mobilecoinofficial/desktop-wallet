@@ -80,7 +80,6 @@
     "changePasswordButton": "CHANGE PASSPHRASE",
     "checkSavePassword": "SAVE PASSPHRASE TO KEYCHAIN?",
     "description": "CHANGING YOUR PASSPHRASE WILL CHANGE HOW WE LOCK THIS WALLET. ALWAYS USE STRONG (UNGUESSABLE) PASSPHRASES AND CHANGE THEM REGULARLY.",
-    "enqueue": "SUCCESSFULLY CHANGED PASSPHRASE.",
     "formLabel": "CHANGE PASSPHRASE",
     "instructions": "TO CHANGE YOUR CURRENT PASSPHRASE, PLEASE ENTER YOUR CURRENT PASSPHRASE AND YOUR NEW PASSPHRASE.",
     "newPasswordLabel": "NEW PASSPHRASE",
@@ -101,7 +100,6 @@
     "currentPasswordLabel": "CURRENT PASSPHRASE",
     "currentPasswordRequired": "YOUR CURRENT PASSPHRASE IS REQUIRED TO SET OR CHANGE YOUR PIN",
     "description": "YOUR TRANSACTION PIN IS USED AS AN EXTRA SAFETY MEASURE. IT IS REQUIRED IF A TRANSACTION VALUE IS HIGHER THAN THE THRESHOLD MOB AMOUNT.",
-    "enqueue": "SUCCESSFULLY SET PIN!",
     "errorPin": "PIN MUST BE ALL DIGITS",
     "formLabel": "PIN",
     "instructions": "TO CHANGE YOUR PIN OR TO CREATE ONE, ENTER THE DESIRED PIN VALUE BELOW, AND THE MINIMUM AMOUNT IT APPLIES TO, AS WELL.",
@@ -145,6 +143,7 @@
     "claimGift": "CLAIM GIFT",
     "confirmation": "GIFT RECEIVED. YOUR BALANCE WILL UPDATE SHORTLY.",
     "confirmationNotFound": "COULD NOT FIND CONFIRMATION",
+    "description": "USE THIS FORM TO COLLECT GIFT CODES. ENTER THE GIFT CODE AND CONFIRM YOU WANT TO ACCEPT THE GIFT INTO YOUR WALLET.",
     "error": "HMM, SOMETHING WENT WRONG.",
     "fee": "FEE",
     "giftB58Error": "COULD NOT FIND GIFT WITH CODE.",
@@ -158,13 +157,9 @@
     "newBalance": "NEW BALANCE",
     "openGift": "OPEN GIFT",
     "select": "SELECT ACCOUNT",
+    "title": "OPEN GIFTS OF MOB",
     "total": "TOTAL",
     "unnamed": "UNNAMED ACCOUNT"
-  },
-
-  "ConsumeGiftPanel": {
-    "title": "OPEN GIFTS OF MOB",
-    "description": "USE THIS FORM TO COLLECT GIFT CODES. ENTER THE GIFT CODE AND CONFIRM YOU WANT TO ACCEPT THE GIFT INTO YOUR WALLET."
   },
 
   "ContactsBookView": {
@@ -505,6 +500,11 @@
     "privacyPolicy": "PRIVACY POLICY",
     "retrieveEntropy": "RETRIEVE SECRET ENTROPY",
     "terms": "TERMS OF USE"
+  },
+
+  "SettingsPage": {
+    "changePasswordSuccess": "SUCCESSFULLY CHANGED PASSPHRASE.",
+    "changePinSuccess": "SUCCESSFULLY SET PIN!"
   },
 
   "ShowEntropyModal": {

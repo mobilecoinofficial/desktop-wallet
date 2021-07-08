@@ -16,6 +16,5 @@ const Template: Story<ComponentProps<typeof RetrieveEntropyView>> = (args) => (
 export const RetrieveEntropy = Template.bind({});
 RetrieveEntropy.args = {
   accounts: [],
-  retrieveEntropy: () =>
-    Promise.resolve('220960220960120456120456220960220960120456120456220960220960120456120456'),
+  entropy: '',
 };

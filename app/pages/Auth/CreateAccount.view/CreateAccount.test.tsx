@@ -11,8 +11,8 @@ const VALID_PASSWORD = '12345678';
 const WRONG_PASSWORD = '123456789012345';
 const SHORT_PASSWORD = '12345';
 
-const setUpTest = (createAccount = jest.fn()) => {
-  const { container } = render(<CreateAccountView createAccount={createAccount} />);
+const setUpTest = (onClickCreate = jest.fn()) => {
+  const { container } = render(<CreateAccountView onClickCreate={onClickCreate} />);
   const nameField = container.querySelector(
     '[id="CreateAccountForm-accountNameField"]'
   ) as HTMLInputElement;
@@ -27,8 +27,8 @@ const setUpTest = (createAccount = jest.fn()) => {
   const submitButton = container.querySelector('[data-testid="submit-button"]') as HTMLInputElement;
   return {
     container,
-    createAccount,
     nameField,
+    onClickCreate,
     openTermsButton,
     pass1Field,
     pass2Field,
@@ -60,8 +60,8 @@ test('All fields appear correctly', () => {
 test('Submit button is enabled when all required fields (legacy entropy) are entered', async () => {
   const {
     container,
-    createAccount,
     nameField,
+    onClickCreate,
     openTermsButton,
     pass1Field,
     pass2Field,
@@ -96,7 +96,7 @@ test('Submit button is enabled when all required fields (legacy entropy) are ent
   expect(submitButton.disabled).toBeFalsy();
 
   await act(async () => userEvent.click(submitButton));
-  expect(createAccount).toHaveBeenCalledWith(SOME_NAME, VALID_PASSWORD);
+  expect(onClickCreate).toHaveBeenCalledWith(SOME_NAME, VALID_PASSWORD, false);
 });
 
 test('Too short password is not accepted', async () => {

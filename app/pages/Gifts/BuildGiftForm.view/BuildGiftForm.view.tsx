@@ -6,11 +6,9 @@ import {
   Box,
   Button,
   Container,
-  Fade,
   FormHelperText,
   FormLabel,
   InputAdornment,
-  LinearProgress,
   Slide,
   Modal,
   Typography,
@@ -18,7 +16,6 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
@@ -26,22 +23,10 @@ import { AccountCard } from '../../../components/AccountCard';
 import { MOBNumberFormat } from '../../../components/MOBNumberFormat';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { MOBIcon } from '../../../components/icons';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
-import type { TxProposal } from '../../../types/TxProposal';
-import {
-  convertMobStringToPicoMobString,
-  convertPicoMobStringToMob,
-} from '../../../utils/convertMob';
+import { convertPicoMobStringToMob } from '../../../utils/convertMob';
 import { BuildGiftFormProps } from './BuildGiftForm';
-
-const EMPTY_CONFIRMATION = {
-  feeConfirmation: 0n,
-  giftCodeB58: '',
-  totalValueConfirmation: 0n,
-  txProposal: {} as TxProposal,
-};
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -93,32 +78,23 @@ const useStyles = makeStyles((theme: Theme) => ({
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component manageable.
 const BuildGiftForm: FC<BuildGiftFormProps> = ({
-  buildGiftCode,
-  codeClicked,
-  feePmob,
-  getAllGiftCodes,
+  confirmation,
   existingPin,
-  isSyncedBuffered,
+  feePmob,
+  isSynced,
+  onClickCancelBuild,
+  onClickCode,
+  onClickConfirmBuild,
+  onClickCreateGift,
   pinThresholdPmob,
   selectedAccount,
-  submitGiftCode,
+  showModal,
 }: BuildGiftFormProps) => {
   const classes = useStyles();
-  const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
-  const [showModal, setShowModal] = useState(false);
   const [showCode, setShowCode] = useState(false);
-  const [isAwaitingConformation, setIsAwaitingConformation] = useState(false);
-  const [submittingConfimedGift, setSubmittingConfirmedGift] = useState(false);
   const [slideExitSpeed, setSlideExitSpeed] = useState(0);
-  const { enqueueSnackbar } = useSnackbar();
-  const isMountedRef = useIsMountedRef();
 
   const { t } = useTranslation('BuildGiftForm');
-
-  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
-  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
-
-  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   // TODO - consider adding minimum gift ~ 1 MOB
   // We'll use this array in prep for future patterns with multiple accounts
@@ -134,104 +110,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
     setSlideExitSpeed(1000);
     setShowCode(true);
   };
-
-  const handleClose = () => {
-    setSlideExitSpeed(0);
-    setShowCode(false);
-    setShowModal(false);
-    setIsAwaitingConformation(false);
-    setConfirmation(EMPTY_CONFIRMATION);
-    enqueueSnackbar(t('giftCanceled'), {
-      variant: 'warning',
-    });
-  };
-
-  const handleConfirm = (setErrors, setStatus) => async () => {
-    setSubmittingConfirmedGift(true);
-    setShowModal(false);
-    try {
-      if (confirmation.txProposal === null || confirmation.txProposal === undefined) {
-        throw new Error(t('confirmationNotFound'));
-      }
-      await submitGiftCode({
-        fromAccountId: selectedAccount.account.accountId,
-        giftCodeB58: confirmation.giftCodeB58,
-        txProposal: confirmation.txProposal,
-      });
-
-      await getAllGiftCodes();
-      /* istanbul ignore next */
-      if (isMountedRef.current) {
-        setStatus({ success: true });
-        setSubmittingConfirmedGift(false);
-        setIsAwaitingConformation(false);
-        setConfirmation(EMPTY_CONFIRMATION);
-        enqueueSnackbar(t('giftCreated'), {
-          variant: 'success',
-        });
-      }
-    } catch (err) {
-      /* istanbul ignore next */
-      if (isMountedRef.current) {
-        setStatus({ success: false });
-        setErrors({ submit: err.message });
-        setSubmittingConfirmedGift(false);
-        setIsAwaitingConformation(false);
-        setConfirmation(EMPTY_CONFIRMATION);
-        enqueueSnackbar(t('error'), {
-          variant: 'error',
-        });
-      }
-    }
-  };
-
-  // const createAccountLabel = (account: Account) => {
-  //   const name =
-  //     account.name && account.name.length > 0 ? `${account.name}: ` : `${t('unnamed')}: `;
-  //   return (
-  //     <Box display="flex" justifyContent="space-between">
-  //       <Typography color="textPrimary">
-  //         {name}
-  //         <ShortCode code={account.b58Code} />
-  //       </Typography>
-  //       <Typography color="textPrimary">
-  //         <MOBNumberFormat
-  //           value={account.balance.toString()} // TODO - have MOBNumberFormat take BigInt
-  //           valueUnit="pMOB"
-  //         />
-  //       </Typography>
-  //     </Box>
-  //   );
-  // };
-
-  // TODO - reintroduce with multiple accounts
-  // const renderSenderPublicAddressOptions = (accounts: Account[], isSubmitting: boolean) => (
-  //   <Box pt={2}>
-  //     <FormLabel className={classes.form} component="legend">
-  //       <Typography color="primary">{t('select')}</Typography>
-  //     </FormLabel>
-  //     <Field component={RadioGroup} name="senderPublicAddress">
-  //       <Box display="flex" justifyContent="space-between">
-  //         <Typography color="textPrimary">{t('accountName')}</Typography>
-  //         <Typography color="textPrimary">{t('accountBalance')}</Typography>
-  //       </Box>
-  //       {accounts.map((account: Account) => (
-  //         <FormControlLabel
-  //           key={account.b58Code}
-  //           value={account.b58Code}
-  //           control={<Radio disabled={isSubmitting} />}
-  //           label={createAccountLabel(account)}
-  //           labelPlacement="end"
-  //           disabled={isSubmitting}
-  //           classes={{
-  //             label: classes.label,
-  //             root: classes.formControlLabelRoot,
-  //           }}
-  //         />
-  //       ))}
-  //     </Field>
-  //   </Box>
-  // );
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
@@ -264,55 +142,11 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
           .positive(t('positiveValidation'))
           .required(t('positiveValidationRequired')),
       })}
-      onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
-        // On submit, let's build the TxProposal.
-        // On success, we set the TxProposal in state.
-        // That triggers the confirmation modal.
-        // In the modal, the user has to confirm that they have written the
-        // code down (similiar to create new account modal).
-        // After they do, they can "Create Gift"
-        try {
-          setIsAwaitingConformation(true);
-
-          const adjustedValue = Number(values.mobValue) + Number(values.feeAmount);
-
-          const result = await buildGiftCode({
-            accountId: selectedAccount.account.accountId,
-            valuePmob: convertMobStringToPicoMobString(String(adjustedValue)),
-          });
-
-          if (result === null || result === undefined) {
-            throw new Error(t('errorBuild'));
-          }
-
-          const { feeConfirmation, giftCodeB58, totalValueConfirmation, txProposal } = result;
-
-          setConfirmation({
-            feeConfirmation,
-            giftCodeB58,
-            totalValueConfirmation,
-            txProposal,
-          });
-
-          setShowModal(true);
-
-          /* istanbul ignore next */
-          if (isMountedRef.current) {
-            setSubmitting(false);
-            resetForm();
-          }
-        } catch (err) {
-          /* istanbul ignore next */
-          if (isMountedRef.current) {
-            setStatus({ success: false });
-            setErrors({ submit: err.message });
-            setSubmitting(false);
-            setIsAwaitingConformation(false);
-          }
-        }
+      onSubmit={async (values) => {
+        onClickCreateGift(values.mobValue, values.feeAmount);
       }}
     >
-      {({ errors, isSubmitting, isValid, dirty, submitForm, values, setErrors, setStatus }) => {
+      {({ errors, isSubmitting, isValid, dirty, submitForm, values }) => {
         const selectedBalance =
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
@@ -330,7 +164,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
         }
 
         let remainingBalance;
-        let totalSent;
+        let totalSent = 0;
         if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
           remainingBalance =
             selectedBalance -
@@ -381,7 +215,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
             <SubmitButton
               disabled={!dirty || !isSynced || !isValid || isSubmitting}
               onClick={submitForm}
-              isSubmitting={isAwaitingConformation || isSubmitting}
+              isSubmitting={isSubmitting}
             >
               {isSynced ? t('createGift') : `${t('walletSyncing')}...`}
             </SubmitButton>
@@ -390,7 +224,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
               aria-describedby="transition-modal-description"
               className={classes.modal}
               open={showModal}
-              onClose={handleClose}
+              onClose={onClickCancelBuild}
               closeAfterTransition
               BackdropComponent={Backdrop}
               BackdropProps={{
@@ -471,7 +305,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     </Typography>
                   </Box>
                   <Box py={1} />
-                  {/* TODO - after multiple accounts, we should actually store these gift codes. please check jira for full explation */}
+                  {/* TODO - after multiple accounts, we should actually store these gift codes. please check jira for full explanation */}
                   <Typography variant="body2" color="textPrimary">
                     {t('mobWillBeSent')}
                   </Typography>
@@ -483,7 +317,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                         b58Code: confirmation?.giftCodeB58,
                         name: t('pending'),
                       }}
-                      codeClicked={codeClicked}
+                      onClickCode={onClickCode}
                     />
                   ) : (
                     <Box display="flex" justifyContent="center" py={27}>
@@ -511,7 +345,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     <Button
                       className={classes.button}
                       color="secondary"
-                      onClick={handleClose}
+                      onClick={onClickCancelBuild}
                       size="large"
                       fullWidth
                       variant="contained"
@@ -527,7 +361,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                         !showCode || (isPinRequiredForTransaction && values.pin !== existingPin)
                       }
                       fullWidth
-                      onClick={handleConfirm(setErrors, setStatus)}
+                      onClick={onClickConfirmBuild}
                       variant="contained"
                       id="confirm-modal"
                     >
@@ -536,24 +370,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                   </Box>
                 </Container>
               </Slide>
-            </Modal>
-            <Modal
-              className={classes.modal}
-              open={submittingConfimedGift}
-              closeAfterTransition
-              disableAutoFocus
-              disableEnforceFocus
-              disableBackdropClick
-              BackdropComponent={Backdrop}
-              BackdropProps={{
-                timeout: 1000,
-              }}
-            >
-              <Fade in={submittingConfimedGift} timeout={{ enter: 15000, exit: 0 }}>
-                <Box width="100%" p={3}>
-                  <LinearProgress />
-                </Box>
-              </Fade>
             </Modal>
           </Form>
         );

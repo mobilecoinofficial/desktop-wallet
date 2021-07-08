@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const AccountCard: FC<AccountCardProps> = ({
   account,
   isGift,
-  codeClicked,
+  onClickCode,
   ...rest
 }: AccountCardProps) => {
   const [isQRCode, setIsQRCode] = useState(false);
@@ -59,7 +59,7 @@ const AccountCard: FC<AccountCardProps> = ({
   const mobUrl = `mob:///b58/${b58Code}`;
 
   const handleCodeClicked = () => {
-    codeClicked(b58Code, isGift ? t('clipboardGift') : t('clipboardAddress'));
+    onClickCode(b58Code, isGift ? t('clipboardGift') : t('clipboardAddress'));
   };
 
   const handleToggleClick = () => {

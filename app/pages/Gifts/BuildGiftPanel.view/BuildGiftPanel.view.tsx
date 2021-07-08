@@ -23,13 +23,11 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
 import { AccountCard, MOBNumberFormat } from '../../../components';
 import { ShortCode } from '../../../components/ShortCode';
 import { CopyIcon, TrashcanIcon } from '../../../components/icons';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import { BuildGiftForm } from '../BuildGiftForm.view';
 import type { BuildGiftPanelProps } from './BuildGiftPanel.d';
 
@@ -45,22 +43,22 @@ const useStyles = makeStyles(() => ({
 }));
 
 const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
-  codeClicked,
-  deleteStoredGiftCodeB58,
-  feePmob,
-  getAllGiftCodes,
-  giftCodes,
-  buildGiftCode,
+  confirmation,
   existingPin,
+  feePmob,
+  giftCodes,
   handleCopyClick,
-  isSyncedBuffered,
+  isSynced,
+  onClickCancelBuild,
+  onClickCode,
+  onClickConfirmBuild,
+  onClickCreateGift,
+  onClickDeleteGiftCode,
   pinThresholdPmob,
   selectedAccount,
-  submitGiftCode,
+  showModal,
 }: BuildGiftPanelProps) => {
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
-  const isMountedRef = useIsMountedRef();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pendingDeleteCode, setPendingDeleteCode] = useState(EMPTY_PENDING_DELETE_CODE);
 
@@ -78,20 +76,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
 
   const handleConfirmDelete = async () => {
     handleDialogClose();
-    try {
-      await deleteStoredGiftCodeB58(pendingDeleteCode[0]);
-      await getAllGiftCodes();
-      enqueueSnackbar(t('deleted'), {
-        variant: 'success',
-      });
-    } catch (err) {
-      /* istanbul ignore next */
-      if (isMountedRef.current) {
-        enqueueSnackbar(err.message, {
-          variant: 'error',
-        });
-      }
-    }
+    onClickDeleteGiftCode(pendingDeleteCode[0]);
   };
 
   return (
@@ -111,15 +96,17 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
           </Box>
           <Box flexGrow={1} mt={3}>
             <BuildGiftForm
-              buildGiftCode={buildGiftCode}
+              confirmation={confirmation}
               existingPin={existingPin}
               feePmob={feePmob}
-              getAllGiftCodes={getAllGiftCodes}
-              isSyncedBuffered={isSyncedBuffered}
+              isSynced={isSynced}
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}
-              submitGiftCode={submitGiftCode}
-              codeClicked={codeClicked}
+              onClickCancelBuild={onClickCancelBuild}
+              onClickCode={onClickCode}
+              onClickConfirmBuild={onClickConfirmBuild}
+              onClickCreateGift={onClickCreateGift}
+              showModal={showModal}
             />
           </Box>
         </CardContent>
@@ -211,7 +198,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                       b58Code: pendingDeleteCode[0],
                       name: 'Gift Code',
                     }}
-                    codeClicked={codeClicked}
+                    onClickCode={onClickCode}
                   />
                   <Box py={2} display="flex" justifyContent="space-between">
                     <Typography color="textPrimary">{t('giftValue')}</Typography>
@@ -238,11 +225,6 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
       )}
     </Container>
   );
-};
-
-BuildGiftPanel.defaultProps = {
-  deleteStoredGiftCodeB58: () => {},
-  giftCodes: [],
 };
 
 export default BuildGiftPanel;

@@ -13,13 +13,11 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
-import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import { PASSWORD_MIN_SIZE, PASSWORD_MAX_SIZE } from '../../../constants/codes';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { ChangePasswordViewProps } from './ChangePassword';
 
@@ -76,13 +74,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ChangePasswordView: FC<ChangePasswordViewProps> = ({
   accounts,
-  changePassword,
   onClickBack,
-  setKeychainAccount,
+  onClickChangePassword,
 }: ChangePasswordViewProps) => {
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
-  const isMountedRef = useIsMountedRef();
   const { t } = useTranslation('ChangePasswordView');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -138,33 +133,9 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
               .required(t('passwordConfirmationRequired')),
             password: Yup.string().required(t('oldPasswordRequired')),
           })}
-          onSubmit={async (values, { setErrors, setStatus, setSubmitting, resetForm }) => {
-            try {
-              setSubmitting(true);
-              if (values.checkedSavePassword) {
-                const currentAccount = accounts[0].account;
-                await changePassword(values.password, values.newPassword);
-                setKeychainAccount(currentAccount, values.newPassword);
-              } else {
-                await changePassword(values.password, values.newPassword);
-              }
-              if (isMountedRef.current) {
-                enqueueSnackbar(t('enqueue'), {
-                  variant: 'success',
-                });
-                setStatus({ success: true });
-                setSubmitting(false);
-                resetForm();
-              }
-            } catch (err) {
-              /* istanbul ignore next */
-              if (isMountedRef.current) {
-                setStatus({ success: false });
-                setErrors({ submit: err.message });
-                setSubmitting(false);
-              }
-            }
-          }}
+          onSubmit={async (values) =>
+            onClickChangePassword(values.password, values.newPassword, values.checkedSavePassword)
+          }
         >
           {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm, values }) => (
             <Form>

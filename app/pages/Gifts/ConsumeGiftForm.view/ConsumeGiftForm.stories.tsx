@@ -43,9 +43,25 @@ const selectedAccount = {
   },
 };
 
-export const GiftForm = Template.bind({});
-GiftForm.args = {
-  checkGiftCodeStatus: () => undefined,
-  claimGiftCode: () => undefined,
+const confirmation = {
+  giftCodeB58:
+    'KT2xjDefXi3g4ZS1hEiwZxSx7zS2WYxpkuXVgXPi7RHj3xxSeyL2JXvkytY9V4a1aNVuPGgmjCoMjiZhwCiWtc1rodSmV6jib92oWso5',
+  giftCodeStatus: 'GiftCodeAvailable',
+  giftValue: 1000400000000,
+};
+
+export const InitialForm = Template.bind({});
+InitialForm.args = {
+  confirmation,
+  feePmob: '0.004',
   selectedAccount,
+  showModal: false,
+};
+
+export const ConfirmationForm = Template.bind({});
+ConfirmationForm.args = {
+  confirmation,
+  feePmob: '0.004',
+  selectedAccount,
+  showModal: true,
 };

@@ -69,7 +69,6 @@
     "changePasswordBreadcrumb": "修改密码",
     "changePasswordButton": "确认修改",
     "description": "修改密码将会同时改变您备份口令的加密方式。我们推荐您使用不容易被猜到的复杂密码并定期更换密码。",
-    "enqueue": "密码修改成功。",
     "formLabel": "修改密码",
     "instructions": "请输入当前密码和新密码以修改您的密码。",
     "newPasswordLabel": "新密码",
@@ -89,7 +88,6 @@
     "currentPasswordLabel": "当前密码",
     "currentPasswordRequired": "请输入您的密码以修改 PIN 码",
     "description": "为了保证您的安全，当交易金额超过您设定的阈值时，您将需要使用您的 PIN 码来确认交易。",
-    "enqueue": "PIN 码设置成功。",
     "errorPin": "PIN 码必须为数字",
     "formLabel": "在此处输入您的PIN",
     "instructions": "请在下方设置您的 PIN 码并设定触发 PIN 码的阈值。",
@@ -129,6 +127,7 @@
     "claimGift": "领取红包",
     "confirmation": "红包已领取，正在更新余额。",
     "confirmationNotFound": "红包尚未确认",
+    "description": "请在下方输入红包码来收取红包。",
     "error": "抱歉，出了点问题。",
     "fee": "手续费",
     "giftB58Error": "无法找到红包。",
@@ -142,12 +141,9 @@
     "newBalance": "新余额",
     "openGift": "打开红包",
     "select": "选择账户",
+    "title": "收取 MOB 红包",
     "total": "总计",
     "unnamed": "未命名账户"
-  },
-  "ConsumeGiftPanel": {
-    "title": "收取 MOB 红包",
-    "description": "请在下方输入红包码来收取红包。"
   },
   "ContactsBookView": {
     "added": "已添加联系人",
@@ -437,6 +433,10 @@
     "privacyPolicy": "隐私条款",
     "retrieveEntropy": "查看备份口令",
     "terms": "用户条款"
+  },
+  "SettingsPage": {
+    "changePasswordSuccess": "密码修改成功。",
+    "changePinSuccess": "PIN 码设置成功。"
   },
   "ShowEntropyModal": {
     "back": "返回",

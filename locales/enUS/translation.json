@@ -563,6 +563,7 @@
   },
 
   "TransactionView": {
+    "mob": "MOB",
     "receive": "Receive MOB",
     "send": "Send MOB",
     "sendBuildError": "Could not build transaction.",

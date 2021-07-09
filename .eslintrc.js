@@ -14,8 +14,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:testing-library/react',
     'plugin:prettier/recommended',
-    'prettier/@typescript-eslint',
-    'prettier/react',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -70,6 +69,9 @@ module.exports = {
       },
     ],
     'sort-vars': 'error',
+    'testing-library/no-container': 'off',
+    'testing-library/no-node-access': 'off',
+    'testing-library/prefer-screen-queries': 'off',
   },
   settings: {
     'import/parsers': {

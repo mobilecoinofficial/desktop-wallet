@@ -173,14 +173,8 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case IMPORT_ACCOUNT: {
-      const {
-        accounts,
-        addresses,
-        encryptedPassphrase,
-        secretKey,
-        selectedAccount,
-        walletStatus,
-      } = (action as ImportAccountActionType).payload;
+      const { accounts, addresses, encryptedPassphrase, secretKey, selectedAccount, walletStatus } =
+        (action as ImportAccountActionType).payload;
       return {
         ...state,
         accounts,

@@ -13,10 +13,8 @@ const changePassword = async (oldPassword: string, newPassword: string): Promise
     }
 
     await validatePassphrase(oldPassword, encryptedPassphrase);
-    const {
-      secretKey,
-      encryptedPassphrase: newEncryptedPassphrase,
-    } = await encryptAndStorePassphrase(newPassword);
+    const { secretKey, encryptedPassphrase: newEncryptedPassphrase } =
+      await encryptAndStorePassphrase(newPassword);
 
     // delete encrypted PIN based on old secretKey, re-encyrpt and save to local store
     deleteEncryptedPin();

@@ -1,14 +1,13 @@
-/*
 import React from 'react';
 
-import { act, waitFor, render } from '@testing-library/react';
+import { act, waitFor, fireEvent, render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 
 import '../../../testUtils/i18nForTests';
 import { ContactForm } from './ContactForm.view';
 
-describe.skip('Contact form', () => {
+describe('Contact form', () => {
   test('shows old contact', async () => {
     const handleClick1 = jest.fn();
     const handleClick2 = jest.fn();
@@ -77,7 +76,7 @@ describe.skip('Contact form', () => {
     await act(async () => userEvent.type(contactAlias, 'A NEW NAME', { delay: 1 }));
     await act(async () => userEvent.tab());
     await waitFor(() => expect(updateButton.disabled).toBeFalsy());
-    await act(async () => userEvent.click(updateButton));
+    await act(async () => fireEvent.click(updateButton));
     await waitFor(() => expect(handleClick3).toHaveBeenCalled());
   });
 
@@ -118,7 +117,7 @@ describe.skip('Contact form', () => {
     await act(async () => userEvent.click(cancelButton));
     expect(handleClick1).toHaveBeenCalled();
 
-    await act(async () => userEvent.click(updateButton));
+    await act(async () => fireEvent.click(updateButton));
     expect(handleClick3).not.toHaveBeenCalled(); // missing data, so no call
 
     const contactAlias = container.querySelector('[id="contact-alias"]') as HTMLInputElement;
@@ -143,7 +142,7 @@ describe.skip('Contact form', () => {
       userEvent.type(contactRecipientAddress, '1014789234789234789234789', { delay: 1 })
     );
     await act(async () => userEvent.tab());
-    await act(async () => userEvent.click(updateButton));
+    await act(async () => fireEvent.click(updateButton));
     expect(handleClick3).toHaveBeenCalled(); // all data, so call
   });
 
@@ -180,8 +179,7 @@ describe.skip('Contact form', () => {
     await act(async () => userEvent.click(cancelButton));
     expect(handleClick1).toHaveBeenCalled();
 
-    await act(async () => userEvent.click(updateButton));
+    await act(async () => fireEvent.click(updateButton));
     expect(handleClick3).not.toHaveBeenCalled();
   });
 });
-*/

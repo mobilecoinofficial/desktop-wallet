@@ -1,4 +1,3 @@
-/*
 import React from 'react';
 
 import { act, render, waitFor } from '@testing-library/react';
@@ -158,7 +157,7 @@ const getModalData = (container: HTMLElement) => {
   };
 };
 
-xdescribe('Send Mob', () => {
+describe('Send Mob', () => {
   test('All fields appear correctly if contacts are provided', async () => {
     const { contactsSelect, recipientAddress, saveToContactsCheck, submitButton } = setUpTest({
       contacts: CONTACTS,
@@ -186,16 +185,11 @@ xdescribe('Send Mob', () => {
   });
 
   test('Submit and save to contact are enabled, submit sends the transaction', async () => {
-    const {
-      mobAmount,
-      onClickSend,
-      recipientAddress,
-      saveToContactsCheck,
-      submitButton,
-    } = setUpTest({
-      contacts: [],
-      showing: 0,
-    });
+    const { mobAmount, onClickSend, recipientAddress, saveToContactsCheck, submitButton } =
+      setUpTest({
+        contacts: [],
+        showing: 0,
+      });
 
     await act(async () => userEvent.type(recipientAddress, PUBLIC_ADDRESS, { delay: 1 }));
     await waitFor(() => expect(recipientAddress.value).toEqual(PUBLIC_ADDRESS));
@@ -269,4 +263,3 @@ xdescribe('Send Mob', () => {
     await waitFor(() => expect(recipientAddress.disabled).toBeTruthy());
   });
 });
-*/

@@ -20,6 +20,7 @@ import type { StringHex } from '../../../types/SpecialStrings';
 import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
+import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
 
@@ -192,6 +193,8 @@ const SendReceivePage: FC = () => {
     />
   );
 
+  const PaymentRequestWithParams = () => <PaymentRequest selectedAccount={selectedAccount} />;
+
   useEffect(getFeePmob, []);
 
   return (
@@ -208,9 +211,10 @@ const SendReceivePage: FC = () => {
           >
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
+            <Tab label="Payment Requests" />
           </Tabs>
           <TabPanel
-            panels={[SendMobWithParams, ReceiveMobWithParams]}
+            panels={[SendMobWithParams, ReceiveMobWithParams, PaymentRequestWithParams]}
             selectedTabIndex={selectedTabIndex}
           />
         </Grid>

@@ -149,12 +149,8 @@ const SendReceivePage: FC = () => {
         throw new Error(t('sendBuildError'));
       }
 
-      const {
-        feeConfirmation,
-        totalValueConfirmation,
-        txProposal,
-        txProposalReceiverB58Code,
-      } = result;
+      const { feeConfirmation, totalValueConfirmation, txProposal, txProposalReceiverB58Code } =
+        result;
 
       setConfirmation({
         feeConfirmation,

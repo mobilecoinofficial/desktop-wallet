@@ -495,7 +495,7 @@ const SendMob: FC<SendMobProps> = ({
                               id="cancelSend"
                               className={classes.button}
                               color="secondary"
-                              disabled={!isValid || isSubmitting}
+                              disabled={isSubmitting}
                               onClick={handleClose(setSubmitting)}
                               size="large"
                               fullWidth
@@ -509,7 +509,6 @@ const SendMob: FC<SendMobProps> = ({
                               className={classes.button}
                               color="secondary"
                               disabled={
-                                !isValid ||
                                 isSubmitting ||
                                 (isPinRequiredForTransaction && values.pin !== existingPin)
                               }

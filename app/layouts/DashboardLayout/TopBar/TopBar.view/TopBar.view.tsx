@@ -51,11 +51,6 @@ const sections = [
     label: 'settings',
     path: routePaths.APP_SETTINGS,
   },
-  {
-    Icon: CogIcon,
-    label: 'crash',
-    path: routePaths.APP_CRASH_LOG,
-  },
 ];
 
 const TopBar: FC = () => {

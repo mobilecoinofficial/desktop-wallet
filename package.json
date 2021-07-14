@@ -34,8 +34,7 @@
     "test-all": "yarn lint && yarn tsc && yarn build && yarn test",
     "test-watch": "yarn test --watch",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "prepare": "husky install"
+    "build-storybook": "build-storybook"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

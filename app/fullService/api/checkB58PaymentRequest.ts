@@ -21,10 +21,7 @@ const checkB58PaymentRequest = async (
   const res = await axiosFullService(CHECK_B58_TYPE_METHOD, { b58Code });
   console.log(res);
 
-  if (res.error) {
-    return res.error;
-  }
-  if (res.result.b58Type !== 'PaymentRequest') {
+  if (res.error || res.result.b58Type !== 'PaymentRequest') {
     return { error: 'Invalid payment request code.' };
   }
   return res.result.data;

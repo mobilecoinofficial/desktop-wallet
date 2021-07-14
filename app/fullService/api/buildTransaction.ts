@@ -49,7 +49,8 @@ const buildTransaction = async ({
     }
   );
   if (error) {
-    throw new Error(error);
+    console.log(error);
+    throw new Error(error.data.details);
   }
 
   const { txProposal } = result;
@@ -62,7 +63,7 @@ const buildTransaction = async ({
     .reduce((acc, cur) => acc + cur, BigInt(0));
 
   const feeConfirmation = BigInt(txProposal.fee);
-
+  console.log(feeConfirmation, totalValueConfirmation, txProposal, txProposalReceiverB58Code);
   return {
     feeConfirmation,
     totalValueConfirmation,

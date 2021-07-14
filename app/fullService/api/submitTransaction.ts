@@ -22,7 +22,8 @@ const submitTransaction = async ({
     accountId,
     txProposal,
   });
-
+console.log(result)
+console.log(error)
   if (error) {
     // TODO - I'll write up a better error handler
     throw new Error(error);

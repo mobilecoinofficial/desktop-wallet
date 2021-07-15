@@ -52,11 +52,13 @@
     ]
   },
   "build": {
-    "productName": "MobileCoin-Desktop-Wallet-beta-v030",
-    "appId": "",
+    "productName": "MobileCoin-Desktop-Wallet-beta-v040",
+    "appId": "com.mobilecoin.vault",
     "files": [
       "dist/",
       "node_modules/",
+      "app/node_modules/",
+      "app/package.json",
       "app.html",
       "main.prod.js",
       "main.prod.js.map",
@@ -113,7 +115,12 @@
       "repo": "desktop-wallet",
       "owner": "mobilecoinofficial",
       "private": true
-    }
+    },
+    "mac": {
+      "hardenedRuntime": true,
+      "entitlements": "./build/entitlements.mac.inherit.plist"
+    },
+    "afterSign": "./afterSignHook.js"
   },
   "author": {
     "name": "MobileCoin, Inc.",
@@ -235,6 +242,7 @@
     "electron": "^13.1.6",
     "electron-builder": "^22.11.7",
     "electron-devtools-installer": "^3.2.0",
+    "electron-notarize": "^1.0.0",
     "electron-rebuild": "^2.3.4",
     "eslint": "^7.30.0",
     "eslint-config-airbnb": "^18.2.0",
@@ -252,7 +260,7 @@
     "eslint-plugin-testcafe": "^0.2.1",
     "eslint-plugin-testing-library": "^4.9.0",
     "file-loader": "^6.0.0",
-    "husky": "^7.0.0",
+    "husky": "^7.0.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.0.6",
     "jest-canvas-mock": "^2.3.0",

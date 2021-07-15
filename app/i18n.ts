@@ -16,7 +16,7 @@ if (!i18n.isInitialized) {
       escapeValue: false, // not needed for react as it escapes by default
     },
     react: {
-      wait: false,
+      useSuspense: true,
     },
     resources: {
       enUS,

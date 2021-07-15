@@ -23,7 +23,7 @@ const i18nextOptions = {
     escapeValue: false,
   },
   react: {
-    wait: false,
+    useSuspense: true,
   },
   supportedLngs: config.languages,
 };

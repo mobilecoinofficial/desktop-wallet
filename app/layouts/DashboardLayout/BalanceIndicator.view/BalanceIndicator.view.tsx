@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 25,
   },
   item: {
-    padding: theme.spacing(3, 0, 0, 0),
+    padding: theme.spacing(1, 0, 0, 0),
     textAlign: 'center',
   },
   valueContainer: {

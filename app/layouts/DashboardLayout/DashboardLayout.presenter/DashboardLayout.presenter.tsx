@@ -51,7 +51,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: Dashbo
     <Box className={classes.root}>
       <TopBar />
       <Box className={classes.wrapper}>
-        <Box display="flex" flexDirection="column" p={3}>
+        <Box display="flex" flexDirection="column" p={1}>
           <SyncStatus selectedAccount={selectedAccount} sendSyncStatus={sendSyncStatus} />
           <BalanceIndicator
             balance={selectedAccount.balanceStatus.unspentPmob}

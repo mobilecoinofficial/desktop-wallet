@@ -7737,7 +7737,7 @@ ejs@^3.1.6:
   dependencies:
     jake "^10.6.1"
 
-electron-builder@^22.9.1:
+electron-builder@^22.11.7:
   version "22.11.7"
   resolved "https://registry.yarnpkg.com/electron-builder/-/electron-builder-22.11.7.tgz#cd97a0d9f6e6d388112e66b4376de431cca4d596"
   integrity sha512-yQExSLt7Hbz/P8lLkZDdE/OnJJ7NCX+uiQcV+XIH0TeEZcD87ZnSqBBzGUN5akySU4BXXlrVZKeUsXACWrm5Kw==
@@ -7763,7 +7763,7 @@ electron-debug@^3.1.0:
     electron-is-dev "^1.1.0"
     electron-localshortcut "^3.1.0"
 
-electron-devtools-installer@^3.1.1:
+electron-devtools-installer@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/electron-devtools-installer/-/electron-devtools-installer-3.2.0.tgz#acc48d24eb7033fe5af284a19667e73b78d406d0"
   integrity sha512-t3UczsYugm4OAbqvdImMCImIMVdFzJAHgbwHpkl5jmfu1izVgUcP/mnrPqJIpEeCK1uZGpt+yHgWEN+9EwoYhQ==
@@ -7874,10 +7874,10 @@ electron-updater@^4.3.9:
     lodash.isequal "^4.5.0"
     semver "^7.3.5"
 
-electron@^12.0.2:
-  version "12.0.14"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-12.0.14.tgz#7c5547f8248633a4bbbba89c88c57aa9e6410892"
-  integrity sha512-RcU++BiL+DlwhP62sUTasjAOwXOloWQS3oLk4PE0s2eERNs7hr2LoKqbUpbShw9nY+aqNw4mgd+ojyBJsOE2fg==
+electron@^13.1.6:
+  version "13.1.6"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-13.1.6.tgz#6ecaf969255d62ce82cc0b5c948bf26e7dfb489b"
+  integrity sha512-XiB55/JTaQpDFQrD9pulYnOGwaWeMyRIub5ispvoE2bWBvM5zVMLptwMLb0m3KTMrfSkzhedZvOu7fwYvR7L7Q==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^14.6.2"

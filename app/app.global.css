@@ -10,7 +10,7 @@ body {
   height: 100vh;
   background-color: black;
   font-family: 'Lucida Console', Monaco, monospace;
-  overflow-y: hidden;
+  overflow: auto;
   letter-spacing: 4px;
 }
 

@@ -239,7 +239,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     <Typography variant="h1" color="textPrimary">
                       {t('giftConfirmation')}
                     </Typography>
-                    {/* <Typography variant="p" color="textPrimary"> */}
                     <Typography color="textPrimary">{t('giftConfirmationDescription')}:</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">

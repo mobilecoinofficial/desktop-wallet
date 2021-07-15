@@ -91,7 +91,7 @@ const AuthPage: FC = () => {
     const onClickUnlock = async (pwd: string) => {
       if (pwd) {
         try {
-          await ipcRenderer.invoke('logged-in');
+          // FK await ipcRenderer.invoke('logged-in');
           await unlockWallet(pwd);
         } catch (e) {
           setUnlocked(!e.message.includes('Invalid Password'));

@@ -532,7 +532,11 @@ const SendMob: FC<SendMobProps> = ({
                     <Modal
                       className={classes.modal}
                       open={showing === Showing.SEND_FORM}
-                      onClose={(_e, _reason:"backdropClick") => true}
+                       onClose={(event, reason) => {
+                           if (reason !== 'backdropClick') {
+                             onClose(event, reason);
+                           }
+                         }}
                       closeAfterTransition
                       disableAutoFocus
                       disableEnforceFocus

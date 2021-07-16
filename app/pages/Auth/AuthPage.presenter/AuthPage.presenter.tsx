@@ -19,7 +19,7 @@ import {
 } from '../../../services';
 import type { Theme } from '../../../theme';
 import { isHex64 } from '../../../utils/bip39Functions';
-import { setKeychainAccount /* , getKeychainAccounts */ } from '../../../utils/keytarService';
+import { setKeychainAccount , getKeychainAccounts  } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { ImportAccountView } from '../ImportAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
@@ -104,7 +104,7 @@ const AuthPage: FC = () => {
         <Container className={classes.viewContainer} maxWidth="sm">
           <LogoIcon className={classes.logoIcon} />
           <Card className={classes.cardContainer}>
-            <UnlockWalletView onClickUnlock={onClickUnlock} />
+            <UnlockWalletView onClickUnlock={onClickUnlock} accounts={getKeychainAccounts()}/>
           </Card>
         </Container>
       </Box>

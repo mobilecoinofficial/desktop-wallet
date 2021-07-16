@@ -107,14 +107,12 @@ const SettingsPage: FC = () => {
   };
 
   const onClickRetrieveEntropy = async (password: string) => {
-    console.log('RETRIEVING', password);
     try {
       const entropyString = await retrieveEntropy(password);
 
       if (typeof entropyString !== 'string') {
         throw new Error(t('error'));
       }
-      console.log('GOT', entropyString);
       setEntropy(entropyString);
     } catch (err) {
       console.log('ERROR!!!', err);

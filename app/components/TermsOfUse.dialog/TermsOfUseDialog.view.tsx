@@ -11,7 +11,13 @@ const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
   const { t } = useTranslation('TermsOfUseDialog');
 
   return (
-    <Dialog fullScreen open={open} disableEscapeKeyDown disableBackdropClick>
+    <Dialog fullScreen open={open}
+    onClose={(event, reason) => {
+         if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+           onClose(event, reason);
+         }
+       }}
+    >
       <Container maxWidth="md">
         <TermsOfUse />
         <Box p={2}>

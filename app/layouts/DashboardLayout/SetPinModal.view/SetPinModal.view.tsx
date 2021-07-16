@@ -62,6 +62,11 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
       aria-describedby="transition-modal-description"
       className={classes.modal}
       open={isShown}
+      onClose={(event, reason) => {
+        if (reason !== 'backdropClick') {
+          onClose(event, reason);
+        }
+      }}
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
@@ -69,7 +74,6 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
       }}
       disableAutoFocus
       disableEnforceFocus
-      disableBackdropClick
     >
       <Fade in={isShown}>
         <Container className={classes.paper} maxWidth="sm">

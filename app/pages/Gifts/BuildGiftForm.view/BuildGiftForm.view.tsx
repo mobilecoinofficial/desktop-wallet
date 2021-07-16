@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
-    margin: '4rem',
+    margin: '2rem',
     maxHeight: '-webkit-fill-available',
     maxWidth: 800,
     overflow: 'auto',

@@ -1,7 +1,7 @@
 export const APP_VERSION = process.env.npm_package_version;
 
-export const MIN_WINDOW_HEIGHT = 760;
-export const MIN_WINDOW_WIDTH = 720;
+export const MIN_WINDOW_HEIGHT = 480;
+export const MIN_WINDOW_WIDTH = 640;
 
 export const HISTORY_PAGE_SIZE = 5; // for usage in Transaction History
 

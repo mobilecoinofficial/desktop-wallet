@@ -14,7 +14,7 @@ import 'regenerator-runtime/runtime';
 import { exec, spawn } from 'child_process';
 import path from 'path';
 
-import { app, BrowserWindow, dialog, ipcMain, nativeTheme } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
@@ -119,9 +119,10 @@ const createWindow = async () => {
     : path.join(__dirname, '../resources');
 
   const getAssetPath = (...paths: string[]): string => path.join(RESOURCES_PATH, ...paths);
+  const { height } = screen.getPrimaryDisplay().workAreaSize
 
   mainWindow = new BrowserWindow({
-    height: INITIAL_WINDOW_HEIGHT,
+    height: height < INITIAL_WINDOW_HEIGHT ? height : INITIAL_WINDOW_HEIGHT,
     icon: getAssetPath('icon.png'),
     minHeight: MIN_WINDOW_HEIGHT,
     minWidth: MIN_WINDOW_WIDTH,

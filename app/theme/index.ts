@@ -1,5 +1,6 @@
-import { createMuiTheme, responsiveFontSizes } from '@material-ui/core';
-import type { Theme as MuiTheme } from '@material-ui/core/styles/createMuiTheme';
+import { responsiveFontSizes } from '@material-ui/core';
+import { createTheme } from '@material-ui/core/styles'
+import type { Theme as MuiTheme } from '@material-ui/core/styles/createTheme';
 import type {
   Palette as MuiPalette,
   TypeBackground as MuiTypeBackground,
@@ -76,7 +77,7 @@ export const setTheme = (config: ThemeConfig = {}): Theme => {
     [themeOptions] = themesOptions;
   }
 
-  let theme = createMuiTheme({
+  let theme = createTheme({
     ...baseOptions,
     ...themeOptions,
   });

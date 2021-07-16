@@ -12,7 +12,7 @@ const SettingsOptionsList: FC<SettingsOptionsListProps> = ({
 }: SettingsOptionsListProps) => (
   <Grid container spacing={2}>
     <Grid item sm={12}>
-      <Grid container justify="center" spacing={3}>
+      <Grid container justifyContent="center" spacing={3}>
         {settingOptionsList.map(({ Icon, label, path }) => (
           <SettingsOptionsItem
             Icon={Icon}

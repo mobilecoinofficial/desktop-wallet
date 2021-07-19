@@ -58,11 +58,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: 'center',
     display: 'flex',
     justifyContent: 'center',
+    overflow: 'auto',
   },
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
+    margin: '2rem',
+    maxHeight: '-webkit-fill-available',
+    maxWidth: 800,
+    overflow: 'auto',
     padding: theme.spacing(2, 4, 3),
   },
   root: {},
@@ -527,10 +532,14 @@ const SendMob: FC<SendMobProps> = ({
                     <Modal
                       className={classes.modal}
                       open={showing === Showing.SEND_FORM}
+                       onClose={(event, reason) => {
+                           if (reason !== 'backdropClick') {
+                             onClose(event, reason);
+                           }
+                         }}
                       closeAfterTransition
                       disableAutoFocus
                       disableEnforceFocus
-                      disableBackdropClick
                       BackdropComponent={Backdrop}
                       BackdropProps={{
                         timeout: 1000,

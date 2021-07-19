@@ -183,7 +183,6 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
         aria-describedby="transition-modal-description"
         className={classes.modal}
         open={!!entropy}
-        onClose={onClickClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -191,7 +190,6 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
         }}
         disableAutoFocus
         disableEnforceFocus
-        disableBackdropClick
       >
         <div>
           <ShowRetrievedEntropyModal open={!!entropy} entropy={entropy} onClose={onClickClose} />

@@ -32,6 +32,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
+    margin: '2rem',
+    maxHeight: '-webkit-fill-available',
+    maxWidth: 800,
     padding: theme.spacing(2, 4, 3),
   },
   root: {},
@@ -84,7 +87,6 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
       }}
       disableAutoFocus
       disableEnforceFocus
-      disableBackdropClick
     >
       <Fade in={isShown}>
         {!alertOpen ? (

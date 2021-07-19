@@ -15,12 +15,17 @@ interface UnlockWalletFormValues {
   submit: null;
 }
 
-const UnlockWalletView: FC<UnlockWalletViewProps> = ({ onClickUnlock }: UnlockWalletViewProps) => {
+const UnlockWalletView: FC<UnlockWalletViewProps> = ({ onClickUnlock , accounts}: UnlockWalletViewProps) => {
   const { t } = useTranslation('UnlockWallet');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClose = () => setAnchorEl(null);
   const handleOnSubmit = (values: UnlockWalletFormValues) => onClickUnlock(values.password);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (accounts.length > 0) {
+      setAnchorEl(event.currentTarget);
+    }
+  };
 
   return (
     <>
@@ -46,9 +51,10 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({ onClickUnlock }: UnlockWa
               label={t('passwordLabel')}
               name="password"
               type="password"
+              onClick={handleClick}
             />
             <SavedPasswordsModal
-              accounts={[]}
+              accounts={accounts}
               anchorEl={anchorEl}
               handleClose={handleClose}
               setFieldValue={setFieldValue}

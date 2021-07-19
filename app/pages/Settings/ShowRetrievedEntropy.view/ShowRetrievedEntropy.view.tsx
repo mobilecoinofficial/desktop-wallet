@@ -18,11 +18,15 @@ import { ShowRetrievedEntropyModalProps } from './ShowRetrievedEntropy';
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: { letterSpacing: 2.95 },
-  modal: { alignItems: 'center', display: 'flex', justifyContent: 'center' },
+  modal: { alignItems: 'center', display: 'flex', justifyContent: 'center', overflow: 'auto' },
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
+    margin: '2rem',
+    maxHeight: '-webkit-fill-available',
+    maxWidth: 800,
+    overflow: 'auto',
     padding: theme.spacing(2, 4, 3),
   },
   root: {},

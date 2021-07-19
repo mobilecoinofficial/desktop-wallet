@@ -1,7 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box, makeStyles } from '@material-ui/core';
+import { Box, makeStyles, useMediaQuery } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 
 import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
@@ -45,13 +45,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: DashboardLayoutProps) => {
   const { selectedAccount, isEntropyKnown, isPinRequired, pendingSecrets } = useFullService();
   const classes = useStyles();
+  const matches = useMediaQuery('(min-height:768px)');
   const sendSyncStatus = (statusCode: string) => ipcRenderer.send('sync-status', statusCode);
 
   return (
     <Box className={classes.root}>
       <TopBar />
       <Box className={classes.wrapper}>
-        <Box display="flex" flexDirection="column" p={3}>
+        <Box display="flex" flexDirection="column" p={3} style={matches ? {} : {padding: '12px 0 6px'}}>
           <SyncStatus selectedAccount={selectedAccount} sendSyncStatus={sendSyncStatus} />
           <BalanceIndicator
             balance={selectedAccount.balanceStatus.unspentPmob}

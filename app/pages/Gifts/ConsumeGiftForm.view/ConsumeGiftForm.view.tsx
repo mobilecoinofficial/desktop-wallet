@@ -109,8 +109,9 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
           // @ts-ignore
-          mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
-            .balance;
+          mockMultipleAccounts.find(
+            (account) => account.b58Code === values.senderPublicAddress
+          ).balance;
         let increasedBalance;
         let totalSent;
 

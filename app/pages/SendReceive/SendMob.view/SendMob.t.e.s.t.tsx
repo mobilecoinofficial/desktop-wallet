@@ -185,16 +185,11 @@ describe('Send Mob', () => {
   });
 
   test('Submit and save to contact are enabled, submit sends the transaction', async () => {
-    const {
-      mobAmount,
-      onClickSend,
-      recipientAddress,
-      saveToContactsCheck,
-      submitButton,
-    } = setUpTest({
-      contacts: [],
-      showing: 0,
-    });
+    const { mobAmount, onClickSend, recipientAddress, saveToContactsCheck, submitButton } =
+      setUpTest({
+        contacts: [],
+        showing: 0,
+      });
 
     await act(async () => userEvent.type(recipientAddress, PUBLIC_ADDRESS, { delay: 1 }));
     await waitFor(() => expect(recipientAddress.value).toEqual(PUBLIC_ADDRESS));

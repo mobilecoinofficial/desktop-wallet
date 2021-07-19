@@ -64,7 +64,7 @@ const renderSnapshot = (
   mockUseFullService.mockImplementation(() => mockUseFullServiceValues);
 
   // CBB: we may want to just import a test version of App.tsx
-  const renderedScreen = render(
+  const view = render(
     <MemoryRouter initialEntries={['/test']} initialIndex={0}>
       <I18nextProvider i18n={i18n}>
         <ThemeProvider theme={theme}>
@@ -82,7 +82,7 @@ const renderSnapshot = (
     </MemoryRouter>
   );
 
-  return { ...renderedScreen, mockUseFullServiceValues };
+  return { ...view, mockUseFullServiceValues };
 };
 
 export default renderSnapshot;

@@ -40,7 +40,7 @@ module.exports = (api) => {
       require('@babel/plugin-syntax-import-meta'),
       [require('@babel/plugin-proposal-class-properties'), { loose: true }],
       require('@babel/plugin-proposal-json-strings'),
-
+      [require('@babel/plugin-proposal-private-methods'), { loose: true }],
       ...(development ? developmentPlugins : productionPlugins),
     ],
     presets: [

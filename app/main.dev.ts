@@ -227,11 +227,13 @@ const createWindow = async () => {
 
   nativeTheme.themeSource = (localStore.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
 
+  /* FK see also line 270, and AuthPage.presenter.tsx line 94
   ipcMain.handle('logged-in', () => {
     console.log('STARTING SERVICE');
     startFullService();
     return 'Service started';
   });
+  */
 
   ipcMain.on('get-theme', (event) => {
     // eslint-disable-next-line no-param-reassign
@@ -265,7 +267,7 @@ if (process.env.E2E_BUILD === 'true') {
     .catch(() => null);
 } else {
   app.on('ready', () => {
-    // FK //    startFullService();
+    startFullService();
     createWindow();
   });
 }

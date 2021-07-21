@@ -375,7 +375,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   useEffect(() => {
     const { selectedAccount } = state;
     const { accountId } = selectedAccount.account;
-    // // TODO - check this early exit
+    // TODO - check this early exit
     if (accountId === '') {
       return () => undefined;
     }

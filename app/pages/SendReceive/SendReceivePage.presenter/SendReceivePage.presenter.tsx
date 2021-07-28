@@ -98,15 +98,15 @@ const SendReceivePage: FC = () => {
   const onClickConfirm = () => {
     try {
       // fk setSlideExitSpeed(1000);
-      console.log(confirmation.txProposal)
+      console.log(confirmation.txProposal);
       submitTransaction(confirmation.txProposal);
 
       const totalValueConfirmationAsMob = convertPicoMobStringToMob(
         confirmation.totalValueConfirmation.toString()
       );
-      console.log(totalValueConfirmationAsMob)
+      console.log(totalValueConfirmationAsMob);
       const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
-      console.log(totalValueConfirmationAsMobComma)
+      console.log(totalValueConfirmationAsMobComma);
       if (formIsChecked) {
         saveToContacts();
       }
@@ -114,8 +114,8 @@ const SendReceivePage: FC = () => {
         variant: 'success',
       });
     } catch (err) {
-      console.log(err)
-      console.log(err.message)
+      console.log(err);
+      console.log(err.message);
       enqueueSnackbar(t('sendError'), { variant: 'error' });
     }
     setConfirmation(EMPTY_CONFIRMATION);
@@ -210,23 +210,19 @@ const SendReceivePage: FC = () => {
   }) => {
     // let result;
     try {
-      console.log(`accountId ${accountId} `)
-      console.log(`fee ${fee} `)
-      console.log(`recipientPublicAddress ${recipientPublicAddress} `)
-      console.log(`valuePmob ${valuePmob} `)
+      console.log(`accountId ${accountId} `);
+      console.log(`fee ${fee} `);
+      console.log(`recipientPublicAddress ${recipientPublicAddress} `);
+      console.log(`valuePmob ${valuePmob} `);
       const result = await buildTransaction({ accountId, fee, recipientPublicAddress, valuePmob });
-console.log(`result ${result} `)
+      console.log(`result ${result} `);
       if (result === null || result === undefined) {
         console.log('build error!!!');
         throw new Error(t('sendBuildError'));
       }
 
-      const {
-        feeConfirmation,
-        totalValueConfirmation,
-        txProposal,
-        txProposalReceiverB58Code,
-      } = result;
+      const { feeConfirmation, totalValueConfirmation, txProposal, txProposalReceiverB58Code } =
+        result;
       setConfirmation({
         feeConfirmation,
         totalValueConfirmation,
@@ -237,15 +233,15 @@ console.log(`result ${result} `)
       // setSendingStatus(Showing.CONFIRM_FORM);
       // setShowModal(true);
     } catch (err) {
-      console.log(`err ${err.error} `)
-      console.log(`err ${err.message} `)
+      console.log(`err ${err.error} `);
+      console.log(`err ${err.message} `);
 
       enqueueSnackbar(err.message, { variant: 'error' });
     }
   };
   const onClickCancelPaymentRequest = () => {
     // setSendingStatus(Showing.INPUT_FORM);
-    setConfirmation(EMPTY_CONFIRMATION)
+    setConfirmation(EMPTY_CONFIRMATION);
     enqueueSnackbar(t('transactionCanceled'), { variant: 'warning' });
   };
 
@@ -281,7 +277,7 @@ console.log(`result ${result} `)
           >
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
-            <Tab label="Payment Requests" />
+            <Tab label="Pay MOB" />
           </Tabs>
           <TabPanel
             panels={[SendMobWithParams, ReceiveMobWithParams, PaymentRequestWithParams]}

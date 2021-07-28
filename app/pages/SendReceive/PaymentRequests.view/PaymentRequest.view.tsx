@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   code: {
     alignItems: 'center',
     display: 'flex',
+    display: 'grid',
     flexDirection: 'column',
     letterSpacing: '.70rem',
     marginRight: '-.70rem',
@@ -270,8 +271,8 @@ PaymentRequestProps) => {
                     </Typography>
                     <Box p={1} />
                     <Typography variant="body2" color="textSecondary">
-                      Enter a Payment Request code to view full request details. After viewing
-                      request details, accept or decline request.
+                      Enter a valid Payment Request code to view full details of the corresponding
+                      request. After viewing details, accept or decline the request.
                     </Typography>
                   </Box>
                 </Box>
@@ -337,21 +338,23 @@ PaymentRequestProps) => {
                           below.
                         </Typography>
                         <Box py={1} />
-                        <Box display="flex" justifyContent="space-evenly">
+                        <Box display="flex" justifyContent="space-around">
+                          <Box textAlign="center">
+                        <Typography color="textPrimary">Recipient Address</Typography>
                           <LongCode
                             code={confirmation.txProposalReceiverB58Code}
                             codeClass={classes.code}
-                          />
-                          {/* <Box display="flex" justifyContent="space-between">
-                          <Typography color="textPrimary">Account Balance:</Typography>
-                          <Typography color="textPrimary">
+                            />                          {/* <Box display="flex" justifyContent="space-between">
+                            <Typography color="textPrimary">Account Balance:</Typography>
+                            <Typography color="textPrimary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
-                              value={selectedBalance?.toString()}
+                            suffix=" MOB"
+                            valueUnit="pMOB"
+                            value={selectedBalance?.toString()}
                             />
-                          </Typography>
-                        </Box> */}
+                            </Typography>
+                          </Box> */}
+                          </Box>
                           <Box alignSelf="center">
                             <Box display="flex" justifyContent="space-between">
                               <Typography color="primary" style={{ margin: ' 0px 10px 0px 0px' }}>
@@ -382,7 +385,7 @@ PaymentRequestProps) => {
                               justifyContent="space-between"
                               py={1}
                               style={{
-                                textDecoration: 'underline',
+                                // textDecoration: 'underline',
                                 textDecorationColor: 'blue',
                                 textDecorationThickness: '2px',
                                 textUnderlinePosition: 'under',

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, Card, Container, Divider, makeStyles } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
@@ -19,7 +18,7 @@ import {
 } from '../../../services';
 import type { Theme } from '../../../theme';
 import { isHex64 } from '../../../utils/bip39Functions';
-import { setKeychainAccount , getKeychainAccounts  } from '../../../utils/keytarService';
+import { setKeychainAccount, getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { ImportAccountView } from '../ImportAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
@@ -104,7 +103,7 @@ const AuthPage: FC = () => {
         <Container className={classes.viewContainer} maxWidth="sm">
           <LogoIcon className={classes.logoIcon} />
           <Card className={classes.cardContainer}>
-            <UnlockWalletView onClickUnlock={onClickUnlock} accounts={getKeychainAccounts()}/>
+            <UnlockWalletView onClickUnlock={onClickUnlock} accounts={getKeychainAccounts()} />
           </Card>
         </Container>
       </Box>

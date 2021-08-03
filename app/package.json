@@ -1,7 +1,7 @@
 {
-  "name": "mobilecoin-desktop-wallet-beta-v040",
-  "productName": "MobileCoin-Desktop-Wallet-beta-v040",
-  "version": "v0.4.0",
+  "name": "mobilecoin-desktop-wallet-v1.0.0",
+  "productName": "MobileCoin-Desktop-Wallet-v1.0.0",
+  "version": "v1.0.0",
   "description": "Desktop hot wallet for your MobileCoin needs.",
   "main": "./main.prod.js",
   "author": {

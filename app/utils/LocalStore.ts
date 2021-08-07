@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+
 import Store from 'electron-store';
 import { SjclCipherEncrypted } from 'sjcl';
 
@@ -13,6 +15,7 @@ export const schemaKeys = {
   ENCRYPTED_CONTACTS: 'encryptedContacts',
   ENCRYPTED_PASSPHRASE: 'encryptedPassphrase',
   ENCRYPTED_PIN: 'encryptedPin',
+  FULL_SERVICE_DB_EXISTS: 'fullServiceDbExists',
   FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
   FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
   GIFT_CODES: 'giftCodes',
@@ -28,6 +31,7 @@ export const schema: LocalStoreSchema = {
   [schemaKeys.ENCRYPTED_CONTACTS]: { type: 'string' },
   [schemaKeys.ENCRYPTED_PASSPHRASE]: { type: 'string' },
   [schemaKeys.ENCRYPTED_PIN]: { type: 'string' },
+  [schemaKeys.FULL_SERVICE_DB_EXISTS]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_DB_PATH]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
   [schemaKeys.GIFT_CODES]: { type: 'array' },
@@ -119,6 +123,11 @@ export const deleteEncryptedPassphrase = (): void => {
 export const getFullServiceDbPath = (): string => {
   const fullServiceDbPath = store.get(schemaKeys.FULL_SERVICE_DB_PATH);
   return typeof fullServiceDbPath === 'string' ? fullServiceDbPath : '';
+};
+
+export const getWalletDbExists = (): boolean => {
+  const path = [getFullServiceDbPath(), 'wallet.db'].join('/');
+  return fs.existsSync(path);
 };
 
 export const getFullServiceLedgerDbPath = () => store.get(schemaKeys.LEDGER_DB_PATH);

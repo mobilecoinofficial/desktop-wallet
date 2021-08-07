@@ -26,7 +26,10 @@ import { getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { CreateWalletView } from '../CreateWallet.view';
 import { ImportAccountView } from '../ImportAccount.view';
+import { UnlockAccountView } from '../UnlockAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
+import * as localStore from '../../../utils/LocalStore';
+import { WalletStatus } from '../../../types/WalletStatus';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardContainer: {
@@ -55,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AuthPage: FC = () => {
   const classes = useStyles();
-  const { isAuthenticated, selectedAccount } = useFullService();
+  const { isAuthenticated } = useFullService();
   const [selectedView, setView] = useState(1);
   const { t } = useTranslation('AuthPage');
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
@@ -104,10 +107,6 @@ const AuthPage: FC = () => {
           await ipcRenderer.invoke('start-full-service', password);
           await new Promise((resolve) => setTimeout(resolve, 5000));
           const status = await getWalletStatus();
-          await unlockWallet(password);
-          if (status.accountIds.length > 0) {
-            await selectAccount(status.accountIds[0]);
-          }
           setAccountIds(status.accountIds);
           setFullServiceIsRunning(true);
         } catch (err) {
@@ -131,8 +130,6 @@ const AuthPage: FC = () => {
         await ipcRenderer.invoke('start-full-service', password);
         await new Promise((resolve) => setTimeout(resolve, 5000));
         const status = await getWalletStatus();
-        await createWallet(password);
-        await unlockWallet(password);
         setAccountIds(status.accountIds);
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
@@ -152,19 +149,6 @@ const AuthPage: FC = () => {
       </Box>
     );
   }
-
-  const onClickUnlockWallet = async (password: string) => {
-    try {
-      const status = await getWalletStatus();
-      await unlockWallet(password);
-      if (status.accountIds.length > 0) {
-        await selectAccount(status.accountIds[0]);
-      }
-      setAccountIds(status.accountIds);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   if (accountIds.length > 0) {
     return (

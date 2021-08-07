@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, Card, Container, Divider, makeStyles } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
@@ -20,8 +21,12 @@ import type { Theme } from '../../../theme';
 import { isHex64 } from '../../../utils/bip39Functions';
 import { setKeychainAccount, getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
+import { CreateWalletView } from '../CreateWallet.view';
 import { ImportAccountView } from '../ImportAccount.view';
+import { UnlockAccountView } from '../UnlockAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
+import * as localStore from '../../../utils/LocalStore';
+import { WalletStatus } from '../../../types/WalletStatus';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardContainer: {
@@ -50,23 +55,29 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AuthPage: FC = () => {
   const classes = useStyles();
-  const { isAuthenticated, isInitialized } = useFullService();
+  const { isAuthenticated } = useFullService();
   const [selectedView, setView] = useState(1);
-  const [isUnlocked, setUnlocked] = useState(false);
   const { t } = useTranslation('AuthPage');
+  const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
+  const [fullServiceIsRunning, setFullServiceIsRunning] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [accountIds, setAccountIds] = useState([]);
 
-  useEffect(() => {}, [isUnlocked]);
-
-  const getWallet = async () => {
+  const checkIfFullServiceIsRunning = async () => {
     try {
-      await getWalletStatus();
-    } catch (e) {
-      // nothing!
+      const status = await getWalletStatus();
+      setAccountIds(status.accountIds);
+      setFullServiceIsRunning(true);
+    } finally {
+      setLoading(false);
     }
   };
-  getWallet();
 
-  if (!isInitialized) {
+  useEffect(() => {
+    checkIfFullServiceIsRunning();
+  }, []);
+
+  if (loading) {
     return <SplashScreen />;
   }
 
@@ -86,15 +97,41 @@ const AuthPage: FC = () => {
       </Button>
     );
 
-  if (!isUnlocked) {
-    const onClickUnlock = async (pwd: string) => {
-      if (pwd) {
+  if (!fullServiceIsRunning) {
+    if (walletDbExists) {
+      const onClickUnlock = async (password: string) => {
         try {
-          // FK await ipcRenderer.invoke('logged-in');
-          await unlockWallet(pwd);
-        } catch (e) {
-          setUnlocked(!e.message.includes('Invalid Password'));
+          await ipcRenderer.invoke('start-full-service', password);
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+          const status = await getWalletStatus();
+          setAccountIds(status.accountIds);
+          setFullServiceIsRunning(true);
+        } catch (err) {
+          console.log(err);
         }
+      };
+
+      return (
+        <Box data-testid="AuthPageId" className={classes.root}>
+          <Container className={classes.viewContainer} maxWidth="sm">
+            <LogoIcon className={classes.logoIcon} />
+            <Card className={classes.cardContainer}>
+              <UnlockWalletView onClickUnlock={onClickUnlock} accounts={getKeychainAccounts()} />
+            </Card>
+          </Container>
+        </Box>
+      );
+    }
+    const onClickCreateWallet = async (password: string) => {
+      try {
+        await ipcRenderer.invoke('start-full-service', password);
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        const status = await getWalletStatus();
+        setAccountIds(status.accountIds);
+        setWalletDbExists(true);
+        setFullServiceIsRunning(true);
+      } catch (err) {
+        console.log(err);
       }
     };
 
@@ -103,14 +140,14 @@ const AuthPage: FC = () => {
         <Container className={classes.viewContainer} maxWidth="sm">
           <LogoIcon className={classes.logoIcon} />
           <Card className={classes.cardContainer}>
-            <UnlockWalletView onClickUnlock={onClickUnlock} accounts={getKeychainAccounts()} />
+            <CreateWalletView onClickCreate={onClickCreateWallet} />
           </Card>
         </Container>
       </Box>
     );
   }
 
-  /*
+  if (accountIds.length > 0) {
     return (
       <Box data-testid="AuthPageId" className={classes.root}>
         <Container className={classes.viewContainer} maxWidth="sm">
@@ -121,7 +158,7 @@ const AuthPage: FC = () => {
         </Container>
       </Box>
     );
-  */
+  }
 
   const onClickCreate = async (
     accountName: string,
@@ -164,7 +201,6 @@ const AuthPage: FC = () => {
         <Card className={classes.cardContainer}>
           {selectedView === 1 && <CreateAccountView onClickCreate={onClickCreate} />}
           {selectedView === 2 && <ImportAccountView onClickImport={onClickImport} />}
-
           <Box my={3}>
             <Divider />
           </Box>

@@ -72,7 +72,7 @@ const installExtensions = async () => {
 
 // TODO: rename this function to full service after integration
 // TODO: test
-const startFullService = (): void => {
+const startFullService = (password: string): void => {
   // Start the full-service process in the background
   const IS_PROD = process.env.NODE_ENV === 'production';
   const root = process.cwd();
@@ -89,25 +89,35 @@ const startFullService = (): void => {
     path.join(fullServiceBinariesPath, './start-full-service.sh')
   );
 
-  // Determine Full-Service path and store for config view
+  const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
+  const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
+
+  spawn(
+    fullServiceExecPath,
+    [
+      fullServiceLedgerDBPath,
+      fullServiceWalletDBPath,
+      [fullServiceWalletDBPath, 'wallet.db'].join('/'),
+      password,
+    ],
+    {}
+  );
+};
+
+const setFullServiceDbPaths = (): void => {
   const userDataPath = app.getPath('userData');
   const ledgerFullServiceDbPath = path.normalize(
     path.join(userDataPath, 'full-service', 'ledger-db')
-  ); // escape spaces in mac and linux (change logic for windows)
-  const fullServiceDbPath = path.normalize(path.join(userDataPath, 'full-service', 'wallet-db')); // escape spaces in mac and linux (change logic for windows)
+  );
+  const fullServiceDbPath = path.normalize(path.join(userDataPath, 'full-service', 'wallet-db'));
 
   console.log('ledgerFullServiceDbPath', ledgerFullServiceDbPath);
   console.log('fullServiceDbPath', fullServiceDbPath);
-  spawn(
-    fullServiceExecPath,
-    [ledgerFullServiceDbPath, fullServiceDbPath, [fullServiceDbPath, 'wallet.db'].join('/')],
-    {}
-  );
-  localStore.setLedgerDbPath(ledgerFullServiceDbPath);
-  localStore.setFullServiceDbPath(fullServiceDbPath);
 };
 
 let syncStatus = ''; // for the app to update, via ipcRenderer.send(...)
+
+setFullServiceDbPaths();
 
 const createWindow = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
@@ -228,13 +238,12 @@ const createWindow = async () => {
 
   nativeTheme.themeSource = (localStore.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
 
-  /* FK see also line 270, and AuthPage.presenter.tsx line 94
-  ipcMain.handle('logged-in', () => {
+  // FK see also line 270, and AuthPage.presenter.tsx line 94
+  ipcMain.handle('start-full-service', (_, password: string) => {
     console.log('STARTING SERVICE');
-    startFullService();
+    startFullService(password);
     return 'Service started';
   });
-  */
 
   ipcMain.on('get-theme', (event) => {
     // eslint-disable-next-line no-param-reassign
@@ -268,7 +277,6 @@ if (process.env.E2E_BUILD === 'true') {
     .catch(() => null);
 } else {
   app.on('ready', () => {
-    startFullService();
     createWindow();
   });
 }

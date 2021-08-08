@@ -38,7 +38,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
   };
 
   const handleOnSubmit = async (values: ImportAccountFormValues) =>
-    onClickImport(values.accountName, values.checkedSavePassword, values.entropy, values.password);
+    onClickImport(values.accountName, values.entropy);
 
   return (
     <>
@@ -61,34 +61,19 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
       <Formik
         initialValues={{
           accountName: '',
-          checkedSavePassword: false,
           checkedTerms: false,
           entropy: '',
-          password: '',
-          passwordConfirmation: '',
           submit: null,
         }}
         onSubmit={handleOnSubmit}
         validationSchema={Yup.object().shape({
-          accountName: Yup.string()
-            .max(64, t('accountNameValidation'))
-            .when('checkedSavePassword', {
-              is: true,
-              then: Yup.string().required(t('checkedSavePasswordValidation')),
-            }),
+          accountName: Yup.string().max(64, t('accountNameValidation')),
           // CBB: It appears that the checkedTerms error message is not working properly.
           checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
           entropy: Yup.string()
             .test('format', t('entropyMatches'), isValidMnemonicOrHexFormat)
             .test('validEntropy', t('entropyIsWrong'), isValidMnemonicOrHexValue)
             .required(t('entropyRequired')),
-          password: Yup.string()
-            .min(8, t('passwordMin'))
-            .max(99, t('passwordMax'))
-            .required(t('passwordRequired')),
-          passwordConfirmation: Yup.string()
-            .oneOf([Yup.ref('password')], t('passwordConfirmationRef'))
-            .required(t('passwordConfirmationRequired')),
         })}
       >
         {({ errors, isSubmitting, dirty, isValid, values, submitForm }) => (
@@ -112,44 +97,6 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
               multiline
               name="entropy"
             />
-            <Field
-              id="ImportAccountForm-passwordField"
-              component={TextField}
-              fullWidth
-              label={t('passwordLabel')}
-              margin="dense"
-              name="password"
-              type="password"
-            />
-            <Field
-              id="ImportAccountForm-passwordConfirmationField"
-              component={TextField}
-              fullWidth
-              label={t('passwordConfirmationLabel')}
-              margin="dense"
-              name="passwordConfirmation"
-              type="password"
-            />
-            <Box pt={1} display="flex">
-              <Box display="flex" alignItems="center" flexDirection="row-reverse">
-                <Box>
-                  <Typography display="inline">{t('checkSavePassword')}</Typography>
-                </Box>
-                <Field
-                  component={Checkbox}
-                  type="checkbox"
-                  name="checkedSavePassword"
-                  disabled={
-                    values.passwordConfirmation === '' ||
-                    values.passwordConfirmation !== values.password
-                  }
-                  indeterminate={
-                    values.passwordConfirmation === '' ||
-                    values.passwordConfirmation !== values.password
-                  }
-                />
-              </Box>
-            </Box>
             <Box pt={1} display="flex">
               <Box display="flex" alignItems="center" flexDirection="row-reverse">
                 <Box>

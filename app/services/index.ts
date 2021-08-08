@@ -9,6 +9,7 @@ import { checkGiftCodeStatus, CheckGiftCodeStatusService } from './checkGiftCode
 import { claimGiftCode, ClaimGiftCodeService } from './claimGiftCode.service';
 import { confirmEntropyKnown, ConfirmEntropyKnownService } from './confirmEntropyKnown.service';
 import { createAccount, CreateAccountService } from './createAccount.service';
+import { createWallet, CreateWalletService } from './createWallet.service';
 import { decryptContacts, DecryptContactsService } from './decryptContacts.service';
 import {
   deleteStoredGiftCodeB58,
@@ -29,6 +30,7 @@ import { getWalletStatus, GetWalletStatusService } from './getWalletStatus.servi
 import { importAccount, ImportAccountService } from './importAccount.service';
 import { importLegacyAccount, ImportLegacyAccountService } from './importLegacyAccount.service';
 import { retrieveEntropy, RetrieveEntropyService } from './retrieveEntropy.service';
+import { selectAccount, SelectAccountService } from './selectAccount.service';
 import { setPin, SetPinService } from './setPin.service';
 import { submitGiftCode, SubmitGiftCodeService } from './submitGiftCode.service';
 import { submitTransaction, SubmitTransactionService } from './submitTransaction.service';
@@ -44,6 +46,7 @@ export {
   claimGiftCode,
   confirmEntropyKnown,
   createAccount,
+  createWallet,
   decryptContacts,
   deleteStoredGiftCodeB58,
   encryptContacts,
@@ -55,6 +58,7 @@ export {
   importAccount,
   importLegacyAccount,
   retrieveEntropy,
+  selectAccount,
   setPin,
   submitGiftCode,
   submitTransaction,
@@ -71,6 +75,7 @@ export type {
   ClaimGiftCodeService,
   ConfirmEntropyKnownService,
   CreateAccountService,
+  CreateWalletService,
   DecryptContactsService,
   DeleteStoredGiftCodeB58Service,
   EncryptContactsService,
@@ -82,6 +87,7 @@ export type {
   ImportAccountService,
   ImportLegacyAccountService,
   RetrieveEntropyService,
+  SelectAccountService,
   SetPinService,
   SubmitGiftCodeService,
   SubmitTransactionService,

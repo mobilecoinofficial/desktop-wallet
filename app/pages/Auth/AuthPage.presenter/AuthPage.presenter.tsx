@@ -12,21 +12,21 @@ import routePaths from '../../../constants/routePaths';
 import useFullService from '../../../hooks/useFullService';
 import {
   createAccount,
+  createWallet,
   getWalletStatus,
   importAccount,
   importLegacyAccount,
+  selectAccount,
   unlockWallet,
 } from '../../../services';
 import type { Theme } from '../../../theme';
+import * as localStore from '../../../utils/LocalStore';
 import { isHex64 } from '../../../utils/bip39Functions';
-import { setKeychainAccount, getKeychainAccounts } from '../../../utils/keytarService';
+import { getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { CreateWalletView } from '../CreateWallet.view';
 import { ImportAccountView } from '../ImportAccount.view';
-import { UnlockAccountView } from '../UnlockAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
-import * as localStore from '../../../utils/LocalStore';
-import { WalletStatus } from '../../../types/WalletStatus';
 
 const useStyles = makeStyles((theme: Theme) => ({
   cardContainer: {
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AuthPage: FC = () => {
   const classes = useStyles();
-  const { isAuthenticated } = useFullService();
+  const { isAuthenticated, selectedAccount } = useFullService();
   const [selectedView, setView] = useState(1);
   const { t } = useTranslation('AuthPage');
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
@@ -81,7 +81,7 @@ const AuthPage: FC = () => {
     return <SplashScreen />;
   }
 
-  if (isAuthenticated) {
+  if (isAuthenticated && selectedAccount != null) {
     return <Redirect to={routePaths.APP_DASHBOARD} />;
   }
 
@@ -104,6 +104,10 @@ const AuthPage: FC = () => {
           await ipcRenderer.invoke('start-full-service', password);
           await new Promise((resolve) => setTimeout(resolve, 5000));
           const status = await getWalletStatus();
+          await unlockWallet(password);
+          if (status.accountIds.length > 0) {
+            await selectAccount(status.accountIds[0]);
+          }
           setAccountIds(status.accountIds);
           setFullServiceIsRunning(true);
         } catch (err) {
@@ -127,6 +131,8 @@ const AuthPage: FC = () => {
         await ipcRenderer.invoke('start-full-service', password);
         await new Promise((resolve) => setTimeout(resolve, 5000));
         const status = await getWalletStatus();
+        await createWallet(password);
+        await unlockWallet(password);
         setAccountIds(status.accountIds);
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
@@ -147,48 +153,51 @@ const AuthPage: FC = () => {
     );
   }
 
+  const onClickUnlockWallet = async (password: string) => {
+    try {
+      const status = await getWalletStatus();
+      await unlockWallet(password);
+      if (status.accountIds.length > 0) {
+        await selectAccount(status.accountIds[0]);
+      }
+      setAccountIds(status.accountIds);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   if (accountIds.length > 0) {
     return (
       <Box data-testid="AuthPageId" className={classes.root}>
         <Container className={classes.viewContainer} maxWidth="sm">
           <LogoIcon className={classes.logoIcon} />
           <Card className={classes.cardContainer}>
-            <UnlockAccountView unlockWallet={unlockWallet} accounts={getKeychainAccounts()} />
+            <UnlockWalletView
+              onClickUnlock={onClickUnlockWallet}
+              accounts={getKeychainAccounts()}
+            />
           </Card>
         </Container>
       </Box>
     );
   }
 
-  const onClickCreate = async (
-    accountName: string,
-    password: string,
-    checkedSavePassword: boolean
-  ) => {
+  const onClickCreate = async (accountName: string) => {
     try {
-      await createAccount(accountName, password);
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      checkedSavePassword ? setKeychainAccount(accountName, password) : null;
+      await createAccount(accountName);
     } catch (err) {
       /* TODO: handle error */
       console.log('ERROR!', err);
     }
   };
 
-  const onClickImport = async (
-    accountName: string,
-    checkedSavePassword: boolean,
-    entropy: string,
-    password: string
-  ) => {
+  const onClickImport = async (accountName: string, entropy: string) => {
     try {
       if (isHex64(entropy)) {
-        await importLegacyAccount(accountName, entropy, password);
+        await importLegacyAccount(accountName, entropy);
       } else {
-        await importAccount(accountName, entropy, password);
+        await importAccount(accountName, entropy);
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      checkedSavePassword ? setKeychainAccount(accountName, password) : null;
     } catch (err) {
       /* nothing now... TODO: fix! */
     }

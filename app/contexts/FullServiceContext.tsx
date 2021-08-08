@@ -24,6 +24,7 @@ import {
   ConfirmEntropyKnownActionType,
 } from './actions/confirmEntropyKnown.action';
 import { CREATE_ACCOUNT, CreateAccountActionType } from './actions/createAccount.action';
+import { CREATE_WALLET, CreateWalletActionType } from './actions/createWallet.action';
 import {
   FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   FetchAllTransactionLogsForAccountActionType,
@@ -34,6 +35,7 @@ import {
 } from './actions/fetchAllTxosForAccount.action';
 import { IMPORT_ACCOUNT, ImportAccountActionType } from './actions/importAccount.action';
 import { INITIALIZE, initializeAction, InitializeActionType } from './actions/initialize.action';
+import { SELECT_ACCOUNT, SelectAccountActionType } from './actions/selectAccount.action';
 import { UNLOCK_WALLET, UnlockWalletActionType } from './actions/unlockWallet.action';
 import { UPDATE_CONTACTS, UpdateContactsActionType } from './actions/updateContacts.action';
 import { UPDATE_FEE_PMOB, UpdateFeePmobActionType } from './actions/updateFeePmob.action';
@@ -59,7 +61,7 @@ export interface FullServiceState {
   isPinRequired: boolean;
   pendingSecrets: PendingSecrets | null;
   secretKey: string;
-  selectedAccount: SelectedAccount;
+  selectedAccount: SelectedAccount | null;
   transactionLogs: TransactionLogs | null;
   pinThresholdPmob: StringUInt64;
   pin: string | undefined;
@@ -74,10 +76,12 @@ interface FullServiceProviderProps {
 type Action =
   | ConfirmEntropyKnownActionType
   | CreateAccountActionType
+  | CreateWalletActionType
   | FetchAllTransactionLogsForAccountActionType
   | FetchAllTxosForAccountActionType
   | ImportAccountActionType
   | InitializeActionType
+  | SelectAccountActionType
   | UnlockWalletActionType
   | UpdateContactsActionType
   | UpdateFeePmobActionType
@@ -100,36 +104,7 @@ const initialFullServiceState: FullServiceState = {
   isInitialized: false,
   isPinRequired: false,
   secretKey: '',
-  selectedAccount: {
-    account: {
-      accountHeight: '',
-      accountId: '',
-      accountKey: {
-        fogAuthoritySpki: '',
-        fogReportId: '',
-        fogReportUrl: '',
-        spendPrivateKey: '',
-        viewPrivateKey: '',
-      },
-      entropy: '',
-      mainAddress: '',
-      name: null,
-      nextSubaddressIndex: '',
-      // offsetCount: 0,
-      recoveryMode: false,
-    },
-    balanceStatus: {
-      accountBlockCount: '',
-      isSynced: false,
-      localBlockCount: '',
-      networkBlockCount: '',
-      orphanedPmob: '',
-      pendingPmob: '',
-      secretedPmob: '',
-      spentPmob: '',
-      unspentPmob: '',
-    },
-  },
+  selectedAccount: null,
   transactionLogs: null,
   walletStatus: {
     isSyncedAll: false,
@@ -173,44 +148,44 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case IMPORT_ACCOUNT: {
-      const { accounts, addresses, encryptedPassphrase, secretKey, selectedAccount, walletStatus } =
-        (action as ImportAccountActionType).payload;
+      const { accounts, addresses, selectedAccount, walletStatus } = (
+        action as ImportAccountActionType
+      ).payload;
       return {
         ...state,
         accounts,
         addresses,
-        encryptedPassphrase,
         isAuthenticated: true,
         isEntropyKnown: true,
         isPinRequired: true,
-        secretKey,
         selectedAccount,
         walletStatus,
       };
     }
 
     case CREATE_ACCOUNT: {
-      const {
-        accounts,
-        addresses,
-        encryptedPassphrase,
-        pendingSecrets,
-        secretKey,
-        selectedAccount,
-        walletStatus,
-      } = (action as CreateAccountActionType).payload;
+      const { accounts, addresses, pendingSecrets, selectedAccount, walletStatus } = (
+        action as CreateAccountActionType
+      ).payload;
       return {
         ...state,
         accounts,
         addresses,
-        encryptedPassphrase,
         isAuthenticated: true,
         isEntropyKnown: false,
         isPinRequired: true,
         pendingSecrets,
-        secretKey,
         selectedAccount,
         walletStatus,
+      };
+    }
+
+    case CREATE_WALLET: {
+      const { encryptedPassphrase, secretKey } = (action as CreateWalletActionType).payload;
+      return {
+        ...state,
+        encryptedPassphrase,
+        secretKey,
       };
     }
 
@@ -230,31 +205,29 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case UNLOCK_WALLET: {
-      const {
-        accounts,
+    case SELECT_ACCOUNT: {
+      const { addresses, selectedAccount } = (action as SelectAccountActionType).payload;
+      return {
+        ...state,
         addresses,
-        contacts,
-        isPinRequired,
-        pin,
-        pinThresholdPmob,
-        secretKey,
+        isEntropyKnown: true,
         selectedAccount,
-        walletStatus,
-      } = (action as UnlockWalletActionType).payload;
+      };
+    }
+
+    case UNLOCK_WALLET: {
+      const { contacts, isPinRequired, pin, pinThresholdPmob, secretKey, walletStatus } = (
+        action as UnlockWalletActionType
+      ).payload;
 
       return {
         ...state,
-        accounts,
-        addresses,
         contacts,
         isAuthenticated: true,
-        isEntropyKnown: true,
         isPinRequired,
         pin,
         pinThresholdPmob,
         secretKey,
-        selectedAccount,
         walletStatus,
       };
     }
@@ -348,7 +321,7 @@ const removeAllAccounts = async (excludedAccountIds: string[]) => {
 
 export const wipeAccountContactAndPin = async (): Promise<void> => {
   // Wipe Accounts, Contacts, and PIN
-  removeAllAccounts([]);
+  // removeAllAccounts([]);
   localStore.deleteEncryptedContacts();
   localStore.deletePinThresholdPmob();
   localStore.deleteEncryptedPin();
@@ -374,6 +347,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   // Poll Status
   useEffect(() => {
     const { selectedAccount } = state;
+
+    if (selectedAccount == null) {
+      return;
+    }
+
     const { accountId } = selectedAccount.account;
     // TODO - check this early exit
     if (accountId === '') {

@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AuthPage: FC = () => {
   const classes = useStyles();
-  const { isAuthenticated, selectedAccount } = useFullService();
+  const { addingAccount, isAuthenticated, selectedAccount } = useFullService();
   const [selectedView, setView] = useState(1);
   const { t } = useTranslation('AuthPage');
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
@@ -81,7 +81,7 @@ const AuthPage: FC = () => {
     return <SplashScreen />;
   }
 
-  if (isAuthenticated && selectedAccount != null) {
+  if (isAuthenticated && selectedAccount != null && !addingAccount) {
     return <Redirect to={routePaths.APP_DASHBOARD} />;
   }
 
@@ -166,7 +166,7 @@ const AuthPage: FC = () => {
     }
   };
 
-  if (accountIds.length > 0) {
+  if (accountIds.length > 0 && !addingAccount) {
     return (
       <Box data-testid="AuthPageId" className={classes.root}>
         <Container className={classes.viewContainer} maxWidth="sm">

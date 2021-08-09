@@ -1,3 +1,4 @@
+import { addAccount, AddAccountService } from './addAccount.service';
 import {
   assignAddressForAccount,
   AssignAddressForAccountService,
@@ -38,6 +39,7 @@ import { unlockWallet, UnlockWalletService } from './unlockWallet.service';
 import { updateContacts, UpdateContactsService } from './updateContacts.service';
 
 export {
+  addAccount,
   assignAddressForAccount,
   buildGiftCode,
   buildTransaction,
@@ -67,6 +69,7 @@ export {
 };
 
 export type {
+  AddAccountService,
   AssignAddressForAccountService,
   BuildGiftCodeService,
   BuildTransactionService,

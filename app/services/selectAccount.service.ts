@@ -4,6 +4,8 @@ import * as fullServiceApi from '../fullService/api';
 
 const selectAccount = async (accountId: string): Promise<void> => {
   try {
+    const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
+
     const { account } = await fullServiceApi.getAccount({ accountId });
 
     const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
@@ -14,7 +16,9 @@ const selectAccount = async (accountId: string): Promise<void> => {
       accountId,
     });
 
-    store.dispatch(selectAccountAction(addressIds, addressMap, account, balanceStatus));
+    store.dispatch(
+      selectAccountAction(accountIds, accountMap, addressIds, addressMap, account, balanceStatus)
+    );
   } catch (err) {
     throw new Error(err.message);
   }

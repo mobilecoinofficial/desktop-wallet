@@ -7,9 +7,12 @@ import {
   CardContent,
   Container,
   IconButton,
+  MenuItem,
+  Select,
   Tooltip,
   Typography,
   makeStyles,
+  Button,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
@@ -19,6 +22,7 @@ import { QRMob } from '../QRMob';
 import { ShortCode } from '../ShortCode';
 import { CodeTextIcon, LogoIcon, QRCodeIcon } from '../icons';
 import { AccountCardProps } from './AccountCard';
+import { selectAccount } from '../../services';
 
 const useStyles = makeStyles((theme: Theme) => ({
   code: {
@@ -46,7 +50,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AccountCard: FC<AccountCardProps> = ({
   account,
+  accounts,
   isGift,
+  onAddAccount,
   onClickCode,
   ...rest
 }: AccountCardProps) => {
@@ -54,7 +60,7 @@ const AccountCard: FC<AccountCardProps> = ({
   const classes = useStyles();
   const { t } = useTranslation('AccountCard');
 
-  const { b58Code, name } = account;
+  const { b58Code } = account;
 
   const mobUrl = `mob:///b58/${b58Code}`;
 
@@ -72,6 +78,10 @@ const AccountCard: FC<AccountCardProps> = ({
   } else {
     headerString = isGift ? t('giftHeader') : t('accountHeader');
   }
+
+  const handleAccountSelectChange = (event) => {
+    selectAccount(event.target.value);
+  };
 
   return (
     <Container className={classes.container} fixed maxWidth="sm">
@@ -124,9 +134,21 @@ const AccountCard: FC<AccountCardProps> = ({
               )}
             </Typography>
             <Box className={classes.corners}>
-              <Typography data-testid="account-card-name" color="textPrimary" variant="h4">
-                {name || t('unnamed')}
-              </Typography>
+              <Box>
+                <Select
+                  labelId="account-select-label"
+                  id="account-select"
+                  value={account.accountId}
+                  onChange={handleAccountSelectChange}
+                >
+                  {accounts.accountIds.map((accountId: string) => (
+                    <MenuItem value={accountId} key={accountId}>
+                      {accountId.substring(0, 5)}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <Button onClick={onAddAccount}>+</Button>
+              </Box>
               <Typography data-testid="account-card-short-code" color="textSecondary" variant="h4">
                 <ShortCode code={b58Code} />
               </Typography>

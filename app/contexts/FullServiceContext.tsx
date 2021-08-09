@@ -19,6 +19,7 @@ import sameObject from '../utils/sameObject';
 //
 // NEW DUCKS-STYLE ACTIONS, ACTION BUILDERS, AND CONSTANTS
 //
+import { ADD_ACCOUNT, AddAccountActionType } from './actions/addAccount.action';
 import {
   CONFIRM_ENTROPY_KNOWN,
   ConfirmEntropyKnownActionType,
@@ -50,6 +51,7 @@ import {
 
 export interface FullServiceState {
   accounts: Accounts;
+  addingAccount: boolean;
   addresses: Addresses;
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
@@ -74,6 +76,7 @@ interface FullServiceProviderProps {
 }
 
 type Action =
+  | AddAccountActionType
   | ConfirmEntropyKnownActionType
   | CreateAccountActionType
   | CreateWalletActionType
@@ -96,6 +99,7 @@ type Action =
 // TODO -- maybe remove object key from types!
 const initialFullServiceState: FullServiceState = {
   accounts: { accountIds: [], accountMap: {} },
+  addingAccount: false,
   addresses: { addressIds: [], addressMap: {} },
   contacts: [],
   encryptedPassphrase: undefined,
@@ -147,6 +151,13 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
+    case ADD_ACCOUNT: {
+      return {
+        ...state,
+        addingAccount: true,
+      };
+    }
+
     case IMPORT_ACCOUNT: {
       const { accounts, addresses, selectedAccount, walletStatus } = (
         action as ImportAccountActionType
@@ -154,10 +165,10 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       return {
         ...state,
         accounts,
+        addingAccount: false,
         addresses,
         isAuthenticated: true,
         isEntropyKnown: true,
-        isPinRequired: true,
         selectedAccount,
         walletStatus,
       };
@@ -170,10 +181,10 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       return {
         ...state,
         accounts,
+        addingAccount: false,
         addresses,
         isAuthenticated: true,
         isEntropyKnown: false,
-        isPinRequired: true,
         pendingSecrets,
         selectedAccount,
         walletStatus,
@@ -206,9 +217,11 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case SELECT_ACCOUNT: {
-      const { addresses, selectedAccount } = (action as SelectAccountActionType).payload;
+      const { accounts, addresses, selectedAccount } = (action as SelectAccountActionType).payload;
       return {
         ...state,
+        accounts,
+        addingAccount: false,
         addresses,
         isEntropyKnown: true,
         selectedAccount,

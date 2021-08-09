@@ -4,6 +4,8 @@ import { deleteEncryptedPin } from '../utils/LocalStore';
 import * as localStore from '../utils/LocalStore';
 import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authentication';
 import { encrypt } from '../utils/encryption';
+import { decryptContacts } from './decryptContacts.service';
+import { updateContacts } from './updateContacts.service';
 
 const changePassword = async (oldPassword: string, newPassword: string): Promise<void> => {
   try {
@@ -21,7 +23,10 @@ const changePassword = async (oldPassword: string, newPassword: string): Promise
     const encryptedPin = await encrypt(pin, secretKey);
     localStore.setEncryptedPin(encryptedPin);
 
+    // grab contacts using old secretKey and update after new key is dispatched
+    const contacts = await decryptContacts(store.state.secretKey);
     store.dispatch(updatePassphraseAction(newEncryptedPassphrase, secretKey));
+    updateContacts(contacts);
   } catch (err) {
     throw new Error(err.message);
   }

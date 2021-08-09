@@ -15,7 +15,10 @@ interface UnlockWalletFormValues {
   submit: null;
 }
 
-const UnlockWalletView: FC<UnlockWalletViewProps> = ({ onClickUnlock , accounts}: UnlockWalletViewProps) => {
+const UnlockWalletView: FC<UnlockWalletViewProps> = ({
+  onClickUnlock,
+  accounts,
+}: UnlockWalletViewProps) => {
   const { t } = useTranslation('UnlockWallet');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 

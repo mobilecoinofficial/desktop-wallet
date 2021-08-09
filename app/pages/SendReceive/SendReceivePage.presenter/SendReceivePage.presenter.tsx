@@ -98,15 +98,12 @@ const SendReceivePage: FC = () => {
   const onClickConfirm = () => {
     try {
       // fk setSlideExitSpeed(1000);
-      console.log(confirmation.txProposal);
       submitTransaction(confirmation.txProposal);
 
       const totalValueConfirmationAsMob = convertPicoMobStringToMob(
         confirmation.totalValueConfirmation.toString()
       );
-      console.log(totalValueConfirmationAsMob);
       const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
-      console.log(totalValueConfirmationAsMobComma);
       if (formIsChecked) {
         saveToContacts();
       }
@@ -114,8 +111,6 @@ const SendReceivePage: FC = () => {
         variant: 'success',
       });
     } catch (err) {
-      console.log(err);
-      console.log(err.message);
       enqueueSnackbar(t('sendError'), { variant: 'error' });
     }
     setConfirmation(EMPTY_CONFIRMATION);
@@ -193,31 +188,21 @@ const SendReceivePage: FC = () => {
       selectedAccount={selectedAccount}
     />
   );
-  // -----------------
+
   const onClickViewPaymentRequest = async ({
     accountId,
     fee,
-    // showModal,
     recipientPublicAddress,
     valuePmob,
   }: {
     accountId: string;
-    // alias: string;
     fee: string;
-    isChecked: boolean;
     recipientPublicAddress: StringHex;
     valuePmob: string;
   }) => {
-    // let result;
     try {
-      console.log(`accountId ${accountId} `);
-      console.log(`fee ${fee} `);
-      console.log(`recipientPublicAddress ${recipientPublicAddress} `);
-      console.log(`valuePmob ${valuePmob} `);
       const result = await buildTransaction({ accountId, fee, recipientPublicAddress, valuePmob });
-      console.log(`result ${result} `);
       if (result === null || result === undefined) {
-        console.log('build error!!!');
         throw new Error(t('sendBuildError'));
       }
 
@@ -229,18 +214,12 @@ const SendReceivePage: FC = () => {
         txProposal,
         txProposalReceiverB58Code,
       });
-      // console.log(confirmation)
-      // setSendingStatus(Showing.CONFIRM_FORM);
-      // setShowModal(true);
     } catch (err) {
-      console.log(`err ${err.error} `);
-      console.log(`err ${err.message} `);
-
       enqueueSnackbar(err.message, { variant: 'error' });
     }
   };
+
   const onClickCancelPaymentRequest = () => {
-    // setSendingStatus(Showing.INPUT_FORM);
     setConfirmation(EMPTY_CONFIRMATION);
     enqueueSnackbar(t('transactionCanceled'), { variant: 'warning' });
   };

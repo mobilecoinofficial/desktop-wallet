@@ -17,17 +17,14 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
-// import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
+import { LongCode } from '../../../components/LongCode';
 import { checkB58PaymentRequest } from '../../../services/checkB58PaymentRequest.service';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account';
-import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
-import { ErrorSharp } from '@material-ui/icons';
-import LongCode from '../../../components/LongCode';
-// import { PaymentRequestProps } from './PaymentRequest.d';
+import { PaymentRequestProps } from './PaymentRequest.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -39,7 +36,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   code: {
     alignItems: 'center',
-    display: 'flex',
     display: 'grid',
     flexDirection: 'column',
     letterSpacing: '.70rem',
@@ -64,29 +60,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
+    margin: '1rem',
     maxWidth: 800,
     padding: theme.spacing(2, 4, 3),
-    // --------
-    border: '4px solid #000000b5',
-    // padding: 16px 32px 24px;
-    // max-width: 800px;
-    boxShadow:
-      '0px 5px 5px 10px rgb(0 0 0 / 20%), 0px 5px 5px 5px rgb(0 0 0 / 14%), 0px 1px 14px 0px rgb(0 0 0 / 12%)',
-    boxShadow:
-      '0px 3px 3px 3px rgb(0 0 0 / 20%), 0px 3px 3px 3px rgb(0 0 0 / 14%), 0px 3px 3px 3px rgb(0 0 0 / 12%)',
-    // background-color: #FAFAFA;
-    borderRadius: '1rem',
-    // latest edit turn on below
-    margin: '1rem',
-    border: '10px solid #00000017',
-    // margin: 1rem;
-    // padding: 16px 32px 24px;
-    // max-width: 800px;
-    boxShadow:
-      '0px 3px 3px 3px rgb(0 0 0 / 20%), 0px 3px 3px 3px rgb(0 0 0 / 14%), 0px 0px 10px 10px rgb(0 0 0 / 12%)',
-    borderRadius: '3rem',
-    // background-color: #FAFAFA;
-    padding: '1.5rem 3rem',
   },
   root: {},
 }));
@@ -98,13 +74,8 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
   onClickConfirm,
   selectedAccount,
   onClickViewPaymentRequest,
-  existingPin,
-  isSynced,
-  pinThresholdPmob,
-  showing,
   enqueueSnackbar,
-}: // showModal,
-PaymentRequestProps) => {
+}: PaymentRequestProps) => {
   const classes = useStyles();
   const [showModal, setShowModal] = useState(false);
 
@@ -113,102 +84,23 @@ PaymentRequestProps) => {
     onClickCancel();
   };
 
-  const handleSubmit = () => {};
-
-  // const { t } = useTranslation('PaymentRequest');
-  // ---------------------
-  // const createPayReq = async () => {
-  //   try {
-  //     const result = await createPaymentRequest(myAcctId, amountPmob);
-  //     console.log(result);
-  //   } catch (error) {
-  //     throw new Error('error from createpayreq');
-  //   }
-  // };
-  // const onClickViewPaymentRequest = async ({
-  //   accountId,
-  //   fee,
-  //   // showModal,
-  //   recipientPublicAddress,
-  //   valuePmob,
-  // }: {
-  //   accountId: string;
-  //   alias: string;
-  //   fee: string;
-  //   isChecked: boolean;
-  //   recipientPublicAddress: StringHex;
-  //   valuePmob: string;
-  // }) => {
-  //   // let result;
-  //   try {
-  //     let result = await buildTransaction({ accountId, fee, recipientPublicAddress, valuePmob });
-
-  //     if (result === null || result === undefined) {
-  //       console.log('build error!!!');
-  //       throw new Error(t('sendBuildError'));
-  //     }
-
-  //     const {
-  //       feeConfirmation,
-  //       totalValueConfirmation,
-  //       txProposal,
-  //       txProposalReceiverB58Code,
-  //     } = result;
-  //     setConfirmation({
-  //       feeConfirmation,
-  //       totalValueConfirmation,
-  //       txProposal,
-  //       txProposalReceiverB58Code,
-  //     });
-  //     // setSendingStatus(Showing.CONFIRM_FORM);
-  //     setShowModal(true);
-  //   } catch (err) {
-  //     enqueueSnackbar(err.message, { variant: 'error' });
-  //   }
-  // };
-
   const handleViewPaymentRequest = async (b58code) => {
     try {
       const result = await checkB58PaymentRequest(b58code);
       if (result.error) {
-        console.log(result.error);
         throw new Error(result.error);
       }
-      console.log(result);
       const { publicAddressB58, value } = result;
       await onClickViewPaymentRequest({
         accountId: selectedAccount.account.accountId,
-        // alias: values.alias,
         fee: feePmob,
-        // fee: convertMobStringToPicoMobString(feePmob),
-        // isChecked,
-        // recipientPublicAddress: values.recipientPublicAddress,
         recipientPublicAddress: publicAddressB58,
-        // valuePmob: convertMobStringToPicoMobString(values.mobAmount),
         valuePmob: value,
       });
-
-      //  open modal
-      // setShowModal(true);
-
-      // setPaymentRequest(result);
-      //  set request address as publicAddressB58
-      //  set requested value as value
-      //  add confirm and cancel
-      //  build and submit Transaction
-      //  enque snackbar
     } catch (error) {
-      console.log(error);
       enqueueSnackbar(error.message, { variant: 'error' });
-
-      // return error;
-      // throw new Error(error);
     }
   };
-
-  // useEffect(() => {
-  //   createPayReq();
-  // }, []);
 
   const mockMultipleAccounts: Array<Account> = [
     {
@@ -221,34 +113,20 @@ PaymentRequestProps) => {
   return (
     <Formik
       initialValues={{
-        paymentRequestCodeB58: '', // mobs
+        paymentRequestCodeB58: '',
         senderPublicAddress: mockMultipleAccounts[0].b58Code,
         submit: null,
       }}
       validationSchema={Yup.object().shape({
-        // update
-        paymentRequestCodeB58: Yup.string().required('Required!'),
+        paymentRequestCodeB58: Yup.string().required('Valid request code required'),
       })}
       onSubmit={(values) => handleViewPaymentRequest(values.paymentRequestCodeB58)}
-      // onSubmit={(values) => onClickOpenGift(values.paymentRequestCodeB58)}
     >
       {({ errors, isSubmitting, dirty, isValid, submitForm, values }) => {
-        console.log(errors);
-        const selectedBalance =
-          // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
-          // eslint-disable-next-line
-          // @ts-ignore
-          BigInt(
-            mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
-              .balance
-          );
-        let isPinRequiredForTransaction = false;
-        if (confirmation.totalValueConfirmation) {
-          isPinRequiredForTransaction =
-            confirmation.totalValueConfirmation + confirmation.feeConfirmation >=
-            BigInt(pinThresholdPmob);
-        }
-        console.log(isPinRequiredForTransaction);
+        const selectedBalance = BigInt(
+          mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
+            .balance
+        );
         let remainingBalance;
         let totalSent = 0;
         if (confirmation.totalValueConfirmation && confirmation.feeConfirmation) {
@@ -256,9 +134,6 @@ PaymentRequestProps) => {
             selectedBalance - (confirmation.totalValueConfirmation + confirmation.feeConfirmation);
           totalSent = confirmation.totalValueConfirmation + confirmation.feeConfirmation;
         }
-        console.log(`total sent --- ${totalSent}`);
-        console.log(`remainingBalance --- ${remainingBalance}`);
-        console.log(confirmation);
 
         return (
           <Container className={classes.root} maxWidth="sm">
@@ -308,7 +183,6 @@ PaymentRequestProps) => {
                     aria-describedby="transition-modal-description"
                     className={classes.modal}
                     open={confirmation.txProposalReceiverB58Code !== ''}
-                    // open={showModal}
                     onClose={handleCancel}
                     closeAfterTransition
                     BackdropComponent={Backdrop}
@@ -322,7 +196,6 @@ PaymentRequestProps) => {
                       in={confirmation.txProposalReceiverB58Code !== ''}
                       timeout={{ enter: 0, exit: 0 }}
                     >
-                      {/* <Slide in={showModal} timeout={{ enter: 0, exit: 0 }}> */}
                       <Container className={classes.paper}>
                         <Typography
                           color="textPrimary"
@@ -340,20 +213,11 @@ PaymentRequestProps) => {
                         <Box py={1} />
                         <Box display="flex" justifyContent="space-around">
                           <Box textAlign="center">
-                        <Typography color="textPrimary">Recipient Address</Typography>
-                          <LongCode
-                            code={confirmation.txProposalReceiverB58Code}
-                            codeClass={classes.code}
-                            />                          {/* <Box display="flex" justifyContent="space-between">
-                            <Typography color="textPrimary">Account Balance:</Typography>
-                            <Typography color="textPrimary">
-                            <MOBNumberFormat
-                            suffix=" MOB"
-                            valueUnit="pMOB"
-                            value={selectedBalance?.toString()}
+                            <Typography color="textPrimary">Recipient Address</Typography>
+                            <LongCode
+                              code={confirmation.txProposalReceiverB58Code}
+                              codeClass={classes.code}
                             />
-                            </Typography>
-                          </Box> */}
                           </Box>
                           <Box alignSelf="center">
                             <Box display="flex" justifyContent="space-between">
@@ -364,9 +228,7 @@ PaymentRequestProps) => {
                                 <MOBNumberFormat
                                   suffix=" MOB"
                                   valueUnit="pMOB"
-                                  value={(confirmation?.totalValueConfirmation)
-                                    // confirmation?.totalValueConfirmation - Number(feePmob)
-                                    .toString()}
+                                  value={(confirmation?.totalValueConfirmation).toString()}
                                 />
                               </Typography>
                             </Box>
@@ -385,7 +247,7 @@ PaymentRequestProps) => {
                               justifyContent="space-between"
                               py={1}
                               style={{
-                                // textDecoration: 'underline',
+                                textDecoration: 'underline',
                                 textDecorationColor: 'blue',
                                 textDecorationThickness: '2px',
                                 textUnderlinePosition: 'under',
@@ -438,13 +300,11 @@ PaymentRequestProps) => {
                             className={classes.button}
                             color="secondary"
                             onClick={handleCancel}
-                            // onClick={onClickCancel}
                             size="large"
                             fullWidth
                             variant="contained"
                             id="cancel-modal"
                           >
-                            {/* {t('cancel')} */}
                             Cancel
                           </Button>
                           <Box px={2} />
@@ -452,13 +312,11 @@ PaymentRequestProps) => {
                             className={classes.button}
                             color="secondary"
                             fullWidth
-                            // onClick={onClickClaimGift}
                             onClick={onClickConfirm}
                             variant="contained"
                             id="claim-modal"
                           >
                             Submit Payment
-                            {/* {t('claimGift')} */}
                           </Button>
                         </Box>
                       </Container>

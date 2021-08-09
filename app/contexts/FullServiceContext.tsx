@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from 'react';
+import React, { createContext, useEffect, useReducer, useState } from 'react';
 import type { FC, ReactNode } from 'react';
 
 import type { SjclCipherEncrypted } from 'sjcl';
@@ -306,36 +306,8 @@ export const store = {
   state: {} as FullServiceState,
 };
 
-const removeAllAccounts = async (excludedAccountIds: string[]) => {
-  const removeAccount = async (accountId: string) => {
-    try {
-      const removed = await fullServiceApi.removeAccount({ accountId });
-
-      return removed;
-      // Now we need to reflect the fact that we just removed an account from Full Service
-      // wallet_db in our Desktop Wallet's FullServiceContext state to then get passed on
-      // to any UI elements that care about it.
-      // const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  try {
-    const { accountIds } = await fullServiceApi.getAllAccounts();
-    accountIds.forEach(async (accountId) => {
-      if (!excludedAccountIds.includes(accountId)) {
-        await removeAccount(accountId);
-      }
-    });
-  } catch (err) {
-    throw new Error(err.message);
-  }
-};
-
 export const wipeAccountContactAndPin = async (): Promise<void> => {
-  // Wipe Accounts, Contacts, and PIN
-  // removeAllAccounts([]);
+  // Wipe Contacts and PIN
   localStore.deleteEncryptedContacts();
   localStore.deletePinThresholdPmob();
   localStore.deleteEncryptedPin();
@@ -348,6 +320,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   store.state = state;
   store.dispatch = dispatch;
 
+  const [fetchBalanceTimer, setFetchBalanceTimer] = useState<null | NodeJS.Timer>(null);
+
   // Initialize App On Startup
   useEffect(() => {
     try {
@@ -358,8 +332,11 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   }, []);
 
-  // Poll Status
   useEffect(() => {
+    if (fetchBalanceTimer != null) {
+      clearInterval(fetchBalanceTimer);
+    }
+
     const { selectedAccount } = state;
 
     if (selectedAccount == null) {
@@ -367,36 +344,14 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
 
     const { accountId } = selectedAccount.account;
-    // TODO - check this early exit
-    if (accountId === '') {
-      return () => undefined;
-    }
 
     const fetchBalance = async () => {
-      // TODO - consider making a GetBalanceService
-      // but, currently, it's unclear of its value if it's just 1 call
-
-      // TODO - like most of the api calls, i really want to, instead,
-      // attach them directly to the client.
-      // Let's time box this for 1 hour today
-
-      // TODO- right now, we're just using the selected account to refresh
-      // this is obviously not ideal
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
       const { walletStatus } = await fullServiceApi.getWalletStatus();
-      // TODO - get new balance (now that is it pending)
-
       dispatch(updateStatusAction(selectedAccount.account, balanceStatus, walletStatus));
     };
 
-    fetchBalance();
-    const fetchBalanceForever = setInterval(fetchBalance, 10000);
-    return () => clearInterval(fetchBalanceForever);
-    // TODO - consider rebuilding the setInterval based on roundtrip time
-    // TODO - Right now, we have 1 monitorID. later, we may have multiple for
-    // many accounts. We'll need to parse each monitorId and built a fetcher for each.
-    // Or Alternatively (and I like this idea more), our GetBalanceService can take
-    // an array of monitorIds and return a balance for each.
+    setFetchBalanceTimer(setInterval(fetchBalance, 10000));
   }, [state]);
 
   return <FullServiceContext.Provider value={{ ...state }}>{children}</FullServiceContext.Provider>;

@@ -102,7 +102,7 @@ const AuthPage: FC = () => {
     if (walletDbExists) {
       const onClickUnlock = async (password: string) => {
         try {
-          await ipcRenderer.invoke('start-full-service', password);
+          await ipcRenderer.invoke('start-full-service', password, null);
           await new Promise((resolve) => setTimeout(resolve, 5000));
           const status = await getWalletStatus();
           await unlockWallet(password);
@@ -129,7 +129,7 @@ const AuthPage: FC = () => {
     }
     const onClickCreateWallet = async (password: string) => {
       try {
-        await ipcRenderer.invoke('start-full-service', password);
+        await ipcRenderer.invoke('start-full-service', password, null);
         await new Promise((resolve) => setTimeout(resolve, 5000));
         const status = await getWalletStatus();
         await createWallet(password);

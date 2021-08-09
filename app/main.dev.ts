@@ -72,7 +72,7 @@ const installExtensions = async () => {
 
 // TODO: rename this function to full service after integration
 // TODO: test
-const startFullService = (password: string): void => {
+const startFullService = (password: string, newPassword: string | null): void => {
   // Start the full-service process in the background
   const IS_PROD = process.env.NODE_ENV === 'production';
   const root = process.cwd();
@@ -92,15 +92,25 @@ const startFullService = (password: string): void => {
   const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
   const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
 
+  const options: { [k: string]: { [j: string]: string } } = {
+    env: {
+      ...process.env,
+      MC_PASSWORD: password,
+    },
+  };
+
+  if (newPassword != null) {
+    options.env.MC_CHANGED_PASSWORD = newPassword;
+  }
+
   spawn(
     fullServiceExecPath,
     [
       fullServiceLedgerDBPath,
       fullServiceWalletDBPath,
       [fullServiceWalletDBPath, 'wallet.db'].join('/'),
-      password,
     ],
-    {}
+    options
   );
 };
 
@@ -239,9 +249,9 @@ const createWindow = async () => {
   nativeTheme.themeSource = (localStore.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
 
   // FK see also line 270, and AuthPage.presenter.tsx line 94
-  ipcMain.handle('start-full-service', (_, password: string) => {
+  ipcMain.handle('start-full-service', (_, password: string, newPassword: string | null) => {
     console.log('STARTING SERVICE');
-    startFullService(password);
+    startFullService(password, newPassword);
     return 'Service started';
   });
 

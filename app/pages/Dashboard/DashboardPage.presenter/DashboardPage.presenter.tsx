@@ -38,6 +38,10 @@ const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) 
     enqueueSnackbar(text, { variant: 'success' });
   };
 
+  const handleAddAccount = () => {
+    addAccount(true);
+  };
+
   return (
     <Box data-testid="DashboardPage" className={classes.root}>
       <Container maxWidth={false}>
@@ -46,7 +50,7 @@ const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) 
             <DashboardView
               accounts={accounts}
               selectedAccount={selectedAccount}
-              onAddAccount={addAccount}
+              onAddAccount={handleAddAccount}
               onClose={onClose}
               onClickCode={handleCodeClicked}
             />

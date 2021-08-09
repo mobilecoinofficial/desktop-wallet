@@ -152,9 +152,10 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case ADD_ACCOUNT: {
+      const { adding } = (action as AddAccountActionType).payload;
       return {
         ...state,
-        addingAccount: true,
+        addingAccount: adding,
       };
     }
 

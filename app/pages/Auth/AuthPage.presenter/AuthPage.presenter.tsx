@@ -11,6 +11,7 @@ import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
 import useFullService from '../../../hooks/useFullService';
 import {
+  addAccount,
   createAccount,
   createWallet,
   getWalletStatus,
@@ -203,6 +204,10 @@ const AuthPage: FC = () => {
     }
   };
 
+  const onClickCancel = () => {
+    addAccount(false);
+  };
+
   return (
     <Box data-testid="AuthPageId" className={classes.root}>
       <Container className={classes.viewContainer} maxWidth="sm">
@@ -216,6 +221,7 @@ const AuthPage: FC = () => {
 
           {optButton(1, t('createInstead'))}
           {optButton(2, t('importInstead'))}
+          {addingAccount ? <Button onClick={onClickCancel}>Cancel</Button> : <></>}
         </Card>
       </Container>
     </Box>

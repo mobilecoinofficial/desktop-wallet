@@ -191,7 +191,7 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
         disableAutoFocus
         disableEnforceFocus
       >
-        <div>
+        <div style={{ overflow: 'auto' }}>
           <ShowRetrievedEntropyModal open={!!entropy} entropy={entropy} onClose={onClickClose} />
         </div>
       </Modal>

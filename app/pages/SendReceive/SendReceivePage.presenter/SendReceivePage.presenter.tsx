@@ -20,6 +20,7 @@ import type { StringHex } from '../../../types/SpecialStrings';
 import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
+import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
 
@@ -188,6 +189,57 @@ const SendReceivePage: FC = () => {
     />
   );
 
+  const onClickViewPaymentRequest = async ({
+    accountId,
+    fee,
+    recipientPublicAddress,
+    valuePmob,
+  }: {
+    accountId: string;
+    fee: string;
+    recipientPublicAddress: StringHex;
+    valuePmob: string;
+  }) => {
+    try {
+      const result = await buildTransaction({ accountId, fee, recipientPublicAddress, valuePmob });
+      if (result === null || result === undefined) {
+        throw new Error(t('sendBuildError'));
+      }
+
+      const { feeConfirmation, totalValueConfirmation, txProposal, txProposalReceiverB58Code } =
+        result;
+      setConfirmation({
+        feeConfirmation,
+        totalValueConfirmation,
+        txProposal,
+        txProposalReceiverB58Code,
+      });
+    } catch (err) {
+      enqueueSnackbar(err.message, { variant: 'error' });
+    }
+  };
+
+  const onClickCancelPaymentRequest = () => {
+    setConfirmation(EMPTY_CONFIRMATION);
+    enqueueSnackbar(t('transactionCanceled'), { variant: 'warning' });
+  };
+
+  const PaymentRequestWithParams = () => (
+    <PaymentRequest
+      onClickViewPaymentRequest={onClickViewPaymentRequest}
+      selectedAccount={selectedAccount}
+      confirmation={confirmation}
+      existingPin={existingPin as string}
+      feePmob={feePmob || '0'}
+      isSynced={isSynced}
+      onClickCancel={onClickCancelPaymentRequest}
+      onClickConfirm={onClickConfirm}
+      pinThresholdPmob={parseFloat(pinThresholdPmob)}
+      showing={sendingStatus}
+      enqueueSnackbar={enqueueSnackbar}
+    />
+  );
+
   useEffect(getFeePmob, []);
 
   return (
@@ -204,9 +256,10 @@ const SendReceivePage: FC = () => {
           >
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
+            <Tab label="Pay MOB" />
           </Tabs>
           <TabPanel
-            panels={[SendMobWithParams, ReceiveMobWithParams]}
+            panels={[SendMobWithParams, ReceiveMobWithParams, PaymentRequestWithParams]}
             selectedTabIndex={selectedTabIndex}
           />
         </Grid>

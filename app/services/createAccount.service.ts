@@ -15,7 +15,7 @@ const createAccount = async (name: string): Promise<void> => {
     });
 
     const { walletStatus } = await fullServiceApi.getWalletStatus();
-    const { accountIds, accountMap } = walletStatus;
+    const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
     const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
       accountId,
     });

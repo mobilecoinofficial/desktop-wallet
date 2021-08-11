@@ -89,7 +89,7 @@ const ReceiveMob: FC<ReceiveMobProps> = ({
             accountId: selectedAccount.account.accountId,
             b58Code: selectedAccount.account.mainAddress,
             balance: selectedAccount.balanceStatus.unspentPmob,
-            name: selectedAccount.account.name as string,
+            name: nameFromAddress,
           }}
           accounts={accounts}
           onClickCode={onClickCode}

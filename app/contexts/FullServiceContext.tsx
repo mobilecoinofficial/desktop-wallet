@@ -26,6 +26,7 @@ import {
 } from './actions/confirmEntropyKnown.action';
 import { CREATE_ACCOUNT, CreateAccountActionType } from './actions/createAccount.action';
 import { CREATE_WALLET, CreateWalletActionType } from './actions/createWallet.action';
+import { DELETE_ACCOUNT, DeleteAccountActionType } from './actions/deleteAccount.action';
 import {
   FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   FetchAllTransactionLogsForAccountActionType,
@@ -80,6 +81,7 @@ type Action =
   | ConfirmEntropyKnownActionType
   | CreateAccountActionType
   | CreateWalletActionType
+  | DeleteAccountActionType
   | FetchAllTransactionLogsForAccountActionType
   | FetchAllTxosForAccountActionType
   | ImportAccountActionType
@@ -156,6 +158,15 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       return {
         ...state,
         addingAccount: adding,
+      };
+    }
+
+    case DELETE_ACCOUNT: {
+      const { accounts } = (action as DeleteAccountActionType).payload;
+
+      return {
+        ...state,
+        accounts,
       };
     }
 
@@ -339,7 +350,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
 
     const { selectedAccount } = state;
 
-    if (selectedAccount == null) {
+    if (selectedAccount === undefined || selectedAccount === null) {
       return;
     }
 

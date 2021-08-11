@@ -16,13 +16,13 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+import { selectAccount } from '../../services';
 import type { Theme } from '../../theme';
 import { LongCode } from '../LongCode';
 import { QRMob } from '../QRMob';
 import { ShortCode } from '../ShortCode';
 import { CodeTextIcon, LogoIcon, QRCodeIcon } from '../icons';
 import { AccountCardProps } from './AccountCard';
-import { selectAccount } from '../../services';
 
 const useStyles = makeStyles((theme: Theme) => ({
   code: {
@@ -135,19 +135,25 @@ const AccountCard: FC<AccountCardProps> = ({
             </Typography>
             <Box className={classes.corners}>
               <Box>
-                <Select
-                  labelId="account-select-label"
-                  id="account-select"
-                  value={account.accountId}
-                  onChange={handleAccountSelectChange}
-                >
-                  {accounts.accountIds.map((accountId: string) => (
-                    <MenuItem value={accountId} key={accountId}>
-                      {accountId.substring(0, 5)}
-                    </MenuItem>
-                  ))}
-                </Select>
-                <Button onClick={onAddAccount}>+</Button>
+                {accounts === undefined ? (
+                  <></>
+                ) : (
+                  <Select
+                    labelId="account-select-label"
+                    id="account-select"
+                    value={account.accountId}
+                    onChange={handleAccountSelectChange}
+                  >
+                    {accounts.accountIds.map((accountId: string) => (
+                      <MenuItem value={accountId} key={accountId}>
+                        {`${
+                          accounts.accountMap[accountId].name ?? 'unnamed'
+                        } - ${accountId.substring(0, 5)}`}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+                {onAddAccount === undefined ? <></> : <Button onClick={onAddAccount}>+</Button>}
               </Box>
               <Typography data-testid="account-card-short-code" color="textSecondary" variant="h4">
                 <ShortCode code={b58Code} />

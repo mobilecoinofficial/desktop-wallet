@@ -1,8 +1,10 @@
+import { Accounts } from '../../../types/Account';
 import type { GiftCode } from '../../../types/GiftCode.d';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 import type { TxProposal } from '../../../types/TxProposal';
 
 export interface BuildGiftPanelProps {
+  accounts: Accounts;
   confirmation: {
     feeConfirmation: number;
     giftCodeB58: string;

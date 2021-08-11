@@ -60,6 +60,7 @@ const GiftsPage: FC = () => {
 
   const { t } = useTranslation('GiftingView');
   const {
+    accounts,
     feePmob,
     giftCodes,
     pin: existingPin,
@@ -150,6 +151,7 @@ const GiftsPage: FC = () => {
 
   const BuildGift = () => (
     <BuildGiftPanel
+      accounts={accounts}
       buildGiftCode={buildGiftCode}
       confirmation={confirmationBuild}
       deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}

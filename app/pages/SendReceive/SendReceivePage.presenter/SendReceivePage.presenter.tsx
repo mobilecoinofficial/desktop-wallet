@@ -52,6 +52,7 @@ const SendReceivePage: FC = () => {
   const [formRecipientPublicAddress, setRecipientPublicAddress] = useState('');
 
   const {
+    accounts,
     contacts,
     pin: existingPin,
     feePmob,
@@ -183,6 +184,7 @@ const SendReceivePage: FC = () => {
 
   const ReceiveMobWithParams = () => (
     <ReceiveMob
+      accounts={accounts}
       onClickCode={handleCodeClicked}
       contacts={contacts}
       selectedAccount={selectedAccount}

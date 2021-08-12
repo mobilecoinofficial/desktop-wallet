@@ -35,7 +35,6 @@ const DashboardView: FC<DashboardPageProps> = ({
           name: selectedAccount.account.name as string,
         }}
         accounts={accounts}
-        onAddAccount={onAddAccount}
         onClickCode={onClickCode}
       />
       <Box py={2} />

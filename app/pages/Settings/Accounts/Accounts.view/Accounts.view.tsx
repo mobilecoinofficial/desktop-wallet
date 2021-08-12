@@ -10,6 +10,7 @@ import {
   makeStyles,
   Button,
   Grid,
+  Fab,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
@@ -43,6 +44,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: '-.70rem',
     padding: theme.spacing(1),
   },
+  fab: {
+    margin: '10px auto',
+  },
   form: {
     paddingBottom: theme.spacing(2),
   },
@@ -71,6 +75,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const AccountsView: FC<AccountsViewProps> = ({
   accounts,
   deleteAccount,
+  onClickAddAccount,
   onClickBack,
   selectAccount,
   selectedAccount,
@@ -125,6 +130,9 @@ const AccountsView: FC<AccountsViewProps> = ({
             </Button>
           ) : null}
         </Box>
+        <Fab color="primary" size="medium" className={classes.fab} onClick={onClickAddAccount}>
+          +
+        </Fab>
       </Grid>
     </Container>
   );

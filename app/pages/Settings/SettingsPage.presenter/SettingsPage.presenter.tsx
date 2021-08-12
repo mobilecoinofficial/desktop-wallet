@@ -13,9 +13,17 @@ import {
   PrivateDocumentIcon,
   ToolsIcon,
 } from '../../../components/icons';
+import routePaths from '../../../constants/routePaths';
 import useFullService from '../../../hooks/useFullService';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
-import { changePassword, retrieveEntropy, selectAccount, setPin } from '../../../services';
+import {
+  addAccount,
+  changePassword,
+  retrieveEntropy,
+  selectAccount,
+  setPin,
+} from '../../../services';
+import { deleteAccount } from '../../../services/deleteAccount.service';
 import type { Theme } from '../../../theme';
 import type { StringUInt64 } from '../../../types/SpecialStrings.d';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
@@ -28,8 +36,6 @@ import { PrivacyPolicyView } from '../PrivacyPolicy.view';
 import { RetrieveEntropyView } from '../RetrieveEntropy.view';
 import { SettingsOptionsList } from '../SettingsOptionsList.view';
 import { TermsOfUseView } from '../TermsOfUse.view';
-import deleteAccount from '../../../services/deleteAccount.service';
-import routePaths from '../../../constants/routePaths';
 
 const SETTINGS = 'settings';
 const ACCOUNTS = 'accounts';
@@ -51,15 +57,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const SettingsPage: FC = () => {
   const classes = useStyles();
+  const { accounts, addingAccount, pinThresholdPmob, pin, selectedAccount } = useFullService();
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');
-  const { accounts, pinThresholdPmob, pin, selectedAccount } = useFullService();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('SettingsPage');
-
-  if (accounts.accountIds.length === 0) {
-    return <Redirect to={routePaths.ROOT} />;
-  }
 
   const {
     ledgerDbPath,
@@ -174,6 +176,14 @@ const SettingsPage: FC = () => {
 
   const onClickBack = () => setShowing(SETTINGS);
 
+  const onClickAddAccount = () => {
+    addAccount(true);
+  };
+
+  if (addingAccount) {
+    return <Redirect to={routePaths.ROOT} />;
+  }
+
   switch (showing) {
     case SETTINGS:
       return (
@@ -194,6 +204,7 @@ const SettingsPage: FC = () => {
             <AccountsView
               accounts={accounts}
               deleteAccount={deleteAccount}
+              onClickAddAccount={onClickAddAccount}
               onClickBack={onClickBack}
               selectAccount={selectAccount}
               selectedAccount={selectedAccount}

@@ -52,7 +52,6 @@ const AccountCard: FC<AccountCardProps> = ({
   account,
   accounts,
   isGift,
-  onAddAccount,
   onClickCode,
   ...rest
 }: AccountCardProps) => {
@@ -153,7 +152,6 @@ const AccountCard: FC<AccountCardProps> = ({
                     ))}
                   </Select>
                 )}
-                {onAddAccount === undefined ? <></> : <Button onClick={onAddAccount}>+</Button>}
               </Box>
               <Typography data-testid="account-card-short-code" color="textSecondary" variant="h4">
                 <ShortCode code={b58Code} />

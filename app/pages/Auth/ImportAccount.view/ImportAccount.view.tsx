@@ -17,7 +17,6 @@ import type { ImportAccountViewProps } from './ImportAccount.d';
 interface ImportAccountFormValues {
   accountName: string;
   checkedSavePassword: boolean;
-  checkedTerms: boolean;
   entropy: string;
   password: string;
   passwordConfirmation: string;
@@ -28,14 +27,6 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
   onClickImport,
 }: ImportAccountViewProps) => {
   const { t } = useTranslation('ImportAccount');
-
-  const [canCheck, setCanCheck] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  const handleCloseTerms = () => {
-    setCanCheck(true);
-    setOpen(false);
-  };
 
   const handleOnSubmit = async (values: ImportAccountFormValues) =>
     onClickImport(values.accountName, values.entropy);
@@ -61,15 +52,12 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
       <Formik
         initialValues={{
           accountName: '',
-          checkedTerms: false,
           entropy: '',
           submit: null,
         }}
         onSubmit={handleOnSubmit}
         validationSchema={Yup.object().shape({
           accountName: Yup.string().max(64, t('accountNameValidation')),
-          // CBB: It appears that the checkedTerms error message is not working properly.
-          checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
           entropy: Yup.string()
             .test('format', t('entropyMatches'), isValidMnemonicOrHexFormat)
             .test('validEntropy', t('entropyIsWrong'), isValidMnemonicOrHexValue)
@@ -97,24 +85,6 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
               multiline
               name="entropy"
             />
-            <Box pt={1} display="flex">
-              <Box display="flex" alignItems="center" flexDirection="row-reverse">
-                <Box>
-                  <Typography display="inline">{t('acceptTerms')}</Typography>
-                  <Button color="primary" onClick={() => setOpen(true)} id="openTerms">
-                    {t('acceptTermsButton')}
-                  </Button>
-                </Box>
-                <Field
-                  component={Checkbox}
-                  type="checkbox"
-                  name="checkedTerms"
-                  disabled={!canCheck}
-                  indeterminate={!canCheck}
-                />
-              </Box>
-            </Box>
-            {!canCheck && <FormHelperText focused>{t('acceptTermsFormHelper')}</FormHelperText>}
             {errors.submit && (
               <Box mt={3}>
                 <FormHelperText error>{errors.submit}</FormHelperText>
@@ -127,7 +97,6 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
             >
               {t('importAccountButton')}
             </SubmitButton>
-            <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
           </Form>
         )}
       </Formik>

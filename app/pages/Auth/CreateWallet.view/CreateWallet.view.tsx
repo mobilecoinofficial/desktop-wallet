@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, FormHelperText, Typography } from '@material-ui/core';
+import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { TextField } from 'formik-material-ui';
+import { Checkbox, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
+import { SubmitButton, TermsOfUseDialog } from '../../../components';
 import type { CreateWalletViewProps } from './CreateWallet';
 
 interface CreateWalletFormValues {
@@ -18,6 +18,13 @@ interface CreateWalletFormValues {
 
 const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWalletViewProps) => {
   const { t } = useTranslation('UnlockWallet');
+  const [canCheck, setCanCheck] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const handleCloseTerms = () => {
+    setCanCheck(true);
+    setOpen(false);
+  };
 
   const handleOnSubmit = (values: CreateWalletFormValues) => onClickCreate(values.password);
 
@@ -27,11 +34,18 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
         Create Wallet
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
-        Please enter a passphrase to encrypt your wallet database. If you lose this and don't have your account secrets backed up, there will be no way to recover your account!
+        Please enter a passphrase to encrypt your wallet database. If you lose this and don't have
+        your account secrets backed up, there will be no way to recover your account!
       </Typography>
       <Formik
-        initialValues={{ password: '', passwordConfirmation: '', submit: null }}
+        initialValues={{
+          checkedTerms: false,
+          password: '',
+          passwordConfirmation: '',
+          submit: null,
+        }}
         validationSchema={Yup.object().shape({
+          checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
           password: Yup.string().min(8, 'min 8').max(99, 'max 99').required(t('passwordRequired')),
           passwordConfirmation: Yup.string()
             .oneOf([Yup.ref('password')], 'Passwords must match')
@@ -62,6 +76,24 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Box>
             )}
+            <Box display="flex">
+              <Box display="flex" alignItems="center" flexDirection="row-reverse">
+                <Box>
+                  <Typography display="inline">{t('acceptTerms')}</Typography>
+                  <Button color="primary" onClick={() => setOpen(true)} id="openTerms">
+                    {t('acceptTermsButton')}
+                  </Button>
+                </Box>
+                <Field
+                  component={Checkbox}
+                  type="checkbox"
+                  name="checkedTerms"
+                  disabled={!canCheck}
+                  indeterminate={!canCheck}
+                />
+              </Box>
+            </Box>
+            {!canCheck && <FormHelperText focused>{t('acceptTermsFormHelper')}</FormHelperText>}
             <SubmitButton
               data-testid="submit-button"
               disabled={!dirty || !isValid || isSubmitting}
@@ -70,6 +102,7 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
             >
               Create
             </SubmitButton>
+            <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
           </Form>
         )}
       </Formik>

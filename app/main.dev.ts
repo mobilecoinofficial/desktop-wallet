@@ -123,6 +123,9 @@ const setFullServiceDbPaths = (): void => {
 
   console.log('ledgerFullServiceDbPath', ledgerFullServiceDbPath);
   console.log('fullServiceDbPath', fullServiceDbPath);
+
+  localStore.setFullServiceDbPath(fullServiceDbPath);
+  localStore.setLedgerDbPath(ledgerFullServiceDbPath);
 };
 
 let syncStatus = ''; // for the app to update, via ipcRenderer.send(...)

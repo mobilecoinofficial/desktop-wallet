@@ -1,7 +1,7 @@
 {
-  "name": "mobilecoin-desktop-wallet-v1.0.0",
-  "productName": "MobileCoin-Desktop-Wallet-v1.0.0",
-  "version": "v1.0.0",
+  "name": "mobilecoin-wallet-v1.1.0",
+  "productName": "MobileCoin Wallet",
+  "version": "v1.1.0",
   "description": "Desktop hot wallet for your MobileCoin needs.",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
@@ -52,7 +52,7 @@
     ]
   },
   "build": {
-    "productName": "MobileCoin-Desktop-Wallet-v1.0.0",
+    "productName": "MobileCoin Wallet",
     "appId": "com.mobilecoin.vault",
     "files": [
       "dist/",

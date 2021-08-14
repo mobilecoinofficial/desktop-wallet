@@ -103,6 +103,8 @@ const startFullService = (password: string, newPassword: string | null): void =>
     options.env.MC_CHANGED_PASSWORD = newPassword;
   }
 
+  console.log('PATH', fullServiceExecPath);
+
   spawn(
     fullServiceExecPath,
     [
@@ -142,7 +144,7 @@ const createWindow = async () => {
     : path.join(__dirname, '../resources');
 
   const getAssetPath = (...paths: string[]): string => path.join(RESOURCES_PATH, ...paths);
-  const { height } = screen.getPrimaryDisplay().workAreaSize
+  const { height } = screen.getPrimaryDisplay().workAreaSize;
 
   mainWindow = new BrowserWindow({
     height: height < INITIAL_WINDOW_HEIGHT ? height : INITIAL_WINDOW_HEIGHT,

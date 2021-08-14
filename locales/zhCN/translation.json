@@ -509,6 +509,9 @@
     "unlockAccountButton": "解锁钱包"
   },
   "UnlockWallet": {
+    "acceptTerms": "我已阅读并接受",
+    "acceptTermsButton": "用户条款",
+    "acceptTermsFormHelper": "您必须先阅读用户条款才能使用钱包。",
     "description": "请输入钱包密码。如果您忘记了密码的话，可以通过您的备份口令重新导入账户。",
     "passwordLabel": "密码",
     "passwordRequired": "请输入密码",

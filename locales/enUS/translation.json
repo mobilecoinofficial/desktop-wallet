@@ -586,6 +586,9 @@
   },
 
   "UnlockWallet": {
+    "acceptTerms": "I have read and accept the",
+    "acceptTermsButton": "Terms of Use",
+    "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
     "description": "Please enter the passphrase you used to secure your wallet.",
     "passwordLabel": "Passphrase",
     "passwordRequired": "Passphrase is required",

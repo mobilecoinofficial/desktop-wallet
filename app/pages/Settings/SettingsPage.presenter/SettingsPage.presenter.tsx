@@ -9,6 +9,7 @@ import { Redirect } from 'react-router-dom';
 import {
   KeyIcon,
   LockIcon,
+  MOBIcon,
   OfficialDocumentIcon,
   PrivateDocumentIcon,
   ToolsIcon,
@@ -131,7 +132,7 @@ const SettingsPage: FC = () => {
 
   const settingsOptionsList = [
     {
-      Icon: LockIcon,
+      Icon: MOBIcon,
       handleOnClick,
       label: 'accounts',
       path: ACCOUNTS,

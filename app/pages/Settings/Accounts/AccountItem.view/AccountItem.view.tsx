@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+import { ShortCode } from '../../../../components/ShortCode';
 import { MOBIcon, TrashcanIcon } from '../../../../components/icons';
 import { Theme } from '../../../../theme';
 import type { AccountItemProps } from './AccountItem';
@@ -56,19 +57,15 @@ const AccountItem: FC<AccountItemProps> = ({
               </Avatar>
             }
             title={account.name ?? 'Unnamed'}
-            subheader={`${account.accountId.substring(0, 10)}...`}
+            subheader={<ShortCode code={account.mainAddress} />}
             classes={{
               action: classes.action,
             }}
           />
         </CardActionArea>
-        {selected ? (
-          <></>
-        ) : (
-          <Button onClick={onDelete}>
-            <TrashcanIcon color="red" />
-          </Button>
-        )}
+        <Button onClick={onDelete} disabled={selected}>
+          <TrashcanIcon color={selected ? 'grey' : 'red'} />
+        </Button>
       </Card>
     </Grid>
   );

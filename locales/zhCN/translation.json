@@ -11,6 +11,10 @@
     "mobUrlTooltip": "查看 MobURL 二维码",
     "unnamed": "未命名账户"
   },
+  "AccountsView": {
+    "accounts": "Accounts",
+    "settingsBreadcrumb": "设置"
+  },
   "BalanceIndicator": {
     "syncMessage": "在钱包与账簿同步完成前显示的余额可能不准确。",
     "title": "账户余额"
@@ -427,6 +431,7 @@
     "pinSize": "PIN 码必须为 6 位数"
   },
   "SettingsOptionsItem": {
+    "accounts": "ACCOUNTS",
     "changePassword": "修改密码",
     "changePin": "设置或修改 PIN 码",
     "configureFullService": "配置 MobileCoin 守护进程",

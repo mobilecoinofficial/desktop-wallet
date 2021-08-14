@@ -15,7 +15,6 @@ const useStyles = makeStyles(() => ({
 
 const DashboardView: FC<DashboardPageProps> = ({
   accounts,
-  onAddAccount,
   onClickCode,
   onClose,
   selectedAccount,

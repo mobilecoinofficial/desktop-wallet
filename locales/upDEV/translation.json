@@ -12,6 +12,11 @@
     "unnamed": "UNNAMED ACCOUNT"
   },
 
+  "AccountsView": {
+    "accounts": "ACCOUNTS",
+    "settingsBreadcrumb": "SETTINGS"
+  },
+
   "AuthPage": {
     "createInstead": "CREATE ACCOUNT INSTEAD",
     "importInstead": "IMPORT ACCOUNT INSTEAD",
@@ -494,6 +499,7 @@
   },
 
   "SettingsOptionsItem": {
+    "accounts": "ACCOUNTS",
     "changePassword": "CHANGE PASSPHRASE",
     "changePin": "TRANSACTION PIN SETTINGS",
     "configureFullService": "MANAGE LEDGER DATABASE",

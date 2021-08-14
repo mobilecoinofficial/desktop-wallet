@@ -134,9 +134,11 @@ const AccountCard: FC<AccountCardProps> = ({
             </Typography>
             <Box className={classes.corners}>
               <Box>
-                {accounts === undefined ? (
-                  <></>
-                ) : (
+                {(accounts === undefined || accounts.accountIds.length === 0) && <></>}
+                {accounts !== undefined && accounts.accountIds.length === 1 && (
+                  <span>{accounts.accountMap[accounts.accountIds[0]].name}</span>
+                )}
+                {accounts !== undefined && accounts.accountIds.length > 1 && (
                   <Select
                     labelId="account-select-label"
                     id="account-select"
@@ -145,9 +147,8 @@ const AccountCard: FC<AccountCardProps> = ({
                   >
                     {accounts.accountIds.map((accountId: string) => (
                       <MenuItem value={accountId} key={accountId}>
-                        {`${
-                          accounts.accountMap[accountId].name ?? 'unnamed'
-                        } - ${accountId.substring(0, 5)}`}
+                        {`${accounts.accountMap[accountId].name ?? 'unnamed'}`}&nbsp; (
+                        <ShortCode code={accounts.accountMap[accountId].mainAddress} />)
                       </MenuItem>
                     ))}
                   </Select>

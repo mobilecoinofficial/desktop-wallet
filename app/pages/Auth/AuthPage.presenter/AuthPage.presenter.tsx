@@ -54,6 +54,19 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
+/* eslint-disable no-await-in-loop */
+const untilFullServiceRuns = async () => {
+  for (;;) {
+    try {
+      await getWalletStatus();
+      return true;
+    } catch (e) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+  }
+};
+/* eslint-enable no-await-in-loop */
+
 const AuthPage: FC = () => {
   const classes = useStyles();
   const { addingAccount, isAuthenticated, selectedAccount } = useFullService();
@@ -103,7 +116,7 @@ const AuthPage: FC = () => {
       const onClickUnlock = async (password: string) => {
         try {
           await ipcRenderer.invoke('start-full-service', password, null);
-          await new Promise((resolve) => setTimeout(resolve, 5000));
+          await untilFullServiceRuns();
           const status = await getWalletStatus();
           await unlockWallet(password);
           if (status.accountIds.length > 0) {
@@ -130,7 +143,7 @@ const AuthPage: FC = () => {
     const onClickCreateWallet = async (password: string) => {
       try {
         await ipcRenderer.invoke('start-full-service', password, null);
-        await new Promise((resolve) => setTimeout(resolve, 5000));
+        await untilFullServiceRuns();
         const status = await getWalletStatus();
         await createWallet(password);
         await unlockWallet(password);

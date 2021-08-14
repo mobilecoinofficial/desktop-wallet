@@ -12,6 +12,11 @@
     "unnamed": "Unnamed Account"
   },
 
+  "AccountsView": {
+    "accounts": "Accounts",
+    "settingsBreadcrumb": "Settings"
+  },
+
   "AuthPage": {
     "createInstead": "Create account instead",
     "importInstead": "Import account instead",
@@ -489,6 +494,7 @@
   },
 
   "SettingsOptionsItem": {
+    "accounts": "Accounts",
     "changePassword": "Change Passphrase",
     "changePin": "Transaction PIN Settings",
     "configureFullService": "Manage Ledger Database",

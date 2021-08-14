@@ -81,7 +81,7 @@ const AccountsView: FC<AccountsViewProps> = ({
   selectedAccount,
 }: AccountsViewProps) => {
   const classes = useStyles();
-  const { t } = useTranslation('ChangePasswordView');
+  const { t } = useTranslation('AccountsView');
   const [firstToShow, setFirstToShow] = useState(0);
 
   const pageBack = () => setFirstToShow(firstToShow - 5);

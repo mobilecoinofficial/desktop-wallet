@@ -119,7 +119,7 @@ const AuthPage: FC = () => {
           await untilFullServiceRuns();
           const status = await getWalletStatus();
           await unlockWallet(password);
-          if (status.accountIds.length > 0) {
+          if (status.accountIds.length) {
             await selectAccount(status.accountIds[0]);
           }
           setAccountIds(status.accountIds);

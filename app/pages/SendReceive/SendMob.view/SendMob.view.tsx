@@ -31,7 +31,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
-import { StarIcon, MOBIcon } from '../../../components/icons';
+import { StarIcon, MOBIcon, CopyIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
 import {
@@ -87,6 +87,7 @@ const SendMob: FC<SendMobProps> = ({
   isSynced,
   onClickCancel,
   onClickConfirm,
+  onClickCopyReceiverReceipts,
   onClickSend,
   pinThresholdPmob,
   selectedAccount,
@@ -125,6 +126,10 @@ const SendMob: FC<SendMobProps> = ({
   const handleClose = (setSubmitting: (boolean: boolean) => void) => () => {
     setSubmitting(false);
     onClickCancel();
+  };
+
+  const handleCopyReceiverReceipts = () => {
+    onClickCopyReceiverReceipts();
   };
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
@@ -526,17 +531,23 @@ const SendMob: FC<SendMobProps> = ({
                               {t('confirmSend')}
                             </Button>
                           </Box>
+                          <Box display="flex" justifyContent="space-around">
+                            <Button id="copyReceipts" onClick={handleCopyReceiverReceipts}>
+                              <CopyIcon />
+                              <Typography color="textPrimary">Copy Receiver Receipt</Typography>
+                            </Button>
+                          </Box>
                         </div>
                       </Slide>
                     </Modal>
                     <Modal
                       className={classes.modal}
                       open={showing === Showing.SEND_FORM}
-                       onClose={(event, reason) => {
-                           if (reason !== 'backdropClick') {
-                             onClose(event, reason);
-                           }
-                         }}
+                      onClose={(event, reason) => {
+                        if (reason !== 'backdropClick') {
+                          onClose(event, reason);
+                        }
+                      }}
                       closeAfterTransition
                       disableAutoFocus
                       disableEnforceFocus

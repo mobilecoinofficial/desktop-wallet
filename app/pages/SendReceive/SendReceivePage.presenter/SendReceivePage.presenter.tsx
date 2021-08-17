@@ -23,6 +23,7 @@ import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
+import { createReceiverReceipts } from '../../../fullService/api';
 
 const EMPTY_CONFIRMATION = {
   feeConfirmation: 0n,
@@ -166,6 +167,18 @@ const SendReceivePage: FC = () => {
     }
   };
 
+  const onClickCopyReceiverReceipts = () => {
+    (async () => {
+      try {
+        const result = await createReceiverReceipts({ txProposal: confirmation.txProposal });
+        clipboard.writeText(JSON.stringify(result.receiverReceipts));
+        enqueueSnackbar('Copied Receipt to Clipboard');
+      } catch (err) {
+        enqueueSnackbar(err.message, { variant: 'error' });
+      }
+    })();
+  };
+
   const SendMobWithParams = () => (
     <SendMob
       confirmation={confirmation}
@@ -175,6 +188,7 @@ const SendReceivePage: FC = () => {
       isSynced={isSynced}
       onClickCancel={onClickCancel}
       onClickConfirm={onClickConfirm}
+      onClickCopyReceiverReceipts={onClickCopyReceiverReceipts}
       onClickSend={onClickSend}
       pinThresholdPmob={parseFloat(pinThresholdPmob)}
       selectedAccount={selectedAccount}

@@ -24,6 +24,7 @@ export interface SendMobProps {
   feePmob: string;
   isSynced: boolean;
   onClickCancel: () => void;
+  onClickCopyReceiverReceipts: () => void;
   onClickConfirm: () => void;
   onClickSend: (x: SendParameters) => void;
   pinThresholdPmob: number;

@@ -77,18 +77,19 @@ const AuthPage: FC = () => {
   const [loading, setLoading] = useState(true);
   const [accountIds, setAccountIds] = useState([]);
 
-  const checkIfFullServiceIsRunning = async () => {
-    try {
-      const status = await getWalletStatus();
-      setAccountIds(status.accountIds);
-      setFullServiceIsRunning(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    checkIfFullServiceIsRunning();
+    const controller = new AbortController();
+    (async () => {
+      try {
+        const status = await getWalletStatus();
+        setAccountIds(status.accountIds);
+        setFullServiceIsRunning(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
+
+    return () => controller?.abort();
   }, []);
 
   if (loading) {

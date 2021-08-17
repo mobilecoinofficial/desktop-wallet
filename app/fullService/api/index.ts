@@ -5,6 +5,7 @@ export { default as checkGiftCodeStatus } from './checkGiftCodeStatus';
 export { default as checkB58PaymentRequest } from './checkB58PaymentRequest';
 export { default as claimGiftCode } from './claimGiftCode';
 export { default as createAccount } from './createAccount';
+export { default as createReceiverReceipts } from './createReceiverReceipts';
 export { default as exportAccountSecrets } from './exportAccountSecrets';
 export { default as getAccount } from './getAccount';
 export { default as getAccountStatus } from './getAccountStatus';

@@ -1,11 +1,20 @@
 import React from 'react';
 import type { FC, ReactNode } from 'react';
 
-import { Box, Card, CardContent, Container, makeStyles, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  makeStyles,
+  Typography,
+} from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { ShortCode, SubmitButton } from '../../../components';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
+import { CopyIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
 import type { TransactionDetailsViewProps } from './TransactionDetails.d';
 
@@ -33,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const TransactionDetails: FC<TransactionDetailsViewProps> = ({
-  // onChangedComment,
+  onClickCopyConfirmations,
   onClickBack,
   transactionLog,
   txos,
@@ -94,6 +103,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
 
     return renderRow(`${label}:`, aliasOrAddress);
   };
+
   return (
     <Container maxWidth="md" className={classes.root}>
       <Card className={classes.card}>
@@ -145,54 +155,14 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
           </CardContent>
         </Card>
       )}
-
-      {/* <Container className={classes.container}>
-          <Card className={classes.card}>
-            <Typography variant="body2" color="textPrimary">
-              {t('addComment')}
-            </Typography>
-
-            <Formik
-              initialValues={{
-                newComment: comment,
-                submit: null,
-              }}
-              onSubmit={(values, { setSubmitting, setStatus }) => {
-                setSubmitting(true);
-                onChangedComment(transactionLogId, values.newComment);
-                setTimeout(() => {
-                  setSubmitting(false);
-                  enqueueSnackbar(t('savedComment'), { variant: 'success' });
-                  setStatus({ success: true });
-                }, 1500);
-              }}
-            >
-              {({ isSubmitting, dirty, isValid, submitForm }) => (
-                <Form>
-                  <Box>
-                    <Field
-                      component={TextField}
-                      fullWidth
-                      label={t('typeHere')}
-                      margin="normal"
-                      name="newComment"
-                      type="text"
-                    />
-                  </Box>{' '}
-                  <Box paddingLeft={10} paddingRight={10}>
-                    <SubmitButton
-                      disabled={!dirty || !isValid || isSubmitting}
-                      onClick={submitForm}
-                      isSubmitting={isSubmitting}
-                    >
-                      {t('changeComment')}
-                    </SubmitButton>
-                  </Box>
-                </Form>
-              )}
-            </Formik>
-          </Card>
-        </Container> */}
+      {direction === 'tx_direction_sent' ? (
+        <Button id="copyReceipts" onClick={onClickCopyConfirmations}>
+          <CopyIcon />
+          <Typography color="textPrimary">Copy Confirmation(s)</Typography>
+        </Button>
+      ) : (
+        <></>
+      )}
       <SubmitButton disabled={false} isSubmitting={false} onClick={onClickBack}>
         {t('buttons.back')}
       </SubmitButton>

@@ -50,7 +50,7 @@ const TermsOfUse = (): JSX.Element => (
         the Compliance Entities at any time and without prior notice to you by posting at
         [www.buymobilecoin.us]. Your continued use of any MobileCoins and any MobileCoin Wallets
         following the posting of any amendment, change, or update means that you accept and agree to
-        the amended, changed, or updated Terms. These Terms are first effective as of [August __],
+        the amended, changed, or updated Terms. These Terms are first effective as of August 17,
         2021 and supersede any previous versions.
       </Typography>
     </Box>
@@ -62,9 +62,10 @@ const TermsOfUse = (): JSX.Element => (
         or transfer of any MobileCoins which is void will not be the basis for the assertion or
         recognition of any interest, right, remedy, power, or privilege. [Please also consult the
         applicable Terms of Sale and Access and Use of the Site, available at the MobileCoin U.S.
-        LLC website at www.buymobile.us or the MobileCoin TS Ltd. website at www.buymobilecoin.com.
-        Information on the way personal information is handled is included in the appropriate
-        Privacy Policy, available at [www.buymobilecoin.us] or [www.buymobilecoin.com/].]
+        LLC website at www.buymobilecoin.us or the MobileCoin TS Ltd. website at
+        www.buymobilecoin.com. Information on the way personal information is handled is included in
+        the appropriate Privacy Policy, available at [www.buymobilecoin.us] or
+        [www.buymobilecoin.com/].]
       </Typography>
     </Box>
 

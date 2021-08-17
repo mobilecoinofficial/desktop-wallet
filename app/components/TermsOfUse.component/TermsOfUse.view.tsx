@@ -48,10 +48,10 @@ const TermsOfUse = (): JSX.Element => (
         MobileCoin U.S., LLC or other authorized entities (which are collectively referred to in
         these Terms as the Compliance Entities). These Terms may be amended, changed, or updated by
         the Compliance Entities at any time and without prior notice to you by posting at
-        [www.buymobilecoin.us]. Your continued use of any MobileCoins and any MobileCoin Wallets
-        following the posting of any amendment, change, or update means that you accept and agree to
-        the amended, changed, or updated Terms. These Terms are first effective as of August 17,
-        2021 and supersede any previous versions.
+        [https://www.buymobilecoin.us]. Your continued use of any MobileCoins and any MobileCoin
+        Wallets following the posting of any amendment, change, or update means that you accept and
+        agree to the amended, changed, or updated Terms. These Terms are first effective as of
+        August 17, 2021 and supersede any previous versions.
       </Typography>
     </Box>
     <Box p={2} textAlign="justify">
@@ -62,10 +62,10 @@ const TermsOfUse = (): JSX.Element => (
         or transfer of any MobileCoins which is void will not be the basis for the assertion or
         recognition of any interest, right, remedy, power, or privilege. [Please also consult the
         applicable Terms of Sale and Access and Use of the Site, available at the MobileCoin U.S.
-        LLC website at www.buymobilecoin.us or the MobileCoin TS Ltd. website at
-        www.buymobilecoin.com. Information on the way personal information is handled is included in
-        the appropriate Privacy Policy, available at [www.buymobilecoin.us] or
-        [www.buymobilecoin.com/].]
+        LLC website at https://www.buymobilecoin.us or the MobileCoin TS Ltd. website at
+        https://www.buymobilecoin.com. Information on the way personal information is handled is
+        included in the appropriate Privacy Policy, available at [https://www.buymobilecoin.us] or
+        [https://www.buymobilecoin.com/].]
       </Typography>
     </Box>
 
@@ -225,7 +225,7 @@ const TermsOfUse = (): JSX.Element => (
         applicable laws or demanded upon a lawful request by any government. When information
         includes personal data under European Union law and/or California law, the terms of the
         Privacy Policy will apply. Please consult the appropriate Privacy Policy available at
-        [www.buymobilecoin.us] and [http://www.buymobilecoin.com/].
+        [https://www.buymobilecoin.us] and [https://www.buymobilecoin.com/].
       </Typography>
     </Box>
     <Box p={2} textAlign="justify">
@@ -653,8 +653,8 @@ const TermsOfUse = (): JSX.Element => (
         You agree and consent to receive electronically all communications, agreements, receipts and
         disclosures that the Compliance Entities may provide in connection with these Terms.
         Information in relation to how we may communicate with you and your rights in that respect
-        can be found in the appropriate Privacy Policy at [www.buymobilecoin.us] or
-        [http://www.buymobilecoin.com/].
+        can be found in the appropriate Privacy Policy at [https://www.buymobilecoin.us] or
+        [https://www.buymobilecoin.com/].
       </Typography>
     </Box>
     <Box p={2} textAlign="justify" style={{ textDecoration: 'underline' }}>
@@ -738,8 +738,8 @@ const TermsOfUse = (): JSX.Element => (
       <Typography>
         If you have any questions relating to these Terms, your rights and obligations arising from
         these Terms and/or your use of any MobileCoins and any MobileCoin Wallets, please use the
-        question form at [www.buymobilecoin.us] or the MobileCoin TS Ltd. website at
-        [http://www.buymobilecoin.com/].
+        question form at [https://www.buymobilecoin.us] or the MobileCoin TS Ltd. website at
+        [https://www.buymobilecoin.com/].
       </Typography>
     </Box>
   </Box>

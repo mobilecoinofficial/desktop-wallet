@@ -20,6 +20,7 @@ import type { ReceiveMobProps } from './ReceiveMob.d';
 
 // CBB, really, we should just give the list and work by the indexes.
 const ReceiveMob: FC<ReceiveMobProps> = ({
+  accounts,
   contacts,
   onClickCode,
   selectedAccount,
@@ -85,9 +86,12 @@ const ReceiveMob: FC<ReceiveMobProps> = ({
       <Box pt={3} display="flex" flexDirection="column" alignItems="center">
         <AccountCard
           account={{
-            b58Code: selectedAddress,
+            accountId: selectedAccount.account.accountId,
+            b58Code: selectedAccount.account.mainAddress,
+            balance: selectedAccount.balanceStatus.unspentPmob,
             name: nameFromAddress,
           }}
+          accounts={accounts}
           onClickCode={onClickCode}
         />
       </Box>

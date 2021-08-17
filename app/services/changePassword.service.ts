@@ -1,3 +1,5 @@
+import { ipcRenderer } from 'electron';
+
 import { store } from '../contexts/FullServiceContext';
 import { updatePassphraseAction } from '../contexts/actions/updatePassphrase.action';
 import { deleteEncryptedPin } from '../utils/LocalStore';
@@ -5,6 +7,7 @@ import * as localStore from '../utils/LocalStore';
 import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authentication';
 import { encrypt } from '../utils/encryption';
 import { decryptContacts } from './decryptContacts.service';
+import { getWalletStatus } from './getWalletStatus.service';
 import { updateContacts } from './updateContacts.service';
 
 const changePassword = async (oldPassword: string, newPassword: string): Promise<void> => {
@@ -27,6 +30,10 @@ const changePassword = async (oldPassword: string, newPassword: string): Promise
     const contacts = await decryptContacts(store.state.secretKey);
     store.dispatch(updatePassphraseAction(newEncryptedPassphrase, secretKey));
     updateContacts(contacts);
+
+    await ipcRenderer.invoke('start-full-service', oldPassword, newPassword);
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+    await getWalletStatus();
   } catch (err) {
     throw new Error(err.message);
   }

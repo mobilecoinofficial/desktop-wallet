@@ -7,12 +7,16 @@ import {
   CardContent,
   Container,
   IconButton,
+  MenuItem,
+  Select,
   Tooltip,
   Typography,
   makeStyles,
+  Button,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+import { selectAccount } from '../../services';
 import type { Theme } from '../../theme';
 import { LongCode } from '../LongCode';
 import { QRMob } from '../QRMob';
@@ -46,6 +50,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AccountCard: FC<AccountCardProps> = ({
   account,
+  accounts,
   isGift,
   onClickCode,
   ...rest
@@ -54,7 +59,7 @@ const AccountCard: FC<AccountCardProps> = ({
   const classes = useStyles();
   const { t } = useTranslation('AccountCard');
 
-  const { b58Code, name } = account;
+  const { b58Code } = account;
 
   const mobUrl = `mob:///b58/${b58Code}`;
 
@@ -72,6 +77,10 @@ const AccountCard: FC<AccountCardProps> = ({
   } else {
     headerString = isGift ? t('giftHeader') : t('accountHeader');
   }
+
+  const handleAccountSelectChange = (event) => {
+    selectAccount(event.target.value);
+  };
 
   return (
     <Container className={classes.container} fixed maxWidth="sm">
@@ -124,9 +133,27 @@ const AccountCard: FC<AccountCardProps> = ({
               )}
             </Typography>
             <Box className={classes.corners}>
-              <Typography data-testid="account-card-name" color="textPrimary" variant="h4">
-                {name || t('unnamed')}
-              </Typography>
+              <Box>
+                {(accounts === undefined || accounts.accountIds.length === 0) && <></>}
+                {accounts !== undefined && accounts.accountIds.length === 1 && (
+                  <span>{accounts.accountMap[accounts.accountIds[0]].name}</span>
+                )}
+                {accounts !== undefined && accounts.accountIds.length > 1 && (
+                  <Select
+                    labelId="account-select-label"
+                    id="account-select"
+                    value={account.accountId}
+                    onChange={handleAccountSelectChange}
+                  >
+                    {accounts.accountIds.map((accountId: string) => (
+                      <MenuItem value={accountId} key={accountId}>
+                        {`${accounts.accountMap[accountId].name ?? 'unnamed'}`}&nbsp; (
+                        <ShortCode code={accounts.accountMap[accountId].mainAddress} />)
+                      </MenuItem>
+                    ))}
+                  </Select>
+                )}
+              </Box>
               <Typography data-testid="account-card-short-code" color="textSecondary" variant="h4">
                 <ShortCode code={b58Code} />
               </Typography>

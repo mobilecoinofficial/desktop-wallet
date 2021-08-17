@@ -1,18 +1,13 @@
-import { store, wipeAccountContactAndPin } from '../contexts/FullServiceContext';
+import { store } from '../contexts/FullServiceContext';
 import { importAccountAction } from '../contexts/actions/importAccount.action';
 import * as fullServiceApi from '../fullService/api';
-import { encryptAndStorePassphrase } from '../utils/authentication';
 
 // Import the wallet should initalize the basic wallet information
 // The wallet status
 // Accounts + status
-const importLegacyAccount = async (
-  name: string | null,
-  entropy: string,
-  passphrase: string
-): Promise<void> => {
+const importLegacyAccount = async (name: string | null, entropy: string): Promise<void> => {
   try {
-    await wipeAccountContactAndPin();
+    // await wipeAccountContactAndPin();
 
     // Attempt import
     const { account } = await fullServiceApi.importLegacyAccount({ entropy, name });
@@ -28,7 +23,7 @@ const importLegacyAccount = async (
     const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
     // After successful import, store encryptedPassphrase
-    const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
+    // const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
 
     store.dispatch(
       importAccountAction(
@@ -36,8 +31,6 @@ const importLegacyAccount = async (
         accountMap,
         addressIds,
         addressMap,
-        encryptedPassphrase,
-        secretKey,
         account,
         balanceStatus,
         walletStatus

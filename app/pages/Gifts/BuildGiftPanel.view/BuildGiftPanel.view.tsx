@@ -43,6 +43,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
+  accounts,
   confirmation,
   existingPin,
   feePmob,
@@ -96,6 +97,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
           </Box>
           <Box flexGrow={1} mt={3}>
             <BuildGiftForm
+              accounts={accounts}
               confirmation={confirmation}
               existingPin={existingPin}
               feePmob={feePmob}
@@ -198,6 +200,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                       b58Code: pendingDeleteCode[0],
                       name: 'Gift Code',
                     }}
+                    accounts={accounts}
                     onClickCode={onClickCode}
                   />
                   <Box py={2} display="flex" justifyContent="space-between">

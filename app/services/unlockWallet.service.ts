@@ -15,29 +15,15 @@ const unlockWallet = async (passphrase: string): Promise<void> => {
 
     const { secretKey } = await validatePassphrase(passphrase, encryptedPassphrase);
 
-    // Get main account id
-    const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-    // TODO - need better metadata for this; come back and use config data
-    const selectedAccount = accountMap[accountIds[0]];
-
-    // Decrypt Contacts
     const contacts = await decryptContacts(secretKey);
 
-    // Get basic wallet information
     const { walletStatus } = await fullServiceApi.getWalletStatus();
 
-    const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
-      accountId: selectedAccount.accountId,
-    });
-
-    const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({
-      accountId: selectedAccount.accountId,
-    });
-
-    // Determine if PIN needs to be set (edge case)
     let isPinRequired = false;
     let pin;
+
     const encryptedPin = localStore.getEncryptedPin();
+
     const pinThresholdPmob = localStore.getPinThresholdPmob();
 
     if (encryptedPin === undefined) {
@@ -45,22 +31,8 @@ const unlockWallet = async (passphrase: string): Promise<void> => {
     } else {
       pin = (await decrypt(encryptedPin, secretKey)) as string;
     }
-
     store.dispatch(
-      unlockWalletAction(
-        accountIds,
-        accountMap,
-        addressIds,
-        addressMap,
-        contacts,
-        isPinRequired,
-        pin,
-        pinThresholdPmob,
-        secretKey,
-        selectedAccount,
-        balanceStatus,
-        walletStatus
-      )
+      unlockWalletAction(contacts, isPinRequired, pin, pinThresholdPmob, secretKey, walletStatus)
     );
   } catch (err) {
     throw new Error(err.message);

@@ -1,19 +1,12 @@
-import { store, wipeAccountContactAndPin } from '../contexts/FullServiceContext';
+import { store } from '../contexts/FullServiceContext';
 import { importAccountAction } from '../contexts/actions/importAccount.action';
 import * as fullServiceApi from '../fullService/api';
-import { encryptAndStorePassphrase } from '../utils/authentication';
 
 // Import the wallet should initialize the basic wallet information
 // The wallet status
 // Accounts + status
-const importAccount = async (
-  name: string | null,
-  mnemonic: string,
-  passphrase: string
-): Promise<void> => {
+const importAccount = async (name: string | null, mnemonic: string): Promise<void> => {
   try {
-    await wipeAccountContactAndPin();
-
     // Attempt import
     const { account } = await fullServiceApi.importAccount({
       key_derivation_version: '2',
@@ -30,17 +23,12 @@ const importAccount = async (
     });
     const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
-    // After successful import, store encryptedPassphrase
-    const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
-
     store.dispatch(
       importAccountAction(
         accountIds,
         accountMap,
         addressIds,
         addressMap,
-        encryptedPassphrase,
-        secretKey,
         account,
         balanceStatus,
         walletStatus

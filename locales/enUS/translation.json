@@ -12,6 +12,11 @@
     "unnamed": "Unnamed Account"
   },
 
+  "AccountsView": {
+    "accounts": "Accounts",
+    "settingsBreadcrumb": "Settings"
+  },
+
   "AuthPage": {
     "createInstead": "Create account instead",
     "importInstead": "Import account instead",
@@ -489,6 +494,7 @@
   },
 
   "SettingsOptionsItem": {
+    "accounts": "Accounts",
     "changePassword": "Change Passphrase",
     "changePin": "Transaction PIN Settings",
     "configureFullService": "Manage Ledger Database",
@@ -580,6 +586,9 @@
   },
 
   "UnlockWallet": {
+    "acceptTerms": "I have read and accept the",
+    "acceptTermsButton": "Terms of Use",
+    "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
     "description": "Please enter the passphrase you used to secure your wallet.",
     "passwordLabel": "Passphrase",
     "passwordRequired": "Passphrase is required",

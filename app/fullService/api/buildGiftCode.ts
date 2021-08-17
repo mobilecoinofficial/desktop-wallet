@@ -56,7 +56,7 @@ const buildGiftCode = async ({
   // TODO fix type, right now it just matches what the component is expecting
   const totalValueConfirmation = txProposal.outlayList
     .map((outlay) => BigInt(outlay.value))
-    .reduce((acc, cur) => acc + cur);
+    .reduce((acc, cur) => acc + cur, BigInt(0));
 
   const feeConfirmation = BigInt(txProposal.fee);
 

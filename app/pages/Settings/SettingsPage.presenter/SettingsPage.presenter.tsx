@@ -9,17 +9,27 @@ import { Redirect } from 'react-router-dom';
 import {
   KeyIcon,
   LockIcon,
+  MOBIcon,
   OfficialDocumentIcon,
   PrivateDocumentIcon,
   ToolsIcon,
 } from '../../../components/icons';
+import routePaths from '../../../constants/routePaths';
 import useFullService from '../../../hooks/useFullService';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
-import { changePassword, retrieveEntropy, setPin } from '../../../services';
+import {
+  addAccount,
+  changePassword,
+  retrieveEntropy,
+  selectAccount,
+  setPin,
+} from '../../../services';
+import { deleteAccount } from '../../../services/deleteAccount.service';
 import type { Theme } from '../../../theme';
 import type { StringUInt64 } from '../../../types/SpecialStrings.d';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { getKeychainAccounts, setKeychainAccount } from '../../../utils/keytarService';
+import { AccountsView } from '../Accounts/Accounts.view';
 import { ChangePasswordView } from '../ChangePassword.view';
 import { ChangePinView } from '../ChangePin.view';
 import { ConfigureFullServiceView } from '../ConfigureFullService.view';
@@ -29,6 +39,7 @@ import { SettingsOptionsList } from '../SettingsOptionsList.view';
 import { TermsOfUseView } from '../TermsOfUse.view';
 
 const SETTINGS = 'settings';
+const ACCOUNTS = 'accounts';
 const CHANGE_PASSWORD = 'changePassword';
 const CHANGE_PIN = 'changePin';
 const RETRIEVE_ENTROPY = 'retrieveEntropy';
@@ -47,9 +58,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const SettingsPage: FC = () => {
   const classes = useStyles();
+  const { accounts, addingAccount, pinThresholdPmob, pin, selectedAccount } = useFullService();
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');
-  const { pinThresholdPmob, pin, selectedAccount } = useFullService();
   const { enqueueSnackbar } = useSnackbar();
   const { t } = useTranslation('SettingsPage');
 
@@ -67,7 +78,7 @@ const SettingsPage: FC = () => {
     toggleLeaveFullServiceRunning,
   };
 
-  const accounts = getKeychainAccounts();
+  const keychainAccounts = getKeychainAccounts();
 
   const handleOnClick = (path: string) => {
     if (path) {
@@ -82,7 +93,7 @@ const SettingsPage: FC = () => {
   ) => {
     try {
       if (saveChecked) {
-        const currentAccount = accounts[0].account;
+        const currentAccount = keychainAccounts[0].account;
         await changePassword(password, newPassword);
         setKeychainAccount(currentAccount, newPassword);
       } else {
@@ -120,6 +131,12 @@ const SettingsPage: FC = () => {
   };
 
   const settingsOptionsList = [
+    {
+      Icon: MOBIcon,
+      handleOnClick,
+      label: 'accounts',
+      path: ACCOUNTS,
+    },
     {
       Icon: LockIcon,
       handleOnClick,
@@ -160,6 +177,14 @@ const SettingsPage: FC = () => {
 
   const onClickBack = () => setShowing(SETTINGS);
 
+  const onClickAddAccount = () => {
+    addAccount(true);
+  };
+
+  if (addingAccount) {
+    return <Redirect to={routePaths.ROOT} />;
+  }
+
   switch (showing) {
     case SETTINGS:
       return (
@@ -173,10 +198,26 @@ const SettingsPage: FC = () => {
         </Box>
       );
 
+    case ACCOUNTS:
+      return (
+        <Box className={classes.root}>
+          <Container maxWidth="md">
+            <AccountsView
+              accounts={accounts}
+              deleteAccount={deleteAccount}
+              onClickAddAccount={onClickAddAccount}
+              onClickBack={onClickBack}
+              selectAccount={selectAccount}
+              selectedAccount={selectedAccount}
+            />
+          </Container>
+        </Box>
+      );
+
     case CHANGE_PASSWORD:
       return (
         <ChangePasswordView
-          accounts={accounts}
+          accounts={keychainAccounts}
           onClickBack={onClickBack}
           onClickChangePassword={onClickChangePassword}
         />
@@ -185,7 +226,7 @@ const SettingsPage: FC = () => {
     case CHANGE_PIN:
       return (
         <ChangePinView
-          accounts={accounts}
+          accounts={keychainAccounts}
           onClickBack={onClickBack}
           onClickChangePin={onClickChangePin}
           pinThresholdPmob={pinThresholdPmob}
@@ -196,7 +237,7 @@ const SettingsPage: FC = () => {
     case RETRIEVE_ENTROPY:
       return (
         <RetrieveEntropyView
-          accounts={accounts}
+          accounts={keychainAccounts}
           entropy={entropy}
           onClickBack={onClickBack}
           onClickClose={() => setEntropy('')}

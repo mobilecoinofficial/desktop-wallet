@@ -14,6 +14,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const DashboardView: FC<DashboardPageProps> = ({
+  accounts,
   onClickCode,
   onClose,
   selectedAccount,
@@ -27,10 +28,12 @@ const DashboardView: FC<DashboardPageProps> = ({
       <Box alignItems="center" />
       <AccountCard
         account={{
+          accountId: selectedAccount.account.accountId,
           b58Code: selectedAccount.account.mainAddress,
           balance: selectedAccount.balanceStatus.unspentPmob,
           name: selectedAccount.account.name as string,
         }}
+        accounts={accounts}
         onClickCode={onClickCode}
       />
       <Box py={2} />

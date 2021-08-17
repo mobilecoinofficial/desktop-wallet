@@ -1,5 +1,3 @@
-import type { SjclCipherEncrypted } from 'sjcl';
-
 import type { Account, Accounts } from '../../types/Account.d';
 import type { Address, Addresses } from '../../types/Address.d';
 import { BalanceStatus } from '../../types/BalanceStatus';
@@ -14,9 +12,7 @@ export type CreateAccountActionType = {
   payload: {
     accounts: Accounts;
     addresses: Addresses;
-    encryptedPassphrase: SjclCipherEncrypted;
     pendingSecrets: PendingSecrets;
-    secretKey: string;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
@@ -28,9 +24,7 @@ export const createAccountAction = (
   accountMap: { [accountId: string]: Account },
   addressIds: StringHex[],
   addressMap: { [addressId: string]: Address },
-  encryptedPassphrase: SjclCipherEncrypted,
   pendingSecrets: PendingSecrets,
-  secretKey: string,
   account: Account,
   balanceStatus: BalanceStatus,
   walletStatus: WalletStatus
@@ -44,9 +38,7 @@ export const createAccountAction = (
       addressIds,
       addressMap,
     },
-    encryptedPassphrase,
     pendingSecrets,
-    secretKey,
     selectedAccount: {
       account,
       balanceStatus,

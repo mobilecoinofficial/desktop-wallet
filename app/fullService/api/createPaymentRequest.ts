@@ -5,7 +5,6 @@ const createPaymentRequest = async (accountId: unknown, amountPmob: unknown) => 
     accountId,
     amountPmob,
   });
-  console.log(res);
 };
 
 export default createPaymentRequest;

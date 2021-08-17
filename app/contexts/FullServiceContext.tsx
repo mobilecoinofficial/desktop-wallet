@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from 'react';
+import React, { createContext, useEffect, useReducer, useState } from 'react';
 import type { FC, ReactNode } from 'react';
 
 import type { SjclCipherEncrypted } from 'sjcl';
@@ -19,11 +19,14 @@ import sameObject from '../utils/sameObject';
 //
 // NEW DUCKS-STYLE ACTIONS, ACTION BUILDERS, AND CONSTANTS
 //
+import { ADD_ACCOUNT, AddAccountActionType } from './actions/addAccount.action';
 import {
   CONFIRM_ENTROPY_KNOWN,
   ConfirmEntropyKnownActionType,
 } from './actions/confirmEntropyKnown.action';
 import { CREATE_ACCOUNT, CreateAccountActionType } from './actions/createAccount.action';
+import { CREATE_WALLET, CreateWalletActionType } from './actions/createWallet.action';
+import { DELETE_ACCOUNT, DeleteAccountActionType } from './actions/deleteAccount.action';
 import {
   FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   FetchAllTransactionLogsForAccountActionType,
@@ -34,6 +37,7 @@ import {
 } from './actions/fetchAllTxosForAccount.action';
 import { IMPORT_ACCOUNT, ImportAccountActionType } from './actions/importAccount.action';
 import { INITIALIZE, initializeAction, InitializeActionType } from './actions/initialize.action';
+import { SELECT_ACCOUNT, SelectAccountActionType } from './actions/selectAccount.action';
 import { UNLOCK_WALLET, UnlockWalletActionType } from './actions/unlockWallet.action';
 import { UPDATE_CONTACTS, UpdateContactsActionType } from './actions/updateContacts.action';
 import { UPDATE_FEE_PMOB, UpdateFeePmobActionType } from './actions/updateFeePmob.action';
@@ -48,6 +52,7 @@ import {
 
 export interface FullServiceState {
   accounts: Accounts;
+  addingAccount: boolean;
   addresses: Addresses;
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
@@ -59,7 +64,7 @@ export interface FullServiceState {
   isPinRequired: boolean;
   pendingSecrets: PendingSecrets | null;
   secretKey: string;
-  selectedAccount: SelectedAccount;
+  selectedAccount: SelectedAccount | null;
   transactionLogs: TransactionLogs | null;
   pinThresholdPmob: StringUInt64;
   pin: string | undefined;
@@ -72,12 +77,16 @@ interface FullServiceProviderProps {
 }
 
 type Action =
+  | AddAccountActionType
   | ConfirmEntropyKnownActionType
   | CreateAccountActionType
+  | CreateWalletActionType
+  | DeleteAccountActionType
   | FetchAllTransactionLogsForAccountActionType
   | FetchAllTxosForAccountActionType
   | ImportAccountActionType
   | InitializeActionType
+  | SelectAccountActionType
   | UnlockWalletActionType
   | UpdateContactsActionType
   | UpdateFeePmobActionType
@@ -92,6 +101,7 @@ type Action =
 // TODO -- maybe remove object key from types!
 const initialFullServiceState: FullServiceState = {
   accounts: { accountIds: [], accountMap: {} },
+  addingAccount: false,
   addresses: { addressIds: [], addressMap: {} },
   contacts: [],
   encryptedPassphrase: undefined,
@@ -100,36 +110,7 @@ const initialFullServiceState: FullServiceState = {
   isInitialized: false,
   isPinRequired: false,
   secretKey: '',
-  selectedAccount: {
-    account: {
-      accountHeight: '',
-      accountId: '',
-      accountKey: {
-        fogAuthoritySpki: '',
-        fogReportId: '',
-        fogReportUrl: '',
-        spendPrivateKey: '',
-        viewPrivateKey: '',
-      },
-      entropy: '',
-      mainAddress: '',
-      name: null,
-      nextSubaddressIndex: '',
-      // offsetCount: 0,
-      recoveryMode: false,
-    },
-    balanceStatus: {
-      accountBlockCount: '',
-      isSynced: false,
-      localBlockCount: '',
-      networkBlockCount: '',
-      orphanedPmob: '',
-      pendingPmob: '',
-      secretedPmob: '',
-      spentPmob: '',
-      unspentPmob: '',
-    },
-  },
+  selectedAccount: null,
   transactionLogs: null,
   walletStatus: {
     isSyncedAll: false,
@@ -172,45 +153,62 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case IMPORT_ACCOUNT: {
-      const { accounts, addresses, encryptedPassphrase, secretKey, selectedAccount, walletStatus } =
-        (action as ImportAccountActionType).payload;
+    case ADD_ACCOUNT: {
+      const { adding } = (action as AddAccountActionType).payload;
+      return {
+        ...state,
+        addingAccount: adding,
+      };
+    }
+
+    case DELETE_ACCOUNT: {
+      const { accounts } = (action as DeleteAccountActionType).payload;
+
       return {
         ...state,
         accounts,
+      };
+    }
+
+    case IMPORT_ACCOUNT: {
+      const { accounts, addresses, selectedAccount, walletStatus } = (
+        action as ImportAccountActionType
+      ).payload;
+      return {
+        ...state,
+        accounts,
+        addingAccount: false,
         addresses,
-        encryptedPassphrase,
         isAuthenticated: true,
         isEntropyKnown: true,
-        isPinRequired: true,
-        secretKey,
         selectedAccount,
         walletStatus,
       };
     }
 
     case CREATE_ACCOUNT: {
-      const {
-        accounts,
-        addresses,
-        encryptedPassphrase,
-        pendingSecrets,
-        secretKey,
-        selectedAccount,
-        walletStatus,
-      } = (action as CreateAccountActionType).payload;
+      const { accounts, addresses, pendingSecrets, selectedAccount, walletStatus } = (
+        action as CreateAccountActionType
+      ).payload;
       return {
         ...state,
         accounts,
+        addingAccount: false,
         addresses,
-        encryptedPassphrase,
         isAuthenticated: true,
         isEntropyKnown: false,
-        isPinRequired: true,
         pendingSecrets,
-        secretKey,
         selectedAccount,
         walletStatus,
+      };
+    }
+
+    case CREATE_WALLET: {
+      const { encryptedPassphrase, secretKey } = (action as CreateWalletActionType).payload;
+      return {
+        ...state,
+        encryptedPassphrase,
+        secretKey,
       };
     }
 
@@ -230,31 +228,31 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case UNLOCK_WALLET: {
-      const {
-        accounts,
-        addresses,
-        contacts,
-        isPinRequired,
-        pin,
-        pinThresholdPmob,
-        secretKey,
-        selectedAccount,
-        walletStatus,
-      } = (action as UnlockWalletActionType).payload;
-
+    case SELECT_ACCOUNT: {
+      const { accounts, addresses, selectedAccount } = (action as SelectAccountActionType).payload;
       return {
         ...state,
         accounts,
+        addingAccount: false,
         addresses,
+        isEntropyKnown: true,
+        selectedAccount,
+      };
+    }
+
+    case UNLOCK_WALLET: {
+      const { contacts, isPinRequired, pin, pinThresholdPmob, secretKey, walletStatus } = (
+        action as UnlockWalletActionType
+      ).payload;
+
+      return {
+        ...state,
         contacts,
         isAuthenticated: true,
-        isEntropyKnown: true,
         isPinRequired,
         pin,
         pinThresholdPmob,
         secretKey,
-        selectedAccount,
         walletStatus,
       };
     }
@@ -319,36 +317,8 @@ export const store = {
   state: {} as FullServiceState,
 };
 
-const removeAllAccounts = async (excludedAccountIds: string[]) => {
-  const removeAccount = async (accountId: string) => {
-    try {
-      const removed = await fullServiceApi.removeAccount({ accountId });
-
-      return removed;
-      // Now we need to reflect the fact that we just removed an account from Full Service
-      // wallet_db in our Desktop Wallet's FullServiceContext state to then get passed on
-      // to any UI elements that care about it.
-      // const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-    } catch (err) {
-      throw new Error(err.message);
-    }
-  };
-
-  try {
-    const { accountIds } = await fullServiceApi.getAllAccounts();
-    accountIds.forEach(async (accountId) => {
-      if (!excludedAccountIds.includes(accountId)) {
-        await removeAccount(accountId);
-      }
-    });
-  } catch (err) {
-    throw new Error(err.message);
-  }
-};
-
 export const wipeAccountContactAndPin = async (): Promise<void> => {
-  // Wipe Accounts, Contacts, and PIN
-  removeAllAccounts([]);
+  // Wipe Contacts and PIN
   localStore.deleteEncryptedContacts();
   localStore.deletePinThresholdPmob();
   localStore.deleteEncryptedPin();
@@ -361,6 +331,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   store.state = state;
   store.dispatch = dispatch;
 
+  const [fetchBalanceTimer, setFetchBalanceTimer] = useState<null | NodeJS.Timer>(null);
+
   // Initialize App On Startup
   useEffect(() => {
     try {
@@ -371,40 +343,26 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     }
   }, []);
 
-  // Poll Status
   useEffect(() => {
-    const { selectedAccount } = state;
-    const { accountId } = selectedAccount.account;
-    // TODO - check this early exit
-    if (accountId === '') {
-      return () => undefined;
+    if (fetchBalanceTimer != null) {
+      clearInterval(fetchBalanceTimer);
     }
 
+    const { selectedAccount } = state;
+
+    if (selectedAccount === undefined || selectedAccount === null) {
+      return;
+    }
+
+    const { accountId } = selectedAccount.account;
+
     const fetchBalance = async () => {
-      // TODO - consider making a GetBalanceService
-      // but, currently, it's unclear of its value if it's just 1 call
-
-      // TODO - like most of the api calls, i really want to, instead,
-      // attach them directly to the client.
-      // Let's time box this for 1 hour today
-
-      // TODO- right now, we're just using the selected account to refresh
-      // this is obviously not ideal
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
       const { walletStatus } = await fullServiceApi.getWalletStatus();
-      // TODO - get new balance (now that is it pending)
-
       dispatch(updateStatusAction(selectedAccount.account, balanceStatus, walletStatus));
     };
 
-    fetchBalance();
-    const fetchBalanceForever = setInterval(fetchBalance, 10000);
-    return () => clearInterval(fetchBalanceForever);
-    // TODO - consider rebuilding the setInterval based on roundtrip time
-    // TODO - Right now, we have 1 monitorID. later, we may have multiple for
-    // many accounts. We'll need to parse each monitorId and built a fetcher for each.
-    // Or Alternatively (and I like this idea more), our GetBalanceService can take
-    // an array of monitorIds and return a balance for each.
+    setFetchBalanceTimer(setInterval(fetchBalance, 10000));
   }, [state]);
 
   return <FullServiceContext.Provider value={{ ...state }}>{children}</FullServiceContext.Provider>;

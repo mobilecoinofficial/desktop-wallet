@@ -4,9 +4,12 @@ import type { FC } from 'react';
 import { Box, Container, Grid, makeStyles } from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
+import { Redirect } from 'react-router-dom';
 
+import routePaths from '../../../constants/routePaths';
 import { logger } from '../../../fullService/utils';
 import useFullService from '../../../hooks/useFullService';
+import { addAccount } from '../../../services';
 import type { Theme } from '../../../theme';
 import { DashboardView } from '../DashboardPage.view/DashboardPage.view';
 import type { DashboardPageProps } from './DashboardPage.d';
@@ -22,8 +25,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) => {
   const classes = useStyles();
-  const { selectedAccount } = useFullService();
+  const { accounts, addingAccount, selectedAccount } = useFullService();
   const { enqueueSnackbar } = useSnackbar();
+
+  if (addingAccount) {
+    return <Redirect to={routePaths.ROOT} />;
+  }
 
   const handleCodeClicked = (code: string, text: string) => {
     logger('Code copied to clipboard from dashboard');
@@ -31,7 +38,9 @@ const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) 
     enqueueSnackbar(text, { variant: 'success' });
   };
 
-  logger('Showing Dashboard');
+  const handleAddAccount = () => {
+    addAccount(true);
+  };
 
   return (
     <Box data-testid="DashboardPage" className={classes.root}>
@@ -39,7 +48,9 @@ const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) 
         <Grid container spacing={3}>
           <Grid item xs={12}>
             <DashboardView
+              accounts={accounts}
               selectedAccount={selectedAccount}
+              onAddAccount={handleAddAccount}
               onClose={onClose}
               onClickCode={handleCodeClicked}
             />

@@ -87,7 +87,6 @@ const SendMob: FC<SendMobProps> = ({
   isSynced,
   onClickCancel,
   onClickConfirm,
-  onClickCopyReceiverReceipts,
   onClickSend,
   pinThresholdPmob,
   selectedAccount,
@@ -126,10 +125,6 @@ const SendMob: FC<SendMobProps> = ({
   const handleClose = (setSubmitting: (boolean: boolean) => void) => () => {
     setSubmitting(false);
     onClickCancel();
-  };
-
-  const handleCopyReceiverReceipts = () => {
-    onClickCopyReceiverReceipts();
   };
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
@@ -529,12 +524,6 @@ const SendMob: FC<SendMobProps> = ({
                               variant="contained"
                             >
                               {t('confirmSend')}
-                            </Button>
-                          </Box>
-                          <Box display="flex" justifyContent="space-around">
-                            <Button id="copyReceipts" onClick={handleCopyReceiverReceipts}>
-                              <CopyIcon />
-                              <Typography color="textPrimary">Copy Receiver Receipt</Typography>
                             </Button>
                           </Box>
                         </div>

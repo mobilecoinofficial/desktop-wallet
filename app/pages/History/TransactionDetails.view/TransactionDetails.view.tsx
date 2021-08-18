@@ -8,13 +8,16 @@ import {
   CardContent,
   Container,
   makeStyles,
+  Tooltip,
   Typography,
 } from '@material-ui/core';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import { useTranslation } from 'react-i18next';
 
 import { ShortCode, SubmitButton } from '../../../components';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
-import { CopyIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
 import type { TransactionDetailsViewProps } from './TransactionDetails.d';
 
@@ -44,29 +47,64 @@ const useStyles = makeStyles((theme: Theme) => ({
 const TransactionDetails: FC<TransactionDetailsViewProps> = ({
   onClickCopyConfirmations,
   onClickBack,
+  onClickValidateConfirmations,
   transactionLog,
+  txoValidations,
   txos,
 }: TransactionDetailsViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('TransactionDetails');
 
   const {
-    // comment,
     contact,
     direction,
     finalizedBlockIndex,
     assignedAddressId,
     recipientAddressId,
     outputTxoIds,
-    // transactionLogId,
     valuePmob,
   } = transactionLog;
 
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
 
-  // TODO replace this with a component
   const renderRow = (title: string, value: string | ReactNode, noWrap?: boolean) => (
     <Box className={classes.internal} key={title}>
+      <Typography className={classes.textLeft} display="inline" noWrap={noWrap}>
+        {title}
+      </Typography>
+      {typeof value === 'string' ? (
+        <Typography className={classes.textRight} display="inline">
+          {value}
+        </Typography>
+      ) : (
+        value
+      )}
+    </Box>
+  );
+
+  const renderTXODetailsRow = (
+    title: string,
+    value: string | ReactNode,
+    validated?: boolean,
+    noWrap?: boolean
+  ) => (
+    <Box className={classes.internal} key={title}>
+      {
+        // eslint-disable-next-line no-nested-ternary
+        validated === undefined ? (
+          <Tooltip title="No validations found">
+            <RemoveCircleIcon color="action" />
+          </Tooltip>
+        ) : validated ? (
+          <Tooltip title="Validated">
+            <CheckCircleIcon color="primary" />
+          </Tooltip>
+        ) : (
+          <Tooltip title="Invalid">
+            <ErrorIcon color="error" />
+          </Tooltip>
+        )
+      }
       <Typography className={classes.textLeft} display="inline" noWrap={noWrap}>
         {title}
       </Typography>
@@ -126,15 +164,26 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
         </Typography>
         <CardContent>
           {outputTxoIds.map((txoId) =>
-            renderRow(
-              txoId,
-              <TransactionInfoLabel
-                valuePmob={txos.txoMap[txoId].valuePmob}
-                sign={sign}
-                label=" MOB"
-              />,
-              true
-            )
+            direction === 'tx_direction_sent'
+              ? renderRow(
+                  txoId,
+                  <TransactionInfoLabel
+                    valuePmob={txos.txoMap[txoId].valuePmob}
+                    sign={sign}
+                    label=" MOB"
+                  />,
+                  true
+                )
+              : renderTXODetailsRow(
+                  txoId,
+                  <TransactionInfoLabel
+                    valuePmob={txos.txoMap[txoId].valuePmob}
+                    sign={sign}
+                    label=" MOB"
+                  />,
+                  txoValidations[txoId],
+                  true
+                )
           )}
         </CardContent>
       </Card>
@@ -156,12 +205,13 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
         </Card>
       )}
       {direction === 'tx_direction_sent' ? (
-        <Button id="copyReceipts" onClick={onClickCopyConfirmations}>
-          <CopyIcon />
+        <Button id="copyConfirmations" onClick={onClickCopyConfirmations}>
           <Typography color="textPrimary">Copy Confirmation(s)</Typography>
         </Button>
       ) : (
-        <></>
+        <Button id="validateConfirmations" onClick={onClickValidateConfirmations}>
+          <Typography color="textPrimary">Validate Confirmation(s)</Typography>
+        </Button>
       )}
       <SubmitButton disabled={false} isSubmitting={false} onClick={onClickBack}>
         {t('buttons.back')}

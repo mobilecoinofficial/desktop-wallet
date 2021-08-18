@@ -1,6 +1,6 @@
 export interface Confirmation {
-  txo_id_hex: string;
-  txo_index: string;
+  txoIdHex: string;
+  txoIndex: string;
   confirmation: string;
 }
 

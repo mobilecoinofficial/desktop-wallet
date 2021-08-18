@@ -8,18 +8,20 @@ import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
-import { getConfirmations } from '../../../fullService/api';
+import { getConfirmations, validateConfirmation } from '../../../fullService/api';
 import useFullService from '../../../hooks/useFullService';
 import { fetchAllTransactionLogsForAccount, fetchAllTxosForAccount } from '../../../services';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
+import { Confirmations } from '../../../types/Confirmation';
 
 const HISTORY = 'history';
 const DETAILS = 'details';
 
 const HistoryPage: FC = () => {
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
+  const [txoValidations, setTxoValidations] = useState({});
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
@@ -32,7 +34,6 @@ const HistoryPage: FC = () => {
   }, [selectedAccount?.account?.accountId]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   const handleClickCopyConfirmations = () => {
-    console.log('hello');
     (async () => {
       try {
         const result = await getConfirmations({
@@ -40,6 +41,35 @@ const HistoryPage: FC = () => {
         });
         clipboard.writeText(JSON.stringify(result.confirmations));
         enqueueSnackbar('Copied Confirmations to Clipboard');
+      } catch (err) {
+        enqueueSnackbar(err.message, { variant: 'error' });
+      }
+    })();
+  };
+
+  const handleClickValidateConfirmations = () => {
+    (async () => {
+      const confirmationsString = clipboard.readText();
+      try {
+        const confirmations = JSON.parse(confirmationsString) as Confirmations;
+        const results: { [txoId: string]: boolean } = {};
+
+        await Promise.all(
+          confirmations.map(async (confirmation) => {
+            try {
+              const result = await validateConfirmation({
+                accountId: selectedAccount.account.accountId,
+                confirmation: confirmation.confirmation,
+                txoId: confirmation.txoIdHex,
+              });
+              results[confirmation.txoIdHex] = result.validated;
+            } catch (err) {
+              results[confirmation.txoIdHex] = false;
+            }
+          })
+        );
+
+        setTxoValidations(results);
       } catch (err) {
         enqueueSnackbar(err.message, { variant: 'error' });
       }
@@ -103,8 +133,10 @@ const HistoryPage: FC = () => {
         <TransactionDetails
           onClickCopyConfirmations={handleClickCopyConfirmations}
           onClickBack={() => setShowing(HISTORY)}
+          onClickValidateConfirmations={handleClickValidateConfirmations}
           onChangedComment={() => {}}
           transactionLog={currentTransactionLog}
+          txoValidations={txoValidations}
           txos={txos}
         />
       );

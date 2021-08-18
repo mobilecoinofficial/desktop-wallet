@@ -78,7 +78,6 @@ const useStyles = makeStyles((theme: Theme) => ({
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component manageable.
 const BuildGiftForm: FC<BuildGiftFormProps> = ({
-  accounts,
   confirmation,
   existingPin,
   feePmob,

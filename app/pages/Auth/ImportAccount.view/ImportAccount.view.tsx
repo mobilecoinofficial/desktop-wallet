@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { FC } from 'react';
 
-import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
+import { Box, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { Checkbox, TextField } from 'formik-material-ui';
+import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton, TermsOfUseDialog } from '../../../components';
+import { SubmitButton } from '../../../components';
 import {
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,

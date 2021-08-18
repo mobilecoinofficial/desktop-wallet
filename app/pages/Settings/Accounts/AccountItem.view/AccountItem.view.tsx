@@ -3,16 +3,13 @@ import type { FC } from 'react';
 
 import {
   Avatar,
-  Box,
   Card,
   CardActionArea,
   CardHeader,
   Grid,
-  Typography,
   makeStyles,
   Button,
 } from '@material-ui/core';
-import { useTranslation } from 'react-i18next';
 
 import { ShortCode } from '../../../../components/ShortCode';
 import { MOBIcon, TrashcanIcon } from '../../../../components/icons';

@@ -34,8 +34,8 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
         Create Wallet
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
-        Please enter a passphrase to encrypt your wallet database. If you lose this and don't have
-        your account secrets backed up, there will be no way to recover your account!
+        Please enter a passphrase to encrypt your wallet database. If you lose this and don&apos;t
+        have your account secrets backed up, there will be no way to recover your account!
       </Typography>
       <Formik
         initialValues={{
@@ -53,7 +53,7 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
         })}
         onSubmit={handleOnSubmit}
       >
-        {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
+        {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
           <Form name="UnlockWalletInnerForm">
             <Field
               data-testid="passwordField"

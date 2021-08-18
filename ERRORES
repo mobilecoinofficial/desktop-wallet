@@ -1,0 +1,95 @@
+yarn run v1.22.10
+$ cross-env NODE_ENV=development eslint . --cache --ext .js,.jsx,.ts,.tsx
+
+/home/devt/Trabajos/desktop-wallet/app/contexts/FullServiceContext.tsx
+  366:6  warning  React Hook useEffect has a missing dependency: 'fetchBalanceTimer'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/home/devt/Trabajos/desktop-wallet/app/fullService/axiosFullService.ts
+  11:14  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  17:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  24:28  warning  Missing return type on function           @typescript-eslint/explicit-module-boundary-types
+  27:3   warning  Avoid using promises inside of callbacks  promise/no-promise-in-callback
+  31:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/devt/Trabajos/desktop-wallet/app/fullService/utils/skipKeysCamelCase.ts
+  13:49  warning  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+  22:28  warning  Argument 'response' should be typed with a non-any type  @typescript-eslint/explicit-module-boundary-types
+  22:38  warning  Unexpected any. Specify a different type                 @typescript-eslint/no-explicit-any
+
+/home/devt/Trabajos/desktop-wallet/app/get-platform.js
+  3:16  warning  Missing return type on function  @typescript-eslint/explicit-module-boundary-types
+
+/home/devt/Trabajos/desktop-wallet/app/index.tsx
+  26:23  error  Unexpected use of file extension "tsx" for "./App.tsx"  import/extensions
+
+/home/devt/Trabajos/desktop-wallet/app/menus/darwinMenu.js
+  6:25  warning  Missing return type on function        @typescript-eslint/explicit-module-boundary-types
+  6:26  warning  Argument 'app' should be typed         @typescript-eslint/explicit-module-boundary-types
+  6:31  warning  Argument 'mainWindow' should be typed  @typescript-eslint/explicit-module-boundary-types
+  6:43  warning  Argument 'i18n' should be typed        @typescript-eslint/explicit-module-boundary-types
+
+/home/devt/Trabajos/desktop-wallet/app/menus/otherMenu.js
+  6:25  warning  Missing return type on function        @typescript-eslint/explicit-module-boundary-types
+  6:26  warning  Argument 'app' should be typed         @typescript-eslint/explicit-module-boundary-types
+  6:31  warning  Argument 'mainWindow' should be typed  @typescript-eslint/explicit-module-boundary-types
+  6:43  warning  Argument 'i18n' should be typed        @typescript-eslint/explicit-module-boundary-types
+
+/home/devt/Trabajos/desktop-wallet/app/pages/Auth/AuthPage.presenter/AuthPage.presenter.tsx
+  128:11  warning  Unexpected console statement  no-console
+  154:9   warning  Unexpected console statement  no-console
+  179:7   warning  Unexpected console statement  no-console
+  204:7   warning  Unexpected console statement  no-console
+
+/home/devt/Trabajos/desktop-wallet/app/pages/Auth/CreateAccount.view/CreateAccount.view.tsx
+  50:63  warning  '_' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/devt/Trabajos/desktop-wallet/app/pages/Auth/CreateWallet.view/CreateWallet.test.tsx
+  20:1  warning  Some tests seem to be commented  jest/no-commented-out-tests
+  21:1  warning  Some tests seem to be commented  jest/no-commented-out-tests
+  30:1  warning  Some tests seem to be commented  jest/no-commented-out-tests
+
+/home/devt/Trabajos/desktop-wallet/app/pages/CrashReport/CrashReportPage.presenter/CrashReport.presenter.tsx
+  32:3  warning  Unexpected console statement  no-console
+  50:5  warning  Unexpected console statement  no-console
+  51:5  warning  Unexpected console statement  no-console
+
+/home/devt/Trabajos/desktop-wallet/app/pages/History/TransactionDetails.view/TransactionDetails.stories.tsx
+  77:27  warning  Unexpected console statement  no-console
+  78:22  warning  Unexpected console statement  no-console
+
+/home/devt/Trabajos/desktop-wallet/app/pages/SendReceive/PaymentRequests.view/PaymentRequest.view.tsx
+  1:17  error    'useState' is defined but never used  no-unused-vars
+  1:17  warning  'useState' is defined but never used  @typescript-eslint/no-unused-vars
+
+/home/devt/Trabajos/desktop-wallet/app/pages/SendReceive/ReceiveMob.view/ReceiveMob.stories.tsx
+  39:22  warning  Unexpected console statement  no-console
+
+/home/devt/Trabajos/desktop-wallet/app/pages/Settings/Accounts/AccountItem.view/AccountItem.stories.tsx
+   5:10  error    'AccountItem' is defined but never used  no-unused-vars
+   5:10  warning  'AccountItem' is defined but never used  @typescript-eslint/no-unused-vars
+  12:72  error    'HistoryItem' is not defined             react/jsx-no-undef
+
+/home/devt/Trabajos/desktop-wallet/app/pages/Settings/Accounts/AccountItem.view/AccountItem.test.tsx
+   21:1  warning  Some tests seem to be commented  jest/no-commented-out-tests
+   22:1  warning  Some tests seem to be commented  jest/no-commented-out-tests
+   44:1  warning  Some tests seem to be commented  jest/no-commented-out-tests
+   65:1  warning  Some tests seem to be commented  jest/no-commented-out-tests
+   87:1  warning  Some tests seem to be commented  jest/no-commented-out-tests
+  108:1  warning  Some tests seem to be commented  jest/no-commented-out-tests
+
+/home/devt/Trabajos/desktop-wallet/app/pages/Settings/SettingsPage.presenter/SettingsPage.presenter.tsx
+  106:7  warning  Unexpected console statement  no-console
+  116:7  warning  Unexpected console statement  no-console
+  129:7  warning  Unexpected console statement  no-console
+
+/home/devt/Trabajos/desktop-wallet/app/theme/index.ts
+  43:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  44:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  45:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/home/devt/Trabajos/desktop-wallet/app/utils/logger.ts
+  21:5  warning  Unexpected console statement  no-console
+
+✖ 51 problems (4 errors, 47 warnings)
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

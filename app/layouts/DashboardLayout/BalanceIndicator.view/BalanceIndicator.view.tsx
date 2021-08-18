@@ -36,7 +36,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   const { t } = useTranslation('BalanceIndicator');
 
   return (
-    <Box className={classes.item} style={matches ? {} : {padding: '0'}} >
+    <Box className={classes.item} style={matches ? {} : { padding: '0' }}>
       <Typography variant="h3" color="textSecondary" gutterBottom>
         {t('title')}
       </Typography>

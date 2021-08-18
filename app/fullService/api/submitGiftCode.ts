@@ -16,7 +16,7 @@ export type SubmitGiftCodeResult = {
 };
 
 type AxiosFullServiceResponse = {
-  error: any;
+  error: string;
   result: {
     giftCode: GiftCode;
   };

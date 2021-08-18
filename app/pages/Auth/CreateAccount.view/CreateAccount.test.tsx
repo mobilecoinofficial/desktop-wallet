@@ -38,14 +38,8 @@ const setUpTest = (onClickCreate = jest.fn()) => {
 };
 
 test('All fields appear correctly', () => {
-  const {
-    nameField,
-    openTermsButton,
-    pass1Field,
-    pass2Field,
-    submitButton,
-    termsCheckbox,
-  } = setUpTest();
+  const { nameField, openTermsButton, pass1Field, pass2Field, submitButton, termsCheckbox } =
+    setUpTest();
 
   expect(nameField).not.toBeFalsy();
   expect(pass1Field).not.toBeFalsy();

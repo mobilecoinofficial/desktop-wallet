@@ -130,7 +130,8 @@ export const getWalletDbExists = (): boolean => {
   return fs.existsSync(path);
 };
 
-export const getFullServiceLedgerDbPath = () => store.get(schemaKeys.LEDGER_DB_PATH);
+export const getFullServiceLedgerDbPath = (): string =>
+  store.get(schemaKeys.LEDGER_DB_PATH) as string;
 
 export const setLedgerDbPath = (name: string): void => {
   store.set(schemaKeys.LEDGER_DB_PATH, name);

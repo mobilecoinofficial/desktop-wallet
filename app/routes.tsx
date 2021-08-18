@@ -19,7 +19,7 @@ import {
 } from './pages';
 
 type Routes = {
-  Component?: any;
+  Component?: React.Component;
   exact?: boolean;
   layout?: FC;
   path?: string | string[];

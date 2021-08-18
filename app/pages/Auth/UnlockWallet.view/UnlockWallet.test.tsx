@@ -9,7 +9,7 @@ import { UnlockWalletView } from './UnlockWallet.view';
 const FAKE_PASSWORD = 'fakepassword';
 
 const setUpTest = (onClickUnlock = jest.fn()) => {
-  const { container } = render(<UnlockWalletView onClickUnlock={onClickUnlock}  accounts={[]}/>);
+  const { container } = render(<UnlockWalletView onClickUnlock={onClickUnlock} accounts={[]} />);
   const passwordField = container.querySelector('[name="password"]') as HTMLInputElement;
   const submitButton = container.querySelector('[data-testid="submit-button"]') as HTMLInputElement;
   return { container, onClickUnlock, passwordField, submitButton };

@@ -1,3 +1,3 @@
 export interface CreateWalletViewProps {
-  onClickCreate: (password: string) => void;
+  onClickCreate: (password: string, startInOfflineMode: boolean) => void;
 }

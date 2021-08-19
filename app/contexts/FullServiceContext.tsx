@@ -63,6 +63,7 @@ export interface FullServiceState {
   isEntropyKnown: boolean;
   isInitialized: boolean;
   isPinRequired: boolean;
+  offlineModeEnabled: boolean;
   pendingSecrets: PendingSecrets | null;
   secretKey: string;
   selectedAccount: SelectedAccount | null;
@@ -111,6 +112,7 @@ const initialFullServiceState: FullServiceState = {
   isEntropyKnown: false,
   isInitialized: false,
   isPinRequired: false,
+  offlineModeEnabled: false,
   secretKey: '',
   selectedAccount: null,
   transactionLogs: null,
@@ -247,15 +249,22 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case UNLOCK_WALLET: {
-      const { contacts, isPinRequired, pin, pinThresholdPmob, secretKey, walletStatus } = (
-        action as UnlockWalletActionType
-      ).payload;
+      const {
+        contacts,
+        isPinRequired,
+        pin,
+        pinThresholdPmob,
+        secretKey,
+        walletStatus,
+        offlineModeEnabled,
+      } = (action as UnlockWalletActionType).payload;
 
       return {
         ...state,
         contacts,
         isAuthenticated: true,
         isPinRequired,
+        offlineModeEnabled,
         pin,
         pinThresholdPmob,
         secretKey,

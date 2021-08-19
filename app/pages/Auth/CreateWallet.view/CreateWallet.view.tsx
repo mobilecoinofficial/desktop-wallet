@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
+import { Box, Button, FormHelperText, Tooltip, Typography } from '@material-ui/core';
+import HelpIcon from '@material-ui/icons/Help';
 import { Formik, Form, Field } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +14,7 @@ import type { CreateWalletViewProps } from './CreateWallet';
 interface CreateWalletFormValues {
   password: string;
   passwordConfirmation: string;
+  startInOfflineMode: boolean;
   submit: null;
 }
 
@@ -26,7 +28,8 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
     setOpen(false);
   };
 
-  const handleOnSubmit = (values: CreateWalletFormValues) => onClickCreate(values.password);
+  const handleOnSubmit = (values: CreateWalletFormValues) =>
+    onClickCreate(values.password, values.startInOfflineMode);
 
   return (
     <>
@@ -42,6 +45,7 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
           checkedTerms: false,
           password: '',
           passwordConfirmation: '',
+          startInOfflineMode: false,
           submit: null,
         }}
         validationSchema={Yup.object().shape({
@@ -94,6 +98,15 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
               </Box>
             </Box>
             {!canCheck && <FormHelperText focused>{t('acceptTermsFormHelper')}</FormHelperText>}
+            <Box display="flex">
+              <Box display="flex" alignItems="center" flexDirection="row-reverse">
+                <Tooltip title="This will start Full Service in Offline Mode, which disables the ability to update the ledger and submit transactions">
+                  <HelpIcon style={{ marginLeft: '5px' }} />
+                </Tooltip>
+                <Typography display="inline">Start in Offline Mode</Typography>
+                <Field component={Checkbox} type="checkbox" name="startInOfflineMode" />
+              </Box>
+            </Box>
             <SubmitButton
               data-testid="submit-button"
               disabled={!dirty || !isValid || isSubmitting}

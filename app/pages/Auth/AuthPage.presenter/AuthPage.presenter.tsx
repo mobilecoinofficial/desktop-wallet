@@ -62,7 +62,7 @@ const untilFullServiceRuns = async () => {
       await getWalletStatus();
       return true;
     } catch (e) {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
 };
@@ -115,12 +115,12 @@ const AuthPage: FC = () => {
 
   if (!fullServiceIsRunning) {
     if (walletDbExists) {
-      const onClickUnlock = async (password: string) => {
+      const onClickUnlock = async (password: string, startInOfflineMode: boolean) => {
         try {
-          await ipcRenderer.invoke('start-full-service', password, null);
+          await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
           await untilFullServiceRuns();
           const status = await getWalletStatus();
-          await unlockWallet(password);
+          await unlockWallet(password, startInOfflineMode);
           if (status.accountIds.length) {
             await selectAccount(status.accountIds[0]);
           }
@@ -140,19 +140,20 @@ const AuthPage: FC = () => {
                 onClickUnlock={onClickUnlock}
                 accounts={getKeychainAccounts()}
                 handleDeleteWallet={deleteWallet}
+                fullServiceIsRunning={fullServiceIsRunning}
               />
             </Card>
           </Container>
         </Box>
       );
     }
-    const onClickCreateWallet = async (password: string) => {
+    const onClickCreateWallet = async (password: string, startInOfflineMode: boolean) => {
       try {
-        await ipcRenderer.invoke('start-full-service', password, null);
+        await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
         await untilFullServiceRuns();
         const status = await getWalletStatus();
         await createWallet(password);
-        await unlockWallet(password);
+        await unlockWallet(password, startInOfflineMode);
         setAccountIds(status.accountIds);
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
@@ -176,7 +177,7 @@ const AuthPage: FC = () => {
   const onClickUnlockWallet = async (password: string) => {
     try {
       const status = await getWalletStatus();
-      await unlockWallet(password);
+      await unlockWallet(password, status.networkBlockIndex === '0');
       if (status.accountIds.length > 0) {
         await selectAccount(status.accountIds[0]);
       }
@@ -196,6 +197,7 @@ const AuthPage: FC = () => {
               onClickUnlock={onClickUnlockWallet}
               accounts={getKeychainAccounts()}
               handleDeleteWallet={deleteWallet}
+              fullServiceIsRunning={fullServiceIsRunning}
             />
           </Card>
         </Container>

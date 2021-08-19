@@ -24,7 +24,14 @@ import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
 
-const EMPTY_CONFIRMATION = {
+interface TxConfirmation {
+  feeConfirmation: bigint;
+  totalValueConfirmation: bigint;
+  txProposal: TxProposal;
+  txProposalReceiverB58Code: string;
+}
+
+const EMPTY_CONFIRMATION: TxConfirmation = {
   feeConfirmation: 0n,
   totalValueConfirmation: 0n,
   txProposal: {} as TxProposal,
@@ -55,6 +62,7 @@ const SendReceivePage: FC = () => {
     accounts,
     contacts,
     pin: existingPin,
+    offlineModeEnabled,
     feePmob,
     pinThresholdPmob,
     selectedAccount,
@@ -166,15 +174,52 @@ const SendReceivePage: FC = () => {
     }
   };
 
+  const onClickCopyTxProposal = () => {
+    const confirmationText = JSON.stringify(confirmation, (key, value) =>
+      typeof value === 'bigint' ? `${value.toString()}n` : value
+    );
+    clipboard.writeText(confirmationText);
+    enqueueSnackbar('Tx Proposal Copied to Clipboard');
+    setSendingStatus(Showing.INPUT_FORM);
+  };
+
+  const importTxProposalFromClipboard = () => {
+    try {
+      const txConfirmation = JSON.parse(clipboard.readText(), (key, value) => {
+        if (typeof value === 'string' && /^\d+n$/.test(value)) {
+          return BigInt(value.substr(0, value.length - 1));
+        }
+        return value;
+      }) as TxConfirmation;
+
+      if (
+        txConfirmation.feeConfirmation === undefined ||
+        txConfirmation.totalValueConfirmation === undefined ||
+        txConfirmation.txProposal === undefined ||
+        txConfirmation.txProposalReceiverB58Code === undefined
+      ) {
+        throw new Error('Not a valid TxConfirmation');
+      }
+
+      setConfirmation(txConfirmation);
+      setSendingStatus(Showing.CONFIRM_FORM);
+    } catch (err) {
+      enqueueSnackbar(err.message, { variant: 'error' });
+    }
+  };
+
   const SendMobWithParams = () => (
     <SendMob
       confirmation={confirmation}
       contacts={contacts}
       existingPin={existingPin as string}
       feePmob={feePmob || '0'}
+      importTxProposalFromClipboard={importTxProposalFromClipboard}
       isSynced={isSynced}
+      offlineModeEnabled={offlineModeEnabled}
       onClickCancel={onClickCancel}
       onClickConfirm={onClickConfirm}
+      onClickCopyTxProposal={onClickCopyTxProposal}
       onClickSend={onClickSend}
       pinThresholdPmob={parseFloat(pinThresholdPmob)}
       selectedAccount={selectedAccount}

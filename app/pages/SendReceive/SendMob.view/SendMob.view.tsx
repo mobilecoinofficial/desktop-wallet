@@ -84,9 +84,12 @@ const SendMob: FC<SendMobProps> = ({
   contacts,
   existingPin,
   feePmob,
+  importTxProposalFromClipboard,
   isSynced,
+  offlineModeEnabled,
   onClickCancel,
   onClickConfirm,
+  onClickCopyTxProposal,
   onClickSend,
   pinThresholdPmob,
   selectedAccount,
@@ -358,6 +361,9 @@ const SendMob: FC<SendMobProps> = ({
                     >
                       {isSynced ? t('send') : t('syncing')}
                     </SubmitButton>
+                    <Button onClick={importTxProposalFromClipboard}>
+                      Import Proposal From Clipboard
+                    </Button>
                     {/* TODO - disable model if invalid */}
                     <Modal
                       aria-labelledby="transition-modal-title"
@@ -518,12 +524,12 @@ const SendMob: FC<SendMobProps> = ({
                                 (isPinRequiredForTransaction && values.pin !== existingPin)
                               }
                               fullWidth
-                              onClick={onClickConfirm}
+                              onClick={offlineModeEnabled ? onClickCopyTxProposal : onClickConfirm}
                               size="large"
                               type="submit"
                               variant="contained"
                             >
-                              {t('confirmSend')}
+                              {offlineModeEnabled ? 'Copy Proposal' : t('confirmSend')}
                             </Button>
                           </Box>
                         </div>

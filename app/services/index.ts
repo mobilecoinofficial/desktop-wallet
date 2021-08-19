@@ -16,6 +16,7 @@ import {
   deleteStoredGiftCodeB58,
   DeleteStoredGiftCodeB58Service,
 } from './deleteStoredGiftCodeB58.service';
+import { deleteWallet, DeleteWalletService } from './deleteWallet.service';
 import { encryptContacts, EncryptContactsService } from './encryptContacts.service';
 import {
   fetchAllTransactionLogsForAccount,
@@ -51,6 +52,7 @@ export {
   createWallet,
   decryptContacts,
   deleteStoredGiftCodeB58,
+  deleteWallet,
   encryptContacts,
   fetchAllTransactionLogsForAccount,
   fetchAllTxosForAccount,
@@ -81,6 +83,7 @@ export type {
   CreateWalletService,
   DecryptContactsService,
   DeleteStoredGiftCodeB58Service,
+  DeleteWalletService,
   EncryptContactsService,
   FetchAllTransactionLogsForAccountService,
   FetchAllTxosForAccountService,

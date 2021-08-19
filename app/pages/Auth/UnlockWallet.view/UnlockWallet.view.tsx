@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, FormHelperText, Typography } from '@material-ui/core';
+import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
+import { ConfirmDeleteWalletDialog } from '../../../components/ConfirmDeleteWallet.dialog';
 import type { UnlockWalletViewProps } from './UnlockWallet';
 
 interface UnlockWalletFormValues {
@@ -18,9 +19,11 @@ interface UnlockWalletFormValues {
 const UnlockWalletView: FC<UnlockWalletViewProps> = ({
   onClickUnlock,
   accounts,
+  handleDeleteWallet,
 }: UnlockWalletViewProps) => {
   const { t } = useTranslation('UnlockWallet');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [confirmDeleteWalletDialogOpen, setConfirmDeleteWalletDialogOpen] = useState(false);
 
   const handleClose = () => setAnchorEl(null);
   const handleOnSubmit = (values: UnlockWalletFormValues) => onClickUnlock(values.password);
@@ -75,6 +78,18 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
             >
               {t('unlockWalletButton')}
             </SubmitButton>
+            <Button
+              color="primary"
+              onClick={() => setConfirmDeleteWalletDialogOpen(true)}
+              id="deleteWalletConfirmation"
+            >
+              Delete Wallet and Start Over
+            </Button>
+            <ConfirmDeleteWalletDialog
+              open={confirmDeleteWalletDialogOpen}
+              cancel={() => setConfirmDeleteWalletDialogOpen(false)}
+              confirm={handleDeleteWallet}
+            />
           </Form>
         )}
       </Formik>

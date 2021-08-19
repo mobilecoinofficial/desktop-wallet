@@ -344,7 +344,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   }, []);
 
   useEffect(() => {
-    if (fetchBalanceTimer != null) {
+    if (fetchBalanceTimer !== null) {
       clearInterval(fetchBalanceTimer);
     }
 

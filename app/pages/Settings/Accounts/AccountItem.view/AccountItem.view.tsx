@@ -46,7 +46,7 @@ const AccountItem: FC<AccountItemProps> = ({
   return (
     <Grid item xs={12}>
       <Card className={classes.card}>
-        <CardActionArea onClick={onClick}>
+        <CardActionArea onClick={onClick} name="accountCard">
           <CardHeader
             avatar={
               <Avatar style={{ backgroundColor: '#757575' }}>
@@ -60,7 +60,7 @@ const AccountItem: FC<AccountItemProps> = ({
             }}
           />
         </CardActionArea>
-        <Button onClick={onDelete} disabled={selected}>
+        <Button onClick={onDelete} disabled={selected} name="deleteButton">
           <TrashcanIcon color={selected ? 'grey' : 'red'} />
         </Button>
       </Card>

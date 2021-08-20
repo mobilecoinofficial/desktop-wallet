@@ -13,15 +13,8 @@ const ConfirmDeleteWalletDialog = (props: ConfirmDeleteWalletDialogProps): JSX.E
   const { open, cancel, confirm } = props;
   const { t } = useTranslation('ConfirmDeleteWalletDialog');
 
-  const handleOnSubmit = () => confirm();
-
   return (
-    <Dialog
-      open={open}
-      onClose={() => {
-        cancel();
-      }}
-    >
+    <Dialog open={open} onClose={cancel}>
       <Container maxWidth="md" style={{ marginBottom: '20px', marginTop: '20px' }}>
         <Typography variant="h2" paragraph>
           {t('title')}
@@ -34,7 +27,7 @@ const ConfirmDeleteWalletDialog = (props: ConfirmDeleteWalletDialogProps): JSX.E
           validationSchema={Yup.object().shape({
             confirmationChecked: Yup.bool().oneOf([true], t('confirmationChecked')),
           })}
-          onSubmit={handleOnSubmit}
+          onSubmit={confirm}
         >
           {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
             <Form name="UnlockWalletInnerForm">

@@ -92,15 +92,15 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
       {
         // eslint-disable-next-line no-nested-ternary
         validated === undefined ? (
-          <Tooltip title="No validations found">
+          <Tooltip title={t('noValidation')}>
             <RemoveCircleIcon color="action" />
           </Tooltip>
         ) : validated ? (
-          <Tooltip title="Validated">
+          <Tooltip title={t('validated')}>
             <CheckCircleIcon color="primary" />
           </Tooltip>
         ) : (
-          <Tooltip title="Invalid">
+          <Tooltip title={t('invalid')}>
             <ErrorIcon color="error" />
           </Tooltip>
         )
@@ -206,11 +206,11 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
       )}
       {direction === 'tx_direction_sent' ? (
         <Button id="copyConfirmations" onClick={onClickCopyConfirmations}>
-          <Typography color="textPrimary">Copy Confirmation(s)</Typography>
+          <Typography color="textPrimary">{t('copyConfirmations')}</Typography>
         </Button>
       ) : (
         <Button id="validateConfirmations" onClick={onClickValidateConfirmations}>
-          <Typography color="textPrimary">Validate Confirmation(s)</Typography>
+          <Typography color="textPrimary">{t('validateConfirmations')}</Typography>
         </Button>
       )}
       <SubmitButton disabled={false} isSubmitting={false} onClick={onClickBack}>

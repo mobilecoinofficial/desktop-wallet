@@ -118,7 +118,7 @@ const AccountCard: FC<AccountCardProps> = ({
               variant="h3"
             >
               {isQRCode ? (
-                <QRMob name="account-card-qr-code" size={280} value={mobUrl} />
+                <QRMob data-testid="account-card-qr-code" size={280} value={mobUrl} />
               ) : (
                 <Tooltip title={t('copyTooltip') as string} placement="right" arrow>
                   <Box data-testid="account-card-tooltip" onClick={handleCodeClicked}>

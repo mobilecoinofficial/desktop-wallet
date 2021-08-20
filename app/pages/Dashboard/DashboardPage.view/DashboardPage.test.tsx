@@ -75,9 +75,6 @@ test('Dashboard shows account address code', () => {
   );
 
   expect(container.innerHTML.includes('Account Address Code')).toBeTruthy();
-
-  console.log(container.innerHTML);
-
   expect(container.innerHTML.includes('FK OWN')).toBeTruthy();
 
   expect(container.innerHTML.includes('s')).toBeTruthy();

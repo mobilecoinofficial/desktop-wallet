@@ -55,7 +55,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
 
       {offlineModeEnabled && (
         <Typography data-testid="balance-sync-message" variant="h6" color="primary">
-          Offline Mode Enabled
+          {t('offlineMode')}
         </Typography>
       )}
     </Box>

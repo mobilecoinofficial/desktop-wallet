@@ -79,10 +79,10 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
             ) : (
               <Box display="flex">
                 <Box display="flex" alignItems="center" flexDirection="row-reverse">
-                  <Tooltip title="This will start Full Service in Offline Mode, which disables the ability to update the ledger and submit transactions">
+                  <Tooltip title={t('offlineModeTooltip')}>
                     <HelpIcon style={{ marginLeft: '5px' }} />
                   </Tooltip>
-                  <Typography display="inline">Start in Offline Mode</Typography>
+                  <Typography display="inline">{t('startInOfflineMode')}</Typography>
                   <Field component={Checkbox} type="checkbox" name="startInOfflineMode" />
                 </Box>
               </Box>
@@ -100,7 +100,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
               onClick={() => setConfirmDeleteWalletDialogOpen(true)}
               id="deleteWalletConfirmation"
             >
-              Delete Wallet and Start Over
+              {t('deleteWallet')}
             </Button>
             <ConfirmDeleteWalletDialog
               open={confirmDeleteWalletDialogOpen}

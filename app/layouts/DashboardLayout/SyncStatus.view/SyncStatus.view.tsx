@@ -93,7 +93,7 @@ const SyncStatus: FC<SyncStatusProps> = ({
   switch (statusCode) {
     case OFFLINE: {
       backgroundColor = BLUE_LIGHT;
-      title = 'Offline Mode Enabled';
+      title = t('offlineMode');
       break;
     }
     case SYNCED: {

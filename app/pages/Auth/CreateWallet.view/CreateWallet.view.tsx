@@ -19,7 +19,7 @@ interface CreateWalletFormValues {
 }
 
 const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWalletViewProps) => {
-  const { t } = useTranslation('UnlockWallet');
+  const { t } = useTranslation('CreateWallet');
   const [canCheck, setCanCheck] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -34,11 +34,10 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
   return (
     <>
       <Typography variant="h2" paragraph>
-        Create Wallet
+        {t('title')}
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
-        Please enter a passphrase to encrypt your wallet database. If you lose this and don't have
-        your account secrets backed up, there will be no way to recover your account!
+        {t('description')}
       </Typography>
       <Formik
         initialValues={{
@@ -52,8 +51,8 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
           checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
           password: Yup.string().min(8, 'min 8').max(99, 'max 99').required(t('passwordRequired')),
           passwordConfirmation: Yup.string()
-            .oneOf([Yup.ref('password')], 'Passwords must match')
-            .required('Verify Passphrase is required'),
+            .oneOf([Yup.ref('password')], t('passwordConfirmationRef'))
+            .required(t('verifyPasswordRequired')),
         })}
         onSubmit={handleOnSubmit}
       >
@@ -71,7 +70,7 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
               data-testid="passwordConfirmationField"
               component={TextField}
               fullWidth
-              label="Confirm Passphrase"
+              label={t('passwordConfirmationLabel')}
               name="passwordConfirmation"
               type="password"
             />
@@ -100,10 +99,10 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
             {!canCheck && <FormHelperText focused>{t('acceptTermsFormHelper')}</FormHelperText>}
             <Box display="flex">
               <Box display="flex" alignItems="center" flexDirection="row-reverse">
-                <Tooltip title="This will start Full Service in Offline Mode, which disables the ability to update the ledger and submit transactions">
+                <Tooltip title={t('offlineModeTooltip')}>
                   <HelpIcon style={{ marginLeft: '5px' }} />
                 </Tooltip>
-                <Typography display="inline">Start in Offline Mode</Typography>
+                <Typography display="inline">{t('startInOfflineMode')}</Typography>
                 <Field component={Checkbox} type="checkbox" name="startInOfflineMode" />
               </Box>
             </Box>
@@ -113,7 +112,7 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
               isSubmitting={isSubmitting}
               onClick={submitForm}
             >
-              Create
+              {t('createWalletButton')}
             </SubmitButton>
             <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
           </Form>

@@ -252,11 +252,11 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       const {
         contacts,
         isPinRequired,
+        offlineModeEnabled,
         pin,
         pinThresholdPmob,
         secretKey,
         walletStatus,
-        offlineModeEnabled,
       } = (action as UnlockWalletActionType).payload;
 
       return {

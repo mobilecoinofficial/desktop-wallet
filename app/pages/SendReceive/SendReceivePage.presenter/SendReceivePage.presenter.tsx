@@ -179,7 +179,7 @@ const SendReceivePage: FC = () => {
       typeof value === 'bigint' ? `${value.toString()}n` : value
     );
     clipboard.writeText(confirmationText);
-    enqueueSnackbar('Tx Proposal Copied to Clipboard');
+    enqueueSnackbar(t('transactionCopied'));
     setSendingStatus(Showing.INPUT_FORM);
   };
 
@@ -198,7 +198,7 @@ const SendReceivePage: FC = () => {
         txConfirmation.txProposal === undefined ||
         txConfirmation.txProposalReceiverB58Code === undefined
       ) {
-        throw new Error('Not a valid TxConfirmation');
+        throw new Error(t('invalidTransaction'));
       }
 
       setConfirmation(txConfirmation);
@@ -229,7 +229,6 @@ const SendReceivePage: FC = () => {
 
   const ReceiveMobWithParams = () => (
     <ReceiveMob
-      accounts={accounts}
       onClickCode={handleCodeClicked}
       contacts={contacts}
       selectedAccount={selectedAccount}
@@ -303,7 +302,7 @@ const SendReceivePage: FC = () => {
           >
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
-            <Tab label="Pay MOB" />
+            <Tab label={t('pay')} />
           </Tabs>
           <TabPanel
             panels={[SendMobWithParams, ReceiveMobWithParams, PaymentRequestWithParams]}

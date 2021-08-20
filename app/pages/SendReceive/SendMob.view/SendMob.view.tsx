@@ -231,7 +231,6 @@ const SendMob: FC<SendMobProps> = ({
 
                 return (
                   <Form>
-                    {/* {renderSenderPublicAddressOptions(mockMultipleAccounts, isSubmitting)} */}
                     <Box pt={4}>
                       <FormLabel component="legend">
                         <Typography color="primary">{t('transaction')}</Typography>
@@ -362,7 +361,7 @@ const SendMob: FC<SendMobProps> = ({
                       {isSynced ? t('send') : t('syncing')}
                     </SubmitButton>
                     <Button onClick={importTxProposalFromClipboard}>
-                      Import Proposal From Clipboard
+                      {t('importFromClipboard')}
                     </Button>
                     {/* TODO - disable model if invalid */}
                     <Modal
@@ -529,7 +528,7 @@ const SendMob: FC<SendMobProps> = ({
                               type="submit"
                               variant="contained"
                             >
-                              {offlineModeEnabled ? 'Copy Proposal' : t('confirmSend')}
+                              {offlineModeEnabled ? t('copyProposal') : t('confirmSend')}
                             </Button>
                           </Box>
                         </div>

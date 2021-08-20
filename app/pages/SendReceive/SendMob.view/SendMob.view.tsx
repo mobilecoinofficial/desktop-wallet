@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { ChangeEvent, FC } from 'react';
 
 import {
@@ -31,7 +31,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
-import { StarIcon, MOBIcon, CopyIcon } from '../../../components/icons';
+import { StarIcon, MOBIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
 import {
@@ -291,6 +291,7 @@ const SendMob: FC<SendMobProps> = ({
                         margin="normal"
                         name="recipientPublicAddress"
                         type="text"
+                        key="recipientPublicAddress"
                       />
                       <Field
                         component={TextField}

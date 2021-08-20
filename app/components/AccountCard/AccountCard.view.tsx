@@ -118,7 +118,7 @@ const AccountCard: FC<AccountCardProps> = ({
               variant="h3"
             >
               {isQRCode ? (
-                <QRMob data-testid="account-card-qr-code" size={280} value={mobUrl} />
+                <QRMob name="account-card-qr-code" size={280} value={mobUrl} />
               ) : (
                 <Tooltip title={t('copyTooltip') as string} placement="right" arrow>
                   <Box data-testid="account-card-tooltip" onClick={handleCodeClicked}>
@@ -135,7 +135,9 @@ const AccountCard: FC<AccountCardProps> = ({
               <Box>
                 {(accounts === undefined || accounts.accountIds.length === 0) && <></>}
                 {accounts !== undefined && accounts.accountIds.length === 1 && (
-                  <span>{accounts.accountMap[accounts.accountIds[0]].name}</span>
+                  <span data-testid="account-card-name">
+                    {accounts.accountMap[accounts.accountIds[0]].name}
+                  </span>
                 )}
                 {accounts !== undefined && accounts.accountIds.length > 1 && (
                   <Select

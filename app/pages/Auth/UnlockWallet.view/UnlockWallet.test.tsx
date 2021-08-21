@@ -8,8 +8,15 @@ import { UnlockWalletView } from './UnlockWallet.view';
 
 const FAKE_PASSWORD = 'fakepassword';
 
-const setUpTest = (onClickUnlock = jest.fn()) => {
-  const { container } = render(<UnlockWalletView onClickUnlock={onClickUnlock} accounts={[]} />);
+const setUpTest = (onClickUnlock = jest.fn(), handleDeleteWallet = jest.fn()) => {
+  const { container } = render(
+    <UnlockWalletView
+      onClickUnlock={onClickUnlock}
+      accounts={[]}
+      fullServiceIsRunning={false}
+      handleDeleteWallet={handleDeleteWallet}
+    />
+  );
   const passwordField = container.querySelector('[name="password"]') as HTMLInputElement;
   const submitButton = container.querySelector('[data-testid="submit-button"]') as HTMLInputElement;
   return { container, onClickUnlock, passwordField, submitButton };
@@ -27,7 +34,7 @@ describe('Unlock wallet', () => {
     expect(submitButton.disabled).toBeTruthy();
   });
 
-  test('Entering password enables submit button', async () => {
+  test('Entering password enables submit button with offline mode false', async () => {
     const { passwordField, submitButton, onClickUnlock } = setUpTest();
     /*
     If somebody wonders about the act(...) call statement below,
@@ -39,6 +46,6 @@ describe('Unlock wallet', () => {
     expect(onClickUnlock).toHaveBeenCalledTimes(0);
 
     await act(async () => userEvent.click(submitButton));
-    expect(onClickUnlock).toHaveBeenCalledWith(FAKE_PASSWORD);
+    expect(onClickUnlock).toHaveBeenCalledWith(FAKE_PASSWORD, false);
   });
 });

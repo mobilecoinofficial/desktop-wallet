@@ -1,7 +1,7 @@
 {
   "name": "mobilecoin-wallet",
   "productName": "MobileCoin Wallet",
-  "version": "v1.2.0",
+  "version": "1.2.0",
   "description": "Desktop hot wallet for your MobileCoin needs.",
   "main": "./main.prod.js",
   "author": {

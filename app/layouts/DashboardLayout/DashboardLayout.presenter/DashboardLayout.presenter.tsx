@@ -43,7 +43,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: DashboardLayoutProps) => {
-  const { selectedAccount, isEntropyKnown, isPinRequired, pendingSecrets } = useFullService();
+  const { offlineModeEnabled, selectedAccount, isEntropyKnown, isPinRequired, pendingSecrets } =
+    useFullService();
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
   const sendSyncStatus = (statusCode: string) => ipcRenderer.send('sync-status', statusCode);
@@ -58,19 +59,24 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: Dashbo
           p={3}
           style={matches ? {} : { padding: '12px 0 6px' }}
         >
-          <SyncStatus selectedAccount={selectedAccount} sendSyncStatus={sendSyncStatus} />
+          <SyncStatus
+            offlineModeEnabled={offlineModeEnabled}
+            selectedAccount={selectedAccount}
+            sendSyncStatus={sendSyncStatus}
+          />
           <BalanceIndicator
             balance={selectedAccount.balanceStatus.unspentPmob}
             isSynced={selectedAccount.balanceStatus.isSynced}
+            offlineModeEnabled={offlineModeEnabled}
           />
         </Box>
         <Box className={classes.contentContainer}>
-          <InactivityDetect
+          {/* <InactivityDetect
             handleCloseApp={onClose}
             selectedAccount={selectedAccount}
             TIME_FOR_INACTIVITY={TIME_FOR_INACTIVITY}
             TIME_FOR_REACTION={TIME_FOR_REACTION}
-          />
+          /> */}
           <Box className={classes.content}>{children}</Box>
           <OnboardingModal
             confirmEntropyKnown={confirmEntropyKnown}

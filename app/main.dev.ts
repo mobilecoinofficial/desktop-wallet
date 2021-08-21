@@ -18,6 +18,7 @@ import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen } from 'electr
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
+import fs from 'fs';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
@@ -72,7 +73,11 @@ const installExtensions = async () => {
 
 // TODO: rename this function to full service after integration
 // TODO: test
-const startFullService = (password: string, newPassword: string | null): void => {
+const startFullService = (
+  password: string,
+  newPassword: string | null,
+  startInOfflineMode: boolean
+): void => {
   // Start the full-service process in the background
   const IS_PROD = process.env.NODE_ENV === 'production';
   const root = process.cwd();
@@ -85,9 +90,10 @@ const startFullService = (password: string, newPassword: string | null): void =>
       : path.join(root, 'full-service-bin');
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
-  const fullServiceExecPath = path.resolve(
-    path.join(fullServiceBinariesPath, './start-full-service.sh')
-  );
+  console.log(`Offline Mode: ${startInOfflineMode}`);
+  const fullServiceExecPath = startInOfflineMode
+    ? path.resolve(path.join(fullServiceBinariesPath, './start-full-service-offline.sh'))
+    : path.resolve(path.join(fullServiceBinariesPath, './start-full-service.sh'));
 
   const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
   const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
@@ -254,11 +260,14 @@ const createWindow = async () => {
   nativeTheme.themeSource = (localStore.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
 
   // FK see also line 270, and AuthPage.presenter.tsx line 94
-  ipcMain.handle('start-full-service', (_, password: string, newPassword: string | null) => {
-    console.log('STARTING SERVICE');
-    startFullService(password, newPassword);
-    return 'Service started';
-  });
+  ipcMain.handle(
+    'start-full-service',
+    (_, password: string, newPassword: string | null, startInOfflineMode: boolean) => {
+      console.log('STARTING SERVICE');
+      startFullService(password, newPassword, startInOfflineMode);
+      return 'Service started';
+    }
+  );
 
   ipcMain.on('get-theme', (event) => {
     // eslint-disable-next-line no-param-reassign
@@ -328,6 +337,19 @@ ipcMain.on('reset-ledger', () => {
   exec(`rm "${ledgerDbPath}/lock.mdb"`);
   app.relaunch(); // does not trigger until app quits or exits
   app.exit(); // exits without before-quit and will-quit
+});
+
+ipcMain.on('reset-wallet-db', () => {
+  const walletDbPath = localStore.getFullServiceDbPath();
+  console.log('KILLING SERVICE');
+  exec('pkill -f full-service');
+  fs.rmdirSync(walletDbPath, { recursive: true });
+  app.relaunch();
+  app.exit();
+});
+
+ipcMain.on('kill-full-service', () => {
+  exec('pkill -f full-service');
 });
 
 ipcMain.on('get-initial-translations', (event) => {

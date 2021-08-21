@@ -29,6 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   balance,
   isSynced,
+  offlineModeEnabled,
 }: BalanceIndicatorProps) => {
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
@@ -46,9 +47,15 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
           <MOBNumberFormat valueUnit="pMOB" value={balance} />
         </Typography>
       </Box>
-      {!isSynced && (
+      {!isSynced && !offlineModeEnabled && (
         <Typography data-testid="balance-sync-message" variant="h6" color="primary">
           {t('syncMessage')}
+        </Typography>
+      )}
+
+      {offlineModeEnabled && (
+        <Typography data-testid="balance-sync-message" variant="h6" color="primary">
+          {t('offlineMode')}
         </Typography>
       )}
     </Box>

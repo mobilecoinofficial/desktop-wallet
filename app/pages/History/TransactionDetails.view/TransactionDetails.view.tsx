@@ -1,7 +1,19 @@
 import React from 'react';
 import type { FC, ReactNode } from 'react';
 
-import { Box, Card, CardContent, Container, makeStyles, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  makeStyles,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import { useTranslation } from 'react-i18next';
 
 import { ShortCode, SubmitButton } from '../../../components';
@@ -33,31 +45,66 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const TransactionDetails: FC<TransactionDetailsViewProps> = ({
-  // onChangedComment,
+  onClickCopyConfirmations,
   onClickBack,
+  onClickValidateConfirmations,
   transactionLog,
+  txoValidations,
   txos,
 }: TransactionDetailsViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('TransactionDetails');
 
   const {
-    // comment,
     contact,
     direction,
     finalizedBlockIndex,
     assignedAddressId,
     recipientAddressId,
     outputTxoIds,
-    // transactionLogId,
     valuePmob,
   } = transactionLog;
 
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
 
-  // TODO replace this with a component
   const renderRow = (title: string, value: string | ReactNode, noWrap?: boolean) => (
     <Box className={classes.internal} key={title}>
+      <Typography className={classes.textLeft} display="inline" noWrap={noWrap}>
+        {title}
+      </Typography>
+      {typeof value === 'string' ? (
+        <Typography className={classes.textRight} display="inline">
+          {value}
+        </Typography>
+      ) : (
+        value
+      )}
+    </Box>
+  );
+
+  const renderTXODetailsRow = (
+    title: string,
+    value: string | ReactNode,
+    validated?: boolean,
+    noWrap?: boolean
+  ) => (
+    <Box className={classes.internal} key={title}>
+      {
+        // eslint-disable-next-line no-nested-ternary
+        validated === undefined ? (
+          <Tooltip title={t('noValidation')}>
+            <RemoveCircleIcon color="action" />
+          </Tooltip>
+        ) : validated ? (
+          <Tooltip title={t('validated')}>
+            <CheckCircleIcon color="primary" />
+          </Tooltip>
+        ) : (
+          <Tooltip title={t('invalid')}>
+            <ErrorIcon color="error" />
+          </Tooltip>
+        )
+      }
       <Typography className={classes.textLeft} display="inline" noWrap={noWrap}>
         {title}
       </Typography>
@@ -94,6 +141,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
 
     return renderRow(`${label}:`, aliasOrAddress);
   };
+
   return (
     <Container maxWidth="md" className={classes.root}>
       <Card className={classes.card}>
@@ -116,15 +164,26 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
         </Typography>
         <CardContent>
           {outputTxoIds.map((txoId) =>
-            renderRow(
-              txoId,
-              <TransactionInfoLabel
-                valuePmob={txos.txoMap[txoId].valuePmob}
-                sign={sign}
-                label=" MOB"
-              />,
-              true
-            )
+            direction === 'tx_direction_sent'
+              ? renderRow(
+                  txoId,
+                  <TransactionInfoLabel
+                    valuePmob={txos.txoMap[txoId].valuePmob}
+                    sign={sign}
+                    label=" MOB"
+                  />,
+                  true
+                )
+              : renderTXODetailsRow(
+                  txoId,
+                  <TransactionInfoLabel
+                    valuePmob={txos.txoMap[txoId].valuePmob}
+                    sign={sign}
+                    label=" MOB"
+                  />,
+                  txoValidations[txoId],
+                  true
+                )
           )}
         </CardContent>
       </Card>
@@ -145,54 +204,15 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
           </CardContent>
         </Card>
       )}
-
-      {/* <Container className={classes.container}>
-          <Card className={classes.card}>
-            <Typography variant="body2" color="textPrimary">
-              {t('addComment')}
-            </Typography>
-
-            <Formik
-              initialValues={{
-                newComment: comment,
-                submit: null,
-              }}
-              onSubmit={(values, { setSubmitting, setStatus }) => {
-                setSubmitting(true);
-                onChangedComment(transactionLogId, values.newComment);
-                setTimeout(() => {
-                  setSubmitting(false);
-                  enqueueSnackbar(t('savedComment'), { variant: 'success' });
-                  setStatus({ success: true });
-                }, 1500);
-              }}
-            >
-              {({ isSubmitting, dirty, isValid, submitForm }) => (
-                <Form>
-                  <Box>
-                    <Field
-                      component={TextField}
-                      fullWidth
-                      label={t('typeHere')}
-                      margin="normal"
-                      name="newComment"
-                      type="text"
-                    />
-                  </Box>{' '}
-                  <Box paddingLeft={10} paddingRight={10}>
-                    <SubmitButton
-                      disabled={!dirty || !isValid || isSubmitting}
-                      onClick={submitForm}
-                      isSubmitting={isSubmitting}
-                    >
-                      {t('changeComment')}
-                    </SubmitButton>
-                  </Box>
-                </Form>
-              )}
-            </Formik>
-          </Card>
-        </Container> */}
+      {direction === 'tx_direction_sent' ? (
+        <Button id="copyConfirmations" onClick={onClickCopyConfirmations}>
+          <Typography color="textPrimary">{t('copyConfirmations')}</Typography>
+        </Button>
+      ) : (
+        <Button id="validateConfirmations" onClick={onClickValidateConfirmations}>
+          <Typography color="textPrimary">{t('validateConfirmations')}</Typography>
+        </Button>
+      )}
       <SubmitButton disabled={false} isSubmitting={false} onClick={onClickBack}>
         {t('buttons.back')}
       </SubmitButton>

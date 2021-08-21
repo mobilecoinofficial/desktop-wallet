@@ -24,7 +24,7 @@
   },
 
   "BalanceIndicator": {
-    "syncMessage": "BALANCE MAY BE OUT-OF-DATE WHILE WALLET SYNCS WITH LEDGER.",
+    "syncMessage": "BALANCE MAY BE OUT OF DATE WHILE WALLET SYNCS WITH LEDGER.",
     "title": "BALANCE"
   },
 

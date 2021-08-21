@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { FC } from 'react';
 
-import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
+import { Box, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
-import { Checkbox, TextField } from 'formik-material-ui';
+import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton, TermsOfUseDialog } from '../../../components';
+import { SubmitButton } from '../../../components';
 import {
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
@@ -16,11 +16,7 @@ import type { ImportAccountViewProps } from './ImportAccount.d';
 
 interface ImportAccountFormValues {
   accountName: string;
-  checkedSavePassword: boolean;
   entropy: string;
-  password: string;
-  passwordConfirmation: string;
-  submit: null;
 }
 
 const ImportAccountView: FC<ImportAccountViewProps> = ({
@@ -73,9 +69,6 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
               label={t('nameLabel')}
               name="accountName"
             />
-            {values.checkedSavePassword && !values.accountName && (
-              <FormHelperText focused>{t('checkedSavePasswordFormHelper')}</FormHelperText>
-            )}
             <Field
               id="ImportAccountForm-entropyField"
               component={TextField}

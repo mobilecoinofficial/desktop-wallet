@@ -24,7 +24,7 @@ export type BuildGiftCodeResult = {
 };
 
 type AxiosFullServiceResponse = {
-  error: any;
+  error: string;
   result: {
     giftCode: GiftCode;
     giftCodeB58: StringB58;

@@ -52,7 +52,8 @@ npm-debug.log.*
 *.sass.d.ts
 *.scss.d.ts
 
-full-service-bin/*
-full-service-bin-DEV/*
-full-service-bin-PROD/*
-!full-service-bin/.gitkeep
+full-service-bin/*/*.css
+full-service-bin/*/full-service
+full-service-bin/*.css
+full-service-bin/full-service
+full-service-bin/*.sh

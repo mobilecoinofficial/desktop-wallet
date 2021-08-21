@@ -14,6 +14,7 @@ import {
   addAccount,
   createAccount,
   createWallet,
+  deleteWallet,
   getWalletStatus,
   importAccount,
   importLegacyAccount,
@@ -56,12 +57,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 /* eslint-disable no-await-in-loop */
 const untilFullServiceRuns = async () => {
-  for (;;) {
+  for (let i = 0; i < 25; i++) {
     try {
       await getWalletStatus();
       return true;
     } catch (e) {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
 };
@@ -77,18 +78,19 @@ const AuthPage: FC = () => {
   const [loading, setLoading] = useState(true);
   const [accountIds, setAccountIds] = useState([]);
 
-  const checkIfFullServiceIsRunning = async () => {
-    try {
-      const status = await getWalletStatus();
-      setAccountIds(status.accountIds);
-      setFullServiceIsRunning(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    checkIfFullServiceIsRunning();
+    const controller = new AbortController();
+    (async () => {
+      try {
+        const status = await getWalletStatus();
+        setAccountIds(status.accountIds);
+        setFullServiceIsRunning(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
+
+    return () => controller?.abort();
   }, []);
 
   if (loading) {
@@ -113,12 +115,12 @@ const AuthPage: FC = () => {
 
   if (!fullServiceIsRunning) {
     if (walletDbExists) {
-      const onClickUnlock = async (password: string) => {
+      const onClickUnlock = async (password: string, startInOfflineMode: boolean) => {
         try {
-          await ipcRenderer.invoke('start-full-service', password, null);
+          await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
           await untilFullServiceRuns();
           const status = await getWalletStatus();
-          await unlockWallet(password);
+          await unlockWallet(password, startInOfflineMode);
           if (status.accountIds.length) {
             await selectAccount(status.accountIds[0]);
           }
@@ -134,19 +136,24 @@ const AuthPage: FC = () => {
           <Container className={classes.viewContainer} maxWidth="sm">
             <LogoIcon className={classes.logoIcon} />
             <Card className={classes.cardContainer}>
-              <UnlockWalletView onClickUnlock={onClickUnlock} accounts={getKeychainAccounts()} />
+              <UnlockWalletView
+                onClickUnlock={onClickUnlock}
+                accounts={getKeychainAccounts()}
+                handleDeleteWallet={deleteWallet}
+                fullServiceIsRunning={fullServiceIsRunning}
+              />
             </Card>
           </Container>
         </Box>
       );
     }
-    const onClickCreateWallet = async (password: string) => {
+    const onClickCreateWallet = async (password: string, startInOfflineMode: boolean) => {
       try {
-        await ipcRenderer.invoke('start-full-service', password, null);
+        await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
         await untilFullServiceRuns();
         const status = await getWalletStatus();
         await createWallet(password);
-        await unlockWallet(password);
+        await unlockWallet(password, startInOfflineMode);
         setAccountIds(status.accountIds);
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
@@ -170,7 +177,7 @@ const AuthPage: FC = () => {
   const onClickUnlockWallet = async (password: string) => {
     try {
       const status = await getWalletStatus();
-      await unlockWallet(password);
+      await unlockWallet(password, status.networkBlockIndex === '0');
       if (status.accountIds.length > 0) {
         await selectAccount(status.accountIds[0]);
       }
@@ -189,6 +196,8 @@ const AuthPage: FC = () => {
             <UnlockWalletView
               onClickUnlock={onClickUnlockWallet}
               accounts={getKeychainAccounts()}
+              handleDeleteWallet={deleteWallet}
+              fullServiceIsRunning={fullServiceIsRunning}
             />
           </Card>
         </Container>

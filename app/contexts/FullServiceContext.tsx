@@ -27,6 +27,7 @@ import {
 import { CREATE_ACCOUNT, CreateAccountActionType } from './actions/createAccount.action';
 import { CREATE_WALLET, CreateWalletActionType } from './actions/createWallet.action';
 import { DELETE_ACCOUNT, DeleteAccountActionType } from './actions/deleteAccount.action';
+import { DELETE_WALLET, DeleteWalletActionType } from './actions/deleteWallet.action';
 import {
   FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   FetchAllTransactionLogsForAccountActionType,
@@ -62,6 +63,7 @@ export interface FullServiceState {
   isEntropyKnown: boolean;
   isInitialized: boolean;
   isPinRequired: boolean;
+  offlineModeEnabled: boolean;
   pendingSecrets: PendingSecrets | null;
   secretKey: string;
   selectedAccount: SelectedAccount | null;
@@ -82,6 +84,7 @@ type Action =
   | CreateAccountActionType
   | CreateWalletActionType
   | DeleteAccountActionType
+  | DeleteWalletActionType
   | FetchAllTransactionLogsForAccountActionType
   | FetchAllTxosForAccountActionType
   | ImportAccountActionType
@@ -109,6 +112,7 @@ const initialFullServiceState: FullServiceState = {
   isEntropyKnown: false,
   isInitialized: false,
   isPinRequired: false,
+  offlineModeEnabled: false,
   secretKey: '',
   selectedAccount: null,
   transactionLogs: null,
@@ -168,6 +172,10 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         ...state,
         accounts,
       };
+    }
+
+    case DELETE_WALLET: {
+      return initialFullServiceState;
     }
 
     case IMPORT_ACCOUNT: {
@@ -241,15 +249,22 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case UNLOCK_WALLET: {
-      const { contacts, isPinRequired, pin, pinThresholdPmob, secretKey, walletStatus } = (
-        action as UnlockWalletActionType
-      ).payload;
+      const {
+        contacts,
+        isPinRequired,
+        offlineModeEnabled,
+        pin,
+        pinThresholdPmob,
+        secretKey,
+        walletStatus,
+      } = (action as UnlockWalletActionType).payload;
 
       return {
         ...state,
         contacts,
         isAuthenticated: true,
         isPinRequired,
+        offlineModeEnabled,
         pin,
         pinThresholdPmob,
         secretKey,
@@ -344,7 +359,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   }, []);
 
   useEffect(() => {
-    if (fetchBalanceTimer != null) {
+    if (fetchBalanceTimer !== null) {
       clearInterval(fetchBalanceTimer);
     }
 

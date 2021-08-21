@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { FC } from 'react';
 
 import {
@@ -77,12 +77,8 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
   enqueueSnackbar,
 }: PaymentRequestProps) => {
   const classes = useStyles();
-  const [showModal, setShowModal] = useState(false);
 
-  const handleCancel = () => {
-    setShowModal(false);
-    onClickCancel();
-  };
+  const handleCancel = onClickCancel;
 
   const handleViewPaymentRequest = async (b58code) => {
     try {

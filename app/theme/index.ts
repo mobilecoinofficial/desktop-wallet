@@ -1,10 +1,10 @@
 import { responsiveFontSizes } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles'
-import type { Theme as MuiTheme } from '@material-ui/core/styles/createTheme';
+import { createTheme } from '@material-ui/core/styles';
 import type {
   Palette as MuiPalette,
   TypeBackground as MuiTypeBackground,
 } from '@material-ui/core/styles/createPalette';
+import type { Theme as MuiTheme } from '@material-ui/core/styles/createTheme';
 import type { Shadows as MuiShadows } from '@material-ui/core/styles/shadows';
 
 import { BLACK_LIGHT } from '../constants/colors';

@@ -1,5 +1,4 @@
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
-import type { StringHex } from '../../../types/SpecialStrings';
 
 export interface PaymentRequestProps {
   confirmation?: unknown;

@@ -3,16 +3,13 @@ import type { FC } from 'react';
 
 import {
   Avatar,
-  Box,
   Card,
   CardActionArea,
   CardHeader,
   Grid,
-  Typography,
   makeStyles,
   Button,
 } from '@material-ui/core';
-import { useTranslation } from 'react-i18next';
 
 import { ShortCode } from '../../../../components/ShortCode';
 import { MOBIcon, TrashcanIcon } from '../../../../components/icons';
@@ -49,7 +46,7 @@ const AccountItem: FC<AccountItemProps> = ({
   return (
     <Grid item xs={12}>
       <Card className={classes.card}>
-        <CardActionArea onClick={onClick}>
+        <CardActionArea onClick={onClick} name="accountCard">
           <CardHeader
             avatar={
               <Avatar style={{ backgroundColor: '#757575' }}>
@@ -63,7 +60,7 @@ const AccountItem: FC<AccountItemProps> = ({
             }}
           />
         </CardActionArea>
-        <Button onClick={onDelete} disabled={selected}>
+        <Button onClick={onDelete} disabled={selected} name="deleteButton">
           <TrashcanIcon color={selected ? 'grey' : 'red'} />
         </Button>
       </Card>

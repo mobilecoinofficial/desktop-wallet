@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 /* eslint-disable no-await-in-loop */
 const untilFullServiceRuns = async () => {
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 25; i++) {
     try {
       await getWalletStatus();
       return true;

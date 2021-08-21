@@ -25,7 +25,7 @@
 
   "BalanceIndicator": {
     "offlineMode": "Offline Mode Enabled",
-    "syncMessage": "Balance may be out-of-date while wallet syncs with ledger.",
+    "syncMessage": "Balance may be out of date while wallet syncs with ledger.",
     "title": "Balance"
   },
 
@@ -612,7 +612,7 @@
   },
 
   "TransactionView": {
-    "invalideTransaction": "Not a valid TxConfirmation",
+    "invalidTransaction": "Not a valid TxConfirmation",
     "mob": "MOB",
     "pay": "Pay MOB",
     "receive": "Receive MOB",

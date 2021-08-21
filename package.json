@@ -1,7 +1,7 @@
 {
-  "name": "mobilecoin-wallet-v1.1.1",
+  "name": "mobilecoin-wallet-v1.2.0",
   "productName": "MobileCoin Wallet",
-  "version": "v1.1.1",
+  "version": "v1.2.0",
   "description": "Desktop hot wallet for your MobileCoin needs.",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",

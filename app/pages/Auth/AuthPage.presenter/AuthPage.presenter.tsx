@@ -14,6 +14,7 @@ import {
   addAccount,
   createAccount,
   createWallet,
+  deleteWallet,
   getWalletStatus,
   importAccount,
   importLegacyAccount,
@@ -77,18 +78,19 @@ const AuthPage: FC = () => {
   const [loading, setLoading] = useState(true);
   const [accountIds, setAccountIds] = useState([]);
 
-  const checkIfFullServiceIsRunning = async () => {
-    try {
-      const status = await getWalletStatus();
-      setAccountIds(status.accountIds);
-      setFullServiceIsRunning(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    checkIfFullServiceIsRunning();
+    const controller = new AbortController();
+    (async () => {
+      try {
+        const status = await getWalletStatus();
+        setAccountIds(status.accountIds);
+        setFullServiceIsRunning(true);
+      } finally {
+        setLoading(false);
+      }
+    })();
+
+    return () => controller?.abort();
   }, []);
 
   if (loading) {
@@ -134,7 +136,11 @@ const AuthPage: FC = () => {
           <Container className={classes.viewContainer} maxWidth="sm">
             <LogoIcon className={classes.logoIcon} />
             <Card className={classes.cardContainer}>
-              <UnlockWalletView onClickUnlock={onClickUnlock} accounts={getKeychainAccounts()} />
+              <UnlockWalletView
+                onClickUnlock={onClickUnlock}
+                accounts={getKeychainAccounts()}
+                handleDeleteWallet={deleteWallet}
+              />
             </Card>
           </Container>
         </Box>
@@ -189,6 +195,7 @@ const AuthPage: FC = () => {
             <UnlockWalletView
               onClickUnlock={onClickUnlockWallet}
               accounts={getKeychainAccounts()}
+              handleDeleteWallet={deleteWallet}
             />
           </Card>
         </Container>

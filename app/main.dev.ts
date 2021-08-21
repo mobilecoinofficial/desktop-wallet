@@ -18,6 +18,7 @@ import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen } from 'electr
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
+import fs from 'fs';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
@@ -328,6 +329,19 @@ ipcMain.on('reset-ledger', () => {
   exec(`rm "${ledgerDbPath}/lock.mdb"`);
   app.relaunch(); // does not trigger until app quits or exits
   app.exit(); // exits without before-quit and will-quit
+});
+
+ipcMain.on('reset-wallet-db', () => {
+  const walletDbPath = localStore.getFullServiceDbPath();
+  console.log('KILLING SERVICE');
+  exec('pkill -f full-service');
+  fs.rmdirSync(walletDbPath, { recursive: true });
+  app.relaunch();
+  app.exit();
+});
+
+ipcMain.on('kill-full-service', () => {
+  exec('pkill -f full-service');
 });
 
 ipcMain.on('get-initial-translations', (event) => {

@@ -52,7 +52,12 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: Dashbo
     <Box className={classes.root}>
       <TopBar />
       <Box className={classes.wrapper}>
-        <Box display="flex" flexDirection="column" p={3} style={matches ? {} : {padding: '12px 0 6px'}}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          p={3}
+          style={matches ? {} : { padding: '12px 0 6px' }}
+        >
           <SyncStatus selectedAccount={selectedAccount} sendSyncStatus={sendSyncStatus} />
           <BalanceIndicator
             balance={selectedAccount.balanceStatus.unspentPmob}
@@ -60,12 +65,12 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: Dashbo
           />
         </Box>
         <Box className={classes.contentContainer}>
-          <InactivityDetect
+          {/* <InactivityDetect
             handleCloseApp={onClose}
             selectedAccount={selectedAccount}
             TIME_FOR_INACTIVITY={TIME_FOR_INACTIVITY}
             TIME_FOR_REACTION={TIME_FOR_REACTION}
-          />
+          /> */}
           <Box className={classes.content}>{children}</Box>
           <OnboardingModal
             confirmEntropyKnown={confirmEntropyKnown}

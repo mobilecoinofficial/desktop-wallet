@@ -31,7 +31,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
-import { StarIcon, MOBIcon } from '../../../components/icons';
+import { StarIcon, MOBIcon, CopyIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
 import {
@@ -532,11 +532,11 @@ const SendMob: FC<SendMobProps> = ({
                     <Modal
                       className={classes.modal}
                       open={showing === Showing.SEND_FORM}
-                       onClose={(event, reason) => {
-                           if (reason !== 'backdropClick') {
-                             onClose(event, reason);
-                           }
-                         }}
+                      onClose={(event, reason) => {
+                        if (reason !== 'backdropClick') {
+                          onClose(event, reason);
+                        }
+                      }}
                       closeAfterTransition
                       disableAutoFocus
                       disableEnforceFocus

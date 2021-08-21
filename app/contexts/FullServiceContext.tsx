@@ -27,6 +27,7 @@ import {
 import { CREATE_ACCOUNT, CreateAccountActionType } from './actions/createAccount.action';
 import { CREATE_WALLET, CreateWalletActionType } from './actions/createWallet.action';
 import { DELETE_ACCOUNT, DeleteAccountActionType } from './actions/deleteAccount.action';
+import { DELETE_WALLET, DeleteWalletActionType } from './actions/deleteWallet.action';
 import {
   FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   FetchAllTransactionLogsForAccountActionType,
@@ -82,6 +83,7 @@ type Action =
   | CreateAccountActionType
   | CreateWalletActionType
   | DeleteAccountActionType
+  | DeleteWalletActionType
   | FetchAllTransactionLogsForAccountActionType
   | FetchAllTxosForAccountActionType
   | ImportAccountActionType
@@ -168,6 +170,10 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
         ...state,
         accounts,
       };
+    }
+
+    case DELETE_WALLET: {
+      return initialFullServiceState;
     }
 
     case IMPORT_ACCOUNT: {

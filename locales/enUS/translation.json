@@ -546,6 +546,9 @@
       "save": "Save comment"
     },
     "changeComment": "Change comment",
+    "copyConfirmations": "Copy Confirmation(s)",
+    "invalid": "Invalid",
+    "noValidation": "No validation found",
     "orphaned": "??? Orphaned",
     "orphanedTitle": "Orphaned Transaction",
     "orphanedExplaination": "This transaction is considered orphaned. This means that the assigned address that received this transaction is unknown to this wallet. This likely happens if you assign addresses for this account within other wallets. Other causes may be importing/recovering this account. We recommend to only use an account in a single wallet.",
@@ -556,7 +559,9 @@
     "transactionDetails": "Transaction Details",
     "txo": "TXO",
     "txoDetails": "TXO Details",
-    "typeHere": "Start typing here"
+    "typeHere": "Start typing here",
+    "validateConfirmations": "Validate Confirmation(s)",
+    "validated": "Validated"
   },
 
   "TermsOfUseDialog": {

@@ -25,6 +25,7 @@ const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
         <Box p={2}>
           <Button
             color="secondary"
+            data-testid="closeTerms"
             onClick={handleCloseTerms}
             variant="contained"
             fullWidth

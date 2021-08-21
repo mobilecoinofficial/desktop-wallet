@@ -49,7 +49,10 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
         }}
         validationSchema={Yup.object().shape({
           checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
-          password: Yup.string().min(8, 'min 8').max(99, 'max 99').required(t('passwordRequired')),
+          password: Yup.string()
+            .min(8, t('passwordMin'))
+            .max(99, t('passwordMax'))
+            .required(t('passwordRequired')),
           passwordConfirmation: Yup.string()
             .oneOf([Yup.ref('password')], t('passwordConfirmationRef'))
             .required(t('verifyPasswordRequired')),
@@ -83,7 +86,12 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
               <Box display="flex" alignItems="center" flexDirection="row-reverse">
                 <Box>
                   <Typography display="inline">{t('acceptTerms')}</Typography>
-                  <Button color="primary" onClick={() => setOpen(true)} id="openTerms">
+                  <Button
+                    data-testid="openTerms"
+                    color="primary"
+                    onClick={() => setOpen(true)}
+                    id="openTerms"
+                  >
                     {t('acceptTermsButton')}
                   </Button>
                 </Box>

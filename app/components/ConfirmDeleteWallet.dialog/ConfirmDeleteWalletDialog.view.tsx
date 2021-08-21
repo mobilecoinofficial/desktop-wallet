@@ -11,21 +11,21 @@ import { ConfirmDeleteWalletDialogProps } from './ConfirmDeleteWalletDialog';
 
 const ConfirmDeleteWalletDialog = (props: ConfirmDeleteWalletDialogProps): JSX.Element => {
   const { open, cancel, confirm } = props;
-  const { t } = useTranslation('TermsOfUseDialog');
+  const { t } = useTranslation('ConfirmDeleteWalletDialog');
 
   return (
     <Dialog open={open} onClose={cancel}>
       <Container maxWidth="md" style={{ marginBottom: '20px', marginTop: '20px' }}>
         <Typography variant="h2" paragraph>
-          Delete Wallet
+          {t('title')}
         </Typography>
         <Typography variant="body2" color="textSecondary" paragraph>
-          If you don't have your entropy backed up, you will lose your account forever!
+          {t('description')}
         </Typography>
         <Formik
           initialValues={{ confirmationChecked: false, submit: null }}
           validationSchema={Yup.object().shape({
-            confirmationChecked: Yup.bool().oneOf([true], 'Hey'),
+            confirmationChecked: Yup.bool().oneOf([true], t('confirmationChecked')),
           })}
           onSubmit={confirm}
         >
@@ -34,10 +34,7 @@ const ConfirmDeleteWalletDialog = (props: ConfirmDeleteWalletDialogProps): JSX.E
               <Box display="flex">
                 <Box display="flex" alignItems="center" flexDirection="row-reverse">
                   <Box>
-                    <Typography display="inline">
-                      I understand this could cause me to lose my accounts if I don't have them
-                      backed up.
-                    </Typography>
+                    <Typography display="inline">{t('understandCheckText')}</Typography>
                   </Box>
                   <Field component={Checkbox} type="checkbox" name="confirmationChecked" />
                 </Box>
@@ -49,7 +46,7 @@ const ConfirmDeleteWalletDialog = (props: ConfirmDeleteWalletDialogProps): JSX.E
                   isSubmitting={isSubmitting}
                   onClick={submitForm}
                 >
-                  Delete Wallet
+                  {t('deleteWalletButton')}
                 </SubmitButton>
                 <Button
                   color="secondary"
@@ -57,7 +54,7 @@ const ConfirmDeleteWalletDialog = (props: ConfirmDeleteWalletDialogProps): JSX.E
                   style={{ marginTop: '10px' }}
                   onClick={cancel}
                 >
-                  Cancel
+                  {t('cancelButton')}
                 </Button>
               </Box>
             </Form>

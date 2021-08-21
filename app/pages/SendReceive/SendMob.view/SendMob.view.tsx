@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { ChangeEvent, FC } from 'react';
 
 import {
@@ -84,9 +84,12 @@ const SendMob: FC<SendMobProps> = ({
   contacts,
   existingPin,
   feePmob,
+  importTxProposalFromClipboard,
   isSynced,
+  offlineModeEnabled,
   onClickCancel,
   onClickConfirm,
+  onClickCopyTxProposal,
   onClickSend,
   pinThresholdPmob,
   selectedAccount,
@@ -228,7 +231,6 @@ const SendMob: FC<SendMobProps> = ({
 
                 return (
                   <Form>
-                    {/* {renderSenderPublicAddressOptions(mockMultipleAccounts, isSubmitting)} */}
                     <Box pt={4}>
                       <FormLabel component="legend">
                         <Typography color="primary">{t('transaction')}</Typography>
@@ -289,6 +291,7 @@ const SendMob: FC<SendMobProps> = ({
                         margin="normal"
                         name="recipientPublicAddress"
                         type="text"
+                        key="recipientPublicAddress"
                       />
                       <Field
                         component={TextField}
@@ -358,6 +361,9 @@ const SendMob: FC<SendMobProps> = ({
                     >
                       {isSynced ? t('send') : t('syncing')}
                     </SubmitButton>
+                    <Button onClick={importTxProposalFromClipboard}>
+                      {t('importFromClipboard')}
+                    </Button>
                     {/* TODO - disable model if invalid */}
                     <Modal
                       aria-labelledby="transition-modal-title"
@@ -518,12 +524,12 @@ const SendMob: FC<SendMobProps> = ({
                                 (isPinRequiredForTransaction && values.pin !== existingPin)
                               }
                               fullWidth
-                              onClick={onClickConfirm}
+                              onClick={offlineModeEnabled ? onClickCopyTxProposal : onClickConfirm}
                               size="large"
                               type="submit"
                               variant="contained"
                             >
-                              {t('confirmSend')}
+                              {offlineModeEnabled ? t('copyProposal') : t('confirmSend')}
                             </Button>
                           </Box>
                         </div>

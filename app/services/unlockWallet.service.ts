@@ -6,7 +6,7 @@ import { validatePassphrase } from '../utils/authentication';
 import { decrypt } from '../utils/encryption';
 import { decryptContacts } from './decryptContacts.service';
 
-const unlockWallet = async (passphrase: string): Promise<void> => {
+const unlockWallet = async (passphrase: string, startInOfflineMode = false): Promise<void> => {
   try {
     const { encryptedPassphrase } = store.state;
     if (encryptedPassphrase === undefined) {
@@ -32,7 +32,15 @@ const unlockWallet = async (passphrase: string): Promise<void> => {
       pin = (await decrypt(encryptedPin, secretKey)) as string;
     }
     store.dispatch(
-      unlockWalletAction(contacts, isPinRequired, pin, pinThresholdPmob, secretKey, walletStatus)
+      unlockWalletAction(
+        contacts,
+        isPinRequired,
+        pin,
+        pinThresholdPmob,
+        secretKey,
+        walletStatus,
+        startInOfflineMode
+      )
     );
   } catch (err) {
     throw new Error(err.message);

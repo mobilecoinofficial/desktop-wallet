@@ -23,6 +23,7 @@ const DashboardView: FC<DashboardPageProps> = ({
 
   // TODO - figure out if we should calculate isSynced with a buffer.
   // We should pull that into a util
+
   return (
     <Container data-testid="DashboardOverview" className={classes.root} maxWidth="sm">
       <Box alignItems="center" />

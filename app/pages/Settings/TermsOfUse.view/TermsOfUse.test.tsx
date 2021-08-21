@@ -21,7 +21,7 @@ describe('TermsOfUseView', () => {
       test('Settings breadcrumb fires to navigate away from current view', () => {
         render(<TermsOfUseView onClickBack={mockOnClickBack} />);
         const termsPanel = screen.queryByText(
-          'MOBILECOIN TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS'
+          'TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS'
         );
         expect(termsPanel).toBeInTheDocument();
         userEvent.click(screen.getByText('Settings'));

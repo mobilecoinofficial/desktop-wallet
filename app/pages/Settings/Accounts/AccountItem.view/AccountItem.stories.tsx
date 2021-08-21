@@ -2,7 +2,8 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import { AccountItem } from './AccountItem.view';
+import type { TransactionLog } from '../../../../types/TransactionLog.d';
+import { HistoryItem } from '../../../History/HistoryItem.view';
 
 export default {
   component: HistoryItem,

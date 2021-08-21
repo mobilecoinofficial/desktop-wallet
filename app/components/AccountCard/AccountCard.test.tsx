@@ -2,7 +2,7 @@
 import React from 'react';
 
 import 'jest-canvas-mock';
-import { screen, render } from '@testing-library/react';
+import { screen, render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 
@@ -12,8 +12,26 @@ import '../../testUtils/i18nForTests';
 
 const MOCK_LONG_CODE = 'mockLongCode';
 
+const ACCOUNTS = {
+  accountIds: ['ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8'],
+  accountMap: {
+    ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8: {
+      object: 'account',
+      accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
+      name: 'FK OWN',
+      keyDerivationVersion: '1',
+      mainAddress:
+        'syJAd2QoH7xSkZvMDV8Q6DdWhnRsmAKqx3LZ5BaLXKezCDjf6nUfps2b8ywm1scSMp5WDbYxNMu5mNniVkmb1fehAGaKQdNQWEEg4vHrCH',
+      nextSubaddressIndex: '2',
+      firstBlockIndex: '0',
+      nextBlockIndex: '161411',
+      recoveryMode: false,
+    },
+  },
+};
+
 function setupComponent(props?) {
-  render(
+  const { container } = render(
     <SnackbarProvider>
       <AccountCard
         account={{
@@ -23,13 +41,15 @@ function setupComponent(props?) {
           },
           ...props,
         }}
+        accounts={ACCOUNTS}
       />
     </SnackbarProvider>
   );
+  return container;
 }
 
 describe('AccountCard', () => {
-  test('renders long code with tooltip by default and toggles correctly', () => {
+  test('renders long code with tooltip by default and toggles correctly', async () => {
     setupComponent();
 
     expect(screen.queryByTestId('account-card-center')).not.toBeNull();
@@ -40,7 +60,7 @@ describe('AccountCard', () => {
     );
     expect(screen.queryByTestId('account-card-qr-code')).toBeNull();
 
-    userEvent.click(screen.getByTestId('account-card-toggle'));
+    await act(async () => userEvent.click(screen.getByTestId('account-card-toggle')));
 
     expect(screen.queryByTestId('long-code-code')).toBeNull();
     expect(screen.queryByTestId('account-card-tooltip')).toBeNull();
@@ -48,16 +68,8 @@ describe('AccountCard', () => {
   });
 
   test('renders name correctly', () => {
-    const mockName = 'timmy';
-    setupComponent({ name: mockName });
-
-    expect(screen.getByTestId('account-card-name').textContent).toEqual(mockName);
-  });
-
-  test('renders correct placeholder for unnamed account', () => {
-    setupComponent();
-
-    expect(screen.getByTestId('account-card-name').textContent).toEqual('Unnamed Account');
+    const container = setupComponent();
+    expect(screen.getByTestId('account-card-name').textContent).toEqual('FK OWN');
   });
 
   test('renders correct toggle tooltip', () => {

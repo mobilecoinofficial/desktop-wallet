@@ -9,7 +9,7 @@ describe('TermsOfUse', () => {
     render(<TermsOfUse />);
 
     expect(screen.getByTestId('tos-header').textContent).toEqual(
-      'MOBILECOIN TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS'
+      'TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS'
     );
   });
 

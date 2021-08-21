@@ -23,7 +23,7 @@ export type BuildTransactionResult = {
 };
 
 type AxiosFullServiceResponse = {
-  error: any;
+  error: string;
   result: { txProposal: TxProposal };
 };
 

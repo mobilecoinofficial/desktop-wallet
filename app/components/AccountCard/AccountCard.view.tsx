@@ -12,7 +12,6 @@ import {
   Tooltip,
   Typography,
   makeStyles,
-  Button,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
@@ -136,7 +135,9 @@ const AccountCard: FC<AccountCardProps> = ({
               <Box>
                 {(accounts === undefined || accounts.accountIds.length === 0) && <></>}
                 {accounts !== undefined && accounts.accountIds.length === 1 && (
-                  <span>{accounts.accountMap[accounts.accountIds[0]].name}</span>
+                  <span data-testid="account-card-name">
+                    {accounts.accountMap[accounts.accountIds[0]].name}
+                  </span>
                 )}
                 {accounts !== undefined && accounts.accountIds.length > 1 && (
                   <Select

@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
-import { clipboard } from 'electron';
+import { app, clipboard, dialog, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
@@ -176,13 +176,16 @@ const SendReceivePage: FC = () => {
     }
   };
 
-  const onClickCopyTxProposal = () => {
+  const onClickCopyTxProposal = async () => {
     const confirmationText = JSON.stringify(confirmation, (key, value) =>
       typeof value === 'bigint' ? `${value.toString()}n` : value
     );
-    clipboard.writeText(confirmationText);
-    enqueueSnackbar(t('transactionCopied'));
-    setSendingStatus(Showing.INPUT_FORM);
+    const success = await ipcRenderer.invoke('save-tx-proposal', confirmationText);
+
+    if (success) {
+      enqueueSnackbar(t('transactionSaved'), { variant: 'success' });
+      setSendingStatus(Showing.INPUT_FORM);
+    }
   };
 
   const importTxProposalFromClipboard = () => {

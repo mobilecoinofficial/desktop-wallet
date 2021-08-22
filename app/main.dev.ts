@@ -324,6 +324,21 @@ ipcMain.on('sync-status', (_e, status) => {
   syncStatus = status;
 });
 
+ipcMain.handle('save-tx-proposal', (_, txConfirmationText) => {
+  const options = {
+    defaultPath: `${app.getPath('documents')}/txConfirmation.json`,
+  };
+
+  const txConfirmationPath = dialog.showSaveDialogSync(mainWindow, options);
+  if (txConfirmationPath === undefined) {
+    return false;
+  }
+
+  fs.writeFileSync(txConfirmationPath, txConfirmationText);
+
+  return true;
+});
+
 ipcMain.on('reset-ledger', () => {
   const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
 

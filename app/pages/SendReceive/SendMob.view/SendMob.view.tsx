@@ -529,7 +529,7 @@ const SendMob: FC<SendMobProps> = ({
                               type="submit"
                               variant="contained"
                             >
-                              {offlineModeEnabled ? t('copyProposal') : t('confirmSend')}
+                              {offlineModeEnabled ? t('saveProposal') : t('confirmSend')}
                             </Button>
                           </Box>
                         </div>

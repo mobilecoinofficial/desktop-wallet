@@ -362,7 +362,7 @@ const SendMob: FC<SendMobProps> = ({
                       {isSynced ? t('send') : t('syncing')}
                     </SubmitButton>
                     <Button onClick={importTxProposalFromClipboard}>
-                      {t('importFromClipboard')}
+                      {t('importTxConfirmation')}
                     </Button>
                     {/* TODO - disable model if invalid */}
                     <Modal

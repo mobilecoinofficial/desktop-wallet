@@ -188,15 +188,20 @@ const SendReceivePage: FC = () => {
     }
   };
 
-  const importTxProposalFromClipboard = () => {
+  const importTxProposalFromClipboard = async () => {
+    const txConfirmationText = await ipcRenderer.invoke('load-tx-confirmation');
+
+    if (txConfirmationText === undefined) {
+      return;
+    }
+
     try {
-      const txConfirmation = JSON.parse(clipboard.readText(), (key, value) => {
+      const txConfirmation = JSON.parse(txConfirmationText, (key, value) => {
         if (typeof value === 'string' && /^\d+n$/.test(value)) {
           return BigInt(value.substr(0, value.length - 1));
         }
         return value;
       }) as TxConfirmation;
-
       if (
         txConfirmation.feeConfirmation === undefined ||
         txConfirmation.totalValueConfirmation === undefined ||
@@ -205,7 +210,6 @@ const SendReceivePage: FC = () => {
       ) {
         throw new Error(t('invalidTransaction'));
       }
-
       setConfirmation(txConfirmation);
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {

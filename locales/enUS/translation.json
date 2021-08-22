@@ -490,7 +490,7 @@
     "enterPin": "For this amount your PIN is required",
     "errorFee": "Please reserve 0.01 MOB for transaction fee.",
     "fee": "Fee",
-    "importFromClipboard": "Import Proposal From Clipboard",
+    "importTxConfirmation": "Import TxConfirmation",
     "intent": "Please check and confirm your payment amount",
     "mob": "MOB",
     "mobAmount": "MOB Amount",

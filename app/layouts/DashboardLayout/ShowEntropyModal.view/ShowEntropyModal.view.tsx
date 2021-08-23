@@ -10,8 +10,10 @@ import {
   Container,
   Fab,
   Fade,
+  Grid,
   makeStyles,
   Modal,
+  Paper,
   Typography,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -39,6 +41,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   root: {},
   shownEntropy: {},
+  wordBox: {
+    border: '1px solid',
+    borderColor: theme.palette.text.secondary,
+    borderRadius: '10px',
+    display: 'flex',
+    justifyContent: 'center',
+  },
 }));
 
 const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
@@ -108,13 +117,17 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
                     </Fab>
                   </Box>
                   <Container maxWidth="sm">
-                    <Typography
-                      className={showEntropy ? classes.shownEntropy : classes.hiddenEntropy}
-                      variant="body2"
-                      color="textPrimary"
-                    >
-                      {mnemonic}
-                    </Typography>
+                    <Grid container direction="row" justifyContent="center" alignItems="center">
+                      <Grid container justifyContent="center" spacing={2}>
+                        {mnemonic.split(' ').map((value, index) => (
+                          <Grid key={value} item xs={4}>
+                            <Box className={classes.wordBox}>
+                              {index + 1} {showEntropy ? value : 'xxxxxx'}
+                            </Box>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </Grid>
                   </Container>
                 </Box>
               </CardContent>

@@ -8,6 +8,7 @@ import {
   CardContent,
   Fab,
   Fade,
+  Grid,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -31,6 +32,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   root: {},
   shownEntropy: { letterSpacing: 1 },
+  wordBox: {
+    border: '1px solid',
+    borderColor: theme.palette.text.secondary,
+    borderRadius: '10px',
+    display: 'flex',
+    justifyContent: 'center',
+  },
 }));
 
 const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
@@ -74,20 +82,17 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
                   {(showEntropy ? t('hide') : t('show')) as string}
                 </Fab>
               </Box>
-              {showEntropy ? (
-                <Typography className={classes.shownEntropy} variant="body2" color="textPrimary">
-                  {entropy}
-                </Typography>
-              ) : (
-                <>
-                  <Typography className={classes.hiddenEntropy} variant="body2" color="textPrimary">
-                    ****************************************************************
-                  </Typography>
-                  <Typography className={classes.hiddenEntropy} variant="body2" color="textPrimary">
-                    ****************************************************************
-                  </Typography>
-                </>
-              )}
+              <Grid container direction="row" justifyContent="center" alignItems="center">
+                <Grid container justifyContent="center" spacing={2}>
+                  {entropy.split(' ').map((value, index) => (
+                    <Grid key={value} item xs={4}>
+                      <Box className={classes.wordBox}>
+                        {index + 1} {showEntropy ? value : 'xxxxxx'}
+                      </Box>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Grid>
             </Box>
           </CardContent>
         </Card>

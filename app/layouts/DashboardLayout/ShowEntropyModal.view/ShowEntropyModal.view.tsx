@@ -1,23 +1,10 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import {
-  Backdrop,
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Container,
-  Fab,
-  Fade,
-  Grid,
-  makeStyles,
-  Modal,
-  Paper,
-  Typography,
-} from '@material-ui/core';
+import { Backdrop, Box, Button, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+import ShowRetrievedEntropy from '../../../pages/Settings/ShowRetrievedEntropy.view';
 import type { Theme } from '../../../theme';
 import { ShowEntropyModalProps } from './ShowEntropyModal';
 
@@ -41,13 +28,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   root: {},
   shownEntropy: {},
-  wordBox: {
-    border: '1px solid',
-    borderColor: theme.palette.text.secondary,
-    borderRadius: '10px',
-    display: 'flex',
-    justifyContent: 'center',
-  },
 }));
 
 const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
@@ -99,53 +79,7 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
     >
       <Fade in={isShown}>
         {!alertOpen ? (
-          <Box className={classes.paper} display="flex" flexDirection="column">
-            <Typography color="textPrimary" gutterBottom variant="h2">
-              {t('header')}
-            </Typography>
-            <br />
-            <Typography variant="body2" color="textPrimary">
-              {t('description')}
-            </Typography>
-            <br />
-            <Card>
-              <CardContent>
-                <Box py={3} display="flex" alignItems="center" flexDirection="column">
-                  <Box p={2}>
-                    <Fab variant="extended" color="primary" onClick={toggleEntropy} size="small">
-                      {showEntropy ? (t('hide') as string) : (t('show') as string)}
-                    </Fab>
-                  </Box>
-                  <Container maxWidth="sm">
-                    <Grid container direction="row" justifyContent="center" alignItems="center">
-                      <Grid container justifyContent="center" spacing={2}>
-                        {mnemonic.split(' ').map((value, index) => (
-                          // eslint-disable-next-line react/no-array-index-key
-                          <Grid key={`${index}-${value}`} item xs={4}>
-                            <Box className={classes.wordBox}>
-                              {index + 1} {showEntropy ? value : 'xxxxxx'}
-                            </Box>
-                          </Grid>
-                        ))}
-                      </Grid>
-                    </Grid>
-                  </Container>
-                </Box>
-              </CardContent>
-            </Card>
-            <br />
-            <Button
-              color="secondary"
-              disabled={!canGoForward}
-              onClick={handleGoForward}
-              size="large"
-              fullWidth
-              type="submit"
-              variant="contained"
-            >
-              {t('secured')}
-            </Button>
-          </Box>
+          <ShowRetrievedEntropy entropy={mnemonic} open={!alertOpen} onClose={handleGoForward} />
         ) : (
           <Box className={classes.paper}>
             <Typography color="textPrimary" gutterBottom variant="h2">

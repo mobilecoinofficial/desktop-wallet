@@ -485,7 +485,7 @@
     "cancel": "Cancel",
     "confirm": "Send MOB Confirmation",
     "confirmSend": "Confirm Send",
-    "saveProposal": "Save Proposal",
+    "saveTxConfirmation": "Save Confirmation",
     "description": "Please enter the recipient’s address and the amount of MOB to send",
     "enterPin": "For this amount your PIN is required",
     "errorFee": "Please reserve 0.01 MOB for transaction fee.",
@@ -620,7 +620,7 @@
     "sendBuildError": "Could not build transaction.",
     "sendSuccess": "Successfully sent ",
     "transactionCanceled": "Transaction Canceled",
-    "transactionSaved": "TxConfirmation Saved"
+    "txConfirmationSaved": "TxConfirmation Saved"
   },
 
   "UnlockAccount": {

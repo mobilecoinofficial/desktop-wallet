@@ -176,19 +176,19 @@ const SendReceivePage: FC = () => {
     }
   };
 
-  const onClickCopyTxProposal = async () => {
+  const saveTxConfirmation = async () => {
     const confirmationText = JSON.stringify(confirmation, (key, value) =>
       typeof value === 'bigint' ? `${value.toString()}n` : value
     );
-    const success = await ipcRenderer.invoke('save-tx-proposal', confirmationText);
+    const success = await ipcRenderer.invoke('save-tx-confirmation', confirmationText);
 
     if (success) {
-      enqueueSnackbar(t('transactionSaved'), { variant: 'success' });
+      enqueueSnackbar(t('txConfirmationSaved'), { variant: 'success' });
       setSendingStatus(Showing.INPUT_FORM);
     }
   };
 
-  const importTxProposalFromClipboard = async () => {
+  const importTxConfirmation = async () => {
     const txConfirmationText = await ipcRenderer.invoke('load-tx-confirmation');
 
     if (txConfirmationText === undefined) {
@@ -274,14 +274,14 @@ const SendReceivePage: FC = () => {
               contacts={contacts}
               existingPin={existingPin as string}
               feePmob={feePmob || '400000000'}
-              importTxProposalFromClipboard={importTxProposalFromClipboard}
+              importTxConfirmation={importTxConfirmation}
               isSynced={isSynced}
               offlineModeEnabled={offlineModeEnabled}
               onClickCancel={onClickCancel}
               onClickConfirm={onClickConfirm}
-              onClickCopyTxProposal={onClickCopyTxProposal}
               onClickSend={onClickSend}
               pinThresholdPmob={parseFloat(pinThresholdPmob)}
+              saveTxConfirmation={saveTxConfirmation}
               selectedAccount={selectedAccount}
               showing={sendingStatus}
             />

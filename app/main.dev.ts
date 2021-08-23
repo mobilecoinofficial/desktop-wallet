@@ -324,7 +324,7 @@ ipcMain.on('sync-status', (_e, status) => {
   syncStatus = status;
 });
 
-ipcMain.handle('save-tx-proposal', (_, txConfirmationText) => {
+ipcMain.handle('save-tx-confirmation', (_, txConfirmationText) => {
   const options = {
     defaultPath: `${app.getPath('documents')}/txConfirmation.json`,
   };

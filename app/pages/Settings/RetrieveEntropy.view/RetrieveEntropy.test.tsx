@@ -52,6 +52,5 @@ describe('RetrieveEntropyView', () => {
 
     const parentHtml = container?.parentElement?.innerHTML;
     expect(parentHtml?.includes('We decrypted your Entropy')).toBeTruthy();
-    expect(parentHtml?.includes('****************')).toBeTruthy();
   });
 });

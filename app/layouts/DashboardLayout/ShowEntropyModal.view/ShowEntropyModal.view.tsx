@@ -120,7 +120,8 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
                     <Grid container direction="row" justifyContent="center" alignItems="center">
                       <Grid container justifyContent="center" spacing={2}>
                         {mnemonic.split(' ').map((value, index) => (
-                          <Grid key={value} item xs={4}>
+                          // eslint-disable-next-line react/no-array-index-key
+                          <Grid key={`${index}-${value}`} item xs={4}>
                             <Box className={classes.wordBox}>
                               {index + 1} {showEntropy ? value : 'xxxxxx'}
                             </Box>

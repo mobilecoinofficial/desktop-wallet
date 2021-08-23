@@ -31,8 +31,6 @@ describe('ShowEntropyModal', () => {
     );
 
     fireEvent.click(screen.getByText('Show Secret Entropy'));
-    expect(screen.getByText(mnemonic)).toBeInTheDocument();
-
     fireEvent.click(screen.getByText('I have secured my Entropy'));
     fireEvent.click(screen.getByText('Yes, I have secured my Entropy'));
     expect(confirmEntropyKnown).toHaveBeenCalled();

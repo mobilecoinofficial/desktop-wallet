@@ -421,7 +421,9 @@
   },
 
   "FullServiceDirectory": {
+    "exportLedgerDb": "Export",
     "formLabel": "Full-Service Directory",
+    "importLedgerDb": "Import",
     "ledgerDbPathHeader": "Ledger Database Path:",
     "fullServiceDbPathHeader": "Full-Service Database Path:"
   },

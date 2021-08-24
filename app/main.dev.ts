@@ -353,7 +353,7 @@ ipcMain.on('kill-full-service', () => {
 });
 
 ipcMain.handle('export-ledger-db', () => {
-  const filePath = dialog.showSaveDialogSync(mainWindow);
+  const filePath = dialog.showSaveDialogSync(mainWindow, { defaultPath: 'data.mdb' });
 
   if (filePath === undefined) {
     return false;
@@ -362,6 +362,23 @@ ipcMain.handle('export-ledger-db', () => {
   const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
   fs.copyFileSync(`${ledgerDbPath}/data.mdb`, filePath);
 
+  return true;
+});
+
+ipcMain.handle('import-ledger-db', () => {
+  const filePath = dialog.showOpenDialogSync(mainWindow);
+
+  if (filePath === undefined || filePath.length === 0) {
+    return false;
+  }
+
+  const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
+  exec('pkill -f full-service');
+  fs.rmSync(`${ledgerDbPath}/data.mdb`);
+  fs.rmSync(`${ledgerDbPath}/lock.mdb`);
+  fs.copyFileSync(filePath[0], `${ledgerDbPath}/data.mdb`);
+  app.relaunch();
+  app.exit();
   return true;
 });
 

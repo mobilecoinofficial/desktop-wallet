@@ -9,6 +9,7 @@ import { FullServiceDirectoryProps } from './FullServiceDirectory';
 const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
   exportLedger,
   fullServiceDbPath,
+  importLedger,
   ledgerDbPath,
 }: FullServiceDirectoryProps) => {
   const { t } = useTranslation('FullServiceDirectory');
@@ -28,7 +29,8 @@ const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
         <Typography variant="body2" color="textSecondary">
           {`${ledgerDbPath}`}
         </Typography>
-        <Button onClick={exportLedger}>Export</Button>
+        <Button onClick={exportLedger}>{t('exportLedgerDb')}</Button>
+        <Button onClick={importLedger}>{t('importLedgerDb')}</Button>
         <Box py={1} />
         <Typography variant="body2" color="textPrimary">
           {t('fullServiceDbPathHeader')}

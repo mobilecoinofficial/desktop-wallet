@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
   configureFullServiceConfigs,
   exportLedger,
+  importLedger,
   onClickBack,
   selectedAccount,
 }: ConfigureFullServiceViewProps) => {
@@ -84,6 +85,7 @@ const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
       />
       <FullServiceDirectory
         exportLedger={exportLedger}
+        importLedger={importLedger}
         ledgerDbPath={ledgerDbPath}
         fullServiceDbPath={fullServiceDbPath}
       />

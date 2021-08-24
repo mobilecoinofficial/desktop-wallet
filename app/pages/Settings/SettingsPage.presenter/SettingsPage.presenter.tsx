@@ -131,7 +131,15 @@ const SettingsPage: FC = () => {
     }
   };
 
-  const exportLedger = async () => {};
+  const exportLedger = async () => {
+    const success = await ipcRenderer.invoke('export-ledger-db');
+    enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
+  };
+
+  const importLedger = async () => {
+    const success = await ipcRenderer.invoke('import-ledger-db');
+    enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
+  };
 
   const settingsOptionsList = [
     {
@@ -259,6 +267,7 @@ const SettingsPage: FC = () => {
         <ConfigureFullServiceView
           onClickBack={onClickBack}
           exportLedger={exportLedger}
+          importLedger={importLedger}
           selectedAccount={selectedAccount}
           configureFullServiceConfigs={configureFullServiceConfigs}
         />

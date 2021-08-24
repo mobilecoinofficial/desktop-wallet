@@ -15,6 +15,7 @@ type ConfigureFullServiceConfigs = {
 
 export interface ConfigureFullServiceViewProps {
   configureFullServiceConfigs: ConfigureFullServiceConfigs;
+  exportLedger: () => void;
   selectedAccount: SelectedAccount;
   onClickBack: () => void;
 }

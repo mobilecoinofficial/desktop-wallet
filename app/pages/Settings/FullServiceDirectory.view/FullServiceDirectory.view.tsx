@@ -1,12 +1,13 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box, FormLabel, Typography } from '@material-ui/core';
+import { Box, Button, FormLabel, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { FullServiceDirectoryProps } from './FullServiceDirectory';
 
 const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
+  exportLedger,
   fullServiceDbPath,
   ledgerDbPath,
 }: FullServiceDirectoryProps) => {
@@ -27,6 +28,7 @@ const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
         <Typography variant="body2" color="textSecondary">
           {`${ledgerDbPath}`}
         </Typography>
+        <Button onClick={exportLedger}>Export</Button>
         <Box py={1} />
         <Typography variant="body2" color="textPrimary">
           {t('fullServiceDbPathHeader')}

@@ -354,6 +354,15 @@ ipcMain.on('kill-full-service', () => {
 
 ipcMain.handle('export-ledger-db', () => {
   const filePath = dialog.showSaveDialogSync(mainWindow);
+
+  if (filePath === undefined) {
+    return false;
+  }
+
+  const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
+  fs.copyFileSync(`${ledgerDbPath}/data.mdb`, filePath);
+
+  return true;
 });
 
 ipcMain.on('get-initial-translations', (event) => {

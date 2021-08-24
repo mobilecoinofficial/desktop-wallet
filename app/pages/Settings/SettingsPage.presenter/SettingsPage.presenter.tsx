@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Container, makeStyles } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
@@ -130,6 +131,8 @@ const SettingsPage: FC = () => {
     }
   };
 
+  const exportLedger = async () => {};
+
   const settingsOptionsList = [
     {
       Icon: MOBIcon,
@@ -255,6 +258,7 @@ const SettingsPage: FC = () => {
       return (
         <ConfigureFullServiceView
           onClickBack={onClickBack}
+          exportLedger={exportLedger}
           selectedAccount={selectedAccount}
           configureFullServiceConfigs={configureFullServiceConfigs}
         />

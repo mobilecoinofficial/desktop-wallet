@@ -1,7 +1,20 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Backdrop, Box, Button, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
+import {
+  Backdrop,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Fab,
+  Fade,
+  Grid,
+  makeStyles,
+  Modal,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import ShowRetrievedEntropy from '../../../pages/Settings/ShowRetrievedEntropy.view';
@@ -28,6 +41,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   root: {},
   shownEntropy: {},
+  wordBox: {
+    border: '1px solid',
+    borderColor: theme.palette.text.secondary,
+    borderRadius: '10px',
+    display: 'flex',
+    justifyContent: 'center',
+  },
 }));
 
 const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
@@ -36,6 +56,7 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
   confirmEntropyKnown,
 }: ShowEntropyModalProps) => {
   const classes = useStyles();
+  const [currentPage, setCurrentPage] = useState(0);
   const [alertOpen, setAlertOpen] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [showEntropy, setShowEntropy] = useState(false);
@@ -43,19 +64,20 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
 
   const handleCloseModal = () => confirmEntropyKnown();
 
-  const toggleEntropy = () => {
-    if (!canGoForward) {
-      setCanGoForward(true);
-    }
-    setShowEntropy(!showEntropy);
-  };
+  // const toggleEntropy = () => {
+  //   if (!canGoForward) {
+  //     setCanGoForward(true);
+  //   }
+  //   setShowEntropy(!showEntropy);
+  // };
 
   const handleGoForward = () => {
-    setAlertOpen(true);
-    setShowEntropy(false);
+    setCurrentPage(currentPage + 1);
+    // setAlertOpen(true);
+    // setShowEntropy(false);
   };
 
-  const handleGoBack = () => setAlertOpen(false);
+  const handleGoBack = () => setCurrentPage(currentPage - 1);
 
   const handleFinalConfirm = async () => {
     await confirmEntropyKnown();
@@ -78,47 +100,109 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
       disableEnforceFocus
     >
       <Fade in={isShown}>
-        {!alertOpen ? (
-          <ShowRetrievedEntropy entropy={mnemonic} open={!alertOpen} onClose={handleGoForward} />
-        ) : (
-          <Box className={classes.paper}>
-            <Typography color="textPrimary" gutterBottom variant="h2">
-              {t('confirm')}
-            </Typography>
-            <br />
-            <Typography variant="body2" color="textSecondary">
-              {t('retrieve')}
-            </Typography>
-            <br />
-            <Typography variant="body2" color="textSecondary">
-              {t('recommend')}
-            </Typography>
-            <br />
-            <Box display="flex" justifyContent="space-between">
-              <Button
-                color="secondary"
-                onClick={handleGoBack}
-                size="large"
-                fullWidth
-                type="submit"
-                variant="contained"
-              >
-                {t('back')}
-              </Button>
-              <Box paddingX={2} />
-              <Button
-                color="secondary"
-                fullWidth
-                onClick={handleFinalConfirm}
-                size="large"
-                type="submit"
-                variant="contained"
-              >
-                {t('yes')}
-              </Button>
+        <>
+          {currentPage === 0 && (
+            <ShowRetrievedEntropy entropy={mnemonic} open={!alertOpen} onClose={handleGoForward} />
+          )}
+
+          {currentPage === 1 && (
+            <Box className={classes.paper} display="flex" flexDirection="column">
+              <Typography color="textPrimary" gutterBottom variant="h2">
+                {t('header')}
+              </Typography>
+              <br />
+              <Typography variant="body2" color="textSecondary">
+                {t('description')}
+              </Typography>
+              <br />
+
+              <Card>
+                <CardContent>
+                  <Box py={3} display="flex" alignItems="center" flexDirection="column">
+                    <Grid container direction="row" justifyContent="center" alignItems="center">
+                      <Grid container justifyContent="center" spacing={2}>
+                        {mnemonic.split(' ').map((value, index) => (
+                          <Grid key={value} item xs={4}>
+                            <Box className={classes.wordBox}>
+                              {index + 1} <TextField />
+                            </Box>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </CardContent>
+              </Card>
+              <br />
+              <Box display="flex" justifyContent="space-between">
+                <Button
+                  color="secondary"
+                  onClick={handleGoBack}
+                  size="large"
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                  id="secured-button"
+                  style={{ marginRight: '5px' }}
+                >
+                  Go Back
+                </Button>
+                <Button
+                  color="secondary"
+                  onClick={handleGoForward}
+                  size="large"
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                  id="secured-button"
+                  style={{ marginLeft: '5px' }}
+                >
+                  Continue
+                </Button>
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
+
+          {currentPage === 2 && (
+            <Box className={classes.paper}>
+              <Typography color="textPrimary" gutterBottom variant="h2">
+                {t('confirm')}
+              </Typography>
+              <br />
+              <Typography variant="body2" color="textSecondary">
+                {t('retrieve')}
+              </Typography>
+              <br />
+              <Typography variant="body2" color="textSecondary">
+                {t('recommend')}
+              </Typography>
+              <br />
+              <Box display="flex" justifyContent="space-between">
+                <Button
+                  color="secondary"
+                  onClick={handleGoBack}
+                  size="large"
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                >
+                  {t('back')}
+                </Button>
+                <Box paddingX={2} />
+                <Button
+                  color="secondary"
+                  fullWidth
+                  onClick={handleFinalConfirm}
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                >
+                  {t('yes')}
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </>
       </Fade>
     </Modal>
   );

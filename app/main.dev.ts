@@ -352,6 +352,10 @@ ipcMain.on('kill-full-service', () => {
   exec('pkill -f full-service');
 });
 
+ipcMain.handle('export-ledger-db', () => {
+  const filePath = dialog.showSaveDialogSync(mainWindow);
+});
+
 ipcMain.on('get-initial-translations', (event) => {
   i18n.loadLanguages(languages.EN_US, () => {
     const initial = {

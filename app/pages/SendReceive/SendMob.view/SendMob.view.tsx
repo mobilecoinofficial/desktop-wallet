@@ -31,7 +31,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
-import { StarIcon, MOBIcon, CopyIcon } from '../../../components/icons';
+import { StarIcon, MOBIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
 import {
@@ -84,14 +84,14 @@ const SendMob: FC<SendMobProps> = ({
   contacts,
   existingPin,
   feePmob,
-  importTxProposalFromClipboard,
+  importTxConfirmation,
   isSynced,
   offlineModeEnabled,
   onClickCancel,
   onClickConfirm,
-  onClickCopyTxProposal,
   onClickSend,
   pinThresholdPmob,
+  saveTxConfirmation,
   selectedAccount,
   showing,
 }: SendMobProps) => {
@@ -361,9 +361,9 @@ const SendMob: FC<SendMobProps> = ({
                     >
                       {isSynced ? t('send') : t('syncing')}
                     </SubmitButton>
-                    <Button onClick={importTxProposalFromClipboard}>
-                      {t('importFromClipboard')}
-                    </Button>
+                    {!offlineModeEnabled && (
+                      <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>
+                    )}
                     {/* TODO - disable model if invalid */}
                     <Modal
                       aria-labelledby="transition-modal-title"
@@ -524,12 +524,12 @@ const SendMob: FC<SendMobProps> = ({
                                 (isPinRequiredForTransaction && values.pin !== existingPin)
                               }
                               fullWidth
-                              onClick={offlineModeEnabled ? onClickCopyTxProposal : onClickConfirm}
+                              onClick={offlineModeEnabled ? saveTxConfirmation : onClickConfirm}
                               size="large"
                               type="submit"
                               variant="contained"
                             >
-                              {offlineModeEnabled ? t('copyProposal') : t('confirmSend')}
+                              {offlineModeEnabled ? t('saveTxConfirmation') : t('confirmSend')}
                             </Button>
                           </Box>
                         </div>

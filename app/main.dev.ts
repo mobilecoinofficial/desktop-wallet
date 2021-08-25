@@ -12,13 +12,13 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { exec, spawn } from 'child_process';
+import fs from 'fs';
 import path from 'path';
 
 import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
-import fs from 'fs';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';

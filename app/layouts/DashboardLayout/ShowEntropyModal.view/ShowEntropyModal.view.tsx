@@ -64,13 +64,6 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
 
   const handleCloseModal = () => confirmEntropyKnown();
 
-  // const toggleEntropy = () => {
-  //   if (!canGoForward) {
-  //     setCanGoForward(true);
-  //   }
-  //   setShowEntropy(!showEntropy);
-  // };
-
   const handleGoForward = () => {
     setCurrentPage(currentPage + 1);
     // setAlertOpen(true);

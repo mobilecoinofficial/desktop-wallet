@@ -4,12 +4,12 @@ import type { FC } from 'react';
 import { Box, makeStyles, useMediaQuery } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 
-import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
+// import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
 import useFullService from '../../../hooks/useFullService';
 import { confirmEntropyKnown, setPin } from '../../../services';
 import type { Theme } from '../../../theme';
 import { BalanceIndicator } from '../BalanceIndicator.view';
-import { InactivityDetect } from '../InactivityDetect';
+// import { InactivityDetect } from '../InactivityDetect';
 import { OnboardingModal } from '../OnboardingModal.view';
 import { SyncStatus } from '../SyncStatus.view';
 import { TopBar } from '../TopBar';

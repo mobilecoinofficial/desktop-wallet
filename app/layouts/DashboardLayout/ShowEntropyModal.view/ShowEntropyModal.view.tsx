@@ -43,13 +43,6 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
 
   const handleCloseModal = () => confirmEntropyKnown();
 
-  const toggleEntropy = () => {
-    if (!canGoForward) {
-      setCanGoForward(true);
-    }
-    setShowEntropy(!showEntropy);
-  };
-
   const handleGoForward = () => {
     setAlertOpen(true);
     setShowEntropy(false);
@@ -78,47 +71,49 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
       disableEnforceFocus
     >
       <Fade in={isShown}>
-        {!alertOpen ? (
-          <ShowRetrievedEntropy entropy={mnemonic} open={!alertOpen} onClose={handleGoForward} />
-        ) : (
-          <Box className={classes.paper}>
-            <Typography color="textPrimary" gutterBottom variant="h2">
-              {t('confirm')}
-            </Typography>
-            <br />
-            <Typography variant="body2" color="textSecondary">
-              {t('retrieve')}
-            </Typography>
-            <br />
-            <Typography variant="body2" color="textSecondary">
-              {t('recommend')}
-            </Typography>
-            <br />
-            <Box display="flex" justifyContent="space-between">
-              <Button
-                color="secondary"
-                onClick={handleGoBack}
-                size="large"
-                fullWidth
-                type="submit"
-                variant="contained"
-              >
-                {t('back')}
-              </Button>
-              <Box paddingX={2} />
-              <Button
-                color="secondary"
-                fullWidth
-                onClick={handleFinalConfirm}
-                size="large"
-                type="submit"
-                variant="contained"
-              >
-                {t('yes')}
-              </Button>
+        <div>
+          {!alertOpen ? (
+            <ShowRetrievedEntropy entropy={mnemonic} open={!alertOpen} onClose={handleGoForward} />
+          ) : (
+            <Box className={classes.paper}>
+              <Typography color="textPrimary" gutterBottom variant="h2">
+                {t('confirm')}
+              </Typography>
+              <br />
+              <Typography variant="body2" color="textSecondary">
+                {t('retrieve')}
+              </Typography>
+              <br />
+              <Typography variant="body2" color="textSecondary">
+                {t('recommend')}
+              </Typography>
+              <br />
+              <Box display="flex" justifyContent="space-between">
+                <Button
+                  color="secondary"
+                  onClick={handleGoBack}
+                  size="large"
+                  fullWidth
+                  type="submit"
+                  variant="contained"
+                >
+                  {t('back')}
+                </Button>
+                <Box paddingX={2} />
+                <Button
+                  color="secondary"
+                  fullWidth
+                  onClick={handleFinalConfirm}
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                >
+                  {t('yes')}
+                </Button>
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
+        </div>
       </Fade>
     </Modal>
   );

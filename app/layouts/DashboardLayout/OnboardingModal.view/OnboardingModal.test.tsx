@@ -8,55 +8,55 @@ import { OnboardingModal } from './OnboardingModal.view';
 
 const confirmEntropyKnown = jest.fn();
 const setPin = jest.fn();
-const pendingSecrets = null;
-const showEntropyMsg =
-  'We generated a random Entropy to create your new account. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.';
-const setPinMsg =
+
+const ENTROPY_MSG =
+  'We decrypted your Entropy and will now show you the code on your screen. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.';
+const PIN_MSG =
   'Your Transaction PIN is used as an extra safety measure. It is required if a transaction value is higher than the threshold MOB amount.';
 
 describe('OnboardingModal', () => {
   test('renders ShowEntropyModal when no stored entropy', () => {
-    const { getByText } = render(
-      <OnboardingModal
-        confirmEntropyKnown={confirmEntropyKnown}
-        setPin={setPin}
-        pendingSecrets={pendingSecrets}
-        isEntropyKnown={false}
-        isPinRequired
-      />
+    const { container } = render(
+      <div>
+        <OnboardingModal
+          confirmEntropyKnown={confirmEntropyKnown}
+          setPin={setPin}
+          pendingSecrets={null}
+          isEntropyKnown={false}
+          isPinRequired
+        />
+      </div>
     );
 
-    expect(getByText(showEntropyMsg)).toBeInTheDocument();
+    expect(container?.parentElement?.innerHTML.includes(ENTROPY_MSG)).toBeTruthy();
   });
 
   test('renders SetPinModal when pin is required', () => {
-    const { getByText } = render(
+    const { container } = render(
       <OnboardingModal
         confirmEntropyKnown={confirmEntropyKnown}
         setPin={setPin}
-        pendingSecrets={pendingSecrets}
+        pendingSecrets={null}
         isEntropyKnown
         isPinRequired
       />
     );
 
-    expect(getByText(setPinMsg)).toBeInTheDocument();
+    expect(container?.parentElement?.innerHTML.includes(PIN_MSG)).toBeTruthy();
   });
 
   test('renders neither when entropy is known and no pin is required', () => {
-    render(
+    const { container } = render(
       <OnboardingModal
         confirmEntropyKnown={confirmEntropyKnown}
         setPin={setPin}
-        pendingSecrets={pendingSecrets}
+        pendingSecrets={null}
         isEntropyKnown
         isPinRequired={false}
       />
     );
 
-    const entropyModal = screen.queryByText(showEntropyMsg);
-    const pinModal = screen.queryByText(setPinMsg);
-    expect(entropyModal).toBeNull();
-    expect(pinModal).toBeNull();
+    expect(container?.parentElement?.innerHTML.includes(ENTROPY_MSG)).toBeFalsy();
+    expect(container?.parentElement?.innerHTML.includes(PIN_MSG)).toBeFalsy();
   });
 });

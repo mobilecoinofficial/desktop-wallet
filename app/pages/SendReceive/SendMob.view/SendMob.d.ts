@@ -22,14 +22,14 @@ export interface SendMobProps {
   contacts: Contact[];
   existingPin: string;
   feePmob: string;
-  importTxProposalFromClipboard: () => void;
+  importTxConfirmation: () => void;
   isSynced: boolean;
   offlineModeEnabled: boolean;
   onClickCancel: () => void;
   onClickConfirm: () => void;
-  onClickCopyTxProposal: () => void;
   onClickSend: (x: SendParameters) => void;
   pinThresholdPmob: number;
+  saveTxConfirmation: () => void;
   selectedAccount: SelectedAccount;
   showing: Showing;
 }

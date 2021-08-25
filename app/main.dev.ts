@@ -324,6 +324,33 @@ ipcMain.on('sync-status', (_e, status) => {
   syncStatus = status;
 });
 
+ipcMain.handle('save-tx-confirmation', (_, txConfirmationText) => {
+  const options = {
+    defaultPath: `${app.getPath('documents')}/txConfirmation.json`,
+  };
+
+  const txConfirmationPath = dialog.showSaveDialogSync(mainWindow, options);
+  if (txConfirmationPath === undefined) {
+    return false;
+  }
+
+  fs.writeFileSync(txConfirmationPath, txConfirmationText);
+
+  return true;
+});
+
+ipcMain.handle('load-tx-confirmation', () => {
+  const options = {};
+
+  const txConfirmationPath = dialog.showOpenDialogSync(mainWindow, options);
+  if (txConfirmationPath === undefined || txConfirmationPath.length === 0) {
+    return undefined;
+  }
+
+  const fileText = fs.readFileSync(txConfirmationPath[0]);
+  return fileText.toString();
+});
+
 ipcMain.on('reset-ledger', () => {
   const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
 

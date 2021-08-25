@@ -485,12 +485,12 @@
     "cancel": "Cancel",
     "confirm": "Send MOB Confirmation",
     "confirmSend": "Confirm Send",
-    "copyProposal": "Copy Proposal",
+    "saveTxConfirmation": "Save Confirmation",
     "description": "Please enter the recipient’s address and the amount of MOB to send",
     "enterPin": "For this amount your PIN is required",
     "errorFee": "Please reserve 0.01 MOB for transaction fee.",
     "fee": "Fee",
-    "importFromClipboard": "Import Proposal From Clipboard",
+    "importTxConfirmation": "Import TxConfirmation",
     "intent": "Please check and confirm your payment amount",
     "mob": "MOB",
     "mobAmount": "MOB Amount",
@@ -620,7 +620,7 @@
     "sendBuildError": "Could not build transaction.",
     "sendSuccess": "Successfully sent ",
     "transactionCanceled": "Transaction Canceled",
-    "transactionCopied": "TxConfirmation Copied to Clipboard"
+    "txConfirmationSaved": "TxConfirmation Saved"
   },
 
   "UnlockAccount": {

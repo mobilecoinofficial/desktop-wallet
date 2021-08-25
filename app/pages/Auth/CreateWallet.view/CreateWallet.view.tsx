@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Button, FormHelperText, Typography } from '@material-ui/core';
+import { Box, Button, FormHelperText, Tooltip, Typography } from '@material-ui/core';
+import HelpIcon from '@material-ui/icons/Help';
 import { Formik, Form, Field } from 'formik';
 import { Checkbox, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
@@ -13,11 +14,12 @@ import type { CreateWalletViewProps } from './CreateWallet';
 interface CreateWalletFormValues {
   password: string;
   passwordConfirmation: string;
+  startInOfflineMode: boolean;
   submit: null;
 }
 
 const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWalletViewProps) => {
-  const { t } = useTranslation('UnlockWallet');
+  const { t } = useTranslation('CreateWallet');
   const [canCheck, setCanCheck] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -26,30 +28,34 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
     setOpen(false);
   };
 
-  const handleOnSubmit = (values: CreateWalletFormValues) => onClickCreate(values.password);
+  const handleOnSubmit = (values: CreateWalletFormValues) =>
+    onClickCreate(values.password, values.startInOfflineMode);
 
   return (
     <>
       <Typography variant="h2" paragraph>
-        Create Wallet
+        {t('title')}
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
-        Please enter a passphrase to encrypt your wallet database. If you lose this and don&apos;t
-        have your account secrets backed up, there will be no way to recover your account!
+        {t('description')}
       </Typography>
       <Formik
         initialValues={{
           checkedTerms: false,
           password: '',
           passwordConfirmation: '',
+          startInOfflineMode: false,
           submit: null,
         }}
         validationSchema={Yup.object().shape({
           checkedTerms: Yup.bool().oneOf([true], t('checkedTermsValidation')),
-          password: Yup.string().min(8, 'min 8').max(99, 'max 99').required(t('passwordRequired')),
+          password: Yup.string()
+            .min(8, t('passwordMin'))
+            .max(99, t('passwordMax'))
+            .required(t('passwordRequired')),
           passwordConfirmation: Yup.string()
-            .oneOf([Yup.ref('password')], 'Passwords must match')
-            .required('Verify Passphrase is required'),
+            .oneOf([Yup.ref('password')], t('passwordConfirmationRef'))
+            .required(t('verifyPasswordRequired')),
         })}
         onSubmit={handleOnSubmit}
       >
@@ -67,7 +73,7 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
               data-testid="passwordConfirmationField"
               component={TextField}
               fullWidth
-              label="Confirm Passphrase"
+              label={t('passwordConfirmationLabel')}
               name="passwordConfirmation"
               type="password"
             />
@@ -80,7 +86,12 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
               <Box display="flex" alignItems="center" flexDirection="row-reverse">
                 <Box>
                   <Typography display="inline">{t('acceptTerms')}</Typography>
-                  <Button color="primary" onClick={() => setOpen(true)} id="openTerms">
+                  <Button
+                    data-testid="openTerms"
+                    color="primary"
+                    onClick={() => setOpen(true)}
+                    id="openTerms"
+                  >
                     {t('acceptTermsButton')}
                   </Button>
                 </Box>
@@ -94,13 +105,22 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
               </Box>
             </Box>
             {!canCheck && <FormHelperText focused>{t('acceptTermsFormHelper')}</FormHelperText>}
+            <Box display="flex">
+              <Box display="flex" alignItems="center" flexDirection="row-reverse">
+                <Tooltip title={t('offlineModeTooltip')}>
+                  <HelpIcon style={{ marginLeft: '5px' }} />
+                </Tooltip>
+                <Typography display="inline">{t('startInOfflineMode')}</Typography>
+                <Field component={Checkbox} type="checkbox" name="startInOfflineMode" />
+              </Box>
+            </Box>
             <SubmitButton
               data-testid="submit-button"
               disabled={!dirty || !isValid || isSubmitting}
               isSubmitting={isSubmitting}
               onClick={submitForm}
             >
-              Create
+              {t('createWalletButton')}
             </SubmitButton>
             <TermsOfUseDialog open={open} handleCloseTerms={handleCloseTerms} />
           </Form>

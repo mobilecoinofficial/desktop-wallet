@@ -5,7 +5,7 @@ import { Box, makeStyles, Tooltip, CircularProgress } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { CircleMOBIcon } from '../../../components/icons';
-import { BLUE_DARK, GOLD_LIGHT, RED } from '../../../constants/colors';
+import { BLUE_DARK, BLUE_LIGHT, GOLD_LIGHT, RED } from '../../../constants/colors';
 import { Theme } from '../../../theme';
 import { getPercentSynced } from '../../../utils/getPercentSynced';
 import { SyncStatusProps } from './SyncStatus';
@@ -13,6 +13,7 @@ import { SyncStatusProps } from './SyncStatus';
 const ERROR = 'ERROR';
 const SYNCED = 'SYNCED';
 const SYNCING = 'SYNCING';
+const OFFLINE = 'OFFLINE';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {},
@@ -45,7 +46,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   tooltip: { margin: 'auto', position: 'relative' },
 }));
 
-const SyncStatus: FC<SyncStatusProps> = ({ selectedAccount, sendSyncStatus }: SyncStatusProps) => {
+const SyncStatus: FC<SyncStatusProps> = ({
+  offlineModeEnabled,
+  selectedAccount,
+  sendSyncStatus,
+}: SyncStatusProps) => {
   const classes = useStyles();
   const { t } = useTranslation('SyncStatus');
 
@@ -62,8 +67,11 @@ const SyncStatus: FC<SyncStatusProps> = ({ selectedAccount, sendSyncStatus }: Sy
   const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex);
   const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
   const acceptableDiffBigInt = BigInt(2);
-
-  if (
+  if (offlineModeEnabled) {
+    isSynced = false;
+    percentSynced = 0;
+    statusCode = OFFLINE;
+  } else if (
     networkBlockIndexBigInt < accountBlockIndexBigInt ||
     networkBlockIndexBigInt < localBlockIndexBigInt
   ) {
@@ -83,6 +91,11 @@ const SyncStatus: FC<SyncStatusProps> = ({ selectedAccount, sendSyncStatus }: Sy
   sendSyncStatus(statusCode);
 
   switch (statusCode) {
+    case OFFLINE: {
+      backgroundColor = BLUE_LIGHT;
+      title = `Block Height: ${localBlockIndexBigInt}`;
+      break;
+    }
     case SYNCED: {
       backgroundColor = BLUE_DARK;
       title = t('synced');

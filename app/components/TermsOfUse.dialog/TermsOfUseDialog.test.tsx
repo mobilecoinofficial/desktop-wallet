@@ -13,7 +13,7 @@ describe('TermsOfUseDialog', () => {
     render(<TermsOfUseDialog open handleCloseTerms={handleCloseTerms} />);
 
     expect(screen.getByTestId('tos-header').textContent).toEqual(
-      'MOBILECOIN TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS'
+      'TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS'
     );
 
     userEvent.click(screen.getByText('Close Terms of Use'));

@@ -13,7 +13,6 @@ We will be shifting away from free-for-all, pre-release branch/commit pattern to
 A user-friendly desktop wallet with support for transaction history, encrypted contact book, gift codes, and payments.
 
 - You must read and accept the [Terms of Use for MobileCoins and MobileCoin Wallets](./TERMS-OF-USE.md) to use MobileCoin Software.
-- Please note that currently, the MobileCoin Wallet is not available for download or use by U.S. persons or entities, persons or entities located in the U.S., or persons or entities in other prohibited jurisdictions.
 
 ### Roadmap
 

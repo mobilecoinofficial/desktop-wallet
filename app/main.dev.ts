@@ -12,6 +12,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { exec, spawn } from 'child_process';
+import fs from 'fs';
 import path from 'path';
 
 import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen } from 'electron';
@@ -72,7 +73,11 @@ const installExtensions = async () => {
 
 // TODO: rename this function to full service after integration
 // TODO: test
-const startFullService = (password: string, newPassword: string | null): void => {
+const startFullService = (
+  password: string,
+  newPassword: string | null,
+  startInOfflineMode: boolean
+): void => {
   // Start the full-service process in the background
   const IS_PROD = process.env.NODE_ENV === 'production';
   const root = process.cwd();
@@ -85,9 +90,10 @@ const startFullService = (password: string, newPassword: string | null): void =>
       : path.join(root, 'full-service-bin');
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
-  const fullServiceExecPath = path.resolve(
-    path.join(fullServiceBinariesPath, './start-full-service.sh')
-  );
+  console.log(`Offline Mode: ${startInOfflineMode}`);
+  const fullServiceExecPath = startInOfflineMode
+    ? path.resolve(path.join(fullServiceBinariesPath, './start-full-service-offline.sh'))
+    : path.resolve(path.join(fullServiceBinariesPath, './start-full-service.sh'));
 
   const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
   const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
@@ -254,11 +260,14 @@ const createWindow = async () => {
   nativeTheme.themeSource = (localStore.getTheme() as 'system' | 'light' | 'dark') ?? 'system';
 
   // FK see also line 270, and AuthPage.presenter.tsx line 94
-  ipcMain.handle('start-full-service', (_, password: string, newPassword: string | null) => {
-    console.log('STARTING SERVICE');
-    startFullService(password, newPassword);
-    return 'Service started';
-  });
+  ipcMain.handle(
+    'start-full-service',
+    (_, password: string, newPassword: string | null, startInOfflineMode: boolean) => {
+      console.log('STARTING SERVICE');
+      startFullService(password, newPassword, startInOfflineMode);
+      return 'Service started';
+    }
+  );
 
   ipcMain.on('get-theme', (event) => {
     // eslint-disable-next-line no-param-reassign
@@ -315,6 +324,33 @@ ipcMain.on('sync-status', (_e, status) => {
   syncStatus = status;
 });
 
+ipcMain.handle('save-tx-confirmation', (_, txConfirmationText) => {
+  const options = {
+    defaultPath: `${app.getPath('documents')}/txConfirmation.json`,
+  };
+
+  const txConfirmationPath = dialog.showSaveDialogSync(mainWindow, options);
+  if (txConfirmationPath === undefined) {
+    return false;
+  }
+
+  fs.writeFileSync(txConfirmationPath, txConfirmationText);
+
+  return true;
+});
+
+ipcMain.handle('load-tx-confirmation', () => {
+  const options = {};
+
+  const txConfirmationPath = dialog.showOpenDialogSync(mainWindow, options);
+  if (txConfirmationPath === undefined || txConfirmationPath.length === 0) {
+    return undefined;
+  }
+
+  const fileText = fs.readFileSync(txConfirmationPath[0]);
+  return fileText.toString();
+});
+
 ipcMain.on('reset-ledger', () => {
   const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
 
@@ -328,6 +364,49 @@ ipcMain.on('reset-ledger', () => {
   exec(`rm "${ledgerDbPath}/lock.mdb"`);
   app.relaunch(); // does not trigger until app quits or exits
   app.exit(); // exits without before-quit and will-quit
+});
+
+ipcMain.on('reset-wallet-db', () => {
+  const walletDbPath = localStore.getFullServiceDbPath();
+  console.log('KILLING SERVICE');
+  exec('pkill -f full-service');
+  fs.rmdirSync(walletDbPath, { recursive: true });
+  app.relaunch();
+  app.exit();
+});
+
+ipcMain.on('kill-full-service', () => {
+  exec('pkill -f full-service');
+});
+
+ipcMain.handle('export-ledger-db', () => {
+  const filePath = dialog.showSaveDialogSync(mainWindow, { defaultPath: 'data.mdb' });
+
+  if (filePath === undefined) {
+    return false;
+  }
+
+  const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
+  fs.copyFileSync(`${ledgerDbPath}/data.mdb`, filePath);
+
+  return true;
+});
+
+ipcMain.handle('import-ledger-db', () => {
+  const filePath = dialog.showOpenDialogSync(mainWindow);
+
+  if (filePath === undefined || filePath.length === 0) {
+    return false;
+  }
+
+  const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
+  exec('pkill -f full-service');
+  fs.rmSync(`${ledgerDbPath}/data.mdb`);
+  fs.rmSync(`${ledgerDbPath}/lock.mdb`);
+  fs.copyFileSync(filePath[0], `${ledgerDbPath}/data.mdb`);
+  app.relaunch();
+  app.exit();
+  return true;
 });
 
 ipcMain.on('get-initial-translations', (event) => {

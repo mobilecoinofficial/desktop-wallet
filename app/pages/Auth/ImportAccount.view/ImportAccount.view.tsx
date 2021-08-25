@@ -16,11 +16,7 @@ import type { ImportAccountViewProps } from './ImportAccount.d';
 
 interface ImportAccountFormValues {
   accountName: string;
-  checkedSavePassword: boolean;
   entropy: string;
-  password: string;
-  passwordConfirmation: string;
-  submit: null;
 }
 
 const ImportAccountView: FC<ImportAccountViewProps> = ({
@@ -73,9 +69,6 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
               label={t('nameLabel')}
               name="accountName"
             />
-            {values.checkedSavePassword && !values.accountName && (
-              <FormHelperText focused>{t('checkedSavePasswordFormHelper')}</FormHelperText>
-            )}
             <Field
               id="ImportAccountForm-entropyField"
               component={TextField}

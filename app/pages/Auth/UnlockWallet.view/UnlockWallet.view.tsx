@@ -1,29 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, FormHelperText, Typography } from '@material-ui/core';
+import { Box, Button, FormHelperText, Tooltip, Typography } from '@material-ui/core';
+import HelpIcon from '@material-ui/icons/Help';
 import { Formik, Form, Field } from 'formik';
-import { TextField } from 'formik-material-ui';
+import { Checkbox, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
+import { ConfirmDeleteWalletDialog } from '../../../components/ConfirmDeleteWallet.dialog';
 import type { UnlockWalletViewProps } from './UnlockWallet';
 
 interface UnlockWalletFormValues {
   password: string;
+  startInOfflineMode: boolean;
   submit: null;
 }
 
 const UnlockWalletView: FC<UnlockWalletViewProps> = ({
   onClickUnlock,
   accounts,
+  handleDeleteWallet,
+  fullServiceIsRunning,
 }: UnlockWalletViewProps) => {
   const { t } = useTranslation('UnlockWallet');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [confirmDeleteWalletDialogOpen, setConfirmDeleteWalletDialogOpen] = useState(false);
 
   const handleClose = () => setAnchorEl(null);
-  const handleOnSubmit = (values: UnlockWalletFormValues) => onClickUnlock(values.password);
+  const handleOnSubmit = (values: UnlockWalletFormValues) =>
+    onClickUnlock(values.password, values.startInOfflineMode);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     if (accounts.length > 0) {
       setAnchorEl(event.currentTarget);
@@ -39,7 +46,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
         {t('description')}
       </Typography>
       <Formik
-        initialValues={{ password: '', submit: null }}
+        initialValues={{ password: '', startInOfflineMode: false, submit: null }}
         validationSchema={Yup.object().shape({
           password: Yup.string().required(t('passwordRequired')),
         })}
@@ -67,6 +74,19 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
                 <FormHelperText error>{errors.submit}</FormHelperText>
               </Box>
             )}
+            {fullServiceIsRunning ? (
+              <> </>
+            ) : (
+              <Box display="flex">
+                <Box display="flex" alignItems="center" flexDirection="row-reverse">
+                  <Tooltip title={t('offlineModeTooltip')}>
+                    <HelpIcon style={{ marginLeft: '5px' }} />
+                  </Tooltip>
+                  <Typography display="inline">{t('startInOfflineMode')}</Typography>
+                  <Field component={Checkbox} type="checkbox" name="startInOfflineMode" />
+                </Box>
+              </Box>
+            )}
             <SubmitButton
               data-testid="submit-button"
               disabled={!dirty || !isValid || isSubmitting}
@@ -75,6 +95,18 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
             >
               {t('unlockWalletButton')}
             </SubmitButton>
+            <Button
+              color="primary"
+              onClick={() => setConfirmDeleteWalletDialogOpen(true)}
+              id="deleteWalletConfirmation"
+            >
+              {t('deleteWallet')}
+            </Button>
+            <ConfirmDeleteWalletDialog
+              open={confirmDeleteWalletDialogOpen}
+              cancel={() => setConfirmDeleteWalletDialogOpen(false)}
+              confirm={handleDeleteWallet}
+            />
           </Form>
         )}
       </Formik>

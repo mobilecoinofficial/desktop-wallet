@@ -37,9 +37,6 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
       <Formik
         initialValues={{
           accountName: '',
-          checkedSavePassword: false,
-          password: '',
-          passwordConfirmation: '',
           submit: null,
         }}
         onSubmit={handleOnSubmit}

@@ -2,11 +2,10 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
-import { clipboard } from 'electron';
+import { app, clipboard, dialog, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import { TabPanel } from '../../../components/TabPanel';
 import useFullService from '../../../hooks/useFullService';
 import {
   assignAddressForAccount,
@@ -24,7 +23,14 @@ import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
 
-const EMPTY_CONFIRMATION = {
+interface TxConfirmation {
+  feeConfirmation: bigint;
+  totalValueConfirmation: bigint;
+  txProposal: TxProposal;
+  txProposalReceiverB58Code: string;
+}
+
+const EMPTY_CONFIRMATION: TxConfirmation = {
   feeConfirmation: 0n,
   totalValueConfirmation: 0n,
   txProposal: {} as TxProposal,
@@ -52,13 +58,17 @@ const SendReceivePage: FC = () => {
   const [formRecipientPublicAddress, setRecipientPublicAddress] = useState('');
 
   const {
-    accounts,
     contacts,
     pin: existingPin,
+    offlineModeEnabled,
     feePmob,
     pinThresholdPmob,
     selectedAccount,
   } = useFullService();
+
+  useEffect(() => {
+    getFeePmob();
+  }, []);
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex as string);
   const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex as string);
@@ -166,30 +176,46 @@ const SendReceivePage: FC = () => {
     }
   };
 
-  const SendMobWithParams = () => (
-    <SendMob
-      confirmation={confirmation}
-      contacts={contacts}
-      existingPin={existingPin as string}
-      feePmob={feePmob || '0'}
-      isSynced={isSynced}
-      onClickCancel={onClickCancel}
-      onClickConfirm={onClickConfirm}
-      onClickSend={onClickSend}
-      pinThresholdPmob={parseFloat(pinThresholdPmob)}
-      selectedAccount={selectedAccount}
-      showing={sendingStatus}
-    />
-  );
+  const saveTxConfirmation = async () => {
+    const confirmationText = JSON.stringify(confirmation, (key, value) =>
+      typeof value === 'bigint' ? `${value.toString()}n` : value
+    );
+    const success = await ipcRenderer.invoke('save-tx-confirmation', confirmationText);
 
-  const ReceiveMobWithParams = () => (
-    <ReceiveMob
-      accounts={accounts}
-      onClickCode={handleCodeClicked}
-      contacts={contacts}
-      selectedAccount={selectedAccount}
-    />
-  );
+    if (success) {
+      enqueueSnackbar(t('txConfirmationSaved'), { variant: 'success' });
+      setSendingStatus(Showing.INPUT_FORM);
+    }
+  };
+
+  const importTxConfirmation = async () => {
+    const txConfirmationText = await ipcRenderer.invoke('load-tx-confirmation');
+
+    if (txConfirmationText === undefined) {
+      return;
+    }
+
+    try {
+      const txConfirmation = JSON.parse(txConfirmationText, (key, value) => {
+        if (typeof value === 'string' && /^\d+n$/.test(value)) {
+          return BigInt(value.substr(0, value.length - 1));
+        }
+        return value;
+      }) as TxConfirmation;
+      if (
+        txConfirmation.feeConfirmation === undefined ||
+        txConfirmation.totalValueConfirmation === undefined ||
+        txConfirmation.txProposal === undefined ||
+        txConfirmation.txProposalReceiverB58Code === undefined
+      ) {
+        throw new Error(t('invalidTransaction'));
+      }
+      setConfirmation(txConfirmation);
+      setSendingStatus(Showing.CONFIRM_FORM);
+    } catch (err) {
+      enqueueSnackbar(err.message, { variant: 'error' });
+    }
+  };
 
   const onClickViewPaymentRequest = async ({
     accountId,
@@ -226,24 +252,6 @@ const SendReceivePage: FC = () => {
     enqueueSnackbar(t('transactionCanceled'), { variant: 'warning' });
   };
 
-  const PaymentRequestWithParams = () => (
-    <PaymentRequest
-      onClickViewPaymentRequest={onClickViewPaymentRequest}
-      selectedAccount={selectedAccount}
-      confirmation={confirmation}
-      existingPin={existingPin as string}
-      feePmob={feePmob || '0'}
-      isSynced={isSynced}
-      onClickCancel={onClickCancelPaymentRequest}
-      onClickConfirm={onClickConfirm}
-      pinThresholdPmob={parseFloat(pinThresholdPmob)}
-      showing={sendingStatus}
-      enqueueSnackbar={enqueueSnackbar}
-    />
-  );
-
-  useEffect(getFeePmob, []);
-
   return (
     <Box className={classes.root}>
       <Grid container spacing={3}>
@@ -258,12 +266,48 @@ const SendReceivePage: FC = () => {
           >
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
-            <Tab label="Pay MOB" />
+            <Tab label={t('pay')} />
           </Tabs>
-          <TabPanel
-            panels={[SendMobWithParams, ReceiveMobWithParams, PaymentRequestWithParams]}
-            selectedTabIndex={selectedTabIndex}
-          />
+          {selectedTabIndex === 0 && (
+            <SendMob
+              confirmation={confirmation}
+              contacts={contacts}
+              existingPin={existingPin as string}
+              feePmob={feePmob || '400000000'}
+              importTxConfirmation={importTxConfirmation}
+              isSynced={isSynced}
+              offlineModeEnabled={offlineModeEnabled}
+              onClickCancel={onClickCancel}
+              onClickConfirm={onClickConfirm}
+              onClickSend={onClickSend}
+              pinThresholdPmob={parseFloat(pinThresholdPmob)}
+              saveTxConfirmation={saveTxConfirmation}
+              selectedAccount={selectedAccount}
+              showing={sendingStatus}
+            />
+          )}
+          {selectedTabIndex === 1 && (
+            <ReceiveMob
+              onClickCode={handleCodeClicked}
+              contacts={contacts}
+              selectedAccount={selectedAccount}
+            />
+          )}
+          {selectedTabIndex === 2 && (
+            <PaymentRequest
+              onClickViewPaymentRequest={onClickViewPaymentRequest}
+              selectedAccount={selectedAccount}
+              confirmation={confirmation}
+              existingPin={existingPin as string}
+              feePmob={feePmob || '400000000'}
+              isSynced={isSynced}
+              onClickCancel={onClickCancelPaymentRequest}
+              onClickConfirm={onClickConfirm}
+              pinThresholdPmob={parseFloat(pinThresholdPmob)}
+              showing={sendingStatus}
+              enqueueSnackbar={enqueueSnackbar}
+            />
+          )}
         </Grid>
       </Grid>
     </Box>

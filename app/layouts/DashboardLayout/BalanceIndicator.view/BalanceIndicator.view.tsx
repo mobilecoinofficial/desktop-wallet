@@ -1,7 +1,7 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
+import { Box, Button, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { MOBNumberFormat } from '../../../components';
@@ -28,7 +28,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   balance,
+  importLedger,
   isSynced,
+  offlineModeEnabled,
 }: BalanceIndicatorProps) => {
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
@@ -46,10 +48,22 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
           <MOBNumberFormat valueUnit="pMOB" value={balance} />
         </Typography>
       </Box>
-      {!isSynced && (
+      {!isSynced && !offlineModeEnabled && (
         <Typography data-testid="balance-sync-message" variant="h6" color="primary">
           {t('syncMessage')}
         </Typography>
+      )}
+
+      {offlineModeEnabled && (
+        <Typography data-testid="balance-sync-message" variant="h6" color="primary">
+          {t('offlineMode')}
+        </Typography>
+      )}
+
+      {offlineModeEnabled && (
+        <Button onClick={importLedger}>
+          <Typography variant="h6">Import Ledger</Typography>
+        </Button>
       )}
     </Box>
   );

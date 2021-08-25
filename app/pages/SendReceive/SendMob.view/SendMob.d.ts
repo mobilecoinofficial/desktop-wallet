@@ -22,11 +22,14 @@ export interface SendMobProps {
   contacts: Contact[];
   existingPin: string;
   feePmob: string;
+  importTxConfirmation: () => void;
   isSynced: boolean;
+  offlineModeEnabled: boolean;
   onClickCancel: () => void;
   onClickConfirm: () => void;
   onClickSend: (x: SendParameters) => void;
   pinThresholdPmob: number;
+  saveTxConfirmation: () => void;
   selectedAccount: SelectedAccount;
   showing: Showing;
 }

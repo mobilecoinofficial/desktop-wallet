@@ -24,7 +24,8 @@
   },
 
   "BalanceIndicator": {
-    "syncMessage": "Balance may be out-of-date while wallet syncs with ledger.",
+    "offlineMode": "Offline Mode Enabled",
+    "syncMessage": "Balance may be out of date while wallet syncs with ledger.",
     "title": "Balance"
   },
 
@@ -136,6 +137,15 @@
     "settingsBreadcrumb": "Settings"
   },
 
+  "ConfirmDeleteWalletDialog": {
+    "cancelButton": "Cancel",
+    "confirmationChecked": "You must check this to continue!",
+    "deleteWalletButton": "Delete Wallet",
+    "description": "If you don't have your entropy backed up, you will lose your account forever!",
+    "title": "Delete Wallet",
+    "understandCheckText": "I understand this could cause me to lose my accounts if I don't have them backed up."
+  },
+
   "ConsumeGiftForm": {
     "accountBalance": "Account Balance",
     "accountName": "Account Name",
@@ -229,6 +239,31 @@
     "passwordMin": "Passphrase must be at least 8 characters in length.",
     "passwordRequired": "Passphrase is required",
     "title": "Create Account"
+  },
+
+  "CreateWallet": {
+    "acceptTerms": "I have read and accept the",
+    "acceptTermsButton": "Terms of Use",
+    "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
+    "accountNameValidation": "Account Name cannot be more than 64 characters.",
+    "checkedSavePasswordFormHelper": "Account Name is optional, but required to save passphrase.",
+    "checkedSavePasswordValidation": "Account Name is required to save passphrase.",
+    "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
+    "createWalletButton": "Create Wallet",
+    "description": "Please enter a passphrase to encrypt your wallet database. If you lose this and don't have your account secrets backed up, there will be no way to recover your account!",
+    "header": "Create a new account for this desktop wallet.",
+    "nameLabel": "Account Name (optional)",
+    "offlineModeTooltip": "This will start Full Service in Offline Mode, which disables the ability to update the ledger and submit transactions",
+    "passwordConfirmationLabel": "Passphrase Confirmation",
+    "passwordConfirmationRef": "Must match Passphrase",
+    "passwordConfirmationRequired": "Passphrase Confirmation is required",
+    "passwordLabel": "Passphrase",
+    "passwordMax": "Passphrases cannot be more than 99 characters.",
+    "passwordMin": "Passphrase must be at least 8 characters in length.",
+    "passwordRequired": "Passphrase is required",
+    "startInOfflineMode": "Start in Offline Mode",
+    "title": "Create Wallet",
+    "verifyPasswordRequired": "Verify Passphrase is required"
   },
 
   "Dates": {
@@ -386,7 +421,9 @@
   },
 
   "FullServiceDirectory": {
+    "exportLedgerDb": "Export",
     "formLabel": "Full-Service Directory",
+    "importLedgerDb": "Import",
     "ledgerDbPathHeader": "Ledger Database Path:",
     "fullServiceDbPathHeader": "Full-Service Database Path:"
   },
@@ -450,10 +487,12 @@
     "cancel": "Cancel",
     "confirm": "Send MOB Confirmation",
     "confirmSend": "Confirm Send",
+    "saveTxConfirmation": "Save Confirmation",
     "description": "Please enter the recipient’s address and the amount of MOB to send",
     "enterPin": "For this amount your PIN is required",
     "errorFee": "Please reserve 0.01 MOB for transaction fee.",
     "fee": "Fee",
+    "importTxConfirmation": "Import TxConfirmation",
     "intent": "Please check and confirm your payment amount",
     "mob": "MOB",
     "mobAmount": "MOB Amount",
@@ -531,6 +570,7 @@
 
   "SyncStatus": {
     "error": "Please see Admin Panel in Settings.",
+    "offlineMode": "Offline Mode Enabled",
     "synced": "100% synced with the ledger",
     "syncing": "Syncing with the ledger"
   },
@@ -546,6 +586,9 @@
       "save": "Save comment"
     },
     "changeComment": "Change comment",
+    "copyConfirmations": "Copy Confirmation(s)",
+    "invalid": "Invalid",
+    "noValidation": "No validation found",
     "orphaned": "??? Orphaned",
     "orphanedTitle": "Orphaned Transaction",
     "orphanedExplaination": "This transaction is considered orphaned. This means that the assigned address that received this transaction is unknown to this wallet. This likely happens if you assign addresses for this account within other wallets. Other causes may be importing/recovering this account. We recommend to only use an account in a single wallet.",
@@ -556,7 +599,9 @@
     "transactionDetails": "Transaction Details",
     "txo": "TXO",
     "txoDetails": "TXO Details",
-    "typeHere": "Start typing here"
+    "typeHere": "Start typing here",
+    "validateConfirmations": "Validate Confirmation(s)",
+    "validated": "Validated"
   },
 
   "TermsOfUseDialog": {
@@ -569,12 +614,15 @@
   },
 
   "TransactionView": {
+    "invalidTransaction": "Not a valid TxConfirmation",
     "mob": "MOB",
+    "pay": "Pay MOB",
     "receive": "Receive MOB",
     "send": "Send MOB",
     "sendBuildError": "Could not build transaction.",
     "sendSuccess": "Successfully sent ",
-    "transactionCanceled": "Transaction Canceled"
+    "transactionCanceled": "Transaction Canceled",
+    "txConfirmationSaved": "TxConfirmation Saved"
   },
 
   "UnlockAccount": {
@@ -589,9 +637,12 @@
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",
     "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
+    "deleteWallet": "Delete Wallet and Start Over",
     "description": "Please enter the passphrase you used to secure your wallet.",
+    "offlineModeTooltip": "This will start Full Service in Offline Mode, which disables the ability to update the ledger and submit transactions",
     "passwordLabel": "Passphrase",
     "passwordRequired": "Passphrase is required",
+    "startInOfflineMode": "Start in Offline Mode",
     "title": "Unlock Wallet",
     "unlockWalletButton": "Unlock Wallet"
   }

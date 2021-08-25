@@ -6,7 +6,6 @@ import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import { TabPanel } from '../../../components/TabPanel';
 import useFullService from '../../../hooks/useFullService';
 import {
   buildGiftCode,
@@ -149,30 +148,6 @@ const GiftsPage: FC = () => {
     getAllGiftCodes();
   };
 
-  const BuildGift = () => (
-    <BuildGiftPanel
-      accounts={accounts}
-      buildGiftCode={buildGiftCode}
-      confirmation={confirmationBuild}
-      deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
-      existingPin={existingPin as string}
-      feePmob={feePmob || '0'}
-      getAllGiftCodes={getAllGiftCodes}
-      giftCodes={giftCodes}
-      handleCopyClick={handleCodeClicked}
-      isSynced={isSynced}
-      onClickCancelBuild={onClickCancelBuild}
-      onClickCode={handleCodeClicked}
-      onClickConfirmBuild={onClickConfirmBuild}
-      onClickCreateGift={onClickCreateGift}
-      onClickDeleteGiftCode={onClickDeleteGiftCodeBuild}
-      pinThresholdPmob={pinThresholdPmob}
-      selectedAccount={selectedAccount}
-      showModal={showModalBuild}
-      submitGiftCode={submitGiftCode}
-    />
-  );
-
   const onClickCancelConsume = () => {
     setShowModalConsume(false);
     enqueueSnackbar(t('giftCanceled'), { variant: 'warning' });
@@ -224,18 +199,6 @@ const GiftsPage: FC = () => {
     setShowModalConsume(false);
   };
 
-  const ConsumeGift = () => (
-    <ConsumeGiftForm
-      confirmation={confirmationConsume}
-      feePmob={feePmob || '0'}
-      onClickCancel={onClickCancelConsume}
-      onClickClaimGift={onClickClaimGiftConsume}
-      onClickOpenGift={onClickOpenGiftConsume}
-      selectedAccount={selectedAccount}
-      showModal={showModalConsume}
-    />
-  );
-
   useEffect(getAllGiftCodes, []);
   useEffect(getFeePmob, []);
 
@@ -254,7 +217,40 @@ const GiftsPage: FC = () => {
             <Tab label={t('tabs.createGift')} />
             <Tab label={t('tabs.openGift')} />
           </Tabs>
-          <TabPanel panels={[BuildGift, ConsumeGift]} selectedTabIndex={selectedTabIndex} />
+          {selectedTabIndex === 0 && (
+            <BuildGiftPanel
+              accounts={accounts}
+              buildGiftCode={buildGiftCode}
+              confirmation={confirmationBuild}
+              deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
+              existingPin={existingPin as string}
+              feePmob={feePmob || '400000000'}
+              getAllGiftCodes={getAllGiftCodes}
+              giftCodes={giftCodes}
+              handleCopyClick={handleCodeClicked}
+              isSynced={isSynced}
+              onClickCancelBuild={onClickCancelBuild}
+              onClickCode={handleCodeClicked}
+              onClickConfirmBuild={onClickConfirmBuild}
+              onClickCreateGift={onClickCreateGift}
+              onClickDeleteGiftCode={onClickDeleteGiftCodeBuild}
+              pinThresholdPmob={pinThresholdPmob}
+              selectedAccount={selectedAccount}
+              showModal={showModalBuild}
+              submitGiftCode={submitGiftCode}
+            />
+          )}
+          {selectedTabIndex === 1 && (
+            <ConsumeGiftForm
+              confirmation={confirmationConsume}
+              feePmob={feePmob || '400000000'}
+              onClickCancel={onClickCancelConsume}
+              onClickClaimGift={onClickClaimGiftConsume}
+              onClickOpenGift={onClickOpenGiftConsume}
+              selectedAccount={selectedAccount}
+              showModal={showModalConsume}
+            />
+          )}
         </Grid>
       </Grid>
     </Box>

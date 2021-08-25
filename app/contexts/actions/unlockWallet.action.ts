@@ -13,6 +13,7 @@ export type UnlockWalletActionType = {
     pinThresholdPmob: StringUInt64;
     secretKey: string;
     walletStatus: WalletStatus;
+    offlineModeEnabled: boolean;
   };
 };
 
@@ -22,11 +23,13 @@ export const unlockWalletAction = (
   pin: string | undefined,
   pinThresholdPmob: StringUInt64,
   secretKey: string,
-  walletStatus: WalletStatus
+  walletStatus: WalletStatus,
+  offlineModeEnabled: boolean
 ): UnlockWalletActionType => ({
   payload: {
     contacts,
     isPinRequired,
+    offlineModeEnabled,
     pin,
     pinThresholdPmob,
     secretKey,

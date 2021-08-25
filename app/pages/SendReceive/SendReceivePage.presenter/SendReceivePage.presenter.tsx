@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
-import { clipboard } from 'electron';
+import { app, clipboard, dialog, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
@@ -176,24 +176,32 @@ const SendReceivePage: FC = () => {
     }
   };
 
-  const onClickCopyTxProposal = () => {
+  const saveTxConfirmation = async () => {
     const confirmationText = JSON.stringify(confirmation, (key, value) =>
       typeof value === 'bigint' ? `${value.toString()}n` : value
     );
-    clipboard.writeText(confirmationText);
-    enqueueSnackbar(t('transactionCopied'));
-    setSendingStatus(Showing.INPUT_FORM);
+    const success = await ipcRenderer.invoke('save-tx-confirmation', confirmationText);
+
+    if (success) {
+      enqueueSnackbar(t('txConfirmationSaved'), { variant: 'success' });
+      setSendingStatus(Showing.INPUT_FORM);
+    }
   };
 
-  const importTxProposalFromClipboard = () => {
+  const importTxConfirmation = async () => {
+    const txConfirmationText = await ipcRenderer.invoke('load-tx-confirmation');
+
+    if (txConfirmationText === undefined) {
+      return;
+    }
+
     try {
-      const txConfirmation = JSON.parse(clipboard.readText(), (key, value) => {
+      const txConfirmation = JSON.parse(txConfirmationText, (key, value) => {
         if (typeof value === 'string' && /^\d+n$/.test(value)) {
           return BigInt(value.substr(0, value.length - 1));
         }
         return value;
       }) as TxConfirmation;
-
       if (
         txConfirmation.feeConfirmation === undefined ||
         txConfirmation.totalValueConfirmation === undefined ||
@@ -202,7 +210,6 @@ const SendReceivePage: FC = () => {
       ) {
         throw new Error(t('invalidTransaction'));
       }
-
       setConfirmation(txConfirmation);
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {
@@ -267,14 +274,14 @@ const SendReceivePage: FC = () => {
               contacts={contacts}
               existingPin={existingPin as string}
               feePmob={feePmob || '400000000'}
-              importTxProposalFromClipboard={importTxProposalFromClipboard}
+              importTxConfirmation={importTxConfirmation}
               isSynced={isSynced}
               offlineModeEnabled={offlineModeEnabled}
               onClickCancel={onClickCancel}
               onClickConfirm={onClickConfirm}
-              onClickCopyTxProposal={onClickCopyTxProposal}
               onClickSend={onClickSend}
               pinThresholdPmob={parseFloat(pinThresholdPmob)}
+              saveTxConfirmation={saveTxConfirmation}
               selectedAccount={selectedAccount}
               showing={sendingStatus}
             />

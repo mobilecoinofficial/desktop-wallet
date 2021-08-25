@@ -49,6 +49,10 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: Dashbo
   const matches = useMediaQuery('(min-height:768px)');
   const sendSyncStatus = (statusCode: string) => ipcRenderer.send('sync-status', statusCode);
 
+  const importLedger = async () => {
+    ipcRenderer.invoke('import-ledger-db');
+  };
+
   return (
     <Box className={classes.root}>
       <TopBar />
@@ -66,6 +70,7 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: Dashbo
           />
           <BalanceIndicator
             balance={selectedAccount.balanceStatus.unspentPmob}
+            importLedger={importLedger}
             isSynced={selectedAccount.balanceStatus.isSynced}
             offlineModeEnabled={offlineModeEnabled}
           />

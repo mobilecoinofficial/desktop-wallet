@@ -12,13 +12,13 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 import { exec, spawn } from 'child_process';
+import fs from 'fs';
 import path from 'path';
 
 import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
-import fs from 'fs';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
@@ -324,6 +324,33 @@ ipcMain.on('sync-status', (_e, status) => {
   syncStatus = status;
 });
 
+ipcMain.handle('save-tx-confirmation', (_, txConfirmationText) => {
+  const options = {
+    defaultPath: `${app.getPath('documents')}/txConfirmation.json`,
+  };
+
+  const txConfirmationPath = dialog.showSaveDialogSync(mainWindow, options);
+  if (txConfirmationPath === undefined) {
+    return false;
+  }
+
+  fs.writeFileSync(txConfirmationPath, txConfirmationText);
+
+  return true;
+});
+
+ipcMain.handle('load-tx-confirmation', () => {
+  const options = {};
+
+  const txConfirmationPath = dialog.showOpenDialogSync(mainWindow, options);
+  if (txConfirmationPath === undefined || txConfirmationPath.length === 0) {
+    return undefined;
+  }
+
+  const fileText = fs.readFileSync(txConfirmationPath[0]);
+  return fileText.toString();
+});
+
 ipcMain.on('reset-ledger', () => {
   const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
 
@@ -350,6 +377,36 @@ ipcMain.on('reset-wallet-db', () => {
 
 ipcMain.on('kill-full-service', () => {
   exec('pkill -f full-service');
+});
+
+ipcMain.handle('export-ledger-db', () => {
+  const filePath = dialog.showSaveDialogSync(mainWindow, { defaultPath: 'data.mdb' });
+
+  if (filePath === undefined) {
+    return false;
+  }
+
+  const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
+  fs.copyFileSync(`${ledgerDbPath}/data.mdb`, filePath);
+
+  return true;
+});
+
+ipcMain.handle('import-ledger-db', () => {
+  const filePath = dialog.showOpenDialogSync(mainWindow);
+
+  if (filePath === undefined || filePath.length === 0) {
+    return false;
+  }
+
+  const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
+  exec('pkill -f full-service');
+  fs.rmSync(`${ledgerDbPath}/data.mdb`);
+  fs.rmSync(`${ledgerDbPath}/lock.mdb`);
+  fs.copyFileSync(filePath[0], `${ledgerDbPath}/data.mdb`);
+  app.relaunch();
+  app.exit();
+  return true;
 });
 
 ipcMain.on('get-initial-translations', (event) => {

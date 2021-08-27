@@ -148,12 +148,12 @@ const SettingsPage: FC = () => {
       label: 'accounts',
       path: ACCOUNTS,
     },
-    {
-      Icon: LockIcon,
-      handleOnClick,
-      label: 'changePassword',
-      path: CHANGE_PASSWORD,
-    },
+    // {
+    //   Icon: LockIcon,
+    //   handleOnClick,
+    //   label: 'changePassword',
+    //   path: CHANGE_PASSWORD,
+    // },
     {
       Icon: LockIcon,
       handleOnClick,

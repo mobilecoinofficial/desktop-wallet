@@ -344,6 +344,34 @@ exports[`ConfigureFullServiceView component render ConfigureFullServiceView rend
         >
           ledger/path
         </p>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Export
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Import
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
         <div
           class="MuiBox-root MuiBox-root-28"
         />

@@ -125,9 +125,18 @@ const SendMob: FC<SendMobProps> = ({
     });
   };
 
-  const handleClose = (setSubmitting: (boolean: boolean) => void) => () => {
+  const handleClose = (setSubmitting: (boolean: boolean) => void, resetForm: () => void) => () => {
     setSubmitting(false);
+    resetForm();
     onClickCancel();
+  };
+
+  const handleSaveConfirmation = (resetForm: () => void) => {
+    saveTxConfirmation(resetForm);
+  };
+
+  const handleConfirmSubmit = (resetForm: () => void) => {
+    onClickConfirm(resetForm);
   };
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
@@ -184,7 +193,16 @@ const SendMob: FC<SendMobProps> = ({
               })}
               onSubmit={() => {}}
             >
-              {({ errors, isSubmitting, dirty, isValid, setFieldValue, setSubmitting, values }) => {
+              {({
+                errors,
+                isSubmitting,
+                dirty,
+                isValid,
+                resetForm,
+                setFieldValue,
+                setSubmitting,
+                values,
+              }) => {
                 // NOTE: because this is just a display for the value up to 3 dec mob,
                 // We do not need the precision to be BigInt
 
@@ -507,7 +525,7 @@ const SendMob: FC<SendMobProps> = ({
                               className={classes.button}
                               color="secondary"
                               disabled={isSubmitting}
-                              onClick={handleClose(setSubmitting)}
+                              onClick={handleClose(setSubmitting, resetForm)}
                               size="large"
                               fullWidth
                               type="submit"
@@ -524,7 +542,13 @@ const SendMob: FC<SendMobProps> = ({
                                 (isPinRequiredForTransaction && values.pin !== existingPin)
                               }
                               fullWidth
-                              onClick={offlineModeEnabled ? saveTxConfirmation : onClickConfirm}
+                              onClick={() => {
+                                if (offlineModeEnabled) {
+                                  handleSaveConfirmation(resetForm);
+                                } else {
+                                  handleConfirmSubmit(resetForm);
+                                }
+                              }}
                               size="large"
                               type="submit"
                               variant="contained"

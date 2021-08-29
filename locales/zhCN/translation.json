@@ -11,14 +11,24 @@
     "mobUrlTooltip": "查看 MobURL 二维码",
     "unnamed": "未命名账户"
   },
+
   "AccountsView": {
     "accounts": "Accounts",
     "settingsBreadcrumb": "设置"
   },
+
+  "AuthPage": {
+    "createInstead": "Create account instead",
+    "importInstead": "Import account instead",
+    "unlockInstead": "Unlock account instead"
+  },
+
   "BalanceIndicator": {
+    "offlineMode": "Offline Mode Enabled",
     "syncMessage": "在钱包与账簿同步完成前显示的余额可能不准确。",
     "title": "账户余额"
   },
+
   "BuildGiftForm": {
     "accountBalance": "账户余额",
     "accountName": "账户名",
@@ -51,6 +61,7 @@
     "unnamed": "未命名账户",
     "walletSyncing": "钱包同步中"
   },
+
   "BuildGiftPanel": {
     "cancelButton": "取消",
     "clickToCopy": "点击复制。",
@@ -69,6 +80,7 @@
     "title": "可以把 MOB 包成红包送给朋友哦! ",
     "value": "金额"
   },
+
   "ChangePasswordView": {
     "changePasswordBreadcrumb": "修改密码",
     "changePasswordButton": "确认修改",
@@ -86,6 +98,7 @@
     "passwordRequired": "请输入新密码",
     "settingsBreadcrumb": "设置"
   },
+
   "ChangePinView": {
     "changePinBreadcrumb": "设置或修改 PIN 码",
     "changePinButton": "设置 PIN 码",
@@ -104,12 +117,14 @@
     "pinSize": "PIN 码必须为 6 位数",
     "settingsBreadcrumb": "设置"
   },
+
   "CloseApp": {
     "confirm": "要在后台同步吗？",
     "explain": "账簿并未完全同步，您需要它在后台继续同步吗？",
     "no": "不需要，中止同步并退出",
     "yes": "需要，退出并保持后台同步"
   },
+
   "CloseWalletModal": {
     "closeVerifyBody": "是否要安全地退出钱包？",
     "closeVerifyConfirm": "确认退出",
@@ -117,6 +132,7 @@
     "closeVerifyHeader": "退出钱包？",
     "closeWalletButton": "退出"
   },
+
   "ConfigureFullServiceView": {
     "configureFullServiceBreadcrumb": "配置 MobileCoin 守护进程",
     "daemonDescription": "MobileCoin Daemon (MobileCoin 守护进程) 是一个独立的程序，它负责与区块链同步并提供钱包服务。",
@@ -124,6 +140,16 @@
     "panelDescription": "您可以在这里配置 MobileCoin 守护进程的行为并进行一些重置操作。",
     "settingsBreadcrumb": "设置"
   },
+
+  "ConfirmDeleteWalletDialog": {
+    "cancelButton": "Cancel",
+    "confirmationChecked": "You must check this to continue!",
+    "deleteWalletButton": "Delete Wallet",
+    "description": "If you don't have your entropy backed up, you will lose your account forever!",
+    "title": "Delete Wallet",
+    "understandCheckText": "I understand this could cause me to lose my accounts if I don't have them backed up."
+  },
+
   "ConsumeGiftForm": {
     "accountBalance": "账户余额",
     "accountName": "账户名",
@@ -149,17 +175,8 @@
     "total": "总计",
     "unnamed": "未命名账户"
   },
-  "ContactsBookView": {
-    "added": "已添加联系人",
-    "removed": "已删除联系人",
-    "updated": "已更新联系人"
-  },
-  "ContactsList": {
-    "allContacts": "全部",
-    "favoriteContacts": "收藏夹",
-    "filter": "筛选"
-  },
-  "ContactView": {
+
+  "ContactForm": {
     "abbreviation": "缩写（最多三个字符）",
     "addContact": "添加联系人",
     "addressCodeRequired": "请输入地址",
@@ -178,11 +195,44 @@
     "removeContact": "删除联系人"
   },
 
+  "ContactsPage": {
+    "added": "已添加联系人",
+    "removed": "已删除联系人",
+    "updated": "已更新联系人"
+  },
+
+  "ContactsList": {
+    "allContacts": "全部",
+    "favoriteContacts": "收藏夹",
+    "filter": "筛选"
+  },
+
+  "CrashReportPage": {
+    "encounteredAnIssue": "It seems we've encountered an issue that's causing the app the crash!",
+    "here": "here",
+    "quitApplication": "Quit Desktop Wallet",
+    "sendDebugLog": "If you'd like to also send us a copy of the debug log, you can find a copy of it",
+    "sendDebugLog2": "so feel free to check it out.",
+    "sendReport": "It would be super helpful if you sent the crash report to us, but we totally understand if you'd rather not :)",
+    "uhOh": "Uh Oh!"
+  },
+
+  "CrashShowLog": {
+    "debugLogs": "Debug Logs",
+    "openLogsDir": "Open Logs Folder",
+    "sendLogsButton": "Send Logs",
+    "submit": "Submit",
+    "title": "This log will be posted publicly online for contributors to view. You may examine and edit it before submitting."
+  },
+
   "CreateAccount": {
     "acceptTerms": "我已阅读并接受",
     "acceptTermsButton": "用户条款",
     "acceptTermsFormHelper": "您必须先阅读用户条款才能使用钱包。",
     "accountNameValidation": "账户名不能超过 64 个字符",
+    "checkSavePassword": "Save passphrase to keychain?",
+    "checkedSavePasswordFormHelper": "Account Name is optional, but required to save passphrase.",
+    "checkedSavePasswordValidation": "Account Name is required to save passphrase.",
     "checkedTermsValidation": "您必须接受用户条款才能使用钱包。",
     "createAccountButton": "创建账户",
     "description": "请创建账户。如果您想导入一个现有的账户，请选择导入已有账户。",
@@ -196,6 +246,31 @@
     "passwordMin": "新密码至少需要 8 个字符。",
     "passwordRequired": "请设置密码",
     "title": "创建账户"
+  },
+
+  "CreateWallet": {
+    "acceptTerms": "I have read and accept the",
+    "acceptTermsButton": "Terms of Use",
+    "acceptTermsFormHelper": "You must read the Terms of Use before using the wallet.",
+    "accountNameValidation": "Account Name cannot be more than 64 characters.",
+    "checkedSavePasswordFormHelper": "Account Name is optional, but required to save passphrase.",
+    "checkedSavePasswordValidation": "Account Name is required to save passphrase.",
+    "checkedTermsValidation": "You must accept Terms of Use to use wallet.",
+    "createWalletButton": "Create Wallet",
+    "description": "Please enter a passphrase to encrypt your wallet database. If you lose this and don't have your account secrets backed up, there will be no way to recover your account!",
+    "header": "Create a new account for this desktop wallet.",
+    "nameLabel": "Account Name (optional)",
+    "offlineModeTooltip": "This will start Full Service in Offline Mode, which disables the ability to update the ledger and submit transactions",
+    "passwordConfirmationLabel": "Passphrase Confirmation",
+    "passwordConfirmationRef": "Must match Passphrase",
+    "passwordConfirmationRequired": "Passphrase Confirmation is required",
+    "passwordLabel": "Passphrase",
+    "passwordMax": "Passphrases cannot be more than 99 characters.",
+    "passwordMin": "Passphrase must be at least 8 characters in length.",
+    "passwordRequired": "Passphrase is required",
+    "startInOfflineMode": "Start in Offline Mode",
+    "title": "Create Wallet",
+    "verifyPasswordRequired": "Verify Passphrase is required"
   },
 
   "Dates": {
@@ -212,13 +287,26 @@
     "m10": "十一月",
     "m11": "十二月"
   },
+
   "GiftingView": {
+    "confirmationNotFound": "Could not find confirmation",
+    "errorBuild": "Could not build gift code.",
+    "errorCreate": "Could not create gift.",
+    "giftB58Error": "Could not find gift with code.",
+    "giftCanceled": "Gift Canceled",
+    "giftConsumed": "Gift Consumed",
+    "giftClaimError": "Gift claim failed",
+    "giftConsumeError": "Gift consuming failed",
+    "giftCreated": "Gift created. Your balance will update shortly.",
+    "giftDeleted": "Deleted.",
+    "giftPreviouslyClaimed": "This gift has already been claimed!",
     "tabs": {
       "createGift": "创建红包",
       "myGifts": "我的红包",
       "openGift": "接收红包"
     }
   },
+
   "HistoryView": {
     "emptyState": "您还没有任何进行过任何交易",
     "finalizedBlockHeight": "最终区块高度：",
@@ -263,6 +351,7 @@
     "title": "Zzz...即将自动退出",
     "tooLong": "您太久没有操作了。。。"
   },
+
   "LeaveFullServiceRunning": {
     "defaultDescription": "当您退出钱包时，MobileCoin 守护进程默认会停止运行。这个选项让您可以决定是否要让 MobileCoin 守护进程在后台继续运行。保持账簿同步可以有效避免交易和更新余额的延迟。",
     "formLabel": "MobieCoin 守护进程",
@@ -271,6 +360,7 @@
     "ternaryWillNotSync": "MobileCoin 守护进程会在退出钱包后停止同步。",
     "ternaryWillSync": "MobileCoin 守护进程会在钱包退出后继续同步。"
   },
+
   "LedgerStatus": {
     "accountBlocks": "账户区块",
     "accountBlocksDescription": "每个账户都需要和一些特定的账户区块同步。当账户区块同步完成后，您的交易会立刻生效。",
@@ -288,6 +378,7 @@
     "statusCopyError": "账簿出现错误，请在页面下方重置账簿。",
     "synced": "% 已同步"
   },
+
   "Menu": {
     "about": "关于 MobileCoin 桌面钱包",
     "bringToFront": "显示全部",
@@ -333,11 +424,15 @@
       "zhCN": "简体中文 Simplified Chinese"
     }
   },
+
   "FullServiceDirectory": {
+    "exportLedgerDb": "Export",
     "formLabel": "MobileCoin 守护进程目录",
+    "importLedgerDb": "Import",
     "ledgerDbPathHeader": "账簿数据库路径：",
     "fullServiceDbPathHeader": "MobileCoin 守护进程数据库路径："
   },
+
   "NavBar": {
     "contacts": "通讯录",
     "gift": "红包",
@@ -347,15 +442,18 @@
     "transaction": "收付款",
     "wallet": "钱包"
   },
+
   "NotFoundView": {
     "backButton": "返回主页",
     "description": "如果你看到了这个页面，说明有程序员玩脱了",
     "header": "404：您要找的页面不见了"
   },
+
   "PrivacyPolicyView": {
     "privacyPolicy": "隐私条款",
     "settings": "设置"
   },
+
   "ReceiveMobPanel": {
     "assignedAddress": "指定地址",
     "assignedAddressDetails": "如果您想记录来自特定发款人的转账记录，您需要创建一个联系人，每个联系人都有唯一的一个地址。您可以给联系人设置昵称和缩写。联系人可以为个人，公司，团体。您也可以把一个联系人当作一个普通的公共地址使用。同时您的联系人信息都是经过加密并只存储在本地的。",
@@ -364,6 +462,7 @@
     "mainPublicAddress": "公共地址",
     "mainPublicAddressDetails": "转账到公共地址将不会显示发款人。如果您不需要在交易历史中显示发款人的话，请使用公共地址。"
   },
+
   "RetrieveEntropyView": {
     "description": "备份口令可以用来解锁您的钱包并使用 MobileCoin。每组口令都是独一无二的。请勿公开您的备份口令并妥善保存在安全，可靠的地方。本程序会使用您的密码来加密并存储您的备份口令。",
     "entropyCanBeUsed": "备份口令可以在此设备损坏或丢失时把当前账户导入到其他钱包。",
@@ -376,6 +475,14 @@
     "retrieveSecret": "查看加密的备份口令",
     "settings": "设置"
   },
+
+  "SavePasswordModal": {
+    "accountNameRequired": "Account Name Required",
+    "notNow": "Not Now",
+    "save": "Save",
+    "saveToKeychain": "Save Password to Keychain?"
+  },
+
   "SendMobForm": {
     "accountBalance": "账户余额",
     "accountName": "账户名",
@@ -384,10 +491,12 @@
     "cancel": "取消",
     "confirm": "确认转账",
     "confirmSend": "确认",
+    "description": "请输入收款人的地址和转账金额",
     "enterPin": "金额超过设定阈值，请输入您的 PIN。",
     "error": "无法创建交易。",
     "errorFee": "请预留 0.01 MOB 作为手续费。",
     "fee": "手续费",
+    "importTxConfirmation": "Import TxConfirmation",
     "intent": "请查看并确认您的转账交易",
     "mob": "MOB",
     "mobAmount": "MOB 金额",
@@ -400,6 +509,7 @@
     "recipientPlus1": "收款人地址",
     "recipientPlus2": "（对方地址）",
     "remaining": "账户余额",
+    "saveTxConfirmation": "Save Confirmation",
     "select": "选择账户",
     "send": "转账",
     "senderPlus": "发款人（您的）地址",
@@ -407,15 +517,13 @@
     "senderPlus2": "（您的地址）",
     "success": "转账成功",
     "syncing": "正在同步钱包……",
+    "title": "发送 MOB 到地址",
     "total": "总计",
     "transaction": "交易明细",
     "transactionCanceled": "交易已取消",
     "unnamed": "未命名账户"
   },
-  "SendMobPanel": {
-    "title": "发送 MOB 到地址",
-    "description": "请输入收款人的地址和转账金额"
-  },
+
   "SetPinModal": {
     "changePinButton": "设置 PIN 码",
     "description": "为了保证您的安全，当交易金额超过您设定的阈值时，您将需要使用您的 PIN 码来确认交易。",
@@ -430,6 +538,7 @@
     "pinRequired": "请输入 PIN 码",
     "pinSize": "PIN 码必须为 6 位数"
   },
+
   "SettingsOptionsItem": {
     "accounts": "ACCOUNTS",
     "changePassword": "修改密码",
@@ -439,10 +548,12 @@
     "retrieveEntropy": "查看备份口令",
     "terms": "用户条款"
   },
+
   "SettingsPage": {
     "changePasswordSuccess": "密码修改成功。",
     "changePinSuccess": "PIN 码设置成功。"
   },
+
   "ShowEntropyModal": {
     "back": "返回",
     "confirm": "请确认您已妥善保存好了您的备份口令",
@@ -455,6 +566,7 @@
     "show": "显示备份口令",
     "yes": "是的，我已妥善保存了备份口令"
   },
+
   "ShowRetrievedEntropyModal": {
     "description": "您的备份口令已解密并显示在下方。请妥善保存您的备份口令并确保只有您能够访问。备份口令可以用来把您的账号导入到其他钱包中。",
     "header": "您的备份口令",
@@ -462,11 +574,14 @@
     "secured": "我已妥善保存了备份口令",
     "show": "显示备份口令"
   },
+
   "SyncStatus": {
     "error": "错误，参见设置-管理面板",
+    "offlineMode": "Offline Mode Enabled",
     "synced": "同步完成",
     "syncing": "正在与账簿同步"
   },
+
   "TransactionDetails": {
     "addComment": "添加备注",
     "address": "地址",
@@ -478,6 +593,9 @@
       "save": "保存备注"
     },
     "changeComment": "修改备注",
+    "copyConfirmations": "Copy Confirmation(s)",
+    "invalid": "Invalid",
+    "noValidation": "No validation found",
     "orphaned": "??? 孤立",
     "orphanedTitle": "孤立交易",
     "orphanedExplaination": "这是一个孤立交易，这说明发款人发送到了一个未知的指定地址。这可能是因为您在其他钱包中设置了指定地址，或是您进行了账户的导入/恢复。我们建议您只在一个钱包中使用一个账户。",
@@ -488,19 +606,32 @@
     "transactionDetails": "交易详情",
     "txo": "交易输出",
     "txoDetails": "交易输出明细",
-    "typeHere": "开始输入"
+    "typeHere": "开始输入",
+    "validateConfirmations": "Validate Confirmation(s)",
+    "validated": "Validated"
   },
+
   "TermsOfUseDialog": {
     "close": "关闭"
   },
+
   "TermsOfUseView": {
     "settings": "设置",
     "terms": "用户条款"
   },
+
   "TransactionView": {
+    "invalidTransaction": "Not a valid TxConfirmation",
+    "mob": "MOB",
+    "pay": "Pay MOB",
     "receive": "收取 MOB",
-    "send": "发送 MOB"
+    "send": "发送 MOB",
+    "sendBuildError": "Could not build transaction.",
+    "sendSuccess": "Successfully sent ",
+    "transactionCanceled": "Transaction Canceled",
+    "txConfirmationSaved": "TxConfirmation Saved"
   },
+
   "UnlockAccount": {
     "description": "请输入钱包密码。如果您忘记了密码的话，可以通过您的备份口令重新导入账户。",
     "passwordLabel": "密码",
@@ -508,13 +639,17 @@
     "title": "解锁钱包",
     "unlockAccountButton": "解锁钱包"
   },
+
   "UnlockWallet": {
     "acceptTerms": "我已阅读并接受",
     "acceptTermsButton": "用户条款",
     "acceptTermsFormHelper": "您必须先阅读用户条款才能使用钱包。",
+    "deleteWallet": "Delete Wallet and Start Over",
     "description": "请输入钱包密码。如果您忘记了密码的话，可以通过您的备份口令重新导入账户。",
+    "offlineModeTooltip": "This will start Full Service in Offline Mode, which disables the ability to update the ledger and submit transactions",
     "passwordLabel": "密码",
     "passwordRequired": "请输入密码",
+    "startInOfflineMode": "Start in Offline Mode",
     "title": "解锁钱包",
     "unlockWalletButton": "解锁钱包"
   }

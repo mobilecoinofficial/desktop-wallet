@@ -26,10 +26,10 @@ export interface SendMobProps {
   isSynced: boolean;
   offlineModeEnabled: boolean;
   onClickCancel: () => void;
-  onClickConfirm: () => void;
+  onClickConfirm: (resetForm: () => void) => void;
   onClickSend: (x: SendParameters) => void;
   pinThresholdPmob: number;
-  saveTxConfirmation: () => void;
+  saveTxConfirmation: (resetForm: () => void) => void;
   selectedAccount: SelectedAccount;
   showing: Showing;
 }

@@ -79,14 +79,13 @@ const AccountCard: FC<AccountCardProps> = ({
   return (
     <Container className={classes.container} fixed maxWidth="sm">
       <Card data-testid="account-card" className={classes.root} {...rest}>
-        <CardContent>
+        <CardContent style={{ padding: '4px' }}>
           <Box
             display="flex"
             alignItems="center"
             flexDirection="column"
             textAlign="center"
             justifyContent="space-between"
-            minHeight={400}
           >
             <Box className={classes.corners}>
               <LogoIcon />
@@ -150,7 +149,7 @@ const AccountCard: FC<AccountCardProps> = ({
                   </Select>
                 )}
               </Box>
-              <Typography data-testid="account-card-short-code" color="textSecondary" variant="h4">
+              <Typography data-testid="account-card-short-code" color="textSecondary">
                 <ShortCode code={b58Code} />
               </Typography>
             </Box>

@@ -135,7 +135,7 @@ const SendMob: FC<SendMobProps> = ({
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
     if (valueAsPicoMob + fee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee');
+      error = t('errorFee', { limit: Number(fee) / 1000000000000 });
     }
     return error;
   };

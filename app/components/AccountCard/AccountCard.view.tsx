@@ -62,13 +62,10 @@ const AccountCard: FC<AccountCardProps> = ({
 
   const mobUrl = `mob:///b58/${b58Code}`;
 
-  const handleCodeClicked = () => {
+  const handleCodeClicked = () =>
     onClickCode(b58Code, isGift ? t('clipboardGift') : t('clipboardAddress'));
-  };
 
-  const handleToggleClick = () => {
-    setIsQRCode(!isQRCode);
-  };
+  const handleToggleClick = () => setIsQRCode(!isQRCode);
 
   let headerString = '';
   if (isQRCode) {
@@ -77,9 +74,7 @@ const AccountCard: FC<AccountCardProps> = ({
     headerString = isGift ? t('giftHeader') : t('accountHeader');
   }
 
-  const handleAccountSelectChange = (event) => {
-    selectAccount(event.target.value);
-  };
+  const handleAccountSelectChange = (event) => selectAccount(event.target.value);
 
   return (
     <Container className={classes.container} fixed maxWidth="sm">

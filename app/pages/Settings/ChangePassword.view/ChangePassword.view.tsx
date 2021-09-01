@@ -106,10 +106,6 @@ const ChangePasswordView: FC<ChangePasswordViewProps> = ({
         flexDirection="column"
       >
         <Typography variant="body2" color="textSecondary">
-          {t('description')}
-        </Typography>
-        <br />
-        <Typography variant="body2" color="textSecondary">
           {t('instructions')}
         </Typography>
       </Box>

@@ -53,6 +53,7 @@ const SendReceivePage: FC = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [sendingStatus, setSendingStatus] = useState(Showing.INPUT_FORM);
   const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
+  const [includeAccountId, setIncludeAccountId] = useState(true);
   const [formIsChecked, setIsChecked] = useState(false);
   const [formAlias, setAlias] = useState('');
   const [formRecipientPublicAddress, setRecipientPublicAddress] = useState('');
@@ -109,7 +110,7 @@ const SendReceivePage: FC = () => {
   const onClickConfirm = (resetForm: () => void) => {
     try {
       // fk setSlideExitSpeed(1000);
-      submitTransaction(confirmation.txProposal);
+      submitTransaction(confirmation.txProposal, includeAccountId);
 
       const totalValueConfirmationAsMob = convertPicoMobStringToMob(
         confirmation.totalValueConfirmation.toString()
@@ -165,6 +166,8 @@ const SendReceivePage: FC = () => {
       const { feeConfirmation, totalValueConfirmation, txProposal, txProposalReceiverB58Code } =
         result;
 
+      setIncludeAccountId(true);
+
       setConfirmation({
         feeConfirmation,
         totalValueConfirmation,
@@ -213,6 +216,7 @@ const SendReceivePage: FC = () => {
       ) {
         throw new Error(t('invalidTransaction'));
       }
+      setIncludeAccountId(false);
       setConfirmation(txConfirmation);
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {

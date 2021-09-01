@@ -1,13 +1,33 @@
-import { shell, nativeTheme } from 'electron';
+import { shell, nativeTheme, BrowserWindow } from 'electron';
 
 import config from '../../configs/app.config';
 import * as localStore from '../utils/LocalStore';
+
+const openAboutWindow = async (mainWindow) => {
+  const modal = new BrowserWindow({
+    autoHideMenuBar: true,
+    height: 150,
+    modal: true,
+    parent: mainWindow,
+    title: '',
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    width: 300,
+  });
+
+  await modal.loadFile('../app/menus/otherHelp.html', {
+    query: { version: process.env.npm_package_version },
+  });
+  return modal;
+};
 
 const defaultTemplate = (app, mainWindow, i18n) => {
   const submenuAbout = {
     label: i18n.t('Menu.mobileCoin'),
     submenu: [
       {
+        click: () => openAboutWindow(mainWindow),
         label: i18n.t('Menu.about'),
         selector: 'orderFrontStandardAboutPanel:',
       },
@@ -54,9 +74,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
     submenu: [
       {
         accelerator: 'Ctrl+Command+F',
-        click: () => {
-          this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen());
-        },
+        click: () => this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen()),
         label: i18n.t('Menu.View.toggleFullScreen'),
       },
       { type: 'separator' },
@@ -99,9 +117,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
     submenuViewProd.submenu.push({ type: 'separator' });
     submenuViewProd.submenu.push({
       accelerator: 'Alt+Command+I',
-      click: () => {
-        mainWindow.webContents.toggleDevTools();
-      },
+      click: () => mainWindow.webContents.toggleDevTools(),
       label: i18n.t('Menu.View.toggleDevTools'),
     });
 

@@ -2,9 +2,12 @@ import { store } from '../contexts/FullServiceContext';
 import * as fullServiceApi from '../fullService/api';
 import type { TxProposal } from '../types/TxProposal.d';
 
-const submitTransaction = async (txProposal: TxProposal): Promise<void> => {
+const submitTransaction = async (
+  txProposal: TxProposal,
+  includeAccountId = true
+): Promise<void> => {
   const { selectedAccount } = store.state;
-  const { accountId } = selectedAccount.account;
+  const accountId = includeAccountId ? selectedAccount.account.accountId : undefined;
   // submit transaction
   // TODO probably want to figure out what I want to save about this transaction log
   await fullServiceApi.submitTransaction({

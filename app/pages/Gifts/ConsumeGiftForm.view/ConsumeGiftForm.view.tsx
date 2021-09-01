@@ -104,7 +104,16 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
       })}
       onSubmit={(values) => onClickOpenGift(values.giftCodeB58)}
     >
-      {({ errors, isSubmitting, dirty, isValid, submitForm, values }) => {
+      {({
+        errors,
+        isSubmitting,
+        dirty,
+        handleBlur,
+        isValid,
+        setFieldValue,
+        submitForm,
+        values,
+      }) => {
         const selectedBalance =
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
@@ -149,6 +158,10 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                       name="giftCodeB58"
                       id="giftCodeB58"
                       type="text"
+                      onBlur={(event) => {
+                        handleBlur(event);
+                        setFieldValue('giftCodeB58', event.target.value.trim());
+                      }}
                     />
                   </Box>
                   {errors.submit && (

@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
-import { clipboard } from 'electron';
+import { app, clipboard, dialog, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
@@ -53,6 +53,7 @@ const SendReceivePage: FC = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [sendingStatus, setSendingStatus] = useState(Showing.INPUT_FORM);
   const [confirmation, setConfirmation] = useState(EMPTY_CONFIRMATION);
+  const [includeAccountId, setIncludeAccountId] = useState(true);
   const [formIsChecked, setIsChecked] = useState(false);
   const [formAlias, setAlias] = useState('');
   const [formRecipientPublicAddress, setRecipientPublicAddress] = useState('');
@@ -109,7 +110,7 @@ const SendReceivePage: FC = () => {
   const onClickConfirm = () => {
     try {
       // fk setSlideExitSpeed(1000);
-      submitTransaction(confirmation.txProposal);
+      submitTransaction(confirmation.txProposal, includeAccountId);
 
       const totalValueConfirmationAsMob = convertPicoMobStringToMob(
         confirmation.totalValueConfirmation.toString()
@@ -164,6 +165,8 @@ const SendReceivePage: FC = () => {
       const { feeConfirmation, totalValueConfirmation, txProposal, txProposalReceiverB58Code } =
         result;
 
+      setIncludeAccountId(true);
+
       setConfirmation({
         feeConfirmation,
         totalValueConfirmation,
@@ -176,24 +179,32 @@ const SendReceivePage: FC = () => {
     }
   };
 
-  const onClickCopyTxProposal = () => {
+  const saveTxConfirmation = async () => {
     const confirmationText = JSON.stringify(confirmation, (key, value) =>
       typeof value === 'bigint' ? `${value.toString()}n` : value
     );
-    clipboard.writeText(confirmationText);
-    enqueueSnackbar(t('transactionCopied'));
-    setSendingStatus(Showing.INPUT_FORM);
+    const success = await ipcRenderer.invoke('save-tx-confirmation', confirmationText);
+
+    if (success) {
+      enqueueSnackbar(t('txConfirmationSaved'), { variant: 'success' });
+      setSendingStatus(Showing.INPUT_FORM);
+    }
   };
 
-  const importTxProposalFromClipboard = () => {
+  const importTxConfirmation = async () => {
+    const txConfirmationText = await ipcRenderer.invoke('load-tx-confirmation');
+
+    if (txConfirmationText === undefined) {
+      return;
+    }
+
     try {
-      const txConfirmation = JSON.parse(clipboard.readText(), (key, value) => {
+      const txConfirmation = JSON.parse(txConfirmationText, (key, value) => {
         if (typeof value === 'string' && /^\d+n$/.test(value)) {
           return BigInt(value.substr(0, value.length - 1));
         }
         return value;
       }) as TxConfirmation;
-
       if (
         txConfirmation.feeConfirmation === undefined ||
         txConfirmation.totalValueConfirmation === undefined ||
@@ -202,7 +213,7 @@ const SendReceivePage: FC = () => {
       ) {
         throw new Error(t('invalidTransaction'));
       }
-
+      setIncludeAccountId(false);
       setConfirmation(txConfirmation);
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {
@@ -267,14 +278,14 @@ const SendReceivePage: FC = () => {
               contacts={contacts}
               existingPin={existingPin as string}
               feePmob={feePmob || '400000000'}
-              importTxProposalFromClipboard={importTxProposalFromClipboard}
+              importTxConfirmation={importTxConfirmation}
               isSynced={isSynced}
               offlineModeEnabled={offlineModeEnabled}
               onClickCancel={onClickCancel}
               onClickConfirm={onClickConfirm}
-              onClickCopyTxProposal={onClickCopyTxProposal}
               onClickSend={onClickSend}
               pinThresholdPmob={parseFloat(pinThresholdPmob)}
+              saveTxConfirmation={saveTxConfirmation}
               selectedAccount={selectedAccount}
               showing={sendingStatus}
             />

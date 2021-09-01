@@ -74,7 +74,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
     submenu: [
       {
         accelerator: 'Ctrl+Command+F',
-        click: () => this.mainWindow.setFullScreen(!this.mainWindow.isFullScreen()),
+        click: () => mainWindow.setFullScreen(!mainWindow.isFullScreen()),
         label: i18n.t('Menu.View.toggleFullScreen'),
       },
       { type: 'separator' },

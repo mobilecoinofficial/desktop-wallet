@@ -71,6 +71,9 @@ const installExtensions = async () => {
   ).catch(console.log);
 };
 
+let syncStatus = ''; // For the app to update, via ipcRenderer.send(...)
+let networkStatus = '';
+
 // TODO: rename this function to full service after integration
 // TODO: test
 const startFullService = (
@@ -91,6 +94,7 @@ const startFullService = (
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   console.log(`Offline Mode: ${startInOfflineMode}`);
+  networkStatus = startInOfflineMode ? 'OFFLINE' : 'ONLINE';
   const fullServiceExecPath = startInOfflineMode
     ? path.resolve(path.join(fullServiceBinariesPath, './start-full-service-offline.sh'))
     : path.resolve(path.join(fullServiceBinariesPath, './start-full-service.sh'));
@@ -135,8 +139,6 @@ const setFullServiceDbPaths = (): void => {
   localStore.setFullServiceDbPath(fullServiceDbPath);
   localStore.setLedgerDbPath(ledgerFullServiceDbPath);
 };
-
-let syncStatus = ''; // for the app to update, via ipcRenderer.send(...)
 
 setFullServiceDbPaths();
 
@@ -209,15 +211,19 @@ const createWindow = async () => {
   });
 
   mainWindow.on('close', () => {
-    const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
-    if (syncStatus !== 'SYNCED' && !leaveFullServiceRunning) {
-      const choice = dialog.showMessageBoxSync(mainWindow as BrowserWindow, {
-        buttons: [i18n.t('CloseApp.yes'), i18n.t('CloseApp.no')],
-        message: i18n.t('CloseApp.explain'),
-        title: i18n.t('CloseApp.confirm'),
-        type: 'question',
-      });
-      localStore.setLeaveFullServiceRunning(choice === 0);
+    if (networkStatus === 'OFFLINE') {
+      localStore.setLeaveFullServiceRunning(false);
+    } else {
+      const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
+      if (syncStatus !== 'SYNCED' && !leaveFullServiceRunning) {
+        const choice = dialog.showMessageBoxSync(mainWindow as BrowserWindow, {
+          buttons: [i18n.t('CloseApp.yes'), i18n.t('CloseApp.no')],
+          message: i18n.t('CloseApp.explain'),
+          title: i18n.t('CloseApp.confirm'),
+          type: 'question',
+        });
+        localStore.setLeaveFullServiceRunning(choice === 0);
+      }
     }
   });
 
@@ -319,6 +325,11 @@ app.on('activate', () => {
  */
 
 ipcMain.on('close-app', () => app.quit());
+
+ipcMain.on('network-status', (_e, status) => {
+  console.log('SETTING NETWORK STATUS', status);
+  networkStatus = status;
+});
 
 ipcMain.on('sync-status', (_e, status) => {
   syncStatus = status;

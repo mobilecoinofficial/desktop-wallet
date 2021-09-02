@@ -28,17 +28,6 @@ describe('Create Account', () => {
 
     expect(nameField).not.toBeFalsy();
     expect(submitButton).not.toBeFalsy();
-    expect(submitButton.disabled).toBeTruthy();
-  });
-
-  test('Submit button is enabled when account name is entered', async () => {
-    const { nameField, onClickCreate, submitButton } = setUpTest();
-
-    await act(async () => userEvent.type(nameField, SOME_NAME, { delay: 1 }));
-    expect(nameField.value).toEqual(SOME_NAME);
     expect(submitButton.disabled).toBeFalsy();
-
-    await act(async () => userEvent.click(submitButton));
-    expect(onClickCreate).toHaveBeenCalledWith(SOME_NAME);
   });
 });

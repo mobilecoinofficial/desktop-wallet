@@ -270,6 +270,7 @@ const createWindow = async () => {
     'start-full-service',
     (_, password: string, newPassword: string | null, startInOfflineMode: boolean) => {
       console.log('STARTING SERVICE');
+      localStore.setOfflineStart(startInOfflineMode);
       startFullService(password, newPassword, startInOfflineMode);
       return 'Service started';
     }

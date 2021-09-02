@@ -23,6 +23,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
   accounts,
   handleDeleteWallet,
   fullServiceIsRunning,
+  offlineStart,
 }: UnlockWalletViewProps) => {
   const { t } = useTranslation('UnlockWallet');
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -46,7 +47,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
         {t('description')}
       </Typography>
       <Formik
-        initialValues={{ password: '', startInOfflineMode: false, submit: null }}
+        initialValues={{ password: '', startInOfflineMode: !!offlineStart, submit: null }}
         validationSchema={Yup.object().shape({
           password: Yup.string().required(t('passwordRequired')),
         })}

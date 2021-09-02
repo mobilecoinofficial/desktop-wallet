@@ -3,4 +3,5 @@ export interface UnlockWalletViewProps {
   onClickUnlock: (password: string, startInOfflineMode: boolean) => void;
   handleDeleteWallet: () => void;
   fullServiceIsRunning: boolean;
+  offlineStart?: boolean;
 }

@@ -107,7 +107,7 @@ const SendReceivePage: FC = () => {
     await updateContacts(contacts);
   };
 
-  const onClickConfirm = () => {
+  const onClickConfirm = (resetForm: () => void) => {
     try {
       // fk setSlideExitSpeed(1000);
       submitTransaction(confirmation.txProposal, includeAccountId);
@@ -125,6 +125,7 @@ const SendReceivePage: FC = () => {
     } catch (err) {
       enqueueSnackbar(t('sendError'), { variant: 'error' });
     }
+    resetForm();
     setConfirmation(EMPTY_CONFIRMATION);
     setSendingStatus(Showing.INPUT_FORM);
   };
@@ -179,7 +180,7 @@ const SendReceivePage: FC = () => {
     }
   };
 
-  const saveTxConfirmation = async () => {
+  const saveTxConfirmation = async (resetForm: () => void) => {
     const confirmationText = JSON.stringify(confirmation, (key, value) =>
       typeof value === 'bigint' ? `${value.toString()}n` : value
     );
@@ -187,7 +188,9 @@ const SendReceivePage: FC = () => {
 
     if (success) {
       enqueueSnackbar(t('txConfirmationSaved'), { variant: 'success' });
+      setConfirmation(EMPTY_CONFIRMATION);
       setSendingStatus(Showing.INPUT_FORM);
+      resetForm();
     }
   };
 

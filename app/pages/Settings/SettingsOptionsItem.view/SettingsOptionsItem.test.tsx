@@ -22,7 +22,7 @@ describe('SettingsOptionsItem', () => {
       />
     );
 
-    expect(getByText('Change Passphrase')).toBeInTheDocument();
+    expect(getByText('Change Password')).toBeInTheDocument();
   });
 
   test('Click works', () => {

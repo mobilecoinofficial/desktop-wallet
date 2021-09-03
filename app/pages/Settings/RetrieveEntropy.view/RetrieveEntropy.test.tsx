@@ -24,7 +24,7 @@ describe('RetrieveEntropyView', () => {
     );
 
     expect(getByText('Retrieve Secret Entropy')).toBeInTheDocument();
-    const passwordField = (await screen.findByLabelText('Passphrase', {
+    const passwordField = (await screen.findByLabelText('Password', {
       selector: 'input',
     })) as HTMLInputElement;
     const submitButton = await screen.findByRole('button', { name: 'Retrieve Entropy' });

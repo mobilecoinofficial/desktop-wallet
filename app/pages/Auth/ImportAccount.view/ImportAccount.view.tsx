@@ -60,7 +60,16 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
             .required(t('entropyRequired')),
         })}
       >
-        {({ errors, isSubmitting, dirty, isValid, values, submitForm }) => (
+        {({
+          errors,
+          isSubmitting,
+          dirty,
+          handleBlur,
+          isValid,
+          setFieldValue,
+          values,
+          submitForm,
+        }) => (
           <Form name="ImportAccountFormName">
             <Field
               id="ImportAccountForm-accountNameField"
@@ -77,6 +86,10 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
               margin="dense"
               multiline
               name="entropy"
+              onBlur={(event) => {
+                handleBlur(event);
+                setFieldValue('entropy', event.target.value.trim());
+              }}
             />
             {errors.submit && (
               <Box mt={3}>

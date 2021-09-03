@@ -116,7 +116,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
     if (valueAsPicoMob + fee + fee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee');
+      error = t('errorFee', { limit: Number(fee) / 1000000000000 });
     }
     return error;
   };
@@ -241,7 +241,11 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     </Typography>
                     <Typography color="textPrimary">{t('giftConfirmationDescription')}:</Typography>
                   </Box>
-                  <Box display="flex" justifyContent="space-between">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    style={{ borderBottom: '1px solid' }}
+                  >
                     <Typography color="textPrimary">{t('accountBalance')}:</Typography>
                     <Typography color="textPrimary">
                       <MOBNumberFormat
@@ -250,10 +254,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                         value={selectedBalance?.toString()}
                       />
                     </Typography>
-                  </Box>
-                  <Box display="flex" justifyContent="space-between">
-                    <Typography color="textPrimary">---</Typography>
-                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="primary">{t('giftValue')}:</Typography>
@@ -279,7 +279,11 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                       />
                     </Typography>
                   </Box>
-                  <Box display="flex" justifyContent="space-between">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    style={{ borderBottom: '1px solid' }}
+                  >
                     <Typography color="textPrimary">{t('total')}:</Typography>
                     <Typography color="textPrimary">
                       <MOBNumberFormat
@@ -288,10 +292,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                         value={totalSent?.toString()}
                       />
                     </Typography>
-                  </Box>
-                  <Box display="flex" justifyContent="space-between">
-                    <Typography color="textPrimary">---</Typography>
-                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="primary">{t('remaining')}:</Typography>
@@ -303,7 +303,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                       />
                     </Typography>
                   </Box>
-                  <Box py={1} />
                   {/* TODO - after multiple accounts, we should actually store these gift codes. please check jira for full explanation */}
                   <Typography variant="body2" color="textPrimary">
                     {t('mobWillBeSent')}
@@ -338,6 +337,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                       margin="normal"
                       name="pin"
                       type="password"
+                      style={{ topMargin: 0 }}
                     />
                   )}
                   <Box display="flex" justifyContent="space-between" style={{ padding: '1rem' }}>

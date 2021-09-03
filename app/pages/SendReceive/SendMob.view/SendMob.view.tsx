@@ -140,7 +140,7 @@ const SendMob: FC<SendMobProps> = ({
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
     if (valueAsPicoMob + fee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee');
+      error = t('errorFee', { limit: Number(fee) / 1000000000000 });
     }
     return error;
   };
@@ -193,8 +193,8 @@ const SendMob: FC<SendMobProps> = ({
                 errors,
                 isSubmitting,
                 dirty,
+                handleBlur,
                 isValid,
-                resetForm,
                 setFieldValue,
                 setSubmitting,
                 values,
@@ -306,6 +306,10 @@ const SendMob: FC<SendMobProps> = ({
                         name="recipientPublicAddress"
                         type="text"
                         key="recipientPublicAddress"
+                        onBlur={(event) => {
+                          handleBlur(event);
+                          setFieldValue('recipientPublicAddress', event.target.value.trim());
+                        }}
                       />
                       <Field
                         component={TextField}

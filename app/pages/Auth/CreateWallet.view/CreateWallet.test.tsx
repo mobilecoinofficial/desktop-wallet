@@ -152,7 +152,7 @@ describe('Create Wallet', () => {
     expect(passwordField.value).toEqual(SHORT_PASSWORD);
     expect(submitButton.disabled).toBeTruthy();
     expect(
-      container.innerHTML.includes('Passphrase must be at least 8 characters in length.')
+      container.innerHTML.includes('Password must be at least 8 characters in length.')
     ).toBeTruthy();
   });
 
@@ -168,6 +168,6 @@ describe('Create Wallet', () => {
     expect(passwordConfirmationField.value).toEqual(WRONG_PASSWORD);
 
     expect(submitButton.disabled).toBeTruthy();
-    expect(container.innerHTML.includes('Must match Passphrase')).toBeTruthy();
+    expect(container.innerHTML.includes('Must match Password')).toBeTruthy();
   });
 });

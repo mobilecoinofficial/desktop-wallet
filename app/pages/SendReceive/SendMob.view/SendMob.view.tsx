@@ -131,13 +131,9 @@ const SendMob: FC<SendMobProps> = ({
     onClickCancel();
   };
 
-  const handleSaveConfirmation = (resetForm: () => void) => {
-    saveTxConfirmation(resetForm);
-  };
+  const handleSaveConfirmation = (resetForm: () => void) => saveTxConfirmation(resetForm);
 
-  const handleConfirmSubmit = (resetForm: () => void) => {
-    onClickConfirm(resetForm);
-  };
+  const handleConfirmSubmit = (resetForm: () => void) => onClickConfirm(resetForm);
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;

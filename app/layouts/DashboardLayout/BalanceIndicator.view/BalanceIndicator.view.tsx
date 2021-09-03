@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { MOBNumberFormat } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
+import { GOLD_LIGHT } from '../../../constants/colors';
 import { Theme } from '../../../theme';
 import { BalanceIndicatorProps } from './BalanceIndicator';
 
@@ -49,8 +50,8 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         </Typography>
       </Box>
       {!isSynced && !offlineModeEnabled && (
-        <Typography data-testid="balance-sync-message" variant="h6" color="primary">
-          {t('syncMessage')}
+        <Typography data-testid="balance-sync-message" variant="h6">
+          <span style={{ color: GOLD_LIGHT }}>{t('syncMessage')}</span>
         </Typography>
       )}
 

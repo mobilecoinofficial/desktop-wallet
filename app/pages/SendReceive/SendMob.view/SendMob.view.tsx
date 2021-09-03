@@ -135,7 +135,7 @@ const SendMob: FC<SendMobProps> = ({
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
     if (valueAsPicoMob + fee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee');
+      error = t('errorFee', { limit: Number(fee) / 1000000000000 });
     }
     return error;
   };
@@ -184,7 +184,16 @@ const SendMob: FC<SendMobProps> = ({
               })}
               onSubmit={() => {}}
             >
-              {({ errors, isSubmitting, dirty, isValid, setFieldValue, setSubmitting, values }) => {
+              {({
+                errors,
+                isSubmitting,
+                dirty,
+                handleBlur,
+                isValid,
+                setFieldValue,
+                setSubmitting,
+                values,
+              }) => {
                 // NOTE: because this is just a display for the value up to 3 dec mob,
                 // We do not need the precision to be BigInt
 
@@ -292,6 +301,10 @@ const SendMob: FC<SendMobProps> = ({
                         name="recipientPublicAddress"
                         type="text"
                         key="recipientPublicAddress"
+                        onBlur={(event) => {
+                          handleBlur(event);
+                          setFieldValue('recipientPublicAddress', event.target.value.trim());
+                        }}
                       />
                       <Field
                         component={TextField}

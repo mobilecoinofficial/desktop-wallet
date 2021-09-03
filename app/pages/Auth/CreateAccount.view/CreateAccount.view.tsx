@@ -44,7 +44,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
           accountName: Yup.string().max(64, t('accountNameValidation')),
         })}
       >
-        {({ errors, isSubmitting, dirty, isValid, submitForm, _ }) => (
+        {({ errors, isSubmitting, isValid, submitForm }) => (
           <Form name="CreateAccountFormName">
             <Field
               id="CreateAccountForm-accountNameField"
@@ -59,7 +59,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
               </Box>
             )}
             <SubmitButton
-              disabled={!dirty || !isValid || isSubmitting}
+              disabled={!isValid || isSubmitting}
               onClick={submitForm}
               isSubmitting={isSubmitting}
             >

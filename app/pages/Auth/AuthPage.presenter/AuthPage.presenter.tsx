@@ -78,6 +78,8 @@ const AuthPage: FC = () => {
   const [loading, setLoading] = useState(true);
   const [accountIds, setAccountIds] = useState([]);
 
+  const offlineStart = localStore.getOfflineStart();
+
   useEffect(() => {
     const controller = new AbortController();
     (async () => {
@@ -141,6 +143,7 @@ const AuthPage: FC = () => {
                 accounts={getKeychainAccounts()}
                 handleDeleteWallet={deleteWallet}
                 fullServiceIsRunning={fullServiceIsRunning}
+                offlineStart={offlineStart}
               />
             </Card>
           </Container>
@@ -198,6 +201,7 @@ const AuthPage: FC = () => {
               accounts={getKeychainAccounts()}
               handleDeleteWallet={deleteWallet}
               fullServiceIsRunning={fullServiceIsRunning}
+              offlineStart={offlineStart}
             />
           </Card>
         </Container>

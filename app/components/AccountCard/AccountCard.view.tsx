@@ -62,13 +62,10 @@ const AccountCard: FC<AccountCardProps> = ({
 
   const mobUrl = `mob:///b58/${b58Code}`;
 
-  const handleCodeClicked = () => {
+  const handleCodeClicked = () =>
     onClickCode(b58Code, isGift ? t('clipboardGift') : t('clipboardAddress'));
-  };
 
-  const handleToggleClick = () => {
-    setIsQRCode(!isQRCode);
-  };
+  const handleToggleClick = () => setIsQRCode(!isQRCode);
 
   let headerString = '';
   if (isQRCode) {
@@ -77,21 +74,18 @@ const AccountCard: FC<AccountCardProps> = ({
     headerString = isGift ? t('giftHeader') : t('accountHeader');
   }
 
-  const handleAccountSelectChange = (event) => {
-    selectAccount(event.target.value);
-  };
+  const handleAccountSelectChange = (event) => selectAccount(event.target.value);
 
   return (
     <Container className={classes.container} fixed maxWidth="sm">
       <Card data-testid="account-card" className={classes.root} {...rest}>
-        <CardContent>
+        <CardContent style={{ padding: '4px' }}>
           <Box
             display="flex"
             alignItems="center"
             flexDirection="column"
             textAlign="center"
             justifyContent="space-between"
-            minHeight={400}
           >
             <Box className={classes.corners}>
               <LogoIcon />
@@ -155,7 +149,7 @@ const AccountCard: FC<AccountCardProps> = ({
                   </Select>
                 )}
               </Box>
-              <Typography data-testid="account-card-short-code" color="textSecondary" variant="h4">
+              <Typography data-testid="account-card-short-code" color="textSecondary">
                 <ShortCode code={b58Code} />
               </Typography>
             </Box>

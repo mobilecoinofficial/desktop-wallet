@@ -104,7 +104,16 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
       })}
       onSubmit={(values) => onClickOpenGift(values.giftCodeB58)}
     >
-      {({ errors, isSubmitting, dirty, isValid, submitForm, values }) => {
+      {({
+        errors,
+        isSubmitting,
+        dirty,
+        handleBlur,
+        isValid,
+        setFieldValue,
+        submitForm,
+        values,
+      }) => {
         const selectedBalance =
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
@@ -149,6 +158,10 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                       name="giftCodeB58"
                       id="giftCodeB58"
                       type="text"
+                      onBlur={(event) => {
+                        handleBlur(event);
+                        setFieldValue('giftCodeB58', event.target.value.trim());
+                      }}
                     />
                   </Box>
                   {errors.submit && (
@@ -183,7 +196,11 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                           {t('giftConfirmation')}
                         </Typography>
                         <Box py={2} />
-                        <Box display="flex" justifyContent="space-between">
+                        <Box
+                          display="flex"
+                          justifyContent="space-between"
+                          style={{ borderBottom: '1px solid' }}
+                        >
                           <Typography color="textPrimary">{t('accountBalance')}:</Typography>
                           <Typography color="textPrimary">
                             <MOBNumberFormat
@@ -192,10 +209,6 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                               value={selectedBalance?.toString()}
                             />
                           </Typography>
-                        </Box>
-                        <Box display="flex" justifyContent="space-between">
-                          <Typography color="textPrimary">---</Typography>
-                          <Typography color="textPrimary">---</Typography>
                         </Box>
                         <Box display="flex" justifyContent="space-between">
                           <Typography color="textPrimary">{t('total')}:</Typography>
@@ -213,7 +226,11 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                             <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={feePmob} />
                           </Typography>
                         </Box>
-                        <Box display="flex" justifyContent="space-between">
+                        <Box
+                          display="flex"
+                          justifyContent="space-between"
+                          style={{ borderBottom: '1px solid' }}
+                        >
                           <Typography color="primary">{t('giftValue')}:</Typography>
                           <Typography color="primary">
                             <MOBNumberFormat
@@ -222,10 +239,6 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                               value={(confirmation?.giftValue - Number(feePmob)).toString()}
                             />
                           </Typography>
-                        </Box>
-                        <Box display="flex" justifyContent="space-between">
-                          <Typography>---</Typography>
-                          <Typography>---</Typography>
                         </Box>
                         <Box display="flex" justifyContent="space-between">
                           <Typography color="primary">{t('newBalance')}:</Typography>

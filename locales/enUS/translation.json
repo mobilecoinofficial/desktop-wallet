@@ -327,7 +327,7 @@
     "entropyRequired": "Entropy is required",
     "header": "Import an existing account for this desktop wallet.",
     "importAccountButton": "Import Account",
-    "legacyHex": "New wallets should have an Entropy with 24 mnemonic words. Legacy wallets use 64 hex characters. Please do not convert these values. Else, you will import the wrong account and have 0 balance.",
+    "legacyHex": "New wallets should have an Entropy with 24 mnemonic words. Legacy wallets use 64 hex characters. Please do not convert these values. If you do, you will import the wrong account and have 0 balance.",
     "nameLabel": "Account Name (optional)",
     "passwordConfirmationLabel": "Password Confirmation",
     "passwordConfirmationRef": "Must match Password",

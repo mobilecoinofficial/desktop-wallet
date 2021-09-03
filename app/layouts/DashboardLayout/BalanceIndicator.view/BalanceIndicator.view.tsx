@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { MOBNumberFormat } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
-import { BLUE_DARK, BLUE_LIGHT, GOLD_LIGHT, RED } from '../../../constants/colors';
+import { GOLD_LIGHT } from '../../../constants/colors';
 import { Theme } from '../../../theme';
 import { BalanceIndicatorProps } from './BalanceIndicator';
 

@@ -16,15 +16,15 @@ const ACCOUNTS = {
   accountIds: ['ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8'],
   accountMap: {
     ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8: {
-      object: 'account',
       accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
-      name: 'FK OWN',
+      firstBlockIndex: '0',
       keyDerivationVersion: '1',
       mainAddress:
         'syJAd2QoH7xSkZvMDV8Q6DdWhnRsmAKqx3LZ5BaLXKezCDjf6nUfps2b8ywm1scSMp5WDbYxNMu5mNniVkmb1fehAGaKQdNQWEEg4vHrCH',
-      nextSubaddressIndex: '2',
-      firstBlockIndex: '0',
+      name: 'FK OWN',
       nextBlockIndex: '161411',
+      nextSubaddressIndex: '2',
+      object: 'account',
       recoveryMode: false,
     },
   },
@@ -68,7 +68,7 @@ describe('AccountCard', () => {
   });
 
   test('renders name correctly', () => {
-    const container = setupComponent();
+    setupComponent();
     expect(screen.getByTestId('account-card-name').textContent).toEqual('FK OWN');
   });
 

@@ -60,16 +60,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
             .required(t('entropyRequired')),
         })}
       >
-        {({
-          errors,
-          isSubmitting,
-          dirty,
-          handleBlur,
-          isValid,
-          setFieldValue,
-          values,
-          submitForm,
-        }) => (
+        {({ errors, isSubmitting, dirty, handleBlur, isValid, setFieldValue, submitForm }) => (
           <Form name="ImportAccountFormName">
             <Field
               id="ImportAccountForm-accountNameField"

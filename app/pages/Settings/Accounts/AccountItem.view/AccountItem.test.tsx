@@ -50,10 +50,12 @@ describe('Account Item', () => {
       />
     );
 
-    expect(() => userEvent.click(container.querySelector('[name="deleteButton"]'))).toThrow();
+    // eslint-disable-next-line jest/valid-expect
+    expect(() => userEvent.click(container.querySelector('[name="deleteButton"]').toThrow()));
     expect(handleOnDelete).not.toHaveBeenCalled();
 
-    expect(() => userEvent.click(container.querySelector('[name="accountCard"]'))).toThrow();
+    // eslint-disable-next-line jest/valid-expect
+    expect(() => userEvent.click(container.querySelector('[name="accountCard"]')).toThrow());
     expect(handleOnClick).not.toHaveBeenCalled();
   });
 });

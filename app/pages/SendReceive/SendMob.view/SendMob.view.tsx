@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 
 import {
@@ -195,6 +195,7 @@ const SendMob: FC<SendMobProps> = ({
                 dirty,
                 handleBlur,
                 isValid,
+                resetForm,
                 setFieldValue,
                 setSubmitting,
                 values,

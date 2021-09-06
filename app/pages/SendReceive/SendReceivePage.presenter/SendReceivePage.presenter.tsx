@@ -187,6 +187,10 @@ const SendReceivePage: FC = () => {
     const success = await ipcRenderer.invoke('save-tx-confirmation', confirmationText);
 
     if (success) {
+      if (formIsChecked) {
+        saveToContacts();
+      }
+
       enqueueSnackbar(t('txConfirmationSaved'), { variant: 'success' });
       setConfirmation(EMPTY_CONFIRMATION);
       setSendingStatus(Showing.INPUT_FORM);

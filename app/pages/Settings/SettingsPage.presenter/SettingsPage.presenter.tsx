@@ -59,7 +59,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const SettingsPage: FC = () => {
   const classes = useStyles();
-  const { accounts, addingAccount, pinThresholdPmob, pin, selectedAccount } = useFullService();
+  const { accounts, addingAccount, offlineModeEnabled, pinThresholdPmob, pin, selectedAccount } =
+    useFullService();
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');
   const { enqueueSnackbar } = useSnackbar();
@@ -268,6 +269,7 @@ const SettingsPage: FC = () => {
           onClickBack={onClickBack}
           exportLedger={exportLedger}
           importLedger={importLedger}
+          offlineModeEnabled={offlineModeEnabled}
           selectedAccount={selectedAccount}
           configureFullServiceConfigs={configureFullServiceConfigs}
         />

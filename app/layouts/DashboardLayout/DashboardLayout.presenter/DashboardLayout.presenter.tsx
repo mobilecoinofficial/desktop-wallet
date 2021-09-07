@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const DashboardLayout: FC<DashboardLayoutProps> = ({ children, onClose }: DashboardLayoutProps) => {
+const DashboardLayout: FC<DashboardLayoutProps> = ({ children }: DashboardLayoutProps) => {
   const { offlineModeEnabled, selectedAccount, isEntropyKnown, isPinRequired, pendingSecrets } =
     useFullService();
   const classes = useStyles();

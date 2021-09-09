@@ -152,6 +152,8 @@ const SendReceivePage: FC = () => {
   }) => {
     let result;
 
+    // console.log(valuePmob);
+
     setAlias(alias);
     setIsChecked(isChecked);
     setRecipientPublicAddress(recipientPublicAddress);

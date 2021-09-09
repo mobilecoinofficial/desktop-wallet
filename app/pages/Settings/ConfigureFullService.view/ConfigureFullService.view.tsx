@@ -38,6 +38,7 @@ const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
   configureFullServiceConfigs,
   exportLedger,
   importLedger,
+  offlineModeEnabled,
   onClickBack,
   selectedAccount,
 }: ConfigureFullServiceViewProps) => {
@@ -78,7 +79,7 @@ const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
           {t('daemonDescriptionContinued')}
         </Typography>
       </Box>
-      <LedgerStatus selectedAccount={selectedAccount} />
+      <LedgerStatus selectedAccount={selectedAccount} offlineModeEnabled={offlineModeEnabled} />
       <LeaveFullServiceRunning
         leaveFullServiceRunning={leaveFullServiceRunning}
         toggleLeaveFullServiceRunning={toggleLeaveFullServiceRunning}

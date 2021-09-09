@@ -17,6 +17,7 @@ export interface ConfigureFullServiceViewProps {
   configureFullServiceConfigs: ConfigureFullServiceConfigs;
   exportLedger: () => void;
   importLedger: () => void;
-  selectedAccount: SelectedAccount;
+  offlineModeEnabled?: boolean;
   onClickBack: () => void;
+  selectedAccount: SelectedAccount;
 }

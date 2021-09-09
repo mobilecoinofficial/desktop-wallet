@@ -223,7 +223,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
               disableAutoFocus
               disableEnforceFocus
             >
-              <Slide in={showModal} timeout={{ enter: 0, exit: slideExitSpeed }}>
+              <Slide in={showModal} timeout={{ enter: 0 }}>
                 <Container className={classes.paper}>
                   <Box py={2}>
                     <Typography variant="h1" color="textPrimary">

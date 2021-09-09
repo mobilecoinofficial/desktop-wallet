@@ -55,7 +55,6 @@
     "remaining": "REMAINING BALANCE",
     "secureCode": "PLEASE SECURE CODE",
     "select": "SELECT ACCOUNT",
-    "showCode": "SHOW GIFT CODE",
     "total": "TOTAL",
     "unnamed": "UNNAMED ACCOUNT",
     "walletSyncing": "WALLET SYNCING"
@@ -255,6 +254,7 @@
   },
 
   "GiftingView": {
+    "hideCode": "CLOSE",
     "tabs": {
       "createGift": "CREATE GIFT",
       "myGifts": "MY GIFTS",

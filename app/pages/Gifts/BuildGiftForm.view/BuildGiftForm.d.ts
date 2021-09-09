@@ -14,7 +14,6 @@ export interface BuildGiftFormProps {
   feePmob: string;
   isSynced: boolean;
   onClickCancelBuild: () => void;
-  onClickCode: (code: string, text: string) => void;
   onClickConfirmBuild: () => void;
   onClickCreateGift: (x: string, y: string) => void;
   pinThresholdPmob: string;

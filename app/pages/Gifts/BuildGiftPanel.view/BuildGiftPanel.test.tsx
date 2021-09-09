@@ -187,10 +187,6 @@ describe('Build gift', () => {
 
     expect(container.parentElement.innerHTML.includes('Create Gifts of MOB')).toBeTruthy();
 
-    const showGiftCodeButton = container.parentElement.querySelector(
-      '[id="show-code-modal"]'
-    ) as HTMLInputElement;
-
     const cancelButton = container.parentElement.querySelector(
       '[id="cancel-modal"]'
     ) as HTMLInputElement;
@@ -199,7 +195,6 @@ describe('Build gift', () => {
       '[id="confirm-modal"]'
     ) as HTMLInputElement;
 
-    expect(showGiftCodeButton.disabled).toBeFalsy();
     expect(cancelButton.disabled).toBeFalsy();
     expect(confirmButton.disabled).not.toBeFalsy();
 
@@ -238,19 +233,10 @@ describe('Build gift', () => {
 
     expect(container.parentElement.innerHTML.includes('Create Gifts of MOB')).toBeTruthy();
 
-    const showGiftCodeButton = container.parentElement.querySelector(
-      '[id="show-code-modal"]'
-    ) as HTMLInputElement;
-
     const confirmButton = container.parentElement.querySelector(
       '[id="confirm-modal"]'
     ) as HTMLInputElement;
 
-    expect(showGiftCodeButton.disabled).toBeFalsy();
     expect(confirmButton.disabled).not.toBeFalsy();
-
-    await act(async () => userEvent.click(showGiftCodeButton));
-    // FK: THE FOLLOWING FAILS, UNEXPECTEDLY
-    // expect(confirmButton.disabled).toBeFalsy();
   });
 });

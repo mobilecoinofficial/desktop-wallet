@@ -46,7 +46,6 @@
     "remaining": "账户余额",
     "secureCode": "请妥善保管红包码",
     "select": "选择账户",
-    "showCode": "查看红包码",
     "total": "总计",
     "unnamed": "未命名账户",
     "walletSyncing": "钱包同步中"
@@ -213,6 +212,7 @@
     "m11": "十二月"
   },
   "GiftingView": {
+    "hideCode": "关闭",
     "tabs": {
       "createGift": "创建红包",
       "myGifts": "我的红包",

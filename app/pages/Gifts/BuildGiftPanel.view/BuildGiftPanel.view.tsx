@@ -105,7 +105,6 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}
               onClickCancelBuild={onClickCancelBuild}
-              onClickCode={onClickCode}
               onClickConfirmBuild={onClickConfirmBuild}
               onClickCreateGift={onClickCreateGift}
               showModal={showModal}

@@ -1,11 +1,13 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
+import { Box, Container, Fade, Grid, makeStyles, Modal, Tab, Tabs } from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
+import { AccountCard } from '../../../components/AccountCard';
+import { SubmitButton } from '../../../components/SubmitButton';
 import useFullService from '../../../hooks/useFullService';
 import {
   buildGiftCode,
@@ -24,8 +26,19 @@ import { BuildGiftPanel } from '../BuildGiftPanel.view';
 import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
+  modal: {
+    alignItems: 'center',
+    display: 'flex',
+    justifyContent: 'center',
+  },
   padding: {
     paddingBottom: theme.spacing(3),
+  },
+  paper: {
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(3, 4),
   },
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -52,6 +65,8 @@ const GiftsPage: FC = () => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [giftCode, setGiftCode] = useState('');
+  const [showGiftCode, setshowGiftCode] = useState(false);
   const [showModalBuild, setShowModalBuild] = useState(false);
   const [showModalConsume, setShowModalConsume] = useState(false);
   const [confirmationBuild, setConfirmationBuild] = useState(EMPTY_CONFIRMATION_BUILD);
@@ -132,15 +147,19 @@ const GiftsPage: FC = () => {
 
       await getAllGiftCodes();
       enqueueSnackbar(t('giftCreated'), { variant: 'success' });
+
+      setGiftCode(confirmationBuild.giftCodeB58);
+      setshowGiftCode(true);
     } catch (err) {
       enqueueSnackbar(t('errorCreate'), { variant: 'error' });
     }
+
     setConfirmationBuild(EMPTY_CONFIRMATION_BUILD);
   };
 
-  const onClickDeleteGiftCodeBuild = async (giftCode: string) => {
+  const onClickDeleteGiftCodeBuild = async (giftCodeToDelete: string) => {
     try {
-      await deleteStoredGiftCodeB58(giftCode);
+      await deleteStoredGiftCodeB58(giftCodeToDelete);
       enqueueSnackbar(t('giftDeleted'), { variant: 'success' });
     } catch (err) {
       enqueueSnackbar(err.message, { variant: 'error' });
@@ -218,27 +237,59 @@ const GiftsPage: FC = () => {
             <Tab label={t('tabs.openGift')} />
           </Tabs>
           {selectedTabIndex === 0 && (
-            <BuildGiftPanel
-              accounts={accounts}
-              buildGiftCode={buildGiftCode}
-              confirmation={confirmationBuild}
-              deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
-              existingPin={existingPin as string}
-              feePmob={feePmob || '400000000'}
-              getAllGiftCodes={getAllGiftCodes}
-              giftCodes={giftCodes}
-              handleCopyClick={handleCodeClicked}
-              isSynced={isSynced}
-              onClickCancelBuild={onClickCancelBuild}
-              onClickCode={handleCodeClicked}
-              onClickConfirmBuild={onClickConfirmBuild}
-              onClickCreateGift={onClickCreateGift}
-              onClickDeleteGiftCode={onClickDeleteGiftCodeBuild}
-              pinThresholdPmob={pinThresholdPmob}
-              selectedAccount={selectedAccount}
-              showModal={showModalBuild}
-              submitGiftCode={submitGiftCode}
-            />
+            <>
+              <BuildGiftPanel
+                accounts={accounts}
+                buildGiftCode={buildGiftCode}
+                confirmation={confirmationBuild}
+                deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
+                existingPin={existingPin as string}
+                feePmob={feePmob || '400000000'}
+                getAllGiftCodes={getAllGiftCodes}
+                giftCodes={giftCodes}
+                handleCopyClick={handleCodeClicked}
+                isSynced={isSynced}
+                onClickCancelBuild={onClickCancelBuild}
+                onClickCode={handleCodeClicked}
+                onClickConfirmBuild={onClickConfirmBuild}
+                onClickCreateGift={onClickCreateGift}
+                onClickDeleteGiftCode={onClickDeleteGiftCodeBuild}
+                pinThresholdPmob={pinThresholdPmob}
+                selectedAccount={selectedAccount}
+                showModal={showModalBuild}
+                submitGiftCode={submitGiftCode}
+              />
+              {showGiftCode && (
+                <Modal
+                  data-testid="close-gift-code-modal"
+                  className={classes.modal}
+                  open={showGiftCode}
+                  onClose={() => setshowGiftCode(false)}
+                  closeAfterTransition
+                  disableAutoFocus
+                  disableEnforceFocus
+                >
+                  <Fade in={showGiftCode}>
+                    <div>
+                      <Container className={classes.paper}>
+                        <Box py={2}>
+                          <AccountCard
+                            isGift
+                            account={{
+                              b58Code: giftCode,
+                            }}
+                            onClickCode={handleCodeClicked}
+                          />
+                          <SubmitButton onClick={() => setshowGiftCode(false)} id="gift-code-modal">
+                            {t('hideCode')}
+                          </SubmitButton>
+                        </Box>
+                      </Container>
+                    </div>
+                  </Fade>
+                </Modal>
+              )}
+            </>
           )}
           {selectedTabIndex === 1 && (
             <ConsumeGiftForm

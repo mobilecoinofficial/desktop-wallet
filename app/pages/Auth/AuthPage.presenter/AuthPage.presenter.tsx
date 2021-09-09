@@ -65,6 +65,8 @@ const untilFullServiceRuns = async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
+
+  return false;
 };
 /* eslint-enable no-await-in-loop */
 

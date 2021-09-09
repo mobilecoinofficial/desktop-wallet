@@ -37,7 +37,7 @@ describe('Account Item', () => {
     const handleOnClick = jest.fn();
     const handleOnDelete = jest.fn();
 
-    const { container, getByText } = render(
+    const { container } = render(
       <AccountItem
         account={{
           mainAddress:
@@ -50,9 +50,11 @@ describe('Account Item', () => {
       />
     );
 
-    expect(() => userEvent.click(container.querySelector('[name="deleteButton"]')).toThrow());
+    // eslint-disable-next-line jest/valid-expect
+    expect(() => userEvent.click(container.querySelector('[name="deleteButton"]').toThrow()));
     expect(handleOnDelete).not.toHaveBeenCalled();
 
+    // eslint-disable-next-line jest/valid-expect
     expect(() => userEvent.click(container.querySelector('[name="accountCard"]')).toThrow());
     expect(handleOnClick).not.toHaveBeenCalled();
   });

@@ -1,12 +1,9 @@
 import React from 'react';
 
-import { act, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render } from '@testing-library/react';
 
 import '../../../testUtils/i18nForTests';
 import { CreateAccountView } from './CreateAccount.view';
-
-const SOME_NAME = 'Some name';
 
 const setUpTest = (onClickCreate = jest.fn()) => {
   const { container } = render(<CreateAccountView onClickCreate={onClickCreate} />);

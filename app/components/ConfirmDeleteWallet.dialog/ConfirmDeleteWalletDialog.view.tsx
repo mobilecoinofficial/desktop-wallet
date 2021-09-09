@@ -29,7 +29,7 @@ const ConfirmDeleteWalletDialog = (props: ConfirmDeleteWalletDialogProps): JSX.E
           })}
           onSubmit={confirm}
         >
-          {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
+          {({ isSubmitting, dirty, isValid, submitForm }) => (
             <Form name="UnlockWalletInnerForm">
               <Box display="flex">
                 <Box display="flex" alignItems="center" flexDirection="row-reverse">

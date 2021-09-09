@@ -27,20 +27,20 @@ const InactivityDetect: FC<InactivityDetectProps> = ({
 
   let prepareForLogout = (): void | undefined => undefined; // to avoid "use before defining" ESLint complaint
 
-  // const resetTimer = () => {
-  //   if (inactivityTimer) {
-  //     clearTimeout(inactivityTimer);
-  //   }
-  //   inactivityTimer = window.setTimeout(prepareForLogout, TIME_FOR_INACTIVITY);
-  // };
+  const resetTimer = () => {
+    if (inactivityTimer) {
+      clearTimeout(inactivityTimer);
+    }
+    inactivityTimer = window.setTimeout(prepareForLogout, TIME_FOR_INACTIVITY);
+  };
 
-  // const reenableTimer = () => {
-  //   clearTimeout(reactionTimer);
-  //   setInactiveTooLong(false);
-  //   resetTimer();
-  //   document.onmousemove = resetTimer;
-  //   document.onkeypress = resetTimer;
-  // };
+  const reenableTimer = () => {
+    clearTimeout(reactionTimer);
+    setInactiveTooLong(false);
+    resetTimer();
+    document.onmousemove = resetTimer;
+    document.onkeypress = resetTimer;
+  };
 
   prepareForLogout = () => {
     const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);

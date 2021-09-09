@@ -22,7 +22,7 @@ ipcRenderer.on('language-changed', (_, message) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // eslint-disable-next-line global-require
+  // eslint-disable-next-line global-require, import/extensions
   const App = require('./App.tsx').default;
 
   render(

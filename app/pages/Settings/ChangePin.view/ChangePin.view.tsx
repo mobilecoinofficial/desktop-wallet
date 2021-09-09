@@ -87,9 +87,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
 
   const validatePin = (st: string) => (isValidPin(st) ? '' : t('errorPin'));
 
-  const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
-    event.target.select();
-  };
+  const handleSelect = (event: ChangeEvent<HTMLInputElement>) => event.target.select();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {

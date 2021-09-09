@@ -232,9 +232,7 @@ const AuthPage: FC = () => {
     }
   };
 
-  const onClickCancel = () => {
-    addAccount(false);
-  };
+  const onClickCancel = () => addAccount(false);
 
   return (
     <Box data-testid="AuthPageId" className={classes.root}>

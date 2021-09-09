@@ -23,10 +23,7 @@ const LoadingScreen: FC = () => {
 
   useEffect(() => {
     NProgress.start();
-
-    return () => {
-      NProgress.done();
-    };
+    return () => NProgress.done();
   }, []);
 
   return (

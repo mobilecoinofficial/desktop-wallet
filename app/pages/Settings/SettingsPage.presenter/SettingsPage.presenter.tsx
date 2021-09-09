@@ -189,10 +189,7 @@ const SettingsPage: FC = () => {
 
   const onClickBack = () => setShowing(SETTINGS);
 
-  const onClickAddAccount = () => {
-    addAccount(true);
-  };
-
+  const onClickAddAccount = () => addAccount(true);
   if (addingAccount) {
     return <Redirect to={routePaths.ROOT} />;
   }

@@ -105,7 +105,7 @@ const SettingsPage: FC = () => {
         variant: 'success',
       });
     } catch (err) {
-      console.log('ERROR', err);
+      console.log('ERROR', err); // eslint-disable-line no-console
     }
   };
 
@@ -115,7 +115,7 @@ const SettingsPage: FC = () => {
       /* istanbul ignore next */
       enqueueSnackbar(t('changePinSuccess'), { variant: 'success' });
     } catch (err) {
-      console.log('ERROR!', err);
+      console.log('ERROR!', err); // eslint-disable-line no-console
     }
   };
 
@@ -128,7 +128,7 @@ const SettingsPage: FC = () => {
       }
       setEntropy(entropyString);
     } catch (err) {
-      console.log('ERROR!!!', err);
+      console.log('ERROR!!!', err); // eslint-disable-line no-console
     }
   };
 

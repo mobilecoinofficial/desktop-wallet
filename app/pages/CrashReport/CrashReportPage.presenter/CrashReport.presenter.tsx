@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const handleQuitApplication = () => {
-  console.log('Quitting...');
+  console.log('Quitting...'); // eslint-disable-line no-console
   ipcRenderer.send('close-app');
 };
 
@@ -47,8 +47,8 @@ const CrashReportPage: FC = () => {
   const closeLog = () => setOpenShowLog(false);
 
   const handleSendDebugLog = (text: string) => {
-    console.log('Sending log somewhere, somehow...');
-    console.log(text);
+    console.log('Sending log somewhere, somehow...'); // eslint-disable-line no-console
+    console.log(text); // eslint-disable-line no-console
   };
 
   return (

@@ -18,7 +18,7 @@ const writeLog = (msg: string, lvl = 'INFO'): void => {
     logStream.write(output);
     logStream.write('\n');
     process.nextTick(() => logStream.uncork());
-    console.log('>>>>>>>>>>>>>', output);
+    console.log('>>>>>>>>>>>>>', output); // eslint-disable-line no-console
   }
 };
 

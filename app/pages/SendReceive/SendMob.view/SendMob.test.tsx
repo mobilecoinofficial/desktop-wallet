@@ -12,7 +12,7 @@ import { SendMob } from './SendMob.view';
 jest.setTimeout(30000);
 
 const AMOUNT_TO_SEND = 44;
-const INITIAL_BALANCE = 229;
+const INITIAL_BALANCE = 150;
 const ACCOUNT_NEW_NAME = 'SOMEONE';
 
 const PUBLIC_ADDRESS =
@@ -195,6 +195,7 @@ describe('Send Mob', () => {
     await waitFor(() => expect(recipientAddress.value).toEqual(PUBLIC_ADDRESS));
     await waitFor(() => expect(submitButton.disabled).toBeTruthy());
 
+    await act(async () => userEvent.click(mobAmount));
     await act(async () => userEvent.type(mobAmount, String(AMOUNT_TO_SEND), { delay: 1 }));
     await waitFor(() => expect(mobAmount.value.includes(String(AMOUNT_TO_SEND))).toBeTruthy());
     await waitFor(() => expect(saveToContactsCheck.disabled).toBeFalsy());
@@ -228,7 +229,9 @@ describe('Send Mob', () => {
       showing: 0,
     });
 
+    await act(async () => userEvent.click(recipientAddress));
     await act(async () => userEvent.type(recipientAddress, PUBLIC_ADDRESS, { delay: 1 }));
+    await act(async () => userEvent.click(mobAmount));
     await act(async () => userEvent.type(mobAmount, String(AMOUNT_TO_SEND), { delay: 1 }));
     await waitFor(() => expect(submitButton.disabled).toBeFalsy());
 
@@ -238,6 +241,7 @@ describe('Send Mob', () => {
 
     const aliasField = container.querySelector('[name="alias"]') as HTMLInputElement;
     await waitFor(() => expect(aliasField).not.toBeFalsy());
+    await act(async () => userEvent.click(aliasField));
     await act(async () => userEvent.type(aliasField, ACCOUNT_NEW_NAME, { delay: 1 }));
     await waitFor(() => expect(aliasField.value).toEqual(ACCOUNT_NEW_NAME));
     await waitFor(() => expect(submitButton.disabled).toBeFalsy());

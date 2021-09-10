@@ -10335,6 +10335,11 @@ js-base64@^2.1.8:
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.6.4.tgz#f4e686c5de1ea1f867dbcad3d46d969428df98c4"
   integrity sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ==
 
+js-big-decimal@^1.3.4:
+  version "1.3.4"
+  resolved "https://registry.yarnpkg.com/js-big-decimal/-/js-big-decimal-1.3.4.tgz#212f6e18bdc332b73a2ec2e5ea322c5a7516289e"
+  integrity sha512-wF8j7/WuGn/mwcgo7xofgeQTmJAf8uaiNRFWaM3usTn4NSQtyggdg8FofFumuVnvftWYEmHZBtxKgRK9hlOPiw==
+
 js-message@1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/js-message/-/js-message-1.0.7.tgz#fbddd053c7a47021871bb8b2c95397cc17c20e47"

@@ -151,7 +151,6 @@ const SendMob: FC<SendMobProps> = ({
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.select();
   };
-
   const NO_CONTACT_SELECTED = '';
 
   return (

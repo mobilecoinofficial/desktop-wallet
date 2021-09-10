@@ -2,7 +2,7 @@ import { convertMobStringToPicoMobString, convertPicoMobStringToMob, commafy } f
 
 describe('convertMobStringToPicoMobString', () => {
   test('works for 0', () => {
-    expect(convertMobStringToPicoMobString('0')).toBe('0000000000000');
+    expect(convertMobStringToPicoMobString('0')).toBe('0');
   });
 
   test('works for 1', () => {
@@ -14,7 +14,9 @@ describe('convertMobStringToPicoMobString', () => {
   });
 
   test('works for a large value like 12345678901234', () => {
-    expect(convertMobStringToPicoMobString('12345678901234')).toBe('12345678901234000000000000');
+    expect(convertMobStringToPicoMobString('12345678901234.0001')).toBe(
+      '12345678901234000100000000'
+    );
   });
 
   test('throws for non-numbers', () => {

@@ -95,7 +95,9 @@ const AccountsView: FC<AccountsViewProps> = ({
   const handleOpenDeleteAccountConfirmation = (accountId: string) => {
     setAccountIdToDelete(accountId);
     const { mainAddress } = accounts.accountMap[accountId];
-    const shortCode = mainAddress.substring(0, 4) + mainAddress.substring(mainAddress.length - 4);
+    const shortCode = `${mainAddress.substring(0, 4)}-${mainAddress.substring(
+      mainAddress.length - 4
+    )}`;
     setAccountShortCodeToDelete(shortCode);
     setShowDeleteAccountConfirmation(true);
   };
@@ -159,7 +161,6 @@ const AccountsView: FC<AccountsViewProps> = ({
         <DeleteAccountConfirmationView
           confirm={handleDeleteAccount}
           cancel={() => setShowDeleteAccountConfirmation(false)}
-          selectedAccountId={accountIdToDelete}
           shortCode={accountShortCodeToDelete}
         />
       </Dialog>

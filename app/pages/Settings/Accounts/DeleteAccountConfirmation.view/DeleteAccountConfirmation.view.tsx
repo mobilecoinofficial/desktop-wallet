@@ -20,7 +20,6 @@ import { DeleteAccountConfirmationViewProps } from './DeleteAccountConfirmation'
 const DeleteAccountConfirmationView: FC<DeleteAccountConfirmationViewProps> = ({
   confirm,
   cancel,
-  selectedAccountId,
   shortCode,
 }: DeleteAccountConfirmationViewProps) => {
   const { t } = useTranslation('DeleteAccountConfirmationView');
@@ -33,7 +32,7 @@ const DeleteAccountConfirmationView: FC<DeleteAccountConfirmationViewProps> = ({
       validationSchema={Yup.object().shape({
         checkedConfirm: Yup.bool().oneOf([true], t('checkedConfirmValidation')),
         shortCodeConfirmation: Yup.string()
-          .oneOf([shortCode])
+          .oneOf([shortCode], t('shortCodeConfirmationDoesntMatch'))
           .required(t('verifyShortCodeRequired')),
       })}
       onSubmit={confirm}
@@ -45,7 +44,6 @@ const DeleteAccountConfirmationView: FC<DeleteAccountConfirmationViewProps> = ({
             <DialogContentText id="alert-dialog-description">
               {t('deleteDialogDescription')}
             </DialogContentText>
-            <DialogContentText color="textPrimary">{selectedAccountId}</DialogContentText>
             <Field
               component={TextField}
               fullWidth

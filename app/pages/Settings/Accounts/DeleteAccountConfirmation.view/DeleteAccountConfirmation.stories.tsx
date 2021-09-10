@@ -17,6 +17,5 @@ export const DeleteAccountConfirmation = Template.bind({});
 DeleteAccountConfirmation.args = {
   cancel: undefined,
   confirm: undefined,
-  selectedAccountId: '3b4522e8e42a2269f802f16f6999062c1c0e6aafe765eef8f7b78156f9d6b2c5',
   shortCode: '7AqV3PSf',
 };

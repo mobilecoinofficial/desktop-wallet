@@ -4,6 +4,7 @@ import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { act } from 'react-dom/test-utils';
+import '../../../../testUtils/i18nForTests';
 
 import { DeleteAccountConfirmationView } from './DeleteAccountConfirmation.view';
 

@@ -224,6 +224,10 @@
     "verifyShortCodeRequired": "Please enter the main address short code for this account"
   },
 
+  "GiftCode": {
+    "close": "关闭"
+  },
+
   "GiftingView": {
     "hideCode": "关闭",
     "tabs": {

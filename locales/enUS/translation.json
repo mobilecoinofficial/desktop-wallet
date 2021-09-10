@@ -292,6 +292,10 @@
     "verifyShortCodeRequired": "Please enter the main address short code for this account"
   },
 
+  "GiftCode": {
+    "close": "Close"
+  },
+
   "GiftingView": {
     "confirmationNotFound": "Could not find confirmation",
     "errorBuild": "Could not build gift code.",

@@ -265,6 +265,10 @@
     "verifyShortCodeRequired": "PLEASE ENTER THE MAIN ADDRESS SHORT CODE FOR THIS ACCOUNT"
   },
 
+  "GiftCode": {
+    "close": "CLOSE"
+  },
+
   "GiftingView": {
     "hideCode": "CLOSE",
     "tabs": {

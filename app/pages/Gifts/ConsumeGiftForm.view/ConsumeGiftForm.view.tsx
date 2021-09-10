@@ -23,7 +23,7 @@ import * as Yup from 'yup';
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
-import { ConsumeGiftFormProps } from './ConsumeGiftForm';
+import type { ConsumeGiftFormProps } from './ConsumeGiftForm.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

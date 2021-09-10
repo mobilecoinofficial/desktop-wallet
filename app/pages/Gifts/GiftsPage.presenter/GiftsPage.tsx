@@ -1,13 +1,11 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Container, Fade, Grid, makeStyles, Modal, Tab, Tabs } from '@material-ui/core';
+import { Box, Fade, Grid, makeStyles, Modal, Tab, Tabs } from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import { AccountCard } from '../../../components/AccountCard';
-import { SubmitButton } from '../../../components/SubmitButton';
 import useFullService from '../../../hooks/useFullService';
 import {
   buildGiftCode,
@@ -24,6 +22,7 @@ import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
 import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
+import { GiftCode } from '../GiftCode.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
   modal: {
@@ -33,12 +32,6 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   padding: {
     paddingBottom: theme.spacing(3),
-  },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(3, 4),
   },
   root: {
     backgroundColor: theme.palette.background.dark,
@@ -88,11 +81,10 @@ const GiftsPage: FC = () => {
 
   const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
-  const handleChange = (_event: ChangeEvent<HTMLElement>, newSelectedTabIndex: number) => {
+  const handleChange = (_event: ChangeEvent<HTMLElement>, newSelectedTabIndex: number) =>
     setSelectedTabIndex(newSelectedTabIndex);
-  };
 
-  const handleCodeClicked = (code: string, text: string) => {
+  const handleCodeClicked = (code: string, text = '') => {
     clipboard.writeText(code);
     if (text) {
       enqueueSnackbar(text, { variant: 'success' });
@@ -218,6 +210,8 @@ const GiftsPage: FC = () => {
     setShowModalConsume(false);
   };
 
+  const onClickCloseGiftPopup = () => setshowGiftCode(false);
+
   useEffect(getAllGiftCodes, []);
   useEffect(getFeePmob, []);
 
@@ -240,12 +234,9 @@ const GiftsPage: FC = () => {
             <>
               <BuildGiftPanel
                 accounts={accounts}
-                buildGiftCode={buildGiftCode}
                 confirmation={confirmationBuild}
-                deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
                 existingPin={existingPin as string}
                 feePmob={feePmob || '400000000'}
-                getAllGiftCodes={getAllGiftCodes}
                 giftCodes={giftCodes}
                 handleCopyClick={handleCodeClicked}
                 isSynced={isSynced}
@@ -257,38 +248,26 @@ const GiftsPage: FC = () => {
                 pinThresholdPmob={pinThresholdPmob}
                 selectedAccount={selectedAccount}
                 showModal={showModalBuild}
-                submitGiftCode={submitGiftCode}
               />
-              {showGiftCode && (
-                <Modal
-                  data-testid="close-gift-code-modal"
-                  className={classes.modal}
-                  open={showGiftCode}
-                  onClose={() => setshowGiftCode(false)}
-                  closeAfterTransition
-                  disableAutoFocus
-                  disableEnforceFocus
-                >
-                  <Fade in={showGiftCode}>
-                    <div>
-                      <Container className={classes.paper}>
-                        <Box py={2}>
-                          <AccountCard
-                            isGift
-                            account={{
-                              b58Code: giftCode,
-                            }}
-                            onClickCode={handleCodeClicked}
-                          />
-                          <SubmitButton onClick={() => setshowGiftCode(false)} id="gift-code-modal">
-                            {t('hideCode')}
-                          </SubmitButton>
-                        </Box>
-                      </Container>
-                    </div>
-                  </Fade>
-                </Modal>
-              )}
+              <Modal
+                data-testid="close-gift-code-modal"
+                className={classes.modal}
+                open={showGiftCode}
+                onClose={onClickCloseGiftPopup}
+                closeAfterTransition
+                disableAutoFocus
+                disableEnforceFocus
+              >
+                <Fade in={showGiftCode}>
+                  <div>
+                    <GiftCode
+                      onClickCode={handleCodeClicked}
+                      onCloseClick={onClickCloseGiftPopup}
+                      giftCode={giftCode}
+                    />
+                  </div>
+                </Fade>
+              </Modal>
             </>
           )}
           {selectedTabIndex === 1 && (

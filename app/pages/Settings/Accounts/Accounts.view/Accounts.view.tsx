@@ -11,11 +11,13 @@ import {
   Button,
   Grid,
   Fab,
+  Dialog,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import type { Theme } from '../../../../theme';
 import { AccountItem } from '../AccountItem.view';
+import { DeleteAccountConfirmationView } from '../DeleteAccountConfirmation.view';
 import { AccountsViewProps } from './Accounts';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -83,9 +85,27 @@ const AccountsView: FC<AccountsViewProps> = ({
   const classes = useStyles();
   const { t } = useTranslation('AccountsView');
   const [firstToShow, setFirstToShow] = useState(0);
+  const [showDeleteAccountConfirmation, setShowDeleteAccountConfirmation] = useState(false);
+  const [accountIdToDelete, setAccountIdToDelete] = useState('');
+  const [accountShortCodeToDelete, setAccountShortCodeToDelete] = useState('');
 
   const pageBack = () => setFirstToShow(firstToShow - 5);
   const pageForward = () => setFirstToShow(firstToShow + 5);
+
+  const handleOpenDeleteAccountConfirmation = (accountId: string) => {
+    setAccountIdToDelete(accountId);
+    const { mainAddress } = accounts.accountMap[accountId];
+    const shortCode = `${mainAddress.substring(0, 4)}-${mainAddress.substring(
+      mainAddress.length - 4
+    )}`;
+    setAccountShortCodeToDelete(shortCode);
+    setShowDeleteAccountConfirmation(true);
+  };
+
+  const handleDeleteAccount = () => {
+    deleteAccount(accountIdToDelete);
+    setShowDeleteAccountConfirmation(false);
+  };
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -104,7 +124,7 @@ const AccountsView: FC<AccountsViewProps> = ({
               key={accountId}
               account={accounts.accountMap[accountId]}
               onClick={() => selectAccount(accountId)}
-              onDelete={() => deleteAccount(accountId)}
+              onDelete={() => handleOpenDeleteAccountConfirmation(accountId)}
               selected={selectedAccount.account.accountId === accountId}
             />
           ))}
@@ -134,6 +154,16 @@ const AccountsView: FC<AccountsViewProps> = ({
           +
         </Fab>
       </Grid>
+      <Dialog
+        open={showDeleteAccountConfirmation}
+        onClose={() => setShowDeleteAccountConfirmation(false)}
+      >
+        <DeleteAccountConfirmationView
+          confirm={handleDeleteAccount}
+          cancel={() => setShowDeleteAccountConfirmation(false)}
+          shortCode={accountShortCodeToDelete}
+        />
+      </Dialog>
     </Container>
   );
 };

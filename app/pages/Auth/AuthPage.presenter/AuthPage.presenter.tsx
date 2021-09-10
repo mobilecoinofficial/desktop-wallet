@@ -131,7 +131,7 @@ const AuthPage: FC = () => {
           setAccountIds(status.accountIds);
           setFullServiceIsRunning(true);
         } catch (err) {
-          console.log(err);
+          console.log(err); // eslint-disable-line no-console
         }
       };
 
@@ -163,7 +163,7 @@ const AuthPage: FC = () => {
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
       } catch (err) {
-        console.log(err);
+        console.log(err); // eslint-disable-line no-console
       }
     };
 
@@ -188,7 +188,7 @@ const AuthPage: FC = () => {
       }
       setAccountIds(status.accountIds);
     } catch (err) {
-      console.log(err);
+      console.log(err); // eslint-disable-line no-console
     }
   };
 
@@ -216,7 +216,7 @@ const AuthPage: FC = () => {
       await createAccount(accountName);
     } catch (err) {
       /* TODO: handle error */
-      console.log('ERROR!', err);
+      console.log('ERROR!', err); // eslint-disable-line no-console
     }
   };
 
@@ -232,9 +232,7 @@ const AuthPage: FC = () => {
     }
   };
 
-  const onClickCancel = () => {
-    addAccount(false);
-  };
+  const onClickCancel = () => addAccount(false);
 
   return (
     <Box data-testid="AuthPageId" className={classes.root}>

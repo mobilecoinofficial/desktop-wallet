@@ -31,7 +31,6 @@ const useStyles = makeStyles(() =>
 
 const GlobalStyles: FC = () => {
   useStyles();
-
   return null;
 };
 

@@ -52,7 +52,6 @@
     "remaining": "Remaining Balance",
     "secureCode": "Please Secure Code",
     "select": "Select Account",
-    "showCode": "Show Gift Code",
     "total": "Total",
     "unnamed": "Unnamed Account",
     "walletSyncing": "Wallet syncing"
@@ -293,6 +292,7 @@
     "giftCreated": "Gift created. Your balance will update shortly.",
     "giftDeleted": "Deleted.",
     "giftPreviouslyClaimed": "This gift has already been claimed!",
+    "hideCode": "Close",
     "tabs": {
       "createGift": "Create Gift",
       "myGifts": "My Gifts",

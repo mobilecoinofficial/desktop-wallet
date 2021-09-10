@@ -74,8 +74,8 @@ const txos = {
 };
 
 Primary.args = {
-  onChangedComment: () => console.log('onChangeComment!'),
-  onClickBack: () => console.log('onClickBack!'),
+  onChangedComment: () => console.log('onChangeComment!'), // eslint-disable-line no-console
+  onClickBack: () => console.log('onClickBack!'), // eslint-disable-line no-console
   transactionLog: currentTransactionLog as TransactionLog,
   txos: txos as Txos,
 };

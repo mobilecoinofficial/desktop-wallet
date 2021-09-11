@@ -1,4 +1,4 @@
-import { SendMobConfirmation } from './SendMobConfirmation';
+import { SendMobConfirmation } from './SendMobConfirmation.view';
 
 export default SendMobConfirmation;
 export { SendMobConfirmation };

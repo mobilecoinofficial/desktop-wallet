@@ -394,23 +394,25 @@ const SendMob: FC<SendMobProps> = ({
                         in={showing === Showing.CONFIRM_FORM}
                         timeout={{ enter: 0, exit: 0 /* slideExitSpeed */ }}
                       >
-                        <SendMobConfirmation
-                          confirmation={confirmation}
-                          contactName={contactName}
-                          existingPin={existingPin}
-                          handleClose={handleClose}
-                          handleConfirmSubmit={handleConfirmSubmit}
-                          handleSaveConfirmation={handleSaveConfirmation}
-                          isPinRequiredForTransaction={isPinRequiredForTransaction}
-                          isSubmitting={isSubmitting}
-                          offlineModeEnabled={offlineModeEnabled}
-                          remainingBalance={remainingBalance}
-                          resetForm={resetForm}
-                          selectedBalance={selectedBalance}
-                          setSubmitting={setSubmitting}
-                          totalSent={totalSent}
-                          values={values}
-                        />
+                        <div>
+                          <SendMobConfirmation
+                            confirmation={confirmation}
+                            contactName={contactName}
+                            existingPin={existingPin}
+                            handleClose={handleClose}
+                            handleConfirmSubmit={handleConfirmSubmit}
+                            handleSaveConfirmation={handleSaveConfirmation}
+                            isPinRequiredForTransaction={isPinRequiredForTransaction}
+                            isSubmitting={isSubmitting}
+                            offlineModeEnabled={offlineModeEnabled}
+                            remainingBalance={remainingBalance}
+                            resetForm={resetForm}
+                            selectedBalance={selectedBalance}
+                            setSubmitting={setSubmitting}
+                            totalSent={totalSent}
+                            values={values}
+                          />
+                        </div>
                       </Slide>
                     </Modal>
                     <Modal

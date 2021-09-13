@@ -3,8 +3,8 @@ export interface SendMobConfirmationProps {
   contactName: string;
   existingPin: unknown;
   handleClose: (x?: unknown, y?: unknown) => void;
-  handleConfirmSubmit: (x?: unknown) => void;
-  handleSaveConfirmation: (x?: unknown) => void;
+  handleConfirmSubmit: (x?: () => void) => void;
+  handleSaveConfirmation: (x?: () => void) => void;
   isPinRequiredForTransaction: boolean;
   isSubmitting: boolean;
   remainingBalance: unknown;

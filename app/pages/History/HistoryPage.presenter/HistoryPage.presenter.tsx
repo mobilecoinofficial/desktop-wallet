@@ -24,7 +24,6 @@ const HistoryPage: FC = () => {
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
-
   const { addresses, contacts, selectedAccount, transactionLogs, txos } = useFullService();
 
   const handleClickCopyConfirmations = () => {

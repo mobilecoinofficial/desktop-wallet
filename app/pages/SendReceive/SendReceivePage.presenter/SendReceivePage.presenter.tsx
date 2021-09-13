@@ -67,9 +67,7 @@ const SendReceivePage: FC = () => {
     selectedAccount,
   } = useFullService();
 
-  useEffect(() => {
-    getFeePmob();
-  }, []);
+  useEffect(getFeePmob, []);
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex as string);
   const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex as string);

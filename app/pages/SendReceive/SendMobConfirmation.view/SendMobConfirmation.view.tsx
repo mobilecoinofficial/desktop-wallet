@@ -61,7 +61,11 @@ const SendMobConfirmation: FC<SendMobConfirmationProps> = ({
   values,
 }: SendMobConfirmationProps) => {
   const classes = useStyles();
-  const { t } = useTranslation('SendMobConfirmation');
+  /*
+    We're using the same i18n entry because this view
+    is actually a part of SendMob
+  */
+  const { t } = useTranslation('SendMobForm');
 
   const truncateContact = (contact: string, len: number) =>
     contact.length > len ? `${contact.slice(0, len)}...` : contact;

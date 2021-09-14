@@ -1,4 +1,3 @@
-import { Accounts } from '../../../types/Account';
 import type { Contact } from '../../../types/Contact.d';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 

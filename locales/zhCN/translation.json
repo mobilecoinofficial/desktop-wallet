@@ -29,7 +29,7 @@
     "enterPin": "金额超过设定阈值，请输入您的 PIN。",
     "error": "抱歉，出了点问题。",
     "errorBuild": "无法创建红包码。",
-    "errorFee": "请预留 0.01 MOB 作为手续费。",
+    "errorFee": "请预留 {{limit}} MOB 作为手续费。",
     "errorSyncBeforeSending": "在发红包前请同步钱包。",
     "fee": "手续费",
     "giftCanceled": "红包已取消",
@@ -46,7 +46,6 @@
     "remaining": "账户余额",
     "secureCode": "请妥善保管红包码",
     "select": "选择账户",
-    "showCode": "查看红包码",
     "total": "总计",
     "unnamed": "未命名账户",
     "walletSyncing": "钱包同步中"
@@ -212,7 +211,21 @@
     "m10": "十一月",
     "m11": "十二月"
   },
+
+  "DeleteAccountConfirmationView": {
+    "acceptTerms": "I understand that I will not be able to recover my account if I don't have the mnemonic backed up somewhere safe",
+    "cancelButton": "Cancel",
+    "checkedConfirmValidation": "Checked Confirm Validation",
+    "confirmShortCodeFieldLabel": "Confirm Main Address Short Code (XxXx-XxXx)",
+    "deleteButton": "Confirm Delete",
+    "deleteDialogDescription": "Are you sure you want to delete this account? If you do, you will need the secret mnemonic to recover it and gain access to your MOB on this account! Without that, it will be gone forever.",
+    "deleteDialogTitle": "Delete Account",
+    "shortCodeConfirmationDoesntMatch": "Must match the main address short code for selected account",
+    "verifyShortCodeRequired": "Please enter the main address short code for this account"
+  },
+
   "GiftingView": {
+    "hideCode": "关闭",
     "tabs": {
       "createGift": "创建红包",
       "myGifts": "我的红包",
@@ -386,7 +399,7 @@
     "confirmSend": "确认",
     "enterPin": "金额超过设定阈值，请输入您的 PIN。",
     "error": "无法创建交易。",
-    "errorFee": "请预留 0.01 MOB 作为手续费。",
+    "errorFee": "请预留 {{limit}} MOB 作为手续费。",
     "fee": "手续费",
     "intent": "请查看并确认您的转账交易",
     "mob": "MOB",

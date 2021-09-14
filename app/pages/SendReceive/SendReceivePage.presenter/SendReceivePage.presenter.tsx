@@ -2,7 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
-import { app, clipboard, dialog, ipcRenderer } from 'electron';
+import { clipboard, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
@@ -107,7 +107,7 @@ const SendReceivePage: FC = () => {
     await updateContacts(contacts);
   };
 
-  const onClickConfirm = () => {
+  const onClickConfirm = (resetForm: () => void) => {
     try {
       // fk setSlideExitSpeed(1000);
       submitTransaction(confirmation.txProposal, includeAccountId);
@@ -125,6 +125,7 @@ const SendReceivePage: FC = () => {
     } catch (err) {
       enqueueSnackbar(t('sendError'), { variant: 'error' });
     }
+    resetForm();
     setConfirmation(EMPTY_CONFIRMATION);
     setSendingStatus(Showing.INPUT_FORM);
   };
@@ -179,15 +180,21 @@ const SendReceivePage: FC = () => {
     }
   };
 
-  const saveTxConfirmation = async () => {
+  const saveTxConfirmation = async (resetForm: () => void) => {
     const confirmationText = JSON.stringify(confirmation, (key, value) =>
       typeof value === 'bigint' ? `${value.toString()}n` : value
     );
     const success = await ipcRenderer.invoke('save-tx-confirmation', confirmationText);
 
     if (success) {
+      if (formIsChecked) {
+        saveToContacts();
+      }
+
       enqueueSnackbar(t('txConfirmationSaved'), { variant: 'success' });
+      setConfirmation(EMPTY_CONFIRMATION);
       setSendingStatus(Showing.INPUT_FORM);
+      resetForm();
     }
   };
 

@@ -59,7 +59,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const SettingsPage: FC = () => {
   const classes = useStyles();
-  const { accounts, addingAccount, pinThresholdPmob, pin, selectedAccount } = useFullService();
+  const { accounts, addingAccount, offlineModeEnabled, pinThresholdPmob, pin, selectedAccount } =
+    useFullService();
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');
   const { enqueueSnackbar } = useSnackbar();
@@ -104,7 +105,7 @@ const SettingsPage: FC = () => {
         variant: 'success',
       });
     } catch (err) {
-      console.log('ERROR', err);
+      console.log('ERROR', err); // eslint-disable-line no-console
     }
   };
 
@@ -114,7 +115,7 @@ const SettingsPage: FC = () => {
       /* istanbul ignore next */
       enqueueSnackbar(t('changePinSuccess'), { variant: 'success' });
     } catch (err) {
-      console.log('ERROR!', err);
+      console.log('ERROR!', err); // eslint-disable-line no-console
     }
   };
 
@@ -127,7 +128,7 @@ const SettingsPage: FC = () => {
       }
       setEntropy(entropyString);
     } catch (err) {
-      console.log('ERROR!!!', err);
+      console.log('ERROR!!!', err); // eslint-disable-line no-console
     }
   };
 
@@ -148,12 +149,12 @@ const SettingsPage: FC = () => {
       label: 'accounts',
       path: ACCOUNTS,
     },
-    {
-      Icon: LockIcon,
-      handleOnClick,
-      label: 'changePassword',
-      path: CHANGE_PASSWORD,
-    },
+    // {
+    //   Icon: LockIcon,
+    //   handleOnClick,
+    //   label: 'changePassword',
+    //   path: CHANGE_PASSWORD,
+    // },
     {
       Icon: LockIcon,
       handleOnClick,
@@ -188,10 +189,7 @@ const SettingsPage: FC = () => {
 
   const onClickBack = () => setShowing(SETTINGS);
 
-  const onClickAddAccount = () => {
-    addAccount(true);
-  };
-
+  const onClickAddAccount = () => addAccount(true);
   if (addingAccount) {
     return <Redirect to={routePaths.ROOT} />;
   }
@@ -268,6 +266,7 @@ const SettingsPage: FC = () => {
           onClickBack={onClickBack}
           exportLedger={exportLedger}
           importLedger={importLedger}
+          offlineModeEnabled={offlineModeEnabled}
           selectedAccount={selectedAccount}
           configureFullServiceConfigs={configureFullServiceConfigs}
         />

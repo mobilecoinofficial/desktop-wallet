@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Typography } from '@material-ui/core';
@@ -10,11 +10,10 @@ import { Redirect } from 'react-router-dom';
 import { LoadingScreen } from '../../../components';
 import { getConfirmations, validateConfirmation } from '../../../fullService/api';
 import useFullService from '../../../hooks/useFullService';
-import { fetchAllTransactionLogsForAccount, fetchAllTxosForAccount } from '../../../services';
+import { Confirmations } from '../../../types/Confirmation';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
-import { Confirmations } from '../../../types/Confirmation';
 
 const HISTORY = 'history';
 const DETAILS = 'details';
@@ -27,11 +26,6 @@ const HistoryPage: FC = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const { addresses, contacts, selectedAccount, transactionLogs, txos } = useFullService();
-
-  useEffect(() => {
-    fetchAllTransactionLogsForAccount(selectedAccount.account.accountId);
-    fetchAllTxosForAccount(selectedAccount.account.accountId);
-  }, [selectedAccount?.account?.accountId]); /* eslint-disable-line react-hooks/exhaustive-deps */
 
   const handleClickCopyConfirmations = () => {
     (async () => {

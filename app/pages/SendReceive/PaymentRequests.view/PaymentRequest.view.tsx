@@ -118,7 +118,16 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
       })}
       onSubmit={(values) => handleViewPaymentRequest(values.paymentRequestCodeB58)}
     >
-      {({ errors, isSubmitting, dirty, isValid, submitForm, values }) => {
+      {({
+        errors,
+        isSubmitting,
+        dirty,
+        handleBlur,
+        isValid,
+        setFieldValue,
+        submitForm,
+        values,
+      }) => {
         const selectedBalance = BigInt(
           mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
             .balance
@@ -160,6 +169,10 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
                       name="paymentRequestCodeB58"
                       id="paymentRequestCodeB58"
                       type="text"
+                      onBlur={(event) => {
+                        handleBlur(event);
+                        setFieldValue('paymentRequestCodeB58', event.target.value.trim());
+                      }}
                     />
                   </Box>
                   {errors.submit && (

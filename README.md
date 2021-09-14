@@ -1,13 +1,3 @@
-# WARNING
-
-Do not build from main without full confidence in the state of the application. If there is no official release, please contact an admin for the correct branch. This wallet is still in early Beta. Use at your own risk.
-
-Be vigilant for phishing attempts.
-
-## Upcoming Changes to Git Flow
-
-We will be shifting away from free-for-all, pre-release branch/commit pattern to a formalized Gitflow where the main branch is always ready. Please stay tuned!
-
 ## MobileCoin Electron Wallet [v1 Release]
 
 A user-friendly desktop wallet with support for transaction history, encrypted contact book, gift codes, and payments.
@@ -18,9 +8,6 @@ A user-friendly desktop wallet with support for transaction history, encrypted c
 
 Here is a list of some upcoming changes and initiatives:
 
-- Offline Mode (Your keys never touch a computer with the internet!)
-- Payment Requests 
-- Update Notifications
 - User-controlled bug reporting
 - Support for M1
 - Support for Windows
@@ -28,7 +15,6 @@ Here is a list of some upcoming changes and initiatives:
 
 ### Note to Developers
 
-- MobileCoin Desktop Wallet is a prototype. Expect substantial changes before the release.
 - Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for notes on contributing bug reports and code.
 
 ### License

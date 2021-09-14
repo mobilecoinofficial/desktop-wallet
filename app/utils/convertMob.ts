@@ -1,12 +1,4 @@
-const PICO_MOB_PRECISION = 12;
-
-const ensureMobStringPrecision = (mobString: string): string => {
-  const num = Number(mobString);
-  if (Number.isNaN(num)) {
-    throw new Error('mobString is NaN');
-  }
-  return num.toFixed(PICO_MOB_PRECISION);
-};
+import bigDecimal from 'js-big-decimal';
 
 // This function assumes basic US style decimal places.
 // We'll need to revisit for different formats
@@ -14,8 +6,11 @@ const ensureMobStringPrecision = (mobString: string): string => {
 // We should have a universal solution to this problem
 // Likely a component similiar to MOBNumberFormat with the ability to get the
 // picoMob string (StringUInt64) value as a ref
-export const convertMobStringToPicoMobString = (mobString: string): string =>
-  ensureMobStringPrecision(mobString).replace('.', '');
+export const convertMobStringToPicoMobString = (mobString: string): string => {
+  const picoMobBigDec = bigDecimal.multiply(mobString, '1000000000000');
+  const picoMobBigInt = BigInt(picoMobBigDec);
+  return picoMobBigInt.toString();
+};
 
 // TODO, handle value of BigInt
 export const convertPicoMobStringToMob = (picoMobString: string): string => {

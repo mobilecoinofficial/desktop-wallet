@@ -65,6 +65,8 @@ const untilFullServiceRuns = async () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
   }
+
+  return false;
 };
 /* eslint-enable no-await-in-loop */
 
@@ -77,6 +79,8 @@ const AuthPage: FC = () => {
   const [fullServiceIsRunning, setFullServiceIsRunning] = useState(false);
   const [loading, setLoading] = useState(true);
   const [accountIds, setAccountIds] = useState([]);
+
+  const offlineStart = localStore.getOfflineStart();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -127,7 +131,7 @@ const AuthPage: FC = () => {
           setAccountIds(status.accountIds);
           setFullServiceIsRunning(true);
         } catch (err) {
-          console.log(err);
+          console.log(err); // eslint-disable-line no-console
         }
       };
 
@@ -141,6 +145,7 @@ const AuthPage: FC = () => {
                 accounts={getKeychainAccounts()}
                 handleDeleteWallet={deleteWallet}
                 fullServiceIsRunning={fullServiceIsRunning}
+                offlineStart={offlineStart}
               />
             </Card>
           </Container>
@@ -158,7 +163,7 @@ const AuthPage: FC = () => {
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
       } catch (err) {
-        console.log(err);
+        console.log(err); // eslint-disable-line no-console
       }
     };
 
@@ -183,7 +188,7 @@ const AuthPage: FC = () => {
       }
       setAccountIds(status.accountIds);
     } catch (err) {
-      console.log(err);
+      console.log(err); // eslint-disable-line no-console
     }
   };
 
@@ -198,6 +203,7 @@ const AuthPage: FC = () => {
               accounts={getKeychainAccounts()}
               handleDeleteWallet={deleteWallet}
               fullServiceIsRunning={fullServiceIsRunning}
+              offlineStart={offlineStart}
             />
           </Card>
         </Container>
@@ -210,7 +216,7 @@ const AuthPage: FC = () => {
       await createAccount(accountName);
     } catch (err) {
       /* TODO: handle error */
-      console.log('ERROR!', err);
+      console.log('ERROR!', err); // eslint-disable-line no-console
     }
   };
 
@@ -226,9 +232,7 @@ const AuthPage: FC = () => {
     }
   };
 
-  const onClickCancel = () => {
-    addAccount(false);
-  };
+  const onClickCancel = () => addAccount(false);
 
   return (
     <Box data-testid="AuthPageId" className={classes.root}>

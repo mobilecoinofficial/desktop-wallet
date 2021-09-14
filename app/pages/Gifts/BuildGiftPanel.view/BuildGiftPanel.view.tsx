@@ -105,7 +105,6 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}
               onClickCancelBuild={onClickCancelBuild}
-              onClickCode={onClickCode}
               onClickConfirmBuild={onClickConfirmBuild}
               onClickCreateGift={onClickCreateGift}
               showModal={showModal}
@@ -200,7 +199,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                       b58Code: pendingDeleteCode[0],
                       name: 'Gift Code',
                     }}
-                    accounts={accounts}
+                    accounts={undefined}
                     onClickCode={onClickCode}
                   />
                   <Box py={2} display="flex" justifyContent="space-between">

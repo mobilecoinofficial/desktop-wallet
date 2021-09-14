@@ -36,7 +36,7 @@ ReceiveMobs.args = {
       isFavorite: true,
     },
   ],
-  onClickCode: () => console.log('onClickCode!'),
+  onClickCode: () => console.log('onClickCode!'), // eslint-disable-line no-console
   selectedAccount: {
     account: {
       accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',

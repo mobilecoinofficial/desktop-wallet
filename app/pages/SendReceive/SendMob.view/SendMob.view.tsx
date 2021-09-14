@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import type { ChangeEvent, FC } from 'react';
 
 import {
@@ -125,17 +125,22 @@ const SendMob: FC<SendMobProps> = ({
     });
   };
 
-  const handleClose = (setSubmitting: (boolean: boolean) => void) => () => {
+  const handleClose = (setSubmitting: (boolean: boolean) => void, resetForm: () => void) => () => {
     setSubmitting(false);
+    resetForm();
     onClickCancel();
   };
+
+  const handleSaveConfirmation = (resetForm: () => void) => saveTxConfirmation(resetForm);
+
+  const handleConfirmSubmit = (resetForm: () => void) => onClickConfirm(resetForm);
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
     if (valueAsPicoMob + fee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee');
+      error = t('errorFee', { limit: Number(fee) / 1000000000000 });
     }
     return error;
   };
@@ -146,7 +151,6 @@ const SendMob: FC<SendMobProps> = ({
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.select();
   };
-
   const NO_CONTACT_SELECTED = '';
 
   return (
@@ -184,7 +188,17 @@ const SendMob: FC<SendMobProps> = ({
               })}
               onSubmit={() => {}}
             >
-              {({ errors, isSubmitting, dirty, isValid, setFieldValue, setSubmitting, values }) => {
+              {({
+                errors,
+                isSubmitting,
+                dirty,
+                handleBlur,
+                isValid,
+                resetForm,
+                setFieldValue,
+                setSubmitting,
+                values,
+              }) => {
                 // NOTE: because this is just a display for the value up to 3 dec mob,
                 // We do not need the precision to be BigInt
 
@@ -292,6 +306,10 @@ const SendMob: FC<SendMobProps> = ({
                         name="recipientPublicAddress"
                         type="text"
                         key="recipientPublicAddress"
+                        onBlur={(event) => {
+                          handleBlur(event);
+                          setFieldValue('recipientPublicAddress', event.target.value.trim());
+                        }}
                       />
                       <Field
                         component={TextField}
@@ -507,7 +525,7 @@ const SendMob: FC<SendMobProps> = ({
                               className={classes.button}
                               color="secondary"
                               disabled={isSubmitting}
-                              onClick={handleClose(setSubmitting)}
+                              onClick={handleClose(setSubmitting, resetForm)}
                               size="large"
                               fullWidth
                               type="submit"
@@ -524,7 +542,13 @@ const SendMob: FC<SendMobProps> = ({
                                 (isPinRequiredForTransaction && values.pin !== existingPin)
                               }
                               fullWidth
-                              onClick={offlineModeEnabled ? saveTxConfirmation : onClickConfirm}
+                              onClick={() => {
+                                if (offlineModeEnabled) {
+                                  handleSaveConfirmation(resetForm);
+                                } else {
+                                  handleConfirmSubmit(resetForm);
+                                }
+                              }}
                               size="large"
                               type="submit"
                               variant="contained"

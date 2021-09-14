@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { ChangeEvent, FC } from 'react';
 
 import {
@@ -19,7 +19,6 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { AccountCard } from '../../../components/AccountCard';
 import { MOBNumberFormat } from '../../../components/MOBNumberFormat';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { MOBIcon } from '../../../components/icons';
@@ -83,7 +82,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
   feePmob,
   isSynced,
   onClickCancelBuild,
-  onClickCode,
   onClickConfirmBuild,
   onClickCreateGift,
   pinThresholdPmob,
@@ -91,9 +89,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
   showModal,
 }: BuildGiftFormProps) => {
   const classes = useStyles();
-  const [showCode, setShowCode] = useState(false);
-  const [slideExitSpeed, setSlideExitSpeed] = useState(0);
-
   const { t } = useTranslation('BuildGiftForm');
 
   // TODO - consider adding minimum gift ~ 1 MOB
@@ -106,17 +101,12 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
     },
   ];
 
-  const handleShowCode = () => {
-    setSlideExitSpeed(1000);
-    setShowCode(true);
-  };
-
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
     if (valueAsPicoMob + fee + fee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee');
+      error = t('errorFee', { limit: Number(fee) / 1000000000000 });
     }
     return error;
   };
@@ -233,7 +223,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
               disableAutoFocus
               disableEnforceFocus
             >
-              <Slide in={showModal} timeout={{ enter: 0, exit: slideExitSpeed }}>
+              <Slide in={showModal} timeout={{ enter: 0 }}>
                 <Container className={classes.paper}>
                   <Box py={2}>
                     <Typography variant="h1" color="textPrimary">
@@ -241,7 +231,11 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     </Typography>
                     <Typography color="textPrimary">{t('giftConfirmationDescription')}:</Typography>
                   </Box>
-                  <Box display="flex" justifyContent="space-between">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    style={{ borderBottom: '1px solid' }}
+                  >
                     <Typography color="textPrimary">{t('accountBalance')}:</Typography>
                     <Typography color="textPrimary">
                       <MOBNumberFormat
@@ -250,10 +244,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                         value={selectedBalance?.toString()}
                       />
                     </Typography>
-                  </Box>
-                  <Box display="flex" justifyContent="space-between">
-                    <Typography color="textPrimary">---</Typography>
-                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="primary">{t('giftValue')}:</Typography>
@@ -279,7 +269,11 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                       />
                     </Typography>
                   </Box>
-                  <Box display="flex" justifyContent="space-between">
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    style={{ borderBottom: '1px solid' }}
+                  >
                     <Typography color="textPrimary">{t('total')}:</Typography>
                     <Typography color="textPrimary">
                       <MOBNumberFormat
@@ -288,10 +282,6 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                         value={totalSent?.toString()}
                       />
                     </Typography>
-                  </Box>
-                  <Box display="flex" justifyContent="space-between">
-                    <Typography color="textPrimary">---</Typography>
-                    <Typography color="textPrimary">---</Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
                     <Typography color="primary">{t('remaining')}:</Typography>
@@ -303,33 +293,11 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                       />
                     </Typography>
                   </Box>
-                  <Box py={1} />
                   {/* TODO - after multiple accounts, we should actually store these gift codes. please check jira for full explanation */}
                   <Typography variant="body2" color="textPrimary">
                     {t('mobWillBeSent')}
                   </Typography>
                   <Box py={1} />
-                  {showCode ? (
-                    <AccountCard
-                      isGift
-                      account={{
-                        b58Code: confirmation?.giftCodeB58,
-                        name: t('pending'),
-                      }}
-                      onClickCode={onClickCode}
-                    />
-                  ) : (
-                    <Box display="flex" justifyContent="center" py={27}>
-                      <Button
-                        color="secondary"
-                        size="large"
-                        onClick={handleShowCode}
-                        id="show-code-modal"
-                      >
-                        {t('showCode')}
-                      </Button>
-                    </Box>
-                  )}
                   {isPinRequiredForTransaction && (
                     <Field
                       component={TextField}
@@ -338,6 +306,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                       margin="normal"
                       name="pin"
                       type="password"
+                      style={{ topMargin: 0 }}
                     />
                   )}
                   <Box display="flex" justifyContent="space-between" style={{ padding: '1rem' }}>
@@ -356,15 +325,13 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     <Button
                       className={classes.button}
                       color="secondary"
-                      disabled={
-                        !showCode || (isPinRequiredForTransaction && values.pin !== existingPin)
-                      }
+                      disabled={isPinRequiredForTransaction && values.pin !== existingPin}
                       fullWidth
                       onClick={onClickConfirmBuild}
                       variant="contained"
                       id="confirm-modal"
                     >
-                      {showCode ? t('confirmGift') : t('secureCode')}
+                      {t('confirmGift')}
                     </Button>
                   </Box>
                 </Container>

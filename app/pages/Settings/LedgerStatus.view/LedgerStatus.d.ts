@@ -7,5 +7,6 @@ type SelectedAccount = {
 };
 
 export interface LedgerStatusProps {
+  offlineModeEnabled?: boolean;
   selectedAccount: SelectedAccount;
 }

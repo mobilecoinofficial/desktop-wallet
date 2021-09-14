@@ -17,7 +17,10 @@ import { useTranslation } from 'react-i18next';
 import { getPercentSynced } from '../../../utils/getPercentSynced';
 import { LedgerStatusProps } from './LedgerStatus';
 
-const LedgerStatus: FC<LedgerStatusProps> = ({ selectedAccount }: LedgerStatusProps) => {
+const LedgerStatus: FC<LedgerStatusProps> = ({
+  offlineModeEnabled,
+  selectedAccount,
+}: LedgerStatusProps) => {
   const { t } = useTranslation('LedgerStatus');
 
   const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex as string);
@@ -38,12 +41,12 @@ const LedgerStatus: FC<LedgerStatusProps> = ({ selectedAccount }: LedgerStatusPr
 
   const percentAccountSynced =
     networkBlockIndexBigInt < accountBlockIndexBigInt
-      ? 'Error'
+      ? !offlineModeEnabled && 'Error'
       : getPercentSynced(networkBlockIndexBigInt, accountBlockIndexBigInt);
 
   const percentLocalSynced =
     networkBlockIndexBigInt < localBlockIndexBigInt
-      ? 'Error'
+      ? !offlineModeEnabled && 'Error'
       : getPercentSynced(networkBlockIndexBigInt, localBlockIndexBigInt);
 
   const rows = [
@@ -52,13 +55,13 @@ const LedgerStatus: FC<LedgerStatusProps> = ({ selectedAccount }: LedgerStatusPr
       t('localBlocks'),
       Number(localBlockIndexBigInt),
       Number(networkBlockIndexBigInt),
-      percentLocalSynced === 'Error' ? 'Error' : percentLocalSynced
+      percentLocalSynced === 'Error' ? !offlineModeEnabled && 'Error' : percentLocalSynced
     ),
     createData(
       t('accountBlocks'),
       Number(accountBlockIndexBigInt),
       Number(networkBlockIndexBigInt),
-      percentAccountSynced === 'Error' ? 'Error' : percentAccountSynced
+      percentAccountSynced === 'Error' ? !offlineModeEnabled && 'Error' : percentAccountSynced
     ),
   ];
 
@@ -80,7 +83,7 @@ const LedgerStatus: FC<LedgerStatusProps> = ({ selectedAccount }: LedgerStatusPr
           <Typography color="primary">{t('formLabel')}</Typography>
         </FormLabel>
       </Box>
-      <Box pt={2}>
+      <Box pt={2} display={offlineModeEnabled && 'none'}>
         <Typography variant="body2" display="inline" color="textPrimary">
           {statusCopy}
         </Typography>

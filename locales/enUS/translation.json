@@ -434,6 +434,7 @@
 
   "FullServiceDirectory": {
     "exportLedgerDb": "Export",
+    "exportTransactionHistory": "Export Tx History",
     "formLabel": "Full-Service Directory",
     "importLedgerDb": "Import",
     "ledgerDbPathHeader": "Ledger Database Path:",

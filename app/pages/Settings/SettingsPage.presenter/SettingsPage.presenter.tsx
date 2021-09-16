@@ -59,8 +59,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const SettingsPage: FC = () => {
   const classes = useStyles();
-  const { accounts, addingAccount, offlineModeEnabled, pinThresholdPmob, pin, selectedAccount } =
-    useFullService();
+  const {
+    accounts,
+    addingAccount,
+    offlineModeEnabled,
+    pinThresholdPmob,
+    pin,
+    selectedAccount,
+    transactionLogs,
+  } = useFullService();
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');
   const { enqueueSnackbar } = useSnackbar();
@@ -139,6 +146,11 @@ const SettingsPage: FC = () => {
 
   const importLedger = async () => {
     const success = await ipcRenderer.invoke('import-ledger-db');
+    enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
+  };
+
+  const exportTransactionHistory = async () => {
+    const success = await ipcRenderer.invoke('export-transaction-history', transactionLogs);
     enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
   };
 
@@ -265,6 +277,7 @@ const SettingsPage: FC = () => {
         <ConfigureFullServiceView
           onClickBack={onClickBack}
           exportLedger={exportLedger}
+          exportTransactionHistory={exportTransactionHistory}
           importLedger={importLedger}
           offlineModeEnabled={offlineModeEnabled}
           selectedAccount={selectedAccount}

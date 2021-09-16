@@ -16,6 +16,7 @@ type ConfigureFullServiceConfigs = {
 export interface ConfigureFullServiceViewProps {
   configureFullServiceConfigs: ConfigureFullServiceConfigs;
   exportLedger: () => void;
+  exportTransactionHistory: () => void;
   importLedger: () => void;
   offlineModeEnabled?: boolean;
   onClickBack: () => void;

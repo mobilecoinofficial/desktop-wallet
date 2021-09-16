@@ -8,6 +8,7 @@ import { FullServiceDirectoryProps } from './FullServiceDirectory';
 
 const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
   exportLedger,
+  exportTransactionHistory,
   fullServiceDbPath,
   importLedger,
   ledgerDbPath,
@@ -38,6 +39,7 @@ const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
         <Typography variant="body2" color="textSecondary">
           {`${fullServiceDbPath}`}
         </Typography>
+        <Button onClick={exportTransactionHistory}>{t('exportTransactionHistory')}</Button>
       </Box>
     </Box>
   );

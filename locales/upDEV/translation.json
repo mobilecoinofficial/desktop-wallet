@@ -395,6 +395,7 @@
   },
 
   "FullServiceDirectory": {
+    "exportTransactionHistory": "EXPORT TX HISTORY",
     "formLabel": "FULL-SERVICE DIRECTORY",
     "ledgerDbPathHeader": "LEDGER DATABASE PATH:",
     "fullServiceDbPathHeader": "FULL-SERVICE DATABASE PATH:"

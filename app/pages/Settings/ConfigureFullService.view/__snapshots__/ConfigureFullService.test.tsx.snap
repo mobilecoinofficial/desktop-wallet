@@ -385,6 +385,20 @@ exports[`ConfigureFullServiceView component render ConfigureFullServiceView rend
         >
           fullService/path
         </p>
+        <button
+          class="MuiButtonBase-root MuiButton-root MuiButton-text"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiButton-label"
+          >
+            Export Tx History
+          </span>
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
       </div>
     </div>
   </div>

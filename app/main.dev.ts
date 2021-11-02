@@ -421,6 +421,33 @@ ipcMain.handle('import-ledger-db', () => {
   return true;
 });
 
+ipcMain.handle('export-transaction-history', (_event, transactionLogs) => {
+  const filePath = dialog.showSaveDialogSync(mainWindow, { defaultPath: 'tx_history.csv' });
+
+  if (filePath === undefined) {
+    return false;
+  }
+
+  if (transactionLogs.transactionLogMap.length === 0) {
+    return false;
+  }
+
+  const fields = Object.keys(
+    transactionLogs.transactionLogMap[transactionLogs.transactionLogIds[0]]
+  );
+  const replacer = (key, value) => (value === null ? '' : value);
+
+  let csv = transactionLogs.transactionLogIds.map((txLogId) =>
+    fields
+      .map((field) => JSON.stringify(transactionLogs.transactionLogMap[txLogId][field], replacer))
+      .join('\t')
+  );
+  csv.unshift(fields.join('\t'));
+  csv = csv.join('\r\n');
+  fs.writeFileSync(filePath, csv);
+  return true;
+});
+
 ipcMain.on('get-initial-translations', (event) => {
   i18n.loadLanguages(languages.EN_US, () => {
     const initial = {

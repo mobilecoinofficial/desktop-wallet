@@ -60,8 +60,6 @@ const AccountCard: FC<AccountCardProps> = ({
 
   const { b58Code } = account;
 
-  const mobUrl = `mob:///b58/${b58Code}`;
-
   const handleCodeClicked = () =>
     onClickCode(b58Code, isGift ? t('clipboardGift') : t('clipboardAddress'));
 
@@ -112,7 +110,7 @@ const AccountCard: FC<AccountCardProps> = ({
               variant="h3"
             >
               {isQRCode ? (
-                <QRMob data-testid="account-card-qr-code" size={280} value={mobUrl} />
+                <QRMob data-testid="account-card-qr-code" size={280} value={b58Code} />
               ) : (
                 <Tooltip title={t('copyTooltip') as string} placement="right" arrow>
                   <Box data-testid="account-card-tooltip" onClick={handleCodeClicked}>

@@ -5,7 +5,7 @@ export interface PaymentRequestProps {
   enqueueSnackbar: () => void;
   feePmob: string;
   onClickCancel: () => void;
-  onClickConfirm: () => void;
+  onClickConfirm: (resetForm: () => void) => void;
   // onClickViewPaymentRequest: () => void;
   selectedAccount: SelectedAccount;
 }

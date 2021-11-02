@@ -124,6 +124,7 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
         dirty,
         handleBlur,
         isValid,
+        resetForm,
         setFieldValue,
         submitForm,
         values,
@@ -321,7 +322,7 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
                             className={classes.button}
                             color="secondary"
                             fullWidth
-                            onClick={onClickConfirm}
+                            onClick={() => onClickConfirm(resetForm)}
                             variant="contained"
                             id="claim-modal"
                           >

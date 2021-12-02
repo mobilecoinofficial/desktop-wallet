@@ -23,7 +23,7 @@ MobileCoin Desktop Wallet is available under open-source licenses. Look for the 
 
 ### Setup
 
-Depending on your local platform, you'll need to add the correct version from the Downloads section of the [full-service binaries](https://github.com/mobilecoinofficial/full-service/releases/tag/v1.0.0-pre.8) to the `./full-service-bin` directory. Grab the binary `full-service` file and the .css files, and place them in their relative subdirectory in `./full-service-bin`. Once you have the files in the `./full-service-bin/testnet` and `./full-service-bin/mainnet` directories, copy the contents from `./full-service-bin/testnet` into `./full-service-bin`. When you add the binaries, you will likely need to give permissions for the dev environment to run them. In the directory with the binaries, grant permission: `chmod +x full-service`.
+Depending on your local platform, you'll need to add the correct version from the Downloads section of the [full-service binaries](https://github.com/mobilecoinofficial/full-service/releases) to the `./full-service-bin` directory. Grab the binary `full-service` file and the .css files, and place them in their relative subdirectory in `./full-service-bin`. Once you have the files in the `./full-service-bin/testnet` and `./full-service-bin/mainnet` directories, copy the contents from `./full-service-bin/testnet` into `./full-service-bin`. When you add the binaries, you will likely need to give permissions for the dev environment to run them. In the directory with the binaries, grant permission: `chmod +x full-service`.
 
 ### Dev
 

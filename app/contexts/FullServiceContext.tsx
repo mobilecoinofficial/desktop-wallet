@@ -329,7 +329,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
   }
 };
 
-const FullServiceContext = createContext<FullServiceState>({ ...initialFullServiceState }); // creating context here, but its not updating?
+const FullServiceContext = createContext<FullServiceState>({ ...initialFullServiceState });
 
 export const store = {
   dispatch: (() => {}) as React.Dispatch<Action>,

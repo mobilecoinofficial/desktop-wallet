@@ -32,6 +32,7 @@ import { DELETE_WALLET, DeleteWalletActionType } from './actions/deleteWallet.ac
 import {
   FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   FetchAllTransactionLogsForAccountActionType,
+  fetchAllTransactionLogsForAccountAction,
 } from './actions/fetchAllTransactionLogsForAccount.action';
 import {
   FETCH_ALL_TXOS_FOR_ACCOUNT,
@@ -47,7 +48,7 @@ import { UPDATE_GIFT_CODES, UpdateGiftCodesActionType } from './actions/updateGi
 import { UPDATE_PASSPHRASE, UpdatePassphraseActionType } from './actions/updatePassphrase.action';
 import { UPDATE_PIN, UpdatePinActionType } from './actions/updatePin.action';
 import {
-  UPDATE_STATUS,
+  UPDATE_WALLET_STATUS,
   updateStatusAction,
   UpdateStatusActionType,
 } from './actions/updateStatus.action';
@@ -308,17 +309,14 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
       };
     }
 
-    case UPDATE_STATUS: {
-      const { selectedAccount, transactionLogs, walletStatus } = (action as UpdateStatusActionType)
-        .payload;
+    case UPDATE_WALLET_STATUS: {
+      const { selectedAccount, walletStatus } = (action as UpdateStatusActionType).payload;
       return sameObject(selectedAccount, state.selectedAccount) &&
-        sameObject(walletStatus, state.walletStatus) &&
-        sameObject(transactionLogs, state.transactionLogs)
+        sameObject(walletStatus, state.walletStatus)
         ? state
         : {
             ...state,
             selectedAccount,
-            transactionLogs,
             walletStatus,
           };
     }
@@ -350,7 +348,7 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   store.state = state;
   store.dispatch = dispatch;
 
-  const [fetchBalanceTimer, setFetchBalanceTimer] = useState<null | NodeJS.Timer>(null);
+  const [fetchUpdatesTimer, setFetchUpdatesTimer] = useState<null | NodeJS.Timer>(null);
 
   // Initialize App On Startup
   useEffect(() => {
@@ -363,8 +361,8 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   }, []);
 
   useEffect(() => {
-    if (fetchBalanceTimer !== null) {
-      clearInterval(fetchBalanceTimer);
+    if (fetchUpdatesTimer !== null) {
+      clearInterval(fetchUpdatesTimer);
     }
 
     const { selectedAccount } = state;
@@ -378,13 +376,20 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     const fetchBalance = async () => {
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
       const { walletStatus } = await fullServiceApi.getWalletStatus();
-      const transactionLogs = await fetchAllTransactionLogsForAccount(accountId);
-      dispatch(
-        updateStatusAction(selectedAccount.account, balanceStatus, transactionLogs, walletStatus)
-      );
+      dispatch(updateStatusAction(selectedAccount.account, balanceStatus, walletStatus));
     };
 
-    setFetchBalanceTimer(setInterval(fetchBalance, 10000));
+    const fetchLogs = async () => {
+      const transactionLogs = await fetchAllTransactionLogsForAccount(accountId);
+      dispatch(fetchAllTransactionLogsForAccountAction(transactionLogs));
+    };
+
+    setFetchUpdatesTimer(
+      setInterval(() => {
+        fetchBalance();
+        fetchLogs();
+      }, 10000)
+    );
   }, [state]);
 
   return <FullServiceContext.Provider value={{ ...state }}>{children}</FullServiceContext.Provider>;

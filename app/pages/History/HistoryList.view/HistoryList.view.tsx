@@ -50,12 +50,11 @@ const HistoryList: FC<HistoryListProps> = ({
   const handleChangeTab = (_event: ChangeEvent<HTMLElement>, newValue: number) => {
     setSelectedTabIndex(Number(newValue));
     setFirstToShow(0);
-    filterTransactionLogsList();
   };
 
   useEffect(() => {
     filterTransactionLogsList();
-  }, [transactionLogsList]);
+  }, [transactionLogsList, selectedTabIndex]);
 
   return (
     <Box>
@@ -72,7 +71,7 @@ const HistoryList: FC<HistoryListProps> = ({
       </Tabs>
       <Container className={classes.root} maxWidth="lg">
         <Grid container spacing={3}>
-          {transactionLogsList
+          {dataToShow
             .filter((_v, i) => firstToShow <= i && i < firstToShow + HISTORY_PAGE_SIZE)
             .map((transactionLog) => (
               <HistoryItem

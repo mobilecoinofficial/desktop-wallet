@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, Container, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
@@ -31,10 +31,8 @@ const HistoryList: FC<HistoryListProps> = ({
 
   const { t } = useTranslation('HistoryView');
 
-  const handleChange = (_event: ChangeEvent<HTMLElement>, newValue: number) => {
-    setSelectedTabIndex(Number(newValue));
-    setFirstToShow(0);
-    switch (newValue) {
+  const filterTransactionLogsList = () => {
+    switch (selectedTabIndex) {
       case 0:
         setDataToShow(transactionLogsList);
         break;
@@ -49,6 +47,16 @@ const HistoryList: FC<HistoryListProps> = ({
     }
   };
 
+  const handleChangeTab = (_event: ChangeEvent<HTMLElement>, newValue: number) => {
+    setSelectedTabIndex(Number(newValue));
+    setFirstToShow(0);
+    filterTransactionLogsList();
+  };
+
+  useEffect(() => {
+    filterTransactionLogsList();
+  }, [transactionLogsList]);
+
   return (
     <Box>
       <Tabs
@@ -56,7 +64,7 @@ const HistoryList: FC<HistoryListProps> = ({
         value={selectedTabIndex}
         indicatorColor="primary"
         textColor="primary"
-        onChange={handleChange}
+        onChange={handleChangeTab}
       >
         <Tab label={t('showAllTransactions')} id="show-all" />
         <Tab label={t('showSentTransactions')} id="show-sent" />
@@ -64,7 +72,7 @@ const HistoryList: FC<HistoryListProps> = ({
       </Tabs>
       <Container className={classes.root} maxWidth="lg">
         <Grid container spacing={3}>
-          {dataToShow
+          {transactionLogsList
             .filter((_v, i) => firstToShow <= i && i < firstToShow + HISTORY_PAGE_SIZE)
             .map((transactionLog) => (
               <HistoryItem

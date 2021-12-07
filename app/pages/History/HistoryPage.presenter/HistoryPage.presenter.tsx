@@ -120,8 +120,8 @@ const HistoryPage: FC = () => {
 
     case DETAILS:
       /*
-            We should get the TXOs for the transaction
-          */
+        We should get the TXOs for the transaction
+      */
 
       return (
         <TransactionDetails

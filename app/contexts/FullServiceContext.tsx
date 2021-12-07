@@ -4,6 +4,7 @@ import type { FC, ReactNode } from 'react';
 import type { SjclCipherEncrypted } from 'sjcl';
 
 import * as fullServiceApi from '../fullService/api';
+import { fetchAllTransactionLogsForAccount } from '../services/fetchAllTransactionLogsForAccount.service';
 import type { Accounts } from '../types/Account.d';
 import type { Addresses } from '../types/Address.d';
 import type { Contact } from '../types/Contact.d';
@@ -308,13 +309,16 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
     }
 
     case UPDATE_STATUS: {
-      const { selectedAccount, walletStatus } = (action as UpdateStatusActionType).payload;
+      const { selectedAccount, transactionLogs, walletStatus } = (action as UpdateStatusActionType)
+        .payload;
       return sameObject(selectedAccount, state.selectedAccount) &&
-        sameObject(walletStatus, state.walletStatus)
+        sameObject(walletStatus, state.walletStatus) &&
+        sameObject(transactionLogs, state.transactionLogs)
         ? state
         : {
             ...state,
             selectedAccount,
+            transactionLogs,
             walletStatus,
           };
     }
@@ -325,7 +329,7 @@ const reducer = (state: FullServiceState, action: Action): FullServiceState => {
   }
 };
 
-const FullServiceContext = createContext<FullServiceState>({ ...initialFullServiceState });
+const FullServiceContext = createContext<FullServiceState>({ ...initialFullServiceState }); // creating context here, but its not updating?
 
 export const store = {
   dispatch: (() => {}) as React.Dispatch<Action>,
@@ -374,7 +378,10 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
     const fetchBalance = async () => {
       const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
       const { walletStatus } = await fullServiceApi.getWalletStatus();
-      dispatch(updateStatusAction(selectedAccount.account, balanceStatus, walletStatus));
+      const transactionLogs = await fetchAllTransactionLogsForAccount(accountId);
+      dispatch(
+        updateStatusAction(selectedAccount.account, balanceStatus, transactionLogs, walletStatus)
+      );
     };
 
     setFetchBalanceTimer(setInterval(fetchBalance, 10000));

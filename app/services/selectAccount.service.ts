@@ -1,4 +1,5 @@
 import { store } from '../contexts/FullServiceContext';
+import { fetchAllTransactionLogsForAccountAction } from '../contexts/actions/fetchAllTransactionLogsForAccount.action';
 import { selectAccountAction } from '../contexts/actions/selectAccount.action';
 import * as fullServiceApi from '../fullService/api';
 import { fetchAllTransactionLogsForAccount } from './fetchAllTransactionLogsForAccount.service';
@@ -7,11 +8,12 @@ import { fetchAllTxosForAccount } from './fetchAllTxosForAccount.service';
 const selectAccount = async (accountId: string): Promise<void> => {
   try {
     const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
+    const transactionLogs = await fetchAllTransactionLogsForAccount(accountId);
 
     const p1 = fullServiceApi.getAccount({ accountId });
     const p2 = fullServiceApi.getAllAddressesForAccount({ accountId });
     const p3 = fullServiceApi.getBalanceForAccount({ accountId });
-    const p4 = fetchAllTransactionLogsForAccount(accountId);
+    const p4 = store.dispatch(fetchAllTransactionLogsForAccountAction(transactionLogs));
     const p5 = fetchAllTxosForAccount(accountId);
 
     const { account } = await p1;

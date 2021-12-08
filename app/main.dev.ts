@@ -82,15 +82,9 @@ const startFullService = (
   startInOfflineMode: boolean
 ): void => {
   // Start the full-service process in the background
-  const IS_PROD = process.env.NODE_ENV === 'production';
-  const root = process.cwd();
-  const { isPackaged } = app;
-
-  // TODO move these strings into constants/
-  const fullServiceBinariesPath =
-    IS_PROD && isPackaged
-      ? path.join(process.resourcesPath, '..', 'full-service-bin')
-      : path.join(root, 'full-service-bin');
+  const fullServiceBinariesPath = localStore.getFullServiceBinariesPath();
+  const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
+  const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   console.log(`Offline Mode: ${startInOfflineMode}`);
@@ -98,9 +92,6 @@ const startFullService = (
   const fullServiceExecPath = startInOfflineMode
     ? path.resolve(path.join(fullServiceBinariesPath, './start-full-service-offline.sh'))
     : path.resolve(path.join(fullServiceBinariesPath, './start-full-service.sh'));
-
-  const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
-  const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
 
   const options: { [k: string]: { [j: string]: string } } = {
     env: {
@@ -125,6 +116,23 @@ const startFullService = (
     options
   );
 };
+
+const setFullServiceBinariesPath = (): void => {
+  const IS_PROD = process.env.NODE_ENV === 'production';
+  const { isPackaged } = app;
+  const root = process.cwd();
+
+  // TODO move these strings into constants/
+  const fullServiceBinariesPath =
+    IS_PROD && isPackaged
+      ? path.join(process.resourcesPath, '..', 'full-service-bin')
+      : path.join(root, 'full-service-bin');
+
+  console.log('fullServiceBinariesPath', fullServiceBinariesPath);
+  localStore.setFullServiceBinariesPath(fullServiceBinariesPath);
+};
+
+setFullServiceBinariesPath();
 
 const setFullServiceDbPaths = (): void => {
   const userDataPath = app.getPath('userData');

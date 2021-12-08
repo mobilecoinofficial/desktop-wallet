@@ -11,24 +11,20 @@
     "mobUrlTooltip": "Show MOB URL QR Code",
     "unnamed": "Unnamed Account"
   },
-
   "AccountsView": {
     "accounts": "Accounts",
     "settingsBreadcrumb": "Settings"
   },
-
   "AuthPage": {
     "createInstead": "Create account instead",
     "importInstead": "Import account instead",
     "unlockInstead": "Unlock account instead"
   },
-
   "BalanceIndicator": {
     "offlineMode": "Offline Mode Enabled",
     "syncMessage": "Balance may be out of date while wallet syncs with ledger.",
     "title": "Balance"
   },
-
   "BuildGiftForm": {
     "accountBalance": "Account Balance",
     "accountName": "Account Name",
@@ -56,7 +52,6 @@
     "unnamed": "Unnamed Account",
     "walletSyncing": "Wallet syncing"
   },
-
   "BuildGiftPanel": {
     "cancelButton": "Cancel",
     "clickToCopy": "Click to copy to clipboard",
@@ -74,7 +69,6 @@
     "title": "Create Gifts of MOB",
     "value": "Value"
   },
-
   "ChangePasswordView": {
     "changePasswordBreadcrumb": "Change Password",
     "changePasswordButton": "Change Password",
@@ -93,7 +87,6 @@
     "passwordRequired": "New Password is required",
     "settingsBreadcrumb": "Settings"
   },
-
   "ChangePinView": {
     "changePinBreadcrumb": "Transaction PIN settings",
     "changePinButton": "Set PIN",
@@ -112,14 +105,12 @@
     "pinSize": "PIN must be at least 6 characters long.",
     "settingsBreadcrumb": "Settings"
   },
-
   "CloseApp": {
     "confirm": "Synchronize in the background?",
     "explain": "The ledger isn't completely synchronized. Do you want to leave the process synchronizing in the background?",
     "no": "No, stop syncing and close",
     "yes": "Yes, let it run and close"
   },
-
   "CloseWalletModal": {
     "closeVerifyBody": "Do you want to close and secure the wallet?",
     "closeVerifyConfirm": "Yes, Close Wallet",
@@ -127,7 +118,6 @@
     "closeVerifyHeader": "Close and secure wallet?",
     "closeWalletButton": "Close Wallet"
   },
-
   "ConfigureFullServiceView": {
     "configureFullServiceBreadcrumb": "Manage Ledger Database",
     "daemonDescription": "Full-Service is a standalone executable which provides blockchain synchronization and wallet services.",
@@ -135,7 +125,6 @@
     "panelDescription": "This screen shows how to customize the behavior of background ledger processor (named Full-Service) as well as how to perform some basic resets.",
     "settingsBreadcrumb": "Settings"
   },
-
   "ConfirmDeleteWalletDialog": {
     "cancelButton": "Cancel",
     "confirmationChecked": "You must check this to continue!",
@@ -144,7 +133,6 @@
     "title": "Delete Wallet",
     "understandCheckText": "I understand this could cause me to lose my accounts if I don't have them backed up."
   },
-
   "ConsumeGiftForm": {
     "accountBalance": "Account Balance",
     "accountName": "Account Name",
@@ -167,7 +155,6 @@
     "title": "Open Gifts of MOB",
     "unnamed": "Unnamed Account"
   },
-
   "ContactForm": {
     "abbreviation": "Abbreviation (2 characters max)",
     "addContact": "Add Contact",
@@ -186,19 +173,16 @@
     "recipientAddress": "Contact's Address Code",
     "removeContact": "Remove Contact"
   },
-
   "ContactsPage": {
     "added": "Contact was added",
     "removed": "Contact was removed",
     "updated": "Contact was updated"
   },
-
   "ContactsList": {
     "allContacts": "All",
     "favoriteContacts": "Favorite",
     "filter": "Filter"
   },
-
   "CrashReportPage": {
     "encounteredAnIssue": "It seems we've encountered an issue that's causing the app the crash!",
     "here": "here",
@@ -208,7 +192,6 @@
     "sendReport": "It would be super helpful if you sent the crash report to us, but we totally understand if you'd rather not :)",
     "uhOh": "Uh Oh!"
   },
-
   "CrashShowLog": {
     "debugLogs": "Debug Logs",
     "openLogsDir": "Open Logs Folder",
@@ -216,7 +199,6 @@
     "submit": "Submit",
     "title": "This log will be posted publicly online for contributors to view. You may examine and edit it before submitting."
   },
-
   "CreateAccount": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",
@@ -239,7 +221,6 @@
     "passwordRequired": "Password is required",
     "title": "Create Account"
   },
-
   "CreateWallet": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",
@@ -264,7 +245,6 @@
     "title": "Create Wallet",
     "verifyPasswordRequired": "Verify Password is required"
   },
-
   "Dates": {
     "m00": "January",
     "m01": "February",
@@ -279,7 +259,6 @@
     "m10": "November",
     "m11": "December"
   },
-
   "DeleteAccountConfirmationView": {
     "acceptTerms": "I understand that I will not be able to recover my account if I don't have the mnemonic backed up somewhere safe",
     "cancelButton": "Cancel",
@@ -291,7 +270,6 @@
     "shortCodeConfirmationDoesntMatch": "Must match the main address short code for selected account",
     "verifyShortCodeRequired": "Please enter the main address short code for this account"
   },
-
   "GiftingView": {
     "confirmationNotFound": "Could not find confirmation",
     "errorBuild": "Could not build gift code.",
@@ -311,7 +289,6 @@
       "openGift": "Open Gift"
     }
   },
-
   "HistoryView": {
     "emptyState": "You don't have any transactions yet!",
     "finalizedBlockHeight": "Finalized Block Height: ",
@@ -322,7 +299,6 @@
     "showReceivedTransactions": "Received",
     "showSentTransactions": "Sent"
   },
-
   "ImportAccount": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",
@@ -351,14 +327,12 @@
     "title": "Import Account",
     "warning": "You should not actively use the same account on multiple wallets if you want to preserve your local history."
   },
-
   "InactivityDetect": {
     "confirmToStay": "For your privacy, this app will close if left inactive.",
     "keepWorking": "Click to keep working",
     "title": "Closing because of inactivity",
     "tooLong": "You have been inactive too long..."
   },
-
   "LeaveFullServiceRunning": {
     "defaultDescription": "By default, Full-Service terminates when you exit the wallet. This setting allows you to leave Full-Service syncing as a background process. It is best to keep the ledger synced to avoid delays in transactions or balance fetches.",
     "formLabel": "Full-Service Background Process",
@@ -367,7 +341,6 @@
     "ternaryWillNotSync": "Full-Service will not continue to sync when you exit the wallet.",
     "ternaryWillSync": "Full-Service will continue to sync when you exit the wallet."
   },
-
   "LedgerStatus": {
     "accountBlocks": "Account Blocks",
     "accountBlocksDescription": "Account Blocks shows the blocks that a specific Account has synced. Each account has its own Account Blocks sync. Once this value is synced, you will immediately see the effects of transactions.",
@@ -385,7 +358,6 @@
     "statusCopyError": "There's been an error in the ledger. Please reset the ledger at the bottom of this page.",
     "synced": "% Synced"
   },
-
   "Menu": {
     "about": "About MobileCoin Wallet",
     "bringToFront": "Show All",
@@ -431,16 +403,15 @@
       "zhCN": "简体中文 Simplified Chinese"
     }
   },
-
   "FullServiceDirectory": {
     "exportLedgerDb": "Export",
     "exportTransactionHistory": "Export Tx History",
     "formLabel": "Full-Service Directory",
     "importLedgerDb": "Import",
     "ledgerDbPathHeader": "Ledger Database Path:",
-    "fullServiceDbPathHeader": "Full-Service Database Path:"
+    "fullServiceDbPathHeader": "Full-Service Database Path:",
+    "fullServiceBinariesPathHeader": "Full-Service Binaries Path:"
   },
-
   "NavBar": {
     "contacts": "Contacts",
     "crash": "CRASH",
@@ -451,18 +422,15 @@
     "transaction": "Send/Receive",
     "wallet": "Wallet"
   },
-
   "NotFoundView": {
     "backButton": "Back to home",
     "description": "You should never see this page. If you do, an engineer messed up.",
     "header": "404: The page you are looking for is not here"
   },
-
   "PrivacyPolicyView": {
     "privacyPolicy": "Privacy Policy",
     "settings": "Settings"
   },
-
   "ReceiveMobPanel": {
     "assignedAddress": "Assigned Address",
     "assignedAddressDetails": "If you want a record of your transaction history, you may create a new contact. Each new contact will have their own, unique public address. You can give this new contact an alias and abbreviation. A contact doesn’t have to be an individual, you can share it with businesses, groups, or even treat it as another public address. At rest, your contacts are encrypted, and they never leave your local device.",
@@ -471,7 +439,6 @@
     "mainPublicAddress": "Public Address",
     "mainPublicAddressDetails": "Your Public Address can be shared with everyone. The sender will be unknown to the wallet. This is a feature, not a bug. If you do not care about explicit transaction history, or if you purposely want to keep your history ambiguous, use this address."
   },
-
   "RetrieveEntropyView": {
     "description": "that unlocks your wallet and allows you to use MOB. It is unique to your account. Never share this code. Use this code in a secure, safe manner.",
     "entropyCanBeUsed": "The Entropy can be used to import your wallet in case your device is damaged or lost. It also allows you to add your account to other wallets.",
@@ -484,14 +451,12 @@
     "retrieveSecret": "Retrieve Secret Entropy",
     "settings": "Settings"
   },
-
   "SavePasswordModal": {
     "accountNameRequired": "Account Name Required",
     "notNow": "Not Now",
     "save": "Save",
     "saveToKeychain": "Save Password to Keychain?"
   },
-
   "SendMobForm": {
     "accountBalance": "Account Balance",
     "accountName": "Account Name",
@@ -529,7 +494,6 @@
     "transaction": "Transaction Details",
     "unnamed": "Unnamed Account"
   },
-
   "SetPinModal": {
     "changePinButton": "Set PIN",
     "description": "Your Transaction PIN is used as an extra safety measure. It is required if a transaction value is higher than the threshold MOB amount.",
@@ -544,7 +508,6 @@
     "pinRequired": "PIN is required",
     "pinSize": "PIN must be at least 6 characters long."
   },
-
   "SettingsOptionsItem": {
     "accounts": "Accounts",
     "changePassword": "Change Password",
@@ -554,12 +517,10 @@
     "retrieveEntropy": "Retrieve Secret Entropy",
     "terms": "Terms of Use"
   },
-
   "SettingsPage": {
     "changePasswordSuccess": "Successfully changed password.",
     "changePinSuccess": "Successfully set PIN!"
   },
-
   "ShowEntropyModal": {
     "back": "Go back...",
     "confirm": "Confirm you have secured Entropy",
@@ -572,7 +533,6 @@
     "show": "Show Secret Entropy",
     "yes": "Yes, I have secured my Entropy"
   },
-
   "ShowRetrievedEntropyModal": {
     "description": "We decrypted your Entropy and will now show you the code on your screen. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.",
     "header": "This is your secret Entropy",
@@ -580,14 +540,12 @@
     "secured": "I have secured my Entropy",
     "show": "Show Secret Entropy"
   },
-
   "SyncStatus": {
     "error": "Please see Admin Panel in Settings.",
     "offlineMode": "Offline Mode Enabled",
     "synced": "100% synced with the ledger",
     "syncing": "Syncing with the ledger"
   },
-
   "TransactionDetails": {
     "addComment": "Add comment",
     "address": "Address",
@@ -616,16 +574,13 @@
     "validateConfirmations": "Validate Confirmation(s)",
     "validated": "Validated"
   },
-
   "TermsOfUseDialog": {
     "close": "Close Terms of Use"
   },
-
   "TermsOfUseView": {
     "settings": "Settings",
     "terms": "Terms of Use"
   },
-
   "TransactionView": {
     "invalidTransaction": "Not a valid TxConfirmation",
     "mob": "MOB",
@@ -637,7 +592,6 @@
     "transactionCanceled": "Transaction Canceled",
     "txConfirmationSaved": "TxConfirmation Saved"
   },
-
   "UnlockAccount": {
     "description": "Please enter the password you used to secure your account.",
     "passwordLabel": "Password",
@@ -645,7 +599,6 @@
     "title": "Unlock Account",
     "unlockAccountButton": "Unlock Account"
   },
-
   "UnlockWallet": {
     "acceptTerms": "I have read and accept the",
     "acceptTermsButton": "Terms of Use",

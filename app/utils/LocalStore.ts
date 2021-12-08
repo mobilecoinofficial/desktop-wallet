@@ -15,6 +15,7 @@ export const schemaKeys = {
   ENCRYPTED_CONTACTS: 'encryptedContacts',
   ENCRYPTED_PASSPHRASE: 'encryptedPassphrase',
   ENCRYPTED_PIN: 'encryptedPin',
+  FULL_SERVICE_BINARIES_PATH: 'fullServiceBinariesPath',
   FULL_SERVICE_DB_EXISTS: 'fullServiceDbExists',
   FULL_SERVICE_DB_PATH: 'fullServiceDbPath',
   FULL_SERVICE_LEDGER_DB_PATH: 'fullServiceLedgerDbPath',
@@ -32,6 +33,7 @@ export const schema: LocalStoreSchema = {
   [schemaKeys.ENCRYPTED_CONTACTS]: { type: 'string' },
   [schemaKeys.ENCRYPTED_PASSPHRASE]: { type: 'string' },
   [schemaKeys.ENCRYPTED_PIN]: { type: 'string' },
+  [schemaKeys.FULL_SERVICE_BINARIES_PATH]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_DB_EXISTS]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_DB_PATH]: { type: 'string' },
   [schemaKeys.FULL_SERVICE_LEDGER_DB_PATH]: { type: 'string' },
@@ -125,6 +127,12 @@ export const getWalletDbExists = (): boolean => {
 
 export const getFullServiceLedgerDbPath = (): string =>
   store.get(schemaKeys.LEDGER_DB_PATH) as string;
+
+export const getFullServiceBinariesPath = (): string =>
+  store.get(schemaKeys.FULL_SERVICE_BINARIES_PATH) as string;
+
+export const setFullServiceBinariesPath = (name: string): void =>
+  store.set(schemaKeys.FULL_SERVICE_BINARIES_PATH, name);
 
 export const setLedgerDbPath = (name: string): void => store.set(schemaKeys.LEDGER_DB_PATH, name);
 

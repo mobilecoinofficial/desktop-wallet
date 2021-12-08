@@ -5,6 +5,7 @@ import * as localStore from '../utils/LocalStore';
 interface UseFullServiceConfigs {
   leaveFullServiceRunning: boolean;
   ledgerDbPath: string;
+  fullServiceBinariesPath: string;
   fullServiceDbPath: string;
   toggleLeaveFullServiceRunning: () => void;
 }
@@ -27,9 +28,11 @@ const useFullServiceConfigs = (): UseFullServiceConfigs => {
 
   // Paths
   const ledgerDbPath = localStore.getFullServiceLedgerDbPath();
+  const fullServiceBinariesPath = localStore.getFullServiceBinariesPath();
   const fullServiceDbPath = localStore.getFullServiceDbPath();
 
   return {
+    fullServiceBinariesPath,
     fullServiceDbPath,
     leaveFullServiceRunning,
     ledgerDbPath,

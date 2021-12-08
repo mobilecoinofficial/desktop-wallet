@@ -46,6 +46,7 @@ const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
   const classes = useStyles();
   const { t } = useTranslation('ConfigureFullServiceView');
   const {
+    fullServiceBinariesPath,
     fullServiceDbPath,
     leaveFullServiceRunning,
     ledgerDbPath,
@@ -90,6 +91,7 @@ const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
         exportTransactionHistory={exportTransactionHistory}
         importLedger={importLedger}
         ledgerDbPath={ledgerDbPath}
+        fullServiceBinariesPath={fullServiceBinariesPath}
         fullServiceDbPath={fullServiceDbPath}
       />
     </Container>

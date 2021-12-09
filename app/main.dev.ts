@@ -15,7 +15,7 @@ import { exec, spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen, shell } from 'electron';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
@@ -496,6 +496,10 @@ ipcMain.on('remove-accounts', (event) => {
       // eslint-disable-next-line no-param-reassign
       event.returnValue = [];
     });
+});
+
+ipcMain.on('view-path', (_event, filePath: string) => {
+  shell.showItemInFolder(filePath);
 });
 
 const shutDownFullService = () => {

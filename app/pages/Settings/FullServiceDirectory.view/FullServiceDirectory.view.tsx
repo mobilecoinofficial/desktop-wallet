@@ -2,6 +2,7 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Button, FormLabel, Typography } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
 
 import { FullServiceDirectoryProps } from './FullServiceDirectory';
@@ -41,12 +42,19 @@ const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
           {`${fullServiceDbPath}`}
         </Typography>
         <Button onClick={exportTransactionHistory}>{t('exportTransactionHistory')}</Button>
+        <Box py={1} />
         <Typography variant="body2" color="textPrimary">
           {t('fullServiceBinariesPathHeader')}
         </Typography>
-        <Typography variant="body2" color="textSecondary">
-          {`${fullServiceBinariesPath}`}
-        </Typography>
+        <div style={{ cursor: 'pointer' }}>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            onClick={() => ipcRenderer.send('view-path', fullServiceBinariesPath)}
+          >
+            {`${fullServiceBinariesPath}`}
+          </Typography>
+        </div>
       </Box>
     </Box>
   );

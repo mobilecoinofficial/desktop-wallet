@@ -33,7 +33,7 @@ const submitTransaction = async (
   //     },
   //     walletStatus,
   //   },
-  //   type: 'UPDATE_STATUS',
+  //   type: 'UPDATE_WALLET_STATUS',
   // });
 };
 

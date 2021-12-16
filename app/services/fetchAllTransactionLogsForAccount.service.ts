@@ -1,10 +1,10 @@
-import { store } from '../contexts/FullServiceContext';
-import { fetchAllTransactionLogsForAccountAction } from '../contexts/actions/fetchAllTransactionLogsForAccount.action';
 import * as fullServiceApi from '../fullService/api';
 import type { StringHex } from '../types/SpecialStrings';
-import type { TransactionAbbreviation } from '../types/TransactionLog';
+import type { TransactionAbbreviation, TransactionLogs } from '../types/TransactionLog';
 
-const fetchAllTransactionLogsForAccount = async (accountId: StringHex): Promise<void> => {
+export const fetchAllTransactionLogsForAccount = async (
+  accountId: StringHex
+): Promise<TransactionLogs> => {
   try {
     const transactionLogs = await fullServiceApi.getAllTransactionLogsForAccount({ accountId });
 
@@ -17,13 +17,10 @@ const fetchAllTransactionLogsForAccount = async (accountId: StringHex): Promise<
       w.recipientAddressId = w.outputTxos.length > 0 ? w.outputTxos[0].recipientAddressId : null;
     });
 
-    // TODO add logic to only trigger if different object
-    store.dispatch(fetchAllTransactionLogsForAccountAction(transactionLogs));
+    return transactionLogs;
   } catch (err) {
     throw new Error(err.message);
   }
 };
 
-export default fetchAllTransactionLogsForAccount;
-export { fetchAllTransactionLogsForAccount };
 export type FetchAllTransactionLogsForAccountService = typeof fetchAllTransactionLogsForAccount;

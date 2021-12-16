@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Typography } from '@material-ui/core';
@@ -24,8 +24,36 @@ const HistoryPage: FC = () => {
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
+  const [transactionLogsState, setTransactionLogsState] = useState([]);
 
   const { addresses, contacts, selectedAccount, transactionLogs, txos } = useFullService();
+
+  const buildList = (): TransactionLog[] => {
+    if (transactionLogs) {
+      return transactionLogs.transactionLogIds
+        .map((id) => transactionLogs.transactionLogMap[id])
+        .filter((transactionLog) => transactionLog.assignedAddressId !== addresses.addressIds[1])
+        .map((transactionLog) => {
+          // If any transaction is associated to a contact, let's attach the contact object.
+          // TODO - we can improve this greatly by changing how this information is stored.
+          const contact = contacts.find(
+            (x) =>
+              x.assignedAddress === transactionLog.assignedAddressId ||
+              x.recipientAddress === transactionLog.recipientAddressId
+          );
+          if (contact) {
+            transactionLog.contact = contact; /* eslint-disable-line no-param-reassign */
+          }
+          return transactionLog;
+        })
+        .sort((a, b) => b.finalizedBlockIndex - a.finalizedBlockIndex);
+    }
+    return [] as TransactionLog[];
+  };
+
+  useEffect(() => {
+    setTransactionLogsState(buildList());
+  }, [transactionLogs]);
 
   const handleClickCopyConfirmations = () => {
     (async () => {
@@ -69,29 +97,6 @@ const HistoryPage: FC = () => {
       }
     })();
   };
-
-  const buildList = (): TransactionLog[] => {
-    if (transactionLogs) {
-      return transactionLogs.transactionLogIds
-        .map((id) => transactionLogs.transactionLogMap[id])
-        .filter((transactionLog) => transactionLog.assignedAddressId !== addresses.addressIds[1])
-        .map((transactionLog) => {
-          // If any transaction is associated to a contact, let's attach the contact object.
-          // TODO - we can improve this greatly by changing how this information is stored.
-          const contact = contacts.find(
-            (x) =>
-              x.assignedAddress === transactionLog.assignedAddressId ||
-              x.recipientAddress === transactionLog.recipientAddressId
-          );
-          if (contact) {
-            transactionLog.contact = contact; /* eslint-disable-line no-param-reassign */
-          }
-          return transactionLog;
-        })
-        .sort((a, b) => b.finalizedBlockIndex - a.finalizedBlockIndex);
-    }
-    return [] as TransactionLog[];
-  };
   // CREATE VIEW
 
   if (transactionLogs === null) {
@@ -110,7 +115,7 @@ const HistoryPage: FC = () => {
     case HISTORY:
       return (
         <HistoryList
-          transactionLogsList={buildList()}
+          transactionLogsList={transactionLogsState}
           onTransactionClick={(transactionLog) => {
             setCurrentTransaction(transactionLog);
             setShowing(DETAILS);
@@ -120,8 +125,8 @@ const HistoryPage: FC = () => {
 
     case DETAILS:
       /*
-            We should get the TXOs for the transaction
-          */
+        We should get the TXOs for the transaction
+      */
 
       return (
         <TransactionDetails

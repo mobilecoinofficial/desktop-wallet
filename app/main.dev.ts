@@ -166,13 +166,11 @@ const createWindow = async () => {
         ? {
             contextIsolation: false,
             disableBlinkFeatures: 'Auxclick',
-            enableRemoteModule: true,
             nodeIntegration: true,
           }
         : {
             contextIsolation: true,
             disableBlinkFeatures: 'Auxclick',
-            enableRemoteModule: true,
             nodeIntegration: false,
             nodeIntegrationInWorker: false,
             preload: path.join(__dirname, 'dist/renderer.prod.js'),

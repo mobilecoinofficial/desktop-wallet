@@ -16,6 +16,10 @@ import fs from 'fs';
 import path from 'path';
 
 import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen } from 'electron';
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
+} from 'electron-devtools-installer';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
@@ -56,20 +60,6 @@ if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true')
   // eslint-disable-next-line
   require('electron-debug')();
 }
-
-const installExtensions = async () => {
-  // eslint-disable-next-line
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = [
-    /* 'REACT_DEVELOPER_TOOLS', */
-    /* , 'REDUX_DEVTOOLS' */
-  ] as string[];
-
-  return Promise.all(
-    extensions.map((name) => installer.default(installer[name], forceDownload))
-  ).catch(console.log);
-};
 
 let syncStatus = ''; // For the app to update, via ipcRenderer.send(...)
 let networkStatus = '';
@@ -144,7 +134,16 @@ setFullServiceDbPaths();
 
 const createWindow = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    await installExtensions();
+    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+
+    // @ts-ignore: as of type version 2.2.0 the typing of this packages is out of date.
+    // installExtensions takes a second param of type undefined, boolean (forceDownload only), or object
+    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], {
+      forceDownload,
+      loadExtensionOptions: { allowFileAccess: true },
+    })
+      .then((name: string) => console.log(`added extension: ${name}`))
+      .catch((err: any) => console.log('an error occured: ', err));
   }
 
   const RESOURCES_PATH = app.isPackaged

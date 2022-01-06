@@ -14,7 +14,11 @@ const useStyles = makeStyles({
       boxShadow:
         '0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%);',
     },
-    border: '4px solid #80808033',
+    '&:hover .MuiSvgIcon-root': {
+      fontSize: '3.5em',
+      transition: '0.1s ease-in-out',
+    },
+    border: '4px solid #00000014',
     borderRadius: '1em',
     bottom: 102,
     cursor: 'default',
@@ -41,14 +45,8 @@ const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
     >
       <Container maxWidth="md">
         <TermsOfUse />
-        <Fab
-          disableRipple
-          disableTouchRipple
-          disableFocusRipple
-          aria-label="Scroll Down"
-          className={classes.fab}
-        >
-          <ArrowDownwardIcon color="secondary" fontSize="large" />
+        <Fab disableRipple aria-label="Scroll Down" className={classes.fab} color="primary">
+          <ArrowDownwardIcon color="inherit" fontSize="large" />
         </Fab>
         <Box p={2}>
           <Button

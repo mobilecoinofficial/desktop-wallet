@@ -11,7 +11,9 @@ const openAboutWindow = async (mainWindow) => {
     parent: mainWindow,
     title: '',
     webPreferences: {
-      nodeIntegration: true,
+      contextIsolation: true,
+      disableBlinkFeatures: 'Auxclick',
+      nodeIntegrationInWorker: false,
     },
     width: 300,
   });

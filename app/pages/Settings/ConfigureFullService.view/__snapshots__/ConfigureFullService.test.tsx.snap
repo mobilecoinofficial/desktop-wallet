@@ -399,6 +399,23 @@ exports[`ConfigureFullServiceView component render ConfigureFullServiceView rend
             class="MuiTouchRipple-root"
           />
         </button>
+        <div
+          class="MuiBox-root MuiBox-root-29"
+        />
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+        >
+          Full-Service Binaries Path:
+        </p>
+        <div
+          style="cursor: pointer;"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+          >
+            undefined
+          </p>
+        </div>
       </div>
     </div>
   </div>

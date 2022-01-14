@@ -185,12 +185,23 @@ const createWindow = async () => {
     width: 700,
   });
 
-  // Reject all session permission requests from remote content
   mainWindow.webContents.session.setPermissionRequestHandler(
-    (_webContents, _permission, callback) => callback(false)
+    (_webContents, _permission, callback, details) => {
+      if (details.mediaTypes?.includes('video')) {
+        // Approves the video permissions request
+        return callback(true);
+      }
+      // Reject all other session permission requests from remote content
+      return callback(false);
+    }
   );
 
-  mainWindow.webContents.session.setPermissionCheckHandler(() => false);
+  mainWindow.webContents.session.setPermissionCheckHandler((_webContents, permission) => {
+    if (permission === 'media') {
+      return true;
+    }
+    return false;
+  });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 

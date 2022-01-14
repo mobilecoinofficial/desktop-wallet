@@ -23,15 +23,17 @@ import {
   Select,
   Typography,
   makeStyles,
+  Tooltip,
+  IconButton,
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { CheckboxWithLabel, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton, MOBNumberFormat } from '../../../components';
+import { SubmitButton, MOBNumberFormat, QRScanner } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
-import { StarIcon, MOBIcon } from '../../../components/icons';
+import { StarIcon, MOBIcon, QRCodeIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account.d';
 import {
@@ -101,6 +103,7 @@ const SendMob: FC<SendMobProps> = ({
   const [contactId, setContactId] = useState('');
   const [contactName, setContactName] = useState('');
   const [isChecked, setIsChecked] = useState(false);
+  const [isScanningQR, setIsScanningQR] = useState(false);
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
@@ -113,6 +116,7 @@ const SendMob: FC<SendMobProps> = ({
   ];
 
   const handleChecked = () => setIsChecked(!isChecked);
+  const handleScanningQR = () => setIsScanningQR(!isScanningQR);
 
   const handleOpen = (values) => async () => {
     onClickSend({
@@ -296,6 +300,9 @@ const SendMob: FC<SendMobProps> = ({
                           ))}
                         </Select>
                       )}
+                      {isScanningQR && (
+                        <QRScanner setFieldValue={setFieldValue} handleClose={handleScanningQR} />
+                      )}
                       <Field
                         component={TextField}
                         multiline
@@ -309,6 +316,26 @@ const SendMob: FC<SendMobProps> = ({
                         onBlur={(event) => {
                           handleBlur(event);
                           setFieldValue('recipientPublicAddress', event.target.value.trim());
+                        }}
+                        InputProps={{
+                          startAdornment: (
+                            <Tooltip
+                              title="Scan a QR Code to input recipient address?"
+                              placement="top-start"
+                              arrow
+                            >
+                              <InputAdornment position="start" style={{ marginRight: '-2px' }}>
+                                <IconButton
+                                  data-testid="qrscan"
+                                  color="inherit"
+                                  edge="start"
+                                  onClick={handleScanningQR}
+                                >
+                                  <QRCodeIcon height={20} width={20} />
+                                </IconButton>
+                              </InputAdornment>
+                            </Tooltip>
+                          ),
                         }}
                       />
                       <Field

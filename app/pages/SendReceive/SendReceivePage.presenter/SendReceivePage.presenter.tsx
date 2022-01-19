@@ -71,10 +71,10 @@ const SendReceivePage: FC = () => {
     getFeePmob();
   }, []);
 
-  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex as string);
-  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex as string);
+  const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
+  const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
 
-  const isSynced = isSyncedBuffered(networkBlockIndexBigInt, accountBlockIndexBigInt);
+  const isSynced = isSyncedBuffered(networkBlockHeightBigInt, accountBlockHeightBigInt);
 
   const { t } = useTranslation('TransactionView');
   const { enqueueSnackbar } = useSnackbar();

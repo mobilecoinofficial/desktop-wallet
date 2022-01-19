@@ -182,7 +182,7 @@ const AuthPage: FC = () => {
   const onClickUnlockWallet = async (password: string) => {
     try {
       const status = await getWalletStatus();
-      await unlockWallet(password, status.networkBlockIndex === '0');
+      await unlockWallet(password, status.networkBlockHeight === '0');
       if (status.accountIds.length > 0) {
         await selectAccount(status.accountIds[0]);
       }

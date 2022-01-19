@@ -43,15 +43,15 @@ const InactivityDetect: FC<InactivityDetectProps> = ({
   };
 
   prepareForLogout = () => {
-    const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
-    const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex);
-    const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+    const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
+    const localBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.localBlockHeight ?? 0);
+    const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
     const acceptableDiffBigInt = BigInt(2);
     const isSynced =
-      networkBlockIndexBigInt >= accountBlockIndexBigInt &&
-      networkBlockIndexBigInt >= localBlockIndexBigInt &&
-      localBlockIndexBigInt >= accountBlockIndexBigInt &&
-      networkBlockIndexBigInt - accountBlockIndexBigInt < acceptableDiffBigInt;
+      networkBlockHeightBigInt >= accountBlockHeightBigInt &&
+      networkBlockHeightBigInt >= localBlockHeightBigInt &&
+      localBlockHeightBigInt >= accountBlockHeightBigInt &&
+      networkBlockHeightBigInt - accountBlockHeightBigInt < acceptableDiffBigInt;
 
     if (isSynced) {
       setInactiveTooLong(true);

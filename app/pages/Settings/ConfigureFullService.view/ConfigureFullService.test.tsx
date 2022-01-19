@@ -21,10 +21,10 @@ describe('ConfigureFullServiceView', () => {
       object: 'account',
     },
     balanceStatus: {
-      accountBlockIndex: '1234',
+      accountBlockHeight: '1234',
       isSynced: true,
-      localBlockIndex: '1234',
-      networkBlockIndex: '1234',
+      localBlockHeight: '1234',
+      networkBlockHeight: '1234',
       object: 'balance',
       orphanedPmob: '1234',
       pendingPmob: '1234',

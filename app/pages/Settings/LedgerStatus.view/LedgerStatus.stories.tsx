@@ -24,10 +24,10 @@ story.args = {
       object: 'account',
     },
     balanceStatus: {
-      accountBlockIndex: '1234',
+      accountBlockHeight: '1234',
       isSynced: true,
-      localBlockIndex: '1234',
-      networkBlockIndex: '12345',
+      localBlockHeight: '1234',
+      networkBlockHeight: '12345',
       object: 'balance',
       orphanedPmob: '1234',
       pendingPmob: '1234',

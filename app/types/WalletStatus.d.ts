@@ -5,11 +5,9 @@ export interface WalletStatus {
   accountIds?: StringHex[];
   accountMap?: { [accountId: string]: Account };
   isSyncedAll: boolean;
-  localBlockIndex?: StringUInt64;
-  localBlockCount?: StringUInt64;
+  localBlockHeight?: StringUInt64;
   minSyncedBlockIndex: StringUInt64;
-  networkBlockIndex?: StringUInt64;
-  networkBlockCount?: StringUInt64;
+  networkBlockHeight?: StringUInt64;
   object?: 'wallet_status';
   totalOrphanedPmob: StringUInt64;
   totalPendingPmob: StringUInt64;

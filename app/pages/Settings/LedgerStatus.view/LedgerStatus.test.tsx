@@ -22,10 +22,10 @@ const SELECTED_ACCOUNT = {
     recoveryMode: false,
   },
   balanceStatus: {
-    accountBlockIndex: '158974',
+    accountBlockHeight: '158974',
     isSynced: true,
-    localBlockIndex: '158974',
-    networkBlockIndex: '158974',
+    localBlockHeight: '158974',
+    networkBlockHeight: '158974',
     object: 'balance',
     orphanedPmob: '18000000000001',
     pendingPmob: '0',
@@ -37,7 +37,7 @@ const SELECTED_ACCOUNT = {
 
 describe('Ledger status', () => {
   test('works when synced', async () => {
-    SELECTED_ACCOUNT.balanceStatus.accountBlockIndex = '158974';
+    SELECTED_ACCOUNT.balanceStatus.accountBlockHeight = '158974';
     const { container } = render(<LedgerStatus selectedAccount={SELECTED_ACCOUNT} />);
 
     expect(container.innerHTML.includes('The ledger is synced')).toBeTruthy();
@@ -47,7 +47,7 @@ describe('Ledger status', () => {
   });
 
   test('shows error when not synced', async () => {
-    SELECTED_ACCOUNT.balanceStatus.accountBlockIndex = '1589740';
+    SELECTED_ACCOUNT.balanceStatus.accountBlockHeight = '1589740';
     const { container } = render(<LedgerStatus selectedAccount={SELECTED_ACCOUNT} />);
 
     expect(container.innerHTML.includes("There's been an error in the ledger.")).toBeTruthy();

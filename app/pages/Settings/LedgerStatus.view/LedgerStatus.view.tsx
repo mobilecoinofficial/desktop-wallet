@@ -23,9 +23,9 @@ const LedgerStatus: FC<LedgerStatusProps> = ({
 }: LedgerStatusProps) => {
   const { t } = useTranslation('LedgerStatus');
 
-  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex as string);
-  const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex as string);
-  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex as string);
+  const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
+  const localBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.localBlockHeight ?? 0);
+  const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
 
   const createData = (
     blockType: string,
@@ -40,27 +40,27 @@ const LedgerStatus: FC<LedgerStatusProps> = ({
   });
 
   const percentAccountSynced =
-    networkBlockIndexBigInt < accountBlockIndexBigInt
+    networkBlockHeightBigInt < accountBlockHeightBigInt
       ? !offlineModeEnabled && 'Error'
-      : getPercentSynced(networkBlockIndexBigInt, accountBlockIndexBigInt);
+      : getPercentSynced(networkBlockHeightBigInt, accountBlockHeightBigInt);
 
   const percentLocalSynced =
-    networkBlockIndexBigInt < localBlockIndexBigInt
+    networkBlockHeightBigInt < localBlockHeightBigInt
       ? !offlineModeEnabled && 'Error'
-      : getPercentSynced(networkBlockIndexBigInt, localBlockIndexBigInt);
+      : getPercentSynced(networkBlockHeightBigInt, localBlockHeightBigInt);
 
   const rows = [
-    createData(t('networkBlocks'), '', Number(networkBlockIndexBigInt), ''),
+    createData(t('networkBlocks'), '', Number(networkBlockHeightBigInt), ''),
     createData(
       t('localBlocks'),
-      Number(localBlockIndexBigInt),
-      Number(networkBlockIndexBigInt),
+      Number(localBlockHeightBigInt),
+      Number(networkBlockHeightBigInt),
       percentLocalSynced === 'Error' ? !offlineModeEnabled && 'Error' : percentLocalSynced
     ),
     createData(
       t('accountBlocks'),
-      Number(accountBlockIndexBigInt),
-      Number(networkBlockIndexBigInt),
+      Number(accountBlockHeightBigInt),
+      Number(networkBlockHeightBigInt),
       percentAccountSynced === 'Error' ? !offlineModeEnabled && 'Error' : percentAccountSynced
     ),
   ];

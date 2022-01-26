@@ -7,7 +7,7 @@ import '../../../testUtils/i18nForTests';
 import { SyncStatus } from './SyncStatus.view';
 
 describe('SyncStatus', () => {
-  test('SyncStatus renders error when NetworkBlockIndex is less than LocalBlockIndex of SelectedAccount', async () => {
+  test('SyncStatus renders error when NetworkBlockIndex is less than LocalBlockHeight of SelectedAccount', async () => {
     const sendSyncStatus = jest.fn();
     const selectedAccount = {
       account: {
@@ -18,12 +18,13 @@ describe('SyncStatus', () => {
         name: null,
         nextSubaddressIndex: '1235',
         object: 'account',
+        recoveryMode: false,
       },
       balanceStatus: {
-        accountBlockIndex: '1234',
+        accountBlockHeight: '1234',
         isSynced: true,
-        localBlockIndex: '1234',
-        networkBlockIndex: '123',
+        localBlockHeight: '1234',
+        networkBlockHeight: '123',
         object: 'balance',
         orphanedPmob: '1234',
         pendingPmob: '1234',
@@ -54,10 +55,10 @@ describe('SyncStatus', () => {
         object: 'account',
       },
       balanceStatus: {
-        accountBlockIndex: '123',
+        accountBlockHeight: '123',
         isSynced: true,
-        localBlockIndex: '1234',
-        networkBlockIndex: '1234',
+        localBlockHeight: '1234',
+        networkBlockHeight: '1234',
         object: 'balance',
         orphanedPmob: '1234',
         pendingPmob: '1234',
@@ -86,10 +87,10 @@ describe('SyncStatus', () => {
         object: 'account',
       },
       balanceStatus: {
-        accountBlockIndex: '1234',
+        accountBlockHeight: '1234',
         isSynced: true,
-        localBlockIndex: '1234',
-        networkBlockIndex: '1234',
+        localBlockHeight: '1234',
+        networkBlockHeight: '1234',
         object: 'balance',
         orphanedPmob: '1234',
         pendingPmob: '1234',

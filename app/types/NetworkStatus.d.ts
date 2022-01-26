@@ -1,7 +1,7 @@
 import type { StringUInt64 } from './SpecialStrings';
 
 export interface NetworkStatus {
-  localBlockIndex: StringUInt64;
-  networkBlockIndex: StringUInt64;
+  localBlockHeight: StringUInt64;
+  networkBlockHeight: StringUInt64;
   feePmob: StringUInt64;
 }

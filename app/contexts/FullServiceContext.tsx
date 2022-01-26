@@ -120,9 +120,9 @@ const initialFullServiceState: FullServiceState = {
   transactionLogs: null,
   walletStatus: {
     isSyncedAll: false,
-    localBlockCount: '',
+    localBlockHeight: '',
     minSyncedBlockIndex: '',
-    networkBlockCount: '',
+    networkBlockHeight: '',
     totalOrphanedPmob: '',
     totalPendingPmob: '',
     totalSecretedPmob: '',

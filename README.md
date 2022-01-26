@@ -23,13 +23,15 @@ MobileCoin Desktop Wallet is available under open-source licenses. Look for the 
 
 ### Setup
 
-Depending on your local platform, you'll need to add the correct version of [full-service binaries](https://github.com/mobilecoinofficial/full-service/releases/tag/v1.0.0-pre.8) to the `./full-service-bin` directory. If you add the binaries, you will likely need to give permissions for the dev environment to run them. In the directory with the binaries, grant permission: `chmod +x full-service`.
+Depending on your local platform, you'll need to add the correct version from the Downloads section of the [full-service binaries](https://github.com/mobilecoinofficial/full-service/releases) to the `./full-service-bin` directory. Grab the binary `full-service` file and the .css files, and place them in their relative subdirectory in `./full-service-bin`. Once you have the files in the `./full-service-bin/testnet` and `./full-service-bin/mainnet` directories, copy the contents from `./full-service-bin/testnet` into `./full-service-bin`. When you add the binaries, you will likely need to give permissions for the dev environment to run them. In the directory with the binaries, grant permission: `chmod +x full-service`.
 
 ### Dev
 
-You'll need to start by installing the packages. At the root, run `yarn install` (or `yarn` if you're cool like that). Because this wallet has native packages, you'll need to drop into the app/ directory `cd app/` and run `yarn install` here as well. Once done, hop back up to the root directory (I know you know this, but `cd ..`).
+The application is dependent on using node version `^16.0.0`. Since different applications may rely on different versions of node, it is recommended you use a [node manager like n](https://github.com/tj/n). You can check the current node version with `node --version`.
 
-Run the dev environment with `yarn dev`.
+Once you're working with the correct version of node, you'll need to install the rest of the packages. At the root of the directory run `yarn install` (or `yarn` if you're cool like that). Because this wallet has native packages, you'll need to drop into the app/ directory `cd app/` and run `yarn install` here as well. Once done, hop back up to the root directory (I know you know this, but `cd ..`).
+
+Run the dev environment with `yarn dev` from the base directory.
 
 That's it!
 

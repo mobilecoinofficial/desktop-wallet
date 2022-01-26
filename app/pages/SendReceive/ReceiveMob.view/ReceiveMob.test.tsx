@@ -21,10 +21,10 @@ const SELECTED_ACCOUNT = {
     recoveryMode: false,
   },
   balanceStatus: {
-    accountBlockIndex: '158974',
+    accountBlockHeight: '158974',
     isSynced: true,
-    localBlockIndex: '158974',
-    networkBlockIndex: '158974',
+    localBlockHeight: '158974',
+    networkBlockHeight: '158974',
     object: 'balance',
     orphanedPmob: '18000000000001',
     pendingPmob: '0',

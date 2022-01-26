@@ -8,6 +8,7 @@ type SelectedAccount = {
 
 type ConfigureFullServiceConfigs = {
   ledgerDbPath: string;
+  fullServiceBinariesPath: string;
   fullServiceDbPath: string;
   leaveFullServiceRunning: boolean;
   toggleLeaveFullServiceRunning: () => void;

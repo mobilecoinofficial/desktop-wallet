@@ -15,7 +15,11 @@ import { exec, spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen, shell } from 'electron';
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS,
+} from 'electron-devtools-installer';
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
@@ -57,20 +61,6 @@ if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true')
   require('electron-debug')();
 }
 
-const installExtensions = async () => {
-  // eslint-disable-next-line
-  const installer = require('electron-devtools-installer');
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = [
-    /* 'REACT_DEVELOPER_TOOLS', */
-    /* , 'REDUX_DEVTOOLS' */
-  ] as string[];
-
-  return Promise.all(
-    extensions.map((name) => installer.default(installer[name], forceDownload))
-  ).catch(console.log);
-};
-
 let syncStatus = ''; // For the app to update, via ipcRenderer.send(...)
 let networkStatus = '';
 
@@ -82,15 +72,9 @@ const startFullService = (
   startInOfflineMode: boolean
 ): void => {
   // Start the full-service process in the background
-  const IS_PROD = process.env.NODE_ENV === 'production';
-  const root = process.cwd();
-  const { isPackaged } = app;
-
-  // TODO move these strings into constants/
-  const fullServiceBinariesPath =
-    IS_PROD && isPackaged
-      ? path.join(process.resourcesPath, '..', 'full-service-bin')
-      : path.join(root, 'full-service-bin');
+  const fullServiceBinariesPath = localStore.getFullServiceBinariesPath();
+  const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
+  const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   console.log(`Offline Mode: ${startInOfflineMode}`);
@@ -98,9 +82,6 @@ const startFullService = (
   const fullServiceExecPath = startInOfflineMode
     ? path.resolve(path.join(fullServiceBinariesPath, './start-full-service-offline.sh'))
     : path.resolve(path.join(fullServiceBinariesPath, './start-full-service.sh'));
-
-  const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
-  const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
 
   const options: { [k: string]: { [j: string]: string } } = {
     env: {
@@ -126,6 +107,23 @@ const startFullService = (
   );
 };
 
+const setFullServiceBinariesPath = (): void => {
+  const IS_PROD = process.env.NODE_ENV === 'production';
+  const { isPackaged } = app;
+  const root = process.cwd();
+
+  // TODO move these strings into constants/
+  const fullServiceBinariesPath =
+    IS_PROD && isPackaged
+      ? path.join(process.resourcesPath, '..', 'full-service-bin')
+      : path.join(root, 'full-service-bin');
+
+  console.log('fullServiceBinariesPath', fullServiceBinariesPath);
+  localStore.setFullServiceBinariesPath(fullServiceBinariesPath);
+};
+
+setFullServiceBinariesPath();
+
 const setFullServiceDbPaths = (): void => {
   const userDataPath = app.getPath('userData');
   const ledgerFullServiceDbPath = path.normalize(
@@ -144,7 +142,16 @@ setFullServiceDbPaths();
 
 const createWindow = async () => {
   if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    await installExtensions();
+    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+
+    // @ts-ignore: as of type version 2.2.0 the typing of this packages is out of date.
+    // installExtensions takes a second param of type undefined, boolean (forceDownload only), or object
+    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS], {
+      forceDownload,
+      loadExtensionOptions: { allowFileAccess: true },
+    })
+      .then((name: string) => console.log(`added extension: ${name}`))
+      .catch((err: any) => console.log('an error occured: ', err));
   }
 
   const RESOURCES_PATH = app.isPackaged
@@ -166,13 +173,11 @@ const createWindow = async () => {
         ? {
             contextIsolation: false,
             disableBlinkFeatures: 'Auxclick',
-            enableRemoteModule: true,
             nodeIntegration: true,
           }
         : {
             contextIsolation: true,
             disableBlinkFeatures: 'Auxclick',
-            enableRemoteModule: true,
             nodeIntegration: false,
             nodeIntegrationInWorker: false,
             preload: path.join(__dirname, 'dist/renderer.prod.js'),
@@ -180,12 +185,23 @@ const createWindow = async () => {
     width: 700,
   });
 
-  // Reject all session permission requests from remote content
   mainWindow.webContents.session.setPermissionRequestHandler(
-    (_webContents, _permission, callback) => callback(false)
+    (_webContents, _permission, callback, details) => {
+      if (details.mediaTypes?.includes('video')) {
+        // Approves the video permissions request
+        return callback(true);
+      }
+      // Reject all other session permission requests from remote content
+      return callback(false);
+    }
   );
 
-  mainWindow.webContents.session.setPermissionCheckHandler(() => false);
+  mainWindow.webContents.session.setPermissionCheckHandler((_webContents, permission) => {
+    if (permission === 'media') {
+      return true;
+    }
+    return false;
+  });
 
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
@@ -488,6 +504,10 @@ ipcMain.on('remove-accounts', (event) => {
       // eslint-disable-next-line no-param-reassign
       event.returnValue = [];
     });
+});
+
+ipcMain.on('view-path', (_event, filePath: string) => {
+  shell.showItemInFolder(filePath);
 });
 
 const shutDownFullService = () => {

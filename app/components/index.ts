@@ -3,6 +3,7 @@ export { default as GlobalStyles } from './GlobalStyles';
 export { default as LoadingScreen } from './LoadingScreen';
 export { default as MOBNumberFormat } from './MOBNumberFormat';
 export { default as QRMob } from './QRMob';
+export { default as QRScanner } from './QRScanner';
 export { default as SavedPasswordsModal } from './SavedPasswordsModal';
 export { default as ShortCode } from './ShortCode';
 export { default as SplashScreen } from './SplashScreen';

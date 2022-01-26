@@ -75,12 +75,14 @@ const SettingsPage: FC = () => {
 
   const {
     ledgerDbPath,
+    fullServiceBinariesPath,
     fullServiceDbPath,
     leaveFullServiceRunning,
     toggleLeaveFullServiceRunning,
   } = useFullServiceConfigs();
 
   const configureFullServiceConfigs = {
+    fullServiceBinariesPath,
     fullServiceDbPath,
     leaveFullServiceRunning,
     ledgerDbPath,

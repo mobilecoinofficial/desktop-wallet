@@ -3,14 +3,14 @@ import type { BalanceStatus } from '../../types/BalanceStatus.d';
 import type { SelectedAccount } from '../../types/SelectedAccount.d';
 import type { WalletStatus } from '../../types/WalletStatus.d';
 
-export const UPDATE_STATUS = 'UPDATE_STATUS';
+export const UPDATE_WALLET_STATUS = 'UPDATE_WALLET_STATUS';
 
 export type UpdateStatusActionType = {
   payload: {
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
-  type: 'UPDATE_STATUS';
+  type: 'UPDATE_WALLET_STATUS';
 };
 
 export const updateStatusAction = (
@@ -25,5 +25,5 @@ export const updateStatusAction = (
     },
     walletStatus,
   },
-  type: 'UPDATE_STATUS',
+  type: 'UPDATE_WALLET_STATUS',
 });

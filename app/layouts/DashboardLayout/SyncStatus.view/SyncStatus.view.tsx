@@ -63,28 +63,28 @@ const SyncStatus: FC<SyncStatusProps> = ({
   let statusCode;
   let title;
   let backgroundColor;
-  const networkBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.networkBlockIndex);
-  const localBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.localBlockIndex);
-  const accountBlockIndexBigInt = BigInt(selectedAccount.balanceStatus.accountBlockIndex);
+  const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
+  const localBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.localBlockHeight ?? 0);
+  const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
   const acceptableDiffBigInt = BigInt(2);
   if (offlineModeEnabled) {
     isSynced = false;
     percentSynced = 0;
     statusCode = OFFLINE;
   } else if (
-    networkBlockIndexBigInt < accountBlockIndexBigInt ||
-    networkBlockIndexBigInt < localBlockIndexBigInt
+    networkBlockHeightBigInt < accountBlockHeightBigInt ||
+    networkBlockHeightBigInt < localBlockHeightBigInt
   ) {
     isSynced = false;
     percentSynced = 0;
     statusCode = ERROR;
   } else {
     const minBlockIndexBigInt =
-      accountBlockIndexBigInt < localBlockIndexBigInt
-        ? accountBlockIndexBigInt
-        : localBlockIndexBigInt;
-    percentSynced = getPercentSynced(networkBlockIndexBigInt, minBlockIndexBigInt);
-    isSynced = networkBlockIndexBigInt - minBlockIndexBigInt < acceptableDiffBigInt;
+      accountBlockHeightBigInt < localBlockHeightBigInt
+        ? accountBlockHeightBigInt
+        : localBlockHeightBigInt;
+    percentSynced = getPercentSynced(networkBlockHeightBigInt, minBlockIndexBigInt);
+    isSynced = networkBlockHeightBigInt - minBlockIndexBigInt < acceptableDiffBigInt;
 
     statusCode = isSynced ? SYNCED : SYNCING;
   }
@@ -93,7 +93,7 @@ const SyncStatus: FC<SyncStatusProps> = ({
   switch (statusCode) {
     case OFFLINE: {
       backgroundColor = BLUE_LIGHT;
-      title = `Block Height: ${localBlockIndexBigInt}`;
+      title = `Block Height: ${localBlockHeightBigInt}`;
       break;
     }
     case SYNCED: {

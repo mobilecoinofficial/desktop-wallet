@@ -1,5 +1,5 @@
 import type { Account } from '../../types/Account.d';
-import axiosFullService from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const IMPORT_LEGACY_ACCOUNT_METHOD = 'import_account_from_legacy_root_entropy';
 
@@ -18,17 +18,20 @@ const importLegacyAccount = async ({
   firstBlockIndex,
   name,
 }: ImportAccountParams): Promise<ImportAccountResult> => {
-  const { result, error } = await axiosFullService(IMPORT_LEGACY_ACCOUNT_METHOD, {
-    entropy,
-    firstBlockIndex,
-    name,
-  });
+  const { result, error }: AxiosFullServiceResponse<ImportAccountResult> = await axiosFullService(
+    IMPORT_LEGACY_ACCOUNT_METHOD,
+    {
+      entropy,
+      firstBlockIndex,
+      name,
+    }
+  );
 
   if (error) {
     // TODO - I'll write up a better error handler
     throw new Error(error);
   } else {
-    return result;
+    return result as ImportAccountResult;
   }
 };
 

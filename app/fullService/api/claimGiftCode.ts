@@ -1,5 +1,5 @@
 import type { StringB58, StringHex } from '../../types/SpecialStrings.d';
-import axiosFullService from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const CLAIM_GIFT_CODE_METHOD = 'claim_gift_code';
 
@@ -18,17 +18,20 @@ const claimGiftCode = async ({
   address,
   giftCodeB58,
 }: ClaimGiftCodeParams): Promise<ClaimGiftCodeResult> => {
-  const { result, error } = await axiosFullService(CLAIM_GIFT_CODE_METHOD, {
-    accountId,
-    address,
-    giftCodeB58,
-  });
+  const { result, error }: AxiosFullServiceResponse<ClaimGiftCodeResult> = await axiosFullService(
+    CLAIM_GIFT_CODE_METHOD,
+    {
+      accountId,
+      address,
+      giftCodeB58,
+    }
+  );
 
   if (error) {
     // TODO - I'll write up a better error handler
     throw new Error(error);
   } else {
-    return result;
+    return result as ClaimGiftCodeResult;
   }
 };
 

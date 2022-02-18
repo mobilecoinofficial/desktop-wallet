@@ -4,19 +4,19 @@ import snakeCaseKeys from 'snakecase-keys';
 
 import { skipKeysCamelCase } from './utils';
 
-interface FullServiceResponse extends AxiosResponse {
+type FullServiceResponse = AxiosResponse & {
   data: {
     method: string;
     jsonrpc: string;
     result?: any; // TODO, consider replacing with generic T
     error?: string;
   };
-}
+};
 
-interface AxiosFullServiceResponse {
-  result?: any; // TODO, consider replacing with generic T
+export type AxiosFullServiceResponse<T> = {
+  result?: T;
   error?: string;
-}
+};
 
 export const handleResponse = (response: AxiosResponse<FullServiceResponse>): FullServiceResponse =>
   response.data;
@@ -26,10 +26,10 @@ export const handleError = (error: { message?: string }) =>
   // Usually, bad urls (404) or incorrect methods (422).
   Promise.reject(error.message || 'Unknown Full-Service error');
 
-const axiosFullService = async (
+const axiosFullService = async <T>(
   method: string,
   params?: Record<string, any>
-): Promise<AxiosFullServiceResponse> => {
+): Promise<AxiosFullServiceResponse<T>> => {
   const axiosInstance = axios.create({
     baseURL: 'http://localhost:9090/wallet',
     headers: { 'Content-type': 'application/json' },
@@ -61,7 +61,7 @@ const axiosFullService = async (
   } catch (error) {
     // TODO: when we hit an unknown error, I think we can assume this application needs to restart
     // So, we should figure out a bug report path and a reset button.
-    const errorMessage = error.message || 'Unknown Rocket error';
+    const errorMessage = (error as Error).message || 'Unknown Rocket error';
     return { error: errorMessage };
   }
 };

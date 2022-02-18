@@ -1,5 +1,5 @@
 import type { Account } from '../../types/Account.d';
-import axiosFullService from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const CREATE_ACCOUNT_METHOD = 'create_account';
 
@@ -16,16 +16,19 @@ const createAccount = async ({
   firstBlockIndex,
   name,
 }: CreateAccountParams): Promise<CreateAccountResult> => {
-  const { result, error } = await axiosFullService(CREATE_ACCOUNT_METHOD, {
-    firstBlockIndex,
-    name,
-  });
+  const { result, error }: AxiosFullServiceResponse<CreateAccountResult> = await axiosFullService(
+    CREATE_ACCOUNT_METHOD,
+    {
+      firstBlockIndex,
+      name,
+    }
+  );
 
   if (error) {
     // TODO - I'll write up a better error handler
     throw new Error(error);
   } else {
-    return result;
+    return result as CreateAccountResult;
   }
 };
 

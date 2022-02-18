@@ -1,6 +1,6 @@
 import type { GiftCode } from '../../types/GiftCode.d';
 import type { StringB58 } from '../../types/SpecialStrings.d';
-import axiosFullService from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_GIFT_CODE_METHOD = 'get_gift_code';
 
@@ -13,14 +13,17 @@ type GetGiftCodeResult = {
 };
 
 const getGiftCode = async ({ giftCodeB58 }: GetGiftCodeParams): Promise<GetGiftCodeResult> => {
-  const { result, error } = await axiosFullService(GET_GIFT_CODE_METHOD, {
-    giftCodeB58,
-  });
+  const { result, error }: AxiosFullServiceResponse<GetGiftCodeResult> = await axiosFullService(
+    GET_GIFT_CODE_METHOD,
+    {
+      giftCodeB58,
+    }
+  );
   if (error) {
     // TODO - I'll write up a better error handler
     throw new Error(error);
   } else {
-    return result;
+    return result as GetGiftCodeResult;
   }
 };
 

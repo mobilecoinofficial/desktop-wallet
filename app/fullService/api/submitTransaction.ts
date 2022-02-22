@@ -23,11 +23,13 @@ const submitTransaction = async ({
       accountId,
       txProposal,
     });
+
   if (error) {
-    // TODO - I'll write up a better error handler
     throw new Error(error);
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
   } else {
-    return result as SubmitTransactionResult;
+    return result;
   }
 };
 

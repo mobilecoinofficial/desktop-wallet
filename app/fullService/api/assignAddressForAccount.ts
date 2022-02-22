@@ -27,8 +27,10 @@ const assignAddressForAccount = async ({
     // TODO - I'll write up a better error handler
     const errorMessage = error === 'Database(PasswordFailed)' ? 'Incorrect Password' : error;
     throw new Error(errorMessage);
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
   } else {
-    return result as AssignAddressForAccountResult;
+    return result;
   }
 };
 

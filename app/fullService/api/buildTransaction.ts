@@ -41,13 +41,14 @@ const buildTransaction = async ({
       tombstoneBlock,
       valuePmob,
     });
+
   if (error) {
     throw new Error(error);
-  } else if (typeof result === undefined) {
-    throw new Error('empty TxProposal response');
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
   }
 
-  const { txProposal } = result as { txProposal: TxProposal };
+  const { txProposal } = result;
   // FIX-ME: assumes only 1 recipient
   const txProposalReceiverB58Code = recipientPublicAddress;
 

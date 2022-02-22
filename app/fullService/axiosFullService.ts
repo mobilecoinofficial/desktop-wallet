@@ -26,6 +26,8 @@ export const handleError = (error: { message?: string }) =>
   // Usually, bad urls (404) or incorrect methods (422).
   Promise.reject(error.message || 'Unknown Full-Service error');
 
+// TODO: refactor to include better error handling. Returning an optional error param offloads error
+// handling to the caller, breaking DRY
 const axiosFullService = async <T>(
   method: string,
   params?: Record<string, any>

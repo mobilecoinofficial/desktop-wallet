@@ -18,12 +18,14 @@ const removeAccount = async ({ accountId }: RemoveAccountParams): Promise<Remove
       accountId,
     }
   );
+
   if (error) {
-    // TODO - I'll write up a better error handler
     throw new Error(error);
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
   } else {
     removeKeychainAccounts();
-    return result as RemoveAccountResult;
+    return result;
   }
 };
 

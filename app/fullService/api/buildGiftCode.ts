@@ -48,7 +48,14 @@ const buildGiftCode = async ({
       valuePmob,
     }
   );
-  const { txProposal, giftCode, giftCodeB58 } = result as BuildGiftCodeResponse;
+
+  if (error) {
+    throw new Error(error);
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
+  }
+
+  const { txProposal, giftCode, giftCodeB58 } = result;
 
   // TODO fix type, right now it just matches what the component is expecting
   const totalValueConfirmation = txProposal.outlayList
@@ -57,18 +64,13 @@ const buildGiftCode = async ({
 
   const feeConfirmation = BigInt(txProposal.fee);
 
-  if (error) {
-    // TODO - I'll write up a better error handler
-    throw new Error(error);
-  } else {
-    return {
-      feeConfirmation,
-      giftCode,
-      giftCodeB58,
-      totalValueConfirmation,
-      txProposal,
-    };
-  }
+  return {
+    feeConfirmation,
+    giftCode,
+    giftCodeB58,
+    totalValueConfirmation,
+    txProposal,
+  };
 };
 
 export default buildGiftCode;

@@ -34,6 +34,8 @@ const checkB58PaymentRequest = async (
 
   if (error || result?.b58Type !== 'PaymentRequest') {
     checkResponse.error = 'Invalid payment request code.';
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
   }
 
   const validatedResult = result as CheckB58PaymentRequestResult;

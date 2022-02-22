@@ -29,15 +29,12 @@ const submitGiftCode = async ({
     }
   );
 
-  const { giftCode } = result as SubmitGiftCodeResult;
-
   if (error) {
-    // TODO - I'll write up a better error handler
     throw new Error(error);
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
   } else {
-    return {
-      giftCode,
-    };
+    return { giftCode: result.giftCode };
   }
 };
 

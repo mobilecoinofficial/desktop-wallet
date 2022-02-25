@@ -1,6 +1,6 @@
 import { Confirmations } from '../../types/Confirmation';
 import type { StringHex } from '../../types/SpecialStrings.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService from '../axiosFullService';
 
 const GET_CONFIRMATIONS_METHOD = 'get_confirmations';
 
@@ -15,15 +15,12 @@ type GetConfirmationsResult = {
 const getConfirmations = async ({
   transactionLogId,
 }: GetConfirmationsParams): Promise<GetConfirmationsResult> => {
-  const { result, error }: AxiosFullServiceResponse<GetConfirmationsResult> =
-    await axiosFullService(GET_CONFIRMATIONS_METHOD, {
-      transactionLogId,
-    });
-
+  const { result, error } = await axiosFullService(GET_CONFIRMATIONS_METHOD, {
+    transactionLogId,
+  });
   if (error) {
+    // TODO - I'll write up a better error handler
     throw new Error(error);
-  } else if (!result) {
-    throw new Error('Failure to retrieve data.');
   } else {
     return result;
   }

@@ -1,5 +1,5 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService from '../axiosFullService';
 
 const VALIDATE_CONFIRMATION_METHOD = 'validate_confirmation';
 
@@ -18,17 +18,14 @@ const validateConfirmation = async ({
   confirmation,
   txoId,
 }: ValidateConfirmationParams): Promise<ValidateConfirmationResult> => {
-  const { result, error }: AxiosFullServiceResponse<ValidateConfirmationResult> =
-    await axiosFullService(VALIDATE_CONFIRMATION_METHOD, {
-      accountId,
-      confirmation,
-      txoId,
-    });
-
+  const { result, error } = await axiosFullService(VALIDATE_CONFIRMATION_METHOD, {
+    accountId,
+    confirmation,
+    txoId,
+  });
   if (error) {
+    // TODO - I'll write up a better error handler
     throw new Error(error);
-  } else if (!result) {
-    throw new Error('Failure to retrieve data.');
   } else {
     return result;
   }

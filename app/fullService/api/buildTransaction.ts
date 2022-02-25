@@ -1,6 +1,6 @@
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
-import type { Outlay, TxProposal } from '../../types/TxProposal';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import type { TxProposal } from '../../types/TxProposal';
+import axiosFullService from '../axiosFullService';
 
 // TODO - fix the error handling at this level -- when giving the wrong method, for example
 const BUILD_TRANSACTION_METHOD = 'build_transaction';
@@ -22,6 +22,11 @@ export type BuildTransactionResult = {
   txProposalReceiverB58Code: StringB58;
 };
 
+type AxiosFullServiceResponse = {
+  error: string;
+  result: { txProposal: TxProposal };
+};
+
 const buildTransaction = async ({
   accountId,
   fee,
@@ -31,8 +36,9 @@ const buildTransaction = async ({
   tombstoneBlock,
   valuePmob,
 }: BuildTransactionParams): Promise<BuildTransactionResult> => {
-  const { result, error }: AxiosFullServiceResponse<{ txProposal: TxProposal }> =
-    await axiosFullService(BUILD_TRANSACTION_METHOD, {
+  const { result, error }: AxiosFullServiceResponse = await axiosFullService(
+    BUILD_TRANSACTION_METHOD,
+    {
       accountId,
       fee,
       inputTxoIds,
@@ -40,12 +46,10 @@ const buildTransaction = async ({
       recipientPublicAddress,
       tombstoneBlock,
       valuePmob,
-    });
-
+    }
+  );
   if (error) {
-    throw new Error(error);
-  } else if (!result) {
-    throw new Error('Failure to retrieve data.');
+    throw new Error(error.data.details);
   }
 
   const { txProposal } = result;
@@ -54,8 +58,8 @@ const buildTransaction = async ({
 
   // TODO fix type, right now it just matches what the component is expecting
   const totalValueConfirmation = txProposal.outlayList
-    .map((outlay: Outlay) => BigInt(outlay.value))
-    .reduce((acc: bigint, cur: bigint) => acc + cur, BigInt(0));
+    .map((outlay) => BigInt(outlay.value))
+    .reduce((acc, cur) => acc + cur, BigInt(0));
 
   const feeConfirmation = BigInt(txProposal.fee);
   return {

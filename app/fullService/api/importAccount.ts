@@ -1,5 +1,5 @@
 import type { Account } from '../../types/Account.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService from '../axiosFullService';
 
 const IMPORT_ACCOUNT_METHOD = 'import_account';
 
@@ -20,20 +20,16 @@ const importAccount = async ({
   firstBlockIndex,
   name,
 }: ImportAccountParams): Promise<ImportAccountResult> => {
-  const { result, error }: AxiosFullServiceResponse<ImportAccountResult> = await axiosFullService(
-    IMPORT_ACCOUNT_METHOD,
-    {
-      firstBlockIndex,
-      key_derivation_version,
-      mnemonic,
-      name,
-    }
-  );
+  const { result, error } = await axiosFullService(IMPORT_ACCOUNT_METHOD, {
+    firstBlockIndex,
+    key_derivation_version,
+    mnemonic,
+    name,
+  });
 
   if (error) {
+    // TODO - I'll write up a better error handler
     throw new Error(error);
-  } else if (!result) {
-    throw new Error('Failure to retrieve data.');
   } else {
     return result;
   }

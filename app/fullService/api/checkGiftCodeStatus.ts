@@ -1,5 +1,5 @@
 import type { StringB58 } from '../../types/SpecialStrings.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService from '../axiosFullService';
 
 const CHECK_GIFT_CODE_STATUS_METHOD = 'check_gift_code_status';
 
@@ -15,15 +15,13 @@ export type CheckGiftCodeStatusResult = {
 const checkGiftCodeStatus = async ({
   giftCodeB58,
 }: CheckGiftCodeStatusParams): Promise<CheckGiftCodeStatusResult> => {
-  const { result, error }: AxiosFullServiceResponse<CheckGiftCodeStatusResult> =
-    await axiosFullService(CHECK_GIFT_CODE_STATUS_METHOD, {
-      giftCodeB58,
-    });
+  const { result, error } = await axiosFullService(CHECK_GIFT_CODE_STATUS_METHOD, {
+    giftCodeB58,
+  });
 
   if (error) {
+    // TODO - I'll write up a better error handler
     throw new Error(error);
-  } else if (!result) {
-    throw new Error('Failure to retrieve data.');
   } else {
     return result;
   }

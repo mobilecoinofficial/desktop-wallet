@@ -24,7 +24,6 @@ import { LongCode } from '../../../components/LongCode';
 import { checkB58PaymentRequest } from '../../../services/checkB58PaymentRequest.service';
 import type { Theme } from '../../../theme';
 import type { Account } from '../../../types/Account';
-import type { StringB58 } from '../../../types/SpecialStrings.d';
 import { PaymentRequestProps } from './PaymentRequest.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -81,9 +80,9 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
 
   const handleCancel = onClickCancel;
 
-  const handleViewPaymentRequest = async (b58Code: StringB58) => {
+  const handleViewPaymentRequest = async (b58code) => {
     try {
-      const result = await checkB58PaymentRequest({ b58Code });
+      const result = await checkB58PaymentRequest(b58code);
       if (result.error) {
         throw new Error(result.error);
       }

@@ -1,7 +1,7 @@
 import type { GiftCode } from '../../types/GiftCode.d';
 import type { StringHex, StringB58 } from '../../types/SpecialStrings.d';
 import type { TxProposal } from '../../types/TxProposal.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService from '../axiosFullService';
 
 const SUBMIT_GIFT_CODE_METHOD = 'submit_gift_code';
 
@@ -15,12 +15,19 @@ export type SubmitGiftCodeResult = {
   giftCode: GiftCode;
 };
 
+type AxiosFullServiceResponse = {
+  error: string;
+  result: {
+    giftCode: GiftCode;
+  };
+};
+
 const submitGiftCode = async ({
   fromAccountId,
   giftCodeB58,
   txProposal,
 }: SubmitGiftCodeParams): Promise<SubmitGiftCodeResult> => {
-  const { result, error }: AxiosFullServiceResponse<SubmitGiftCodeResult> = await axiosFullService(
+  const { result, error }: AxiosFullServiceResponse = await axiosFullService(
     SUBMIT_GIFT_CODE_METHOD,
     {
       fromAccountId,
@@ -29,12 +36,15 @@ const submitGiftCode = async ({
     }
   );
 
+  const { giftCode } = result;
+
   if (error) {
+    // TODO - I'll write up a better error handler
     throw new Error(error);
-  } else if (!result) {
-    throw new Error('Failure to retrieve data.');
   } else {
-    return { giftCode: result.giftCode };
+    return {
+      giftCode,
+    };
   }
 };
 

@@ -1,6 +1,6 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
 import type { Txo } from '../../types/Txo.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService from '../axiosFullService';
 
 const GET_TXO_METHOD = 'get_txo';
 
@@ -13,17 +13,13 @@ type GetTxoResult = {
 };
 
 const getTxo = async ({ txoId }: GetTxoParams): Promise<GetTxoResult> => {
-  const { result, error }: AxiosFullServiceResponse<GetTxoResult> = await axiosFullService(
-    GET_TXO_METHOD,
-    {
-      txoId,
-    }
-  );
+  const { result, error } = await axiosFullService(GET_TXO_METHOD, {
+    txoId,
+  });
 
   if (error) {
+    // TODO - I'll write up a better error handler
     throw new Error(error);
-  } else if (!result) {
-    throw new Error('Failure to retrieve data.');
   } else {
     return result;
   }

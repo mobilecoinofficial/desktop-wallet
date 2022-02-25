@@ -1,5 +1,5 @@
 import { removeKeychainAccounts } from '../../utils/keytarService';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService from '../axiosFullService';
 
 const REMOVE_ACCOUNT_METHOD = 'remove_account';
 
@@ -12,17 +12,12 @@ export type RemoveAccountResult = {
 };
 
 const removeAccount = async ({ accountId }: RemoveAccountParams): Promise<RemoveAccountResult> => {
-  const { result, error }: AxiosFullServiceResponse<RemoveAccountResult> = await axiosFullService(
-    REMOVE_ACCOUNT_METHOD,
-    {
-      accountId,
-    }
-  );
-
+  const { result, error } = await axiosFullService(REMOVE_ACCOUNT_METHOD, {
+    accountId,
+  });
   if (error) {
+    // TODO - I'll write up a better error handler
     throw new Error(error);
-  } else if (!result) {
-    throw new Error('Failure to retrieve data.');
   } else {
     removeKeychainAccounts();
     return result;

@@ -20,9 +20,6 @@ import type { Theme } from '../../../theme';
 import { ShowEntropyModalProps } from './ShowEntropyModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  hiddenEntropy: {
-    color: theme.palette.background.paper,
-  },
   modal: {
     alignItems: 'center',
     display: 'flex',
@@ -38,7 +35,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2, 4, 3),
   },
   root: {},
-  shownEntropy: {},
 }));
 
 const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
@@ -108,12 +104,8 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
                     </Fab>
                   </Box>
                   <Container maxWidth="sm">
-                    <Typography
-                      className={showEntropy ? classes.shownEntropy : classes.hiddenEntropy}
-                      variant="body2"
-                      color="textPrimary"
-                    >
-                      {mnemonic}
+                    <Typography variant="body2" color="textPrimary">
+                      <div style={{ minHeight: 60 }}>{showEntropy ? mnemonic : ''}</div>
                     </Typography>
                   </Container>
                 </Box>

@@ -1,8 +1,11 @@
-import React, { FC, Fragment } from 'react';
+import React, { FC, Fragment, useEffect } from 'react';
 
+import { Button } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
+import { useSnackbar } from 'notistack';
 import { Switch, Redirect, Route } from 'react-router-dom';
 
+import { WHITE_LIGHT } from './constants/colors';
 import routePaths from './constants/routePaths';
 import { DashboardLayout } from './layouts/DashboardLayout';
 import type { DashboardLayoutProps } from './layouts/DashboardLayout';
@@ -37,7 +40,7 @@ const DashboardLayoutWithClose: FC<DashboardLayoutProps> = ({ children }: Dashbo
 
 const DashboardPageWithClose: FC = () => <DashboardPage onClose={closeApp} />;
 
-const internalRoutes: Routes = [
+export const internalRoutes: Routes = [
   {
     Component: NotFoundPage,
     exact: true,
@@ -113,30 +116,59 @@ const internalRoutes: Routes = [
   },
 ];
 
-const renderInternalRoutes = (routes: Routes): JSX.Element => (
-  <Switch>
-    {routes.map((route, i) => {
-      const { Component, layout, exact, path, routes: nestedRoutes } = route;
-
-      const Layout = layout || Fragment;
-
-      return (
-        <Route
-          key={[path, i].join('|')}
-          path={path}
-          exact={exact}
-          render={(props) => (
-            <Layout>
-              {nestedRoutes ? renderInternalRoutes(nestedRoutes) : <Component {...props} />}
-            </Layout>
-          )}
-        />
+export const InternalRoutesRenderer: FC<{ routes: Routes }> = (props: { routes: Routes }) => {
+  // TODO: the update checking flow should all get pulled out into an app container layer.
+  // TODO: create an app container layer.
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  useEffect(() => {
+    ipcRenderer.on('app-update-ready', () => {
+      enqueueSnackbar(
+        <>
+          <div>An update is ready. Restart your application to stay up-to-date.</div>
+          <Button
+            onClick={() => closeSnackbar()}
+            variant="contained"
+            style={{ backgroundColor: WHITE_LIGHT, marginLeft: 10 }}
+          >
+            DISMISS
+          </Button>
+        </>,
+        {
+          persist: true,
+          variant: 'info',
+        }
       );
-    })}
-  </Switch>
-);
+    });
+    return () => {
+      ipcRenderer.removeAllListeners('app-update-ready');
+    };
+  }, [enqueueSnackbar, closeSnackbar]);
 
-const renderRoutes = (): JSX.Element => renderInternalRoutes(internalRoutes);
+  const { routes } = props;
+  return (
+    <Switch>
+      {routes.map((route, i) => {
+        const { Component, layout, exact, path, routes: nestedRoutes } = route;
 
-export default renderRoutes;
-export { renderRoutes };
+        const Layout = layout || Fragment;
+
+        return (
+          <Route
+            key={[path, i].join('|')}
+            path={path}
+            exact={exact}
+            render={(routeProps) => (
+              <Layout>
+                {nestedRoutes ? (
+                  <InternalRoutesRenderer routes={nestedRoutes} />
+                ) : (
+                  <Component {...routeProps} />
+                )}
+              </Layout>
+            )}
+          />
+        );
+      })}
+    </Switch>
+  );
+};

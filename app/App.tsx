@@ -10,7 +10,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
 import { FullServiceProvider } from './contexts/FullServiceContext';
-import { renderRoutes } from './routes';
+import { internalRoutes, InternalRoutesRenderer } from './routes';
 import { setTheme } from './theme';
 
 const App: FC = () => {
@@ -43,7 +43,7 @@ const App: FC = () => {
       ipcRenderer.removeAllListeners('set-theme-light');
       ipcRenderer.removeAllListeners('set-theme-dark');
     };
-  });
+  }, []);
 
   return (
     <MemoryRouter>
@@ -51,7 +51,7 @@ const App: FC = () => {
         <SnackbarProvider dense maxSnack={5}>
           <FullServiceProvider>
             <GlobalStyles />
-            {renderRoutes()}
+            <InternalRoutesRenderer routes={internalRoutes} />
           </FullServiceProvider>
         </SnackbarProvider>
       </ThemeProvider>

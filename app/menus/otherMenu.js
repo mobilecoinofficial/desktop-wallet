@@ -9,7 +9,7 @@ const openAboutWindow = async (mainWindow) => {
     height: 150,
     modal: true,
     parent: mainWindow,
-    title: '',
+    title: __dirname,
     webPreferences: {
       contextIsolation: true,
       disableBlinkFeatures: 'Auxclick',
@@ -18,11 +18,14 @@ const openAboutWindow = async (mainWindow) => {
     width: 300,
   });
 
-  await modal.loadFile('../app/menus/otherHelp.html', {
+  // await modal.loadFile('../../app/menus/otherHelp.html');
+  await modal.loadFile('app/menus/otherHelp.html', {
     query: { version: process.env.npm_package_version },
   });
   return modal;
 };
+
+// /tmp/.mount_MobileKZdlrL/resources/app.asar
 
 const defaultTemplate = (app, mainWindow, i18n) => {
   const submenuAbout = {

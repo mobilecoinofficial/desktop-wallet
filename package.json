@@ -75,6 +75,13 @@
       {
         "from": "locales",
         "to": "locales"
+      },
+      {
+        "from": "app",
+        "to": "app",
+        "filter": [
+          "menus/otherHelp.html"
+        ]
       }
     ],
     "dmg": {

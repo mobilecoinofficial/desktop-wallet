@@ -1,15 +1,16 @@
 import { shell, nativeTheme, BrowserWindow } from 'electron';
 
 import config from '../../configs/app.config';
+import { version } from '../../package.json';
 import * as localStore from '../utils/LocalStore';
 
-const openAboutWindow = async (mainWindow) => {
+const openAboutWindow = async (mainWindow, i18n) => {
   const modal = new BrowserWindow({
     autoHideMenuBar: true,
     height: 150,
     modal: true,
     parent: mainWindow,
-    title: '',
+    title: i18n.t('Menu.about'),
     webPreferences: {
       contextIsolation: true,
       disableBlinkFeatures: 'Auxclick',
@@ -18,8 +19,8 @@ const openAboutWindow = async (mainWindow) => {
     width: 300,
   });
 
-  await modal.loadFile('../app/menus/otherHelp.html', {
-    query: { version: process.env.npm_package_version },
+  await modal.loadFile('../../app/menus/otherHelp.html', {
+    query: { version },
   });
   return modal;
 };
@@ -29,7 +30,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
     label: i18n.t('Menu.mobileCoin'),
     submenu: [
       {
-        click: () => openAboutWindow(mainWindow),
+        click: () => openAboutWindow(mainWindow, i18n),
         label: i18n.t('Menu.about'),
         selector: 'orderFrontStandardAboutPanel:',
       },

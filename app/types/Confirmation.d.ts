@@ -4,4 +4,4 @@ export interface Confirmation {
   confirmation: string;
 }
 
-export type Confirmations = [Confirmation];
+export type Confirmations = Confirmation[];

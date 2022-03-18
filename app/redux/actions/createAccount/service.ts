@@ -1,9 +1,9 @@
-import { createAccountAction } from '../contexts/actions/createAccount.action';
-import * as fullServiceApi from '../fullService/api';
-import { store } from '../redux/store';
-import type { PendingSecrets } from '../types/PendingSecrets.d';
+import * as fullServiceApi from '../../../fullService/api';
+import { PendingSecrets } from '../../../types';
+import { store } from '../../store';
+import { createAccountAction } from './action';
 
-const createAccount = async (name: string): Promise<void> => {
+export const createAccount = async (name: string): Promise<void> => {
   try {
     // Attempt create
     const { account } = await fullServiceApi.createAccount({ name });
@@ -38,6 +38,4 @@ const createAccount = async (name: string): Promise<void> => {
   }
 };
 
-export default createAccount;
-export { createAccount };
 export type CreateAccountService = typeof createAccount;

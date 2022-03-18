@@ -11,9 +11,11 @@ import { MemoryRouter } from 'react-router-dom';
 import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
 import { FullServiceProvider } from './contexts/FullServiceContext';
-import { decrement, increment } from './redux/actions';
+import * as fullServiceApi from './fullService/api';
+import { fetchAllTransactionLogsForAccountAction, updateStatusAction } from './redux/actions';
 import { store } from './redux/store';
 import { internalRoutes, InternalRoutesRenderer } from './routes';
+import { fetchAllTransactionLogsForAccount } from './services';
 import { setTheme } from './theme';
 
 const App: FC = () => {
@@ -48,29 +50,60 @@ const App: FC = () => {
     };
   }, []);
 
-  const [incrementTimer, setIncrementTimer] = useState<NodeJS.Timer>();
-  const [decrementTimer, setDecrementTimer] = useState<NodeJS.Timer>();
+  const [fetchUpdatesTimer, setFetchUpdatesTimer] = useState<NodeJS.Timer>();
+
+  const { selectedAccount } = store.getState();
+
+  const accountId = selectedAccount?.account?.accountId ?? '';
+
+  const fetchBalance = async () => {
+    const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
+    const { walletStatus } = await fullServiceApi.getWalletStatus();
+    store.dispatch(updateStatusAction(selectedAccount.account, balanceStatus, walletStatus));
+  };
+
+  const fetchLogs = async () => {
+    const transactionLogs = await fetchAllTransactionLogsForAccount(accountId);
+    store.dispatch(fetchAllTransactionLogsForAccountAction(transactionLogs));
+  };
 
   useEffect(() => {
-    setIncrementTimer(
+    setFetchUpdatesTimer(
       setInterval(() => {
-        store.dispatch(increment(8));
-      }, 5000)
-    );
-    setDecrementTimer(
-      setInterval(() => {
-        store.dispatch(decrement(3));
-      }, 2000)
+        fetchBalance();
+        fetchLogs();
+      }, 10000)
     );
     return () => {
-      if (incrementTimer) {
-        clearInterval(incrementTimer);
-      }
-      if (decrementTimer) {
-        clearInterval(decrementTimer);
+      if (fetchUpdatesTimer) {
+        clearInterval(fetchUpdatesTimer);
       }
     };
   }, []);
+
+  // const [incrementTimer, setIncrementTimer] = useState<NodeJS.Timer>();
+  // const [decrementTimer, setDecrementTimer] = useState<NodeJS.Timer>();
+
+  // useEffect(() => {
+  //   setIncrementTimer(
+  //     setInterval(() => {
+  //       store.dispatch(increment(8));
+  //     }, 5000)
+  //   );
+  //   setDecrementTimer(
+  //     setInterval(() => {
+  //       store.dispatch(decrement(3));
+  //     }, 2000)
+  //   );
+  //   return () => {
+  //     if (incrementTimer) {
+  //       clearInterval(incrementTimer);
+  //     }
+  //     if (decrementTimer) {
+  //       clearInterval(decrementTimer);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <Provider store={store}>

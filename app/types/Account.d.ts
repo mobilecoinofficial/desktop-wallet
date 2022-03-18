@@ -1,4 +1,5 @@
 // TODO - change to just Account; delete the other Account type
+import { AccountKey } from './AccountSecrets';
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
 // type AccountKey = {

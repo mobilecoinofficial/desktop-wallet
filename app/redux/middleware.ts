@@ -1,8 +1,8 @@
 import { AnyAction, Dispatch, Middleware, MiddlewareAPI } from 'redux';
 
-import { Action } from './actionTypes';
+import { Action } from './actions';
 
-export const logger: Middleware =
+export const loggerMiddleware: Middleware =
   (store: MiddlewareAPI) => (next: Dispatch<AnyAction>) => (action: Action) => {
     console.log('will dispatch', action);
 

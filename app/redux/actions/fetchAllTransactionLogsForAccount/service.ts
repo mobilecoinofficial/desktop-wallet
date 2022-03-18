@@ -1,0 +1,25 @@
+import * as fullServiceApi from '../../../fullService/api';
+import { StringHex, TransactionAbbreviation, TransactionLogs } from '../../../types';
+
+export const fetchAllTransactionLogsForAccount = async (
+  accountId: StringHex
+): Promise<TransactionLogs> => {
+  try {
+    const transactionLogs = await fullServiceApi.getAllTransactionLogsForAccount({ accountId });
+
+    transactionLogs.transactionLogIds.forEach((v: StringHex) => {
+      const w = transactionLogs.transactionLogMap[v];
+      w.changeTxoIds = w.changeTxos.map((x: TransactionAbbreviation) => x.txoIdHex);
+      w.inputTxoIds = w.inputTxos.map((x: TransactionAbbreviation) => x.txoIdHex);
+      w.outputTxoIds = w.outputTxos.map((x: TransactionAbbreviation) => x.txoIdHex);
+
+      w.recipientAddressId = w.outputTxos.length > 0 ? w.outputTxos[0].recipientAddressId : null;
+    });
+
+    return transactionLogs;
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+export type FetchAllTransactionLogsForAccountService = typeof fetchAllTransactionLogsForAccount;

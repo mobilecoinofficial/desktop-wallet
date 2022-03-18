@@ -1,5 +1,5 @@
-import { store } from '../contexts/FullServiceContext';
-import { confirmEntropyKnownAction } from '../contexts/actions/confirmEntropyKnown.action';
+import { confirmEntropyKnownAction } from '../redux/actions';
+import { store } from '../redux/store';
 
 const confirmEntropyKnown = async (): Promise<void> => store.dispatch(confirmEntropyKnownAction());
 

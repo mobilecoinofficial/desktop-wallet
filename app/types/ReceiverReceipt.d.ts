@@ -7,4 +7,4 @@ export interface ReceiverReceipt {
   amount: StringUInt64;
 }
 
-export type ReceiverReceipts = [ReceiverReceipt];
+export type ReceiverReceipts = ReceiverReceipt[];

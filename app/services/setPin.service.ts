@@ -1,17 +1,17 @@
-import { store } from '../contexts/FullServiceContext';
 import { updatePinAction } from '../contexts/actions/updatePin.action';
+import { store } from '../redux/store';
 import type { StringUInt64 } from '../types/SpecialStrings';
 import * as localStore from '../utils/LocalStore';
 import { validatePassphrase } from '../utils/authentication';
 import { encrypt } from '../utils/encryption';
 
 // This call does not require a password. It should only be used when no PIN is set.
-const setPin = async (
+export const setPin = async (
   pin: string,
   pinThresholdPmob: StringUInt64,
   passphrase?: string
 ): Promise<void> => {
-  const { pin: existingPin, secretKey, encryptedPassphrase } = store.state;
+  const { pin: existingPin, secretKey, encryptedPassphrase } = store.getState();
 
   try {
     if (encryptedPassphrase === undefined) {
@@ -35,10 +35,12 @@ const setPin = async (
 
     store.dispatch(updatePinAction(pin, pinThresholdPmob));
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 
-export default setPin;
-export { setPin };
 export type SetPinService = typeof setPin;

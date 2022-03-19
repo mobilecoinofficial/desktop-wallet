@@ -1,15 +1,11 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect /* useState */ } from 'react';
 import type { FC, ReactNode } from 'react';
 
-import * as fullServiceApi from '../fullService/api';
-import {
-  fetchAllTransactionLogsForAccountAction,
-  initializeAction,
-  updateStatusAction,
-} from '../redux/actions';
+import { initialize } from '../redux/actions/initialize/service';
+// import { updateStatus } from '../redux/actions/updateStatus/service';
 import { initialReduxStoreState, ReduxStoreState } from '../redux/reducers/reducers';
 import { store } from '../redux/store';
-import { fetchAllTransactionLogsForAccount } from '../services/fetchAllTransactionLogsForAccount.service';
+// import { fetchAllTransactionLogsForAccount } from '../services/fetchAllTransactionLogsForAccount.service';
 import * as localStore from '../utils/LocalStore';
 
 interface FullServiceProviderProps {
@@ -28,49 +24,46 @@ export const wipeAccountContactAndPin = async (): Promise<void> => {
 export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   children,
 }: FullServiceProviderProps) => {
-  const [fetchUpdatesTimer, setFetchUpdatesTimer] = useState<null | NodeJS.Timer>(null);
+  // const [fetchUpdatesTimer, setFetchUpdatesTimer] = useState<null | NodeJS.Timer>(null);
 
   // Initialize App On Startup
   useEffect(() => {
     try {
       const encryptedPassphrase = localStore.getEncryptedPassphrase();
-      store.dispatch(initializeAction(encryptedPassphrase));
+      initialize(encryptedPassphrase);
     } catch (err) {
-      store.dispatch(initializeAction(undefined));
+      initialize(undefined);
     }
   }, []);
 
-  useEffect(() => {
-    if (fetchUpdatesTimer !== null) {
-      clearInterval(fetchUpdatesTimer);
-    }
+  // useEffect(() => {
+  //   if (fetchUpdatesTimer !== null) {
+  //     clearInterval(fetchUpdatesTimer);
+  //   }
 
-    const { selectedAccount } = store.getState();
+  //   const { selectedAccount } = store.getState();
 
-    if (selectedAccount === undefined || selectedAccount === null) {
-      return;
-    }
+  //   if (selectedAccount === undefined || selectedAccount === null) {
+  //     return;
+  //   }
 
-    const { accountId } = selectedAccount.account;
+  //   const { accountId } = selectedAccount.account;
 
-    const fetchBalance = async () => {
-      const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-      const { walletStatus } = await fullServiceApi.getWalletStatus();
-      store.dispatch(updateStatusAction(selectedAccount.account, balanceStatus, walletStatus));
-    };
+  //   const fetchBalance = async () => {
+  //     updateStatus(accountId, selectedAccount.account);
+  //   };
 
-    const fetchLogs = async () => {
-      const transactionLogs = await fetchAllTransactionLogsForAccount(accountId);
-      store.dispatch(fetchAllTransactionLogsForAccountAction(transactionLogs));
-    };
+  //   const fetchLogs = async () => {
+  //     fetchAllTransactionLogsForAccount(accountId);
+  //   };
 
-    setFetchUpdatesTimer(
-      setInterval(() => {
-        fetchBalance();
-        fetchLogs();
-      }, 10000)
-    );
-  }, [fetchUpdatesTimer]);
+  //   setFetchUpdatesTimer(
+  //     setInterval(() => {
+  //       fetchBalance();
+  //       fetchLogs();
+  //     }, 10000)
+  //   );
+  // }, []);
 
   return (
     <FullServiceContext.Provider value={{ ...store.getState() }}>

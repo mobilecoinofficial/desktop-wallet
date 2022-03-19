@@ -1,6 +1,6 @@
-import { store } from '../contexts/FullServiceContext';
 import { importAccountAction } from '../contexts/actions/importAccount.action';
 import * as fullServiceApi from '../fullService/api';
+import { store } from '../redux/store';
 
 // Import the wallet should initalize the basic wallet information
 // The wallet status
@@ -37,7 +37,11 @@ const importLegacyAccount = async (name: string | null, entropy: string): Promis
       )
     );
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 

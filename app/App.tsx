@@ -10,13 +10,13 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
-import { FullServiceProvider } from './contexts/FullServiceContext';
-import * as fullServiceApi from './fullService/api';
-import { fetchAllTransactionLogsForAccountAction, updateStatusAction } from './redux/actions';
+// import { FullServiceProvider } from './contexts/FullServiceContext';
+import { fetchAllTransactionLogsForAccount } from './redux/actions/fetchAllTransactionLogsForAccount/service';
+import { updateStatus } from './redux/actions/updateStatus/service';
 import { store } from './redux/store';
 import { internalRoutes, InternalRoutesRenderer } from './routes';
-import { fetchAllTransactionLogsForAccount } from './services';
 import { setTheme } from './theme';
+import { Account } from './types';
 
 const App: FC = () => {
   const [theme, setThemeReact] = useState(
@@ -52,26 +52,24 @@ const App: FC = () => {
 
   const [fetchUpdatesTimer, setFetchUpdatesTimer] = useState<NodeJS.Timer>();
 
-  const { selectedAccount } = store.getState();
-
-  const accountId = selectedAccount?.account?.accountId ?? '';
-
-  const fetchBalance = async () => {
-    const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
-    const { walletStatus } = await fullServiceApi.getWalletStatus();
-    store.dispatch(updateStatusAction(selectedAccount.account, balanceStatus, walletStatus));
+  const fetchBalance = async (accountId: string, account?: Account) => {
+    if (account) {
+      updateStatus(accountId, account);
+    }
   };
 
-  const fetchLogs = async () => {
-    const transactionLogs = await fetchAllTransactionLogsForAccount(accountId);
-    store.dispatch(fetchAllTransactionLogsForAccountAction(transactionLogs));
+  const fetchLogs = async (accountId: string) => {
+    fetchAllTransactionLogsForAccount(accountId);
   };
 
   useEffect(() => {
+    const { selectedAccount } = store.getState();
+    const accountId = selectedAccount?.account?.accountId ?? '';
+
     setFetchUpdatesTimer(
       setInterval(() => {
-        fetchBalance();
-        fetchLogs();
+        fetchBalance(accountId, selectedAccount?.account);
+        fetchLogs(accountId);
       }, 10000)
     );
     return () => {
@@ -81,39 +79,15 @@ const App: FC = () => {
     };
   }, []);
 
-  // const [incrementTimer, setIncrementTimer] = useState<NodeJS.Timer>();
-  // const [decrementTimer, setDecrementTimer] = useState<NodeJS.Timer>();
-
-  // useEffect(() => {
-  //   setIncrementTimer(
-  //     setInterval(() => {
-  //       store.dispatch(increment(8));
-  //     }, 5000)
-  //   );
-  //   setDecrementTimer(
-  //     setInterval(() => {
-  //       store.dispatch(decrement(3));
-  //     }, 2000)
-  //   );
-  //   return () => {
-  //     if (incrementTimer) {
-  //       clearInterval(incrementTimer);
-  //     }
-  //     if (decrementTimer) {
-  //       clearInterval(decrementTimer);
-  //     }
-  //   };
-  // }, []);
-
   return (
     <Provider store={store}>
       <MemoryRouter>
         <ThemeProvider theme={theme}>
           <SnackbarProvider dense maxSnack={5}>
-            <FullServiceProvider>
-              <GlobalStyles />
-              <InternalRoutesRenderer routes={internalRoutes} />
-            </FullServiceProvider>
+            {/* <FullServiceProvider> */}
+            <GlobalStyles />
+            <InternalRoutesRenderer routes={internalRoutes} />
+            {/* </FullServiceProvider> */}
           </SnackbarProvider>
         </ThemeProvider>
       </MemoryRouter>

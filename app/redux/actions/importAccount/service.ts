@@ -5,7 +5,7 @@ import { importAccountAction } from './action';
 // Import the wallet should initialize the basic wallet information
 // The wallet status
 // Accounts + status
-const importAccount = async (name: string | null, mnemonic: string): Promise<void> => {
+export const importAccount = async (name: string | null, mnemonic: string): Promise<void> => {
   try {
     // Attempt import
     const { account } = await fullServiceApi.importAccount({
@@ -35,10 +35,12 @@ const importAccount = async (name: string | null, mnemonic: string): Promise<voi
       )
     );
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 
-export default importAccount;
-export { importAccount };
 export type ImportAccountService = typeof importAccount;

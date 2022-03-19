@@ -1,17 +1,19 @@
-import { store } from '../contexts/FullServiceContext';
 import { updateContactsAction } from '../contexts/actions/updateContacts.action';
+import { store } from '../redux/store';
 import type { Contact } from '../types/Contact.d';
 import { encryptContacts } from './encryptContacts.service';
 
-const updateContacts = async (contacts: Contact[]): Promise<void> => {
+export const updateContacts = async (contacts: Contact[]): Promise<void> => {
   try {
-    encryptContacts(contacts, store.state.secretKey);
+    encryptContacts(contacts, store.getState().secretKey);
     store.dispatch(updateContactsAction(contacts));
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 
-export default updateContacts;
-export { updateContacts };
 export type UpdateContactsService = typeof updateContacts;

@@ -6,7 +6,10 @@ import { decrypt } from '../../../utils/encryption';
 import { store } from '../../store';
 import { unlockWalletAction } from './action';
 
-const unlockWallet = async (passphrase: string, startInOfflineMode = false): Promise<void> => {
+export const unlockWallet = async (
+  passphrase: string,
+  startInOfflineMode = false
+): Promise<void> => {
   try {
     const { encryptedPassphrase } = store.getState();
     if (encryptedPassphrase === undefined) {
@@ -43,10 +46,12 @@ const unlockWallet = async (passphrase: string, startInOfflineMode = false): Pro
       )
     );
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 
-export default unlockWallet;
-export { unlockWallet };
 export type UnlockWalletService = typeof unlockWallet;

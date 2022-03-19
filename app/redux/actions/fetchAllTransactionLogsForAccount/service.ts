@@ -1,9 +1,19 @@
+import { isString } from 'formik';
+
 import * as fullServiceApi from '../../../fullService/api';
 import { StringHex, TransactionAbbreviation, TransactionLogs } from '../../../types';
+import { store } from '../../store';
+import {
+  fetchAllTransactionLogsForAccountFailureAction,
+  fetchAllTransactionLogsForAccountStartedAction,
+  fetchAllTransactionLogsForAccountSuccessAction,
+} from './action';
 
 export const fetchAllTransactionLogsForAccount = async (
   accountId: StringHex
-): Promise<TransactionLogs> => {
+): Promise<TransactionLogs | undefined> => {
+  store.dispatch(fetchAllTransactionLogsForAccountStartedAction());
+
   try {
     const transactionLogs = await fullServiceApi.getAllTransactionLogsForAccount({ accountId });
 
@@ -15,10 +25,19 @@ export const fetchAllTransactionLogsForAccount = async (
 
       w.recipientAddressId = w.outputTxos.length > 0 ? w.outputTxos[0].recipientAddressId : null;
     });
-
+    store.dispatch(fetchAllTransactionLogsForAccountSuccessAction(transactionLogs));
     return transactionLogs;
   } catch (err) {
-    throw new Error(err.message);
+    let error;
+    if (err instanceof Error) {
+      error = err.message;
+    } else if (isString(err)) {
+      error = err;
+    } else {
+      throw err;
+    }
+    store.dispatch(fetchAllTransactionLogsForAccountFailureAction(Error(error)));
+    return undefined;
   }
 };
 

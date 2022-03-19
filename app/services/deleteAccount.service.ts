@@ -1,10 +1,10 @@
-import { store } from '../contexts/FullServiceContext';
 import { deleteAccountAction } from '../contexts/actions/deleteAccount.action';
 import * as fullServiceApi from '../fullService/api';
+import { store } from '../redux/store';
 // import { selectAccount } from './selectAccount.service';
 
 // TODO - Hook into full service delete gift code API call
-const deleteAccount = async (accountId: string): Promise<void> => {
+export const deleteAccount = async (accountId: string): Promise<void> => {
   const result = await fullServiceApi.removeAccount({ accountId });
   const accounts = await fullServiceApi.getAllAccounts();
 
@@ -15,6 +15,4 @@ const deleteAccount = async (accountId: string): Promise<void> => {
   store.dispatch(deleteAccountAction(accountId, accounts, result.removed));
 };
 
-export default deleteAccount;
-export { deleteAccount };
 export type DeleteAccountService = typeof deleteAccount;

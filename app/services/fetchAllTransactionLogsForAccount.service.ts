@@ -19,7 +19,11 @@ export const fetchAllTransactionLogsForAccount = async (
 
     return transactionLogs;
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 

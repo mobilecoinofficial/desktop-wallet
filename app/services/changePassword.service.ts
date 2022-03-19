@@ -10,7 +10,7 @@ import { decryptContacts } from './decryptContacts.service';
 import { getWalletStatus } from './getWalletStatus.service';
 import { updateContacts } from './updateContacts.service';
 
-const changePassword = async (oldPassword: string, newPassword: string): Promise<void> => {
+export const changePassword = async (oldPassword: string, newPassword: string): Promise<void> => {
   try {
     const { encryptedPassphrase, pin, secretKey: storeSecretKey } = store.getState();
     if (encryptedPassphrase === undefined) {
@@ -35,10 +35,12 @@ const changePassword = async (oldPassword: string, newPassword: string): Promise
     await new Promise((resolve) => setTimeout(resolve, 5000));
     await getWalletStatus();
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 
-export default changePassword;
-export { changePassword };
 export type ChangePasswordService = typeof changePassword;

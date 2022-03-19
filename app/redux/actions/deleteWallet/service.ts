@@ -1,12 +1,7 @@
-import * as fullServiceApi from '../../../fullService/api';
-import { store } from '../../store';
-import { deleteAccountAction } from '../deleteAccount/action';
+import { ipcRenderer } from 'electron';
 
-export const deleteAccount = async (accountId: string): Promise<void> => {
-  const result = await fullServiceApi.removeAccount({ accountId });
-  const accounts = await fullServiceApi.getAllAccounts();
-
-  store.dispatch(deleteAccountAction(accountId, accounts, result.removed));
+export const deleteWallet = async (): Promise<void> => {
+  ipcRenderer.sendSync('reset-wallet-db');
 };
 
-export type DeleteAccountService = typeof deleteAccount;
+export type DeleteWalletService = typeof deleteWallet;

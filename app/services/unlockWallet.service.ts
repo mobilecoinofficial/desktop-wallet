@@ -1,6 +1,6 @@
-import { store } from '../contexts/FullServiceContext';
 import { unlockWalletAction } from '../contexts/actions/unlockWallet.action';
 import * as fullServiceApi from '../fullService/api';
+import { store } from '../redux/store';
 import * as localStore from '../utils/LocalStore';
 import { validatePassphrase } from '../utils/authentication';
 import { decrypt } from '../utils/encryption';
@@ -8,7 +8,7 @@ import { decryptContacts } from './decryptContacts.service';
 
 const unlockWallet = async (passphrase: string, startInOfflineMode = false): Promise<void> => {
   try {
-    const { encryptedPassphrase } = store.state;
+    const { encryptedPassphrase } = store.getState();
     if (encryptedPassphrase === undefined) {
       throw new Error('encryptedPassphrase assertion failed');
     }
@@ -43,7 +43,11 @@ const unlockWallet = async (passphrase: string, startInOfflineMode = false): Pro
       )
     );
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 

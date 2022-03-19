@@ -1,19 +1,21 @@
-import { store } from '../contexts/FullServiceContext';
 import { fetchAllTxosForAccountAction } from '../contexts/actions/fetchAllTxosForAccount.action';
 import * as fullServiceApi from '../fullService/api';
+import { store } from '../redux/store';
 import type { StringHex } from '../types/SpecialStrings';
 
-const fetchAllTxosForAccount = async (accountId: StringHex): Promise<void> => {
+export const fetchAllTxosForAccount = async (accountId: StringHex): Promise<void> => {
   try {
     const txos = await fullServiceApi.getAllTxosForAccount({ accountId });
 
     // TODO add logic to only trigger if different object
     store.dispatch(fetchAllTxosForAccountAction(txos));
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 
-export default fetchAllTxosForAccount;
-export { fetchAllTxosForAccount };
 export type FetchAllTxosForAccountService = typeof fetchAllTxosForAccount;

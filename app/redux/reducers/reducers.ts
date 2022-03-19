@@ -16,8 +16,6 @@ import sameObject from '../../utils/sameObject';
 import {
   INITIALIZE,
   InitializeAction,
-  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
-  FetchAllTransactionLogsForAccountAction,
   FETCH_ALL_TXOS_FOR_ACCOUNT,
   FetchAllTxosForAccountAction,
   ADD_ACCOUNT,
@@ -49,6 +47,11 @@ import {
   UPDATE_WALLET_STATUS,
   UpdateStatusAction,
   Action,
+  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_STARTED,
+  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_SUCCESS,
+  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_FAILURE,
+  FetchAllTransactionLogsForAccountSuccessAction,
+  FetchAllTransactionLogsForAccountFailureAction,
 } from '../actions';
 
 export type ReduxStoreState = {
@@ -58,6 +61,7 @@ export type ReduxStoreState = {
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
   encryptedPassphrase: SjclCipherEncrypted | undefined;
+  error: Error | undefined;
   feePmob: StringUInt64;
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
@@ -80,6 +84,7 @@ export const initialReduxStoreState: ReduxStoreState = {
   addresses: { addressIds: [], addressMap: {} },
   contacts: [],
   encryptedPassphrase: undefined,
+  error: undefined,
   feePmob: '',
   giftCodes: null,
   isAuthenticated: false,
@@ -122,11 +127,26 @@ export const reducer = (
       };
     }
 
-    case FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT: {
-      const { transactionLogs } = (action as FetchAllTransactionLogsForAccountAction).payload;
+    case FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_STARTED: {
+      return {
+        ...state,
+      };
+    }
+
+    case FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_SUCCESS: {
+      const { transactionLogs } = (action as FetchAllTransactionLogsForAccountSuccessAction)
+        .payload;
       return {
         ...state,
         transactionLogs,
+      };
+    }
+
+    case FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_FAILURE: {
+      const { error } = (action as FetchAllTransactionLogsForAccountFailureAction).payload;
+      return {
+        ...state,
+        error,
       };
     }
 

@@ -34,7 +34,11 @@ export const createAccount = async (name: string): Promise<void> => {
       )
     );
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 

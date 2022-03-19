@@ -1,6 +1,6 @@
-import { store } from '../contexts/FullServiceContext';
 import { importAccountAction } from '../contexts/actions/importAccount.action';
 import * as fullServiceApi from '../fullService/api';
+import { store } from '../redux/store';
 
 // Import the wallet should initialize the basic wallet information
 // The wallet status
@@ -35,7 +35,11 @@ const importAccount = async (name: string | null, mnemonic: string): Promise<voi
       )
     );
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 

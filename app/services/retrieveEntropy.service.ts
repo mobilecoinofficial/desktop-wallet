@@ -1,10 +1,10 @@
-import { store } from '../contexts/FullServiceContext';
 import * as fullServiceApi from '../fullService/api';
+import { store } from '../redux/store';
 import { validatePassphrase } from '../utils/authentication';
 
-const retrieveEntropy = async (passphrase: string): Promise<string> => {
+export const retrieveEntropy = async (passphrase: string): Promise<string> => {
   try {
-    const { encryptedPassphrase, selectedAccount } = store.state;
+    const { encryptedPassphrase, selectedAccount } = store.getState();
     if (encryptedPassphrase === undefined) {
       throw new Error('encryptedPassphrase assertion failed');
     }
@@ -13,15 +13,17 @@ const retrieveEntropy = async (passphrase: string): Promise<string> => {
     await validatePassphrase(passphrase, encryptedPassphrase);
 
     const { accountSecrets } = await fullServiceApi.exportAccountSecrets({
-      accountId: selectedAccount.account.accountId,
+      accountId: selectedAccount?.account.accountId ?? '',
     });
 
     return accountSecrets.entropy ?? accountSecrets.mnemonic ?? '';
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 
-export default retrieveEntropy;
-export { retrieveEntropy };
 export type RetrieveEntropyService = typeof retrieveEntropy;

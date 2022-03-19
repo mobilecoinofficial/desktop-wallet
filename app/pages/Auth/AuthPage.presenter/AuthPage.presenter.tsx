@@ -10,17 +10,14 @@ import { SplashScreen } from '../../../components/SplashScreen';
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
 import useFullService from '../../../hooks/useFullService';
-import {
-  addAccount,
-  createAccount,
-  createWallet,
-  deleteWallet,
-  getWalletStatus,
-  importAccount,
-  importLegacyAccount,
-  selectAccount,
-  unlockWallet,
-} from '../../../services';
+import { addAccount } from '../../../redux/actions/addAccount/service';
+import { createAccount } from '../../../redux/actions/createAccount/service';
+import { createWallet } from '../../../redux/actions/createWallet/service';
+import { deleteWallet } from '../../../redux/actions/deleteWallet/service';
+import { importAccount } from '../../../redux/actions/importAccount/service';
+import { selectAccount } from '../../../redux/actions/selectAccount/service';
+import { unlockWallet } from '../../../redux/actions/unlockWallet/service';
+import { getWalletStatus, importLegacyAccount } from '../../../services';
 import type { Theme } from '../../../theme';
 import * as localStore from '../../../utils/LocalStore';
 import { isHex64 } from '../../../utils/bip39Functions';
@@ -78,7 +75,7 @@ const AuthPage: FC = () => {
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
   const [fullServiceIsRunning, setFullServiceIsRunning] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [accountIds, setAccountIds] = useState([]);
+  const [accountIds, setAccountIds] = useState<string[]>([]);
 
   const offlineStart = localStore.getOfflineStart();
 
@@ -220,15 +217,12 @@ const AuthPage: FC = () => {
     }
   };
 
+  // TODO: add error handling
   const onClickImport = async (accountName: string, entropy: string) => {
-    try {
-      if (isHex64(entropy)) {
-        await importLegacyAccount(accountName, entropy);
-      } else {
-        await importAccount(accountName, entropy);
-      }
-    } catch (err) {
-      /* nothing now... TODO: fix! */
+    if (isHex64(entropy)) {
+      await importLegacyAccount(accountName, entropy);
+    } else {
+      await importAccount(accountName, entropy);
     }
   };
 

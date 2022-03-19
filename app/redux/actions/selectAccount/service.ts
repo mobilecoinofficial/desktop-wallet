@@ -4,15 +4,14 @@ import { fetchAllTransactionLogsForAccount } from '../fetchAllTransactionLogsFor
 import { fetchAllTxosForAccount } from '../fetchAllTxosForAccount/service';
 import { selectAccountAction } from './action';
 
-const selectAccount = async (accountId: string): Promise<void> => {
+export const selectAccount = async (accountId: string): Promise<void> => {
   try {
     const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
-    const transactionLogs = await fetchAllTransactionLogsForAccount(accountId);
 
     const p1 = fullServiceApi.getAccount({ accountId });
     const p2 = fullServiceApi.getAllAddressesForAccount({ accountId });
     const p3 = fullServiceApi.getBalanceForAccount({ accountId });
-    const p4 = store.dispatch(fetchAllTransactionLogsForAccountAction(transactionLogs)); // change to STARTED etc.
+    const p4 = fetchAllTransactionLogsForAccount(accountId);
     const p5 = fetchAllTxosForAccount(accountId);
 
     const { account } = await p1;
@@ -26,10 +25,12 @@ const selectAccount = async (accountId: string): Promise<void> => {
     await p4;
     await p5;
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 
-export default selectAccount;
-export { selectAccount };
 export type SelectAccountService = typeof selectAccount;

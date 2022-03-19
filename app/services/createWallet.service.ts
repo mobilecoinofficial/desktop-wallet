@@ -1,8 +1,9 @@
-import { store, wipeAccountContactAndPin } from '../contexts/FullServiceContext';
+import { wipeAccountContactAndPin } from '../contexts/FullServiceContext';
 import { createWalletAction } from '../contexts/actions/createWallet.action';
+import { store } from '../redux/store';
 import { encryptAndStorePassphrase } from '../utils/authentication';
 
-const createWallet = async (passphrase: string): Promise<void> => {
+export const createWallet = async (passphrase: string): Promise<void> => {
   try {
     await wipeAccountContactAndPin();
 
@@ -10,10 +11,12 @@ const createWallet = async (passphrase: string): Promise<void> => {
     const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
     store.dispatch(createWalletAction(encryptedPassphrase, secretKey));
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 
-export default createWallet;
-export { createWallet };
 export type CreateWalletService = typeof createWallet;

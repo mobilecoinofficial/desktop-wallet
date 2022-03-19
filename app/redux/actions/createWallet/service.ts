@@ -18,7 +18,11 @@ export const createWallet = async (passphrase: string): Promise<void> => {
     const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
     store.dispatch(createWalletAction(encryptedPassphrase, secretKey));
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 

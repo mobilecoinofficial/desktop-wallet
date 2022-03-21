@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom';
 
 import routePaths from '../../../constants/routePaths';
 import { logger } from '../../../fullService/utils';
-import useFullService from '../../../hooks/useFullService';
+import { store } from '../../../redux/store';
 import { addAccount } from '../../../services';
 import type { Theme } from '../../../theme';
 import { DashboardView } from '../DashboardPage.view/DashboardPage.view';
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) => {
   const classes = useStyles();
-  const { accounts, addingAccount, selectedAccount } = useFullService();
+  const { accounts, addingAccount, selectedAccount } = store.getState();
   const { enqueueSnackbar } = useSnackbar();
 
   if (addingAccount) {

@@ -61,6 +61,7 @@ const axiosFullService = async <T>(
     // such as the API or services
     return skipKeysCamelCase(response);
   } catch (error) {
+    console.log(error);
     // TODO: when we hit an unknown error, I think we can assume this application needs to restart
     // So, we should figure out a bug report path and a reset button.
     const errorMessage = (error as Error).message || 'Unknown Rocket error';

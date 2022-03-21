@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Redirect } from 'react-router-dom';
 
 import { randomColor } from '../../../constants/app';
-import useFullService from '../../../hooks/useFullService';
+import { store } from '../../../redux/store';
 import { assignAddressForAccount, updateContacts } from '../../../services';
 import type { Contact } from '../../../types/Contact.d';
 import { ContactForm } from '../ContactForm.view';
@@ -22,7 +22,7 @@ const ContactsPage: FC = () => {
   const [status, setStatus] = useState(PAGE.LIST);
   const [current, setCurrent] = useState({} as Contact);
   const { enqueueSnackbar } = useSnackbar();
-  const { contacts, selectedAccount } = useFullService();
+  const { contacts, selectedAccount } = store.getState();
 
   const { t } = useTranslation('ContactsPage');
 

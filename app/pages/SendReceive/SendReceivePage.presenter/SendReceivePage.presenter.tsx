@@ -6,7 +6,7 @@ import { clipboard, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 
-import useFullService from '../../../hooks/useFullService';
+import { store } from '../../../redux/store';
 import {
   assignAddressForAccount,
   buildTransaction,
@@ -65,7 +65,7 @@ const SendReceivePage: FC = () => {
     feePmob,
     pinThresholdPmob,
     selectedAccount,
-  } = useFullService();
+  } = store.getState();
 
   useEffect(() => {
     getFeePmob();

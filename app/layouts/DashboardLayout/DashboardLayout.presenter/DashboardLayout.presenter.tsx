@@ -5,7 +5,7 @@ import { Box, makeStyles, useMediaQuery } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 
 // import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
-import useFullService from '../../../hooks/useFullService';
+import { store } from '../../../redux/store';
 import { confirmEntropyKnown, setPin } from '../../../services';
 import type { Theme } from '../../../theme';
 import { BalanceIndicator } from '../BalanceIndicator.view';
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const DashboardLayout: FC<DashboardLayoutProps> = ({ children }: DashboardLayoutProps) => {
   const { offlineModeEnabled, selectedAccount, isEntropyKnown, isPinRequired, pendingSecrets } =
-    useFullService();
+    store.getState();
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
   const sendSyncStatus = (statusCode: string) => ipcRenderer.send('sync-status', statusCode);

@@ -9,7 +9,6 @@ import { Redirect } from 'react-router-dom';
 import { SplashScreen } from '../../../components/SplashScreen';
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
-import useFullService from '../../../hooks/useFullService';
 import { addAccount } from '../../../redux/actions/addAccount/service';
 import { createAccount } from '../../../redux/actions/createAccount/service';
 import { createWallet } from '../../../redux/actions/createWallet/service';
@@ -17,6 +16,7 @@ import { deleteWallet } from '../../../redux/actions/deleteWallet/service';
 import { importAccount } from '../../../redux/actions/importAccount/service';
 import { selectAccount } from '../../../redux/actions/selectAccount/service';
 import { unlockWallet } from '../../../redux/actions/unlockWallet/service';
+import { store } from '../../../redux/store';
 import { getWalletStatus, importLegacyAccount } from '../../../services';
 import type { Theme } from '../../../theme';
 import * as localStore from '../../../utils/LocalStore';
@@ -69,7 +69,7 @@ const untilFullServiceRuns = async () => {
 
 const AuthPage: FC = () => {
   const classes = useStyles();
-  const { addingAccount, isAuthenticated, selectedAccount } = useFullService();
+  const { addingAccount, isAuthenticated, selectedAccount } = store.getState();
   const [selectedView, setView] = useState(1);
   const { t } = useTranslation('AuthPage');
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());

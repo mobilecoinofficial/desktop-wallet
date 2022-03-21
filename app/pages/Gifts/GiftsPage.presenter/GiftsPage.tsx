@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
-import useFullService from '../../../hooks/useFullService';
+import { store } from '../../../redux/store';
 import {
   buildGiftCode,
   checkGiftCodeStatus,
@@ -81,7 +81,7 @@ const GiftsPage: FC = () => {
     pinThresholdPmob,
     // next for both
     selectedAccount,
-  } = useFullService();
+  } = store.getState();
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
@@ -218,8 +218,12 @@ const GiftsPage: FC = () => {
     setShowModalConsume(false);
   };
 
-  useEffect(getAllGiftCodes, []);
-  useEffect(getFeePmob, []);
+  useEffect(() => {
+    getAllGiftCodes();
+  }, []);
+  useEffect(() => {
+    getFeePmob();
+  }, []);
 
   return (
     <Box className={classes.root}>

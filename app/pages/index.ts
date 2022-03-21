@@ -3,7 +3,7 @@ import { ContactsPage } from './Contacts';
 import { CrashReportPage } from './CrashReport';
 import { DashboardPage } from './Dashboard';
 import { GiftsPage } from './Gifts';
-import { HistoryPage } from './History';
+import { ConnectedHistoryPage } from './History';
 import { NotFoundPage } from './NotFound';
 import { SendReceivePage } from './SendReceive';
 import { SettingsPage } from './Settings';
@@ -14,7 +14,7 @@ export {
   CrashReportPage,
   DashboardPage,
   GiftsPage,
-  HistoryPage,
+  ConnectedHistoryPage,
   NotFoundPage,
   SendReceivePage,
   SettingsPage,

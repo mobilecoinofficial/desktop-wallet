@@ -15,7 +15,7 @@ import {
   CrashReportPage,
   DashboardPage,
   GiftsPage,
-  HistoryPage,
+  ConnectedHistoryPage,
   SendReceivePage,
   SettingsPage,
   NotFoundPage,
@@ -71,7 +71,7 @@ export const internalRoutes: Routes = [
         path: routePaths.APP_GIFTING,
       },
       {
-        Component: HistoryPage,
+        Component: ConnectedHistoryPage,
         exact: true,
         path: routePaths.APP_HISTORY,
       },

@@ -16,8 +16,8 @@ import {
   ToolsIcon,
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
-import useFullService from '../../../hooks/useFullService';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
+import { store } from '../../../redux/store';
 import {
   addAccount,
   changePassword,
@@ -67,7 +67,7 @@ const SettingsPage: FC = () => {
     pin,
     selectedAccount,
     transactionLogs,
-  } = useFullService();
+  } = store.getState();
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');
   const { enqueueSnackbar } = useSnackbar();

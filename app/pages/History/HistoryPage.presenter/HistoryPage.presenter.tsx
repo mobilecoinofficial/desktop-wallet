@@ -1,32 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import type { FC } from 'react';
 
 import { Box, Typography } from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
 import { getConfirmations, validateConfirmation } from '../../../fullService/api';
-import useFullService from '../../../hooks/useFullService';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { Addresses, Contact, SelectedAccount, Txos } from '../../../types';
 import { Confirmations } from '../../../types/Confirmation';
-import type { TransactionLog } from '../../../types/TransactionLog.d';
+import type { TransactionLog, TransactionLogs } from '../../../types/TransactionLog.d';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
 
 const HISTORY = 'history';
 const DETAILS = 'details';
 
-const HistoryPage: FC = () => {
+type Props = StateProps;
+
+const HistoryPage = (props: Props): JSX.Element => {
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [txoValidations, setTxoValidations] = useState({});
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
-  const [transactionLogsState, setTransactionLogsState] = useState([]);
+  const [transactionLogsState, setTransactionLogsState] = useState<TransactionLog[]>([]);
 
-  const { addresses, contacts, selectedAccount, transactionLogs, txos } = useFullService();
+  const { addresses, contacts, selectedAccount, transactionLogs, txos } = props;
+  console.log(transactionLogs);
 
   const buildList = (): TransactionLog[] => {
     if (transactionLogs) {
@@ -145,5 +149,30 @@ const HistoryPage: FC = () => {
   }
 };
 
-export default HistoryPage;
-export { HistoryPage };
+type StateProps = {
+  addresses: Addresses;
+  contacts: Contact[];
+  selectedAccount: SelectedAccount | null;
+  transactionLogs: TransactionLogs | null;
+  txos: Txos;
+};
+
+const mapState = (state: ReduxStoreState): StateProps => ({
+  addresses: state.addresses,
+  contacts: state.contacts,
+  selectedAccount: state.selectedAccount,
+  transactionLogs: state.transactionLogs,
+  txos: state.txos,
+});
+
+export const ConnectedHistoryPage = connect<
+  StateProps,
+  Record<string, never>,
+  Record<string, never>,
+  ReduxStoreState
+>(mapState)(HistoryPage);
+
+// type StoreProps = ConnectedProps<typeof connector>;
+
+// export default ConnectedHistoryPage;
+// export { ConnectedHistoryPage };

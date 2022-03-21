@@ -12,11 +12,13 @@ import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
 // import { FullServiceProvider } from './contexts/FullServiceContext';
 import { fetchAllTransactionLogsForAccount } from './redux/actions/fetchAllTransactionLogsForAccount/service';
+import { initialize } from './redux/actions/initialize/service';
 import { updateStatus } from './redux/actions/updateStatus/service';
 import { store } from './redux/store';
 import { internalRoutes, InternalRoutesRenderer } from './routes';
 import { setTheme } from './theme';
 import { Account } from './types';
+import * as localStore from './utils/LocalStore';
 
 const App: FC = () => {
   const [theme, setThemeReact] = useState(
@@ -48,6 +50,15 @@ const App: FC = () => {
       ipcRenderer.removeAllListeners('set-theme-light');
       ipcRenderer.removeAllListeners('set-theme-dark');
     };
+  }, []);
+
+  useEffect(() => {
+    try {
+      const encryptedPassphrase = localStore.getEncryptedPassphrase();
+      initialize(encryptedPassphrase);
+    } catch (err) {
+      initialize(undefined);
+    }
   }, []);
 
   const [fetchUpdatesTimer, setFetchUpdatesTimer] = useState<NodeJS.Timer>();

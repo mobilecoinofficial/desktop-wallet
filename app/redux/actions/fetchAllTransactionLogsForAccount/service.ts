@@ -16,6 +16,7 @@ export const fetchAllTransactionLogsForAccount = async (
 
   try {
     const transactionLogs = await fullServiceApi.getAllTransactionLogsForAccount({ accountId });
+    console.log('TRANSACTION LOGS FROM FULL SERVICE API', transactionLogs);
 
     transactionLogs.transactionLogIds.forEach((v: StringHex) => {
       const w = transactionLogs.transactionLogMap[v];

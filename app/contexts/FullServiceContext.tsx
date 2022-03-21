@@ -1,7 +1,6 @@
-import React, { createContext, useEffect /* useState */ } from 'react';
+import React, { createContext /* useState */ } from 'react';
 import type { FC, ReactNode } from 'react';
 
-import { initialize } from '../redux/actions/initialize/service';
 // import { updateStatus } from '../redux/actions/updateStatus/service';
 import { initialReduxStoreState, ReduxStoreState } from '../redux/reducers/reducers';
 import { store } from '../redux/store';
@@ -23,18 +22,18 @@ export const wipeAccountContactAndPin = async (): Promise<void> => {
 
 export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   children,
-}: FullServiceProviderProps) => {
+}: FullServiceProviderProps) => (
   // const [fetchUpdatesTimer, setFetchUpdatesTimer] = useState<null | NodeJS.Timer>(null);
 
   // Initialize App On Startup
-  useEffect(() => {
-    try {
-      const encryptedPassphrase = localStore.getEncryptedPassphrase();
-      initialize(encryptedPassphrase);
-    } catch (err) {
-      initialize(undefined);
-    }
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     const encryptedPassphrase = localStore.getEncryptedPassphrase();
+  //     initialize(encryptedPassphrase);
+  //   } catch (err) {
+  //     initialize(undefined);
+  //   }
+  // }, []);
 
   // useEffect(() => {
   //   if (fetchUpdatesTimer !== null) {
@@ -65,11 +64,9 @@ export const FullServiceProvider: FC<FullServiceProviderProps> = ({
   //   );
   // }, []);
 
-  return (
-    <FullServiceContext.Provider value={{ ...store.getState() }}>
-      {children}
-    </FullServiceContext.Provider>
-  );
-};
+  <FullServiceContext.Provider value={{ ...store.getState() }}>
+    {children}
+  </FullServiceContext.Provider>
+);
 
 export default FullServiceContext;

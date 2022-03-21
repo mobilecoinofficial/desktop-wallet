@@ -1,12 +1,12 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { clipboard, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 
-import { store } from '../../../redux/store';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   assignAddressForAccount,
   buildTransaction,
@@ -15,6 +15,7 @@ import {
   updateContacts,
 } from '../../../services';
 import type { Theme } from '../../../theme';
+import { Contact, SelectedAccount } from '../../../types';
 import type { StringHex } from '../../../types/SpecialStrings';
 import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
@@ -48,7 +49,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const SendReceivePage: FC = () => {
+type Props = ReduxProps;
+
+const SendReceivePage = (props: Props): JSX.Element => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [sendingStatus, setSendingStatus] = useState(Showing.INPUT_FORM);
@@ -65,7 +68,7 @@ const SendReceivePage: FC = () => {
     feePmob,
     pinThresholdPmob,
     selectedAccount,
-  } = store.getState();
+  } = props;
 
   useEffect(() => {
     getFeePmob();
@@ -325,5 +328,27 @@ const SendReceivePage: FC = () => {
   );
 };
 
-export default SendReceivePage;
-export { SendReceivePage };
+type ReduxProps = {
+  contacts: Contact[];
+  pin: string | undefined;
+  offlineModeEnabled: boolean;
+  feePmob: string;
+  pinThresholdPmob: string;
+  selectedAccount: SelectedAccount | null;
+};
+
+const mapState = (state: ReduxStoreState): ReduxProps => ({
+  contacts: state.contacts,
+  feePmob: state.feePmob,
+  offlineModeEnabled: state.offlineModeEnabled,
+  pin: state.pin,
+  pinThresholdPmob: state.pinThresholdPmob,
+  selectedAccount: state.selectedAccount,
+});
+
+export const ConnectedSendReceivePage = connect<
+  ReduxProps,
+  Record<string, never>,
+  Record<string, never>,
+  ReduxStoreState
+>(mapState)(SendReceivePage);

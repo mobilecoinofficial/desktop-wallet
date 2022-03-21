@@ -1,14 +1,14 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import type { FC } from 'react';
 
 import { Box, Container, Fade, Grid, makeStyles, Modal, Tab, Tabs } from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
-import { store } from '../../../redux/store';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   buildGiftCode,
   checkGiftCodeStatus,
@@ -19,6 +19,7 @@ import {
   submitGiftCode,
 } from '../../../services';
 import type { Theme } from '../../../theme';
+import { Accounts, GiftCode, SelectedAccount } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
@@ -61,7 +62,9 @@ const EMPTY_CONFIRMATION_BUILD = {
   txProposal: {} as TxProposal,
 };
 
-const GiftsPage: FC = () => {
+type Props = ReduxProps;
+
+const GiftsPage = (props: Props): JSX.Element => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -81,7 +84,7 @@ const GiftsPage: FC = () => {
     pinThresholdPmob,
     // next for both
     selectedAccount,
-  } = store.getState();
+  } = props;
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
@@ -312,5 +315,28 @@ const GiftsPage: FC = () => {
   );
 };
 
-export default GiftsPage;
-export { GiftsPage };
+type ReduxProps = {
+  accounts: Accounts;
+  feePmob: string;
+  giftCodes: GiftCode[] | null;
+  pin: string | undefined;
+  pinThresholdPmob: string;
+  // next for both
+  selectedAccount: SelectedAccount | null;
+};
+
+const mapState = (state: ReduxStoreState): ReduxProps => ({
+  accounts: state.accounts,
+  feePmob: state.feePmob,
+  giftCodes: state.giftCodes,
+  pin: state.pin,
+  pinThresholdPmob: state.pinThresholdPmob,
+  selectedAccount: state.selectedAccount,
+});
+
+export const ConnectedGiftsPage = connect<
+  ReduxProps,
+  Record<string, never>,
+  Record<string, never>,
+  ReduxStoreState
+>(mapState)(GiftsPage);

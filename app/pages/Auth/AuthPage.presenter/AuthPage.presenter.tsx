@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import type { FC } from 'react';
 
 import { Box, Button, Card, Container, Divider, makeStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { SplashScreen } from '../../../components/SplashScreen';
@@ -16,9 +16,10 @@ import { deleteWallet } from '../../../redux/actions/deleteWallet/service';
 import { importAccount } from '../../../redux/actions/importAccount/service';
 import { selectAccount } from '../../../redux/actions/selectAccount/service';
 import { unlockWallet } from '../../../redux/actions/unlockWallet/service';
-import { store } from '../../../redux/store';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { getWalletStatus, importLegacyAccount } from '../../../services';
 import type { Theme } from '../../../theme';
+import { SelectedAccount } from '../../../types';
 import * as localStore from '../../../utils/LocalStore';
 import { isHex64 } from '../../../utils/bip39Functions';
 import { getKeychainAccounts } from '../../../utils/keytarService';
@@ -67,9 +68,11 @@ const untilFullServiceRuns = async () => {
 };
 /* eslint-enable no-await-in-loop */
 
-const AuthPage: FC = () => {
+type Props = ReduxProps;
+
+const AuthPage = (props: Props): JSX.Element => {
   const classes = useStyles();
-  const { addingAccount, isAuthenticated, selectedAccount } = store.getState();
+  const { addingAccount, isAuthenticated, selectedAccount } = props;
   const [selectedView, setView] = useState(1);
   const { t } = useTranslation('AuthPage');
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
@@ -248,5 +251,21 @@ const AuthPage: FC = () => {
   );
 };
 
-export default AuthPage;
-export { AuthPage };
+type ReduxProps = {
+  addingAccount: boolean;
+  isAuthenticated: boolean;
+  selectedAccount: SelectedAccount | null;
+};
+
+const mapState = (state: ReduxStoreState): ReduxProps => ({
+  addingAccount: state.addingAccount,
+  isAuthenticated: state.isAuthenticated,
+  selectedAccount: state.selectedAccount,
+});
+
+export const ConnectedAuthPage = connect<
+  ReduxProps,
+  Record<string, never>,
+  Record<string, never>,
+  ReduxStoreState
+>(mapState)(AuthPage);

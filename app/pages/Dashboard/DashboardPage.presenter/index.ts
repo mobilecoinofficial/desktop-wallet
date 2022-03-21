@@ -1,4 +1,4 @@
-import { DashboardPage } from './DashboardPage.presenter';
+import { ConnectedDashboardPage } from './DashboardPage.presenter';
 
-export default DashboardPage;
-export { DashboardPage };
+export default ConnectedDashboardPage;
+export { ConnectedDashboardPage };

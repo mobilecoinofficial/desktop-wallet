@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import type { FC } from 'react';
 
 import { Box, Container, makeStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import {
@@ -17,7 +17,7 @@ import {
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
-import { store } from '../../../redux/store';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   addAccount,
   changePassword,
@@ -27,6 +27,7 @@ import {
 } from '../../../services';
 import { deleteAccount } from '../../../services/deleteAccount.service';
 import type { Theme } from '../../../theme';
+import { Accounts, SelectedAccount, TransactionLogs } from '../../../types';
 import type { StringUInt64 } from '../../../types/SpecialStrings.d';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { getKeychainAccounts, setKeychainAccount } from '../../../utils/keytarService';
@@ -57,7 +58,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const SettingsPage: FC = () => {
+type Props = ReduxProps;
+
+const SettingsPage = (props: Props): JSX.Element => {
   const classes = useStyles();
   const {
     accounts,
@@ -67,7 +70,7 @@ const SettingsPage: FC = () => {
     pin,
     selectedAccount,
     transactionLogs,
-  } = store.getState();
+  } = props;
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');
   const { enqueueSnackbar } = useSnackbar();
@@ -292,5 +295,29 @@ const SettingsPage: FC = () => {
   }
 };
 
-export default SettingsPage;
-export { SettingsPage };
+type ReduxProps = {
+  accounts: Accounts;
+  addingAccount: boolean;
+  offlineModeEnabled: boolean;
+  pinThresholdPmob: string;
+  pin: string | undefined;
+  selectedAccount: SelectedAccount | null;
+  transactionLogs: TransactionLogs | null;
+};
+
+const mapState = (state: ReduxStoreState): ReduxProps => ({
+  accounts: state.accounts,
+  addingAccount: state.addingAccount,
+  offlineModeEnabled: state.offlineModeEnabled,
+  pin: state.pin,
+  pinThresholdPmob: state.pinThresholdPmob,
+  selectedAccount: state.selectedAccount,
+  transactionLogs: state.transactionLogs,
+});
+
+export const ConnectedSettingsPage = connect<
+  ReduxProps,
+  Record<string, never>,
+  Record<string, never>,
+  ReduxStoreState
+>(mapState)(SettingsPage);

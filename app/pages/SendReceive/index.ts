@@ -1,4 +1,4 @@
-import { SendReceivePage } from './SendReceivePage.presenter';
+import { ConnectedSendReceivePage } from './SendReceivePage.presenter';
 
-export default SendReceivePage;
-export { SendReceivePage };
+export default ConnectedSendReceivePage;
+export { ConnectedSendReceivePage };

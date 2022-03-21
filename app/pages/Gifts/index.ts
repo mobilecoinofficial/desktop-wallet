@@ -1,4 +1,4 @@
-import { GiftsPage } from './GiftsPage.presenter';
+import { ConnectedGiftsPage } from './GiftsPage.presenter';
 
-export default GiftsPage;
-export { GiftsPage };
+export default ConnectedGiftsPage;
+export { ConnectedGiftsPage };

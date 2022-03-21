@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
-import type { FC } from 'react';
 
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { randomColor } from '../../../constants/app';
-import { store } from '../../../redux/store';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { assignAddressForAccount, updateContacts } from '../../../services';
+import { SelectedAccount } from '../../../types';
 import type { Contact } from '../../../types/Contact.d';
 import { ContactForm } from '../ContactForm.view';
 import { ContactsList } from '../ContactsList.view';
 
-const ContactsPage: FC = () => {
+type Props = ReduxProps;
+
+const ContactsPage = (props: Props): JSX.Element => {
   enum PAGE {
     ADD,
     EDIT,
@@ -22,7 +25,7 @@ const ContactsPage: FC = () => {
   const [status, setStatus] = useState(PAGE.LIST);
   const [current, setCurrent] = useState({} as Contact);
   const { enqueueSnackbar } = useSnackbar();
-  const { contacts, selectedAccount } = store.getState();
+  const { contacts, selectedAccount } = props;
 
   const { t } = useTranslation('ContactsPage');
 
@@ -131,5 +134,16 @@ const ContactsPage: FC = () => {
   }
 };
 
-export default ContactsPage;
-export { ContactsPage };
+type ReduxProps = { contacts: Contact[]; selectedAccount: SelectedAccount | null };
+
+const mapState = (state: ReduxStoreState): ReduxProps => ({
+  contacts: state.contacts,
+  selectedAccount: state.selectedAccount,
+});
+
+export const ConnectedContactsPage = connect<
+  ReduxProps,
+  Record<string, never>,
+  Record<string, never>,
+  ReduxStoreState
+>(mapState)(ContactsPage);

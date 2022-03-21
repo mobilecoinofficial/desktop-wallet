@@ -1,13 +1,14 @@
 import React from 'react';
-import type { FC } from 'react';
 
 import { Box, makeStyles, useMediaQuery } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
-
 // import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
-import { store } from '../../../redux/store';
+import { connect } from 'react-redux';
+
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { confirmEntropyKnown, setPin } from '../../../services';
 import type { Theme } from '../../../theme';
+import { PendingSecrets, SelectedAccount } from '../../../types';
 import { BalanceIndicator } from '../BalanceIndicator.view';
 // import { InactivityDetect } from '../InactivityDetect';
 import { OnboardingModal } from '../OnboardingModal.view';
@@ -42,9 +43,17 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const DashboardLayout: FC<DashboardLayoutProps> = ({ children }: DashboardLayoutProps) => {
-  const { offlineModeEnabled, selectedAccount, isEntropyKnown, isPinRequired, pendingSecrets } =
-    store.getState();
+type Props = DashboardLayoutProps & ReduxProps;
+
+const DashboardLayout = (props: Props): JSX.Element => {
+  const {
+    offlineModeEnabled,
+    selectedAccount,
+    isEntropyKnown,
+    isPinRequired,
+    pendingSecrets,
+    children,
+  } = props;
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
   const sendSyncStatus = (statusCode: string) => ipcRenderer.send('sync-status', statusCode);
@@ -96,5 +105,25 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }: DashboardLayout
   );
 };
 
-export default DashboardLayout;
-export { DashboardLayout };
+type ReduxProps = {
+  offlineModeEnabled: boolean;
+  selectedAccount: SelectedAccount | null;
+  isEntropyKnown: boolean;
+  isPinRequired: boolean;
+  pendingSecrets: PendingSecrets | null;
+};
+
+const mapState = (state: ReduxStoreState): ReduxProps => ({
+  isEntropyKnown: state.isEntropyKnown,
+  isPinRequired: state.isPinRequired,
+  offlineModeEnabled: state.offlineModeEnabled,
+  pendingSecrets: state.pendingSecrets,
+  selectedAccount: state.selectedAccount,
+});
+
+export const ConnectedDashboardLayout = connect<
+  ReduxProps,
+  Record<string, never>,
+  DashboardLayoutProps,
+  ReduxStoreState
+>(mapState)(DashboardLayout);

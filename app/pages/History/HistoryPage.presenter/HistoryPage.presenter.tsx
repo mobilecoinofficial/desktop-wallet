@@ -19,7 +19,7 @@ import { TransactionDetails } from '../TransactionDetails.view';
 const HISTORY = 'history';
 const DETAILS = 'details';
 
-type Props = StateProps;
+type Props = ReduxProps;
 
 const HistoryPage = (props: Props): JSX.Element => {
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
@@ -149,7 +149,7 @@ const HistoryPage = (props: Props): JSX.Element => {
   }
 };
 
-type StateProps = {
+type ReduxProps = {
   addresses: Addresses;
   contacts: Contact[];
   selectedAccount: SelectedAccount | null;
@@ -157,7 +157,7 @@ type StateProps = {
   txos: Txos;
 };
 
-const mapState = (state: ReduxStoreState): StateProps => ({
+const mapState = (state: ReduxStoreState): ReduxProps => ({
   addresses: state.addresses,
   contacts: state.contacts,
   selectedAccount: state.selectedAccount,
@@ -166,13 +166,8 @@ const mapState = (state: ReduxStoreState): StateProps => ({
 });
 
 export const ConnectedHistoryPage = connect<
-  StateProps,
+  ReduxProps,
   Record<string, never>,
   Record<string, never>,
   ReduxStoreState
 >(mapState)(HistoryPage);
-
-// type StoreProps = ConnectedProps<typeof connector>;
-
-// export default ConnectedHistoryPage;
-// export { ConnectedHistoryPage };

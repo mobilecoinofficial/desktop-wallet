@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import snakeCaseKeys from 'snakecase-keys';
 
-import { skipKeysCamelCase } from './utils';
+import { camelCaseObjectKeys } from './utils/camelCase';
 
 type FullServiceResponse = AxiosResponse & {
   data: {
@@ -49,6 +49,8 @@ const axiosFullService = async <T>(
       },
       timeout: 2000,
     });
+    console.log('axiosFullService response:', response); // not wrong here, all lower-cased
+    // WTF WE'RE CAMELCASING IDS???
     // @ts-ignore override
     if (!response.jsonrpc) {
       // Throw is response is not jsonrpc
@@ -59,7 +61,7 @@ const axiosFullService = async <T>(
 
     // TODO: determine if we need to handle errors here or elsewhere
     // such as the API or services
-    return skipKeysCamelCase(response);
+    return camelCaseObjectKeys(response);
   } catch (error) {
     console.log(error);
     // TODO: when we hit an unknown error, I think we can assume this application needs to restart

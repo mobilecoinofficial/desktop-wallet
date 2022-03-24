@@ -7,7 +7,7 @@ const submitTransaction = async (
   includeAccountId = true
 ): Promise<void> => {
   const { selectedAccount } = store.getState();
-  const accountId = includeAccountId ? selectedAccount?.account.accountId : undefined;
+  const accountId = includeAccountId ? selectedAccount.account.accountId : undefined;
   // submit transaction
   // TODO probably want to figure out what I want to save about this transaction log
   await fullServiceApi.submitTransaction({

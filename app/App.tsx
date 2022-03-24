@@ -94,10 +94,8 @@ const App: FC<Props> = (props: Props): JSX.Element => {
     <MemoryRouter>
       <ThemeProvider theme={theme}>
         <SnackbarProvider dense maxSnack={5}>
-          {/* <FullServiceProvider> */}
           <GlobalStyles />
           <InternalRoutesRenderer routes={internalRoutes} />
-          {/* </FullServiceProvider> */}
         </SnackbarProvider>
       </ThemeProvider>
     </MemoryRouter>

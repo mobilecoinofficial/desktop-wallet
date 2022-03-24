@@ -49,7 +49,6 @@ const axiosFullService = async <T>(
       },
       timeout: 2000,
     });
-    // WTF WE'RE CAMELCASING IDS???
     // @ts-ignore override
     if (!response.jsonrpc) {
       // Throw is response is not jsonrpc

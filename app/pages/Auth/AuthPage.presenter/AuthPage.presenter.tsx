@@ -220,7 +220,7 @@ const AuthPage = (props: Props): JSX.Element => {
     }
   };
 
-  // TODO: add error handling
+  // TODO: improve error handling
   const onClickImport = async (accountName: string, entropy: string) => {
     if (isHex64(entropy)) {
       await importLegacyAccount(accountName, entropy);

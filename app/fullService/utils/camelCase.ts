@@ -44,16 +44,6 @@ export const camelCaseString = (input: unknown): string => {
   return regExpMatchArrayToCamelCase(words);
 };
 
-// const parsed = (obj: any) =>
-//   JSON.parse(JSON.stringify(obj), (k, v) => {
-//     const camelCasedKey = toCamelCase(k);
-//     if (camelCasedKey !== k) {
-//       this[camelCasedKey] = v;
-//       return undefined;
-//     }
-//     return v;
-//   });
-
 
 export const camelCaseObjectKeys = (obj: any) =>
   JSON.parse(JSON.stringify(obj), function(k, v) {

@@ -321,7 +321,6 @@ type ReduxProps = {
   giftCodes: GiftCode[] | null;
   pin: string | undefined;
   pinThresholdPmob: string;
-  // next for both
   selectedAccount: SelectedAccount;
 };
 

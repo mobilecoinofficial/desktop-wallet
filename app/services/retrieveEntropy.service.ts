@@ -13,7 +13,7 @@ export const retrieveEntropy = async (passphrase: string): Promise<string> => {
     await validatePassphrase(passphrase, encryptedPassphrase);
 
     const { accountSecrets } = await fullServiceApi.exportAccountSecrets({
-      accountId: selectedAccount?.account.accountId ?? '',
+      accountId: selectedAccount.account.accountId,
     });
 
     return accountSecrets.entropy ?? accountSecrets.mnemonic ?? '';

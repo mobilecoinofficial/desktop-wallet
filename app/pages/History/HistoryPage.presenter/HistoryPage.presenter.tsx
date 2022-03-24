@@ -30,7 +30,6 @@ const HistoryPage = (props: Props): JSX.Element => {
   const [transactionLogsState, setTransactionLogsState] = useState<TransactionLog[]>([]);
 
   const { addresses, contacts, selectedAccount, transactionLogs, txos } = props;
-  console.log(transactionLogs);
 
   const buildList = (): TransactionLog[] => {
     if (transactionLogs) {
@@ -152,7 +151,7 @@ const HistoryPage = (props: Props): JSX.Element => {
 type ReduxProps = {
   addresses: Addresses;
   contacts: Contact[];
-  selectedAccount: SelectedAccount | null;
+  selectedAccount: SelectedAccount;
   transactionLogs: TransactionLogs | null;
   txos: Txos;
 };

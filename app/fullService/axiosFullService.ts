@@ -49,7 +49,6 @@ const axiosFullService = async <T>(
       },
       timeout: 2000,
     });
-    console.log('axiosFullService response:', response); // not wrong here, all lower-cased
     // WTF WE'RE CAMELCASING IDS???
     // @ts-ignore override
     if (!response.jsonrpc) {
@@ -63,7 +62,6 @@ const axiosFullService = async <T>(
     // such as the API or services
     return camelCaseObjectKeys(response);
   } catch (error) {
-    console.log(error);
     // TODO: when we hit an unknown error, I think we can assume this application needs to restart
     // So, we should figure out a bug report path and a reset button.
     const errorMessage = (error as Error).message || 'Unknown Rocket error';

@@ -134,7 +134,7 @@ const ContactsPage = (props: Props): JSX.Element => {
   }
 };
 
-type ReduxProps = { contacts: Contact[]; selectedAccount: SelectedAccount | null };
+type ReduxProps = { contacts: Contact[]; selectedAccount: SelectedAccount };
 
 const mapState = (state: ReduxStoreState): ReduxProps => ({
   contacts: state.contacts,

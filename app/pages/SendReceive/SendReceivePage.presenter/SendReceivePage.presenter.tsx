@@ -334,7 +334,7 @@ type ReduxProps = {
   offlineModeEnabled: boolean;
   feePmob: string;
   pinThresholdPmob: string;
-  selectedAccount: SelectedAccount | null;
+  selectedAccount: SelectedAccount;
 };
 
 const mapState = (state: ReduxStoreState): ReduxProps => ({

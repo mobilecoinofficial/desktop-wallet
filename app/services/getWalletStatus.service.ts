@@ -1,7 +1,7 @@
 import * as fullServiceApi from '../fullService/api';
 import type { WalletStatus } from '../types/WalletStatus.d';
 
-export const getWalletStatus = async (): Promise<WalletStatus | undefined> => {
+export const getWalletStatus = async (): Promise<WalletStatus> => {
   try {
     return await fullServiceApi.getWalletStatus().then((x) => x.walletStatus);
   } catch (err) {
@@ -11,7 +11,6 @@ export const getWalletStatus = async (): Promise<WalletStatus | undefined> => {
       throw err;
     }
   }
-  return undefined;
 };
 
 export type GetWalletStatusService = typeof getWalletStatus;

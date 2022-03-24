@@ -1,5 +1,6 @@
 import * as fullServiceApi from '../../../fullService/api';
 import { decryptContacts } from '../../../services';
+import { SelectedAccount } from '../../../types';
 import * as localStore from '../../../utils/LocalStore';
 import { validatePassphrase } from '../../../utils/authentication';
 import { decrypt } from '../../../utils/encryption';
@@ -22,6 +23,17 @@ export const unlockWallet = async (
 
     const { walletStatus } = await fullServiceApi.getWalletStatus();
 
+    const firstAccountId = walletStatus.accountIds[0];
+
+    const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({
+      accountId: firstAccountId,
+    });
+
+    const selectedAccount: SelectedAccount = {
+      account: walletStatus.accountMap[firstAccountId],
+      balanceStatus,
+    };
+
     let isPinRequired = false;
     let pin;
 
@@ -41,6 +53,7 @@ export const unlockWallet = async (
         pin,
         pinThresholdPmob,
         secretKey,
+        selectedAccount,
         walletStatus,
         startInOfflineMode
       )

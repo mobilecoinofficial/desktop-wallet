@@ -107,7 +107,7 @@ const DashboardLayout = (props: Props): JSX.Element => {
 
 type ReduxProps = {
   offlineModeEnabled: boolean;
-  selectedAccount: SelectedAccount | null;
+  selectedAccount: SelectedAccount;
   isEntropyKnown: boolean;
   isPinRequired: boolean;
   pendingSecrets: PendingSecrets | null;

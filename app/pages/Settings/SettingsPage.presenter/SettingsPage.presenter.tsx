@@ -301,7 +301,7 @@ type ReduxProps = {
   offlineModeEnabled: boolean;
   pinThresholdPmob: string;
   pin: string | undefined;
-  selectedAccount: SelectedAccount | null;
+  selectedAccount: SelectedAccount;
   transactionLogs: TransactionLogs | null;
 };
 

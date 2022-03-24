@@ -322,7 +322,7 @@ type ReduxProps = {
   pin: string | undefined;
   pinThresholdPmob: string;
   // next for both
-  selectedAccount: SelectedAccount | null;
+  selectedAccount: SelectedAccount;
 };
 
 const mapState = (state: ReduxStoreState): ReduxProps => ({

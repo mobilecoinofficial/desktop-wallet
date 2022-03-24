@@ -67,7 +67,7 @@ const DashboardPage = (props: Props): JSX.Element => {
 type ReduxProps = {
   accounts: Accounts;
   addingAccount: boolean;
-  selectedAccount: SelectedAccount | null;
+  selectedAccount: SelectedAccount;
 };
 
 const mapState = (state: ReduxStoreState): ReduxProps => ({

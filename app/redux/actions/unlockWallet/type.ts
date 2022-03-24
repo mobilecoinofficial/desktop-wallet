@@ -1,4 +1,4 @@
-import { Contact, StringUInt64, WalletStatus } from '../../../types';
+import { Contact, SelectedAccount, StringUInt64, WalletStatus } from '../../../types';
 
 export const UNLOCK_WALLET = 'UNLOCK_WALLET';
 
@@ -10,6 +10,7 @@ export type UnlockWalletAction = {
     pin: string | undefined;
     pinThresholdPmob: StringUInt64;
     secretKey: string;
+    selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
     offlineModeEnabled: boolean;
   };

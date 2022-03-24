@@ -7,9 +7,15 @@ export const fetchAllTxosForAccount = async (accountId: StringHex): Promise<void
   try {
     const txos = await fullServiceApi.getAllTxosForAccount({ accountId });
 
-    store.dispatch(fetchAllTxosForAccountAction(txos));
+    if (store.getState().txos !== txos) {
+      store.dispatch(fetchAllTxosForAccountAction(txos));
+    }
   } catch (err) {
-    throw new Error(err.message);
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
   }
 };
 

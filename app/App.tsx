@@ -5,22 +5,25 @@ import { ThemeProvider } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { SnackbarProvider } from 'notistack';
 import { hot } from 'react-hot-loader/root';
-import { Provider } from 'react-redux';
+import { connect } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
 import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
-// import { FullServiceProvider } from './contexts/FullServiceContext';
 import { fetchAllTransactionLogsForAccount } from './redux/actions/fetchAllTransactionLogsForAccount/service';
 import { initialize } from './redux/actions/initialize/service';
 import { updateStatus } from './redux/actions/updateStatus/service';
-import { store } from './redux/store';
+import { ReduxStoreState } from './redux/reducers/reducers';
 import { internalRoutes, InternalRoutesRenderer } from './routes';
 import { setTheme } from './theme';
-import { Account } from './types';
+import { SelectedAccount } from './types';
 import * as localStore from './utils/LocalStore';
 
-const App: FC = () => {
+type Props = ReduxProps;
+
+const App: FC<Props> = (props: Props): JSX.Element => {
+  const { selectedAccount } = props;
+  const { accountId } = selectedAccount.account;
   const [theme, setThemeReact] = useState(
     setTheme({
       responsiveFontSizes: true,
@@ -63,24 +66,21 @@ const App: FC = () => {
 
   const [fetchUpdatesTimer, setFetchUpdatesTimer] = useState<NodeJS.Timer>();
 
-  const fetchBalance = async (accountId: string, account?: Account) => {
-    if (account) {
-      updateStatus(accountId, account);
+  const fetchBalance = async () => {
+    if (selectedAccount.account) {
+      updateStatus(accountId, selectedAccount.account);
     }
   };
 
-  const fetchLogs = async (accountId: string) => {
+  const fetchLogs = async () => {
     fetchAllTransactionLogsForAccount(accountId);
   };
 
   useEffect(() => {
-    const { selectedAccount } = store.getState();
-    const accountId = selectedAccount?.account?.accountId ?? '';
-
     setFetchUpdatesTimer(
       setInterval(() => {
-        fetchBalance(accountId, selectedAccount?.account);
-        fetchLogs(accountId);
+        fetchBalance();
+        fetchLogs();
       }, 10000)
     );
     return () => {
@@ -88,22 +88,33 @@ const App: FC = () => {
         clearInterval(fetchUpdatesTimer);
       }
     };
-  }, []);
+  }, [selectedAccount, accountId]);
 
   return (
-    <Provider store={store}>
-      <MemoryRouter>
-        <ThemeProvider theme={theme}>
-          <SnackbarProvider dense maxSnack={5}>
-            {/* <FullServiceProvider> */}
-            <GlobalStyles />
-            <InternalRoutesRenderer routes={internalRoutes} />
-            {/* </FullServiceProvider> */}
-          </SnackbarProvider>
-        </ThemeProvider>
-      </MemoryRouter>
-    </Provider>
+    <MemoryRouter>
+      <ThemeProvider theme={theme}>
+        <SnackbarProvider dense maxSnack={5}>
+          {/* <FullServiceProvider> */}
+          <GlobalStyles />
+          <InternalRoutesRenderer routes={internalRoutes} />
+          {/* </FullServiceProvider> */}
+        </SnackbarProvider>
+      </ThemeProvider>
+    </MemoryRouter>
   );
 };
 
-export default hot(App);
+type ReduxProps = { selectedAccount: SelectedAccount };
+
+const mapState = (state: ReduxStoreState): ReduxProps => ({
+  selectedAccount: state.selectedAccount,
+});
+
+const ConnectedApp = connect<
+  ReduxProps,
+  Record<string, never>,
+  Record<string, never>,
+  ReduxStoreState
+>(mapState)(App);
+
+export default hot(ConnectedApp);

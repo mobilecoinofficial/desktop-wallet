@@ -254,7 +254,7 @@ const AuthPage = (props: Props): JSX.Element => {
 type ReduxProps = {
   addingAccount: boolean;
   isAuthenticated: boolean;
-  selectedAccount: SelectedAccount | null;
+  selectedAccount: SelectedAccount;
 };
 
 const mapState = (state: ReduxStoreState): ReduxProps => ({

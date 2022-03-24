@@ -70,7 +70,7 @@ export type ReduxStoreState = {
   offlineModeEnabled: boolean;
   pendingSecrets: PendingSecrets | null;
   secretKey: string;
-  selectedAccount: SelectedAccount | null;
+  selectedAccount: SelectedAccount;
   transactionLogs: TransactionLogs | null;
   pinThresholdPmob: StringUInt64;
   pin: string | undefined;
@@ -96,10 +96,31 @@ export const initialReduxStoreState: ReduxStoreState = {
   pin: undefined,
   pinThresholdPmob: '',
   secretKey: '',
-  selectedAccount: null,
+  selectedAccount: {
+    account: {
+      accountId: '',
+      firstBlockIndex: '',
+      key_derivation_version: '',
+      mainAddress: '',
+      name: '',
+      nextSubaddressIndex: '',
+      object: 'account' as const,
+      recoveryMode: false,
+    },
+    balanceStatus: {
+      isSynced: false,
+      orphanedPmob: '',
+      pendingPmob: '',
+      secretedPmob: '',
+      spentPmob: '',
+      unspentPmob: '',
+    },
+  },
   transactionLogs: null,
   txos: { txoIds: [], txoMap: {} },
   walletStatus: {
+    accountIds: [],
+    accountMap: {},
     isSyncedAll: false,
     localBlockHeight: '',
     minSyncedBlockIndex: '',
@@ -256,6 +277,7 @@ export const reducer = (
         pin,
         pinThresholdPmob,
         secretKey,
+        selectedAccount,
         walletStatus,
       } = (action as UnlockWalletAction).payload;
 
@@ -268,6 +290,7 @@ export const reducer = (
         pin,
         pinThresholdPmob,
         secretKey,
+        selectedAccount,
         walletStatus,
       };
     }

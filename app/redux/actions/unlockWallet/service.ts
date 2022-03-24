@@ -2,22 +2,19 @@ import * as fullServiceApi from '../../../fullService/api';
 import { decryptContacts } from '../../../services';
 import { SelectedAccount } from '../../../types';
 import * as localStore from '../../../utils/LocalStore';
-import { validatePassphrase } from '../../../utils/authentication';
+import { validatePassword } from '../../../utils/authentication';
 import { decrypt } from '../../../utils/encryption';
 import { store } from '../../store';
 import { unlockWalletAction } from './action';
 
-export const unlockWallet = async (
-  passphrase: string,
-  startInOfflineMode = false
-): Promise<void> => {
+export const unlockWallet = async (password: string, startInOfflineMode = false): Promise<void> => {
   try {
-    const { encryptedPassphrase } = store.getState();
-    if (encryptedPassphrase === undefined) {
-      throw new Error('encryptedPassphrase assertion failed');
+    const { encryptedPassword } = store.getState();
+    if (encryptedPassword === undefined) {
+      throw new Error('encryptedPassword assertion failed');
     }
 
-    const { secretKey } = await validatePassphrase(passphrase, encryptedPassphrase);
+    const { secretKey } = await validatePassword(password, encryptedPassword);
 
     const contacts = await decryptContacts(secretKey);
 

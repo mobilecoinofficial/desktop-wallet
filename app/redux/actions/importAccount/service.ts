@@ -65,8 +65,8 @@ export const importLegacyAccount = async (name: string | null, entropy: string):
 
     const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
 
-    // After successful import, store encryptedPassphrase
-    // const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
+    // After successful import, store encryptedPassword
+    // const { encryptedPassword, secretKey } = await encryptAndStorePassword(password);
 
     store.dispatch(
       importAccountAction(

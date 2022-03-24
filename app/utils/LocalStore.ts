@@ -13,7 +13,7 @@ const STORE_NAME = 'mobilecoin_config';
 
 export const schemaKeys = {
   ENCRYPTED_CONTACTS: 'encryptedContacts',
-  ENCRYPTED_PASSPHRASE: 'encryptedPassphrase',
+  ENCRYPTED_PASSPHRASE: 'encryptedPassword',
   ENCRYPTED_PIN: 'encryptedPin',
   FULL_SERVICE_BINARIES_PATH: 'fullServiceBinariesPath',
   FULL_SERVICE_DB_EXISTS: 'fullServiceDbExists',
@@ -105,15 +105,15 @@ export const getTheme = (): string => {
   return typeof theme === 'string' ? theme : 'system';
 };
 
-export const getEncryptedPassphrase = (): SjclCipherEncrypted | undefined =>
+export const getEncryptedPassword = (): SjclCipherEncrypted | undefined =>
   store.get(schemaKeys.ENCRYPTED_PASSPHRASE) as SjclCipherEncrypted | undefined;
 
-export const setEncryptedPassphrase = (encryptedPassphrase: SjclCipherEncrypted): void =>
+export const setEncryptedPassword = (encryptedPassword: SjclCipherEncrypted): void =>
   store.set({
-    [schemaKeys.ENCRYPTED_PASSPHRASE]: encryptedPassphrase,
+    [schemaKeys.ENCRYPTED_PASSPHRASE]: encryptedPassword,
   });
 
-export const deleteEncryptedPassphrase = (): void => store.delete(schemaKeys.ENCRYPTED_PASSPHRASE);
+export const deleteEncryptedPassword = (): void => store.delete(schemaKeys.ENCRYPTED_PASSPHRASE);
 
 export const getFullServiceDbPath = (): string => {
   const fullServiceDbPath = store.get(schemaKeys.FULL_SERVICE_DB_PATH);

@@ -4,26 +4,26 @@ import * as localStore from './LocalStore';
 import argon2Key from './argon2Key';
 import { decrypt, encrypt } from './encryption';
 
-export const encryptAndStorePassphrase = async (
-  passphrase: string
-): Promise<{ encryptedPassphrase: SjclCipherEncrypted; secretKey: string }> => {
-  const { secretKey } = await argon2Key(passphrase);
+export const encryptAndStorePassword = async (
+  password: string
+): Promise<{ encryptedPassword: SjclCipherEncrypted; secretKey: string }> => {
+  const { secretKey } = await argon2Key(password);
 
-  const encryptedPassphrase = await encrypt(passphrase, secretKey);
-  localStore.setEncryptedPassphrase(encryptedPassphrase);
-  return { encryptedPassphrase, secretKey };
+  const encryptedPassword = await encrypt(password, secretKey);
+  localStore.setEncryptedPassword(encryptedPassword);
+  return { encryptedPassword, secretKey };
 };
 
-export const validatePassphrase = async (
-  passphrase: string,
-  encryptedPassphrase: SjclCipherEncrypted
+export const validatePassword = async (
+  password: string,
+  encryptedPassword: SjclCipherEncrypted
 ): Promise<{ secretKey: string }> => {
   try {
-    const { secretKey } = await argon2Key(passphrase);
-    const decryptedPassphrase = await decrypt(encryptedPassphrase, secretKey);
+    const { secretKey } = await argon2Key(password);
+    const decryptedPassword = await decrypt(encryptedPassword, secretKey);
 
     // This logic should be uncessary, but just in case the library changes.
-    if (decryptedPassphrase === passphrase) {
+    if (decryptedPassword === password) {
       return { secretKey };
     }
     throw new Error('Invalid Password');

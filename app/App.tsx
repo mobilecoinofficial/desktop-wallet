@@ -57,8 +57,8 @@ const App: FC<Props> = (props: Props): JSX.Element => {
 
   useEffect(() => {
     try {
-      const encryptedPassphrase = localStore.getEncryptedPassphrase();
-      initialize(encryptedPassphrase);
+      const encryptedPassword = localStore.getEncryptedPassword();
+      initialize(encryptedPassword);
     } catch (err) {
       initialize(undefined);
     }

@@ -4,7 +4,7 @@ export const CREATE_WALLET = 'CREATE_WALLET';
 
 export type CreateWalletAction = {
   payload: {
-    encryptedPassphrase: SjclCipherEncrypted;
+    encryptedPassword: SjclCipherEncrypted;
     secretKey: string;
   };
   type: 'CREATE_WALLET';

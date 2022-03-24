@@ -4,7 +4,7 @@ export const INITIALIZE = 'INITIALIZE';
 
 export type InitializeAction = {
   payload: {
-    encryptedPassphrase: SjclCipherEncrypted | undefined;
+    encryptedPassword: SjclCipherEncrypted | undefined;
     isAuthenticated: boolean;
   };
   type: 'INITIALIZE';

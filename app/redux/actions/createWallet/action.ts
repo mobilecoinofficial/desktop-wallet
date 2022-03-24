@@ -3,11 +3,11 @@ import type { SjclCipherEncrypted } from 'sjcl';
 import { CreateWalletAction, CREATE_WALLET } from './type';
 
 export const createWalletAction = (
-  encryptedpassword: SjclCipherEncrypted,
+  encryptedPassphrase: SjclCipherEncrypted,
   secretKey: string
 ): CreateWalletAction => ({
   payload: {
-    encryptedpassword,
+    encryptedPassphrase,
     secretKey,
   },
   type: CREATE_WALLET,

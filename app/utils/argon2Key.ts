@@ -24,11 +24,11 @@ const ensureSalt = (): string => {
   return salt;
 };
 
-const argon2Key = async (password: string): Promise<{ secretKey: string }> => {
+const argon2Key = async (passphrase: string): Promise<{ secretKey: string }> => {
   const saltHex = ensureSalt();
 
   const salt = Buffer.from(saltHex, 'hex');
-  const secretKeyBuffer = await hash(password, {
+  const secretKeyBuffer = await hash(passphrase, {
     hashLength: KEY_LENGTH,
     memoryCost: MEMORY_COST,
     parallelism: PARALLELISM,

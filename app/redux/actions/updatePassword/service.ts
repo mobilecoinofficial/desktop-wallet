@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 import { decryptContacts, getWalletStatus } from '../../../services';
 import { deleteEncryptedPin } from '../../../utils/LocalStore';
 import * as localStore from '../../../utils/LocalStore';
-import { encryptAndStorepassword, validatepassword } from '../../../utils/authentication';
+import { encryptAndStorePassphrase, validatePassphrase } from '../../../utils/authentication';
 import { encrypt } from '../../../utils/encryption';
 import { store } from '../../store';
 import { updateContacts } from '../updateContacts/service';
@@ -11,15 +11,14 @@ import { updatePasswordAction } from './action';
 
 export const updatePassword = async (oldPassword: string, newPassword: string): Promise<void> => {
   try {
-    const { encryptedpassword, pin, secretKey: storeSecretKey } = store.getState();
-    if (encryptedpassword === undefined) {
-      throw new Error('encryptedpassword assertion failed');
+    const { encryptedPassphrase, pin, secretKey: storeSecretKey } = store.getState();
+    if (encryptedPassphrase === undefined) {
+      throw new Error('encryptedPassphrase assertion failed');
     }
 
-    await validatepassword(oldPassword, encryptedpassword);
-    const { secretKey, encryptedpassword: newEncryptedpassword } = await encryptAndStorepassword(
-      newPassword
-    );
+    await validatePassphrase(oldPassword, encryptedPassphrase);
+    const { secretKey, encryptedPassphrase: newEncryptedPassphrase } =
+      await encryptAndStorePassphrase(newPassword);
 
     // delete encrypted PIN based on old secretKey, re-encyrpt and save to local store
     deleteEncryptedPin();
@@ -28,7 +27,7 @@ export const updatePassword = async (oldPassword: string, newPassword: string): 
 
     // grab contacts using old secretKey and update after new key is dispatched
     const contacts = await decryptContacts(storeSecretKey);
-    store.dispatch(updatePasswordAction(newEncryptedpassword, secretKey));
+    store.dispatch(updatePasswordAction(newEncryptedPassphrase, secretKey));
     updateContacts(contacts);
 
     await ipcRenderer.invoke('start-full-service', oldPassword, newPassword);

@@ -1,6 +1,6 @@
 import { StringUInt64 } from '../../../types';
 import * as localStore from '../../../utils/LocalStore';
-import { validatePassphrase } from '../../../utils/authentication';
+import { validatepassword } from '../../../utils/authentication';
 import { encrypt } from '../../../utils/encryption';
 import { store } from '../../store';
 import { updatePinAction } from './action';
@@ -9,20 +9,20 @@ import { updatePinAction } from './action';
 export const updatePin = async (
   pin: string,
   pinThresholdPmob: StringUInt64,
-  passphrase?: string
+  password?: string
 ): Promise<void> => {
-  const { pin: existingPin, secretKey, encryptedPassphrase } = store.getState();
+  const { pin: existingPin, secretKey, encryptedpassword } = store.getState();
 
   try {
-    if (encryptedPassphrase === undefined) {
-      throw new Error('encryptedPassphrase assertion failed');
+    if (encryptedpassword === undefined) {
+      throw new Error('encryptedpassword assertion failed');
     }
 
-    if (passphrase) {
-      await validatePassphrase(passphrase, encryptedPassphrase);
+    if (password) {
+      await validatepassword(password, encryptedpassword);
     } else if (existingPin) {
-      // This only triggers if attempting to set pin without passphrase.
-      // You cannot overwrite an existing PIN without the correct passphrase!
+      // This only triggers if attempting to set pin without password.
+      // You cannot overwrite an existing PIN without the correct password!
       throw new Error('PIN already exists');
     }
 

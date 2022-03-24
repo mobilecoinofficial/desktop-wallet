@@ -3,10 +3,10 @@ import type { SjclCipherEncrypted } from 'sjcl';
 import { INITIALIZE, InitializeAction } from './type';
 
 export const initializeAction = (
-  encryptedPassphrase: SjclCipherEncrypted | undefined
+  encryptedpassword: SjclCipherEncrypted | undefined
 ): InitializeAction => ({
   payload: {
-    encryptedPassphrase,
+    encryptedpassword,
     isAuthenticated: false,
   },
   type: INITIALIZE,

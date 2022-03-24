@@ -60,7 +60,7 @@ export type ReduxStoreState = {
   addresses: Addresses;
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
-  encryptedPassphrase: SjclCipherEncrypted | undefined;
+  encryptedpassword: SjclCipherEncrypted | undefined;
   error: Error | undefined;
   feePmob: StringUInt64;
   isAuthenticated: boolean;
@@ -83,7 +83,7 @@ export const initialReduxStoreState: ReduxStoreState = {
   addingAccount: false,
   addresses: { addressIds: [], addressMap: {} },
   contacts: [],
-  encryptedPassphrase: undefined,
+  encryptedpassword: undefined,
   error: undefined,
   feePmob: '',
   giftCodes: null,
@@ -139,10 +139,10 @@ export const reducer = (
 ): ReduxStoreState => {
   switch (action.type) {
     case INITIALIZE: {
-      const { encryptedPassphrase, isAuthenticated } = (action as InitializeAction).payload;
+      const { encryptedpassword, isAuthenticated } = (action as InitializeAction).payload;
       return {
         ...state,
-        encryptedPassphrase,
+        encryptedpassword,
         isAuthenticated,
         isInitialized: true,
       };
@@ -233,10 +233,10 @@ export const reducer = (
     }
 
     case CREATE_WALLET: {
-      const { encryptedPassphrase, secretKey } = (action as CreateWalletAction).payload;
+      const { encryptedpassword, secretKey } = (action as CreateWalletAction).payload;
       return {
         ...state,
-        encryptedPassphrase,
+        encryptedpassword,
         secretKey,
       };
     }
@@ -312,10 +312,10 @@ export const reducer = (
     }
 
     case UPDATE_PASSWORD: {
-      const { encryptedPassphrase, secretKey } = (action as UpdatePasswordAction).payload;
+      const { encryptedpassword, secretKey } = (action as UpdatePasswordAction).payload;
       return {
         ...state,
-        encryptedPassphrase,
+        encryptedpassword,
         secretKey,
       };
     }

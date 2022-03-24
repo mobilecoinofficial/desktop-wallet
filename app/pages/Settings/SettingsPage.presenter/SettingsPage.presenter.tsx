@@ -17,14 +17,11 @@ import {
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
+import { addAccount } from '../../../redux/actions/addAccount/service';
+import { selectAccount } from '../../../redux/actions/selectAccount/service';
+import { updatePin } from '../../../redux/actions/updatePin/service';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import {
-  addAccount,
-  changePassword,
-  retrieveEntropy,
-  selectAccount,
-  setPin,
-} from '../../../services';
+import { changePassword, retrieveEntropy } from '../../../services';
 import { deleteAccount } from '../../../services/deleteAccount.service';
 import type { Theme } from '../../../theme';
 import { Accounts, SelectedAccount, TransactionLogs } from '../../../types';
@@ -123,7 +120,7 @@ const SettingsPage = (props: Props): JSX.Element => {
 
   const onClickChangePin = async (password: string, newPin: string, newThreshold: StringUInt64) => {
     try {
-      await setPin(newPin, convertMobStringToPicoMobString(newThreshold), password);
+      await updatePin(newPin, convertMobStringToPicoMobString(newThreshold), password);
       /* istanbul ignore next */
       enqueueSnackbar(t('changePinSuccess'), { variant: 'success' });
     } catch (err) {

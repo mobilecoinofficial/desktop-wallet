@@ -1,6 +1,6 @@
-import { updateGiftCodesAction } from '../contexts/actions/updateGiftCodes.action';
-import * as fullServiceApi from '../fullService/api';
-import { store } from '../redux/store';
+import * as fullServiceApi from '../../../fullService/api';
+import { store } from '../../store';
+import { updateGiftCodesAction } from './action';
 
 export const getAllGiftCodes = async (): Promise<void> => {
   const result = await fullServiceApi.getAllGiftCodes();

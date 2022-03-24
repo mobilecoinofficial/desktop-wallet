@@ -8,14 +8,14 @@ import { connect } from 'react-redux';
 
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
+import { getFeePmob } from '../../../redux/actions/updateFeePmob/service';
+import { getAllGiftCodes } from '../../../redux/actions/updateGiftCodes/service';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   buildGiftCode,
   checkGiftCodeStatus,
   claimGiftCode,
   deleteStoredGiftCodeB58,
-  getAllGiftCodes,
-  getFeePmob,
   submitGiftCode,
 } from '../../../services';
 import type { Theme } from '../../../theme';

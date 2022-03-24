@@ -40,8 +40,8 @@ import {
   UpdateContactsAction,
   UPDATE_FEE_PMOB,
   UpdateFeePmobAction,
-  UPDATE_PASSPHRASE,
-  UpdatePassphraseAction,
+  UPDATE_PASSWORD,
+  UpdatePasswordAction,
   UPDATE_PIN,
   UpdatePinAction,
   UPDATE_WALLET_STATUS,
@@ -311,8 +311,8 @@ export const reducer = (
       };
     }
 
-    case UPDATE_PASSPHRASE: {
-      const { encryptedPassphrase, secretKey } = (action as UpdatePassphraseAction).payload;
+    case UPDATE_PASSWORD: {
+      const { encryptedPassphrase, secretKey } = (action as UpdatePasswordAction).payload;
       return {
         ...state,
         encryptedPassphrase,

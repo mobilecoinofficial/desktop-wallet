@@ -1,11 +1,11 @@
 import type { SjclCipherEncrypted } from 'sjcl';
 
-import { UpdatePassphraseAction, UPDATE_PASSPHRASE } from './type';
+import { UpdatePasswordAction, UPDATE_PASSWORD } from './type';
 
-export const updatePassphraseAction = (
+export const updatePasswordAction = (
   newEncryptedPassphrase: SjclCipherEncrypted,
   secretKey: string
-): UpdatePassphraseAction => ({
+): UpdatePasswordAction => ({
   payload: { encryptedPassphrase: newEncryptedPassphrase, secretKey },
-  type: UPDATE_PASSPHRASE,
+  type: UPDATE_PASSWORD,
 });

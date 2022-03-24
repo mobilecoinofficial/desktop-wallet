@@ -35,7 +35,7 @@ import { SubmitButton, MOBNumberFormat, QRScanner } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
 import { StarIcon, MOBIcon, QRCodeIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
-import type { Account } from '../../../types/Account.d';
+import { SelectedAccount } from '../../../types';
 import {
   convertMobStringToPicoMobString,
   convertPicoMobStringToMob,
@@ -107,13 +107,7 @@ const SendMob: FC<SendMobProps> = ({
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
-  const mockMultipleAccounts: Array<Account> = [
-    {
-      b58Code: selectedAccount.account.mainAddress,
-      balance: selectedAccount.balanceStatus.unspentPmob,
-      name: selectedAccount.account.name,
-    },
-  ];
+  const mockMultipleAccounts: Array<SelectedAccount> = [selectedAccount];
 
   const handleChecked = () => setIsChecked(!isChecked);
   const handleScanningQR = () => setIsScanningQR(!isScanningQR);
@@ -181,7 +175,7 @@ const SendMob: FC<SendMobProps> = ({
                 mobAmount: '0', // mobs
                 pin: '',
                 recipientPublicAddress: '',
-                senderPublicAddress: mockMultipleAccounts[0].b58Code,
+                senderPublicAddress: mockMultipleAccounts[0].account.mainAddress,
                 submit: null,
               }}
               validationSchema={Yup.object().shape({
@@ -213,8 +207,9 @@ const SendMob: FC<SendMobProps> = ({
                   // @ts-ignore
                   BigInt(
                     mockMultipleAccounts.find(
-                      (account) => account.b58Code === values.senderPublicAddress
-                    ).balance
+                      (queriedSelectedAccount) =>
+                        queriedSelectedAccount.account.mainAddress === values.senderPublicAddress
+                    )?.balanceStatus.unspentPmob || 0
                   );
 
                 let isPinRequiredForTransaction = false;
@@ -415,7 +410,7 @@ const SendMob: FC<SendMobProps> = ({
                       aria-describedby="transition-modal-description"
                       className={classes.modal}
                       open={showing === Showing.CONFIRM_FORM}
-                      onClose={handleClose(setSubmitting)}
+                      onClose={handleClose(setSubmitting, resetForm)}
                       closeAfterTransition
                       BackdropComponent={Backdrop}
                       BackdropProps={{

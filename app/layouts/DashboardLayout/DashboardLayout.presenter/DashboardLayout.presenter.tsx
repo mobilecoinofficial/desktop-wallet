@@ -5,8 +5,9 @@ import { ipcRenderer } from 'electron';
 // import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
 import { connect } from 'react-redux';
 
+import { updatePin } from '../../../redux/actions/updatePin/service';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { confirmEntropyKnown, setPin } from '../../../services';
+import { confirmEntropyKnown } from '../../../services';
 import type { Theme } from '../../../theme';
 import { PendingSecrets, SelectedAccount } from '../../../types';
 import { BalanceIndicator } from '../BalanceIndicator.view';
@@ -97,7 +98,7 @@ const DashboardLayout = (props: Props): JSX.Element => {
             isEntropyKnown={isEntropyKnown}
             isPinRequired={isPinRequired}
             pendingSecrets={pendingSecrets}
-            setPin={setPin}
+            updatePin={updatePin}
           />
         </Box>
       </Box>

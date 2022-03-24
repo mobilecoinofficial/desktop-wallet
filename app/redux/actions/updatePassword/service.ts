@@ -1,16 +1,15 @@
 import { ipcRenderer } from 'electron';
 
-import { updatePassphraseAction } from '../redux/actions';
-import { store } from '../redux/store';
-import { deleteEncryptedPin } from '../utils/LocalStore';
-import * as localStore from '../utils/LocalStore';
-import { encryptAndStorePassphrase, validatePassphrase } from '../utils/authentication';
-import { encrypt } from '../utils/encryption';
-import { decryptContacts } from './decryptContacts.service';
-import { getWalletStatus } from './getWalletStatus.service';
-import { updateContacts } from './updateContacts.service';
+import { decryptContacts, getWalletStatus } from '../../../services';
+import { deleteEncryptedPin } from '../../../utils/LocalStore';
+import * as localStore from '../../../utils/LocalStore';
+import { encryptAndStorePassphrase, validatePassphrase } from '../../../utils/authentication';
+import { encrypt } from '../../../utils/encryption';
+import { store } from '../../store';
+import { updateContacts } from '../updateContacts/service';
+import { updatePasswordAction } from './action';
 
-export const changePassword = async (oldPassword: string, newPassword: string): Promise<void> => {
+export const updatePassword = async (oldPassword: string, newPassword: string): Promise<void> => {
   try {
     const { encryptedPassphrase, pin, secretKey: storeSecretKey } = store.getState();
     if (encryptedPassphrase === undefined) {
@@ -28,7 +27,7 @@ export const changePassword = async (oldPassword: string, newPassword: string): 
 
     // grab contacts using old secretKey and update after new key is dispatched
     const contacts = await decryptContacts(storeSecretKey);
-    store.dispatch(updatePassphraseAction(newEncryptedPassphrase, secretKey));
+    store.dispatch(updatePasswordAction(newEncryptedPassphrase, secretKey));
     updateContacts(contacts);
 
     await ipcRenderer.invoke('start-full-service', oldPassword, newPassword);
@@ -43,4 +42,4 @@ export const changePassword = async (oldPassword: string, newPassword: string): 
   }
 };
 
-export type ChangePasswordService = typeof changePassword;
+export type UpdatePasswordService = typeof updatePassword;

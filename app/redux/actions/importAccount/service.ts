@@ -44,3 +44,48 @@ export const importAccount = async (name: string | null, mnemonic: string): Prom
 };
 
 export type ImportAccountService = typeof importAccount;
+
+// Import the wallet should initalize the basic wallet information
+// The wallet status
+// Accounts + status
+export const importLegacyAccount = async (name: string | null, entropy: string): Promise<void> => {
+  try {
+    // await wipeAccountContactAndPin();
+
+    // Attempt import
+    const { account } = await fullServiceApi.importLegacyAccount({ entropy, name });
+    const { accountId } = account;
+
+    // Get basic wallet information
+    const { walletStatus } = await fullServiceApi.getWalletStatus();
+    const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
+    const { addressIds, addressMap } = await fullServiceApi.getAllAddressesForAccount({
+      accountId,
+    });
+
+    const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({ accountId });
+
+    // After successful import, store encryptedPassphrase
+    // const { encryptedPassphrase, secretKey } = await encryptAndStorePassphrase(passphrase);
+
+    store.dispatch(
+      importAccountAction(
+        accountIds,
+        accountMap,
+        addressIds,
+        addressMap,
+        account,
+        balanceStatus,
+        walletStatus
+      )
+    );
+  } catch (err) {
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw err;
+    }
+  }
+};
+
+export type ImportLegacyAccountService = typeof importLegacyAccount;

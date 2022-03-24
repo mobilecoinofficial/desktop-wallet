@@ -42,8 +42,8 @@ import { updateFeePmobAction } from './updateFeePmob/action';
 import { UPDATE_FEE_PMOB, UpdateFeePmobAction } from './updateFeePmob/type';
 import { updateGiftCodesAction } from './updateGiftCodes/action';
 import { UPDATE_GIFT_CODES, UpdateGiftCodesAction } from './updateGiftCodes/type';
-import { updatePassphraseAction } from './updatePassphrase/action';
-import { UPDATE_PASSPHRASE, UpdatePassphraseAction } from './updatePassphrase/type';
+import { updatePasswordAction } from './updatePassword/action';
+import { UPDATE_PASSWORD, UpdatePasswordAction } from './updatePassword/type';
 import { updatePinAction } from './updatePin/action';
 import { UPDATE_PIN, UpdatePinAction } from './updatePin/type';
 import { updateStatusAction } from './updateStatus/action';
@@ -68,7 +68,7 @@ export {
   UPDATE_CONTACTS,
   UPDATE_FEE_PMOB,
   UPDATE_GIFT_CODES,
-  UPDATE_PASSPHRASE,
+  UPDATE_PASSWORD,
   UPDATE_PIN,
   UPDATE_WALLET_STATUS,
 };
@@ -91,7 +91,7 @@ type Action =
   | UpdateContactsAction
   | UpdateFeePmobAction
   | UpdateGiftCodesAction
-  | UpdatePassphraseAction
+  | UpdatePasswordAction
   | UpdatePinAction
   | UpdateStatusAction;
 
@@ -115,7 +115,7 @@ export type {
   UpdateContactsAction,
   UpdateFeePmobAction,
   UpdateGiftCodesAction,
-  UpdatePassphraseAction,
+  UpdatePasswordAction,
   UpdatePinAction,
   UpdateStatusAction,
 };
@@ -139,7 +139,7 @@ export {
   updateContactsAction,
   updateFeePmobAction,
   updateGiftCodesAction,
-  updatePassphraseAction,
+  updatePasswordAction,
   updatePinAction,
   updateStatusAction,
 };

@@ -1,4 +1,1 @@
-import { ConsumeGiftForm } from './ConsumeGiftForm.view';
-
-export default ConsumeGiftForm;
-export { ConsumeGiftForm };
+export { ConsumeGiftForm } from './ConsumeGiftForm.view';

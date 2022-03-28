@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { Box, Container, Grid, makeStyles } from '@material-ui/core';
 import { clipboard } from 'electron';
@@ -6,7 +6,7 @@ import { useSnackbar } from 'notistack';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import routePaths from '../../../constants/routePaths';
+import { routePaths } from '../../../constants/routePaths';
 import { logger } from '../../../fullService/utils';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { addAccount } from '../../../redux/services';
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type Props = DashboardPageProps & ReduxProps;
 
-const DashboardPage = (props: Props): JSX.Element => {
+const DashboardPage: FC<Props> = (props: Props): JSX.Element => {
   const classes = useStyles();
   const { accounts, addingAccount, selectedAccount, onClose } = props;
   const { enqueueSnackbar } = useSnackbar();

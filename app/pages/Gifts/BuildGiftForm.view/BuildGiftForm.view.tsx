@@ -1,5 +1,4 @@
-import React from 'react';
-import type { ChangeEvent, FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 
 import {
   Backdrop,
@@ -76,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // warning that it's taking a bit long...
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component manageable.
-const BuildGiftForm: FC<BuildGiftFormProps> = ({
+export const BuildGiftForm: FC<BuildGiftFormProps> = ({
   confirmation,
   existingPin,
   feePmob,
@@ -343,6 +342,3 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
     </Formik>
   );
 };
-
-export default BuildGiftForm;
-export { BuildGiftForm };

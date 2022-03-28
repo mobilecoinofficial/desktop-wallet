@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import type { FC } from 'react';
+import React, { useState, FC } from 'react';
 
 import { Box, Card, CardContent, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const CloseWalletModal: FC<CloseWalletModalProps> = ({ onClose }: CloseWalletModalProps) => {
+export const CloseWalletModal: FC<CloseWalletModalProps> = ({ onClose }: CloseWalletModalProps) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const { t } = useTranslation('CloseWalletModal');
@@ -95,6 +94,3 @@ const CloseWalletModal: FC<CloseWalletModalProps> = ({ onClose }: CloseWalletMod
     </>
   );
 };
-
-export default CloseWalletModal;
-export { CloseWalletModal };

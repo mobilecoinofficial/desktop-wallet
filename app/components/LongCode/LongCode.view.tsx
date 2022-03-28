@@ -1,10 +1,9 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 
 import type { Theme } from '../../theme';
-import isStringNumber from '../../utils/isStringNumber';
+import { isStringNumber } from '../../utils/isStringNumber';
 import { LongCodeProps } from './LongCode';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const LongCode: FC<LongCodeProps> = ({ code, codeClass, isTruncated }: LongCodeProps) => {
+export const LongCode: FC<LongCodeProps> = ({ code, codeClass, isTruncated }: LongCodeProps) => {
   const classes = useStyles();
 
   // Remove the center of the code and replace with * *
@@ -79,6 +78,3 @@ LongCode.defaultProps = {
   codeClass: '',
   isTruncated: false,
 };
-
-export default LongCode;
-export { LongCode };

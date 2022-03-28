@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import type { FC } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 
 import {
   Container,
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const ContactsList: FC<ContactsListProps> = ({
+export const ContactsList: FC<ContactsListProps> = ({
   contactsList,
   onClickAdd,
   onClickEdit,
@@ -107,6 +106,3 @@ const ContactsList: FC<ContactsListProps> = ({
     </Box>
   );
 };
-
-export default ContactsList;
-export { ContactsList };

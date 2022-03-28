@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { Box, Container, makeStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
@@ -15,8 +15,8 @@ import {
   PrivateDocumentIcon,
   ToolsIcon,
 } from '../../../components/icons';
-import routePaths from '../../../constants/routePaths';
-import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
+import { routePaths } from '../../../constants/routePaths';
+import { useFullServiceConfigs } from '../../../hooks/useFullServiceConfigs';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   addAccount,
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type Props = ReduxProps;
 
-const SettingsPage = (props: Props): JSX.Element => {
+const SettingsPage: FC<Props> = (props: Props): JSX.Element => {
   const classes = useStyles();
   const {
     accounts,

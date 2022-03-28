@@ -6,6 +6,7 @@ import { render } from 'react-dom';
 import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 
+import { HotConnectedApp } from './App';
 import i18n from './i18n';
 import './app.global.css';
 import { store } from './redux/store';
@@ -23,13 +24,10 @@ ipcRenderer.on('language-changed', (_, message) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // eslint-disable-next-line global-require, import/extensions
-  const App = require('./App.tsx').default;
-
   render(
     <AppContainer>
       <Provider store={store}>
-        <App />
+        <HotConnectedApp />
       </Provider>
     </AppContainer>,
     document.getElementById('root')

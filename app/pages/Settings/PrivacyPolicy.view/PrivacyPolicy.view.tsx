@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, Breadcrumbs, Container, Link, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -59,7 +58,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const PrivacyPolicyView: FC<PrivacyPolicyViewProps> = ({ onClickBack }: PrivacyPolicyViewProps) => {
+export const PrivacyPolicyView: FC<PrivacyPolicyViewProps> = ({
+  onClickBack,
+}: PrivacyPolicyViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('PrivacyPolicyView');
 
@@ -78,6 +79,3 @@ const PrivacyPolicyView: FC<PrivacyPolicyViewProps> = ({ onClickBack }: PrivacyP
     </Container>
   );
 };
-
-export default PrivacyPolicyView;
-export { PrivacyPolicyView };

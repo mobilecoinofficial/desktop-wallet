@@ -1,11 +1,11 @@
 import type { Accounts } from '../../types/Account.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_ALL_ACCOUNTS_METHOD = 'get_all_accounts';
 
 type GetAllAccountsResult = Accounts;
 
-const getAllAccounts = async (): Promise<GetAllAccountsResult> => {
+export const getAllAccounts = async (): Promise<GetAllAccountsResult> => {
   const { result, error }: AxiosFullServiceResponse<GetAllAccountsResult> = await axiosFullService(
     GET_ALL_ACCOUNTS_METHOD
   );
@@ -17,5 +17,3 @@ const getAllAccounts = async (): Promise<GetAllAccountsResult> => {
     return result;
   }
 };
-
-export default getAllAccounts;

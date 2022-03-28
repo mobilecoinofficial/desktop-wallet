@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function SearchIcon(props: IconProps): JSX.Element {
+export function SearchIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -20,5 +20,3 @@ SearchIcon.defaultProps = {
   height: 20,
   width: 20,
 };
-
-export default SearchIcon;

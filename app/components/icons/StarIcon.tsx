@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function StarIconIcon(props: IconProps): JSX.Element {
+export function StarIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -15,10 +15,8 @@ function StarIconIcon(props: IconProps): JSX.Element {
   );
 }
 
-StarIconIcon.defaultProps = {
+StarIcon.defaultProps = {
   color: '#ADB0BB',
   height: 20,
   width: 20,
 };
-
-export default StarIconIcon;

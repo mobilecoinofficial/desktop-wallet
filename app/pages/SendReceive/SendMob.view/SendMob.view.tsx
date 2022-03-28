@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
-import React, { useState } from 'react';
-import type { ChangeEvent, FC } from 'react';
+import React, { useState, ChangeEvent, FC } from 'react';
 
 import {
   Backdrop,
@@ -81,7 +80,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component managable.
 
-const SendMob: FC<SendMobProps> = ({
+export const SendMob: FC<SendMobProps> = ({
   confirmation,
   contacts,
   existingPin,
@@ -613,6 +612,3 @@ const SendMob: FC<SendMobProps> = ({
     </Container>
   );
 };
-
-export default SendMob;
-export { SendMob };

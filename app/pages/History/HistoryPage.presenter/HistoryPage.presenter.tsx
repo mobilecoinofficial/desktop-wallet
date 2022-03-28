@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
 import { Box, Typography } from '@material-ui/core';
 import { clipboard } from 'electron';
@@ -21,7 +21,7 @@ const DETAILS = 'details';
 
 type Props = ReduxProps;
 
-const HistoryPage = (props: Props): JSX.Element => {
+const HistoryPage: FC<Props> = (props: Props): JSX.Element => {
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [txoValidations, setTxoValidations] = useState({});
   const [showing, setShowing] = useState(HISTORY);

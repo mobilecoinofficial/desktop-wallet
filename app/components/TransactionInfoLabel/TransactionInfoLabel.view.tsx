@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { makeStyles, Typography } from '@material-ui/core';
 
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   textRight: { textAlign: 'right', width: '100%' },
 }));
 
-const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
+export const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
   valuePmob,
   sign,
   label,
@@ -39,6 +38,3 @@ const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
 TransactionInfoLabel.defaultProps = {
   valuePmob: undefined,
 };
-
-export default TransactionInfoLabel;
-export { TransactionInfoLabel };

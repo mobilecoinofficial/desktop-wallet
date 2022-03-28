@@ -1,4 +1,1 @@
-import { DeleteAccountConfirmationView } from './DeleteAccountConfirmation.view';
-
-export default DeleteAccountConfirmationView;
-export { DeleteAccountConfirmationView };
+export { DeleteAccountConfirmationView } from './DeleteAccountConfirmation.view';

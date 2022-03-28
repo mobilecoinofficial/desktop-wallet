@@ -2,7 +2,7 @@ import * as fullServiceApi from '../fullService/api';
 import { store } from '../redux/store';
 import type { TxProposal } from '../types/TxProposal.d';
 
-const submitTransaction = async (
+export const submitTransaction = async (
   txProposal: TxProposal,
   includeAccountId = true
 ): Promise<void> => {
@@ -37,6 +37,4 @@ const submitTransaction = async (
   // });
 };
 
-export default submitTransaction;
-export { submitTransaction };
 export type SubmitTransactionService = typeof submitTransaction;

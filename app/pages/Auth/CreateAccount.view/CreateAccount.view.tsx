@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
@@ -15,7 +14,7 @@ interface CreateAccountFormValues {
   submit: null;
 }
 
-const CreateAccountView: FC<CreateAccountViewProps> = ({
+export const CreateAccountView: FC<CreateAccountViewProps> = ({
   onClickCreate,
 }: CreateAccountViewProps) => {
   const { t } = useTranslation('CreateAccount');
@@ -71,6 +70,3 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
     </>
   );
 };
-
-export default CreateAccountView;
-export { CreateAccountView };

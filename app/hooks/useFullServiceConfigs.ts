@@ -10,7 +10,7 @@ interface UseFullServiceConfigs {
   toggleLeaveFullServiceRunning: () => void;
 }
 
-const useFullServiceConfigs = (): UseFullServiceConfigs => {
+export const useFullServiceConfigs = (): UseFullServiceConfigs => {
   const initialLeaveFullServiceRunningStore = localStore.getLeaveFullServiceRunning();
   // This coerces initial state of null to false
   const initialLeaveFullServiceRunningState = initialLeaveFullServiceRunningStore === true;
@@ -39,5 +39,3 @@ const useFullServiceConfigs = (): UseFullServiceConfigs => {
     toggleLeaveFullServiceRunning,
   };
 };
-
-export default useFullServiceConfigs;

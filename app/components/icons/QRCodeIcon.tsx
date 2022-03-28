@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function QRCodeIcon(props: IconProps): JSX.Element {
+export function QRCodeIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -30,5 +30,3 @@ QRCodeIcon.defaultProps = {
   height: 24,
   width: 24,
 };
-
-export default QRCodeIcon;

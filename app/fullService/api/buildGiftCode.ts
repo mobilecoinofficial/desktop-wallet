@@ -1,7 +1,7 @@
 import type { GiftCode } from '../../types/GiftCode.d';
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
 import type { TxProposal } from '../../types/TxProposal';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const BUILD_GIFT_CODE_METHOD = 'build_gift_code';
 
@@ -29,7 +29,7 @@ type BuildGiftCodeResponse = {
   txProposal: TxProposal;
 };
 
-const buildGiftCode = async ({
+export const buildGiftCode = async ({
   accountId,
   fee,
   inputTxoIds,
@@ -72,5 +72,3 @@ const buildGiftCode = async ({
     txProposal,
   };
 };
-
-export default buildGiftCode;

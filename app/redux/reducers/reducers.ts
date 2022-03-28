@@ -12,7 +12,7 @@ import {
   Txos,
   WalletStatus,
 } from '../../types';
-import sameObject from '../../utils/sameObject';
+import { sameObject } from '../../utils/sameObject';
 import {
   INITIALIZE,
   InitializeAction,
@@ -133,32 +133,6 @@ export const reducer = (
   action: Action
 ): ReduxStoreState => {
   switch (action.type) {
-    case INITIALIZE: {
-      const { encryptedPassword, isAuthenticated } = (action as InitializeAction).payload;
-      return {
-        ...state,
-        encryptedPassword,
-        isAuthenticated,
-        isInitialized: true,
-      };
-    }
-
-    case GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT: {
-      const { transactionLogs } = (action as GetAllTransactionLogsForAccountAction).payload;
-      return {
-        ...state,
-        transactionLogs,
-      };
-    }
-
-    case GET_ALL_TXOS_FOR_ACCOUNT: {
-      const { txos } = (action as GetAllTxosForAccountAction).payload;
-      return {
-        ...state,
-        txos,
-      };
-    }
-
     case ADD_ACCOUNT: {
       const { adding } = (action as AddAccountAction).payload;
       return {
@@ -167,31 +141,11 @@ export const reducer = (
       };
     }
 
-    case DELETE_ACCOUNT: {
-      const { accounts } = (action as DeleteAccountAction).payload;
-
+    case CONFIRM_ENTROPY_KNOWN: {
       return {
         ...state,
-        accounts,
-      };
-    }
-
-    case DELETE_WALLET: {
-      return initialReduxStoreState;
-    }
-
-    case IMPORT_ACCOUNT: {
-      const { accounts, addresses, selectedAccount, walletStatus } = (action as ImportAccountAction)
-        .payload;
-      return {
-        ...state,
-        accounts,
-        addingAccount: false,
-        addresses,
-        isAuthenticated: true,
         isEntropyKnown: true,
-        selectedAccount,
-        walletStatus,
+        pendingSecrets: null, // Clear secrets from in-memory
       };
     }
 
@@ -221,6 +175,19 @@ export const reducer = (
       };
     }
 
+    case DELETE_ACCOUNT: {
+      const { accounts } = (action as DeleteAccountAction).payload;
+
+      return {
+        ...state,
+        accounts,
+      };
+    }
+
+    case DELETE_WALLET: {
+      return initialReduxStoreState;
+    }
+
     case GET_ALL_GIFT_CODES: {
       const { giftCodes } = (action as GetAllGiftCodesAction).payload;
       return {
@@ -229,11 +196,52 @@ export const reducer = (
       };
     }
 
-    case CONFIRM_ENTROPY_KNOWN: {
+    case GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT: {
+      const { transactionLogs } = (action as GetAllTransactionLogsForAccountAction).payload;
       return {
         ...state,
+        transactionLogs,
+      };
+    }
+
+    case GET_ALL_TXOS_FOR_ACCOUNT: {
+      const { txos } = (action as GetAllTxosForAccountAction).payload;
+      return {
+        ...state,
+        txos,
+      };
+    }
+
+    case GET_FEE_PMOB: {
+      const { feePmob } = (action as GetFeePmobAction).payload;
+      return {
+        ...state,
+        feePmob,
+      };
+    }
+
+    case IMPORT_ACCOUNT: {
+      const { accounts, addresses, selectedAccount, walletStatus } = (action as ImportAccountAction)
+        .payload;
+      return {
+        ...state,
+        accounts,
+        addingAccount: false,
+        addresses,
+        isAuthenticated: true,
         isEntropyKnown: true,
-        pendingSecrets: null, // Clear secrets from in-memory
+        selectedAccount,
+        walletStatus,
+      };
+    }
+
+    case INITIALIZE: {
+      const { encryptedPassword, isAuthenticated } = (action as InitializeAction).payload;
+      return {
+        ...state,
+        encryptedPassword,
+        isAuthenticated,
+        isInitialized: true,
       };
     }
 
@@ -280,14 +288,6 @@ export const reducer = (
       return {
         ...state,
         contacts,
-      };
-    }
-
-    case GET_FEE_PMOB: {
-      const { feePmob } = (action as GetFeePmobAction).payload;
-      return {
-        ...state,
-        feePmob,
       };
     }
 

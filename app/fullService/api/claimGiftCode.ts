@@ -1,5 +1,5 @@
 import type { StringB58, StringHex } from '../../types/SpecialStrings.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const CLAIM_GIFT_CODE_METHOD = 'claim_gift_code';
 
@@ -13,7 +13,7 @@ export type ClaimGiftCodeResult = {
   giftCodeStatus: string;
 };
 
-const claimGiftCode = async ({
+export const claimGiftCode = async ({
   accountId,
   address,
   giftCodeB58,
@@ -35,5 +35,3 @@ const claimGiftCode = async ({
     return result;
   }
 };
-
-export default claimGiftCode;

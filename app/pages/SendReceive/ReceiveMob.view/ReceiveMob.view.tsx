@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import type { FC } from 'react';
+import React, { useState, FC } from 'react';
 
 import {
   Accordion,
@@ -19,7 +18,7 @@ import type { Contact } from '../../../types/Contact.d';
 import type { ReceiveMobProps } from './ReceiveMob.d';
 
 // CBB, really, we should just give the list and work by the indexes.
-const ReceiveMob: FC<ReceiveMobProps> = ({
+export const ReceiveMob: FC<ReceiveMobProps> = ({
   contacts,
   onClickCode,
   selectedAccount,
@@ -90,6 +89,3 @@ const ReceiveMob: FC<ReceiveMobProps> = ({
 };
 
 ReceiveMob.defaultProps = {};
-
-export default ReceiveMob;
-export { ReceiveMob };

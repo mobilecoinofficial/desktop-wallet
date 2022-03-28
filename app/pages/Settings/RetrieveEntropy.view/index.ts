@@ -1,4 +1,1 @@
-import { RetrieveEntropyView } from './RetrieveEntropy.view';
-
-export default RetrieveEntropyView;
-export { RetrieveEntropyView };
+export { RetrieveEntropyView } from './RetrieveEntropy.view';

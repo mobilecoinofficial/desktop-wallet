@@ -1,4 +1,4 @@
-const routePaths = {
+export const routePaths = {
   APP: '/app',
   APP_CONTACTS: '/app/contacts',
   APP_CRASH_LOG: '/app/crashlog',
@@ -16,5 +16,3 @@ const routePaths = {
   NOT_FOUND: '/404',
   ROOT: '/',
 };
-
-export default routePaths;

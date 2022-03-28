@@ -1,5 +1,5 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const VALIDATE_CONFIRMATION_METHOD = 'validate_confirmation';
 
@@ -13,7 +13,7 @@ type ValidateConfirmationResult = {
   validated: boolean; // TODO - lock in name of object
 };
 
-const validateConfirmation = async ({
+export const validateConfirmation = async ({
   accountId,
   confirmation,
   txoId,
@@ -33,5 +33,3 @@ const validateConfirmation = async ({
     return result;
   }
 };
-
-export default validateConfirmation;

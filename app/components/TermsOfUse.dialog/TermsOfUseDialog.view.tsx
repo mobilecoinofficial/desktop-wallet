@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
+export const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
   const { open, handleCloseTerms } = props;
   const { t } = useTranslation('TermsOfUseDialog');
   const classes = useStyles();
@@ -71,6 +71,3 @@ const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
     </Dialog>
   );
 };
-
-export default TermsOfUseDialog;
-export { TermsOfUseDialog };

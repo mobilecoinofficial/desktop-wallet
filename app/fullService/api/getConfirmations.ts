@@ -1,6 +1,6 @@
 import { Confirmations } from '../../types/Confirmation';
 import type { StringHex } from '../../types/SpecialStrings.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_CONFIRMATIONS_METHOD = 'get_confirmations';
 
@@ -12,7 +12,7 @@ type GetConfirmationsResult = {
   confirmations: Confirmations; // TODO - lock in name of object
 };
 
-const getConfirmations = async ({
+export const getConfirmations = async ({
   transactionLogId,
 }: GetConfirmationsParams): Promise<GetConfirmationsResult> => {
   const { result, error }: AxiosFullServiceResponse<GetConfirmationsResult> =
@@ -28,5 +28,3 @@ const getConfirmations = async ({
     return result;
   }
 };
-
-export default getConfirmations;

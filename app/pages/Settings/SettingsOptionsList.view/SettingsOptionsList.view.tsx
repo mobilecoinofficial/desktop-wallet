@@ -1,12 +1,11 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Grid } from '@material-ui/core';
 
 import { SettingsOptionsItem } from '../SettingsOptionsItem.view';
 import { SettingsOptionsListProps } from './SettingsOptionsList';
 
-const SettingsOptionsList: FC<SettingsOptionsListProps> = ({
+export const SettingsOptionsList: FC<SettingsOptionsListProps> = ({
   settingOptionsList,
   handleOnClick,
 }: SettingsOptionsListProps) => (
@@ -26,6 +25,3 @@ const SettingsOptionsList: FC<SettingsOptionsListProps> = ({
     </Grid>
   </Grid>
 );
-
-export default SettingsOptionsList;
-export { SettingsOptionsList };

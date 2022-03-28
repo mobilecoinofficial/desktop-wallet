@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import type { FC } from 'react';
+import React, { useState, FC } from 'react';
 
 import {
   Box,
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   shownEntropy: { letterSpacing: 1 },
 }));
 
-const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
+export const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
   entropy,
   open,
   onClose,
@@ -107,6 +106,3 @@ const ShowRetrievedEntropyModal: FC<ShowRetrievedEntropyModalProps> = ({
     </Fade>
   );
 };
-
-export default ShowRetrievedEntropyModal;
-export { ShowRetrievedEntropyModal };

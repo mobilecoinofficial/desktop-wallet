@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, LinearProgress, makeStyles } from '@material-ui/core';
 
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const SplashScreen: FC = () => {
+export const SplashScreen: FC = () => {
   const classes = useStyles();
 
   // TODO design SplashScreen -- mobilecoin
@@ -47,6 +46,3 @@ const SplashScreen: FC = () => {
     </Box>
   );
 };
-
-export default SplashScreen;
-export { SplashScreen };

@@ -1,14 +1,13 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, Button, Container, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { Link as RouterLink } from 'react-router-dom';
 
-import routePaths from '../../constants/routePaths';
+import { routePaths } from '../../constants/routePaths';
 import type { Theme } from '../../theme';
 
-const useStyles = makeStyles((theme: Theme) => ({
+export const useStyles = makeStyles((theme: Theme) => ({
   root: {
     alignItems: 'center',
     backgroundColor: theme.palette.background.dark,
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const NotFoundPage: FC = () => {
+export const NotFoundPage: FC = () => {
   const classes = useStyles();
   const { t } = useTranslation('NotFoundView');
 
@@ -42,6 +41,3 @@ const NotFoundPage: FC = () => {
     </Box>
   );
 };
-
-export default NotFoundPage;
-export { NotFoundPage };

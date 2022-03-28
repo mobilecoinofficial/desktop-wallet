@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import {
   Backdrop,
@@ -74,7 +73,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
+export const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
   accounts,
   entropy,
   onClickBack,
@@ -198,6 +197,3 @@ const RetrieveEntropyView: FC<RetrieveEntropyViewProps> = ({
     </Container>
   );
 };
-
-export default RetrieveEntropyView;
-export { RetrieveEntropyView };

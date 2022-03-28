@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, FormHelperText, Typography } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
@@ -19,7 +18,7 @@ interface ImportAccountFormValues {
   entropy: string;
 }
 
-const ImportAccountView: FC<ImportAccountViewProps> = ({
+export const ImportAccountView: FC<ImportAccountViewProps> = ({
   onClickImport,
 }: ImportAccountViewProps) => {
   const { t } = useTranslation('ImportAccount');
@@ -100,6 +99,3 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
     </>
   );
 };
-
-export default ImportAccountView;
-export { ImportAccountView };

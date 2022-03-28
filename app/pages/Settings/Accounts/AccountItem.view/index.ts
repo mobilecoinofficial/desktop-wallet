@@ -1,4 +1,1 @@
-import { AccountItem } from './AccountItem.view';
-
-export default AccountItem;
-export { AccountItem };
+export { AccountItem } from './AccountItem.view';

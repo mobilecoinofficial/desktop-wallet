@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, makeStyles, Tooltip, CircularProgress } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -46,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   tooltip: { margin: 'auto', position: 'relative' },
 }));
 
-const SyncStatus: FC<SyncStatusProps> = ({
+export const SyncStatus: FC<SyncStatusProps> = ({
   offlineModeEnabled,
   selectedAccount,
   sendSyncStatus,
@@ -141,6 +140,3 @@ const SyncStatus: FC<SyncStatusProps> = ({
     </Tooltip>
   );
 };
-
-export default SyncStatus;
-export { SyncStatus };

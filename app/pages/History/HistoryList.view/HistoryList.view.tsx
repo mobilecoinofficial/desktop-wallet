@@ -1,5 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import type { FC } from 'react';
+import React, { ChangeEvent, useEffect, useState, FC } from 'react';
 
 import { Box, Button, Container, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -17,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const HistoryList: FC<HistoryListProps> = ({
+export const HistoryList: FC<HistoryListProps> = ({
   transactionLogsList,
   onTransactionClick,
 }: HistoryListProps) => {
@@ -107,6 +106,3 @@ const HistoryList: FC<HistoryListProps> = ({
     </Box>
   );
 };
-
-export default HistoryList;
-export { HistoryList };

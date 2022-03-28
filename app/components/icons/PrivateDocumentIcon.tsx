@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function PrivateDocumentIcon(props: IconProps): JSX.Element {
+export function PrivateDocumentIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -40,5 +40,3 @@ PrivateDocumentIcon.defaultProps = {
   height: 24,
   width: 24,
 };
-
-export default PrivateDocumentIcon;

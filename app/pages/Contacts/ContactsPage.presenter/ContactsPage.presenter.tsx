@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,7 @@ import { ContactsList } from '../ContactsList.view';
 
 type Props = ReduxProps;
 
-const ContactsPage = (props: Props): JSX.Element => {
+const ContactsPage: FC<Props> = (props: Props): JSX.Element => {
   enum PAGE {
     ADD,
     EDIT,

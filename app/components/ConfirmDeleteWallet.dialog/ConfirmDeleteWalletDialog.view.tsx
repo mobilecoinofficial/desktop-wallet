@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import { SubmitButton } from '..';
 import { ConfirmDeleteWalletDialogProps } from './ConfirmDeleteWalletDialog';
 
-const ConfirmDeleteWalletDialog = (props: ConfirmDeleteWalletDialogProps): JSX.Element => {
+export const ConfirmDeleteWalletDialog = (props: ConfirmDeleteWalletDialogProps): JSX.Element => {
   const { open, cancel, confirm } = props;
   const { t } = useTranslation('ConfirmDeleteWalletDialog');
 
@@ -64,6 +64,3 @@ const ConfirmDeleteWalletDialog = (props: ConfirmDeleteWalletDialogProps): JSX.E
     </Dialog>
   );
 };
-
-export default ConfirmDeleteWalletDialog;
-export { ConfirmDeleteWalletDialog };

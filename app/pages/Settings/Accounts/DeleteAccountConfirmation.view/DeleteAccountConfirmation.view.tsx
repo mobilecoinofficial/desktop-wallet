@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import {
   Button,
@@ -17,7 +16,7 @@ import * as Yup from 'yup';
 
 import { DeleteAccountConfirmationViewProps } from './DeleteAccountConfirmation';
 
-const DeleteAccountConfirmationView: FC<DeleteAccountConfirmationViewProps> = ({
+export const DeleteAccountConfirmationView: FC<DeleteAccountConfirmationViewProps> = ({
   confirm,
   cancel,
   shortCode,
@@ -81,6 +80,3 @@ const DeleteAccountConfirmationView: FC<DeleteAccountConfirmationViewProps> = ({
     </Formik>
   );
 };
-
-export default DeleteAccountConfirmationView;
-export { DeleteAccountConfirmationView };

@@ -1,4 +1,1 @@
-import { LedgerStatus } from './LedgerStatus.view';
-
-export default LedgerStatus;
-export { LedgerStatus };
+export { LedgerStatus } from './LedgerStatus.view';

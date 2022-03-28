@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import type { FC } from 'react';
+import React, { useState, FC } from 'react';
 
 import {
   Backdrop,
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {},
 }));
 
-const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
+export const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
   isShown,
   mnemonic,
   confirmEntropyKnown,
@@ -167,6 +166,3 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
     </Modal>
   );
 };
-
-export default ShowEntropyModal;
-export { ShowEntropyModal };

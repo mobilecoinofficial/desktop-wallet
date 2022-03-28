@@ -1,4 +1,1 @@
-import { ImportAccountView } from './ImportAccount.view';
-
-export default ImportAccountView;
-export { ImportAccountView };
+export { ImportAccountView } from './ImportAccount.view';

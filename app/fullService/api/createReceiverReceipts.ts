@@ -1,6 +1,6 @@
 import type { ReceiverReceipts } from '../../types/ReceiverReceipt';
 import type { TxProposal } from '../../types/TxProposal';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const CREATE_RECEIVER_RECEIPTS_METHOD = 'create_receiver_receipts';
 
@@ -12,7 +12,7 @@ type CreateReceiverReceiptsResult = {
   receiverReceipts: ReceiverReceipts;
 };
 
-const createReceiverReceipts = async ({
+export const createReceiverReceipts = async ({
   txProposal,
 }: CreateReceiverReceiptsParams): Promise<CreateReceiverReceiptsResult> => {
   const { result, error }: AxiosFullServiceResponse<CreateReceiverReceiptsResult> =
@@ -28,5 +28,3 @@ const createReceiverReceipts = async ({
     return result;
   }
 };
-
-export default createReceiverReceipts;

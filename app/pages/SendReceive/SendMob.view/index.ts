@@ -1,6 +1,2 @@
-import { Showing } from './SendMob.d';
-import { SendMob } from './SendMob.view';
-
-export default SendMob;
-export { SendMob };
-export { Showing };
+export { Showing } from './SendMob.d';
+export { SendMob } from './SendMob.view';

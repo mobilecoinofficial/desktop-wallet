@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import type { FC } from 'react';
+import React, { useEffect, FC } from 'react';
 
 import { Box, LinearProgress, makeStyles } from '@material-ui/core';
 import NProgress from 'nprogress';
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const LoadingScreen: FC = () => {
+export const LoadingScreen: FC = () => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -36,6 +35,3 @@ const LoadingScreen: FC = () => {
     </div>
   );
 };
-
-export default LoadingScreen;
-export { LoadingScreen };

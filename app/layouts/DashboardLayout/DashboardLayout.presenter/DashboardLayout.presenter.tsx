@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { Box, makeStyles, useMediaQuery } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type Props = DashboardLayoutProps & ReduxProps;
 
-const DashboardLayout = (props: Props): JSX.Element => {
+const DashboardLayout: FC<Props> = (props: Props): JSX.Element => {
   const {
     offlineModeEnabled,
     selectedAccount,

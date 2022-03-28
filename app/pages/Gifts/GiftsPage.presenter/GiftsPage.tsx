@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { Box, Container, Fade, Grid, makeStyles, Modal, Tab, Tabs } from '@material-ui/core';
 import { clipboard } from 'electron';
@@ -21,7 +21,7 @@ import type { Theme } from '../../../theme';
 import { Accounts, GiftCode, SelectedAccount } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
-import isSyncedBuffered from '../../../utils/isSyncedBuffered';
+import { isSyncedBuffered } from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
 import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
 
@@ -63,7 +63,7 @@ const EMPTY_CONFIRMATION_BUILD = {
 
 type Props = ReduxProps;
 
-const GiftsPage = (props: Props): JSX.Element => {
+const GiftsPage: FC<Props> = (props: Props): JSX.Element => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);

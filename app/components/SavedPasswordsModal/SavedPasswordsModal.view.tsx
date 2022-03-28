@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import {
   ListItemIcon,
@@ -38,7 +37,7 @@ const StyledMenuItem = withStyles((theme: Theme) => ({
   },
 }))(MenuItem);
 
-const SavedPasswordsModal: FC<SavedPasswordsModalProps> = ({
+export const SavedPasswordsModal: FC<SavedPasswordsModalProps> = ({
   accounts,
   setFieldValue,
   handleClose,
@@ -68,6 +67,3 @@ const SavedPasswordsModal: FC<SavedPasswordsModalProps> = ({
     ))}
   </StyledMenu>
 );
-
-export default SavedPasswordsModal;
-export { SavedPasswordsModal };

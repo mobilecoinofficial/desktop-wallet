@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function AddressBookIcon(props: IconProps): JSX.Element {
+export function AddressBookIcon(props: IconProps): JSX.Element {
   const { color } = props;
   return (
     <svg viewBox="0 0 28 21" fill="none" {...props}>
@@ -19,5 +19,3 @@ AddressBookIcon.defaultProps = {
   height: 26,
   width: 26,
 };
-
-export default AddressBookIcon;

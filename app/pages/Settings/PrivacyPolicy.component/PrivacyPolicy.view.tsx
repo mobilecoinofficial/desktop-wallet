@@ -3,7 +3,7 @@ import React from 'react';
 
 import { Box, Typography } from '@material-ui/core';
 
-const PrivacyPolicy = (): JSX.Element => (
+export const PrivacyPolicy = (): JSX.Element => (
   <Box p={3} color="text.primary">
     <Box p={2} data-testid="privacy-header" textAlign="center">
       <Typography>Privacy Policy</Typography>
@@ -1100,6 +1100,3 @@ const PrivacyPolicy = (): JSX.Element => (
     </Box>
   </Box>
 );
-
-export default PrivacyPolicy;
-export { PrivacyPolicy };

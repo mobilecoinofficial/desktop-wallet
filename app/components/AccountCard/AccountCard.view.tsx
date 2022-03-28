@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import type { FC } from 'react';
+import React, { useState, FC } from 'react';
 
 import {
   Box,
@@ -47,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const AccountCard: FC<AccountCardProps> = ({
+export const AccountCard: FC<AccountCardProps> = ({
   account,
   accounts,
   isGift,
@@ -161,6 +160,3 @@ const AccountCard: FC<AccountCardProps> = ({
 AccountCard.defaultProps = {
   isGift: false,
 };
-
-export default AccountCard;
-export { AccountCard };

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useState } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { clipboard, ipcRenderer } from 'electron';
@@ -14,7 +14,7 @@ import { Contact, SelectedAccount } from '../../../types';
 import type { StringHex } from '../../../types/SpecialStrings';
 import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
-import isSyncedBuffered from '../../../utils/isSyncedBuffered';
+import { isSyncedBuffered } from '../../../utils/isSyncedBuffered';
 import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 type Props = ReduxProps;
 
-const SendReceivePage = (props: Props): JSX.Element => {
+const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [sendingStatus, setSendingStatus] = useState(Showing.INPUT_FORM);

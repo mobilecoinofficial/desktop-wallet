@@ -1,7 +1,7 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
 import type { TransactionLog } from '../../types/TransactionLog.d';
 import type { TxProposal } from '../../types/TxProposal.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const SUBMIT_TRANSACTION_METHOD = 'submit_transaction';
 
@@ -14,7 +14,7 @@ type SubmitTransactionResult = {
   transaction: TransactionLog;
 };
 
-const submitTransaction = async ({
+export const submitTransaction = async ({
   accountId,
   txProposal,
 }: SubmitTransactionParams): Promise<SubmitTransactionResult> => {
@@ -32,5 +32,3 @@ const submitTransaction = async ({
     return result;
   }
 };
-
-export default submitTransaction;

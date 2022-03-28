@@ -1,4 +1,1 @@
-import { NavBar } from './NavBar.view';
-
-export default NavBar;
-export { NavBar };
+export { NavBar } from './NavBar.view';

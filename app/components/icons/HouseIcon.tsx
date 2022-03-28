@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function HouseIcon(props: IconProps): JSX.Element {
+export function HouseIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -22,5 +22,3 @@ HouseIcon.defaultProps = {
   height: 24,
   width: 24,
 };
-
-export default HouseIcon;

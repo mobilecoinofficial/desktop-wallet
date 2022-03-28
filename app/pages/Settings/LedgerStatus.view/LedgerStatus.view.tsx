@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import {
   Box,
@@ -17,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { getPercentSynced } from '../../../utils/getPercentSynced';
 import { LedgerStatusProps } from './LedgerStatus';
 
-const LedgerStatus: FC<LedgerStatusProps> = ({
+export const LedgerStatus: FC<LedgerStatusProps> = ({
   offlineModeEnabled,
   selectedAccount,
 }: LedgerStatusProps) => {
@@ -128,6 +127,3 @@ const LedgerStatus: FC<LedgerStatusProps> = ({
     </Box>
   );
 };
-
-export default LedgerStatus;
-export { LedgerStatus };

@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import type { FC } from 'react';
+import React, { useState, FC } from 'react';
 
 import {
   Dialog,
@@ -16,7 +15,7 @@ import { InactivityDetectProps } from './InactivityDetect';
 let inactivityTimer: number;
 let reactionTimer: number;
 
-const InactivityDetect: FC<InactivityDetectProps> = ({
+export const InactivityDetect: FC<InactivityDetectProps> = ({
   handleCloseApp,
   selectedAccount,
   TIME_FOR_INACTIVITY,
@@ -85,6 +84,3 @@ const InactivityDetect: FC<InactivityDetectProps> = ({
     </Dialog>
   ) : null;
 };
-
-export default InactivityDetect;
-export { InactivityDetect };

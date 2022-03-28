@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function WalletHomeIcon(props: IconProps): JSX.Element {
+export function WalletHomeIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -26,5 +26,3 @@ WalletHomeIcon.defaultProps = {
   height: 27,
   width: 27,
 };
-
-export default WalletHomeIcon;

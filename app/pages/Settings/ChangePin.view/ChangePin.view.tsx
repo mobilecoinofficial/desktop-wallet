@@ -1,5 +1,4 @@
-import React from 'react';
-import type { ChangeEvent, FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 
 import {
   Box,
@@ -21,7 +20,7 @@ import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
 import type { Theme } from '../../../theme';
 import { convertPicoMobStringToMob } from '../../../utils/convertMob';
-import isValidPin from '../../../utils/isValidPin';
+import { isValidPin } from '../../../utils/isValidPin';
 import { ChangePinViewProps } from './ChangePin';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -75,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const ChangePinView: FC<ChangePinViewProps> = ({
+export const ChangePinView: FC<ChangePinViewProps> = ({
   accounts,
   onClickBack,
   onClickChangePin,
@@ -218,6 +217,3 @@ const ChangePinView: FC<ChangePinViewProps> = ({
     </Container>
   );
 };
-
-export default ChangePinView;
-export { ChangePinView };

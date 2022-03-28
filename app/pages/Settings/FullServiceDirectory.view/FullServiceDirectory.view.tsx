@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, Button, FormLabel, Typography } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
@@ -7,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { FullServiceDirectoryProps } from './FullServiceDirectory';
 
-const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
+export const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
   exportLedger,
   exportTransactionHistory,
   fullServiceBinariesPath,
@@ -59,6 +58,3 @@ const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
     </Box>
   );
 };
-
-export default FullServiceDirectory;
-export { FullServiceDirectory };

@@ -1,5 +1,4 @@
-import React from 'react';
-import type { ChangeEvent, FC } from 'react';
+import React, { ChangeEvent, FC } from 'react';
 
 import {
   Box,
@@ -20,10 +19,10 @@ import * as Yup from 'yup';
 import { MOBNumberFormat, SubmitButton } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import { useIsMountedRef } from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
-import isValidPin from '../../../utils/isValidPin';
+import { isValidPin } from '../../../utils/isValidPin';
 import { SetPinModalProps } from './SetPinModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -45,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   shownEntropy: {},
 }));
 
-const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModalProps) => {
+export const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModalProps) => {
   const classes = useStyles();
   const { t } = useTranslation('SetPinModal');
   const isMountedRef = useIsMountedRef();
@@ -193,6 +192,3 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
     </Modal>
   );
 };
-
-export default SetPinModal;
-export { SetPinModal };

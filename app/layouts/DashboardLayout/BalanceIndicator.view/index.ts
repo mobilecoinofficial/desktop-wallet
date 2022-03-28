@@ -1,4 +1,1 @@
-import { BalanceIndicator } from './BalanceIndicator.view';
-
-export default BalanceIndicator;
-export { BalanceIndicator };
+export { BalanceIndicator } from './BalanceIndicator.view';

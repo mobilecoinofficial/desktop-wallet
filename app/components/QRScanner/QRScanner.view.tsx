@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import type { FC } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -8,7 +7,7 @@ import { Html5Qrcode } from 'html5-qrcode';
 
 import { QRScannerProps } from './QRScanner';
 
-const QRScanner: FC<QRScannerProps> = ({ setFieldValue, handleClose }: QRScannerProps) => {
+export const QRScanner: FC<QRScannerProps> = ({ setFieldValue, handleClose }: QRScannerProps) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -71,6 +70,3 @@ const QRScanner: FC<QRScannerProps> = ({ setFieldValue, handleClose }: QRScanner
     </>
   );
 };
-
-export default QRScanner;
-export { QRScanner };

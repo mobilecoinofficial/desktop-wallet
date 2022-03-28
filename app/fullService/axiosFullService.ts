@@ -28,7 +28,7 @@ export const handleError = (error: { message?: string }) =>
 
 // TODO: refactor to include better error handling. Returning an optional error param offloads error
 // handling to the caller, breaking DRY
-const axiosFullService = async <T>(
+export const axiosFullService = async <T>(
   method: string,
   params?: Record<string, any>
 ): Promise<AxiosFullServiceResponse<T>> => {
@@ -67,5 +67,3 @@ const axiosFullService = async <T>(
     return { error: errorMessage };
   }
 };
-
-export default axiosFullService;

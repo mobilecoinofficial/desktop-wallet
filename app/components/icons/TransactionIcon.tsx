@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function TransactionIcon(props: IconProps): JSX.Element {
+export function TransactionIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -20,5 +20,3 @@ TransactionIcon.defaultProps = {
   height: 22,
   width: 28,
 };
-
-export default TransactionIcon;

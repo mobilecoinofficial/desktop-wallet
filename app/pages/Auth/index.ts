@@ -1,4 +1,1 @@
-import { ConnectedAuthPage } from './AuthPage.presenter';
-
-export default ConnectedAuthPage;
-export { ConnectedAuthPage };
+export { ConnectedAuthPage } from './AuthPage.presenter';

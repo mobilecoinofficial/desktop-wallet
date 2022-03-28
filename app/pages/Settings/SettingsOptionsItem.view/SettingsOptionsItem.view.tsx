@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Card, CardActionArea, CardContent, Grid, makeStyles, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {},
 }));
 
-const SettingsOptionsItem: FC<SettingsOptionsItemProps> = ({
+export const SettingsOptionsItem: FC<SettingsOptionsItemProps> = ({
   Icon,
   label,
   path,
@@ -46,6 +45,3 @@ const SettingsOptionsItem: FC<SettingsOptionsItemProps> = ({
     </Grid>
   );
 };
-
-export default SettingsOptionsItem;
-export { SettingsOptionsItem };

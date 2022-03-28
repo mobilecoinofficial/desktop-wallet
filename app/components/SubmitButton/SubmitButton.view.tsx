@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, Button, CircularProgress, makeStyles } from '@material-ui/core';
 
@@ -16,7 +15,7 @@ const useStyles = makeStyles(() => ({
   root: { position: 'relative' },
 }));
 
-const SubmitButton: FC<SubmitButtonProps> = ({
+export const SubmitButton: FC<SubmitButtonProps> = ({
   disabled,
   isSubmitting,
   children,
@@ -50,6 +49,3 @@ SubmitButton.defaultProps = {
   children: '',
   testID: 'submit-button',
 };
-
-export default SubmitButton;
-export { SubmitButton };

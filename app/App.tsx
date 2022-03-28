@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import type { FC } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 
 import { ThemeProvider } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
@@ -113,4 +112,4 @@ const ConnectedApp = connect<
   ReduxStoreState
 >(mapState)(App);
 
-export default hot(ConnectedApp);
+export const HotConnectedApp = hot(ConnectedApp);

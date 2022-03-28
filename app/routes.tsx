@@ -6,7 +6,7 @@ import { useSnackbar } from 'notistack';
 import { Switch, Redirect, Route } from 'react-router-dom';
 
 import { WHITE_LIGHT } from './constants/colors';
-import routePaths from './constants/routePaths';
+import { routePaths } from './constants/routePaths';
 import { ConnectedDashboardLayout } from './layouts/DashboardLayout';
 import type { DashboardLayoutProps } from './layouts/DashboardLayout';
 import {

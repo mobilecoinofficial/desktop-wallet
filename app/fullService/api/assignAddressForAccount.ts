@@ -1,6 +1,6 @@
 import type { Address } from '../../types/Address.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const ASSIGN_ADDRESS_FOR_ACCOUNT_METHOD = 'assign_address_for_account';
 
@@ -13,7 +13,7 @@ export type AssignAddressForAccountResult = {
   address: Address;
 };
 
-const assignAddressForAccount = async ({
+export const assignAddressForAccount = async ({
   accountId,
   metadata,
 }: AssignAddressForAccountParams): Promise<AssignAddressForAccountResult> => {
@@ -33,5 +33,3 @@ const assignAddressForAccount = async ({
     return result;
   }
 };
-
-export default assignAddressForAccount;

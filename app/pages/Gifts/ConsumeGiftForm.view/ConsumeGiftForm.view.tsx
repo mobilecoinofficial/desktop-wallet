@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import {
   Backdrop,
@@ -70,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // warning that it's taking a bit long...
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component managable.
-const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
+export const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
   confirmation,
   feePmob,
   onClickCancel,
@@ -287,6 +286,3 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
     </Formik>
   );
 };
-
-export default ConsumeGiftForm;
-export { ConsumeGiftForm };

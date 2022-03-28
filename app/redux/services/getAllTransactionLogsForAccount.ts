@@ -1,11 +1,9 @@
 import * as fullServiceApi from '../../fullService/api';
-import { StringHex, TransactionAbbreviation, TransactionLogs } from '../../types';
+import { StringHex, TransactionAbbreviation } from '../../types';
 import { getAllTransactionLogsForAccountAction } from '../actions';
 import { store } from '../store';
 
-export const getAllTransactionLogsForAccount = async (
-  accountId: StringHex
-): Promise<TransactionLogs> => {
+export const getAllTransactionLogsForAccount = async (accountId: StringHex): Promise<void> => {
   try {
     const transactionLogs = await fullServiceApi.getAllTransactionLogsForAccount({ accountId });
 
@@ -18,7 +16,6 @@ export const getAllTransactionLogsForAccount = async (
       w.recipientAddressId = w.outputTxos.length > 0 ? w.outputTxos[0].recipientAddressId : null;
     });
     store.dispatch(getAllTransactionLogsForAccountAction(transactionLogs));
-    return transactionLogs;
   } catch (err) {
     if (err instanceof Error) {
       throw new Error(err.message);

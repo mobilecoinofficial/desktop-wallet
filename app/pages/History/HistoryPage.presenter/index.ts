@@ -1,4 +1,1 @@
-import { ConnectedHistoryPage } from './HistoryPage.presenter';
-
-export default ConnectedHistoryPage;
-export { ConnectedHistoryPage };
+export { ConnectedHistoryPage } from './HistoryPage.presenter';

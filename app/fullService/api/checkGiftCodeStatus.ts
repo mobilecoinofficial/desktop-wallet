@@ -1,5 +1,5 @@
 import type { StringB58 } from '../../types/SpecialStrings.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const CHECK_GIFT_CODE_STATUS_METHOD = 'check_gift_code_status';
 
@@ -12,7 +12,7 @@ export type CheckGiftCodeStatusResult = {
   giftCodeValue: number;
 };
 
-const checkGiftCodeStatus = async ({
+export const checkGiftCodeStatus = async ({
   giftCodeB58,
 }: CheckGiftCodeStatusParams): Promise<CheckGiftCodeStatusResult> => {
   const { result, error }: AxiosFullServiceResponse<CheckGiftCodeStatusResult> =
@@ -28,5 +28,3 @@ const checkGiftCodeStatus = async ({
     return result;
   }
 };
-
-export default checkGiftCodeStatus;

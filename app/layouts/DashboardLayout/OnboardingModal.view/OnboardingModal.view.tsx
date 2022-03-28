@@ -1,11 +1,10 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { SetPinModal } from '../SetPinModal.view';
 import { ShowEntropyModal } from '../ShowEntropyModal.view';
 import { OnboardingModalProps } from './OnboardingModal';
 
-const OnboardingModal: FC<OnboardingModalProps> = ({
+export const OnboardingModal: FC<OnboardingModalProps> = ({
   confirmEntropyKnown,
   isEntropyKnown,
   isPinRequired,
@@ -30,6 +29,3 @@ const OnboardingModal: FC<OnboardingModalProps> = ({
   }
   return null;
 };
-
-export default OnboardingModal;
-export { OnboardingModal };

@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import {
   Avatar,
@@ -35,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   textSmallRight: { fontSize: 'small', textAlign: 'right' },
 }));
 
-const AccountItem: FC<AccountItemProps> = ({
+export const AccountItem: FC<AccountItemProps> = ({
   account,
   onClick,
   onDelete,
@@ -67,6 +66,3 @@ const AccountItem: FC<AccountItemProps> = ({
     </Grid>
   );
 };
-
-export default AccountItem;
-export { AccountItem };

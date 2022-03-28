@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function LockIcon(props: IconProps): JSX.Element {
+export function LockIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -28,5 +28,3 @@ LockIcon.defaultProps = {
   height: 34,
   width: 34,
 };
-
-export default LockIcon;

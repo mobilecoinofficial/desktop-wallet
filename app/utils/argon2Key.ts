@@ -24,7 +24,7 @@ const ensureSalt = (): string => {
   return salt;
 };
 
-const argon2Key = async (password: string): Promise<{ secretKey: string }> => {
+export const argon2Key = async (password: string): Promise<{ secretKey: string }> => {
   const saltHex = ensureSalt();
 
   const salt = Buffer.from(saltHex, 'hex');
@@ -42,5 +42,3 @@ const argon2Key = async (password: string): Promise<{ secretKey: string }> => {
     secretKey,
   };
 };
-
-export default argon2Key;

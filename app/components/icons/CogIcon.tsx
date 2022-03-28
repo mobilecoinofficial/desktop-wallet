@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function CogIcon(props: IconProps): JSX.Element {
+export function CogIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -30,5 +30,3 @@ CogIcon.defaultProps = {
   height: 24,
   width: 24,
 };
-
-export default CogIcon;

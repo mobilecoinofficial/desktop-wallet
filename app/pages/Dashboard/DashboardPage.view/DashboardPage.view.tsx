@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, Container, makeStyles } from '@material-ui/core';
 
@@ -13,7 +12,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const DashboardView: FC<DashboardPageProps> = ({
+export const DashboardView: FC<DashboardPageProps> = ({
   accounts,
   onClickCode,
   onClose,
@@ -42,6 +41,3 @@ const DashboardView: FC<DashboardPageProps> = ({
     </Container>
   );
 };
-
-export default DashboardView;
-export { DashboardView };

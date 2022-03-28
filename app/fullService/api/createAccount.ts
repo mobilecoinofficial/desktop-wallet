@@ -1,5 +1,5 @@
 import type { Account } from '../../types/Account.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const CREATE_ACCOUNT_METHOD = 'create_account';
 
@@ -12,7 +12,7 @@ type CreateAccountResult = {
   account: Account;
 };
 
-const createAccount = async ({
+export const createAccount = async ({
   firstBlockIndex,
   name,
 }: CreateAccountParams): Promise<CreateAccountResult> => {
@@ -32,5 +32,3 @@ const createAccount = async ({
     return result;
   }
 };
-
-export default createAccount;

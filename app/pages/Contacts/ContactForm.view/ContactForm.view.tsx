@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import type { FC } from 'react';
+import React, { useState, FC } from 'react';
 
 import {
   Avatar,
@@ -24,7 +23,7 @@ import * as Yup from 'yup';
 
 import { SubmitButton, StarCheckbox } from '../../../components';
 import { RANDOM_COLORS } from '../../../constants/app';
-import useIsMountedRef from '../../../hooks/useIsMountedRef';
+import { useIsMountedRef } from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { ContactFormProps } from './ContactForm';
 
@@ -84,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 // This should something else...
-const ContactForm: FC<ContactFormProps> = ({
+export const ContactForm: FC<ContactFormProps> = ({
   abbreviation,
   alias,
   assignedAddress,
@@ -291,6 +290,3 @@ const ContactForm: FC<ContactFormProps> = ({
     </Container>
   );
 };
-
-export default ContactForm;
-export { ContactForm };

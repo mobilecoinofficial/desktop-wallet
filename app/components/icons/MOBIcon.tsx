@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function MOBIcon({ color, ...rest }: IconProps): JSX.Element {
+export function MOBIcon({ color, ...rest }: IconProps): JSX.Element {
   return (
     <svg viewBox="0 0 125 125" {...rest}>
       <path
@@ -18,5 +18,3 @@ MOBIcon.defaultProps = {
   height: 125,
   width: 125,
 };
-
-export default MOBIcon;

@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 
@@ -10,7 +9,7 @@ import {
   SUPER_LUCKY_ARRAY_END_INDEX,
 } from '../../constants/indicies';
 import { Theme } from '../../theme';
-import isStringNumber from '../../utils/isStringNumber';
+import { isStringNumber } from '../../utils/isStringNumber';
 import { ShortCodeProps } from './ShortCode';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -31,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
+export const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
   const classes = useStyles();
 
   if (!code) {
@@ -73,6 +72,3 @@ const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
     </Box>
   );
 };
-
-export default ShortCode;
-export { ShortCode };

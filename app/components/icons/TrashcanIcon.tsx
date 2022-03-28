@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function TrashcanIcon(props: IconProps): JSX.Element {
+export function TrashcanIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -23,5 +23,3 @@ TrashcanIcon.defaultProps = {
   height: 24,
   width: 24,
 };
-
-export default TrashcanIcon;

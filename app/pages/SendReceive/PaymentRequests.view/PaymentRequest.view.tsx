@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import {
   Backdrop,
@@ -68,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {},
 }));
 
-const PaymentRequest: FC<PaymentRequestProps> = ({
+export const PaymentRequest: FC<PaymentRequestProps> = ({
   confirmation,
   feePmob,
   onClickCancel,
@@ -342,6 +341,3 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
     </Formik>
   );
 };
-
-export default PaymentRequest;
-export { PaymentRequest };

@@ -1,5 +1,5 @@
 import type { Account } from '../../types/Account.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const IMPORT_ACCOUNT_METHOD = 'import_account';
 
@@ -14,7 +14,7 @@ type ImportAccountResult = {
   account: Account;
 };
 
-const importAccount = async ({
+export const importAccount = async ({
   mnemonic,
   key_derivation_version,
   firstBlockIndex,
@@ -38,5 +38,3 @@ const importAccount = async ({
     return result;
   }
 };
-
-export default importAccount;

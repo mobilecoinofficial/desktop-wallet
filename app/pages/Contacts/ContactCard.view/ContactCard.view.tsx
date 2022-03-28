@@ -1,5 +1,4 @@
-import React from 'react';
-import type { FC } from 'react';
+import React, { FC } from 'react';
 
 import { Avatar, Card, CardActionArea, CardHeader, Grid, makeStyles } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {},
 }));
 
-const ContactCard: FC<ContactCardProps> = ({
+export const ContactCard: FC<ContactCardProps> = ({
   assignedAddress,
   abbreviation,
   alias,
@@ -60,6 +59,3 @@ ContactCard.defaultProps = {
   color: '#CCCCCC',
   isFavorite: false,
 };
-
-export default ContactCard;
-export { ContactCard };

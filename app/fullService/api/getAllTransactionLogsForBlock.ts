@@ -1,6 +1,6 @@
 import type { StringUInt64 } from '../../types/SpecialStrings.d';
 import type { TransactionLogs } from '../../types/TransactionLog.d';
-import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_ALL_TRANSACTION_LOGS_FOR_BLOCK_METHOD = 'get_all_transaction_logs_for_block';
 
@@ -11,7 +11,7 @@ type GetAllTransactionLogsForAccountParams = {
 type GetAllTransactionLogsForAccountResult = TransactionLogs;
 
 // TODO - change name throughout apps
-const getAllTransactionLogsForAccount = async ({
+export const getAllTransactionLogsForAccount = async ({
   blockIndex,
 }: GetAllTransactionLogsForAccountParams): Promise<GetAllTransactionLogsForAccountResult> => {
   const { result, error }: AxiosFullServiceResponse<GetAllTransactionLogsForAccountResult> =
@@ -27,5 +27,3 @@ const getAllTransactionLogsForAccount = async ({
     return result;
   }
 };
-
-export default getAllTransactionLogsForAccount;

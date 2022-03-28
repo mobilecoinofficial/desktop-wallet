@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-function CopyIcon(props: IconProps): JSX.Element {
+export function CopyIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -28,5 +28,3 @@ CopyIcon.defaultProps = {
   height: 24,
   width: 24,
 };
-
-export default CopyIcon;

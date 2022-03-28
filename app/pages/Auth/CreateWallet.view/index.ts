@@ -1,4 +1,1 @@
-import { CreateWalletView } from './CreateWallet.view';
-
-export default CreateWalletView;
-export { CreateWalletView };
+export { CreateWalletView } from './CreateWallet.view';

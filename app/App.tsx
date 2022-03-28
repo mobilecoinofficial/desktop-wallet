@@ -86,7 +86,7 @@ const App: FC<Props> = (props: Props): JSX.Element => {
         clearInterval(fetchUpdatesTimer);
       }
     };
-  }, [selectedAccount, accountId]);
+  }, [props]);
 
   return (
     <MemoryRouter>

@@ -7,5 +7,5 @@ import { initialReduxStoreState, reducer } from './reducers/reducers';
 export const store = createStore(
   reducer,
   initialReduxStoreState,
-  applyMiddleware(/* loggerMiddleware, */ thunk)
+  applyMiddleware(/* loggerMiddleware, */ thunk) // uncomment loggerMiddleware for redux action logging
 );

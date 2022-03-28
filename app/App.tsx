@@ -10,10 +10,8 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
-import { fetchAllTransactionLogsForAccount } from './redux/actions/fetchAllTransactionLogsForAccount/service';
-import { initialize } from './redux/actions/initialize/service';
-import { updateStatus } from './redux/actions/updateStatus/service';
 import { ReduxStoreState } from './redux/reducers/reducers';
+import { getAllTransactionLogsForAccount, initialize, updateStatus } from './redux/services';
 import { internalRoutes, InternalRoutesRenderer } from './routes';
 import { setTheme } from './theme';
 import { SelectedAccount } from './types';
@@ -68,19 +66,19 @@ const App: FC<Props> = (props: Props): JSX.Element => {
 
   const fetchBalance = async () => {
     if (selectedAccount.account) {
-      updateStatus(accountId, selectedAccount.account);
+      await updateStatus(accountId, selectedAccount.account);
     }
   };
 
   const fetchLogs = async () => {
-    fetchAllTransactionLogsForAccount(accountId);
+    await getAllTransactionLogsForAccount(accountId);
   };
 
   useEffect(() => {
     setFetchUpdatesTimer(
-      setInterval(() => {
-        fetchBalance();
-        fetchLogs();
+      setInterval(async () => {
+        await fetchBalance();
+        await fetchLogs();
       }, 10000)
     );
     return () => {

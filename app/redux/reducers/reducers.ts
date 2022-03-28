@@ -16,8 +16,8 @@ import sameObject from '../../utils/sameObject';
 import {
   INITIALIZE,
   InitializeAction,
-  FETCH_ALL_TXOS_FOR_ACCOUNT,
-  FetchAllTxosForAccountAction,
+  GET_ALL_TXOS_FOR_ACCOUNT,
+  GetAllTxosForAccountAction,
   ADD_ACCOUNT,
   AddAccountAction,
   DELETE_ACCOUNT,
@@ -29,8 +29,8 @@ import {
   CreateAccountAction,
   CREATE_WALLET,
   CreateWalletAction,
-  UPDATE_GIFT_CODES,
-  UpdateGiftCodesAction,
+  GET_ALL_GIFT_CODES,
+  GetAllGiftCodesAction,
   CONFIRM_ENTROPY_KNOWN,
   SELECT_ACCOUNT,
   SelectAccountAction,
@@ -38,8 +38,8 @@ import {
   UnlockWalletAction,
   UPDATE_CONTACTS,
   UpdateContactsAction,
-  UPDATE_FEE_PMOB,
-  UpdateFeePmobAction,
+  GET_FEE_PMOB,
+  GetFeePmobAction,
   UPDATE_PASSWORD,
   UpdatePasswordAction,
   UPDATE_PIN,
@@ -47,11 +47,8 @@ import {
   UPDATE_WALLET_STATUS,
   UpdateStatusAction,
   Action,
-  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_STARTED,
-  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_SUCCESS,
-  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_FAILURE,
-  FetchAllTransactionLogsForAccountSuccessAction,
-  FetchAllTransactionLogsForAccountFailureAction,
+  GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
+  GetAllTransactionLogsForAccountAction,
 } from '../actions';
 
 export type ReduxStoreState = {
@@ -61,7 +58,6 @@ export type ReduxStoreState = {
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
   encryptedPassword: SjclCipherEncrypted | undefined;
-  error: Error | undefined;
   feePmob: StringUInt64;
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
@@ -84,7 +80,6 @@ export const initialReduxStoreState: ReduxStoreState = {
   addresses: { addressIds: [], addressMap: {} },
   contacts: [],
   encryptedPassword: undefined,
-  error: undefined,
   feePmob: '',
   giftCodes: null,
   isAuthenticated: false,
@@ -148,31 +143,16 @@ export const reducer = (
       };
     }
 
-    case FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_STARTED: {
-      return {
-        ...state,
-      };
-    }
-
-    case FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_SUCCESS: {
-      const { transactionLogs } = (action as FetchAllTransactionLogsForAccountSuccessAction)
-        .payload;
+    case GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT: {
+      const { transactionLogs } = (action as GetAllTransactionLogsForAccountAction).payload;
       return {
         ...state,
         transactionLogs,
       };
     }
 
-    case FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_FAILURE: {
-      const { error } = (action as FetchAllTransactionLogsForAccountFailureAction).payload;
-      return {
-        ...state,
-        error,
-      };
-    }
-
-    case FETCH_ALL_TXOS_FOR_ACCOUNT: {
-      const { txos } = (action as FetchAllTxosForAccountAction).payload;
+    case GET_ALL_TXOS_FOR_ACCOUNT: {
+      const { txos } = (action as GetAllTxosForAccountAction).payload;
       return {
         ...state,
         txos,
@@ -241,8 +221,8 @@ export const reducer = (
       };
     }
 
-    case UPDATE_GIFT_CODES: {
-      const { giftCodes } = (action as UpdateGiftCodesAction).payload;
+    case GET_ALL_GIFT_CODES: {
+      const { giftCodes } = (action as GetAllGiftCodesAction).payload;
       return {
         ...state,
         giftCodes,
@@ -303,8 +283,8 @@ export const reducer = (
       };
     }
 
-    case UPDATE_FEE_PMOB: {
-      const { feePmob } = (action as UpdateFeePmobAction).payload;
+    case GET_FEE_PMOB: {
+      const { feePmob } = (action as GetFeePmobAction).payload;
       return {
         ...state,
         feePmob,

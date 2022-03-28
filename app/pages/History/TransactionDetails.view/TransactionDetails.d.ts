@@ -1,5 +1,4 @@
 import type { TransactionLog } from '../../../types/TransactionLog.d';
-import type { Txos } from '../../../types/Txo.d';
 
 export interface TransactionDetailsViewProps {
   onClickCopyConfirmations: () => void;
@@ -8,5 +7,4 @@ export interface TransactionDetailsViewProps {
   onClickValidateConfirmations: () => void;
   transactionLog: TransactionLog;
   txoValidations: { [txoId: string]: boolean };
-  txos: Txos;
 }

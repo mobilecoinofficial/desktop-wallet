@@ -1,5 +1,4 @@
-import type { BalanceStatus } from '../../types/BalanceStatus.d';
-import type { StringHex } from '../../types/SpecialStrings.d';
+import { BalanceStatus, StringHex } from '../../types';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_BALANCE_FOR_ACCOUNT_METHOD = 'get_balance_for_account';

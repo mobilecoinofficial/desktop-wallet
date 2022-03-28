@@ -50,7 +50,6 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
   onClickValidateConfirmations,
   transactionLog,
   txoValidations,
-  txos,
 }: TransactionDetailsViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('TransactionDetails');
@@ -165,25 +164,8 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
         <CardContent>
           {outputTxoIds.map((txoId) =>
             direction === 'tx_direction_sent'
-              ? renderRow(
-                  txoId,
-                  <TransactionInfoLabel
-                    valuePmob={txos.txoMap[txoId].valuePmob}
-                    sign={sign}
-                    label=" MOB"
-                  />,
-                  true
-                )
-              : renderTXODetailsRow(
-                  txoId,
-                  <TransactionInfoLabel
-                    valuePmob={txos.txoMap[txoId].valuePmob}
-                    sign={sign}
-                    label=" MOB"
-                  />,
-                  txoValidations[txoId],
-                  true
-                )
+              ? renderRow(`ID: ${txoId}`, undefined, true)
+              : renderTXODetailsRow(`ID: ${txoId}`, undefined, txoValidations[txoId], true)
           )}
         </CardContent>
       </Card>

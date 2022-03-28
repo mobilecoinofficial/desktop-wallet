@@ -17,12 +17,15 @@ import {
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
-import { addAccount } from '../../../redux/actions/addAccount/service';
-import { selectAccount } from '../../../redux/actions/selectAccount/service';
-import { updatePin } from '../../../redux/actions/updatePin/service';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { changePassword, retrieveEntropy } from '../../../services';
-import { deleteAccount } from '../../../services/deleteAccount.service';
+import {
+  addAccount,
+  deleteAccount,
+  selectAccount,
+  updatePassword,
+  updatePin,
+} from '../../../redux/services';
+import { retrieveEntropy } from '../../../services';
 import type { Theme } from '../../../theme';
 import { Accounts, SelectedAccount, TransactionLogs } from '../../../types';
 import type { StringUInt64 } from '../../../types/SpecialStrings.d';
@@ -105,10 +108,10 @@ const SettingsPage = (props: Props): JSX.Element => {
     try {
       if (saveChecked) {
         const currentAccount = keychainAccounts[0].account;
-        await changePassword(password, newPassword);
+        await updatePassword(password, newPassword);
         setKeychainAccount(currentAccount, newPassword);
       } else {
-        await changePassword(password, newPassword);
+        await updatePassword(password, newPassword);
       }
       enqueueSnackbar(t('changePasswordSuccess'), {
         variant: 'success',

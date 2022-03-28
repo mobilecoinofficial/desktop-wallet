@@ -9,14 +9,17 @@ import { Redirect } from 'react-router-dom';
 import { SplashScreen } from '../../../components/SplashScreen';
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
-import { addAccount } from '../../../redux/actions/addAccount/service';
-import { createAccount } from '../../../redux/actions/createAccount/service';
-import { createWallet } from '../../../redux/actions/createWallet/service';
-import { deleteWallet } from '../../../redux/actions/deleteWallet/service';
-import { importAccount, importLegacyAccount } from '../../../redux/actions/importAccount/service';
-import { selectAccount } from '../../../redux/actions/selectAccount/service';
-import { unlockWallet } from '../../../redux/actions/unlockWallet/service';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import {
+  addAccount,
+  createAccount,
+  createWallet,
+  deleteWallet,
+  importAccount,
+  importLegacyAccount,
+  selectAccount,
+  unlockWallet,
+} from '../../../redux/services';
 import { getWalletStatus } from '../../../services';
 import type { Theme } from '../../../theme';
 import { SelectedAccount } from '../../../types';

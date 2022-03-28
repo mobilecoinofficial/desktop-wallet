@@ -11,12 +11,7 @@ import {
   deleteStoredGiftCodeB58,
   DeleteStoredGiftCodeB58Service,
 } from './deleteStoredGiftCodeB58.service';
-import { deleteWallet, DeleteWalletService } from './deleteWallet.service';
 import { encryptContacts, EncryptContactsService } from './encryptContacts.service';
-import {
-  fetchAllTransactionLogsForAccount,
-  FetchAllTransactionLogsForAccountService,
-} from './fetchAllTransactionLogsForAccount.service';
 import { getWalletStatus, GetWalletStatusService } from './getWalletStatus.service';
 import { retrieveEntropy, RetrieveEntropyService } from './retrieveEntropy.service';
 import { submitGiftCode, SubmitGiftCodeService } from './submitGiftCode.service';
@@ -30,9 +25,7 @@ export {
   claimGiftCode,
   decryptContacts,
   deleteStoredGiftCodeB58,
-  deleteWallet,
   encryptContacts,
-  fetchAllTransactionLogsForAccount,
   getWalletStatus,
   retrieveEntropy,
   submitGiftCode,
@@ -47,9 +40,7 @@ export type {
   ClaimGiftCodeService,
   DecryptContactsService,
   DeleteStoredGiftCodeB58Service,
-  DeleteWalletService,
   EncryptContactsService,
-  FetchAllTransactionLogsForAccountService,
   GetWalletStatusService,
   RetrieveEntropyService,
   SubmitGiftCodeService,

@@ -1,53 +1,37 @@
-import { addAccountAction } from './addAccount/action';
-import { ADD_ACCOUNT, AddAccountAction } from './addAccount/type';
-import { confirmEntropyKnownAction } from './confirmEntropyKnown/action';
-import { CONFIRM_ENTROPY_KNOWN, ConfirmEntropyKnownAction } from './confirmEntropyKnown/type';
-import { createAccountAction } from './createAccount/action';
-import { CREATE_ACCOUNT, CreateAccountAction } from './createAccount/type';
-import { createWalletAction } from './createWallet/action';
-import { CREATE_WALLET, CreateWalletAction } from './createWallet/type';
-import { deleteAccountAction } from './deleteAccount/action';
-import { DELETE_ACCOUNT, DeleteAccountAction } from './deleteAccount/type';
-import { deleteWalletAction } from './deleteWallet/action';
-import { DELETE_WALLET, DeleteWalletAction } from './deleteWallet/type';
+import { addAccountAction, AddAccountAction, ADD_ACCOUNT } from './addAccount';
 import {
-  fetchAllTransactionLogsForAccountFailureAction,
-  fetchAllTransactionLogsForAccountStartedAction,
-  fetchAllTransactionLogsForAccountSuccessAction,
-} from './fetchAllTransactionLogsForAccount/action';
+  confirmEntropyKnownAction,
+  CONFIRM_ENTROPY_KNOWN,
+  ConfirmEntropyKnownAction,
+} from './confirmEntropyKnown';
+import { createAccountAction, CREATE_ACCOUNT, CreateAccountAction } from './createAccount';
+import { createWalletAction, CREATE_WALLET, CreateWalletAction } from './createWallet';
+import { deleteAccountAction, DELETE_ACCOUNT, DeleteAccountAction } from './deleteAccount';
+import { deleteWalletAction, DELETE_WALLET, DeleteWalletAction } from './deleteWallet';
 import {
-  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_STARTED,
-  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_SUCCESS,
-  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_FAILURE,
-  FetchAllTransactionLogsForAccountFailureAction,
-  FetchAllTransactionLogsForAccountStartedAction,
-  FetchAllTransactionLogsForAccountSuccessAction,
-} from './fetchAllTransactionLogsForAccount/type';
-import { fetchAllTxosForAccountAction } from './fetchAllTxosForAccount/action';
+  getAllGiftCodesAction,
+  GET_ALL_GIFT_CODES,
+  GetAllGiftCodesAction,
+} from './getAllGiftCodes';
 import {
-  FETCH_ALL_TXOS_FOR_ACCOUNT,
-  FetchAllTxosForAccountAction,
-} from './fetchAllTxosForAccount/type';
-import { importAccountAction } from './importAccount/action';
-import { IMPORT_ACCOUNT, ImportAccountAction } from './importAccount/type';
-import { initializeAction } from './initialize/action';
-import { INITIALIZE, InitializeAction } from './initialize/type';
-import { selectAccountAction } from './selectAccount/action';
-import { SELECT_ACCOUNT, SelectAccountAction } from './selectAccount/type';
-import { unlockWalletAction } from './unlockWallet/action';
-import { UNLOCK_WALLET, UnlockWalletAction } from './unlockWallet/type';
-import { updateContactsAction } from './updateContacts/action';
-import { UPDATE_CONTACTS, UpdateContactsAction } from './updateContacts/type';
-import { updateFeePmobAction } from './updateFeePmob/action';
-import { UPDATE_FEE_PMOB, UpdateFeePmobAction } from './updateFeePmob/type';
-import { updateGiftCodesAction } from './updateGiftCodes/action';
-import { UPDATE_GIFT_CODES, UpdateGiftCodesAction } from './updateGiftCodes/type';
-import { updatePasswordAction } from './updatePassword/action';
-import { UPDATE_PASSWORD, UpdatePasswordAction } from './updatePassword/type';
-import { updatePinAction } from './updatePin/action';
-import { UPDATE_PIN, UpdatePinAction } from './updatePin/type';
-import { updateStatusAction } from './updateStatus/action';
-import { UPDATE_WALLET_STATUS, UpdateStatusAction } from './updateStatus/type';
+  getAllTransactionLogsForAccountAction,
+  GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
+  GetAllTransactionLogsForAccountAction,
+} from './getAllTransactionLogsForAccount';
+import {
+  getAllTxosForAccountAction,
+  GET_ALL_TXOS_FOR_ACCOUNT,
+  GetAllTxosForAccountAction,
+} from './getAllTxosForAccount';
+import { getFeePmobAction, GetFeePmobAction, GET_FEE_PMOB } from './getFeePmob';
+import { importAccountAction, IMPORT_ACCOUNT, ImportAccountAction } from './importAccount';
+import { initializeAction, INITIALIZE, InitializeAction } from './initialize';
+import { selectAccountAction, SELECT_ACCOUNT, SelectAccountAction } from './selectAccount';
+import { unlockWalletAction, UNLOCK_WALLET, UnlockWalletAction } from './unlockWallet';
+import { updateContactsAction, UPDATE_CONTACTS, UpdateContactsAction } from './updateContacts';
+import { updatePasswordAction, UPDATE_PASSWORD, UpdatePasswordAction } from './updatePassword';
+import { updatePinAction, UPDATE_PIN, UpdatePinAction } from './updatePin';
+import { updateStatusAction, UPDATE_WALLET_STATUS, UpdateStatusAction } from './updateStatus';
 
 // Redux Types
 export {
@@ -57,17 +41,15 @@ export {
   CREATE_WALLET,
   DELETE_ACCOUNT,
   DELETE_WALLET,
-  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_STARTED,
-  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_SUCCESS,
-  FETCH_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_FAILURE,
-  FETCH_ALL_TXOS_FOR_ACCOUNT,
+  GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
+  GET_ALL_TXOS_FOR_ACCOUNT,
+  GET_FEE_PMOB,
   IMPORT_ACCOUNT,
   INITIALIZE,
   SELECT_ACCOUNT,
   UNLOCK_WALLET,
   UPDATE_CONTACTS,
-  UPDATE_FEE_PMOB,
-  UPDATE_GIFT_CODES,
+  GET_ALL_GIFT_CODES,
   UPDATE_PASSWORD,
   UPDATE_PIN,
   UPDATE_WALLET_STATUS,
@@ -80,17 +62,15 @@ type Action =
   | CreateWalletAction
   | DeleteAccountAction
   | DeleteWalletAction
-  | FetchAllTransactionLogsForAccountStartedAction
-  | FetchAllTransactionLogsForAccountSuccessAction
-  | FetchAllTransactionLogsForAccountFailureAction
-  | FetchAllTxosForAccountAction
+  | GetAllGiftCodesAction
+  | GetAllTransactionLogsForAccountAction
+  | GetAllTxosForAccountAction
+  | GetFeePmobAction
   | ImportAccountAction
   | InitializeAction
   | SelectAccountAction
   | UnlockWalletAction
   | UpdateContactsAction
-  | UpdateFeePmobAction
-  | UpdateGiftCodesAction
   | UpdatePasswordAction
   | UpdatePinAction
   | UpdateStatusAction;
@@ -104,17 +84,15 @@ export type {
   CreateWalletAction,
   DeleteAccountAction,
   DeleteWalletAction,
-  FetchAllTransactionLogsForAccountStartedAction,
-  FetchAllTransactionLogsForAccountSuccessAction,
-  FetchAllTransactionLogsForAccountFailureAction,
-  FetchAllTxosForAccountAction,
+  GetAllTransactionLogsForAccountAction,
+  GetAllTxosForAccountAction,
+  GetFeePmobAction,
   ImportAccountAction,
   InitializeAction,
   SelectAccountAction,
   UnlockWalletAction,
   UpdateContactsAction,
-  UpdateFeePmobAction,
-  UpdateGiftCodesAction,
+  GetAllGiftCodesAction,
   UpdatePasswordAction,
   UpdatePinAction,
   UpdateStatusAction,
@@ -128,17 +106,15 @@ export {
   createWalletAction,
   deleteAccountAction,
   deleteWalletAction,
-  fetchAllTransactionLogsForAccountStartedAction,
-  fetchAllTransactionLogsForAccountSuccessAction,
-  fetchAllTransactionLogsForAccountFailureAction,
-  fetchAllTxosForAccountAction,
+  getAllTransactionLogsForAccountAction,
+  getAllTxosForAccountAction,
+  getFeePmobAction,
   importAccountAction,
   initializeAction,
   selectAccountAction,
   unlockWalletAction,
   updateContactsAction,
-  updateFeePmobAction,
-  updateGiftCodesAction,
+  getAllGiftCodesAction,
   updatePasswordAction,
   updatePinAction,
   updateStatusAction,

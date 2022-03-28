@@ -7,7 +7,8 @@ import { Redirect } from 'react-router-dom';
 
 import { randomColor } from '../../../constants/app';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { assignAddressForAccount, updateContacts } from '../../../services';
+import { updateContacts } from '../../../redux/services';
+import { assignAddressForAccount } from '../../../services';
 import { SelectedAccount } from '../../../types';
 import type { Contact } from '../../../types/Contact.d';
 import { ContactForm } from '../ContactForm.view';

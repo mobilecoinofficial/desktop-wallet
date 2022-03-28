@@ -8,9 +8,8 @@ import { connect } from 'react-redux';
 
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
-import { getFeePmob } from '../../../redux/actions/updateFeePmob/service';
-import { getAllGiftCodes } from '../../../redux/actions/updateGiftCodes/service';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { getAllGiftCodes, getFeePmob } from '../../../redux/services';
 import {
   buildGiftCode,
   checkGiftCodeStatus,

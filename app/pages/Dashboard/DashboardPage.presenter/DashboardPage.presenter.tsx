@@ -9,7 +9,7 @@ import { Redirect } from 'react-router-dom';
 import routePaths from '../../../constants/routePaths';
 import { logger } from '../../../fullService/utils';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { addAccount } from '../../../services';
+import { addAccount } from '../../../redux/services';
 import type { Theme } from '../../../theme';
 import { Accounts, SelectedAccount } from '../../../types';
 import { DashboardView } from '../DashboardPage.view/DashboardPage.view';

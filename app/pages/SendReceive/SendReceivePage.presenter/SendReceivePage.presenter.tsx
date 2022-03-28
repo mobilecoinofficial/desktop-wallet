@@ -7,13 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import {
-  assignAddressForAccount,
-  buildTransaction,
-  getFeePmob,
-  submitTransaction,
-  updateContacts,
-} from '../../../services';
+import { getFeePmob, updateContacts } from '../../../redux/services';
+import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
 import type { Theme } from '../../../theme';
 import { Contact, SelectedAccount } from '../../../types';
 import type { StringHex } from '../../../types/SpecialStrings';

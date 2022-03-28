@@ -1,5 +1,5 @@
 import * as fullServiceApi from '../fullService/api';
-import type { WalletStatus } from '../types/WalletStatus.d';
+import { WalletStatus } from '../types';
 
 export const getWalletStatus = async (): Promise<WalletStatus> => {
   try {

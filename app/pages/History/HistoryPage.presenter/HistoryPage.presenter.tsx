@@ -10,7 +10,7 @@ import { Redirect } from 'react-router-dom';
 import { LoadingScreen } from '../../../components';
 import { getConfirmations, validateConfirmation } from '../../../fullService/api';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { Addresses, Contact, SelectedAccount, Txos } from '../../../types';
+import { Addresses, Contact, SelectedAccount } from '../../../types';
 import { Confirmations } from '../../../types/Confirmation';
 import type { TransactionLog, TransactionLogs } from '../../../types/TransactionLog.d';
 import { HistoryList } from '../HistoryList.view';
@@ -29,7 +29,7 @@ const HistoryPage = (props: Props): JSX.Element => {
   const { enqueueSnackbar } = useSnackbar();
   const [transactionLogsState, setTransactionLogsState] = useState<TransactionLog[]>([]);
 
-  const { addresses, contacts, selectedAccount, transactionLogs, txos } = props;
+  const { addresses, contacts, selectedAccount, transactionLogs } = props;
 
   const buildList = (): TransactionLog[] => {
     if (transactionLogs) {
@@ -139,7 +139,6 @@ const HistoryPage = (props: Props): JSX.Element => {
           onChangedComment={() => {}}
           transactionLog={currentTransactionLog}
           txoValidations={txoValidations}
-          txos={txos}
         />
       );
 
@@ -153,7 +152,6 @@ type ReduxProps = {
   contacts: Contact[];
   selectedAccount: SelectedAccount;
   transactionLogs: TransactionLogs | null;
-  txos: Txos;
 };
 
 const mapState = (state: ReduxStoreState): ReduxProps => ({
@@ -161,7 +159,6 @@ const mapState = (state: ReduxStoreState): ReduxProps => ({
   contacts: state.contacts,
   selectedAccount: state.selectedAccount,
   transactionLogs: state.transactionLogs,
-  txos: state.txos,
 });
 
 export const ConnectedHistoryPage = connect<

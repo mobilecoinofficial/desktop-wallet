@@ -5,9 +5,8 @@ import { ipcRenderer } from 'electron';
 // import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
 import { connect } from 'react-redux';
 
-import { updatePin } from '../../../redux/actions/updatePin/service';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { confirmEntropyKnown } from '../../../services';
+import { confirmEntropyKnown, updatePin } from '../../../redux/services';
 import type { Theme } from '../../../theme';
 import { PendingSecrets, SelectedAccount } from '../../../types';
 import { BalanceIndicator } from '../BalanceIndicator.view';

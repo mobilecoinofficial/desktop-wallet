@@ -4,23 +4,19 @@ import { ThemeProvider } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { SnackbarProvider } from 'notistack';
 import { hot } from 'react-hot-loader/root';
-import { connect } from 'react-redux';
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
 import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
-import { ReduxStoreState } from './redux/reducers/reducers';
 import { getAllTransactionLogsForAccount, initialize, updateStatus } from './redux/services';
+import { store } from './redux/store';
 import { internalRoutes, InternalRoutesRenderer } from './routes';
 import { setTheme } from './theme';
 import { SelectedAccount } from './types';
 import * as localStore from './utils/LocalStore';
 
-type Props = ReduxProps;
-
-const App: FC<Props> = (props: Props): JSX.Element => {
-  const { selectedAccount } = props;
-  const { accountId } = selectedAccount.account;
+const App: FC = (): JSX.Element => {
   const [theme, setThemeReact] = useState(
     setTheme({
       responsiveFontSizes: true,
@@ -63,21 +59,22 @@ const App: FC<Props> = (props: Props): JSX.Element => {
 
   const [fetchUpdatesTimer, setFetchUpdatesTimer] = useState<NodeJS.Timer>();
 
-  const fetchBalance = async () => {
+  const fetchBalance = async (selectedAccount: SelectedAccount) => {
     if (selectedAccount.account) {
-      await updateStatus(accountId, selectedAccount.account);
+      await updateStatus(selectedAccount.account.accountId, selectedAccount.account);
     }
   };
 
-  const fetchLogs = async () => {
-    await getAllTransactionLogsForAccount(accountId);
+  const fetchLogs = async (selectedAccount: SelectedAccount) => {
+    await getAllTransactionLogsForAccount(selectedAccount.account.accountId);
   };
 
   useEffect(() => {
     setFetchUpdatesTimer(
       setInterval(async () => {
-        await fetchBalance();
-        await fetchLogs();
+        const { selectedAccount } = store.getState();
+        await fetchBalance(selectedAccount);
+        await fetchLogs(selectedAccount);
       }, 10000)
     );
     return () => {
@@ -85,31 +82,20 @@ const App: FC<Props> = (props: Props): JSX.Element => {
         clearInterval(fetchUpdatesTimer);
       }
     };
-  }, [props]);
+  }, []);
 
   return (
-    <MemoryRouter>
-      <ThemeProvider theme={theme}>
-        <SnackbarProvider dense maxSnack={5}>
-          <GlobalStyles />
-          <InternalRoutesRenderer routes={internalRoutes} />
-        </SnackbarProvider>
-      </ThemeProvider>
-    </MemoryRouter>
+    <Provider store={store}>
+      <MemoryRouter>
+        <ThemeProvider theme={theme}>
+          <SnackbarProvider dense maxSnack={5}>
+            <GlobalStyles />
+            <InternalRoutesRenderer routes={internalRoutes} />
+          </SnackbarProvider>
+        </ThemeProvider>
+      </MemoryRouter>
+    </Provider>
   );
 };
 
-type ReduxProps = { selectedAccount: SelectedAccount };
-
-const mapState = (state: ReduxStoreState): ReduxProps => ({
-  selectedAccount: state.selectedAccount,
-});
-
-const ConnectedApp = connect<
-  ReduxProps,
-  Record<string, never>,
-  Record<string, never>,
-  ReduxStoreState
->(mapState)(App);
-
-export const HotConnectedApp = hot(ConnectedApp);
+export const HotApp = hot(App);

@@ -9,7 +9,7 @@ import { Redirect } from 'react-router-dom';
 import { SplashScreen } from '../../../components/SplashScreen';
 import { LogoIcon } from '../../../components/icons';
 import { routePaths } from '../../../constants/routePaths';
-import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { initialReduxStoreState, ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   addAccount,
   createAccount,
@@ -104,7 +104,11 @@ const AuthPage: FC<Props> = (props: Props): JSX.Element => {
     return <SplashScreen />;
   }
 
-  if (isAuthenticated && selectedAccount != null && !addingAccount) {
+  if (
+    isAuthenticated &&
+    selectedAccount !== initialReduxStoreState.selectedAccount &&
+    !addingAccount
+  ) {
     return <Redirect to={routePaths.APP_DASHBOARD} />;
   }
 

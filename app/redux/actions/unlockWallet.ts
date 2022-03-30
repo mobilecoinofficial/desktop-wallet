@@ -5,6 +5,7 @@ export const UNLOCK_WALLET = 'UNLOCK_WALLET';
 export type UnlockWalletAction = {
   type: 'UNLOCK_WALLET';
   payload: {
+    addingAccount: boolean;
     contacts: Contact[];
     isPinRequired: boolean;
     pin: string | undefined;
@@ -17,6 +18,7 @@ export type UnlockWalletAction = {
 };
 
 export const unlockWalletAction = (
+  addingAccount: boolean,
   contacts: Contact[],
   isPinRequired: boolean,
   pin: string | undefined,
@@ -27,6 +29,7 @@ export const unlockWalletAction = (
   offlineModeEnabled: boolean
 ): UnlockWalletAction => ({
   payload: {
+    addingAccount,
     contacts,
     isPinRequired,
     offlineModeEnabled,

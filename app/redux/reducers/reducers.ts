@@ -259,6 +259,7 @@ export const reducer = (
 
     case UNLOCK_WALLET: {
       const {
+        addingAccount,
         contacts,
         isPinRequired,
         offlineModeEnabled,
@@ -271,6 +272,7 @@ export const reducer = (
 
       return {
         ...state,
+        addingAccount,
         contacts,
         isAuthenticated: true,
         isPinRequired,

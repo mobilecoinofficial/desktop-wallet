@@ -4,12 +4,10 @@ import React, { Fragment } from 'react';
 import { ipcRenderer } from 'electron';
 import { render } from 'react-dom';
 import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
-import { Provider } from 'react-redux';
 
-import { HotConnectedApp } from './App';
+import { HotApp } from './App';
 import i18n from './i18n';
 import './app.global.css';
-import { store } from './redux/store';
 
 const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
 
@@ -26,9 +24,7 @@ ipcRenderer.on('language-changed', (_, message) => {
 document.addEventListener('DOMContentLoaded', () => {
   render(
     <AppContainer>
-      <Provider store={store}>
-        <HotConnectedApp />
-      </Provider>
+      <HotApp />
     </AppContainer>,
     document.getElementById('root')
   );

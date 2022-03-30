@@ -9,6 +9,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
+import { initialReduxStoreState } from './redux/reducers/reducers';
 import { getAllTransactionLogsForAccount, initialize, updateStatus } from './redux/services';
 import { store } from './redux/store';
 import { internalRoutes, InternalRoutesRenderer } from './routes';
@@ -73,8 +74,10 @@ const App: FC = (): JSX.Element => {
     setFetchUpdatesTimer(
       setInterval(async () => {
         const { selectedAccount } = store.getState();
-        await fetchBalance(selectedAccount);
-        await fetchLogs(selectedAccount);
+        if (selectedAccount !== initialReduxStoreState.selectedAccount) {
+          await fetchBalance(selectedAccount);
+          await fetchLogs(selectedAccount);
+        }
       }, 10000)
     );
     return () => {

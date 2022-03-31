@@ -1,1 +1,4 @@
-export { ChangePinView } from './ChangePin.view';
+import { ChangePinView } from './ChangePin.view';
+
+export default ChangePinView;
+export { ChangePinView };

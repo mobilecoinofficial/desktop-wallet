@@ -1,5 +1,6 @@
-import { BalanceStatus, StringHex } from '../../types';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import type { BalanceStatus } from '../../types/BalanceStatus.d';
+import type { StringHex } from '../../types/SpecialStrings.d';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_BALANCE_FOR_ACCOUNT_METHOD = 'get_balance_for_account';
 
@@ -11,9 +12,7 @@ type GetBalanceResult = {
   balance: BalanceStatus; // TODO - lock in name of object
 };
 
-export const getBalanceForAccount = async ({
-  accountId,
-}: GetBalanceParams): Promise<GetBalanceResult> => {
+const getBalance = async ({ accountId }: GetBalanceParams): Promise<GetBalanceResult> => {
   const { result, error }: AxiosFullServiceResponse<GetBalanceResult> = await axiosFullService(
     GET_BALANCE_FOR_ACCOUNT_METHOD,
     {
@@ -29,3 +28,5 @@ export const getBalanceForAccount = async ({
     return result;
   }
 };
+
+export default getBalance;

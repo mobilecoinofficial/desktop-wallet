@@ -1,6 +1,6 @@
 import type { Address, Addresses } from '../../types/Address.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_ALL_ADRESSES_FOR_ACCOUNT_METHOD = 'get_all_addresses_for_account';
 
@@ -15,7 +15,7 @@ type GetAllAddressesForAccountResponse = {
   addressMap: { [addressId: string]: Address };
 };
 
-export const getAllAddressesForAccount = async ({
+const getAllAddressesForAccount = async ({
   accountId,
 }: GetAllAddressesForAccountParams): Promise<GetAllAddressesForAccountResult> => {
   const { result, error }: AxiosFullServiceResponse<GetAllAddressesForAccountResponse> =
@@ -34,3 +34,5 @@ export const getAllAddressesForAccount = async ({
     };
   }
 };
+
+export default getAllAddressesForAccount;

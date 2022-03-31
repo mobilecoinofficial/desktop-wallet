@@ -1,4 +1,5 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect } from 'react';
+import type { FC } from 'react';
 
 import { Box, Button, Card, Container, Divider, makeStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
@@ -7,8 +8,8 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { SplashScreen } from '../../../components/SplashScreen';
-import { LogoIcon } from '../../../components/icons';
-import { routePaths } from '../../../constants/routePaths';
+import LogoIcon from '../../../components/icons/LogoIcon';
+import routePaths from '../../../constants/routePaths';
 import { initialReduxStoreState, ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   addAccount,
@@ -81,7 +82,7 @@ const AuthPage: FC<Props> = (props: Props): JSX.Element => {
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
   const [fullServiceIsRunning, setFullServiceIsRunning] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [accountIds, setAccountIds] = useState<string[]>([]);
+  const [accountIds, setAccountIds] = useState([]);
 
   const offlineStart = localStore.getOfflineStart();
 

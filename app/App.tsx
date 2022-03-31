@@ -17,7 +17,7 @@ import { setTheme } from './theme';
 import { SelectedAccount } from './types';
 import * as localStore from './utils/LocalStore';
 
-const App: FC = (): JSX.Element => {
+const App: FC = () => {
   const [theme, setThemeReact] = useState(
     setTheme({
       responsiveFontSizes: true,
@@ -103,4 +103,4 @@ const App: FC = (): JSX.Element => {
   );
 };
 
-export const HotApp = hot(App);
+export default hot(App);

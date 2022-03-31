@@ -1,14 +1,9 @@
 import * as fullServiceApi from '../fullService/api';
-import { WalletStatus } from '../types';
-import { errorToString } from '../utils/errorHandler';
+import type { WalletStatus } from '../types/WalletStatus.d';
 
-export const getWalletStatus = async (): Promise<WalletStatus> => {
-  try {
-    return await fullServiceApi.getWalletStatus().then((x) => x.walletStatus);
-  } catch (err) {
-    const errorMessage = errorToString(err);
-    throw new Error(errorMessage);
-  }
-};
+const getWalletStatus = async (): Promise<WalletStatus> =>
+  fullServiceApi.getWalletStatus().then((x) => x.walletStatus);
 
+export default getWalletStatus;
+export { getWalletStatus };
 export type GetWalletStatusService = typeof getWalletStatus;

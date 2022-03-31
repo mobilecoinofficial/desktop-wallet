@@ -4,9 +4,11 @@ import type {
   CheckGiftCodeStatusResult,
 } from '../fullService/api/checkGiftCodeStatus';
 
-export const checkGiftCodeStatus = async (
+const checkGiftCodeStatus = async (
   checkGiftCodeStatusParams: CheckGiftCodeStatusParams
 ): Promise<CheckGiftCodeStatusResult> =>
   fullServiceApi.checkGiftCodeStatus(checkGiftCodeStatusParams);
 
+export default checkGiftCodeStatus;
+export { checkGiftCodeStatus };
 export type CheckGiftCodeStatusService = typeof checkGiftCodeStatus;

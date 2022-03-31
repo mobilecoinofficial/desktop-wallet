@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import { Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +8,7 @@ import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom'
 import { BLUE_DARK, GREY_LIGHT } from '../../../../constants/colors';
 import { NavBarProps } from './NavBar';
 
-export const NavBar: FC<NavBarProps> = ({ sections }: NavBarProps) => {
+const NavBar: FC<NavBarProps> = ({ sections }: NavBarProps) => {
   const location = useLocation();
   const { t } = useTranslation('NavBar');
   const value = sections.findIndex((section) =>
@@ -37,3 +38,6 @@ export const NavBar: FC<NavBarProps> = ({ sections }: NavBarProps) => {
     </Tabs>
   );
 };
+
+export default NavBar;
+export { NavBar };

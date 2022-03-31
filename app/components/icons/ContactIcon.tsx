@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-export function ContactIcon(props: IconProps): JSX.Element {
+function ContactIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -30,3 +30,5 @@ ContactIcon.defaultProps = {
   height: 32,
   width: 32,
 };
+
+export default ContactIcon;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Typography } from '@material-ui/core';
 
-export const TermsOfUse = (): JSX.Element => (
+const TermsOfUse = (): JSX.Element => (
   <Box p={3} color="text.primary">
     <Box p={2} textAlign="center" data-testid="tos-header">
       <Typography>TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS</Typography>
@@ -744,3 +744,6 @@ export const TermsOfUse = (): JSX.Element => (
     </Box>
   </Box>
 );
+
+export default TermsOfUse;
+export { TermsOfUse };

@@ -1,1 +1,4 @@
-export { FullServiceDirectory } from './FullServiceDirectory.view';
+import { FullServiceDirectory } from './FullServiceDirectory.view';
+
+export default FullServiceDirectory;
+export { FullServiceDirectory };

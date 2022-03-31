@@ -1,1 +1,4 @@
-export { TermsOfUseView } from './TermsOfUse.view';
+import { TermsOfUseView } from './TermsOfUse.view';
+
+export default TermsOfUseView;
+export { TermsOfUseView };

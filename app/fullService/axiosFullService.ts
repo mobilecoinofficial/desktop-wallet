@@ -2,6 +2,7 @@ import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import snakeCaseKeys from 'snakecase-keys';
 
+import { errorToString } from '../utils/errorHandler';
 import { camelCaseObjectKeys } from './utils/camelCase';
 
 type FullServiceResponse = AxiosResponse & {
@@ -28,7 +29,7 @@ export const handleError = (error: { message?: string }) =>
 
 // TODO: refactor to include better error handling. Returning an optional error param offloads error
 // handling to the caller, breaking DRY
-export const axiosFullService = async <T>(
+const axiosFullService = async <T>(
   method: string,
   params?: Record<string, any>
 ): Promise<AxiosFullServiceResponse<T>> => {
@@ -61,12 +62,9 @@ export const axiosFullService = async <T>(
     // such as the API or services
     return camelCaseObjectKeys(response);
   } catch (error) {
-    if (error instanceof Error) {
-      return { error: error.message };
-    }
-    if (typeof error === 'string') {
-      return { error };
-    }
-    throw error;
+    const errorMessage = errorToString(error);
+    throw new Error(errorMessage);
   }
 };
+
+export default axiosFullService;

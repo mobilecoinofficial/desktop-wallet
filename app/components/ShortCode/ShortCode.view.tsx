@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
+const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
   const classes = useStyles();
 
   if (!code) {
@@ -72,3 +73,6 @@ export const ShortCode: FC<ShortCodeProps> = ({ code }: ShortCodeProps) => {
     </Box>
   );
 };
+
+export default ShortCode;
+export { ShortCode };

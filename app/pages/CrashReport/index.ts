@@ -1,1 +1,4 @@
-export { CrashReportPage } from './CrashReportPage.presenter';
+import { CrashReportPage } from './CrashReportPage.presenter';
+
+export default CrashReportPage;
+export { CrashReportPage };

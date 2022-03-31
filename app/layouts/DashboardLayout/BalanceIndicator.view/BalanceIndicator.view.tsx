@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import { Box, Button, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const BalanceIndicator: FC<BalanceIndicatorProps> = ({
+const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   balance,
   importLedger,
   isSynced,
@@ -68,3 +69,6 @@ export const BalanceIndicator: FC<BalanceIndicatorProps> = ({
     </Box>
   );
 };
+
+export default BalanceIndicator;
+export { BalanceIndicator };

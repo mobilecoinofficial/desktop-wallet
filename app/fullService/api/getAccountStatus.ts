@@ -1,6 +1,6 @@
 import type { Account } from '../../types/Account.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_ACCOUNT_STATUS_METHOD = 'get_account_status';
 
@@ -12,7 +12,7 @@ type GetAccountStatusResult = {
   account: Account;
 };
 
-export const getAccountStatus = async ({
+const getAccountStatus = async ({
   accountId,
 }: GetAccountStatusParams): Promise<GetAccountStatusResult> => {
   const { result, error }: AxiosFullServiceResponse<GetAccountStatusResult> =
@@ -28,3 +28,5 @@ export const getAccountStatus = async ({
     return result;
   }
 };
+
+export default getAccountStatus;

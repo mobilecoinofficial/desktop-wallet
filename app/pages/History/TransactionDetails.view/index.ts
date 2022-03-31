@@ -1,1 +1,4 @@
-export { TransactionDetails } from './TransactionDetails.view';
+import { TransactionDetails } from './TransactionDetails.view';
+
+export default TransactionDetails;
+export { TransactionDetails };

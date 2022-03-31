@@ -3,7 +3,7 @@ import { store } from '../redux/store';
 import { validatePassword } from '../utils/authentication';
 import { errorToString } from '../utils/errorHandler';
 
-export const retrieveEntropy = async (password: string): Promise<string> => {
+const retrieveEntropy = async (password: string): Promise<string> => {
   try {
     const { encryptedPassword, selectedAccount } = store.getState();
     if (encryptedPassword === undefined) {
@@ -24,4 +24,6 @@ export const retrieveEntropy = async (password: string): Promise<string> => {
   }
 };
 
+export default retrieveEntropy;
+export { retrieveEntropy };
 export type RetrieveEntropyService = typeof retrieveEntropy;

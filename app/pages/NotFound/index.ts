@@ -1,1 +1,4 @@
-export { NotFoundPage } from './NotFound.view';
+import { NotFoundPage } from './NotFound.view';
+
+export default NotFoundPage;
+export { NotFoundPage };

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-export function PieChartIcon(props: IconProps): JSX.Element {
+function PieChartIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -28,3 +28,5 @@ PieChartIcon.defaultProps = {
   height: 22,
   width: 22,
 };
+
+export default PieChartIcon;

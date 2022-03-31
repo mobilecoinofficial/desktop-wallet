@@ -1,6 +1,6 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
 import type { Txos } from '../../types/Txo.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_ALL_TXOS_FOR_ACCOUNT_METHOD = 'get_all_txos_for_account';
 
@@ -10,7 +10,7 @@ type GetAllTxosByAccountParams = {
 
 type GetAllTxosByAccountResult = Txos;
 
-export const getAllTxosForAccount = async ({
+const getAllTxosForAccount = async ({
   accountId,
 }: GetAllTxosByAccountParams): Promise<GetAllTxosByAccountResult> => {
   const { result, error }: AxiosFullServiceResponse<GetAllTxosByAccountResult> =
@@ -26,3 +26,5 @@ export const getAllTxosForAccount = async ({
     return result;
   }
 };
+
+export default getAllTxosForAccount;

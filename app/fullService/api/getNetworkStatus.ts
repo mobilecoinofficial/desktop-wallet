@@ -1,5 +1,5 @@
 import type { NetworkStatus } from '../../types/NetworkStatus.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_NETWORK_STATUS_METHOD = 'get_network_status';
 
@@ -7,7 +7,7 @@ type GetNetworkStatusResult = {
   networkStatus: NetworkStatus;
 };
 
-export const getNetworkStatus = async (): Promise<GetNetworkStatusResult> => {
+const getNetworkStatus = async (): Promise<GetNetworkStatusResult> => {
   const { result, error }: AxiosFullServiceResponse<GetNetworkStatusResult> =
     await axiosFullService(GET_NETWORK_STATUS_METHOD);
 
@@ -19,3 +19,5 @@ export const getNetworkStatus = async (): Promise<GetNetworkStatusResult> => {
     return result;
   }
 };
+
+export default getNetworkStatus;

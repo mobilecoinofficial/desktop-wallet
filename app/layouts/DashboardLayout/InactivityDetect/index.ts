@@ -1,1 +1,4 @@
-export { InactivityDetect } from './InactivityDetect.view';
+import { InactivityDetect } from './InactivityDetect.view';
+
+export default InactivityDetect;
+export { InactivityDetect };

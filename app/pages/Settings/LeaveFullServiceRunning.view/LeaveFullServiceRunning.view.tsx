@@ -1,11 +1,12 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import { Box, FormLabel, Typography, Switch } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { LeaveFullServiceRunningProps } from './LeaveFullServiceRunning';
 
-export const LeaveFullServiceRunning: FC<LeaveFullServiceRunningProps> = ({
+const LeaveFullServiceRunning: FC<LeaveFullServiceRunningProps> = ({
   leaveFullServiceRunning,
   toggleLeaveFullServiceRunning,
 }: LeaveFullServiceRunningProps) => {
@@ -49,3 +50,6 @@ export const LeaveFullServiceRunning: FC<LeaveFullServiceRunningProps> = ({
     </Box>
   );
 };
+
+export default LeaveFullServiceRunning;
+export { LeaveFullServiceRunning };

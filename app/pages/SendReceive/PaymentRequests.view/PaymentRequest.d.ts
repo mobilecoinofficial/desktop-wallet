@@ -1,23 +1,11 @@
-import { OptionsObject, SnackbarKey, SnackbarMessage } from 'notistack';
-
-import { Confirmation, SelectedAccount, StringB58 } from '../../../types';
+import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export interface PaymentRequestProps {
-  confirmation: Confirmation;
-  enqueueSnackbar: (message: SnackbarMessage, options?: OptionsObject | undefined) => SnackbarKey;
+  confirmation?: unknown;
+  enqueueSnackbar: () => void;
   feePmob: string;
   onClickCancel: () => void;
   onClickConfirm: (resetForm: () => void) => void;
-  onClickViewPaymentRequest: ({
-    accountId,
-    fee,
-    recipientPublicAddress,
-    valuePmob,
-  }: {
-    accountId: string;
-    fee: string;
-    recipientPublicAddress: StringB58;
-    valuePmob: string;
-  }) => void;
+  // onClickViewPaymentRequest: () => void;
   selectedAccount: SelectedAccount;
 }

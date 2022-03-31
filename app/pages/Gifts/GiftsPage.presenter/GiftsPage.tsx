@@ -1,4 +1,5 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import type { FC } from 'react';
 
 import { Box, Container, Fade, Grid, makeStyles, Modal, Tab, Tabs } from '@material-ui/core';
 import { clipboard } from 'electron';
@@ -22,7 +23,7 @@ import { Accounts, GiftCode, SelectedAccount } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
-import { isSyncedBuffered } from '../../../utils/isSyncedBuffered';
+import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
 import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
 

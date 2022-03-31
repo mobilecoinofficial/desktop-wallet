@@ -1,4 +1,5 @@
-import React, { ChangeEvent, FC } from 'react';
+import React from 'react';
+import type { ChangeEvent, FC } from 'react';
 
 import {
   Backdrop,
@@ -22,6 +23,7 @@ import { MOBNumberFormat } from '../../../components/MOBNumberFormat';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { MOBIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
+import type { Account } from '../../../types/Account.d';
 import { convertPicoMobStringToMob } from '../../../utils/convertMob';
 import { BuildGiftFormProps } from './BuildGiftForm';
 
@@ -74,7 +76,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // warning that it's taking a bit long...
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component manageable.
-export const BuildGiftForm: FC<BuildGiftFormProps> = ({
+const BuildGiftForm: FC<BuildGiftFormProps> = ({
   confirmation,
   existingPin,
   feePmob,
@@ -88,6 +90,16 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
 }: BuildGiftFormProps) => {
   const classes = useStyles();
   const { t } = useTranslation('BuildGiftForm');
+
+  // TODO - consider adding minimum gift ~ 1 MOB
+  // We'll use this array in prep for future patterns with multiple accounts
+  const mockMultipleAccounts: Array<Account> = [
+    {
+      b58Code: selectedAccount.account.mainAddress,
+      balance: selectedAccount.balanceStatus.unspentPmob,
+      name: selectedAccount.account.name,
+    },
+  ];
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
@@ -112,7 +124,7 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
         feeAmount: convertPicoMobStringToMob(feePmob),
         mobValue: '0', // mobs
         pin: '',
-        senderPublicAddress: selectedAccount.account.publicAddress,
+        senderPublicAddress: mockMultipleAccounts[0].b58Code,
         submit: null,
       }}
       validationSchema={Yup.object().shape({
@@ -129,26 +141,25 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
           // @ts-ignore
-          BigInt(selectedAccount.balanceStatus.unspentPmob);
+          BigInt(
+            mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
+              .balance
+          );
 
         let isPinRequiredForTransaction = false;
         if (confirmation.totalValueConfirmation) {
           isPinRequiredForTransaction =
-            confirmation?.totalValueConfirmation.valueOf() +
-              confirmation?.feeConfirmation.valueOf() >=
+            confirmation?.totalValueConfirmation + confirmation?.feeConfirmation >=
             BigInt(pinThresholdPmob);
         }
 
-        let remainingBalance = BigInt(0);
-        let totalSent = BigInt(0);
+        let remainingBalance;
+        let totalSent = 0;
         if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
           remainingBalance =
             selectedBalance -
-            (confirmation?.totalValueConfirmation.valueOf() +
-              confirmation?.feeConfirmation.valueOf());
-          totalSent =
-            confirmation?.totalValueConfirmation.valueOf() +
-            confirmation?.feeConfirmation.valueOf();
+            (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
+          totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
         return (
@@ -169,7 +180,7 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
                 onFocus={handleSelect}
                 validate={validateAmount(
                   selectedBalance,
-                  BigInt(parseInt(values.feeAmount) * 1_000_000_000_000)
+                  BigInt(values.feeAmount * 1_000_000_000_000)
                 )}
                 InputProps={{
                   inputComponent: MOBNumberFormat,
@@ -332,3 +343,6 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
     </Formik>
   );
 };
+
+export default BuildGiftForm;
+export { BuildGiftForm };

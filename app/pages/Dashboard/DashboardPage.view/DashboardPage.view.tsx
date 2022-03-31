@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import { Box, Container, makeStyles } from '@material-ui/core';
 
@@ -12,7 +13,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const DashboardView: FC<DashboardPageProps> = ({
+const DashboardView: FC<DashboardPageProps> = ({
   accounts,
   onClickCode,
   onClose,
@@ -27,7 +28,12 @@ export const DashboardView: FC<DashboardPageProps> = ({
     <Container data-testid="DashboardOverview" className={classes.root} maxWidth="sm">
       <Box alignItems="center" />
       <AccountCard
-        account={selectedAccount.account}
+        account={{
+          accountId: selectedAccount.account.accountId,
+          b58Code: selectedAccount.account.mainAddress,
+          balance: selectedAccount.balanceStatus.unspentPmob,
+          name: selectedAccount.account.name as string,
+        }}
         accounts={accounts}
         onClickCode={onClickCode}
       />
@@ -36,3 +42,6 @@ export const DashboardView: FC<DashboardPageProps> = ({
     </Container>
   );
 };
+
+export default DashboardView;
+export { DashboardView };

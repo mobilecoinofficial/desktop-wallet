@@ -1,4 +1,5 @@
-import React, { FC, ReactNode } from 'react';
+import React from 'react';
+import type { FC, ReactNode } from 'react';
 
 import {
   Box,
@@ -43,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   textRight: { textAlign: 'right' },
 }));
 
-export const TransactionDetails: FC<TransactionDetailsViewProps> = ({
+const TransactionDetails: FC<TransactionDetailsViewProps> = ({
   onClickCopyConfirmations,
   onClickBack,
   onClickValidateConfirmations,
@@ -200,3 +201,6 @@ export const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     </Container>
   );
 };
+
+export default TransactionDetails;
+export { TransactionDetails };

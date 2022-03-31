@@ -1,1 +1,4 @@
-export { ContactForm } from './ContactForm.view';
+import { ContactForm } from './ContactForm.view';
+
+export default ContactForm;
+export { ContactForm };

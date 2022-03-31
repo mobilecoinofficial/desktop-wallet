@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-export function CodeTextIcon(props: IconProps): JSX.Element {
+function CodeTextIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -100,3 +100,5 @@ CodeTextIcon.defaultProps = {
   height: 24,
   width: 24,
 };
+
+export default CodeTextIcon;

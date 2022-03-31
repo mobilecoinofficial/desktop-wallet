@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-export function OfficialDocumentIcon(props: IconProps): JSX.Element {
+function OfficialDocumentIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -33,3 +33,5 @@ OfficialDocumentIcon.defaultProps = {
   height: 24,
   width: 24,
 };
+
+export default OfficialDocumentIcon;

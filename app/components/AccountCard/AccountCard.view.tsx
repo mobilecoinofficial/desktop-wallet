@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const AccountCard: FC<AccountCardProps> = ({
+const AccountCard: FC<AccountCardProps> = ({
   account,
   accounts,
   isGift,
@@ -57,10 +57,10 @@ export const AccountCard: FC<AccountCardProps> = ({
   const classes = useStyles();
   const { t } = useTranslation('AccountCard');
 
-  const { publicAddress } = account;
+  const { b58Code } = account;
 
   const handleCodeClicked = () =>
-    onClickCode(publicAddress, isGift ? t('clipboardGift') : t('clipboardAddress'));
+    onClickCode(b58Code, isGift ? t('clipboardGift') : t('clipboardAddress'));
 
   const handleToggleClick = () => setIsQRCode(!isQRCode);
 
@@ -71,8 +71,7 @@ export const AccountCard: FC<AccountCardProps> = ({
     headerString = isGift ? t('giftHeader') : t('accountHeader');
   }
 
-  const handleAccountSelectChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) =>
-    selectAccount(event.target.value as string);
+  const handleAccountSelectChange = (event) => selectAccount(event.target.value);
 
   return (
     <Container className={classes.container} fixed maxWidth="sm">
@@ -110,14 +109,14 @@ export const AccountCard: FC<AccountCardProps> = ({
               variant="h3"
             >
               {isQRCode ? (
-                <QRMob data-testid="account-card-qr-code" size={280} value={publicAddress} />
+                <QRMob data-testid="account-card-qr-code" size={280} value={b58Code} />
               ) : (
                 <Tooltip title={t('copyTooltip') as string} placement="right" arrow>
                   <Box data-testid="account-card-tooltip" onClick={handleCodeClicked}>
                     <LongCode
                       data-testid="account-card-long-code"
                       codeClass={classes.code}
-                      code={publicAddress}
+                      code={b58Code}
                     />
                   </Box>
                 </Tooltip>
@@ -141,14 +140,14 @@ export const AccountCard: FC<AccountCardProps> = ({
                     {accounts.accountIds.map((accountId: string) => (
                       <MenuItem value={accountId} key={accountId}>
                         {`${accounts.accountMap[accountId].name ?? 'unnamed'}`}&nbsp; (
-                        <ShortCode code={accounts.accountMap[accountId].publicAddress} />)
+                        <ShortCode code={accounts.accountMap[accountId].mainAddress} />)
                       </MenuItem>
                     ))}
                   </Select>
                 )}
               </Box>
               <Typography data-testid="account-card-short-code" color="textSecondary">
-                <ShortCode code={publicAddress} />
+                <ShortCode code={b58Code} />
               </Typography>
             </Box>
           </Box>
@@ -161,3 +160,6 @@ export const AccountCard: FC<AccountCardProps> = ({
 AccountCard.defaultProps = {
   isGift: false,
 };
+
+export default AccountCard;
+export { AccountCard };

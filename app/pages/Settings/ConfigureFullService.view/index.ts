@@ -1,1 +1,4 @@
-export { ConfigureFullServiceView } from './ConfigureFullService.view';
+import { ConfigureFullServiceView } from './ConfigureFullService.view';
+
+export default ConfigureFullServiceView;
+export { ConfigureFullServiceView };

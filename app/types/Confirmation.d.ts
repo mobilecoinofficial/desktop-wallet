@@ -1,9 +1,7 @@
-import { StringHex } from './SpecialStrings';
-
 export interface Confirmation {
-  txoIdHex: StringHex;
-  txoIndex: StringHex;
-  confirmation: StringHex;
+  txoIdHex: string;
+  txoIndex: string;
+  confirmation: string;
 }
 
-export type Confirmations = Confirmation[];
+export type Confirmations = [Confirmation];

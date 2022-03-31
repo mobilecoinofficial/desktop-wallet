@@ -1,6 +1,6 @@
 import type { Account } from '../../types/Account.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const UPDATE_ACCOUNT_NAME = 'update_account_name';
 
@@ -13,7 +13,7 @@ type UpdateAccountNameResult = {
   account: Account;
 };
 
-export const updateAccountName = async ({
+const updateAccountName = async ({
   accountId,
   name,
 }: UpdateAccountNameParams): Promise<UpdateAccountNameResult> => {
@@ -31,3 +31,5 @@ export const updateAccountName = async ({
     return result;
   }
 };
+
+export default updateAccountName;

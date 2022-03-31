@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-export function GiftIcon(props: IconProps): JSX.Element {
+function GiftIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -20,3 +20,5 @@ GiftIcon.defaultProps = {
   height: 20,
   width: 30,
 };
+
+export default GiftIcon;

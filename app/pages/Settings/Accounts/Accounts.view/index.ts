@@ -1,1 +1,4 @@
-export { AccountsView } from './Accounts.view';
+import { AccountsView } from './Accounts.view';
+
+export default AccountsView;
+export { AccountsView };

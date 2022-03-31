@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-export function ToolsIcon(props: IconProps): JSX.Element {
+function LockIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -21,8 +21,10 @@ export function ToolsIcon(props: IconProps): JSX.Element {
   );
 }
 
-ToolsIcon.defaultProps = {
+LockIcon.defaultProps = {
   color: '#A6AAB4',
   height: 34,
   width: 34,
 };
+
+export default LockIcon;

@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-import {
-  axiosFullService,
+import axiosFullService, {
   handleError,
-  handleResponse,
+  handleResposne,
 } from '../../app/fullService/axiosFullService';
 
 jest.mock('axios');
@@ -46,7 +45,7 @@ describe('axiosFullService', () => {
 
     await axiosFullService(fakeMethod, fakeParams);
     expect(mockAxios.create).toBeCalledWith(expectedConfig);
-    expect(mockUse).toBeCalledWith(handleResponse, handleError);
+    expect(mockUse).toBeCalledWith(handleResposne, handleError);
   });
 
   test('calls the axiosInstance with the method and params', async () => {

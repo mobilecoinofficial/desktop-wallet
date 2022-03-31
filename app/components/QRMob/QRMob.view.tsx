@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
@@ -34,7 +35,7 @@ const useStyles = makeStyles(() => ({
   root: {},
 }));
 
-export const QRMob: FC<QRMobProps> = (props) => {
+const QRMob: FC<QRMobProps> = (props) => {
   const classes = useStyles();
 
   return (
@@ -51,3 +52,6 @@ QRMob.propTypes = {
   size: PropTypes.number.isRequired,
   value: PropTypes.string.isRequired,
 };
+
+export default QRMob;
+export { QRMob };

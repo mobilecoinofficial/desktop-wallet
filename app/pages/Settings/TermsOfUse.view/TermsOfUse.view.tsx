@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import { Box, Breadcrumbs, Container, Link, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const TermsOfUseView: FC<TermsOfUseViewProps> = ({ onClickBack }: TermsOfUseViewProps) => {
+const TermsOfUseView: FC<TermsOfUseViewProps> = ({ onClickBack }: TermsOfUseViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('TermsOfUseView');
 
@@ -83,3 +84,6 @@ export const TermsOfUseView: FC<TermsOfUseViewProps> = ({ onClickBack }: TermsOf
     </Container>
   );
 };
+
+export default TermsOfUseView;
+export { TermsOfUseView };

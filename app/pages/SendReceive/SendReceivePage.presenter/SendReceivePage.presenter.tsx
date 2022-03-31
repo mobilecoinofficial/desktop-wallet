@@ -1,4 +1,5 @@
-import React, { ChangeEvent, FC, useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { clipboard, ipcRenderer } from 'electron';
@@ -10,11 +11,11 @@ import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { getFeePmob, updateContacts } from '../../../redux/services';
 import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
 import type { Theme } from '../../../theme';
-import { Contact, SelectedAccount, StringB58, StringHex } from '../../../types';
+import { Contact, SelectedAccount, StringHex } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
-import { isSyncedBuffered } from '../../../utils/isSyncedBuffered';
+import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
@@ -145,7 +146,7 @@ const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
     alias: string;
     fee: string;
     isChecked: boolean;
-    recipientPublicAddress: StringB58;
+    recipientPublicAddress: StringHex;
     valuePmob: string;
   }) => {
     let result;
@@ -236,7 +237,7 @@ const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
   }: {
     accountId: string;
     fee: string;
-    recipientPublicAddress: StringB58;
+    recipientPublicAddress: StringHex;
     valuePmob: string;
   }) => {
     try {

@@ -29,7 +29,10 @@ const useStyles = makeStyles(() =>
   })
 );
 
-export const GlobalStyles: FC = () => {
+const GlobalStyles: FC = () => {
   useStyles();
   return null;
 };
+
+export default GlobalStyles;
+export { GlobalStyles };

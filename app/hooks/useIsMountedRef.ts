@@ -4,7 +4,7 @@ import type { MutableRefObject } from 'react';
 // This hook is used to check that a component is mounted before calling
 // setState hooks. We want to prevent memoryleaks from changing windows while
 // using the app.
-export const useIsMountedRef = (): MutableRefObject<boolean> => {
+const useIsMountedRef = (): MutableRefObject<boolean> => {
   const isMounted = useRef(true);
 
   useEffect(
@@ -16,3 +16,5 @@ export const useIsMountedRef = (): MutableRefObject<boolean> => {
 
   return isMounted;
 };
+
+export default useIsMountedRef;

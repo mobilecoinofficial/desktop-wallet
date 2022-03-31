@@ -12,7 +12,7 @@ import {
   Txos,
   WalletStatus,
 } from '../../types';
-import { sameObject } from '../../utils/sameObject';
+import sameObject from '../../utils/sameObject';
 import {
   INITIALIZE,
   InitializeAction,

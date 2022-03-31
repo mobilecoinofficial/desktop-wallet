@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React, { useState } from 'react';
+import type { FC } from 'react';
 
 import {
   Accordion,
@@ -14,23 +15,21 @@ import { ExpandMore as ExpandMoreIcon } from '@material-ui/icons';
 import { useTranslation } from 'react-i18next';
 
 import { AccountCard } from '../../../components/AccountCard';
-import { selectAccount } from '../../../redux/services';
 import type { Contact } from '../../../types/Contact.d';
 import type { ReceiveMobProps } from './ReceiveMob.d';
 
 // CBB, really, we should just give the list and work by the indexes.
-export const ReceiveMob: FC<ReceiveMobProps> = ({
+const ReceiveMob: FC<ReceiveMobProps> = ({
   contacts,
   onClickCode,
   selectedAccount,
 }: ReceiveMobProps) => {
+  const { mainAddress } = selectedAccount.account;
+  const [selectedAddress, setSelectedAddress] = useState(mainAddress);
   const { t } = useTranslation('ReceiveMobPanel');
 
   const dropDownValues = [
-    {
-      alias: t('mainPublicAddress'),
-      assignedAddress: selectedAccount.account.publicAddress,
-    } as Contact,
+    { alias: t('mainPublicAddress'), assignedAddress: mainAddress } as Contact,
   ].concat(contacts);
 
   return (
@@ -66,10 +65,10 @@ export const ReceiveMob: FC<ReceiveMobProps> = ({
         style={{ width: '100%' }}
         labelId="contactsList"
         id="contactsList"
-        value={selectedAccount.account.publicAddress}
+        value={selectedAddress}
         displayEmpty
         variant="outlined"
-        onChange={(x) => selectAccount(x.target.value as string)}
+        onChange={(x) => setSelectedAddress(x.target.value as string)}
       >
         {dropDownValues.map((contact) => (
           <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
@@ -79,10 +78,18 @@ export const ReceiveMob: FC<ReceiveMobProps> = ({
       </Select>
 
       <Box pt={3} display="flex" flexDirection="column" alignItems="center">
-        <AccountCard account={selectedAccount.account} onClickCode={onClickCode} />
+        <AccountCard
+          account={{
+            b58Code: selectedAddress,
+          }}
+          onClickCode={onClickCode}
+        />
       </Box>
     </Container>
   );
 };
 
 ReceiveMob.defaultProps = {};
+
+export default ReceiveMob;
+export { ReceiveMob };

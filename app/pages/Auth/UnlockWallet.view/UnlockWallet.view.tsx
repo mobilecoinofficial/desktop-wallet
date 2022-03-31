@@ -1,4 +1,5 @@
-import React, { useState, FC } from 'react';
+import React, { useState } from 'react';
+import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Tooltip, Typography } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
@@ -17,7 +18,7 @@ interface UnlockWalletFormValues {
   submit: null;
 }
 
-export const UnlockWalletView: FC<UnlockWalletViewProps> = ({
+const UnlockWalletView: FC<UnlockWalletViewProps> = ({
   onClickUnlock,
   accounts,
   handleDeleteWallet,
@@ -113,3 +114,6 @@ export const UnlockWalletView: FC<UnlockWalletViewProps> = ({
     </>
   );
 };
+
+export default UnlockWalletView;
+export { UnlockWalletView };

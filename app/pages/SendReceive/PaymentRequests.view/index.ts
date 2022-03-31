@@ -1,1 +1,4 @@
-export { PaymentRequest } from './PaymentRequest.view';
+import { PaymentRequest } from './PaymentRequest.view';
+
+export default PaymentRequest;
+export { PaymentRequest };

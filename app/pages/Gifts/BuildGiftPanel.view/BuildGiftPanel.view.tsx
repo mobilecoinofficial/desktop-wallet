@@ -1,4 +1,5 @@
-import React, { useState, FC } from 'react';
+import React, { useState } from 'react';
+import type { FC } from 'react';
 
 import {
   Box,
@@ -41,7 +42,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
+const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   accounts,
   confirmation,
   existingPin,
@@ -227,3 +228,6 @@ export const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
     </Container>
   );
 };
+
+export default BuildGiftPanel;
+export { BuildGiftPanel };

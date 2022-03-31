@@ -1,6 +1,6 @@
 import type { GiftCode } from '../../types/GiftCode.d';
 import type { StringB58 } from '../../types/SpecialStrings.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const REMOVE_GIFT_CODE_METHOD = 'remove_gift_code';
 
@@ -12,7 +12,7 @@ export type RemoveGiftCodeResult = {
   giftCode: GiftCode;
 };
 
-export const removeGiftCode = async ({
+const removeGiftCode = async ({
   giftCodeB58,
 }: RemoveGiftCodeParams): Promise<RemoveGiftCodeResult> => {
   const { result, error }: AxiosFullServiceResponse<RemoveGiftCodeResult> = await axiosFullService(
@@ -30,3 +30,5 @@ export const removeGiftCode = async ({
     return result;
   }
 };
+
+export default removeGiftCode;

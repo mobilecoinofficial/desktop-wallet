@@ -1,1 +1,4 @@
-export { ReceiveMob } from './ReceiveMob.view';
+import { ReceiveMob } from './ReceiveMob.view';
+
+export default ReceiveMob;
+export { ReceiveMob };

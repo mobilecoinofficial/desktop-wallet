@@ -2,7 +2,7 @@ import type { Contact } from '../types/Contact';
 import * as localStore from '../utils/LocalStore';
 import { decrypt } from '../utils/encryption';
 
-export const decryptContacts = async (secretKey: string): Promise<Contact[]> => {
+const decryptContacts = async (secretKey: string): Promise<Contact[]> => {
   const encryptedContacts = localStore.getEncryptedContacts();
   if (encryptedContacts === undefined) {
     return [];
@@ -12,4 +12,6 @@ export const decryptContacts = async (secretKey: string): Promise<Contact[]> => 
   return JSON.parse(contactsStringified) as Contact[];
 };
 
+export default decryptContacts;
+export { decryptContacts };
 export type DecryptContactsService = typeof decryptContacts;

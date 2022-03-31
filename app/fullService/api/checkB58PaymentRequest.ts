@@ -1,5 +1,5 @@
 import type { StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const CHECK_B58_TYPE_METHOD = 'check_b58_type';
 
@@ -24,7 +24,7 @@ type CheckB58PaymentRequestData = {
   memo: string;
 };
 
-export const checkB58PaymentRequest = async (
+const checkB58PaymentRequest = async (
   b58Code: CheckB58PaymentRequestParams
 ): Promise<CheckB58PaymentRequestResponse> => {
   const { result, error }: AxiosFullServiceResponse<CheckB58PaymentRequestResult> =
@@ -45,3 +45,5 @@ export const checkB58PaymentRequest = async (
 
   return checkResponse;
 };
+
+export default checkB58PaymentRequest;

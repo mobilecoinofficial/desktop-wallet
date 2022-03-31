@@ -1,1 +1,4 @@
-export { CreateAccountView } from './CreateAccount.view';
+import { CreateAccountView } from './CreateAccount.view';
+
+export default CreateAccountView;
+export { CreateAccountView };

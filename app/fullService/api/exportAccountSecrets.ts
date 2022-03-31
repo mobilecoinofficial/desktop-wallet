@@ -1,6 +1,6 @@
 import type { AccountSecrets } from '../../types/AccountSecrets.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const EXPORT_ACCOUNT_SECRETS_METHOD = 'export_account_secrets';
 
@@ -12,7 +12,7 @@ type ExportAccountSecretsResult = {
   accountSecrets: AccountSecrets;
 };
 
-export const exportAccountSecrets = async ({
+const exportAccountSecrets = async ({
   accountId,
 }: ExportAccountSecretsParams): Promise<ExportAccountSecretsResult> => {
   const { result, error }: AxiosFullServiceResponse<ExportAccountSecretsResult> =
@@ -28,3 +28,5 @@ export const exportAccountSecrets = async ({
     return result;
   }
 };
+
+export default exportAccountSecrets;

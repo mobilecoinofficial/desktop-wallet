@@ -1,1 +1,4 @@
-export { TopBar } from './TopBar.view';
+import { TopBar } from './TopBar.view';
+
+export default TopBar;
+export { TopBar };

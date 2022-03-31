@@ -1,8 +1,8 @@
-import { Account, Accounts } from '../../types/Account';
+import { Accounts } from '../../types/Account';
 
 export interface AccountCardProps {
-  account: Account;
+  account: { accountId: string; b58Code: string; name?: string; balance: string };
   accounts?: Accounts;
   isGift?: boolean;
-  onClickCode: (code: string, text: string) => void;
+  onClickCode?: (code: string, text: string) => void;
 }

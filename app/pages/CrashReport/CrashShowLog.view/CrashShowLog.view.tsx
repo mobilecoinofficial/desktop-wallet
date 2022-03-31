@@ -1,4 +1,5 @@
-import React, { useRef, FC } from 'react';
+import React, { useRef } from 'react';
+import type { FC } from 'react';
 
 import { Box, Button, IconButton, makeStyles, TextField, Typography } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -36,7 +37,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const CrashShowLog: FC<CrashShowLogProps> = ({
+const CrashShowLog: FC<CrashShowLogProps> = ({
   errorLog,
   onClose,
   onSendReport,
@@ -84,3 +85,6 @@ export const CrashShowLog: FC<CrashShowLogProps> = ({
     </Box>
   );
 };
+
+export default CrashShowLog;
+export { CrashShowLog };

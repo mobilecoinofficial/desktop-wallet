@@ -1,1 +1,4 @@
-export { ChangePasswordView } from './ChangePassword.view';
+import { ChangePasswordView } from './ChangePassword.view';
+
+export default ChangePasswordView;
+export { ChangePasswordView };

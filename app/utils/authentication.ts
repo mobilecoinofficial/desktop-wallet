@@ -1,7 +1,7 @@
 import { SjclCipherEncrypted } from 'sjcl';
 
 import * as localStore from './LocalStore';
-import { argon2Key } from './argon2Key';
+import argon2Key from './argon2Key';
 import { decrypt, encrypt } from './encryption';
 
 export const encryptAndStorePassword = async (

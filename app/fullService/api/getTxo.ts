@@ -1,6 +1,6 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
 import type { Txo } from '../../types/Txo.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_TXO_METHOD = 'get_txo';
 
@@ -12,7 +12,7 @@ type GetTxoResult = {
   txo: Txo;
 };
 
-export const getTxo = async ({ txoId }: GetTxoParams): Promise<GetTxoResult> => {
+const getTxo = async ({ txoId }: GetTxoParams): Promise<GetTxoResult> => {
   const { result, error }: AxiosFullServiceResponse<GetTxoResult> = await axiosFullService(
     GET_TXO_METHOD,
     {
@@ -28,3 +28,5 @@ export const getTxo = async ({ txoId }: GetTxoParams): Promise<GetTxoResult> => 
     return result;
   }
 };
+
+export default getTxo;

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-export function LogoIcon(props: IconProps): JSX.Element {
+function LogoIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -20,3 +20,5 @@ LogoIcon.defaultProps = {
   height: 35,
   width: 141,
 };
+
+export default LogoIcon;

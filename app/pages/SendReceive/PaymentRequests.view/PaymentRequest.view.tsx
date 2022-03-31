@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import {
   Backdrop,
@@ -67,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {},
 }));
 
-export const PaymentRequest: FC<PaymentRequestProps> = ({
+const PaymentRequest: FC<PaymentRequestProps> = ({
   confirmation,
   feePmob,
   onClickCancel,
@@ -90,8 +91,8 @@ export const PaymentRequest: FC<PaymentRequestProps> = ({
       await onClickViewPaymentRequest({
         accountId: selectedAccount.account.accountId,
         fee: feePmob,
-        recipientPublicAddress: publicAddressB58 as string,
-        valuePmob: value as string,
+        recipientPublicAddress: publicAddressB58,
+        valuePmob: value,
       });
     } catch (error) {
       const errorMessage = errorToString(error);
@@ -99,11 +100,19 @@ export const PaymentRequest: FC<PaymentRequestProps> = ({
     }
   };
 
+  const mockMultipleAccounts: Array<Account> = [
+    {
+      b58Code: selectedAccount.account.mainAddress,
+      balance: selectedAccount.balanceStatus.unspentPmob,
+      name: selectedAccount.account.name,
+    },
+  ];
+
   return (
     <Formik
       initialValues={{
         paymentRequestCodeB58: '',
-        senderPublicAddress: selectedAccount.account.publicAddress,
+        senderPublicAddress: mockMultipleAccounts[0].b58Code,
         submit: null,
       }}
       validationSchema={Yup.object().shape({
@@ -120,8 +129,12 @@ export const PaymentRequest: FC<PaymentRequestProps> = ({
         resetForm,
         setFieldValue,
         submitForm,
+        values,
       }) => {
-        const selectedBalance = BigInt(selectedAccount.balanceStatus.unspentPmob);
+        const selectedBalance = BigInt(
+          mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
+            .balance
+        );
         let remainingBalance;
         let totalSent = 0;
         if (confirmation.totalValueConfirmation && confirmation.feeConfirmation) {
@@ -330,3 +343,6 @@ export const PaymentRequest: FC<PaymentRequestProps> = ({
     </Formik>
   );
 };
+
+export default PaymentRequest;
+export { PaymentRequest };

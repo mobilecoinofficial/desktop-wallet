@@ -1,6 +1,6 @@
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
 import type { Outlay, TxProposal } from '../../types/TxProposal';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 // TODO - fix the error handling at this level -- when giving the wrong method, for example
 const BUILD_TRANSACTION_METHOD = 'build_transaction';
@@ -22,7 +22,7 @@ export type BuildTransactionResult = {
   txProposalReceiverB58Code: StringB58;
 };
 
-export const buildTransaction = async ({
+const buildTransaction = async ({
   accountId,
   fee,
   inputTxoIds,
@@ -65,3 +65,5 @@ export const buildTransaction = async ({
     txProposalReceiverB58Code,
   };
 };
+
+export default buildTransaction;

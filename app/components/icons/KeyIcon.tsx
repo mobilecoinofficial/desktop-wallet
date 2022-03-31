@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-export function KeyIcon(props: IconProps): JSX.Element {
+function KeyIcon(props: IconProps): JSX.Element {
   const { color } = props;
 
   return (
@@ -26,3 +26,5 @@ KeyIcon.defaultProps = {
   height: 34,
   width: 34,
 };
+
+export default KeyIcon;

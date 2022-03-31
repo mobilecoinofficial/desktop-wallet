@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import {
   Avatar,
@@ -14,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ShortCode } from '../../../components/ShortCode';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
-import { MOBIcon } from '../../../components/icons';
+import MOBIcon from '../../../components/icons/MOBIcon';
 import type { Theme } from '../../../theme';
 import type { HistoryItemProps } from './HistoryItem.d';
 
@@ -37,10 +38,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   textSmallRight: { fontSize: 'small', textAlign: 'right' },
 }));
 
-export const HistoryItem: FC<HistoryItemProps> = ({
-  onClick,
-  transactionLog,
-}: HistoryItemProps) => {
+const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryItemProps) => {
   const classes = useStyles();
   const { t } = useTranslation('HistoryView');
 
@@ -122,3 +120,6 @@ export const HistoryItem: FC<HistoryItemProps> = ({
     </Grid>
   );
 };
+
+export default HistoryItem;
+export { HistoryItem };

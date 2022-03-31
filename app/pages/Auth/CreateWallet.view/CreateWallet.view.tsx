@@ -1,4 +1,5 @@
-import React, { useState, FC } from 'react';
+import React, { useState } from 'react';
+import type { FC } from 'react';
 
 import { Box, Button, FormHelperText, Tooltip, Typography } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
@@ -17,9 +18,7 @@ interface CreateWalletFormValues {
   submit: null;
 }
 
-export const CreateWalletView: FC<CreateWalletViewProps> = ({
-  onClickCreate,
-}: CreateWalletViewProps) => {
+const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWalletViewProps) => {
   const { t } = useTranslation('CreateWallet');
   const [canCheck, setCanCheck] = useState(false);
   const [open, setOpen] = useState(false);
@@ -130,3 +129,6 @@ export const CreateWalletView: FC<CreateWalletViewProps> = ({
     </>
   );
 };
+
+export default CreateWalletView;
+export { CreateWalletView };

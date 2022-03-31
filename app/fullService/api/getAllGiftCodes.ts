@@ -1,5 +1,5 @@
 import type { GiftCode } from '../../types/GiftCode.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_ALL_GIFT_CODES_METHOD = 'get_all_gift_codes';
 
@@ -7,7 +7,7 @@ type GetAllGiftCodesResult = {
   giftCodes: GiftCode[];
 };
 
-export const getAllGiftCodes = async (): Promise<GetAllGiftCodesResult> => {
+const getAllGiftCodes = async (): Promise<GetAllGiftCodesResult> => {
   const { result, error }: AxiosFullServiceResponse<GetAllGiftCodesResult> = await axiosFullService(
     GET_ALL_GIFT_CODES_METHOD
   );
@@ -19,3 +19,5 @@ export const getAllGiftCodes = async (): Promise<GetAllGiftCodesResult> => {
     return result;
   }
 };
+
+export default getAllGiftCodes;

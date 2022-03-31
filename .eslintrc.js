@@ -63,7 +63,6 @@ module.exports = {
       },
     ],
     'no-use-before-define': 'off',
-    radix: ['error', 'as-needed'],
     'react/jsx-props-no-spreading': 0,
     'sort-keys': [
       'error',

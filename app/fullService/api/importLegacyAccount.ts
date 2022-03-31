@@ -1,5 +1,5 @@
 import type { Account } from '../../types/Account.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const IMPORT_LEGACY_ACCOUNT_METHOD = 'import_account_from_legacy_root_entropy';
 
@@ -13,7 +13,7 @@ type ImportAccountResult = {
   account: Account;
 };
 
-export const importLegacyAccount = async ({
+const importLegacyAccount = async ({
   entropy,
   firstBlockIndex,
   name,
@@ -35,3 +35,5 @@ export const importLegacyAccount = async ({
     return result;
   }
 };
+
+export default importLegacyAccount;

@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 
-import React, { useState, ChangeEvent, FC } from 'react';
+import React, { useState } from 'react';
+import type { ChangeEvent, FC } from 'react';
 
 import {
   Backdrop,
@@ -25,7 +26,7 @@ import {
   Tooltip,
   IconButton,
 } from '@material-ui/core';
-import { Formik, Form, Field, FormikValues, GenericFieldHTMLAttributes } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { CheckboxWithLabel, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
@@ -34,7 +35,6 @@ import { SubmitButton, MOBNumberFormat, QRScanner } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
 import { StarIcon, MOBIcon, QRCodeIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
-import { SelectedAccount } from '../../../types';
 import {
   convertMobStringToPicoMobString,
   convertPicoMobStringToMob,
@@ -80,7 +80,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // TODO -- we may want to refactor out the modals and feed them props just to keep
 // this component managable.
 
-export const SendMob: FC<SendMobProps> = ({
+const SendMob: FC<SendMobProps> = ({
   confirmation,
   contacts,
   existingPin,
@@ -106,12 +106,18 @@ export const SendMob: FC<SendMobProps> = ({
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
-  const mockMultipleAccounts: Array<SelectedAccount> = [selectedAccount];
+  const mockMultipleAccounts: Array<Account> = [
+    {
+      b58Code: selectedAccount.account.mainAddress,
+      balance: selectedAccount.balanceStatus.unspentPmob,
+      name: selectedAccount.account.name,
+    },
+  ];
 
   const handleChecked = () => setIsChecked(!isChecked);
   const handleScanningQR = () => setIsScanningQR(!isScanningQR);
 
-  const handleOpen = (values: FormikValues) => async () => {
+  const handleOpen = (values) => async () => {
     onClickSend({
       accountId: selectedAccount.account.accountId,
       alias: values.alias,
@@ -174,7 +180,7 @@ export const SendMob: FC<SendMobProps> = ({
                 mobAmount: '0', // mobs
                 pin: '',
                 recipientPublicAddress: '',
-                senderPublicAddress: mockMultipleAccounts[0].account.mainAddress,
+                senderPublicAddress: mockMultipleAccounts[0].b58Code,
                 submit: null,
               }}
               validationSchema={Yup.object().shape({
@@ -206,9 +212,8 @@ export const SendMob: FC<SendMobProps> = ({
                   // @ts-ignore
                   BigInt(
                     mockMultipleAccounts.find(
-                      (queriedSelectedAccount) =>
-                        queriedSelectedAccount.account.mainAddress === values.senderPublicAddress
-                    )?.balanceStatus.unspentPmob || 0
+                      (account) => account.b58Code === values.senderPublicAddress
+                    ).balance
                   );
 
                 let isPinRequiredForTransaction = false;
@@ -307,12 +312,9 @@ export const SendMob: FC<SendMobProps> = ({
                         name="recipientPublicAddress"
                         type="text"
                         key="recipientPublicAddress"
-                        onBlur={(event: React.FocusEvent<GenericFieldHTMLAttributes>) => {
+                        onBlur={(event) => {
                           handleBlur(event);
-                          setFieldValue(
-                            'recipientPublicAddress',
-                            (event.target.value as string).trim()
-                          );
+                          setFieldValue('recipientPublicAddress', event.target.value.trim());
                         }}
                         InputProps={{
                           startAdornment: (
@@ -615,3 +617,6 @@ export const SendMob: FC<SendMobProps> = ({
     </Container>
   );
 };
+
+export default SendMob;
+export { SendMob };

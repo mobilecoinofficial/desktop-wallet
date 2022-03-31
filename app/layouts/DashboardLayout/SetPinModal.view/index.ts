@@ -1,1 +1,4 @@
-export { SetPinModal } from './SetPinModal.view';
+import { SetPinModal } from './SetPinModal.view';
+
+export default SetPinModal;
+export { SetPinModal };

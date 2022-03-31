@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { IconProps } from './IconProps';
 
-export function CircleMOBIcon({ backgroundColor, ...rest }: IconProps): JSX.Element {
+function CircleMOBIcon({ backgroundColor, ...rest }: IconProps): JSX.Element {
   return (
     <svg viewBox="0 0 144 144" fill="none" {...rest}>
       <circle r={72} transform="matrix(-1 0 0 1 72 72)" fill={backgroundColor} />
@@ -16,3 +16,5 @@ CircleMOBIcon.defaultProps = {
   height: 144,
   width: 144,
 };
+
+export default CircleMOBIcon;

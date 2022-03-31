@@ -1,6 +1,6 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
 import type { TransactionLog } from '../../types/TransactionLog.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_TRANSACTION_LOG_METHOD = 'get_transaction_LOG';
 
@@ -12,7 +12,7 @@ type GetTransactionLogResult = {
   transactionLog: TransactionLog;
 };
 
-export const getTransactionLog = async ({
+const getTransactionLog = async ({
   transactionLogId,
 }: GetTransactionLogParams): Promise<GetTransactionLogResult> => {
   const { result, error }: AxiosFullServiceResponse<GetTransactionLogResult> =
@@ -28,3 +28,5 @@ export const getTransactionLog = async ({
     return result;
   }
 };
+
+export default getTransactionLog;

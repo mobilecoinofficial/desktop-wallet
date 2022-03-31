@@ -1,4 +1,5 @@
-import React, { useState, FC } from 'react';
+import React, { useState } from 'react';
+import type { FC } from 'react';
 
 import {
   Box,
@@ -73,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const AccountsView: FC<AccountsViewProps> = ({
+const AccountsView: FC<AccountsViewProps> = ({
   accounts,
   deleteAccount,
   onClickAddAccount,
@@ -166,3 +167,6 @@ export const AccountsView: FC<AccountsViewProps> = ({
     </Container>
   );
 };
+
+export default AccountsView;
+export { AccountsView };

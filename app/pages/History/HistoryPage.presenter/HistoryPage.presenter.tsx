@@ -1,4 +1,5 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import type { FC } from 'react';
 
 import { Box, Typography } from '@material-ui/core';
 import { clipboard } from 'electron';
@@ -28,7 +29,7 @@ const HistoryPage: FC<Props> = (props: Props): JSX.Element => {
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
-  const [transactionLogsState, setTransactionLogsState] = useState<TransactionLog[]>([]);
+  const [transactionLogsState, setTransactionLogsState] = useState([]);
 
   const { addresses, contacts, selectedAccount, transactionLogs } = props;
 

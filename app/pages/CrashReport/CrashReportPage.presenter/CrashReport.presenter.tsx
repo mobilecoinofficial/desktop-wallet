@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import { Backdrop, Box, Button, makeStyles, Modal, Typography } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
@@ -32,7 +33,7 @@ const handleQuitApplication = () => {
   ipcRenderer.send('close-app');
 };
 
-export const CrashReportPage: FC = () => {
+const CrashReportPage: FC = () => {
   const classes = useStyles();
   const { t } = useTranslation('CrashReportPage');
   const [openShowLog, setOpenShowLog] = React.useState(false);
@@ -110,3 +111,6 @@ export const CrashReportPage: FC = () => {
     </Box>
   );
 };
+
+export default CrashReportPage;
+export { CrashReportPage };

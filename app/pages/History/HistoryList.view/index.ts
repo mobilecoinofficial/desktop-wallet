@@ -1,1 +1,4 @@
-export { HistoryList } from './HistoryList.view';
+import { HistoryList } from './HistoryList.view';
+
+export default HistoryList;
+export { HistoryList };

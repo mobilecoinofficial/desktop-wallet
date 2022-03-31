@@ -1,1 +1,4 @@
-export { ContactCard } from './ContactCard.view';
+import { ContactCard } from './ContactCard.view';
+
+export default ContactCard;
+export { ContactCard };

@@ -1,1 +1,4 @@
-export { OnboardingModal } from './OnboardingModal.view';
+import { OnboardingModal } from './OnboardingModal.view';
+
+export default OnboardingModal;
+export { OnboardingModal };

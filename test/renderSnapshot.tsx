@@ -11,8 +11,9 @@
 
 // import { FullServiceProvider } from '../app/contexts/FullServiceContext';
 // import type { FullServiceState } from '../app/contexts/FullServiceContext';
+// import useFullService from '../app/hooks/useFullService';
 // import i18n from '../app/i18n';
-// import { internalRoutes, InternalRoutesRenderer, renderRoutes } from '../app/routes';
+// import routes, { renderRoutes } from '../app/routes';
 // import { setTheme } from '../app/theme';
 
 // jest.mock('../app/hooks/useFullService');
@@ -71,9 +72,7 @@
 //             <FullServiceProvider>
 //               <StylesProvider generateClassName={generateClassName}>
 //                 <MuiThemeProvider theme={theme}>
-//                   <InternalRoutesRenderer routes={internalRoutes}>
-//                     {testComponent}
-//                   </InternalRoutesRenderer>
+//                   {renderRoutes(routes, testComponent)}
 //                 </MuiThemeProvider>
 //               </StylesProvider>
 //             </FullServiceProvider>

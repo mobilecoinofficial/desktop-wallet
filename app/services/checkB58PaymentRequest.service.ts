@@ -4,9 +4,11 @@ import type {
   CheckB58PaymentRequestResponse,
 } from '../fullService/api/checkB58PaymentRequest';
 
-export const checkB58PaymentRequest = async (
+const checkB58PaymentRequest = async (
   checkB58PaymentRequestParams: CheckB58PaymentRequestParams
 ): Promise<CheckB58PaymentRequestResponse> =>
   fullServiceApi.checkB58PaymentRequest(checkB58PaymentRequestParams);
 
+export default checkB58PaymentRequest;
+export { checkB58PaymentRequest };
 export type CheckB58PaymentRequestService = typeof checkB58PaymentRequest;

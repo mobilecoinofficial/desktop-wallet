@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import { Box, Breadcrumbs, Container, Link, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
@@ -33,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
+const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
   configureFullServiceConfigs,
   exportLedger,
   exportTransactionHistory,
@@ -96,3 +97,6 @@ export const ConfigureFullServiceView: FC<ConfigureFullServiceViewProps> = ({
     </Container>
   );
 };
+
+export default ConfigureFullServiceView;
+export { ConfigureFullServiceView };

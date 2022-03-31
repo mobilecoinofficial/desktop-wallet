@@ -1,1 +1,4 @@
-export { DashboardView } from './DashboardPage.view';
+import { DashboardView } from './DashboardPage.view';
+
+export default DashboardView;
+export { DashboardView };

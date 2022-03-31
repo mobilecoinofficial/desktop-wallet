@@ -1,1 +1,4 @@
-export { PrivacyPolicy } from './PrivacyPolicy.view';
+import { PrivacyPolicy } from './PrivacyPolicy.view';
+
+export default PrivacyPolicy;
+export { PrivacyPolicy };

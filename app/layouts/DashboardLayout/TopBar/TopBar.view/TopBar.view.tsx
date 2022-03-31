@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import { AppBar, makeStyles } from '@material-ui/core';
 
@@ -10,7 +11,7 @@ import {
   WalletIcon,
   WalletHomeIcon,
 } from '../../../../components/icons';
-import { routePaths } from '../../../../constants/routePaths';
+import routePaths from '../../../../constants/routePaths';
 import { NavBar } from '../NavBar.view';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +53,7 @@ const sections = [
   },
 ];
 
-export const TopBar: FC = () => {
+const TopBar: FC = () => {
   const classes = useStyles();
 
   return (
@@ -61,3 +62,6 @@ export const TopBar: FC = () => {
     </AppBar>
   );
 };
+
+export default TopBar;
+export { TopBar };

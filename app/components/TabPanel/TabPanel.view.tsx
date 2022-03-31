@@ -4,7 +4,7 @@ import { Box } from '@material-ui/core';
 
 import { TabPanelProps } from './TabPanel';
 
-export const TabPanel = (props: TabPanelProps): JSX.Element => {
+const TabPanel = (props: TabPanelProps): JSX.Element => {
   const { panels, selectedTabIndex } = props;
 
   const Panel = panels[selectedTabIndex];
@@ -14,3 +14,6 @@ export const TabPanel = (props: TabPanelProps): JSX.Element => {
     </Box>
   );
 };
+
+export default TabPanel;
+export { TabPanel };

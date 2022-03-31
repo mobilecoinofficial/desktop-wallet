@@ -1,6 +1,6 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
 import type { TransactionLogs } from '../../types/TransactionLog.d';
-import { axiosFullService, AxiosFullServiceResponse } from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_METHOD = 'get_all_transaction_logs_for_account';
 
@@ -11,7 +11,7 @@ type GetAllTransactionLogsForAccountParams = {
 type GetAllTransactionLogsForAccountResult = TransactionLogs;
 
 // TODO - change name throughout apps
-export const getAllTransactionLogsForAccount = async ({
+const getAllTransactionLogsForAccount = async ({
   accountId,
 }: GetAllTransactionLogsForAccountParams): Promise<GetAllTransactionLogsForAccountResult> => {
   const { result, error }: AxiosFullServiceResponse<GetAllTransactionLogsForAccountResult> =
@@ -27,3 +27,5 @@ export const getAllTransactionLogsForAccount = async ({
     return result;
   }
 };
+
+export default getAllTransactionLogsForAccount;

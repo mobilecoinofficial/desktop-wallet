@@ -1,4 +1,5 @@
-import React, { FC } from 'react';
+import React from 'react';
+import type { FC } from 'react';
 
 import {
   Box,
@@ -71,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export const ChangePasswordView: FC<ChangePasswordViewProps> = ({
+const ChangePasswordView: FC<ChangePasswordViewProps> = ({
   accounts,
   onClickBack,
   onClickChangePassword,
@@ -213,3 +214,6 @@ export const ChangePasswordView: FC<ChangePasswordViewProps> = ({
     </Container>
   );
 };
+
+export default ChangePasswordView;
+export { ChangePasswordView };

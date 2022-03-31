@@ -2,8 +2,8 @@ import type { Account } from './Account.d';
 import type { StringHex, StringUInt64 } from './SpecialStrings';
 
 export interface WalletStatus {
-  accountIds: StringHex[];
-  accountMap: { [accountId: string]: Account };
+  accountIds?: StringHex[];
+  accountMap?: { [accountId: string]: Account };
   isSyncedAll: boolean;
   localBlockHeight?: StringUInt64;
   minSyncedBlockIndex: StringUInt64;

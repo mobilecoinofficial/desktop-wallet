@@ -16,8 +16,8 @@ export interface PaymentRequestProps {
   }: {
     accountId: string;
     fee: string;
-    recipientPublicAddress?: StringB58;
-    valuePmob?: string;
+    recipientPublicAddress: StringB58;
+    valuePmob: string;
   }) => void;
   selectedAccount: SelectedAccount;
 }

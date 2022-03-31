@@ -1,3 +1,1 @@
-import { LongCode } from './LongCode.view';
-
-export { LongCode };
+export { LongCode } from './LongCode.view';

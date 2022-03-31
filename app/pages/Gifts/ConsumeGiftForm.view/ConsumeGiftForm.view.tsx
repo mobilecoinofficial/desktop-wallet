@@ -14,14 +14,13 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, GenericFieldHTMLAttributes } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import type { Theme } from '../../../theme';
-import type { Account } from '../../../types/Account.d';
 import { ConsumeGiftFormProps } from './ConsumeGiftForm';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -81,21 +80,11 @@ export const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
   const classes = useStyles();
   const { t } = useTranslation('ConsumeGiftForm');
 
-  // We'll use this array in prep for future patterns with multiple accounts
-  // TODO - fix the type for Account
-  const mockMultipleAccounts: Array<Account> = [
-    {
-      b58Code: selectedAccount.account.mainAddress,
-      balance: selectedAccount.balanceStatus.unspentPmob,
-      name: selectedAccount.account.name,
-    },
-  ];
-
   return (
     <Formik
       initialValues={{
         giftCodeB58: '', // mobs
-        senderPublicAddress: mockMultipleAccounts[0].b58Code,
+        senderPublicAddress: selectedAccount.account.publicAddress,
         submit: null,
       }}
       validationSchema={Yup.object().shape({
@@ -103,23 +92,8 @@ export const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
       })}
       onSubmit={(values) => onClickOpenGift(values.giftCodeB58)}
     >
-      {({
-        errors,
-        isSubmitting,
-        dirty,
-        handleBlur,
-        isValid,
-        setFieldValue,
-        submitForm,
-        values,
-      }) => {
-        const selectedBalance =
-          // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
-          // eslint-disable-next-line
-          // @ts-ignore
-          mockMultipleAccounts.find(
-            (account) => account.b58Code === values.senderPublicAddress
-          ).balance;
+      {({ errors, isSubmitting, dirty, handleBlur, isValid, setFieldValue, submitForm }) => {
+        const selectedBalance = selectedAccount.balanceStatus.unspentPmob;
         let increasedBalance;
         let totalSent;
 
@@ -157,9 +131,9 @@ export const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                       name="giftCodeB58"
                       id="giftCodeB58"
                       type="text"
-                      onBlur={(event) => {
+                      onBlur={(event: React.FocusEvent<GenericFieldHTMLAttributes>) => {
                         handleBlur(event);
-                        setFieldValue('giftCodeB58', event.target.value.trim());
+                        setFieldValue('giftCodeB58', (event.target.value as string).trim());
                       }}
                     />
                   </Box>

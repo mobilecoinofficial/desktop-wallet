@@ -10,8 +10,7 @@ import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { getFeePmob, updateContacts } from '../../../redux/services';
 import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
 import type { Theme } from '../../../theme';
-import { Contact, SelectedAccount } from '../../../types';
-import type { StringHex } from '../../../types/SpecialStrings';
+import { Contact, SelectedAccount, StringB58, StringHex } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
@@ -146,7 +145,7 @@ const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
     alias: string;
     fee: string;
     isChecked: boolean;
-    recipientPublicAddress: StringHex;
+    recipientPublicAddress: StringB58;
     valuePmob: string;
   }) => {
     let result;
@@ -237,7 +236,7 @@ const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
   }: {
     accountId: string;
     fee: string;
-    recipientPublicAddress: StringHex;
+    recipientPublicAddress: StringB58;
     valuePmob: string;
   }) => {
     try {

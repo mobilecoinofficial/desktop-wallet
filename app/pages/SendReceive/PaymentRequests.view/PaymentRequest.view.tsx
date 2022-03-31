@@ -22,8 +22,8 @@ import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
 import { checkB58PaymentRequest } from '../../../services/checkB58PaymentRequest.service';
 import type { Theme } from '../../../theme';
-import type { Account } from '../../../types/Account';
 import type { StringB58 } from '../../../types/SpecialStrings.d';
+import { errorToString } from '../../../utils/errorHandler';
 import { PaymentRequestProps } from './PaymentRequest.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -90,21 +90,20 @@ export const PaymentRequest: FC<PaymentRequestProps> = ({
       await onClickViewPaymentRequest({
         accountId: selectedAccount.account.accountId,
         fee: feePmob,
-        recipientPublicAddress: publicAddressB58,
-        valuePmob: value,
+        recipientPublicAddress: publicAddressB58 as string,
+        valuePmob: value as string,
       });
     } catch (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
+      const errorMessage = errorToString(error);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
-
-  const mockMultipleAccounts: Array<Account> = [selectedAccount.account];
 
   return (
     <Formik
       initialValues={{
         paymentRequestCodeB58: '',
-        senderPublicAddress: mockMultipleAccounts[0].publicAddress,
+        senderPublicAddress: selectedAccount.account.publicAddress,
         submit: null,
       }}
       validationSchema={Yup.object().shape({
@@ -121,13 +120,8 @@ export const PaymentRequest: FC<PaymentRequestProps> = ({
         resetForm,
         setFieldValue,
         submitForm,
-        values,
       }) => {
-        const selectedBalance = BigInt(
-          mockMultipleAccounts.find(
-            (account) => account.publicAdddress === values.senderPublicAddress
-          ).balance
-        );
+        const selectedBalance = BigInt(selectedAccount.balanceStatus.unspentPmob);
         let remainingBalance;
         let totalSent = 0;
         if (confirmation.totalValueConfirmation && confirmation.feeConfirmation) {

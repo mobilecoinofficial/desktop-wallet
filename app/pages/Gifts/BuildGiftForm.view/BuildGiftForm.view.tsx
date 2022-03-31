@@ -22,7 +22,6 @@ import { MOBNumberFormat } from '../../../components/MOBNumberFormat';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { MOBIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
-import type { Account } from '../../../types/Account.d';
 import { convertPicoMobStringToMob } from '../../../utils/convertMob';
 import { BuildGiftFormProps } from './BuildGiftForm';
 
@@ -90,10 +89,6 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
   const classes = useStyles();
   const { t } = useTranslation('BuildGiftForm');
 
-  // TODO - consider adding minimum gift ~ 1 MOB
-  // We'll use this array in prep for future patterns with multiple accounts
-  const mockMultipleAccounts: Array<Account> = [selectedAccount.account];
-
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
@@ -117,7 +112,7 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
         feeAmount: convertPicoMobStringToMob(feePmob),
         mobValue: '0', // mobs
         pin: '',
-        senderPublicAddress: mockMultipleAccounts[0].publicAddress,
+        senderPublicAddress: selectedAccount.account.publicAddress,
         submit: null,
       }}
       validationSchema={Yup.object().shape({
@@ -134,26 +129,26 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
           // TODO -- this is fine. we'll gut it anyway once we add multiple accounts
           // eslint-disable-next-line
           // @ts-ignore
-          BigInt(
-            mockMultipleAccounts.find(
-              (account) => account.publicAddress === values.senderPublicAddress
-            ).balanceStatus.unspentPmob
-          );
+          BigInt(selectedAccount.balanceStatus.unspentPmob);
 
         let isPinRequiredForTransaction = false;
         if (confirmation.totalValueConfirmation) {
           isPinRequiredForTransaction =
-            confirmation?.totalValueConfirmation + confirmation?.feeConfirmation >=
+            confirmation?.totalValueConfirmation.valueOf() +
+              confirmation?.feeConfirmation.valueOf() >=
             BigInt(pinThresholdPmob);
         }
 
-        let remainingBalance;
-        let totalSent = 0;
+        let remainingBalance = BigInt(0);
+        let totalSent = BigInt(0);
         if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
           remainingBalance =
             selectedBalance -
-            (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
-          totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
+            (confirmation?.totalValueConfirmation.valueOf() +
+              confirmation?.feeConfirmation.valueOf());
+          totalSent =
+            confirmation?.totalValueConfirmation.valueOf() +
+            confirmation?.feeConfirmation.valueOf();
         }
 
         return (
@@ -174,7 +169,7 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
                 onFocus={handleSelect}
                 validate={validateAmount(
                   selectedBalance,
-                  BigInt(values.feeAmount * 1_000_000_000_000)
+                  BigInt(parseInt(values.feeAmount) * 1_000_000_000_000)
                 )}
                 InputProps={{
                   inputComponent: MOBNumberFormat,

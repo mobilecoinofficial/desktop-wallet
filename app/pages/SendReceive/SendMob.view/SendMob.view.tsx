@@ -25,7 +25,7 @@ import {
   Tooltip,
   IconButton,
 } from '@material-ui/core';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikValues, GenericFieldHTMLAttributes } from 'formik';
 import { CheckboxWithLabel, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
@@ -111,7 +111,7 @@ export const SendMob: FC<SendMobProps> = ({
   const handleChecked = () => setIsChecked(!isChecked);
   const handleScanningQR = () => setIsScanningQR(!isScanningQR);
 
-  const handleOpen = (values) => async () => {
+  const handleOpen = (values: FormikValues) => async () => {
     onClickSend({
       accountId: selectedAccount.account.accountId,
       alias: values.alias,
@@ -307,9 +307,12 @@ export const SendMob: FC<SendMobProps> = ({
                         name="recipientPublicAddress"
                         type="text"
                         key="recipientPublicAddress"
-                        onBlur={(event) => {
+                        onBlur={(event: React.FocusEvent<GenericFieldHTMLAttributes>) => {
                           handleBlur(event);
-                          setFieldValue('recipientPublicAddress', event.target.value.trim());
+                          setFieldValue(
+                            'recipientPublicAddress',
+                            (event.target.value as string).trim()
+                          );
                         }}
                         InputProps={{
                           startAdornment: (

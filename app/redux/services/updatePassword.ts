@@ -5,6 +5,7 @@ import { deleteEncryptedPin } from '../../utils/LocalStore';
 import * as localStore from '../../utils/LocalStore';
 import { encryptAndStorePassword, validatePassword } from '../../utils/authentication';
 import { encrypt } from '../../utils/encryption';
+import { errorToString } from '../../utils/errorHandler';
 import { updatePasswordAction } from '../actions';
 import { store } from '../store';
 import { updateContacts } from './updateContacts';
@@ -35,11 +36,8 @@ export const updatePassword = async (oldPassword: string, newPassword: string): 
     await new Promise((resolve) => setTimeout(resolve, 5000));
     await getWalletStatus();
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw err;
-    }
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };
 

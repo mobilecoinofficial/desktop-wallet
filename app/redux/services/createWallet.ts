@@ -1,5 +1,6 @@
 import * as localStore from '../../utils/LocalStore';
 import { encryptAndStorePassword } from '../../utils/authentication';
+import { errorToString } from '../../utils/errorHandler';
 import { createWalletAction } from '../actions';
 import { store } from '../store';
 
@@ -18,10 +19,7 @@ export const createWallet = async (password: string): Promise<void> => {
     const { encryptedPassword, secretKey } = await encryptAndStorePassword(password);
     store.dispatch(createWalletAction(encryptedPassword, secretKey));
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw err;
-    }
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };

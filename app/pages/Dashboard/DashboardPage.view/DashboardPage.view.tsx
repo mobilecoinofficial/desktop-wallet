@@ -27,12 +27,7 @@ export const DashboardView: FC<DashboardPageProps> = ({
     <Container data-testid="DashboardOverview" className={classes.root} maxWidth="sm">
       <Box alignItems="center" />
       <AccountCard
-        account={{
-          accountId: selectedAccount.account.accountId,
-          b58Code: selectedAccount.account.mainAddress,
-          balance: selectedAccount.balanceStatus.unspentPmob,
-          name: selectedAccount.account.name as string,
-        }}
+        account={selectedAccount.account}
         accounts={accounts}
         onClickCode={onClickCode}
       />

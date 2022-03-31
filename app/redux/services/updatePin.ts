@@ -2,6 +2,7 @@ import { StringUInt64 } from '../../types';
 import * as localStore from '../../utils/LocalStore';
 import { validatePassword } from '../../utils/authentication';
 import { encrypt } from '../../utils/encryption';
+import { errorToString } from '../../utils/errorHandler';
 import { updatePinAction } from '../actions';
 import { store } from '../store';
 
@@ -35,11 +36,8 @@ export const updatePin = async (
 
     store.dispatch(updatePinAction(pin, pinThresholdPmob));
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw err;
-    }
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };
 

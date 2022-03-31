@@ -92,13 +92,7 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
 
   // TODO - consider adding minimum gift ~ 1 MOB
   // We'll use this array in prep for future patterns with multiple accounts
-  const mockMultipleAccounts: Array<Account> = [
-    {
-      b58Code: selectedAccount.account.mainAddress,
-      balance: selectedAccount.balanceStatus.unspentPmob,
-      name: selectedAccount.account.name,
-    },
-  ];
+  const mockMultipleAccounts: Array<Account> = [selectedAccount.account];
 
   const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
     let error;
@@ -123,7 +117,7 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
         feeAmount: convertPicoMobStringToMob(feePmob),
         mobValue: '0', // mobs
         pin: '',
-        senderPublicAddress: mockMultipleAccounts[0].b58Code,
+        senderPublicAddress: mockMultipleAccounts[0].publicAddress,
         submit: null,
       }}
       validationSchema={Yup.object().shape({
@@ -141,8 +135,9 @@ export const BuildGiftForm: FC<BuildGiftFormProps> = ({
           // eslint-disable-next-line
           // @ts-ignore
           BigInt(
-            mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
-              .balance
+            mockMultipleAccounts.find(
+              (account) => account.publicAddress === values.senderPublicAddress
+            ).balanceStatus.unspentPmob
           );
 
         let isPinRequiredForTransaction = false;

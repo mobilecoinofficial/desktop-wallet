@@ -25,6 +25,7 @@ import { SubmitButton, StarCheckbox } from '../../../components';
 import { RANDOM_COLORS } from '../../../constants/app';
 import { useIsMountedRef } from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
+import { errorToString } from '../../../utils/errorHandler';
 import { ContactFormProps } from './ContactForm';
 
 interface CirclePickerType {
@@ -147,8 +148,9 @@ export const ContactForm: FC<ContactFormProps> = ({
                 } catch (err) {
                   /* istanbul ignore next */
                   if (isMountedRef.current) {
+                    const errorMessage = errorToString(err);
                     setStatus({ success: false });
-                    setErrors({ submit: err.message });
+                    setErrors({ submit: errorMessage });
                     setSubmitting(false);
                   }
                 }

@@ -1,5 +1,6 @@
 // TODO - change to just Account; delete the other Account type
 import { AccountKey } from './AccountSecrets';
+import { BalanceStatus } from './BalanceStatus';
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
 // type AccountKey = {
@@ -51,10 +52,11 @@ export interface Account {
   accountId: StringHex;
   accountHeight?: StringUInt64;
   accountKey?: AccountKey;
+  balanceStatus: BalanceStatus;
   entropy?: StringHex;
   firstBlockIndex: StringUInt64;
   key_derivation_version: string;
-  mainAddress: StringB58;
+  publicAddress: StringB58;
   name: string | null;
   nextSubaddressIndex: StringUInt64;
   object: 'account';

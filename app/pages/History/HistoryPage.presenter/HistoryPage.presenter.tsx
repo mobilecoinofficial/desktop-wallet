@@ -13,6 +13,7 @@ import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { Addresses, Contact, SelectedAccount } from '../../../types';
 import { Confirmations } from '../../../types/Confirmation';
 import type { TransactionLog, TransactionLogs } from '../../../types/TransactionLog.d';
+import { errorToString } from '../../../utils/errorHandler';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
 
@@ -67,7 +68,8 @@ const HistoryPage: FC<Props> = (props: Props): JSX.Element => {
         clipboard.writeText(JSON.stringify(result.confirmations));
         enqueueSnackbar('Copied Confirmations to Clipboard');
       } catch (err) {
-        enqueueSnackbar(err.message, { variant: 'error' });
+        const errorMessage = errorToString(err);
+        enqueueSnackbar(errorMessage, { variant: 'error' });
       }
     })();
   };
@@ -96,7 +98,8 @@ const HistoryPage: FC<Props> = (props: Props): JSX.Element => {
 
         setTxoValidations(results);
       } catch (err) {
-        enqueueSnackbar(err.message, { variant: 'error' });
+        const errorMessage = errorToString(err);
+        enqueueSnackbar(errorMessage, { variant: 'error' });
       }
     })();
   };

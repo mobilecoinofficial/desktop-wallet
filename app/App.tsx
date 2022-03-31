@@ -73,6 +73,8 @@ const App: FC = (): JSX.Element => {
   useEffect(() => {
     setFetchUpdatesTimer(
       setInterval(async () => {
+        // store.getState() here ensures the selected account is in sync with the store.
+        // solves an issue of this component's local state fighting with the redux store.
         const { selectedAccount } = store.getState();
         if (selectedAccount !== initialReduxStoreState.selectedAccount) {
           await fetchBalance(selectedAccount);

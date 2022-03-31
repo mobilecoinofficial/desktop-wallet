@@ -1,5 +1,6 @@
 import * as fullServiceApi from '../../fullService/api';
 import { StringHex, TransactionAbbreviation } from '../../types';
+import { errorToString } from '../../utils/errorHandler';
 import { getAllTransactionLogsForAccountAction } from '../actions';
 import { store } from '../store';
 
@@ -17,10 +18,7 @@ export const getAllTransactionLogsForAccount = async (accountId: StringHex): Pro
     });
     store.dispatch(getAllTransactionLogsForAccountAction(transactionLogs));
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw err;
-    }
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };

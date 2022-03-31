@@ -1,5 +1,6 @@
 import * as fullServiceApi from '../../fullService/api';
 import { Accounts, Addresses, SelectedAccount } from '../../types';
+import { errorToString } from '../../utils/errorHandler';
 import { selectAccountAction } from '../actions';
 import { store } from '../store';
 import { getAllTransactionLogsForAccount } from './getAllTransactionLogsForAccount';
@@ -27,10 +28,7 @@ export const selectAccount = async (accountId: string): Promise<void> => {
 
     store.dispatch(selectAccountAction(accounts, addresses, selectedAccount));
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw err;
-    }
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };

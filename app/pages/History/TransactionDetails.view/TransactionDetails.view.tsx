@@ -147,7 +147,7 @@ export const TransactionDetails: FC<TransactionDetailsViewProps> = ({
           {t('transactionDetails')}
         </Typography>
         <CardContent>
-          {renderRow(`${t('blockHeight')}:`, finalizedBlockIndex)}
+          {renderRow(`${t('blockHeight')}:`, finalizedBlockIndex ?? 'unknown')}
           {renderSenderOrReceiver()}
           {renderRow(
             `${t('amount')}:`,

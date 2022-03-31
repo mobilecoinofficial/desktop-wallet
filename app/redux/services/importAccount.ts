@@ -1,4 +1,5 @@
 import * as fullServiceApi from '../../fullService/api';
+import { errorToString } from '../../utils/errorHandler';
 import { importAccountAction } from '../actions';
 import { store } from '../store';
 
@@ -35,11 +36,8 @@ export const importAccount = async (name: string | null, mnemonic: string): Prom
       )
     );
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw err;
-    }
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };
 
@@ -78,10 +76,7 @@ export const importLegacyAccount = async (name: string | null, entropy: string):
       )
     );
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw err;
-    }
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };

@@ -1,6 +1,7 @@
 import * as fullServiceApi from '../fullService/api';
 import { store } from '../redux/store';
 import { validatePassword } from '../utils/authentication';
+import { errorToString } from '../utils/errorHandler';
 
 export const retrieveEntropy = async (password: string): Promise<string> => {
   try {
@@ -18,11 +19,8 @@ export const retrieveEntropy = async (password: string): Promise<string> => {
 
     return accountSecrets.entropy ?? accountSecrets.mnemonic ?? '';
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw err;
-    }
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };
 

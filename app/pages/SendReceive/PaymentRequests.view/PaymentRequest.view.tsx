@@ -98,19 +98,13 @@ export const PaymentRequest: FC<PaymentRequestProps> = ({
     }
   };
 
-  const mockMultipleAccounts: Array<Account> = [
-    {
-      b58Code: selectedAccount.account.mainAddress,
-      balance: selectedAccount.balanceStatus.unspentPmob,
-      name: selectedAccount.account.name,
-    },
-  ];
+  const mockMultipleAccounts: Array<Account> = [selectedAccount.account];
 
   return (
     <Formik
       initialValues={{
         paymentRequestCodeB58: '',
-        senderPublicAddress: mockMultipleAccounts[0].b58Code,
+        senderPublicAddress: mockMultipleAccounts[0].publicAddress,
         submit: null,
       }}
       validationSchema={Yup.object().shape({
@@ -130,8 +124,9 @@ export const PaymentRequest: FC<PaymentRequestProps> = ({
         values,
       }) => {
         const selectedBalance = BigInt(
-          mockMultipleAccounts.find((account) => account.b58Code === values.senderPublicAddress)
-            .balance
+          mockMultipleAccounts.find(
+            (account) => account.publicAdddress === values.senderPublicAddress
+          ).balance
         );
         let remainingBalance;
         let totalSent = 0;

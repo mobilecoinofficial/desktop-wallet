@@ -1,15 +1,13 @@
 import * as fullServiceApi from '../fullService/api';
 import { WalletStatus } from '../types';
+import { errorToString } from '../utils/errorHandler';
 
 export const getWalletStatus = async (): Promise<WalletStatus> => {
   try {
     return await fullServiceApi.getWalletStatus().then((x) => x.walletStatus);
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw err;
-    }
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };
 

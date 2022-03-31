@@ -14,6 +14,7 @@ import { Contact, SelectedAccount } from '../../../types';
 import type { StringHex } from '../../../types/SpecialStrings';
 import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
+import { errorToString } from '../../../utils/errorHandler';
 import { isSyncedBuffered } from '../../../utils/isSyncedBuffered';
 import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
@@ -174,7 +175,8 @@ const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
       });
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -222,7 +224,8 @@ const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
       setConfirmation(txConfirmation);
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -252,7 +255,8 @@ const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
         txProposalReceiverB58Code,
       });
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 

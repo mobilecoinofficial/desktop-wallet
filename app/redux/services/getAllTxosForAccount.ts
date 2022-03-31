@@ -1,5 +1,6 @@
 import * as fullServiceApi from '../../fullService/api';
 import { StringHex } from '../../types';
+import { errorToString } from '../../utils/errorHandler';
 import { getAllTxosForAccountAction } from '../actions';
 import { store } from '../store';
 
@@ -11,10 +12,7 @@ export const getAllTxosForAccount = async (accountId: StringHex): Promise<void> 
       store.dispatch(getAllTxosForAccountAction(txos));
     }
   } catch (err) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw err;
-    }
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };

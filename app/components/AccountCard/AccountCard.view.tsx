@@ -57,10 +57,10 @@ export const AccountCard: FC<AccountCardProps> = ({
   const classes = useStyles();
   const { t } = useTranslation('AccountCard');
 
-  const { b58Code } = account;
+  const { publicAddress } = account;
 
   const handleCodeClicked = () =>
-    onClickCode(b58Code, isGift ? t('clipboardGift') : t('clipboardAddress'));
+    onClickCode(publicAddress, isGift ? t('clipboardGift') : t('clipboardAddress'));
 
   const handleToggleClick = () => setIsQRCode(!isQRCode);
 
@@ -71,7 +71,8 @@ export const AccountCard: FC<AccountCardProps> = ({
     headerString = isGift ? t('giftHeader') : t('accountHeader');
   }
 
-  const handleAccountSelectChange = (event) => selectAccount(event.target.value);
+  const handleAccountSelectChange = (event: React.ChangeEvent<{ name?: string; value: unknown }>) =>
+    selectAccount(event.target.value as string);
 
   return (
     <Container className={classes.container} fixed maxWidth="sm">
@@ -109,14 +110,14 @@ export const AccountCard: FC<AccountCardProps> = ({
               variant="h3"
             >
               {isQRCode ? (
-                <QRMob data-testid="account-card-qr-code" size={280} value={b58Code} />
+                <QRMob data-testid="account-card-qr-code" size={280} value={publicAddress} />
               ) : (
                 <Tooltip title={t('copyTooltip') as string} placement="right" arrow>
                   <Box data-testid="account-card-tooltip" onClick={handleCodeClicked}>
                     <LongCode
                       data-testid="account-card-long-code"
                       codeClass={classes.code}
-                      code={b58Code}
+                      code={publicAddress}
                     />
                   </Box>
                 </Tooltip>
@@ -140,14 +141,14 @@ export const AccountCard: FC<AccountCardProps> = ({
                     {accounts.accountIds.map((accountId: string) => (
                       <MenuItem value={accountId} key={accountId}>
                         {`${accounts.accountMap[accountId].name ?? 'unnamed'}`}&nbsp; (
-                        <ShortCode code={accounts.accountMap[accountId].mainAddress} />)
+                        <ShortCode code={accounts.accountMap[accountId].publicAddress} />)
                       </MenuItem>
                     ))}
                   </Select>
                 )}
               </Box>
               <Typography data-testid="account-card-short-code" color="textSecondary">
-                <ShortCode code={b58Code} />
+                <ShortCode code={publicAddress} />
               </Typography>
             </Box>
           </Box>

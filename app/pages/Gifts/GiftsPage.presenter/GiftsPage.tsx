@@ -21,6 +21,7 @@ import type { Theme } from '../../../theme';
 import { Accounts, GiftCode, SelectedAccount } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
+import { errorToString } from '../../../utils/errorHandler';
 import { isSyncedBuffered } from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
 import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
@@ -125,7 +126,8 @@ const GiftsPage: FC<Props> = (props: Props): JSX.Element => {
 
       setShowModalBuild(true);
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -164,7 +166,8 @@ const GiftsPage: FC<Props> = (props: Props): JSX.Element => {
       await deleteStoredGiftCodeB58(giftCodeToDelete);
       enqueueSnackbar(t('giftDeleted'), { variant: 'success' });
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
     getAllGiftCodes();
   };
@@ -201,7 +204,8 @@ const GiftsPage: FC<Props> = (props: Props): JSX.Element => {
         }
       }
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'warning' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'warning' });
     }
   };
 

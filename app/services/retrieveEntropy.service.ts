@@ -1,6 +1,6 @@
 import * as fullServiceApi from '../fullService/api';
 import { store } from '../redux/store';
-import { validatePassword } from '../utils/authentication';
+import { validatePassphrase } from '../utils/authentication';
 import { errorToString } from '../utils/errorHandler';
 
 const retrieveEntropy = async (password: string): Promise<string> => {
@@ -11,7 +11,7 @@ const retrieveEntropy = async (password: string): Promise<string> => {
     }
 
     // TODO - use secretKey returned here to pass to Full-Service to get secrets.
-    await validatePassword(password, encryptedPassword);
+    await validatePassphrase(password, encryptedPassword);
 
     const { accountSecrets } = await fullServiceApi.exportAccountSecrets({
       accountId: selectedAccount.account.accountId,

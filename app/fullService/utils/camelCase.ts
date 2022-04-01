@@ -11,6 +11,7 @@ const convertToString = (input: unknown): string => {
   return '';
 };
 
+// find words in an input, treating an alphanumeric id as one word.
 const findWords = (input: unknown): RegExpMatchArray | null => {
   const stringInput = convertToString(input);
 
@@ -20,6 +21,7 @@ const findWords = (input: unknown): RegExpMatchArray | null => {
   return stringInput.match(regex);
 };
 
+// convert a regex-generated array of matched words into a camelCased string
 const regExpMatchArrayToCamelCase = (regExpMatchArray: RegExpMatchArray | null): string => {
   if (!regExpMatchArray) {
     return '';
@@ -44,7 +46,7 @@ export const camelCaseString = (input: unknown): string => {
   return regExpMatchArrayToCamelCase(words);
 };
 
-
+// use JSON.parse's reviver functionality to modify the keys of an object
 export const camelCaseObjectKeys = (obj: any) =>
   JSON.parse(JSON.stringify(obj), function(k, v) {
     const camelCasedKey = camelCaseString(k);

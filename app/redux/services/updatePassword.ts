@@ -3,7 +3,7 @@ import { ipcRenderer } from 'electron';
 import { decryptContacts, getWalletStatus } from '../../services';
 import { deleteEncryptedPin } from '../../utils/LocalStore';
 import * as localStore from '../../utils/LocalStore';
-import { encryptAndStorePassword, validatePassword } from '../../utils/authentication';
+import { encryptAndStorePassphrase, validatePassphrase } from '../../utils/authentication';
 import { encrypt } from '../../utils/encryption';
 import { errorToString } from '../../utils/errorHandler';
 import { updatePasswordAction } from '../actions';
@@ -17,10 +17,9 @@ export const updatePassword = async (oldPassword: string, newPassword: string): 
       throw new Error('encryptedPassword assertion failed');
     }
 
-    await validatePassword(oldPassword, encryptedPassword);
-    const { secretKey, encryptedPassword: newEncryptedPassword } = await encryptAndStorePassword(
-      newPassword
-    );
+    await validatePassphrase(oldPassword, encryptedPassword);
+    const { secretKey, encryptedPassphrase: newEncryptedPassword } =
+      await encryptAndStorePassphrase(newPassword);
 
     // delete encrypted PIN based on old secretKey, re-encyrpt and save to local store
     deleteEncryptedPin();

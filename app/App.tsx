@@ -1,4 +1,5 @@
-import React, { useEffect, useState, FC } from 'react';
+import React, { useEffect, useState } from 'react';
+import type { FC } from 'react';
 
 import { ThemeProvider } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
@@ -51,8 +52,8 @@ const App: FC = () => {
 
   useEffect(() => {
     try {
-      const encryptedPassword = localStore.getEncryptedPassword();
-      initialize(encryptedPassword);
+      const encryptedPassphrase = localStore.getEncryptedPassphrase();
+      initialize(encryptedPassphrase);
     } catch (err) {
       initialize(undefined);
     }

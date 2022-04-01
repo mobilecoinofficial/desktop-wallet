@@ -1,7 +1,7 @@
 import * as fullServiceApi from '../../fullService/api';
 import { decryptContacts } from '../../services';
 import * as localStore from '../../utils/LocalStore';
-import { validatePassword } from '../../utils/authentication';
+import { validatePassphrase } from '../../utils/authentication';
 import { decrypt } from '../../utils/encryption';
 import { unlockWalletAction } from '../actions';
 import { initialReduxStoreState } from '../reducers/reducers';
@@ -13,7 +13,7 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
     throw new Error('encryptedPassword assertion failed');
   }
 
-  const { secretKey } = await validatePassword(password, encryptedPassword);
+  const { secretKey } = await validatePassphrase(password, encryptedPassword);
 
   const contacts = await decryptContacts(secretKey);
 

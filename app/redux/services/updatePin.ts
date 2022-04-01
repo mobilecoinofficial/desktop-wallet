@@ -1,6 +1,6 @@
 import { StringUInt64 } from '../../types';
 import * as localStore from '../../utils/LocalStore';
-import { validatePassword } from '../../utils/authentication';
+import { validatePassphrase } from '../../utils/authentication';
 import { encrypt } from '../../utils/encryption';
 import { errorToString } from '../../utils/errorHandler';
 import { updatePinAction } from '../actions';
@@ -20,7 +20,7 @@ export const updatePin = async (
     }
 
     if (password) {
-      await validatePassword(password, encryptedPassword);
+      await validatePassphrase(password, encryptedPassword);
     } else if (existingPin) {
       // This only triggers if attempting to set pin without password.
       // You cannot overwrite an existing PIN without the correct password!

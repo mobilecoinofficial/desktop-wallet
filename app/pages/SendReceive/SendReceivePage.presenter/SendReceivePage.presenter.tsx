@@ -5,13 +5,13 @@ import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { clipboard, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { getFeePmob, updateContacts } from '../../../redux/services';
 import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
 import type { Theme } from '../../../theme';
-import { Contact, SelectedAccount, StringHex } from '../../../types';
+import { StringHex } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
@@ -45,9 +45,16 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-type Props = ReduxProps;
+export const SendReceivePage: FC = (): JSX.Element => {
+  const {
+    contacts,
+    pin: existingPin,
+    offlineModeEnabled,
+    feePmob,
+    pinThresholdPmob,
+    selectedAccount,
+  } = useSelector((state: ReduxStoreState) => state);
 
-const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [sendingStatus, setSendingStatus] = useState(Showing.INPUT_FORM);
@@ -56,15 +63,6 @@ const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
   const [formIsChecked, setIsChecked] = useState(false);
   const [formAlias, setAlias] = useState('');
   const [formRecipientPublicAddress, setRecipientPublicAddress] = useState('');
-
-  const {
-    contacts,
-    pin: existingPin,
-    offlineModeEnabled,
-    feePmob,
-    pinThresholdPmob,
-    selectedAccount,
-  } = props;
 
   useEffect(() => {
     getFeePmob();
@@ -326,28 +324,3 @@ const SendReceivePage: FC<Props> = (props: Props): JSX.Element => {
     </Box>
   );
 };
-
-type ReduxProps = {
-  contacts: Contact[];
-  pin: string | undefined;
-  offlineModeEnabled: boolean;
-  feePmob: string;
-  pinThresholdPmob: string;
-  selectedAccount: SelectedAccount;
-};
-
-const mapState = (state: ReduxStoreState): ReduxProps => ({
-  contacts: state.contacts,
-  feePmob: state.feePmob,
-  offlineModeEnabled: state.offlineModeEnabled,
-  pin: state.pin,
-  pinThresholdPmob: state.pinThresholdPmob,
-  selectedAccount: state.selectedAccount,
-});
-
-export const ConnectedSendReceivePage = connect<
-  ReduxProps,
-  Record<string, never>,
-  Record<string, never>,
-  ReduxStoreState
->(mapState)(SendReceivePage);

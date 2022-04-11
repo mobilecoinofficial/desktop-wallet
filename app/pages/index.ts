@@ -1,21 +1,21 @@
-import { ConnectedAuthPage } from './Auth';
-import { ConnectedContactsPage } from './Contacts';
+import { AuthPage } from './Auth';
+import { ContactsPage } from './Contacts';
 import { CrashReportPage } from './CrashReport';
-import { ConnectedDashboardPage } from './Dashboard';
-import { ConnectedGiftsPage } from './Gifts';
-import { ConnectedHistoryPage } from './History';
+import { DashboardPage } from './Dashboard';
+import { GiftsPage } from './Gifts';
+import { HistoryPage } from './History';
 import { NotFoundPage } from './NotFound';
-import { ConnectedSendReceivePage } from './SendReceive';
-import { ConnectedSettingsPage } from './Settings';
+import { SendReceivePage } from './SendReceive';
+import { SettingsPage } from './Settings';
 
 export {
-  ConnectedAuthPage,
-  ConnectedContactsPage,
+  AuthPage,
+  ContactsPage,
   CrashReportPage,
-  ConnectedDashboardPage,
-  ConnectedGiftsPage,
-  ConnectedHistoryPage,
+  DashboardPage,
+  GiftsPage,
+  HistoryPage,
   NotFoundPage,
-  ConnectedSendReceivePage,
-  ConnectedSettingsPage,
+  SendReceivePage,
+  SettingsPage,
 };

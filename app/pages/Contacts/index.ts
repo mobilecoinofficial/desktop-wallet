@@ -1,4 +1,4 @@
-import { ConnectedContactsPage } from './ContactsPage.presenter';
+import { ContactsPage } from './ContactsPage.presenter';
 
-export default ConnectedContactsPage;
-export { ConnectedContactsPage };
+export default ContactsPage;
+export { ContactsPage };

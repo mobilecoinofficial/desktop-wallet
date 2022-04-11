@@ -5,15 +5,14 @@ import { Box, Typography } from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
 import { getConfirmations, validateConfirmation } from '../../../fullService/api';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { Addresses, Contact, SelectedAccount } from '../../../types';
 import { Confirmations } from '../../../types/Confirmation';
-import type { TransactionLog, TransactionLogs } from '../../../types/TransactionLog.d';
+import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { errorToString } from '../../../utils/errorHandler';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
@@ -21,17 +20,17 @@ import { TransactionDetails } from '../TransactionDetails.view';
 const HISTORY = 'history';
 const DETAILS = 'details';
 
-type Props = ReduxProps;
+export const HistoryPage: FC = (): JSX.Element => {
+  const { addresses, contacts, selectedAccount, transactionLogs } = useSelector(
+    (state: ReduxStoreState) => state
+  );
 
-const HistoryPage: FC<Props> = (props: Props): JSX.Element => {
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [txoValidations, setTxoValidations] = useState({});
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
   const [transactionLogsState, setTransactionLogsState] = useState([]);
-
-  const { addresses, contacts, selectedAccount, transactionLogs } = props;
 
   const buildList = (): TransactionLog[] => {
     if (transactionLogs) {
@@ -150,24 +149,3 @@ const HistoryPage: FC<Props> = (props: Props): JSX.Element => {
       return <Redirect to="-" />;
   }
 };
-
-type ReduxProps = {
-  addresses: Addresses;
-  contacts: Contact[];
-  selectedAccount: SelectedAccount;
-  transactionLogs: TransactionLogs | null;
-};
-
-const mapState = (state: ReduxStoreState): ReduxProps => ({
-  addresses: state.addresses,
-  contacts: state.contacts,
-  selectedAccount: state.selectedAccount,
-  transactionLogs: state.transactionLogs,
-});
-
-export const ConnectedHistoryPage = connect<
-  ReduxProps,
-  Record<string, never>,
-  Record<string, never>,
-  ReduxStoreState
->(mapState)(HistoryPage);

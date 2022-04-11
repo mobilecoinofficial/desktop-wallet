@@ -7,17 +7,17 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 
 import { WHITE_LIGHT } from './constants/colors';
 import routePaths from './constants/routePaths';
-import { ConnectedDashboardLayout } from './layouts/DashboardLayout';
+import { DashboardLayout } from './layouts/DashboardLayout';
 import type { DashboardLayoutProps } from './layouts/DashboardLayout';
 import {
-  ConnectedAuthPage,
-  ConnectedContactsPage,
+  AuthPage,
+  ContactsPage,
   CrashReportPage,
-  ConnectedDashboardPage,
-  ConnectedGiftsPage,
-  ConnectedHistoryPage,
-  ConnectedSendReceivePage,
-  ConnectedSettingsPage,
+  DashboardPage,
+  GiftsPage,
+  HistoryPage,
+  SendReceivePage,
+  SettingsPage,
   NotFoundPage,
 } from './pages';
 
@@ -35,10 +35,10 @@ RedirectToNotFound.displayName = 'RedirectToNotFound';
 const closeApp = () => ipcRenderer.send('close-app');
 
 const DashboardLayoutWithClose: FC<DashboardLayoutProps> = ({ children }: DashboardLayoutProps) => (
-  <ConnectedDashboardLayout onClose={closeApp}>{children}</ConnectedDashboardLayout>
+  <DashboardLayout onClose={closeApp}>{children}</DashboardLayout>
 );
 
-const DashboardPageWithClose: FC = () => <ConnectedDashboardPage onClose={closeApp} />;
+const DashboardPageWithClose: FC = () => <DashboardPage onClose={closeApp} />;
 
 export const internalRoutes: Routes = [
   {
@@ -47,7 +47,7 @@ export const internalRoutes: Routes = [
     path: routePaths.NOT_FOUND,
   },
   {
-    Component: ConnectedAuthPage,
+    Component: AuthPage,
     exact: true,
     path: routePaths.ROOT,
   },
@@ -61,27 +61,27 @@ export const internalRoutes: Routes = [
         path: routePaths.APP_DASHBOARD,
       },
       {
-        Component: ConnectedSendReceivePage,
+        Component: SendReceivePage,
         exact: true,
         path: routePaths.APP_TRANSACTION,
       },
       {
-        Component: ConnectedGiftsPage,
+        Component: GiftsPage,
         exact: true,
         path: routePaths.APP_GIFTING,
       },
       {
-        Component: ConnectedHistoryPage,
+        Component: HistoryPage,
         exact: true,
         path: routePaths.APP_HISTORY,
       },
       {
-        Component: ConnectedContactsPage,
+        Component: ContactsPage,
         exact: true,
         path: routePaths.APP_CONTACTS,
       },
       {
-        Component: ConnectedSettingsPage,
+        Component: SettingsPage,
         exact: true,
         path: routePaths.APP_SETTINGS,
       },

@@ -5,7 +5,7 @@ import { Box, Container, Fade, Grid, makeStyles, Modal, Tab, Tabs } from '@mater
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
@@ -19,7 +19,6 @@ import {
   submitGiftCode,
 } from '../../../services';
 import type { Theme } from '../../../theme';
-import { Accounts, GiftCode, SelectedAccount } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
@@ -63,9 +62,16 @@ const EMPTY_CONFIRMATION_BUILD = {
   txProposal: {} as TxProposal,
 };
 
-type Props = ReduxProps;
+export const GiftsPage: FC = (): JSX.Element => {
+  const {
+    accounts,
+    feePmob,
+    giftCodes,
+    pin: existingPin,
+    pinThresholdPmob,
+    selectedAccount,
+  } = useSelector((state: ReduxStoreState) => state);
 
-const GiftsPage: FC<Props> = (props: Props): JSX.Element => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -77,15 +83,6 @@ const GiftsPage: FC<Props> = (props: Props): JSX.Element => {
   const [confirmationConsume, setConfirmationConsume] = useState(EMPTY_CONFIRMATION_CONSUME);
 
   const { t } = useTranslation('GiftingView');
-  const {
-    accounts,
-    feePmob,
-    giftCodes,
-    pin: existingPin,
-    pinThresholdPmob,
-    // next for both
-    selectedAccount,
-  } = props;
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
@@ -318,28 +315,3 @@ const GiftsPage: FC<Props> = (props: Props): JSX.Element => {
     </Box>
   );
 };
-
-type ReduxProps = {
-  accounts: Accounts;
-  feePmob: string;
-  giftCodes: GiftCode[] | null;
-  pin: string | undefined;
-  pinThresholdPmob: string;
-  selectedAccount: SelectedAccount;
-};
-
-const mapState = (state: ReduxStoreState): ReduxProps => ({
-  accounts: state.accounts,
-  feePmob: state.feePmob,
-  giftCodes: state.giftCodes,
-  pin: state.pin,
-  pinThresholdPmob: state.pinThresholdPmob,
-  selectedAccount: state.selectedAccount,
-});
-
-export const ConnectedGiftsPage = connect<
-  ReduxProps,
-  Record<string, never>,
-  Record<string, never>,
-  ReduxStoreState
->(mapState)(GiftsPage);

@@ -5,7 +5,7 @@ import { Box, Container, makeStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import {
@@ -28,7 +28,6 @@ import {
 } from '../../../redux/services';
 import { retrieveEntropy } from '../../../services';
 import type { Theme } from '../../../theme';
-import { Accounts, SelectedAccount, TransactionLogs } from '../../../types';
 import type { StringUInt64 } from '../../../types/SpecialStrings.d';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { getKeychainAccounts, setKeychainAccount } from '../../../utils/keytarService';
@@ -59,9 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-type Props = ReduxProps;
-
-const SettingsPage: FC<Props> = (props: Props): JSX.Element => {
+export const SettingsPage: FC = (): JSX.Element => {
   const classes = useStyles();
   const {
     accounts,
@@ -71,7 +68,8 @@ const SettingsPage: FC<Props> = (props: Props): JSX.Element => {
     pin,
     selectedAccount,
     transactionLogs,
-  } = props;
+  } = useSelector((state: ReduxStoreState) => state);
+
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');
   const { enqueueSnackbar } = useSnackbar();
@@ -295,30 +293,3 @@ const SettingsPage: FC<Props> = (props: Props): JSX.Element => {
       return <Redirect to="-" />;
   }
 };
-
-type ReduxProps = {
-  accounts: Accounts;
-  addingAccount: boolean;
-  offlineModeEnabled: boolean;
-  pinThresholdPmob: string;
-  pin: string | undefined;
-  selectedAccount: SelectedAccount;
-  transactionLogs: TransactionLogs | null;
-};
-
-const mapState = (state: ReduxStoreState): ReduxProps => ({
-  accounts: state.accounts,
-  addingAccount: state.addingAccount,
-  offlineModeEnabled: state.offlineModeEnabled,
-  pin: state.pin,
-  pinThresholdPmob: state.pinThresholdPmob,
-  selectedAccount: state.selectedAccount,
-  transactionLogs: state.transactionLogs,
-});
-
-export const ConnectedSettingsPage = connect<
-  ReduxProps,
-  Record<string, never>,
-  Record<string, never>,
-  ReduxStoreState
->(mapState)(SettingsPage);

@@ -1,1 +1,1 @@
-export { ConnectedAuthPage } from './AuthPage.presenter';
+export { AuthPage } from './AuthPage.presenter';

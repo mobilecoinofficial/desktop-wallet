@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { Box, Button, Card, Container, Divider, makeStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { SplashScreen } from '../../../components/SplashScreen';
@@ -23,7 +23,6 @@ import {
 } from '../../../redux/services';
 import { getWalletStatus } from '../../../services';
 import type { Theme } from '../../../theme';
-import { SelectedAccount } from '../../../types';
 import * as localStore from '../../../utils/LocalStore';
 import { isHex64 } from '../../../utils/bip39Functions';
 import { getKeychainAccounts } from '../../../utils/keytarService';
@@ -72,11 +71,11 @@ const untilFullServiceRuns = async () => {
 };
 /* eslint-enable no-await-in-loop */
 
-type Props = ReduxProps;
-
-const AuthPage: FC<Props> = (props: Props): JSX.Element => {
+export const AuthPage: FC = (): JSX.Element => {
+  const { addingAccount, isAuthenticated, selectedAccount } = useSelector(
+    (state: ReduxStoreState) => state
+  );
   const classes = useStyles();
-  const { addingAccount, isAuthenticated, selectedAccount } = props;
   const [selectedView, setView] = useState(1);
   const { t } = useTranslation('AuthPage');
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
@@ -258,22 +257,3 @@ const AuthPage: FC<Props> = (props: Props): JSX.Element => {
     </Box>
   );
 };
-
-type ReduxProps = {
-  addingAccount: boolean;
-  isAuthenticated: boolean;
-  selectedAccount: SelectedAccount;
-};
-
-const mapState = (state: ReduxStoreState): ReduxProps => ({
-  addingAccount: state.addingAccount,
-  isAuthenticated: state.isAuthenticated,
-  selectedAccount: state.selectedAccount,
-});
-
-export const ConnectedAuthPage = connect<
-  ReduxProps,
-  Record<string, never>,
-  Record<string, never>,
-  ReduxStoreState
->(mapState)(AuthPage);

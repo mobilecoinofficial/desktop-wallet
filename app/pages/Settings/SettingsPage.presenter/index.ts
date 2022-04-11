@@ -1,4 +1,4 @@
-import { ConnectedSettingsPage } from './SettingsPage.presenter';
+import { SettingsPage } from './SettingsPage.presenter';
 
-export default ConnectedSettingsPage;
-export { ConnectedSettingsPage };
+export default SettingsPage;
+export { SettingsPage };

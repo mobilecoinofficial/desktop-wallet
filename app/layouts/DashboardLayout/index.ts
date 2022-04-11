@@ -1,6 +1,6 @@
 import type { DashboardLayoutProps } from './DashboardLayout.presenter';
-import { ConnectedDashboardLayout } from './DashboardLayout.presenter';
+import { DashboardLayout } from './DashboardLayout.presenter';
 
-export default ConnectedDashboardLayout;
-export { ConnectedDashboardLayout };
+export default DashboardLayout;
+export { DashboardLayout };
 export type { DashboardLayoutProps };

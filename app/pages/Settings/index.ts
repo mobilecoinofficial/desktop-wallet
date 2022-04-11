@@ -1,1 +1,1 @@
-export { ConnectedSettingsPage } from './SettingsPage.presenter';
+export { SettingsPage } from './SettingsPage.presenter';

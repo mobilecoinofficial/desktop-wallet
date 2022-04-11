@@ -1,4 +1,4 @@
-import isValidPin from './isValidPin';
+import { isValidPin } from './isValidPin';
 
 describe('PIN is valid', () => {
   test('if made of 6 digits or longer', () => {

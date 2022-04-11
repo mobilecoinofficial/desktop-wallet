@@ -26,10 +26,6 @@ RUST_LOG=debug,mc_connection=error,mc_ledger_sync=error ./full-service \
         --ledger-db "${LEDGER_DB_DIR}" \
         --wallet-db "${WALLET_DB_FILE}" \
         --poll-interval 1 \
-        --peer mc://node1.prod.mobilecoinww.com/ \
-        --peer mc://node2.prod.mobilecoinww.com/ \
-        --tx-source-url https://ledger.mobilecoinww.com/node1.prod.mobilecoinww.com/ \
-        --tx-source-url https://ledger.mobilecoinww.com/node2.prod.mobilecoinww.com/ \
         --fog-ingest-enclave-css ./ingest-enclave.css \
         --offline \
         &> /tmp/full-service-$(date '+%Y-%m-%d-%H:%M:%S').log &

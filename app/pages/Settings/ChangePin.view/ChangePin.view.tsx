@@ -21,7 +21,7 @@ import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
 import type { Theme } from '../../../theme';
 import { convertPicoMobStringToMob } from '../../../utils/convertMob';
-import isValidPin from '../../../utils/isValidPin';
+import { isValidPin } from '../../../utils/isValidPin';
 import { ChangePinViewProps } from './ChangePin';
 
 const useStyles = makeStyles((theme: Theme) => ({

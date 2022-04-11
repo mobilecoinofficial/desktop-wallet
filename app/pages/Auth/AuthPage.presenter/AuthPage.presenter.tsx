@@ -4,23 +4,24 @@ import type { FC } from 'react';
 import { Box, Button, Card, Container, Divider, makeStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { SplashScreen } from '../../../components/SplashScreen';
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
-import useFullService from '../../../hooks/useFullService';
+import { initialReduxStoreState, ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   addAccount,
   createAccount,
   createWallet,
   deleteWallet,
-  getWalletStatus,
   importAccount,
   importLegacyAccount,
   selectAccount,
   unlockWallet,
-} from '../../../services';
+} from '../../../redux/services';
+import { getWalletStatus } from '../../../services';
 import type { Theme } from '../../../theme';
 import * as localStore from '../../../utils/LocalStore';
 import { isHex64 } from '../../../utils/bip39Functions';
@@ -70,9 +71,11 @@ const untilFullServiceRuns = async () => {
 };
 /* eslint-enable no-await-in-loop */
 
-const AuthPage: FC = () => {
+export const AuthPage: FC = (): JSX.Element => {
+  const { addingAccount, isAuthenticated, selectedAccount } = useSelector(
+    (state: ReduxStoreState) => state
+  );
   const classes = useStyles();
-  const { addingAccount, isAuthenticated, selectedAccount } = useFullService();
   const [selectedView, setView] = useState(1);
   const { t } = useTranslation('AuthPage');
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
@@ -101,7 +104,11 @@ const AuthPage: FC = () => {
     return <SplashScreen />;
   }
 
-  if (isAuthenticated && selectedAccount != null && !addingAccount) {
+  if (
+    isAuthenticated &&
+    selectedAccount !== initialReduxStoreState.selectedAccount &&
+    !addingAccount
+  ) {
     return <Redirect to={routePaths.APP_DASHBOARD} />;
   }
 
@@ -220,15 +227,12 @@ const AuthPage: FC = () => {
     }
   };
 
+  // TODO: improve error handling
   const onClickImport = async (accountName: string, entropy: string) => {
-    try {
-      if (isHex64(entropy)) {
-        await importLegacyAccount(accountName, entropy);
-      } else {
-        await importAccount(accountName, entropy);
-      }
-    } catch (err) {
-      /* nothing now... TODO: fix! */
+    if (isHex64(entropy)) {
+      await importLegacyAccount(accountName, entropy);
+    } else {
+      await importAccount(accountName, entropy);
     }
   };
 
@@ -253,6 +257,3 @@ const AuthPage: FC = () => {
     </Box>
   );
 };
-
-export default AuthPage;
-export { AuthPage };

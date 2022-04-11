@@ -4,12 +4,13 @@ import type { FC } from 'react';
 import { Box, Container, Grid, makeStyles } from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import routePaths from '../../../constants/routePaths';
 import { logger } from '../../../fullService/utils';
-import useFullService from '../../../hooks/useFullService';
-import { addAccount } from '../../../services';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { addAccount } from '../../../redux/services';
 import type { Theme } from '../../../theme';
 import { DashboardView } from '../DashboardPage.view/DashboardPage.view';
 import type { DashboardPageProps } from './DashboardPage.d';
@@ -23,9 +24,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) => {
+export const DashboardPage: FC<DashboardPageProps> = (props: DashboardPageProps): JSX.Element => {
+  const { accounts, addingAccount, selectedAccount } = useSelector(
+    (state: ReduxStoreState) => state
+  );
   const classes = useStyles();
-  const { accounts, addingAccount, selectedAccount } = useFullService();
+  const { onClose } = props;
   const { enqueueSnackbar } = useSnackbar();
 
   if (addingAccount) {
@@ -60,6 +64,3 @@ const DashboardPage: FC<DashboardPageProps> = ({ onClose }: DashboardPageProps) 
     </Box>
   );
 };
-
-export default DashboardPage;
-export { DashboardPage };

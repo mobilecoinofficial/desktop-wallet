@@ -5,28 +5,32 @@ import { Box, Typography } from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
 import { getConfirmations, validateConfirmation } from '../../../fullService/api';
-import useFullService from '../../../hooks/useFullService';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { Confirmations } from '../../../types/Confirmation';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
+import { errorToString } from '../../../utils/errorHandler';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
 
 const HISTORY = 'history';
 const DETAILS = 'details';
 
-const HistoryPage: FC = () => {
+export const HistoryPage: FC = (): JSX.Element => {
+  const { addresses, contacts, selectedAccount, transactionLogs } = useSelector(
+    (state: ReduxStoreState) => state
+  );
+
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [txoValidations, setTxoValidations] = useState({});
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
   const [transactionLogsState, setTransactionLogsState] = useState([]);
-
-  const { addresses, contacts, selectedAccount, transactionLogs, txos } = useFullService();
 
   const buildList = (): TransactionLog[] => {
     if (transactionLogs) {
@@ -64,7 +68,8 @@ const HistoryPage: FC = () => {
         clipboard.writeText(JSON.stringify(result.confirmations));
         enqueueSnackbar('Copied Confirmations to Clipboard');
       } catch (err) {
-        enqueueSnackbar(err.message, { variant: 'error' });
+        const errorMessage = errorToString(err);
+        enqueueSnackbar(errorMessage, { variant: 'error' });
       }
     })();
   };
@@ -93,7 +98,8 @@ const HistoryPage: FC = () => {
 
         setTxoValidations(results);
       } catch (err) {
-        enqueueSnackbar(err.message, { variant: 'error' });
+        const errorMessage = errorToString(err);
+        enqueueSnackbar(errorMessage, { variant: 'error' });
       }
     })();
   };
@@ -136,7 +142,6 @@ const HistoryPage: FC = () => {
           onChangedComment={() => {}}
           transactionLog={currentTransactionLog}
           txoValidations={txoValidations}
-          txos={txos}
         />
       );
 
@@ -144,6 +149,3 @@ const HistoryPage: FC = () => {
       return <Redirect to="-" />;
   }
 };
-
-export default HistoryPage;
-export { HistoryPage };

@@ -35,7 +35,6 @@ import { SubmitButton, MOBNumberFormat, QRScanner } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
 import { StarIcon, MOBIcon, QRCodeIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
-import type { Account } from '../../../types/Account.d';
 import {
   convertMobStringToPicoMobString,
   convertPicoMobStringToMob,
@@ -415,7 +414,7 @@ const SendMob: FC<SendMobProps> = ({
                       aria-describedby="transition-modal-description"
                       className={classes.modal}
                       open={showing === Showing.CONFIRM_FORM}
-                      onClose={handleClose(setSubmitting)}
+                      onClose={handleClose(setSubmitting, resetForm)}
                       closeAfterTransition
                       BackdropComponent={Backdrop}
                       BackdropProps={{

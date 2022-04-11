@@ -1,4 +1,4 @@
-import type { ConfirmEntropyKnownService, SetPinService } from '../../../services';
+import { UpdatePinService } from '../../../redux/services/updatePin';
 import type { StringHex } from '../../../types/SpecialStrings.d';
 
 type PendingSecrets = {
@@ -7,9 +7,9 @@ type PendingSecrets = {
 };
 
 export interface OnboardingModalProps {
-  confirmEntropyKnown: ConfirmEntropyKnownService;
+  confirmEntropyKnown: () => Promise<void>;
   isEntropyKnown: boolean;
   isPinRequired: boolean;
   pendingSecrets: PendingSecrets | null;
-  setPin: SetPinService;
+  updatePin: UpdatePinService;
 }

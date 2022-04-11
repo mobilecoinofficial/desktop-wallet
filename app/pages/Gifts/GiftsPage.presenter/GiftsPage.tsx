@@ -5,22 +5,23 @@ import { Box, Container, Fade, Grid, makeStyles, Modal, Tab, Tabs } from '@mater
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
-import useFullService from '../../../hooks/useFullService';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { getAllGiftCodes, getFeePmob } from '../../../redux/services';
 import {
   buildGiftCode,
   checkGiftCodeStatus,
   claimGiftCode,
   deleteStoredGiftCodeB58,
-  getAllGiftCodes,
-  getFeePmob,
   submitGiftCode,
 } from '../../../services';
 import type { Theme } from '../../../theme';
 import type { TxProposal } from '../../../types/TxProposal';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
+import { errorToString } from '../../../utils/errorHandler';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
 import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
@@ -61,7 +62,16 @@ const EMPTY_CONFIRMATION_BUILD = {
   txProposal: {} as TxProposal,
 };
 
-const GiftsPage: FC = () => {
+export const GiftsPage: FC = (): JSX.Element => {
+  const {
+    accounts,
+    feePmob,
+    giftCodes,
+    pin: existingPin,
+    pinThresholdPmob,
+    selectedAccount,
+  } = useSelector((state: ReduxStoreState) => state);
+
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -73,15 +83,6 @@ const GiftsPage: FC = () => {
   const [confirmationConsume, setConfirmationConsume] = useState(EMPTY_CONFIRMATION_CONSUME);
 
   const { t } = useTranslation('GiftingView');
-  const {
-    accounts,
-    feePmob,
-    giftCodes,
-    pin: existingPin,
-    pinThresholdPmob,
-    // next for both
-    selectedAccount,
-  } = useFullService();
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
@@ -123,7 +124,8 @@ const GiftsPage: FC = () => {
 
       setShowModalBuild(true);
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -162,7 +164,8 @@ const GiftsPage: FC = () => {
       await deleteStoredGiftCodeB58(giftCodeToDelete);
       enqueueSnackbar(t('giftDeleted'), { variant: 'success' });
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
     getAllGiftCodes();
   };
@@ -199,7 +202,8 @@ const GiftsPage: FC = () => {
         }
       }
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'warning' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'warning' });
     }
   };
 
@@ -218,8 +222,12 @@ const GiftsPage: FC = () => {
     setShowModalConsume(false);
   };
 
-  useEffect(getAllGiftCodes, []);
-  useEffect(getFeePmob, []);
+  useEffect(() => {
+    getAllGiftCodes();
+  }, []);
+  useEffect(() => {
+    getFeePmob();
+  }, []);
 
   return (
     <Box className={classes.root}>
@@ -307,6 +315,3 @@ const GiftsPage: FC = () => {
     </Box>
   );
 };
-
-export default GiftsPage;
-export { GiftsPage };

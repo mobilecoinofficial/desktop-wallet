@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { selectAccount } from '../../services';
+import { selectAccount } from '../../redux/services';
 import type { Theme } from '../../theme';
 import { LongCode } from '../LongCode';
 import { QRMob } from '../QRMob';

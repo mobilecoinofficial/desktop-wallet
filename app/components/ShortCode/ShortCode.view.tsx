@@ -10,7 +10,7 @@ import {
   SUPER_LUCKY_ARRAY_END_INDEX,
 } from '../../constants/indicies';
 import { Theme } from '../../theme';
-import isStringNumber from '../../utils/isStringNumber';
+import { isStringNumber } from '../../utils/isStringNumber';
 import { ShortCodeProps } from './ShortCode';
 
 const useStyles = makeStyles((theme: Theme) => ({

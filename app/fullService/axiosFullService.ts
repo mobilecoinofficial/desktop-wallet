@@ -2,7 +2,8 @@ import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import snakeCaseKeys from 'snakecase-keys';
 
-import { skipKeysCamelCase } from './utils';
+import { errorToString } from '../utils/errorHandler';
+import { camelCaseObjectKeys } from './utils/camelCase';
 
 type FullServiceResponse = AxiosResponse & {
   data: {
@@ -59,12 +60,10 @@ const axiosFullService = async <T>(
 
     // TODO: determine if we need to handle errors here or elsewhere
     // such as the API or services
-    return skipKeysCamelCase(response);
+    return camelCaseObjectKeys(response);
   } catch (error) {
-    // TODO: when we hit an unknown error, I think we can assume this application needs to restart
-    // So, we should figure out a bug report path and a reset button.
-    const errorMessage = (error as Error).message || 'Unknown Rocket error';
-    return { error: errorMessage };
+    const errorMessage = errorToString(error);
+    throw new Error(errorMessage);
   }
 };
 

@@ -5,19 +5,16 @@ import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { clipboard, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
-import useFullService from '../../../hooks/useFullService';
-import {
-  assignAddressForAccount,
-  buildTransaction,
-  getFeePmob,
-  submitTransaction,
-  updateContacts,
-} from '../../../services';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { getFeePmob, updateContacts } from '../../../redux/services';
+import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
 import type { Theme } from '../../../theme';
-import type { StringHex } from '../../../types/SpecialStrings';
+import { StringHex } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
+import { errorToString } from '../../../utils/errorHandler';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
@@ -48,7 +45,16 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const SendReceivePage: FC = () => {
+export const SendReceivePage: FC = (): JSX.Element => {
+  const {
+    contacts,
+    pin: existingPin,
+    offlineModeEnabled,
+    feePmob,
+    pinThresholdPmob,
+    selectedAccount,
+  } = useSelector((state: ReduxStoreState) => state);
+
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [sendingStatus, setSendingStatus] = useState(Showing.INPUT_FORM);
@@ -57,15 +63,6 @@ const SendReceivePage: FC = () => {
   const [formIsChecked, setIsChecked] = useState(false);
   const [formAlias, setAlias] = useState('');
   const [formRecipientPublicAddress, setRecipientPublicAddress] = useState('');
-
-  const {
-    contacts,
-    pin: existingPin,
-    offlineModeEnabled,
-    feePmob,
-    pinThresholdPmob,
-    selectedAccount,
-  } = useFullService();
 
   useEffect(() => {
     getFeePmob();
@@ -176,7 +173,8 @@ const SendReceivePage: FC = () => {
       });
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -224,7 +222,8 @@ const SendReceivePage: FC = () => {
       setConfirmation(txConfirmation);
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -254,7 +253,8 @@ const SendReceivePage: FC = () => {
         txProposalReceiverB58Code,
       });
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -324,6 +324,3 @@ const SendReceivePage: FC = () => {
     </Box>
   );
 };
-
-export default SendReceivePage;
-export { SendReceivePage };

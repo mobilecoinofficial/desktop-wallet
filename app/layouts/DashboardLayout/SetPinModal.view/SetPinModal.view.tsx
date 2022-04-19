@@ -23,7 +23,8 @@ import { PIN_MIN_SIZE } from '../../../constants/codes';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
-import isValidPin from '../../../utils/isValidPin';
+import { errorToString } from '../../../utils/errorHandler';
+import { isValidPin } from '../../../utils/isValidPin';
 import { SetPinModalProps } from './SetPinModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -122,9 +123,10 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
                   }
                 } catch (err) {
                   /* istanbul ignore next */
+                  const errorMessage = errorToString(err);
                   if (isMountedRef.current) {
                     setStatus({ success: false });
-                    setErrors({ submit: err.message });
+                    setErrors({ submit: errorMessage });
                     setSubmitting(false);
                   }
                 }

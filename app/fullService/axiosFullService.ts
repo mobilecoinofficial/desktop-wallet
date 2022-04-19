@@ -2,21 +2,22 @@ import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import snakeCaseKeys from 'snakecase-keys';
 
-import { skipKeysCamelCase } from './utils';
+import { errorToString } from '../utils/errorHandler';
+import { camelCaseObjectKeys } from './utils/camelCase';
 
-interface FullServiceResponse extends AxiosResponse {
+type FullServiceResponse = AxiosResponse & {
   data: {
     method: string;
     jsonrpc: string;
     result?: any; // TODO, consider replacing with generic T
     error?: string;
   };
-}
+};
 
-interface AxiosFullServiceResponse {
-  result?: any; // TODO, consider replacing with generic T
+export type AxiosFullServiceResponse<T> = {
+  result?: T;
   error?: string;
-}
+};
 
 export const handleResponse = (response: AxiosResponse<FullServiceResponse>): FullServiceResponse =>
   response.data;
@@ -26,10 +27,12 @@ export const handleError = (error: { message?: string }) =>
   // Usually, bad urls (404) or incorrect methods (422).
   Promise.reject(error.message || 'Unknown Full-Service error');
 
-const axiosFullService = async (
+// TODO: refactor to include better error handling. Returning an optional error param offloads error
+// handling to the caller, breaking DRY
+const axiosFullService = async <T>(
   method: string,
   params?: Record<string, any>
-): Promise<AxiosFullServiceResponse> => {
+): Promise<AxiosFullServiceResponse<T>> => {
   const axiosInstance = axios.create({
     baseURL: 'http://localhost:9090/wallet',
     headers: { 'Content-type': 'application/json' },
@@ -57,12 +60,10 @@ const axiosFullService = async (
 
     // TODO: determine if we need to handle errors here or elsewhere
     // such as the API or services
-    return skipKeysCamelCase(response);
+    return camelCaseObjectKeys(response);
   } catch (error) {
-    // TODO: when we hit an unknown error, I think we can assume this application needs to restart
-    // So, we should figure out a bug report path and a reset button.
-    const errorMessage = error.message || 'Unknown Rocket error';
-    return { error: errorMessage };
+    const errorMessage = errorToString(error);
+    throw new Error(errorMessage);
   }
 };
 

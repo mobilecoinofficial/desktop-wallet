@@ -10,7 +10,7 @@ const OnboardingModal: FC<OnboardingModalProps> = ({
   isEntropyKnown,
   isPinRequired,
   pendingSecrets,
-  setPin,
+  updatePin,
 }: OnboardingModalProps) => {
   const isShowEntropyModalShown = !isEntropyKnown;
   const isSetPinModalShown = isPinRequired;
@@ -26,7 +26,7 @@ const OnboardingModal: FC<OnboardingModalProps> = ({
     );
   }
   if (isSetPinModalShown) {
-    return <SetPinModal isShown={isSetPinModalShown} onPinSubmit={setPin} />;
+    return <SetPinModal isShown={isSetPinModalShown} onPinSubmit={updatePin} />;
   }
   return null;
 };

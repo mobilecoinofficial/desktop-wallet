@@ -5,6 +5,7 @@ import { Box, Container, makeStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import {
@@ -16,16 +17,16 @@ import {
   ToolsIcon,
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
-import useFullService from '../../../hooks/useFullService';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   addAccount,
-  changePassword,
-  retrieveEntropy,
+  deleteAccount,
   selectAccount,
-  setPin,
-} from '../../../services';
-import { deleteAccount } from '../../../services/deleteAccount.service';
+  updatePassword,
+  updatePin,
+} from '../../../redux/services';
+import { retrieveEntropy } from '../../../services';
 import type { Theme } from '../../../theme';
 import type { StringUInt64 } from '../../../types/SpecialStrings.d';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const SettingsPage: FC = () => {
+export const SettingsPage: FC = (): JSX.Element => {
   const classes = useStyles();
   const {
     accounts,
@@ -67,7 +68,8 @@ const SettingsPage: FC = () => {
     pin,
     selectedAccount,
     transactionLogs,
-  } = useFullService();
+  } = useSelector((state: ReduxStoreState) => state);
+
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');
   const { enqueueSnackbar } = useSnackbar();
@@ -105,10 +107,10 @@ const SettingsPage: FC = () => {
     try {
       if (saveChecked) {
         const currentAccount = keychainAccounts[0].account;
-        await changePassword(password, newPassword);
+        await updatePassword(password, newPassword);
         setKeychainAccount(currentAccount, newPassword);
       } else {
-        await changePassword(password, newPassword);
+        await updatePassword(password, newPassword);
       }
       enqueueSnackbar(t('changePasswordSuccess'), {
         variant: 'success',
@@ -120,7 +122,7 @@ const SettingsPage: FC = () => {
 
   const onClickChangePin = async (password: string, newPin: string, newThreshold: StringUInt64) => {
     try {
-      await setPin(newPin, convertMobStringToPicoMobString(newThreshold), password);
+      await updatePin(newPin, convertMobStringToPicoMobString(newThreshold), password);
       /* istanbul ignore next */
       enqueueSnackbar(t('changePinSuccess'), { variant: 'success' });
     } catch (err) {
@@ -291,6 +293,3 @@ const SettingsPage: FC = () => {
       return <Redirect to="-" />;
   }
 };
-
-export default SettingsPage;
-export { SettingsPage };

@@ -31,6 +31,7 @@ module.exports = {
         'ts-ignore': 'allow-with-description',
       },
     ],
+    '@typescript-eslint/no-use-before-define': ['error', { variables: false }],
     'arrow-body-style': ['error', 'as-needed'],
     curly: ['error', 'all'],
     'import/no-extraneous-dependencies': 'off',
@@ -53,6 +54,7 @@ module.exports = {
         pathGroupsExcludedImportTypes: ['react'],
       },
     ],
+    'import/prefer-default-export': 'off',
     'no-plusplus': ['off'],
     'no-unused-vars': [
       'error',
@@ -60,6 +62,7 @@ module.exports = {
         argsIgnorePattern: '^_',
       },
     ],
+    'no-use-before-define': 'off',
     'react/jsx-props-no-spreading': 0,
     'sort-keys': [
       'error',

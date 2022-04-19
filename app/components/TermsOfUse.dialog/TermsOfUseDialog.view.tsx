@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button, Container, Dialog, Fab } from '@material-ui/core';
+import { Box, Button, Container, Dialog, Fab, Tooltip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { useTranslation } from 'react-i18next';
@@ -45,9 +45,15 @@ const TermsOfUseDialog = (props: TermsOfUseDialogProps): JSX.Element => {
     >
       <Container maxWidth="md">
         <TermsOfUse />
-        <Fab disableRipple aria-label="Scroll Down" className={classes.fab} color="primary">
-          <ArrowDownwardIcon color="inherit" fontSize="large" />
-        </Fab>
+        <Tooltip
+          title='Scroll down and click "Close Terms Of Use" to confirm terms have been read.'
+          placement="top"
+          arrow
+        >
+          <Fab disableRipple aria-label="Scroll Down" className={classes.fab} color="primary">
+            <ArrowDownwardIcon color="inherit" fontSize="large" />
+          </Fab>
+        </Tooltip>
         <Box p={2}>
           <Button
             color="secondary"

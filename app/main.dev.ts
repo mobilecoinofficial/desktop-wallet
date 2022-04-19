@@ -30,9 +30,10 @@ import languages from './constants/languages';
 import i18n from './i18next.config';
 import menuFactoryService from './menuFactory';
 import * as localStore from './utils/LocalStore';
+import { checkForAppUpdates, initializeAutoUpdater } from './utils/autoupdate';
 import { initLog, writeLog } from './utils/logger';
 
-import './utils/autoupdate';
+initializeAutoUpdater();
 
 export default class AppUpdater {
   constructor() {
@@ -325,6 +326,7 @@ if (process.env.E2E_BUILD === 'true') {
 } else {
   app.on('ready', () => {
     createWindow();
+    checkForAppUpdates(mainWindow);
   });
 }
 

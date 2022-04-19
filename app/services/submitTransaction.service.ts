@@ -1,12 +1,12 @@
-import { store } from '../contexts/FullServiceContext';
 import * as fullServiceApi from '../fullService/api';
+import { store } from '../redux/store';
 import type { TxProposal } from '../types/TxProposal.d';
 
 const submitTransaction = async (
   txProposal: TxProposal,
   includeAccountId = true
 ): Promise<void> => {
-  const { selectedAccount } = store.state;
+  const { selectedAccount } = store.getState();
   const accountId = includeAccountId ? selectedAccount.account.accountId : undefined;
   // submit transaction
   // TODO probably want to figure out what I want to save about this transaction log

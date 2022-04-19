@@ -4,7 +4,7 @@ import type { FC } from 'react';
 import { Box, makeStyles } from '@material-ui/core';
 
 import type { Theme } from '../../theme';
-import isStringNumber from '../../utils/isStringNumber';
+import { isStringNumber } from '../../utils/isStringNumber';
 import { LongCodeProps } from './LongCode';
 
 const useStyles = makeStyles((theme: Theme) => ({

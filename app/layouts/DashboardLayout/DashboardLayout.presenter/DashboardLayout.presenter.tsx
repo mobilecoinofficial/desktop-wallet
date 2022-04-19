@@ -3,10 +3,11 @@ import type { FC } from 'react';
 
 import { Box, makeStyles, useMediaQuery } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
-
 // import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
-import useFullService from '../../../hooks/useFullService';
-import { confirmEntropyKnown, setPin } from '../../../services';
+import { useSelector } from 'react-redux';
+
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { confirmEntropyKnown, updatePin } from '../../../redux/services';
 import type { Theme } from '../../../theme';
 import { BalanceIndicator } from '../BalanceIndicator.view';
 // import { InactivityDetect } from '../InactivityDetect';
@@ -42,9 +43,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const DashboardLayout: FC<DashboardLayoutProps> = ({ children }: DashboardLayoutProps) => {
+export const DashboardLayout: FC<DashboardLayoutProps> = (
+  props: DashboardLayoutProps
+): JSX.Element => {
   const { offlineModeEnabled, selectedAccount, isEntropyKnown, isPinRequired, pendingSecrets } =
-    useFullService();
+    useSelector((state: ReduxStoreState) => state);
+  const { children } = props;
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
   const sendSyncStatus = (statusCode: string) => ipcRenderer.send('sync-status', statusCode);
@@ -88,13 +92,10 @@ const DashboardLayout: FC<DashboardLayoutProps> = ({ children }: DashboardLayout
             isEntropyKnown={isEntropyKnown}
             isPinRequired={isPinRequired}
             pendingSecrets={pendingSecrets}
-            setPin={setPin}
+            updatePin={updatePin}
           />
         </Box>
       </Box>
     </Box>
   );
 };
-
-export default DashboardLayout;
-export { DashboardLayout };

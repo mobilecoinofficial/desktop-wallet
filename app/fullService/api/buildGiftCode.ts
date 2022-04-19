@@ -1,7 +1,7 @@
 import type { GiftCode } from '../../types/GiftCode.d';
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
 import type { TxProposal } from '../../types/TxProposal';
-import axiosFullService from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const BUILD_GIFT_CODE_METHOD = 'build_gift_code';
 
@@ -23,13 +23,10 @@ export type BuildGiftCodeResult = {
   txProposal: TxProposal;
 };
 
-type AxiosFullServiceResponse = {
-  error: string;
-  result: {
-    giftCode: GiftCode;
-    giftCodeB58: StringB58;
-    txProposal: TxProposal;
-  };
+type BuildGiftCodeResponse = {
+  giftCode: GiftCode;
+  giftCodeB58: StringB58;
+  txProposal: TxProposal;
 };
 
 const buildGiftCode = async ({
@@ -40,7 +37,7 @@ const buildGiftCode = async ({
   tombstoneBlock,
   valuePmob,
 }: BuildGiftCodeParams): Promise<BuildGiftCodeResult> => {
-  const { result, error }: AxiosFullServiceResponse = await axiosFullService(
+  const { result, error }: AxiosFullServiceResponse<BuildGiftCodeResponse> = await axiosFullService(
     BUILD_GIFT_CODE_METHOD,
     {
       accountId,
@@ -51,6 +48,13 @@ const buildGiftCode = async ({
       valuePmob,
     }
   );
+
+  if (error) {
+    throw new Error(error);
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
+  }
+
   const { txProposal, giftCode, giftCodeB58 } = result;
 
   // TODO fix type, right now it just matches what the component is expecting
@@ -60,18 +64,13 @@ const buildGiftCode = async ({
 
   const feeConfirmation = BigInt(txProposal.fee);
 
-  if (error) {
-    // TODO - I'll write up a better error handler
-    throw new Error(error);
-  } else {
-    return {
-      feeConfirmation,
-      giftCode,
-      giftCodeB58,
-      totalValueConfirmation,
-      txProposal,
-    };
-  }
+  return {
+    feeConfirmation,
+    giftCode,
+    giftCodeB58,
+    totalValueConfirmation,
+    txProposal,
+  };
 };
 
 export default buildGiftCode;

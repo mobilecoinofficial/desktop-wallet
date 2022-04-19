@@ -1,16 +1,17 @@
-import { store } from '../contexts/FullServiceContext';
 import * as fullServiceApi from '../fullService/api';
+import { store } from '../redux/store';
 import { validatePassphrase } from '../utils/authentication';
+import { errorToString } from '../utils/errorHandler';
 
-const retrieveEntropy = async (passphrase: string): Promise<string> => {
+const retrieveEntropy = async (password: string): Promise<string> => {
   try {
-    const { encryptedPassphrase, selectedAccount } = store.state;
-    if (encryptedPassphrase === undefined) {
-      throw new Error('encryptedPassphrase assertion failed');
+    const { encryptedPassword, selectedAccount } = store.getState();
+    if (encryptedPassword === undefined) {
+      throw new Error('encryptedPassword assertion failed');
     }
 
     // TODO - use secretKey returned here to pass to Full-Service to get secrets.
-    await validatePassphrase(passphrase, encryptedPassphrase);
+    await validatePassphrase(password, encryptedPassword);
 
     const { accountSecrets } = await fullServiceApi.exportAccountSecrets({
       accountId: selectedAccount.account.accountId,
@@ -18,7 +19,8 @@ const retrieveEntropy = async (passphrase: string): Promise<string> => {
 
     return accountSecrets.entropy ?? accountSecrets.mnemonic ?? '';
   } catch (err) {
-    throw new Error(err.message);
+    const errorMessage = errorToString(err);
+    throw new Error(errorMessage);
   }
 };
 

@@ -1,6 +1,6 @@
 import type { Account } from '../../types/Account.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
-import axiosFullService from '../axiosFullService';
+import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const UPDATE_ACCOUNT_NAME = 'update_account_name';
 
@@ -17,14 +17,16 @@ const updateAccountName = async ({
   accountId,
   name,
 }: UpdateAccountNameParams): Promise<UpdateAccountNameResult> => {
-  const { result, error } = await axiosFullService(UPDATE_ACCOUNT_NAME, {
-    accountId,
-    name,
-  });
+  const { result, error }: AxiosFullServiceResponse<UpdateAccountNameResult> =
+    await axiosFullService(UPDATE_ACCOUNT_NAME, {
+      accountId,
+      name,
+    });
 
   if (error) {
-    // TODO - I'll write up a better error handler
     throw new Error(error);
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
   } else {
     return result;
   }

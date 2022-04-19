@@ -3,26 +3,28 @@ import type { FC } from 'react';
 
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { randomColor } from '../../../constants/app';
-import useFullService from '../../../hooks/useFullService';
-import { assignAddressForAccount, updateContacts } from '../../../services';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { updateContacts } from '../../../redux/services';
+import { assignAddressForAccount } from '../../../services';
 import type { Contact } from '../../../types/Contact.d';
 import { ContactForm } from '../ContactForm.view';
 import { ContactsList } from '../ContactsList.view';
 
-const ContactsPage: FC = () => {
+export const ContactsPage: FC = (): JSX.Element => {
   enum PAGE {
     ADD,
     EDIT,
     LIST,
   }
 
+  const { contacts, selectedAccount } = useSelector((state: ReduxStoreState) => state);
   const [status, setStatus] = useState(PAGE.LIST);
   const [current, setCurrent] = useState({} as Contact);
   const { enqueueSnackbar } = useSnackbar();
-  const { contacts, selectedAccount } = useFullService();
 
   const { t } = useTranslation('ContactsPage');
 
@@ -130,6 +132,3 @@ const ContactsPage: FC = () => {
       return <Redirect to="-" />;
   }
 };
-
-export default ContactsPage;
-export { ContactsPage };

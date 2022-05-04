@@ -53,7 +53,7 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
         })}
         onSubmit={handleOnSubmit}
       >
-        {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm }) => (
+        {({ errors, isSubmitting, dirty, isValid, setFieldValue, submitForm, values }) => (
           <Form name="UnlockWalletInnerForm">
             <Field
               data-testid="passwordField"
@@ -87,6 +87,11 @@ const UnlockWalletView: FC<UnlockWalletViewProps> = ({
                   <Field component={Checkbox} type="checkbox" name="startInOfflineMode" />
                 </Box>
               </Box>
+            )}
+            {!(navigator.onLine || values.startInOfflineMode) && (
+              <Typography display="inline" style={{ fontStyle: 'italic' }}>
+                {t('noInternetConnection')}
+              </Typography>
             )}
             <SubmitButton
               data-testid="submit-button"

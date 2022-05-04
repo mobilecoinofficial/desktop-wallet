@@ -48,7 +48,7 @@ const axiosFullService = async <T>(
         method,
         params: snakeCaseParams,
       },
-      timeout: 2000,
+      timeout: 10000,
     });
     // @ts-ignore override
     if (!response.jsonrpc) {

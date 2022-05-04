@@ -59,7 +59,7 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
         })}
         onSubmit={handleOnSubmit}
       >
-        {({ errors, isSubmitting, dirty, isValid, submitForm }) => (
+        {({ errors, isSubmitting, dirty, isValid, submitForm, values }) => (
           <Form name="UnlockWalletInnerForm">
             <Field
               data-testid="passwordField"
@@ -114,6 +114,11 @@ const CreateWalletView: FC<CreateWalletViewProps> = ({ onClickCreate }: CreateWa
                 <Field component={Checkbox} type="checkbox" name="startInOfflineMode" />
               </Box>
             </Box>
+            {!(navigator.onLine || values.startInOfflineMode) && (
+              <Typography display="inline" style={{ fontStyle: 'italic' }}>
+                {t('noInternetConnection')}
+              </Typography>
+            )}
             <SubmitButton
               data-testid="submit-button"
               disabled={!dirty || !isValid || isSubmitting}

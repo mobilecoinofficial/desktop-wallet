@@ -21,10 +21,10 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
+import { logError } from '../../../redux/services/logError';
 import { checkB58PaymentRequest } from '../../../services/checkB58PaymentRequest.service';
 import type { Theme } from '../../../theme';
 import type { StringB58 } from '../../../types/SpecialStrings.d';
-import { errorToString } from '../../../utils/errorHandler';
 import { PaymentRequestProps } from './PaymentRequest.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -75,7 +75,6 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
   onClickConfirm,
   selectedAccount,
   onClickViewPaymentRequest,
-  enqueueSnackbar,
 }: PaymentRequestProps) => {
   const classes = useStyles();
 
@@ -95,8 +94,10 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
         valuePmob: value,
       });
     } catch (error) {
-      const errorMessage = errorToString(error);
-      enqueueSnackbar(errorMessage, { variant: 'error' });
+      logError(
+        error,
+        'app/pages/SendReceive/PaymentRequests.view/PaymentRequest.view.tsx:handleViewPaymentRequest'
+      );
     }
   };
 

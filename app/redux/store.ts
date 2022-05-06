@@ -15,13 +15,13 @@
  *    refactor mentioned above with respect to the store's and reducer's structure.
  */
 
-import { /* applyMiddleware, */ createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 
-// import { loggerMiddleware } from './middleware';
+import { loggerMiddleware } from './middleware';
 import { initialReduxStoreState, reducer } from './reducers/reducers';
 
 export const store = createStore(
   reducer,
-  initialReduxStoreState
-  // applyMiddleware(loggerMiddleware) // uncomment loggerMiddleware for redux action logging
+  initialReduxStoreState,
+  applyMiddleware(loggerMiddleware) // uncomment loggerMiddleware for redux action logging
 );

@@ -10,6 +10,7 @@ import { getAllTxosForAccount } from './getAllTxosForAccount';
 import { getFeePmob } from './getFeePmob';
 import { importAccount, importLegacyAccount } from './importAccount';
 import { initialize } from './initialize';
+import { logError } from './logError';
 import { selectAccount } from './selectAccount';
 import { unlockWallet } from './unlockWallet';
 import { updateContacts } from './updateContacts';
@@ -31,6 +32,7 @@ export {
   importAccount,
   importLegacyAccount,
   initialize,
+  logError,
   selectAccount,
   unlockWallet,
   updateContacts,

@@ -49,6 +49,8 @@ import {
   Action,
   GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   GetAllTransactionLogsForAccountAction,
+  LogErrorAction,
+  LOG_ERROR,
 } from '../actions';
 
 export type ReduxStoreState = {
@@ -58,6 +60,7 @@ export type ReduxStoreState = {
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
   encryptedPassword: SjclCipherEncrypted | undefined;
+  error: { error: unknown; generatedFrom: string }[];
   feePmob: StringUInt64;
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
@@ -80,6 +83,7 @@ export const initialReduxStoreState: ReduxStoreState = {
   addresses: { addressIds: [], addressMap: {} },
   contacts: [],
   encryptedPassword: undefined,
+  error: [],
   feePmob: '',
   giftCodes: null,
   isAuthenticated: false,
@@ -242,6 +246,14 @@ export const reducer = (
         encryptedPassword,
         isAuthenticated,
         isInitialized: true,
+      };
+    }
+
+    case LOG_ERROR: {
+      const { error, generatedFrom } = (action as LogErrorAction).payload;
+      return {
+        ...state,
+        error: state.error.concat({ error, generatedFrom }),
       };
     }
 

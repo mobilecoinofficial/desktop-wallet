@@ -26,6 +26,7 @@ import {
   updatePassword,
   updatePin,
 } from '../../../redux/services';
+import { logError } from '../../../redux/services/logError';
 import { retrieveEntropy } from '../../../services';
 import type { Theme } from '../../../theme';
 import type { StringUInt64 } from '../../../types/SpecialStrings.d';
@@ -117,6 +118,10 @@ export const SettingsPage: FC = (): JSX.Element => {
       });
     } catch (err) {
       console.log('ERROR', err); // eslint-disable-line no-console
+      logError(
+        err,
+        'app/pages/Settings/SettingsPage.presenter/SettingsPage.presenter.tsx:onClickChangePassword'
+      );
     }
   };
 
@@ -127,6 +132,10 @@ export const SettingsPage: FC = (): JSX.Element => {
       enqueueSnackbar(t('changePinSuccess'), { variant: 'success' });
     } catch (err) {
       console.log('ERROR!', err); // eslint-disable-line no-console
+      logError(
+        err,
+        'app/pages/Settings/SettingsPage.presenter/SettingsPage.presenter.tsx:onClickChangePin'
+      );
     }
   };
 
@@ -140,6 +149,10 @@ export const SettingsPage: FC = (): JSX.Element => {
       setEntropy(entropyString);
     } catch (err) {
       console.log('ERROR!!!', err); // eslint-disable-line no-console
+      logError(
+        err,
+        'app/pages/Settings/SettingsPage.presenter/SettingsPage.presenter.tsx:onClickRetrieveEntropy'
+      );
     }
   };
 

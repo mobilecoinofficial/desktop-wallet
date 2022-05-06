@@ -11,9 +11,9 @@ import { Redirect } from 'react-router-dom';
 import { LoadingScreen } from '../../../components';
 import { getConfirmations, validateConfirmation } from '../../../fullService/api';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { logError } from '../../../redux/services/logError';
 import { Confirmations } from '../../../types/Confirmation';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
-import { errorToString } from '../../../utils/errorHandler';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
 
@@ -68,8 +68,10 @@ export const HistoryPage: FC = (): JSX.Element => {
         clipboard.writeText(JSON.stringify(result.confirmations));
         enqueueSnackbar('Copied Confirmations to Clipboard');
       } catch (err) {
-        const errorMessage = errorToString(err);
-        enqueueSnackbar(errorMessage, { variant: 'error' });
+        logError(
+          err,
+          'app/pages/History/HistoryPage.presenter/HistoryPage.presenter.tsx:handleClickCopyConfirmations'
+        );
       }
     })();
   };
@@ -98,8 +100,10 @@ export const HistoryPage: FC = (): JSX.Element => {
 
         setTxoValidations(results);
       } catch (err) {
-        const errorMessage = errorToString(err);
-        enqueueSnackbar(errorMessage, { variant: 'error' });
+        logError(
+          err,
+          'app/pages/History/HistoryPage.presenter/HistoryPage.presenter.tsx:handleClickValidateConfirmations'
+        );
       }
     })();
   };

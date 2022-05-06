@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { getAllGiftCodes, getFeePmob } from '../../../redux/services';
+import { getAllGiftCodes, getFeePmob, logError } from '../../../redux/services';
 import {
   buildGiftCode,
   checkGiftCodeStatus,
@@ -163,11 +163,10 @@ export const GiftsPage: FC = (): JSX.Element => {
     try {
       await deleteStoredGiftCodeB58(giftCodeToDelete);
       enqueueSnackbar(t('giftDeleted'), { variant: 'success' });
+      getAllGiftCodes();
     } catch (err) {
-      const errorMessage = errorToString(err);
-      enqueueSnackbar(errorMessage, { variant: 'error' });
+      logError(err, 'app/pages/Gifts/GiftsPage.presenter/GiftsPage.tsx:onClickDeleteGiftCodeBuild');
     }
-    getAllGiftCodes();
   };
 
   const onClickCancelConsume = () => {
@@ -202,8 +201,7 @@ export const GiftsPage: FC = (): JSX.Element => {
         }
       }
     } catch (err) {
-      const errorMessage = errorToString(err);
-      enqueueSnackbar(errorMessage, { variant: 'warning' });
+      logError(err, 'app/pages/Gifts/GiftsPage.presenter/GiftsPage.tsx:onClickOpenGiftConsume');
     }
   };
 
@@ -216,17 +214,19 @@ export const GiftsPage: FC = (): JSX.Element => {
 
       enqueueSnackbar(t('giftConsumed'), { variant: 'success' });
     } catch (err) {
-      enqueueSnackbar(t('giftConsumeError'), { variant: 'error' });
+      logError(err, 'app/pages/Gifts/GiftsPage.presenter/GiftsPage.tsx:onClickClaimGiftConsume');
     }
 
     setShowModalConsume(false);
   };
 
   useEffect(() => {
-    getAllGiftCodes();
-  }, []);
-  useEffect(() => {
-    getFeePmob();
+    try {
+      getAllGiftCodes();
+      getFeePmob();
+    } catch (err) {
+      logError(err, 'app/pages/Gifts/GiftsPage.presenter/GiftsPage.tsx:useEffect');
+    }
   }, []);
 
   return (

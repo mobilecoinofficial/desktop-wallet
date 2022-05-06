@@ -5,5 +5,6 @@ export const errorToString = (err: unknown): string => {
   if (typeof err === 'string') {
     return err;
   }
+  console.log(typeof err);
   throw err;
 };

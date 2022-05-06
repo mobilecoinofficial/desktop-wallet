@@ -9,12 +9,12 @@ import { useSelector } from 'react-redux';
 
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { getFeePmob, updateContacts } from '../../../redux/services';
+import { logError } from '../../../redux/services/logError';
 import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
 import type { Theme } from '../../../theme';
 import { StringHex } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
-import { errorToString } from '../../../utils/errorHandler';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
@@ -65,7 +65,14 @@ export const SendReceivePage: FC = (): JSX.Element => {
   const [formRecipientPublicAddress, setRecipientPublicAddress] = useState('');
 
   useEffect(() => {
-    getFeePmob();
+    try {
+      getFeePmob();
+    } catch (err) {
+      logError(
+        err,
+        'app/pages/SendReceive/SendReceivePage.presenter/SendReceivePage.presenter.tsx:useEffect'
+      );
+    }
   }, []);
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
@@ -85,23 +92,30 @@ export const SendReceivePage: FC = (): JSX.Element => {
   };
 
   const saveToContacts = async () => {
-    const randomColor = () => {
-      const RANDOM_COLORS = ['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D969D', '#D82E26'];
-      return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
-    };
+    try {
+      const randomColor = () => {
+        const RANDOM_COLORS = ['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D969D', '#D82E26'];
+        return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
+      };
 
-    const result = await assignAddressForAccount(selectedAccount.account.accountId as StringHex);
+      const result = await assignAddressForAccount(selectedAccount.account.accountId as StringHex);
 
-    contacts.push({
-      abbreviation: formAlias[0].toUpperCase(),
-      alias: formAlias,
-      assignedAddress: result.address.publicAddress,
-      color: randomColor(),
-      isFavorite: false,
-      recipientAddress: formRecipientPublicAddress,
-    });
+      contacts.push({
+        abbreviation: formAlias[0].toUpperCase(),
+        alias: formAlias,
+        assignedAddress: result.address.publicAddress,
+        color: randomColor(),
+        isFavorite: false,
+        recipientAddress: formRecipientPublicAddress,
+      });
 
-    await updateContacts(contacts);
+      await updateContacts(contacts);
+    } catch (err) {
+      logError(
+        err,
+        'app/pages/SendReceive/SendReceivePage.presenter/SendReceivePage.presenter.tsx:saveToContacts'
+      );
+    }
   };
 
   const onClickConfirm = (resetForm: () => void) => {
@@ -173,8 +187,10 @@ export const SendReceivePage: FC = (): JSX.Element => {
       });
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {
-      const errorMessage = errorToString(err);
-      enqueueSnackbar(errorMessage, { variant: 'error' });
+      logError(
+        err,
+        'app/pages/SendReceive/SendReceivePage.presenter/SendReceivePage.presenter.tsx:onClickSend'
+      );
     }
   };
 
@@ -222,8 +238,10 @@ export const SendReceivePage: FC = (): JSX.Element => {
       setConfirmation(txConfirmation);
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {
-      const errorMessage = errorToString(err);
-      enqueueSnackbar(errorMessage, { variant: 'error' });
+      logError(
+        err,
+        'app/pages/SendReceive/SendReceivePage.presenter/SendReceivePage.presenter.tsx:importTxConfirmation'
+      );
     }
   };
 
@@ -253,8 +271,10 @@ export const SendReceivePage: FC = (): JSX.Element => {
         txProposalReceiverB58Code,
       });
     } catch (err) {
-      const errorMessage = errorToString(err);
-      enqueueSnackbar(errorMessage, { variant: 'error' });
+      logError(
+        err,
+        'app/pages/SendReceive/SendReceivePage.presenter/SendReceivePage.presenter.tsx:onClickViewPaymentRequest'
+      );
     }
   };
 
@@ -316,7 +336,6 @@ export const SendReceivePage: FC = (): JSX.Element => {
               onClickConfirm={onClickConfirm}
               pinThresholdPmob={parseFloat(pinThresholdPmob)}
               showing={sendingStatus}
-              enqueueSnackbar={enqueueSnackbar}
             />
           )}
         </Grid>

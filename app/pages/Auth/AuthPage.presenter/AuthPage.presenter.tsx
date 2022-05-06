@@ -21,10 +21,12 @@ import {
   selectAccount,
   unlockWallet,
 } from '../../../redux/services';
+import { logError } from '../../../redux/services/logError';
 import { getWalletStatus } from '../../../services';
 import type { Theme } from '../../../theme';
 import * as localStore from '../../../utils/LocalStore';
 import { isHex64 } from '../../../utils/bip39Functions';
+import { errorToString } from '../../../utils/errorHandler';
 import { getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { CreateWalletView } from '../CreateWallet.view';
@@ -58,12 +60,17 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 /* eslint-disable no-await-in-loop */
 const untilFullServiceRuns = async () => {
-  for (let i = 0; i < 25; i++) {
+  const iterCount = 25;
+  for (let i = 0; i < iterCount; i++) {
     try {
       await getWalletStatus();
       return true;
     } catch (e) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      if (i === iterCount - 1) {
+        const errorMessage = errorToString(e);
+        throw new Error(errorMessage);
+      }
     }
   }
 
@@ -138,6 +145,7 @@ export const AuthPage: FC = (): JSX.Element => {
           setAccountIds(status.accountIds);
           setFullServiceIsRunning(true);
         } catch (err) {
+          logError(err, 'app/pages/Auth/AuthPage.presenter/AuthPage.presenter.tsx:onClickUnlock');
           console.log(err); // eslint-disable-line no-console
         }
       };
@@ -170,6 +178,10 @@ export const AuthPage: FC = (): JSX.Element => {
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
       } catch (err) {
+        logError(
+          err,
+          'app/pages/Auth/AuthPage.presenter/AuthPage.presenter.tsx:onClickCreateWallet'
+        );
         console.log(err); // eslint-disable-line no-console
       }
     };
@@ -195,6 +207,7 @@ export const AuthPage: FC = (): JSX.Element => {
       }
       setAccountIds(status.accountIds);
     } catch (err) {
+      logError(err, 'app/pages/Auth/AuthPage.presenter/AuthPage.presenter.tsx:onClickUnlockWallet');
       console.log(err); // eslint-disable-line no-console
     }
   };
@@ -222,17 +235,21 @@ export const AuthPage: FC = (): JSX.Element => {
     try {
       await createAccount(accountName);
     } catch (err) {
-      /* TODO: handle error */
+      logError(err, 'app/pages/Auth/AuthPage.presenter/AuthPage.presenter.tsx:onClickCreate');
       console.log('ERROR!', err); // eslint-disable-line no-console
     }
   };
 
   // TODO: improve error handling
   const onClickImport = async (accountName: string, entropy: string) => {
-    if (isHex64(entropy)) {
-      await importLegacyAccount(accountName, entropy);
-    } else {
-      await importAccount(accountName, entropy);
+    try {
+      if (isHex64(entropy)) {
+        await importLegacyAccount(accountName, entropy);
+      } else {
+        await importAccount(accountName, entropy);
+      }
+    } catch (err) {
+      logError(err, 'app/pages/Auth/AuthPage.presenter/AuthPage.presenter.tsx:onClickImport');
     }
   };
 

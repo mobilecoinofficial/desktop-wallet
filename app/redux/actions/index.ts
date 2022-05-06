@@ -26,6 +26,7 @@ import {
 import { getFeePmobAction, GetFeePmobAction, GET_FEE_PMOB } from './getFeePmobAction';
 import { importAccountAction, IMPORT_ACCOUNT, ImportAccountAction } from './importAccountAction';
 import { initializeAction, INITIALIZE, InitializeAction } from './initializeAction';
+import { logErrorAction, LogErrorAction, LOG_ERROR } from './logErrorAction';
 import { selectAccountAction, SELECT_ACCOUNT, SelectAccountAction } from './selectAccountAction';
 import { unlockWalletAction, UNLOCK_WALLET, UnlockWalletAction } from './unlockWalletAction';
 import {
@@ -54,6 +55,7 @@ export {
   GET_FEE_PMOB,
   IMPORT_ACCOUNT,
   INITIALIZE,
+  LOG_ERROR,
   SELECT_ACCOUNT,
   UNLOCK_WALLET,
   UPDATE_CONTACTS,
@@ -76,6 +78,7 @@ type Action =
   | GetFeePmobAction
   | ImportAccountAction
   | InitializeAction
+  | LogErrorAction
   | SelectAccountAction
   | UnlockWalletAction
   | UpdateContactsAction
@@ -97,6 +100,7 @@ export type {
   GetFeePmobAction,
   ImportAccountAction,
   InitializeAction,
+  LogErrorAction,
   SelectAccountAction,
   UnlockWalletAction,
   UpdateContactsAction,
@@ -119,6 +123,7 @@ export {
   getFeePmobAction,
   importAccountAction,
   initializeAction,
+  logErrorAction,
   selectAccountAction,
   unlockWalletAction,
   updateContactsAction,

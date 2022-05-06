@@ -1,3 +1,4 @@
+import { logError } from '../../redux/services';
 import type { Address } from '../../types/Address.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
@@ -26,9 +27,18 @@ const assignAddressForAccount = async ({
   if (error) {
     // TODO - I'll write up a better error handler
     const errorMessage = error === 'Database(PasswordFailed)' ? 'Incorrect Password' : error;
+    logError(
+      errorMessage,
+      'app/fullService/api/assignAddressForAccount.ts:assignAddressForAccount'
+    );
     throw new Error(errorMessage);
   } else if (!result) {
-    throw new Error('Failure to retrieve data.');
+    const errorMessage = 'Failure to retrieve data.';
+    logError(
+      errorMessage,
+      'app/fullService/api/assignAddressForAccount.ts:assignAddressForAccount'
+    );
+    throw new Error(errorMessage);
   } else {
     return result;
   }

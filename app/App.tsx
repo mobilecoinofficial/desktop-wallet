@@ -8,10 +8,16 @@ import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
+import { ErrorHandler } from './components/ErrorHandler';
 import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
 import { initialReduxStoreState } from './redux/reducers/reducers';
-import { getAllTransactionLogsForAccount, initialize, updateStatus } from './redux/services';
+import {
+  getAllTransactionLogsForAccount,
+  initialize,
+  logError,
+  updateStatus,
+} from './redux/services';
 import { store } from './redux/store';
 import { internalRoutes, InternalRoutesRenderer } from './routes';
 import { setTheme } from './theme';
@@ -78,8 +84,12 @@ const App: FC = () => {
         // solves an issue of this component's local state fighting with the redux store.
         const { selectedAccount } = store.getState();
         if (selectedAccount !== initialReduxStoreState.selectedAccount) {
-          await fetchBalance(selectedAccount);
-          await fetchLogs(selectedAccount);
+          try {
+            await fetchBalance(selectedAccount);
+            await fetchLogs(selectedAccount);
+          } catch (err) {
+            logError(err, 'app/App.tsx:useEffect');
+          }
         }
       }, 10000)
     );
@@ -95,6 +105,7 @@ const App: FC = () => {
       <MemoryRouter>
         <ThemeProvider theme={theme}>
           <SnackbarProvider dense maxSnack={5}>
+            <ErrorHandler />
             <GlobalStyles />
             <InternalRoutesRenderer routes={internalRoutes} />
           </SnackbarProvider>

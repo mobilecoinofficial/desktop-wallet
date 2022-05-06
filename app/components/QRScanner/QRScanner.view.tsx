@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Html5Qrcode } from 'html5-qrcode';
 
+import { logError } from '../../redux/services/logError';
 import { QRScannerProps } from './QRScanner';
 
 const QRScanner: FC<QRScannerProps> = ({ setFieldValue, handleClose }: QRScannerProps) => {
@@ -19,6 +20,7 @@ const QRScanner: FC<QRScannerProps> = ({ setFieldValue, handleClose }: QRScanner
         .then((devices) => devices[0].id)
         .catch((err) => {
           handleClose();
+          logError(err, 'app/components/QRScanner/QRScanner.view.tsx:cameraId');
           throw new Error(err);
         });
       await html5QrCode.start(

@@ -8,7 +8,7 @@ import { Redirect } from 'react-router-dom';
 
 import { randomColor } from '../../../constants/app';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { updateContacts } from '../../../redux/services';
+import { logError, updateContacts } from '../../../redux/services';
 import { assignAddressForAccount } from '../../../services';
 import type { Contact } from '../../../types/Contact.d';
 import { ContactForm } from '../ContactForm.view';
@@ -45,32 +45,46 @@ export const ContactsPage: FC = (): JSX.Element => {
     isFavorite,
     recipientAddress,
   }: Contact) => {
-    const result = await assignAddressForAccount(
-      selectedAccount.account.accountId || String(Math.random())
-    );
+    try {
+      const result = await assignAddressForAccount(
+        selectedAccount.account.accountId || String(Math.random())
+      );
 
-    setStatus(PAGE.LIST);
-    contacts.push({
-      abbreviation,
-      alias,
-      assignedAddress: result.address.publicAddress,
-      color,
-      isFavorite,
-      recipientAddress,
-    });
-    await updateContacts(contacts);
+      setStatus(PAGE.LIST);
+      contacts.push({
+        abbreviation,
+        alias,
+        assignedAddress: result.address.publicAddress,
+        color,
+        isFavorite,
+        recipientAddress,
+      });
+      await updateContacts(contacts);
 
-    enqueueSnackbar(t('added'), { variant: 'success' });
+      enqueueSnackbar(t('added'), { variant: 'success' });
+    } catch (err) {
+      logError(
+        err,
+        'app/pages/Contacts/ContactsPage.presenter/ContactsPage.presenter.tsx:addNewContact'
+      );
+    }
   };
 
   const deleteContact = async () => {
-    contacts.splice(
-      contacts.findIndex((x) => x.assignedAddress === current.assignedAddress),
-      1
-    );
-    await updateContacts(contacts);
-    setStatus(PAGE.LIST);
-    enqueueSnackbar(t('removed'), { variant: 'success' });
+    try {
+      contacts.splice(
+        contacts.findIndex((x) => x.assignedAddress === current.assignedAddress),
+        1
+      );
+      await updateContacts(contacts);
+      setStatus(PAGE.LIST);
+      enqueueSnackbar(t('removed'), { variant: 'success' });
+    } catch (err) {
+      logError(
+        err,
+        'app/pages/Contacts/ContactsPage.presenter/ContactsPage.presenter.tsx:deleteContact'
+      );
+    }
   };
 
   const editContact = (idToEdit: string) => {
@@ -85,17 +99,24 @@ export const ContactsPage: FC = (): JSX.Element => {
     isFavorite,
     recipientAddress,
   }: Contact) => {
-    contacts[contacts.findIndex((x) => x.assignedAddress === current.assignedAddress)] = {
-      abbreviation,
-      alias,
-      assignedAddress: current.assignedAddress,
-      color: color || randomColor(),
-      isFavorite,
-      recipientAddress,
-    };
-    await updateContacts(contacts);
-    setStatus(PAGE.LIST);
-    enqueueSnackbar(t('updated'), { variant: 'success' });
+    try {
+      contacts[contacts.findIndex((x) => x.assignedAddress === current.assignedAddress)] = {
+        abbreviation,
+        alias,
+        assignedAddress: current.assignedAddress,
+        color: color || randomColor(),
+        isFavorite,
+        recipientAddress,
+      };
+      await updateContacts(contacts);
+      setStatus(PAGE.LIST);
+      enqueueSnackbar(t('updated'), { variant: 'success' });
+    } catch (err) {
+      logError(
+        err,
+        'app/pages/Contacts/ContactsPage.presenter/ContactsPage.presenter.tsx:updateContact'
+      );
+    }
   };
 
   switch (status) {

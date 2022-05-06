@@ -1,6 +1,8 @@
+import { logError } from '../../redux/services';
 import type { GiftCode } from '../../types/GiftCode.d';
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
 import type { TxProposal } from '../../types/TxProposal';
+import { errorToString } from '../../utils/errorHandler';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const BUILD_GIFT_CODE_METHOD = 'build_gift_code';
@@ -50,9 +52,13 @@ const buildGiftCode = async ({
   );
 
   if (error) {
-    throw new Error(error);
+    const errorMessage = errorToString(error);
+    logError(errorMessage, 'app/fullService/api/buildGiftCode.ts:buildGiftCode');
+    throw new Error(errorMessage);
   } else if (!result) {
-    throw new Error('Failure to retrieve data.');
+    const errorMessage = 'Failure to retrieve data.';
+    logError(errorMessage, 'app/fullService/api/buildGiftCode.ts:buildGiftCode');
+    throw new Error(errorMessage);
   }
 
   const { txProposal, giftCode, giftCodeB58 } = result;

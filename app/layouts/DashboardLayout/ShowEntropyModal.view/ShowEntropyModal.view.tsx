@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+import { logError } from '../../../redux/services';
 import type { Theme } from '../../../theme';
 import { ShowEntropyModalProps } from './ShowEntropyModal';
 
@@ -65,7 +66,15 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
   const handleGoBack = () => setAlertOpen(false);
 
   const handleFinalConfirm = async () => {
-    await confirmEntropyKnown();
+    try {
+      await confirmEntropyKnown();
+    } catch (err) {
+      logError(
+        err,
+        'app/layouts/DashboardLayout/ShowEntropyModal.view/ShowEntropyModal.view.tsx:handleFinalConfirm'
+      );
+    }
+
     setAlertOpen(false);
   };
 

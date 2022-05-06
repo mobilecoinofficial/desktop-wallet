@@ -512,6 +512,12 @@ ipcMain.on('view-path', (_event, filePath: string) => {
   shell.showItemInFolder(filePath);
 });
 
+ipcMain.on('show-error', (_event, title: string, generatedFrom: string, stack: string) => {
+  dialog.showMessageBoxSync(mainWindow, {
+    message: `error\n${title}\n\nlocation\n${generatedFrom}\n\nstacktrace\n${stack}`,
+  });
+});
+
 const shutDownFullService = () => {
   const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
   writeLog(`Leave Full-Service running: ${leaveFullServiceRunning}`);

@@ -2,7 +2,7 @@ import type { Address, Addresses } from '../../types/Address.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
-const GET_ALL_ADRESSES_FOR_ACCOUNT_METHOD = 'get_all_addresses_for_account';
+const GET_ALL_ADDRESSES_FOR_ACCOUNT_METHOD = 'get_all_addresses_for_account';
 
 type GetAllAddressesForAccountParams = {
   accountId: StringHex;
@@ -19,7 +19,7 @@ const getAllAddressesForAccount = async ({
   accountId,
 }: GetAllAddressesForAccountParams): Promise<GetAllAddressesForAccountResult> => {
   const { result, error }: AxiosFullServiceResponse<GetAllAddressesForAccountResponse> =
-    await axiosFullService(GET_ALL_ADRESSES_FOR_ACCOUNT_METHOD, {
+    await axiosFullService(GET_ALL_ADDRESSES_FOR_ACCOUNT_METHOD, {
       accountId,
     });
 

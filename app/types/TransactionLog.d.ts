@@ -32,7 +32,7 @@ export interface TransactionLog {
     | 'tx_status_built'
     | 'tx_status_pending'
     | 'tx_status_received'
-    | 'tx_status_succeded'
+    | 'tx_status_succeeded'
     | 'tx_status_failed';
   submittedBlockIndex: StringUInt64 | null;
   transactionLogId: StringHex;

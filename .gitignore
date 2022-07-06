@@ -57,3 +57,5 @@ full-service-bin/*/full-service
 full-service-bin/*.css
 full-service-bin/full-service
 full-service-bin/*.sh
+full-service-bin/*/transaction-signer
+full-service-bin/transaction-signer

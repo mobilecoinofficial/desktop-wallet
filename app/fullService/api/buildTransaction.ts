@@ -1,18 +1,24 @@
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
-import type { Outlay, TxProposal } from '../../types/TxProposal';
+import type { OutputTxo, TxProposal } from '../../types/TxProposal';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 // TODO - fix the error handling at this level -- when giving the wrong method, for example
 const BUILD_TRANSACTION_METHOD = 'build_transaction';
 
 export type BuildTransactionParams = {
+  addressesAndAmounts: AddressAndAmount[];
   accountId: StringHex;
-  fee?: StringUInt64;
+  feeValue?: StringUInt64;
+  feeTokenId?: StringUInt64;
   inputTxoIds?: StringHex[];
   maxSpendableValue?: StringUInt64;
-  recipientPublicAddress: StringB58;
   tombstoneBlock?: StringUInt64;
-  valuePmob: StringUInt64;
+};
+
+export type AddressAndAmount = [StringB58, TransactionAmount];
+export type TransactionAmount = {
+  value: StringUInt64;
+  tokenId: StringUInt64;
 };
 
 export type BuildTransactionResult = {
@@ -23,23 +29,23 @@ export type BuildTransactionResult = {
 };
 
 const buildTransaction = async ({
+  addressesAndAmounts,
   accountId,
-  fee,
+  feeValue,
+  feeTokenId,
   inputTxoIds,
   maxSpendableValue,
-  recipientPublicAddress,
   tombstoneBlock,
-  valuePmob,
 }: BuildTransactionParams): Promise<BuildTransactionResult> => {
   const { result, error }: AxiosFullServiceResponse<{ txProposal: TxProposal }> =
     await axiosFullService(BUILD_TRANSACTION_METHOD, {
       accountId,
-      fee,
+      addressesAndAmounts,
+      feeTokenId,
+      feeValue,
       inputTxoIds,
       maxSpendableValue,
-      recipientPublicAddress,
       tombstoneBlock,
-      valuePmob,
     });
 
   if (error) {
@@ -50,14 +56,14 @@ const buildTransaction = async ({
 
   const { txProposal } = result;
   // FIX-ME: assumes only 1 recipient
-  const txProposalReceiverB58Code = recipientPublicAddress;
+  const txProposalReceiverB58Code = txProposal.payloadTxos[0].recipient_public_address_b58;
 
   // TODO fix type, right now it just matches what the component is expecting
-  const totalValueConfirmation = txProposal.outlayList
-    .map((outlay: Outlay) => BigInt(outlay.value))
+  const totalValueConfirmation = [...txProposal.changeTxos, ...txProposal.payloadTxos]
+    .map((txo: OutputTxo) => BigInt(txo.amount.value))
     .reduce((acc: bigint, cur: bigint) => acc + cur, BigInt(0));
 
-  const feeConfirmation = BigInt(txProposal.fee);
+  const feeConfirmation = BigInt(txProposal.feeAmount.value);
   return {
     feeConfirmation,
     totalValueConfirmation,

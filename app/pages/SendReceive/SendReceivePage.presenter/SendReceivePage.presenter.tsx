@@ -154,7 +154,11 @@ export const SendReceivePage: FC = (): JSX.Element => {
     setRecipientPublicAddress(recipientPublicAddress);
 
     try {
-      result = await buildTransaction({ accountId, fee, recipientPublicAddress, valuePmob });
+      result = await buildTransaction({
+        accountId,
+        addressesAndAmounts: [[recipientPublicAddress, { tokenId: '1', value: valuePmob }]],
+        feeValue: fee,
+      });
 
       if (result === null || result === undefined) {
         throw new Error(t('sendBuildError'));
@@ -239,7 +243,11 @@ export const SendReceivePage: FC = (): JSX.Element => {
     valuePmob: string;
   }) => {
     try {
-      const result = await buildTransaction({ accountId, fee, recipientPublicAddress, valuePmob });
+      const result = await buildTransaction({
+        accountId,
+        addressesAndAmounts: [[recipientPublicAddress, { tokenId: '1', value: valuePmob }]],
+        feeValue: fee,
+      });
       if (result === null || result === undefined) {
         throw new Error(t('sendBuildError'));
       }

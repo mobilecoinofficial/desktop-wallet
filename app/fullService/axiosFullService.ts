@@ -34,7 +34,7 @@ const axiosFullService = async <T>(
   params?: Record<string, any>
 ): Promise<AxiosFullServiceResponse<T>> => {
   const axiosInstance = axios.create({
-    baseURL: 'http://localhost:9090/wallet',
+    baseURL: 'http://localhost:9090/wallet/v2',
     headers: { 'Content-type': 'application/json' },
     method: 'post',
   });

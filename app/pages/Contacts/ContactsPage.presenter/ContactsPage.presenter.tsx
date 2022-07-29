@@ -53,7 +53,7 @@ export const ContactsPage: FC = (): JSX.Element => {
     contacts.push({
       abbreviation,
       alias,
-      assignedAddress: result.address.publicAddress,
+      assignedAddress: result.address.public_address_b58,
       color,
       isFavorite,
       recipientAddress,

@@ -95,7 +95,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
     contacts.push({
       abbreviation: formAlias[0].toUpperCase(),
       alias: formAlias,
-      assignedAddress: result.address.publicAddress,
+      assignedAddress: result.address.public_address_b58,
       color: randomColor(),
       isFavorite: false,
       recipientAddress: formRecipientPublicAddress,

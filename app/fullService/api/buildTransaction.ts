@@ -56,7 +56,7 @@ const buildTransaction = async ({
 
   const { txProposal } = result;
   // FIX-ME: assumes only 1 recipient
-  const txProposalReceiverB58Code = txProposal.payloadTxos[0].recipient_public_address_b58;
+  const txProposalReceiverB58Code = txProposal.payloadTxos[0].recipientPublicAddressB58;
 
   // TODO fix type, right now it just matches what the component is expecting
   const totalValueConfirmation = [...txProposal.changeTxos, ...txProposal.payloadTxos]

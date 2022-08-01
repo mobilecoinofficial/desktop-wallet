@@ -24,8 +24,8 @@ type InputTxo = {
 type OutputTxo = {
   txOutProto: string;
   amount: TransactionAmount;
-  recipient_public_address_b58: StringB58;
-  confirmation_number: StringUInt64;
+  recipientPublicAddressB58: StringB58;
+  confirmationNumber: StringUInt64;
 };
 
 export interface TxProposal {

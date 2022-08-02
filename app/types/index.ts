@@ -13,7 +13,7 @@ import { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 import { TransactionAbbreviation, TransactionLog, TransactionLogs } from './TransactionLog';
 import { TxProposal } from './TxProposal';
 import { Txo, Txos } from './Txo';
-import { WalletStatus } from './WalletStatus';
+import { WalletStatus, WalletStatusFromV2Api } from './WalletStatus';
 
 export type {
   Account,
@@ -42,4 +42,5 @@ export type {
   Txos,
   TxProposal,
   WalletStatus,
+  WalletStatusFromV2Api,
 };

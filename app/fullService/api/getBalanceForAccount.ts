@@ -1,8 +1,7 @@
+import type { AccountStatus } from '../../types/Account.d';
 import type { BalanceStatus } from '../../types/BalanceStatus.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
-
-const GET_BALANCE_FOR_ACCOUNT_METHOD = 'get_balance_for_account';
 
 type GetBalanceParams = {
   accountId: StringHex;
@@ -12,9 +11,25 @@ type GetBalanceResult = {
   balance: BalanceStatus; // TODO - lock in name of object
 };
 
+export function convertBalanceFromV2Api(accountStatus: AccountStatus): BalanceStatus {
+  return {
+    accountBlockHeight: accountStatus.localBlockHeight,
+    isSynced: accountStatus.account.nextBlockIndex === accountStatus.networkBlockHeight,
+    localBlockHeight: accountStatus.localBlockHeight,
+    networkBlockHeight: accountStatus.networkBlockHeight,
+    object: 'balance',
+    orphanedPmob: accountStatus.balancePerToken[0].orphaned,
+    pendingPmob: accountStatus.balancePerToken[0].pending,
+    secretedPmob: accountStatus.balancePerToken[0].secreted,
+    spentPmob: accountStatus.balancePerToken[0].spent,
+    unspentPmob: accountStatus.balancePerToken[0].unspent,
+  };
+}
+
+// full service v2 api does not have a balance endpoint. Instead the balance is a field on account status
 const getBalance = async ({ accountId }: GetBalanceParams): Promise<GetBalanceResult> => {
-  const { result, error }: AxiosFullServiceResponse<GetBalanceResult> = await axiosFullService(
-    GET_BALANCE_FOR_ACCOUNT_METHOD,
+  const { result, error }: AxiosFullServiceResponse<AccountStatus> = await axiosFullService(
+    'get_account_status',
     {
       accountId,
     }
@@ -25,7 +40,7 @@ const getBalance = async ({ accountId }: GetBalanceParams): Promise<GetBalanceRe
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    return result;
+    return { balance: convertBalanceFromV2Api(result) };
   }
 };
 

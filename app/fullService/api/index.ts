@@ -8,7 +8,6 @@ export { default as createAccount } from './createAccount';
 export { default as createReceiverReceipts } from './createReceiverReceipts';
 export { default as exportAccountSecrets } from './exportAccountSecrets';
 export { default as getAccount } from './getAccount';
-export { default as getAccountStatus } from './getAccountStatus';
 export { default as getAllAccounts } from './getAllAccounts';
 export { default as getAllAddressesForAccount } from './getAllAddressesForAccount';
 export { default as getAllGiftCodes } from './getAllGiftCodes';

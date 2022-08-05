@@ -77,7 +77,7 @@ export function convertTransactionLogsResponseFromV2(
 ): TransactionLogs {
   return {
     transactionLogIds: transactionlogs.transactionLogIds,
-    transactionLogMap: Object.keys(transactionlogs.transactionLogMap).reduce(
+    transactionLogMap: transactionlogs.transactionLogIds.reduce(
       (accum: { [transactionLogId: string]: TransactionLog }, key) => ({
         ...accum,
         [key]: convertV2TransactionLogToWalletTransactionLog(

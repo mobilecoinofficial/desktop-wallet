@@ -37,6 +37,7 @@ export function convertAccountFromV2Api(
 
 const getAccount = async ({ accountId }: GetAccountParams): Promise<GetAccountResult> => {
   // not using exportAccountSecrets fn here because we need the v2 secrets
+  // todo wrap this in a fn instead of copy paste
   const {
     result: secretsResult,
     error: secretsError,

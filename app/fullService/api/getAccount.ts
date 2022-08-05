@@ -17,7 +17,6 @@ export function convertAccountFromV2Api(
   accountStatus: AccountStatus,
   accountSecrets: AccountSecretsFromV2Api
 ): GetAccountResult {
-  console.log(accountSecrets);
   return {
     account: {
       accountHeight: accountStatus.account.nextBlockIndex,

@@ -1,11 +1,11 @@
 import type {
   TransactionLog,
-  TransactionLogFromFullServiceV2,
+  TransactionLogV2,
   Status,
   TransactionAbbreviation,
   TransactionLogs,
   TransactionLogsFromV2,
-} from '../../types/TransactionLog.d';
+} from '../../types/TransactionLog';
 import type { InputTxo, OutputTxo } from '../../types/TxProposal';
 
 export function matchStatus(status: 'built' | 'succeeded' | 'pending' | 'failed'): Status {
@@ -37,12 +37,11 @@ export function mapTxoToAbbreviation(txo: InputTxo | OutputTxo): TransactionAbbr
   };
 }
 
-export function convertV2TransactionLogToWalletTransactionLog(
-  v2TransactionLog: TransactionLogFromFullServiceV2
-): TransactionLog {
+export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2): TransactionLog {
   const assignedAddressId = v2TransactionLog.outputTxos[0].recipientPublicAddressB58;
 
-  const direction = 'tx_direction_received'; // FIX-ME TODO find out how to calculate this field
+  // FIX-ME these strings should be enum or const
+  const direction = v2TransactionLog.sentTime ? 'tx_direction_sent' : 'tx_direction_received'; // FIX-ME TODO find out how to calculate this field
 
   return {
     accountId: v2TransactionLog.accountId,
@@ -58,7 +57,6 @@ export function convertV2TransactionLogToWalletTransactionLog(
     finalizedBlockIndex: v2TransactionLog.finalizedBlockIndex,
     inputTxoIds: v2TransactionLog.inputTxos.map((t) => t.txOutProto),
     inputTxos: v2TransactionLog.inputTxos.map((t) => mapTxoToAbbreviation(t)),
-    isSentRecovered: null, // FIX-ME TODO find out how to calc this field
     object: 'transaction_log',
     offsetCount: 0,
     outputTxoIds: v2TransactionLog.outputTxos.map((t) => t.txOutProto),
@@ -80,9 +78,7 @@ export function convertTransactionLogsResponseFromV2(
     transactionLogMap: transactionlogs.transactionLogIds.reduce(
       (accum: { [transactionLogId: string]: TransactionLog }, key) => ({
         ...accum,
-        [key]: convertV2TransactionLogToWalletTransactionLog(
-          transactionlogs.transactionLogMap[key]
-        ),
+        [key]: convertTransactionLogFromV2(transactionlogs.transactionLogMap[key]),
       }),
       {}
     ),

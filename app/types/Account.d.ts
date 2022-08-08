@@ -52,7 +52,7 @@ export interface Account {
   recoveryMode: boolean;
 }
 
-export interface AccountFromV2Api {
+export interface AccountV2 {
   // Unique identifier for the account. Constructed from the public key
   // materials of the account key.
   id: StringHex;
@@ -86,7 +86,7 @@ export interface AccountFromV2Api {
 }
 
 export interface AccountStatus {
-  account: AccountFromV2Api;
+  account: AccountV2;
   networkBlockHeight: StringUInt64;
   localBlockHeight: StringUInt64;
   balancePerToken: {

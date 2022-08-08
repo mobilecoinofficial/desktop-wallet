@@ -1,7 +1,7 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
 import type { TransactionLogs, TransactionLogsFromV2 } from '../../types/TransactionLog.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
-import { convertTransactionLogsResponseFromV2 } from './convertV2TransactionLogToWalletTransactionLog';
+import { convertTransactionLogsResponseFromV2 } from './transactionLogVersionConversion';
 
 const GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_METHOD = 'get_transaction_logs';
 

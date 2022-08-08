@@ -1,5 +1,5 @@
 import type { Accounts } from '../../types/Account.d';
-import type { WalletStatusFromV2Api, WalletStatus } from '../../types/WalletStatus.d';
+import type { WalletStatusV2, WalletStatus } from '../../types/WalletStatus.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 import getAllAccounts from './getAllAccounts';
 
@@ -9,8 +9,8 @@ type GetWalletStatusResult = {
   walletStatus: WalletStatus;
 };
 
-function convertV2StatusToWalletStatus(
-  status: WalletStatusFromV2Api,
+function convertWalletStatusFromV2(
+  status: WalletStatusV2,
   accounts: Accounts
 ): GetWalletStatusResult {
   return {
@@ -32,7 +32,7 @@ function convertV2StatusToWalletStatus(
 }
 
 const getWalletStatus = async (): Promise<GetWalletStatusResult> => {
-  const { result, error }: AxiosFullServiceResponse<{ walletStatus: WalletStatusFromV2Api }> =
+  const { result, error }: AxiosFullServiceResponse<{ walletStatus: WalletStatusV2 }> =
     await axiosFullService(GET_WALLET_STATUS_METHOD);
 
   const accounts = await getAllAccounts();
@@ -42,7 +42,7 @@ const getWalletStatus = async (): Promise<GetWalletStatusResult> => {
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    return convertV2StatusToWalletStatus(result.walletStatus, accounts);
+    return convertWalletStatusFromV2(result.walletStatus, accounts);
   }
 };
 

@@ -1,4 +1,4 @@
-import type { Account, AccountFromV2Api } from '../../types/Account.d';
+import type { Account, AccountV2 } from '../../types/Account.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 import getAccount from './getAccount';
@@ -15,7 +15,7 @@ type UpdateAccountNameResult = {
 };
 
 type UpdateAccountNameResultV2 = {
-  account: AccountFromV2Api;
+  account: AccountV2;
 };
 
 const updateAccountName = async ({

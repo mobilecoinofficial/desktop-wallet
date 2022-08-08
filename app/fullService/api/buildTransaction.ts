@@ -28,6 +28,10 @@ export type BuildTransactionResult = {
   txProposalReceiverB58Code: StringB58;
 };
 
+type BuilTransactionProposalResponse = {
+  txProposal: TxProposal;
+};
+
 const buildTransaction = async ({
   addressesAndAmounts,
   accountId,
@@ -37,7 +41,7 @@ const buildTransaction = async ({
   maxSpendableValue,
   tombstoneBlock,
 }: BuildTransactionParams): Promise<BuildTransactionResult> => {
-  const { result, error }: AxiosFullServiceResponse<{ txProposal: TxProposal }> =
+  const { result, error }: AxiosFullServiceResponse<BuilTransactionProposalResponse> =
     await axiosFullService(BUILD_TRANSACTION_METHOD, {
       accountId,
       addressesAndAmounts,

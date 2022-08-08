@@ -1,4 +1,4 @@
-import type { Account, AccountFromV2Api } from '../../types/Account.d';
+import type { Account, AccountV2 } from '../../types/Account.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 import getAccount from './getAccount';
 
@@ -12,11 +12,17 @@ type CreateAccountResult = {
   account: Account;
 };
 
+type CreateAccountResultV2 = {
+  account: AccountV2;
+};
+
 const createAccount = async ({ name }: CreateAccountParams): Promise<CreateAccountResult> => {
-  const { result, error }: AxiosFullServiceResponse<{ account: AccountFromV2Api }> =
-    await axiosFullService(CREATE_ACCOUNT_METHOD, {
+  const { result, error }: AxiosFullServiceResponse<CreateAccountResultV2> = await axiosFullService(
+    CREATE_ACCOUNT_METHOD,
+    {
       name,
-    });
+    }
+  );
 
   if (error) {
     throw new Error(error);

@@ -1,7 +1,6 @@
 import type { StringHex, StringUInt64 } from './SpecialStrings';
 
 export type AccountKey = {
-  // accountId: StringHex;
   fogAuthoritySpki: string;
   fogReportId: string;
   fogReportUrl: string;
@@ -12,7 +11,7 @@ export interface AccountSecrets {
   accountId: StringHex;
   entropy?: StringHex;
   mnemonic?: string;
-  accountKey: AccountKey;
+  accountKey?: AccountKey;
 }
 
 export interface ViewAccountKey {
@@ -25,9 +24,9 @@ export interface ViewAccountKey {
   spend_public_key: StringHex;
 }
 
-export interface AccountSecretsFromV2Api {
+export interface AccountSecretsV2 {
   // The account ID for this account key in the wallet database.
-  account_id: StringHex;
+  accountId: StringHex;
   // The name of this account
   name: string;
   // The entropy from which this account key was derived, as a String

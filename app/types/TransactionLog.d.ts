@@ -23,7 +23,6 @@ export interface TransactionLog {
   finalizedBlockIndex: StringUInt64 | null;
   inputTxoIds: StringHex[]; // FK this is gone?
   inputTxos: TransactionAbbreviation[];
-  isSentRecovered: boolean | null;
   object: 'transaction_log';
   offsetCount: number;
   outputTxoIds: StringHex[]; // FK this is gone?
@@ -43,7 +42,7 @@ type Status =
   | 'tx_status_succeded'
   | 'tx_status_failed';
 
-export interface TransactionLogFromFullServiceV2 {
+export interface TransactionLogV2 {
   // Unique identifier for the transaction log. This value is not associated
   // to the ledger, but derived from the tx.
   id: string;
@@ -86,5 +85,5 @@ export type TransactionLogs = {
 
 export type TransactionLogsFromV2 = {
   transactionLogIds: StringHex[];
-  transactionLogMap: { [transactionLogId: string]: TransactionLogFromFullServiceV2 };
+  transactionLogMap: { [transactionLogId: string]: TransactionLogV2 };
 };

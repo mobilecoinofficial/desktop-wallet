@@ -1,7 +1,7 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
-import type { TransactionLog, TransactionLogFromFullServiceV2 } from '../../types/TransactionLog.d';
+import type { TransactionLog, TransactionLogV2 } from '../../types/TransactionLog.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
-import { convertV2TransactionLogToWalletTransactionLog } from './convertV2TransactionLogToWalletTransactionLog';
+import { convertTransactionLogFromV2 } from './transactionLogVersionConversion';
 
 const GET_TRANSACTION_LOG_METHOD = 'get_transaction_LOG';
 
@@ -10,7 +10,7 @@ type GetTransactionLogParams = {
 };
 
 type GetTransactionLogResult = {
-  transactionLog: TransactionLogFromFullServiceV2;
+  transactionLog: TransactionLogV2;
 };
 
 const getTransactionLog = async ({
@@ -26,7 +26,7 @@ const getTransactionLog = async ({
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    return { transactionLog: convertV2TransactionLogToWalletTransactionLog(result.transactionLog) };
+    return { transactionLog: convertTransactionLogFromV2(result.transactionLog) };
   }
 };
 

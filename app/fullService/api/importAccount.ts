@@ -1,4 +1,4 @@
-import type { Account, AccountFromV2Api } from '../../types/Account.d';
+import type { Account, AccountV2 } from '../../types/Account.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 import getAccount from './getAccount';
 
@@ -16,7 +16,7 @@ type ImportAccountResult = {
 };
 
 type ImportAccountResultV2 = {
-  account: AccountFromV2Api;
+  account: AccountV2;
 };
 
 const importAccount = async ({

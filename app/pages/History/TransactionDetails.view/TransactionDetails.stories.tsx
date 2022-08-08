@@ -28,7 +28,6 @@ const currentTransactionLog = {
   feePmob: null,
   finalizedBlockIndex: '159566',
   inputTxoIds: [],
-  isSentRecovered: null,
   object: 'transaction_log',
   offsetCount: 1,
   outputTxoIds: ['f788d762c70d81a91a36b2b625b299e2ecf84a800ba31deab5ac2ef1f58891b8'],

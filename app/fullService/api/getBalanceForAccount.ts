@@ -11,7 +11,7 @@ type GetBalanceResult = {
   balance: BalanceStatus; // TODO - lock in name of object
 };
 
-export function convertBalanceFromV2Api(accountStatus: AccountStatus): BalanceStatus {
+export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatus {
   return {
     accountBlockHeight: accountStatus.localBlockHeight,
     isSynced: accountStatus.account.nextBlockIndex === accountStatus.networkBlockHeight,
@@ -40,7 +40,7 @@ const getBalance = async ({ accountId }: GetBalanceParams): Promise<GetBalanceRe
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    return { balance: convertBalanceFromV2Api(result) };
+    return { balance: convertBalanceFromV2(result) };
   }
 };
 

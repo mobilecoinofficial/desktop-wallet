@@ -16,7 +16,7 @@ export interface WalletStatus {
   totalUnspentPmob: StringUInt64;
 }
 
-export interface WalletStatusFromV2Api {
+export interface WalletStatusV2 {
   // The block count of MobileCoin's distributed ledger.
   networkBlockHeight: StringUInt64;
   // The local block count downloaded from the ledger. The local database

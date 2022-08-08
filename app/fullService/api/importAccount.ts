@@ -1,5 +1,6 @@
-import type { Account } from '../../types/Account.d';
+import type { Account, AccountFromV2Api } from '../../types/Account.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import getAccount from './getAccount';
 
 const IMPORT_ACCOUNT_METHOD = 'import_account';
 
@@ -14,13 +15,17 @@ type ImportAccountResult = {
   account: Account;
 };
 
+type ImportAccountResultV2 = {
+  account: AccountFromV2Api;
+};
+
 const importAccount = async ({
   mnemonic,
   key_derivation_version,
   firstBlockIndex,
   name,
 }: ImportAccountParams): Promise<ImportAccountResult> => {
-  const { result, error }: AxiosFullServiceResponse<ImportAccountResult> = await axiosFullService(
+  const { result, error }: AxiosFullServiceResponse<ImportAccountResultV2> = await axiosFullService(
     IMPORT_ACCOUNT_METHOD,
     {
       firstBlockIndex,
@@ -34,9 +39,9 @@ const importAccount = async ({
     throw new Error(error);
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
-  } else {
-    return result;
   }
+
+  return getAccount({ accountId: result.account.id });
 };
 
 export default importAccount;

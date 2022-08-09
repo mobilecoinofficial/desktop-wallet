@@ -1,6 +1,6 @@
 import type { Account, AccountV2 } from '../../types/Account.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
-import { getAccount } from './getAccount';
+import getAccount from './getAccount';
 
 const IMPORT_LEGACY_ACCOUNT_METHOD = 'import_account_from_legacy_root_entropy';
 

@@ -84,7 +84,6 @@ export const AuthPage: FC = (): JSX.Element => {
   const [accountIds, setAccountIds] = useState([]);
 
   const offlineStart = localStore.getOfflineStart();
-
   useEffect(() => {
     const controller = new AbortController();
     (async () => {

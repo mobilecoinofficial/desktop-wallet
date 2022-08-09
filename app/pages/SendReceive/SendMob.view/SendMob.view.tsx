@@ -118,6 +118,7 @@ const SendMob: FC<SendMobProps> = ({
   const handleScanningQR = () => setIsScanningQR(!isScanningQR);
 
   const handleOpen = (values) => async () => {
+    console.log('values', values);
     onClickSend({
       accountId: selectedAccount.account.accountId,
       alias: values.alias,

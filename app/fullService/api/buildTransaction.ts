@@ -63,7 +63,7 @@ const buildTransaction = async ({
   const txProposalReceiverB58Code = txProposal.payloadTxos[0].recipientPublicAddressB58;
 
   // TODO fix type, right now it just matches what the component is expecting
-  const totalValueConfirmation = [...txProposal.changeTxos, ...txProposal.payloadTxos]
+  const totalValueConfirmation = txProposal.payloadTxos
     .map((txo: OutputTxo) => BigInt(txo.amount.value))
     .reduce((acc: bigint, cur: bigint) => acc + cur, BigInt(0));
 

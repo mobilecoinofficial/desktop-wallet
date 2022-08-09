@@ -78,6 +78,7 @@ export const HistoryPage: FC = (): JSX.Element => {
     (async () => {
       const confirmationsString = clipboard.readText();
       try {
+        console.log(confirmationsString);
         const confirmations = JSON.parse(confirmationsString) as Confirmations;
         const results: { [txoId: string]: boolean } = {};
 

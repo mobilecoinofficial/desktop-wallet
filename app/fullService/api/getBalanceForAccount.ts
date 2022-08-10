@@ -18,11 +18,11 @@ export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatu
     localBlockHeight: accountStatus.localBlockHeight,
     networkBlockHeight: accountStatus.networkBlockHeight,
     object: 'balance',
-    orphanedPmob: accountStatus.balancePerToken[0]?.orphaned,
-    pendingPmob: accountStatus.balancePerToken[0]?.pending,
-    secretedPmob: accountStatus.balancePerToken[0]?.secreted,
-    spentPmob: accountStatus.balancePerToken[0]?.spent,
-    unspentPmob: accountStatus.balancePerToken[0]?.unspent,
+    orphanedPmob: accountStatus.balancePerToken[0]?.orphaned || '0',
+    pendingPmob: accountStatus.balancePerToken[0]?.pending || '0',
+    secretedPmob: accountStatus.balancePerToken[0]?.secreted || '0',
+    spentPmob: accountStatus.balancePerToken[0]?.spent || '0',
+    unspentPmob: accountStatus.balancePerToken[0]?.unspent || '0',
   };
 }
 

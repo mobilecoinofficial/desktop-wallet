@@ -38,6 +38,7 @@ export function mapTxoToAbbreviation(txo: InputTxo | OutputTxo): TransactionAbbr
 }
 
 export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2): TransactionLog {
+  console.log(v2TransactionLog);
   const assignedAddressId = v2TransactionLog.outputTxos[0].recipientPublicAddressB58;
 
   // FIX-ME these strings should be enum or const

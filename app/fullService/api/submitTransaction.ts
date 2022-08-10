@@ -12,14 +12,14 @@ type SubmitTransactionParams = {
 };
 
 type SubmitTransactionResult = {
-  transaction: TransactionLog;
+  transactionLog: TransactionLog;
 };
 
 const submitTransaction = async ({
   accountId,
   txProposal,
 }: SubmitTransactionParams): Promise<SubmitTransactionResult> => {
-  const { result, error }: AxiosFullServiceResponse<{ transaction: TransactionLogV2 }> =
+  const { result, error }: AxiosFullServiceResponse<{ transactionLog: TransactionLogV2 }> =
     await axiosFullService(SUBMIT_TRANSACTION_METHOD, {
       accountId,
       txProposal,
@@ -30,7 +30,7 @@ const submitTransaction = async ({
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    return { transaction: convertTransactionLogFromV2(result.transaction) };
+    return { transactionLog: convertTransactionLogFromV2(result.transactionLog) };
   }
 };
 

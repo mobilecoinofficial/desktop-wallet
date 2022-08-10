@@ -39,7 +39,6 @@ const ContactsList: FC<ContactsListProps> = ({
   onClickEdit,
 }: ContactsListProps) => {
   const classes = useStyles();
-
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [currentFilter, setCurrentFilter] = useState('');
   const [dataToShow, setDataToShow] = useState(contactsList);
@@ -91,7 +90,7 @@ const ContactsList: FC<ContactsListProps> = ({
           {dataToShow.map((contact, i) => (
             <ContactCard
               key={contact.assignedAddress ?? `contacts-list-${i}`}
-              assignedAddress={contact.assignedAddress}
+              recipientAddress={contact.recipientAddress}
               abbreviation={contact.abbreviation}
               alias={contact.alias}
               color={contact.color}

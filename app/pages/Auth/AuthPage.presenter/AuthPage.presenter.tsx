@@ -20,6 +20,7 @@ import {
   importLegacyAccount,
   selectAccount,
   unlockWallet,
+  confirmEntropyKnown,
 } from '../../../redux/services';
 import { getWalletStatus } from '../../../services';
 import type { Theme } from '../../../theme';
@@ -90,6 +91,10 @@ export const AuthPage: FC = (): JSX.Element => {
       try {
         const status = await getWalletStatus();
         setAccountIds(status.accountIds);
+        if (status.accountIds?.length) {
+          confirmEntropyKnown();
+        }
+
         setFullServiceIsRunning(true);
       } finally {
         setLoading(false);

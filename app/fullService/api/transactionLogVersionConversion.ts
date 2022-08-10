@@ -41,7 +41,7 @@ export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2):
   const assignedAddressId = v2TransactionLog.outputTxos[0].recipientPublicAddressB58;
 
   // FIX-ME these strings should be enum or const
-  const direction = v2TransactionLog.sentTime ? 'tx_direction_sent' : 'tx_direction_received'; // FIX-ME TODO find out how to calculate this field
+  const direction = 'tx_direction_sent'; // FIX-ME TODO It looks like the new tx logs endpoint returns ONLY sent logs?
 
   return {
     accountId: v2TransactionLog.accountId,

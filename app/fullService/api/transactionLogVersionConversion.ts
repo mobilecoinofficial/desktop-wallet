@@ -1,3 +1,4 @@
+import { StringB58 } from '../../types';
 import type {
   TransactionLog,
   TransactionLogV2,
@@ -7,8 +8,9 @@ import type {
   TransactionLogsFromV2,
 } from '../../types/TransactionLog';
 import type { InputTxo, OutputTxo } from '../../types/TxProposal';
+import type { TxosV2, TxoV2 } from '../../types/Txo.d';
 
-export function matchStatus(status: 'built' | 'succeeded' | 'pending' | 'failed'): Status {
+export function matchStatus(status: string): Status {
   switch (status) {
     case 'built':
       return 'tx_status_built';
@@ -19,7 +21,7 @@ export function matchStatus(status: 'built' | 'succeeded' | 'pending' | 'failed'
     case 'failed':
       return 'tx_status_failed';
     default:
-      return 'tx_status_failed';
+      return 'tx_status_succeded';
   }
 }
 
@@ -40,8 +42,7 @@ export function mapTxoToAbbreviation(txo: InputTxo | OutputTxo): TransactionAbbr
 export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2): TransactionLog {
   const assignedAddressId = v2TransactionLog.outputTxos[0].recipientPublicAddressB58;
 
-  // FIX-ME these strings should be enum or const
-  const direction = 'tx_direction_sent'; // FIX-ME TODO It looks like the new tx logs endpoint returns ONLY sent logs?
+  const direction = 'tx_direction_sent';
 
   return {
     accountId: v2TransactionLog.accountId,
@@ -61,7 +62,7 @@ export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2):
     offsetCount: 0,
     outputTxoIds: v2TransactionLog.outputTxos.map((t) => t.txOutProto),
     outputTxos: v2TransactionLog.outputTxos.map((t) => mapTxoToAbbreviation(t)),
-    recipientAddressId: assignedAddressId, // FIX-ME TODO is this correct?
+    recipientAddressId: assignedAddressId,
     sentTime: v2TransactionLog.sentTime,
     status: matchStatus(v2TransactionLog.status),
     submittedBlockIndex: v2TransactionLog.submittedBlockIndex,
@@ -79,6 +80,55 @@ export function convertTransactionLogsResponseFromV2(
       (accum: { [transactionLogId: string]: TransactionLog }, key) => ({
         ...accum,
         [key]: convertTransactionLogFromV2(transactionlogs.transactionLogMap[key]),
+      }),
+      {}
+    ),
+  };
+}
+
+function convertTxoToTransactionLog(
+  txo: TxoV2,
+  accountId: StringB58,
+  address: StringB58
+): TransactionLog {
+  return {
+    accountId,
+    assignedAddressId: undefined,
+    changeTxoIds: [],
+    changeTxos: [],
+    comment: '',
+    contact: undefined,
+    direction: 'tx_direction_received',
+    failureCode: null,
+    failureMessage: null,
+    feePmob: null,
+    finalizedBlockIndex: null,
+    inputTxoIds: [],
+    inputTxos: [],
+    object: 'transaction_log',
+    offsetCount: 0,
+    outputTxoIds: [],
+    outputTxos: [],
+    recipientAddressId: address,
+    sentTime: null,
+    status: matchStatus(txo.status),
+    submittedBlockIndex: null,
+    transactionLogId: txo.id,
+    valuePmob: txo.value,
+  };
+}
+
+export function convertTxosToTransactionLogs(
+  txos: TxosV2,
+  accountId: StringB58,
+  address: StringB58
+): TransactionLogs {
+  return {
+    transactionLogIds: txos.txoIds,
+    transactionLogMap: txos.txoIds.reduce(
+      (accum: { [transactionLogId: string]: TransactionLog }, key) => ({
+        ...accum,
+        [key]: convertTxoToTransactionLog(txos.txoMap[key], accountId, address),
       }),
       {}
     ),

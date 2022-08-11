@@ -1,5 +1,5 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
-import type { Txos, TxoV2, Txo } from '../../types/Txo.d';
+import type { Txos, TxoV2, Txo, TxosV2 } from '../../types/Txo.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const GET_ALL_TXOS_FOR_ACCOUNT_METHOD = 'get_txos';
@@ -23,36 +23,37 @@ export function convertTxoFromV2(txoV2: TxoV2): Txo {
   };
 }
 
-const getAllTxosForAccount = async ({
-  accountId,
-}: GetAllTxosByAccountParams): Promise<GetAllTxosByAccountResult> => {
-  const {
-    result,
-    error,
-  }: // FIX-ME make a type for this api result
-  AxiosFullServiceResponse<{
-    txoIds: StringHex[];
-    txoMap: { [txoId: string]: TxoV2 };
-  }> = await axiosFullService(GET_ALL_TXOS_FOR_ACCOUNT_METHOD, {
-    accountId,
-  });
-
+export const getTxosV2 = async ({ accountId }: GetAllTxosByAccountParams): Promise<TxosV2> => {
+  const { result, error }: AxiosFullServiceResponse<TxosV2> = await axiosFullService(
+    GET_ALL_TXOS_FOR_ACCOUNT_METHOD,
+    {
+      accountId,
+    }
+  );
   if (error) {
     throw new Error(error);
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    return {
-      txoIds: result.txoIds,
-      txoMap: result.txoIds.reduce(
-        (accum: { [txoId: string]: Txo }, key) => ({
-          ...accum,
-          [key]: convertTxoFromV2(result.txoMap[key]),
-        }),
-        {}
-      ),
-    };
+    return result;
   }
+};
+
+const getAllTxosForAccount = async ({
+  accountId,
+}: GetAllTxosByAccountParams): Promise<GetAllTxosByAccountResult> => {
+  const txosV2 = await getTxosV2({ accountId });
+
+  return {
+    txoIds: txosV2.txoIds,
+    txoMap: txosV2.txoIds.reduce(
+      (accum: { [txoId: string]: Txo }, key) => ({
+        ...accum,
+        [key]: convertTxoFromV2(txosV2.txoMap[key]),
+      }),
+      {}
+    ),
+  };
 };
 
 export default getAllTxosForAccount;

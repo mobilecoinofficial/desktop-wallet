@@ -50,3 +50,8 @@ export type Txos = {
   txoIds: StringHex[];
   txoMap: { [txoId: string]: Txo };
 };
+
+export type TxosV2 = {
+  txoIds: StringHex[];
+  txoMap: { [txoId: string]: TxoV2 };
+};

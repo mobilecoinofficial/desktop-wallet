@@ -245,7 +245,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
     try {
       const result = await buildTransaction({
         accountId,
-        addressesAndAmounts: [[recipientPublicAddress, { tokenId: '1', value: valuePmob }]],
+        addressesAndAmounts: [[recipientPublicAddress, { tokenId: '0', value: valuePmob }]],
         feeValue: fee,
       });
       if (result === null || result === undefined) {

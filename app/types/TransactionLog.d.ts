@@ -11,7 +11,7 @@ export interface TransactionAbbreviation {
 
 export interface TransactionLog {
   accountId: StringHex;
-  assignedAddressId: StringB58;
+  assignedAddressId?: StringB58;
   changeTxoIds: StringHex[]; // FK this is gone?
   changeTxos: TransactionAbbreviation[];
   comment: string;
@@ -27,7 +27,7 @@ export interface TransactionLog {
   offsetCount: number;
   outputTxoIds: StringHex[]; // FK this is gone?
   outputTxos: TransactionAbbreviation[];
-  recipientAddressId: StringB58 | null; // FK this is gone?
+  recipientAddressId: StringB58;
   sentTime: string | null; // FIX-ME: Confirm type
   status: Status;
   submittedBlockIndex: StringUInt64 | null;
@@ -40,7 +40,9 @@ type Status =
   | 'tx_status_pending'
   | 'tx_status_received'
   | 'tx_status_succeded'
-  | 'tx_status_failed';
+  | 'tx_status_failed'
+  | 'tx_status_unspent'
+  | 'tx_status_spent';
 
 export interface TransactionLogV2 {
   // Unique identifier for the transaction log. This value is not associated

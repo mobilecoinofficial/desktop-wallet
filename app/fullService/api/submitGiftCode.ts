@@ -26,7 +26,8 @@ const submitGiftCode = async ({
       fromAccountId,
       giftCodeB58,
       txProposal,
-    }
+    },
+    'v1'
   );
 
   if (error) {

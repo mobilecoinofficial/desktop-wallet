@@ -3,40 +3,6 @@ import type { AccountKey } from './AccountSecrets';
 import type { BalanceFromV2Api } from './BalanceStatus';
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
-// type AccountSyncStatus = {
-//   object: 'account_balance';
-//   accountId: StringHex;
-//   accountBlockCount: StringUInt64;
-//   localBlockCount: StringUInt64;
-//   networkBlockCount: StringUInt64;
-//   isSynced: boolean
-// };
-
-// type AccountBalance = {
-//   object: 'account_balance';
-//   accountId: StringHex;
-//   orphanedPmob: StringUInt64;
-//   pendingPmob: StringUInt64;
-//   secretedPmob: StringUInt64;
-//   spentPmob: StringUInt64;
-//   unspentPmob: StringUInt64;
-// };
-// export default interface Account {
-//   object: 'account';
-//   accountBalance: AccountBalance;
-//   accountHeight: StringUInt64; // why do we have this?
-//   accountId: StringHex;
-//   accountKey: AccountKey;
-//   accountSyncStatus: AccountSyncStatus;
-//   entropy: StringHex;
-//   mainAddress: StringB58;
-//   // metadata: string used as a wildcard, stringified json object?
-//   name: string | null;
-//   nextSubaddressIndex: StringUInt64;
-//   // offsetCount: number; TODO - follow up on why we removed this? to discourage n accounts?
-//   recoveryMode: boolean;
-// }
-
 export interface Account {
   // metadata: string used as a wildcard, stringified json object?
   accountId: StringHex;
@@ -97,4 +63,9 @@ export interface AccountStatus {
 export type Accounts = {
   accountIds: StringHex[];
   accountMap: { [accountId: string]: Account };
+};
+
+export type AccountsV2 = {
+  accountIds: StringHex[];
+  accountMap: { [accountId: string]: AccountV2 };
 };

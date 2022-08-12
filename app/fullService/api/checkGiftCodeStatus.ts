@@ -16,9 +16,13 @@ const checkGiftCodeStatus = async ({
   giftCodeB58,
 }: CheckGiftCodeStatusParams): Promise<CheckGiftCodeStatusResult> => {
   const { result, error }: AxiosFullServiceResponse<CheckGiftCodeStatusResult> =
-    await axiosFullService(CHECK_GIFT_CODE_STATUS_METHOD, {
-      giftCodeB58,
-    });
+    await axiosFullService(
+      CHECK_GIFT_CODE_STATUS_METHOD,
+      {
+        giftCodeB58,
+      },
+      'v1'
+    );
 
   if (error) {
     throw new Error(error);

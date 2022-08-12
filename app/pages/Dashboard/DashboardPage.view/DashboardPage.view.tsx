@@ -20,6 +20,7 @@ const DashboardView: FC<DashboardPageProps> = ({
   selectedAccount,
 }: DashboardPageProps) => {
   const classes = useStyles();
+  console.log(selectedAccount.account.name, selectedAccount.account.accountId);
 
   // TODO - figure out if we should calculate isSynced with a buffer.
   // We should pull that into a util

@@ -23,7 +23,7 @@ function convertNetworkStatusFromV2(networkStatus: NetworkStatusV2): GetNetworkS
 
 const getNetworkStatus = async (): Promise<GetNetworkStatusResult> => {
   const { result, error }: AxiosFullServiceResponse<GetNetworkStatusResultV2> =
-    await axiosFullService(GET_NETWORK_STATUS_METHOD);
+    await axiosFullService(GET_NETWORK_STATUS_METHOD, {});
 
   if (error) {
     throw new Error(error);

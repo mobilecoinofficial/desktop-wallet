@@ -46,7 +46,8 @@ const buildGiftCode = async ({
       maxSpendableValue,
       tombstoneBlock,
       valuePmob,
-    }
+    },
+    'v1'
   );
 
   if (error) {

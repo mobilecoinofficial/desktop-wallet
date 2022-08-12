@@ -31,15 +31,18 @@ export const handleError = (error: { message?: string }) =>
 // handling to the caller, breaking DRY
 const axiosFullService = async <T>(
   method: string,
-  params?: Record<string, any>
+  params: Record<string, any>,
+  apiVersion?: 'v1' | 'v2' // defaults to v2. currently only gift codes require v1
 ): Promise<AxiosFullServiceResponse<T>> => {
+  const baseURLVersion = apiVersion === 'v1' ? '' : '/v2';
   const axiosInstance = axios.create({
-    baseURL: 'http://localhost:9090/wallet/v2',
+    baseURL: `http://localhost:9090/wallet${baseURLVersion}`,
     headers: { 'Content-type': 'application/json' },
     method: 'post',
   });
   axiosInstance.interceptors.response.use(handleResponse, handleError);
-  const snakeCaseParams = params === undefined ? undefined : snakeCaseKeys(params);
+  const isParams = Boolean(Object.keys(params).length);
+  const snakeCaseParams = isParams ? snakeCaseKeys(params) : undefined;
   try {
     const response = await axiosInstance({
       data: {

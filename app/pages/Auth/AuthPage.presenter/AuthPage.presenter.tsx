@@ -135,11 +135,11 @@ export const AuthPage: FC = (): JSX.Element => {
           await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
           await untilFullServiceRuns();
           const status = await getWalletStatus();
+          setAccountIds(status.accountIds);
           await unlockWallet(password, startInOfflineMode);
-          if (status.accountIds.length) {
+          if (status.accountIds?.length) {
             await selectAccount(status.accountIds[0]);
           }
-          setAccountIds(status.accountIds);
           setFullServiceIsRunning(true);
         } catch (err) {
           console.log(err); // eslint-disable-line no-console
@@ -194,10 +194,10 @@ export const AuthPage: FC = (): JSX.Element => {
     try {
       const status = await getWalletStatus();
       await unlockWallet(password, status.networkBlockHeight === '0');
-      if (status.accountIds.length > 0) {
-        await selectAccount(status.accountIds[0]);
+      if ((status?.accountIds ?? []).length > 0) {
+        await selectAccount((status?.accountIds ?? [])[0]);
       }
-      setAccountIds(status.accountIds);
+      setAccountIds(status?.accountIds ?? []);
     } catch (err) {
       console.log(err); // eslint-disable-line no-console
     }

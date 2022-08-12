@@ -1,3 +1,4 @@
+import { store } from '../../redux/store';
 import type { Account, AccountStatus } from '../../types/Account.d';
 import type { AccountSecretsV2 } from '../../types/AccountSecrets.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
@@ -34,6 +35,28 @@ export function convertAccountV2(
     },
   };
 }
+
+export const isAccountSynced = async ({ accountId }: GetAccountParams): Promise<boolean> => {
+  const { result, error }: AxiosFullServiceResponse<AccountStatus> = await axiosFullService(
+    GET_ACCOUNT_METHOD,
+    {
+      accountId,
+    }
+  );
+  if (error) {
+    throw new Error(error);
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
+  } else {
+    const { selectedAccount } = store.getState();
+    const isServerSynced =
+      Number(result.account.nextBlockIndex) === Number(result.networkBlockHeight);
+    const isClientSynced =
+      Number(selectedAccount.balanceStatus.accountBlockHeight) ===
+      Number(result.networkBlockHeight);
+    return isServerSynced && isClientSynced;
+  }
+};
 
 const getAccount = async ({ accountId }: GetAccountParams): Promise<GetAccountResult> => {
   const secrets = await exportAccountSecretsV2({ accountId });

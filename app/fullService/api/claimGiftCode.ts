@@ -24,7 +24,8 @@ const claimGiftCode = async ({
       accountId,
       address,
       giftCodeB58,
-    }
+    },
+    'v1'
   );
 
   if (error) {

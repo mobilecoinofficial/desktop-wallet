@@ -13,8 +13,9 @@ type GetBalanceResult = {
 
 export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatus {
   return {
-    accountBlockHeight: accountStatus.localBlockHeight,
-    isSynced: accountStatus.account.nextBlockIndex === accountStatus.networkBlockHeight,
+    accountBlockHeight: accountStatus.account.nextBlockIndex,
+    isSynced:
+      Number(accountStatus.account.nextBlockIndex) >= Number(accountStatus.networkBlockHeight),
     localBlockHeight: accountStatus.localBlockHeight,
     networkBlockHeight: accountStatus.networkBlockHeight,
     object: 'balance',

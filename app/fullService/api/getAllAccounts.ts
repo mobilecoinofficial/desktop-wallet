@@ -1,4 +1,4 @@
-import type { Accounts, Account } from '../../types/Account.d';
+import type { Accounts, Account, AccountsV2 } from '../../types/Account.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 import getAccount from './getAccount';
 
@@ -6,16 +6,22 @@ const GET_ALL_ACCOUNTS_METHOD = 'get_accounts';
 
 type GetAllAccountsResult = Accounts;
 
-const getAllAccounts = async (): Promise<GetAllAccountsResult> => {
-  const { result, error }: AxiosFullServiceResponse<Accounts> = await axiosFullService(
+export const getAllAccountsV2 = async (): Promise<AccountsV2> => {
+  const { result, error }: AxiosFullServiceResponse<AccountsV2> = await axiosFullService(
     GET_ALL_ACCOUNTS_METHOD,
-    {}
+    { offset: 0 }
   );
   if (error) {
     throw new Error(error);
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
+  } else {
+    return result;
   }
+};
+
+const getAllAccounts = async (): Promise<GetAllAccountsResult> => {
+  const result = await getAllAccountsV2();
 
   const processedAccounts: { [accountId: string]: Account } = {};
 

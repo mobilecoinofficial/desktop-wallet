@@ -268,10 +268,12 @@ export const reducer = (
         secretKey,
         selectedAccount,
         walletStatus,
+        accounts,
       } = (action as UnlockWalletAction).payload;
 
       return {
         ...state,
+        accounts,
         addingAccount,
         contacts,
         isAuthenticated: true,

@@ -8,7 +8,7 @@ import { getAllTxosForAccount } from './getAllTxosForAccount';
 
 export const selectAccount = async (accountId: string): Promise<void> => {
   try {
-    const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
+    const { accountIds, accountMap } = store.getState().accounts;
     const p1 = fullServiceApi.getAccount({ accountId });
     const p2 = fullServiceApi.getAllAddressesForAccount({ accountId });
     const p3 = fullServiceApi.getBalanceForAccount({ accountId });

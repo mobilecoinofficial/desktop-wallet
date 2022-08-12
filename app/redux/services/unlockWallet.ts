@@ -1,5 +1,6 @@
 import * as fullServiceApi from '../../fullService/api';
 import { decryptContacts } from '../../services';
+import { Accounts } from '../../types';
 import * as localStore from '../../utils/LocalStore';
 import { validatePassphrase } from '../../utils/authentication';
 import { decrypt } from '../../utils/encryption';
@@ -19,7 +20,14 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
 
   const { walletStatus } = await fullServiceApi.getWalletStatus();
 
-  const firstAccountId = walletStatus.accountIds[0];
+  const accounts: Accounts = {
+    accountIds: walletStatus.accountIds ?? [],
+    accountMap: walletStatus.accountMap ?? {},
+  };
+
+  console.log(accounts);
+
+  const firstAccountId = (walletStatus.accountIds ?? [])[0];
 
   let { selectedAccount, addingAccount } = initialReduxStoreState;
 
@@ -30,7 +38,7 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
     });
 
     selectedAccount = {
-      account: walletStatus.accountMap[firstAccountId],
+      account: (walletStatus.accountMap ?? {})[firstAccountId],
       balanceStatus,
     };
   } else {
@@ -59,7 +67,8 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
       secretKey,
       selectedAccount,
       walletStatus,
-      startInOfflineMode
+      startInOfflineMode,
+      accounts
     )
   );
 };

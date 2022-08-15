@@ -21,7 +21,7 @@ const HISTORY = 'history';
 const DETAILS = 'details';
 
 export const HistoryPage: FC = (): JSX.Element => {
-  const { addresses, contacts, selectedAccount, transactionLogs } = useSelector(
+  const { contacts, selectedAccount, transactionLogs } = useSelector(
     (state: ReduxStoreState) => state
   );
 
@@ -36,7 +36,6 @@ export const HistoryPage: FC = (): JSX.Element => {
     if (transactionLogs) {
       return transactionLogs.transactionLogIds
         .map((id) => transactionLogs.transactionLogMap[id])
-        .filter((transactionLog) => transactionLog.assignedAddressId !== addresses.addressIds[1])
         .map((transactionLog) => {
           // If any transaction is associated to a contact, let's attach the contact object.
           // TODO - we can improve this greatly by changing how this information is stored.
@@ -78,7 +77,6 @@ export const HistoryPage: FC = (): JSX.Element => {
     (async () => {
       const confirmationsString = clipboard.readText();
       try {
-        console.log(confirmationsString);
         const confirmations = JSON.parse(confirmationsString) as Confirmations;
         const results: { [txoId: string]: boolean } = {};
 

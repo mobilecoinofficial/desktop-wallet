@@ -63,7 +63,6 @@ const SyncStatus: FC<SyncStatusProps> = ({
   let statusCode;
   let title;
   let backgroundColor;
-  console.log(selectedAccount);
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const localBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.localBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);

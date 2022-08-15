@@ -82,7 +82,6 @@ const AccountsView: FC<AccountsViewProps> = ({
   selectAccount,
   selectedAccount,
 }: AccountsViewProps) => {
-  console.log(accounts);
   const classes = useStyles();
   const { t } = useTranslation('AccountsView');
   const [firstToShow, setFirstToShow] = useState(0);

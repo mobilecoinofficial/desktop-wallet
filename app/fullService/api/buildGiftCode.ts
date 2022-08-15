@@ -1,6 +1,6 @@
 import type { GiftCode } from '../../types/GiftCode.d';
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
-import type { TxProposal, OutputTxo } from '../../types/TxProposal';
+import type { TxProposal } from '../../types/TxProposalV1';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const BUILD_GIFT_CODE_METHOD = 'build_gift_code';
@@ -59,15 +59,15 @@ const buildGiftCode = async ({
   const { txProposal, giftCode, giftCodeB58 } = result;
 
   // TODO fix type, right now it just matches what the component is expecting
-  // const totalValueConfirmation = txProposal.outlayList
-  //   .map((outlay) => BigInt(outlay.value))
-  //   .reduce((acc, cur) => acc + cur, BigInt(0));
-  const totalValueConfirmation = [...txProposal.changeTxos, ...txProposal.payloadTxos]
-    .map((txo: OutputTxo) => BigInt(txo.amount.value))
-    .reduce((acc: bigint, cur: bigint) => acc + cur, BigInt(0));
+  const totalValueConfirmation = txProposal.outlayList
+    .map((outlay) => BigInt(outlay.value))
+    .reduce((acc, cur) => acc + cur, BigInt(0));
+  // const totalValueConfirmation = [...txProposal.payloadTxos]
+  //   .map((txo: OutputTxo) => BigInt(txo.amount.value))
+  //   .reduce((acc: bigint, cur: bigint) => acc + cur, BigInt(0));
 
-  // const feeConfirmation = BigInt(txProposal.fee);
-  const feeConfirmation = BigInt(txProposal.feeAmount.value);
+  const feeConfirmation = BigInt(txProposal.fee);
+  // const feeConfirmation = BigInt(txProposal.feeAmount.value);
 
   return {
     feeConfirmation,

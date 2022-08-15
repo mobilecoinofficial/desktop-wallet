@@ -94,7 +94,7 @@ function convertTxoToTransactionLog(
 ): TransactionLog {
   return {
     accountId,
-    assignedAddressId: undefined,
+    assignedAddressId: address,
     changeTxoIds: [],
     changeTxos: [],
     comment: '',

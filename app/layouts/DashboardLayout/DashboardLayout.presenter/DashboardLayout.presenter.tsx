@@ -56,7 +56,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
   const importLedger = async () => {
     ipcRenderer.invoke('import-ledger-db');
   };
-  console.log(selectedAccount);
+
   return (
     <Box className={classes.root}>
       <TopBar />

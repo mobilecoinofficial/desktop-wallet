@@ -7,6 +7,7 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { MOBTOKENID } from '../../../constants/app';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { getFeePmob, updateContacts } from '../../../redux/services';
 import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
@@ -156,7 +157,9 @@ export const SendReceivePage: FC = (): JSX.Element => {
     try {
       result = await buildTransaction({
         accountId,
-        addressesAndAmounts: [[recipientPublicAddress, { tokenId: '0', value: valuePmob }]],
+        addressesAndAmounts: [
+          [recipientPublicAddress, { tokenId: `${MOBTOKENID}`, value: valuePmob }],
+        ],
         feeValue: fee,
       });
 
@@ -245,7 +248,9 @@ export const SendReceivePage: FC = (): JSX.Element => {
     try {
       const result = await buildTransaction({
         accountId,
-        addressesAndAmounts: [[recipientPublicAddress, { tokenId: '0', value: valuePmob }]],
+        addressesAndAmounts: [
+          [recipientPublicAddress, { tokenId: `${MOBTOKENID}`, value: valuePmob }],
+        ],
         feeValue: fee,
       });
       if (result === null || result === undefined) {

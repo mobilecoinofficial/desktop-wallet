@@ -1,3 +1,4 @@
+import { MOBTOKENID } from '../../constants/app';
 import type { AccountStatus } from '../../types/Account.d';
 import type { BalanceStatus } from '../../types/BalanceStatus.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
@@ -19,11 +20,11 @@ export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatu
     localBlockHeight: accountStatus.localBlockHeight,
     networkBlockHeight: accountStatus.networkBlockHeight,
     object: 'balance',
-    orphanedPmob: accountStatus.balancePerToken[0]?.orphaned || '0',
-    pendingPmob: accountStatus.balancePerToken[0]?.pending || '0',
-    secretedPmob: accountStatus.balancePerToken[0]?.secreted || '0',
-    spentPmob: accountStatus.balancePerToken[0]?.spent || '0',
-    unspentPmob: accountStatus.balancePerToken[0]?.unspent || '0',
+    orphanedPmob: accountStatus.balancePerToken[MOBTOKENID]?.orphaned || '0',
+    pendingPmob: accountStatus.balancePerToken[MOBTOKENID]?.pending || '0',
+    secretedPmob: accountStatus.balancePerToken[MOBTOKENID]?.secreted || '0',
+    spentPmob: accountStatus.balancePerToken[MOBTOKENID]?.spent || '0',
+    unspentPmob: accountStatus.balancePerToken[MOBTOKENID]?.unspent || '0',
   };
 }
 

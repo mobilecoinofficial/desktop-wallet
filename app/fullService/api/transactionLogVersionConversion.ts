@@ -1,3 +1,4 @@
+import { MOBTOKENID } from '../../constants/app';
 import { StringB58 } from '../../types';
 import type {
   TransactionLog,
@@ -67,7 +68,7 @@ export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2):
     status: matchStatus(v2TransactionLog.status),
     submittedBlockIndex: v2TransactionLog.submittedBlockIndex,
     transactionLogId: v2TransactionLog.id,
-    valuePmob: v2TransactionLog.valueMap[0],
+    valuePmob: v2TransactionLog.valueMap[MOBTOKENID],
   };
 }
 

@@ -62,12 +62,8 @@ const buildGiftCode = async ({
   const totalValueConfirmation = txProposal.outlayList
     .map((outlay) => BigInt(outlay.value))
     .reduce((acc, cur) => acc + cur, BigInt(0));
-  // const totalValueConfirmation = [...txProposal.payloadTxos]
-  //   .map((txo: OutputTxo) => BigInt(txo.amount.value))
-  //   .reduce((acc: bigint, cur: bigint) => acc + cur, BigInt(0));
 
   const feeConfirmation = BigInt(txProposal.fee);
-  // const feeConfirmation = BigInt(txProposal.feeAmount.value);
 
   return {
     feeConfirmation,

@@ -103,7 +103,7 @@ function convertTxoToTransactionLog(
     failureCode: null,
     failureMessage: null,
     feePmob: null,
-    finalizedBlockIndex: null,
+    finalizedBlockIndex: txo.receivedBlockIndex ?? null,
     inputTxoIds: [],
     inputTxos: [],
     object: 'transaction_log',

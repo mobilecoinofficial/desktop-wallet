@@ -1,4 +1,4 @@
-import { MOBTOKENID } from '../../constants/app';
+import { TokenIds } from '../../constants/app';
 import type { AccountStatus } from '../../types/Account.d';
 import type { BalanceStatus } from '../../types/BalanceStatus.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
@@ -20,11 +20,11 @@ export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatu
     localBlockHeight: accountStatus.localBlockHeight,
     networkBlockHeight: accountStatus.networkBlockHeight,
     object: 'balance',
-    orphanedPmob: accountStatus.balancePerToken[MOBTOKENID]?.orphaned || '0',
-    pendingPmob: accountStatus.balancePerToken[MOBTOKENID]?.pending || '0',
-    secretedPmob: accountStatus.balancePerToken[MOBTOKENID]?.secreted || '0',
-    spentPmob: accountStatus.balancePerToken[MOBTOKENID]?.spent || '0',
-    unspentPmob: accountStatus.balancePerToken[MOBTOKENID]?.unspent || '0',
+    orphanedPmob: accountStatus.balancePerToken[TokenIds.MOB]?.orphaned || '0',
+    pendingPmob: accountStatus.balancePerToken[TokenIds.MOB]?.pending || '0',
+    secretedPmob: accountStatus.balancePerToken[TokenIds.MOB]?.secreted || '0',
+    spentPmob: accountStatus.balancePerToken[TokenIds.MOB]?.spent || '0',
+    unspentPmob: accountStatus.balancePerToken[TokenIds.MOB]?.unspent || '0',
   };
 }
 

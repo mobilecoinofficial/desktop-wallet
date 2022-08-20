@@ -1,4 +1,4 @@
-import { MOBTOKENID } from '../../constants/app';
+import { TokenIds } from '../../constants/app';
 import type { Accounts } from '../../types/Account.d';
 import type { WalletStatusV2, WalletStatus } from '../../types/WalletStatus.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
@@ -23,11 +23,11 @@ function convertWalletStatusFromV2(
       minSyncedBlockIndex: status.minSyncedBlockIndex,
       networkBlockHeight: status.networkBlockHeight,
       object: 'wallet_status',
-      totalOrphanedPmob: status.balancePerToken[MOBTOKENID]?.orphaned,
-      totalPendingPmob: status.balancePerToken[MOBTOKENID]?.pending,
-      totalSecretedPmob: status.balancePerToken[MOBTOKENID]?.secreted,
-      totalSpentPmob: status.balancePerToken[MOBTOKENID]?.spent,
-      totalUnspentPmob: status.balancePerToken[MOBTOKENID]?.unspent,
+      totalOrphanedPmob: status.balancePerToken[TokenIds.MOB]?.orphaned,
+      totalPendingPmob: status.balancePerToken[TokenIds.MOB]?.pending,
+      totalSecretedPmob: status.balancePerToken[TokenIds.MOB]?.secreted,
+      totalSpentPmob: status.balancePerToken[TokenIds.MOB]?.spent,
+      totalUnspentPmob: status.balancePerToken[TokenIds.MOB]?.unspent,
     },
   };
 }

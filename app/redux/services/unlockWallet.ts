@@ -26,17 +26,17 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
   };
 
   const firstAccountId = (walletStatus.accountIds ?? [])[0];
+  const firstAccount = firstAccountId && (walletStatus.accountMap ?? {})[firstAccountId];
 
   let { selectedAccount, addingAccount } = initialReduxStoreState;
   // if an account already exists, use the default to the first account available. Otherwise, use the initial state
-  if (firstAccountId) {
+  if (firstAccountId && firstAccount) {
     const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({
       accountId: firstAccountId,
     });
 
-    const account = (walletStatus.accountMap ?? {})[firstAccountId];
     selectedAccount = {
-      account,
+      account: firstAccount,
       balanceStatus,
     };
   } else {

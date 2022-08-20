@@ -9,7 +9,7 @@ type GetAllAccountsResult = Accounts;
 export const getAllAccountsV2 = async (): Promise<AccountsV2> => {
   const { result, error }: AxiosFullServiceResponse<AccountsV2> = await axiosFullService(
     GET_ALL_ACCOUNTS_METHOD,
-    { offset: 0 }
+    {}
   );
   if (error) {
     throw new Error(error);

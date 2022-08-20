@@ -31,7 +31,7 @@ export const handleError = (error: { message?: string }) =>
 // handling to the caller, breaking DRY
 const axiosFullService = async <T>(
   method: string,
-  params: Record<string, any>,
+  params: Record<string, any> | null,
   apiVersion?: 'v1' | 'v2' // defaults to v2. currently only gift codes require v1
 ): Promise<AxiosFullServiceResponse<T>> => {
   const baseURLVersion = apiVersion === 'v1' ? '' : '/v2';
@@ -41,8 +41,8 @@ const axiosFullService = async <T>(
     method: 'post',
   });
   axiosInstance.interceptors.response.use(handleResponse, handleError);
-  const isParams = Boolean(Object.keys(params).length);
-  const snakeCaseParams = isParams ? snakeCaseKeys(params) : undefined;
+  // const isParams = params && Boolean(Object.keys(params).length);
+  const snakeCaseParams = params && snakeCaseKeys(params);
   try {
     const response = await axiosInstance({
       data: {

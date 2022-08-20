@@ -34,7 +34,7 @@ function convertWalletStatusFromV2(
 
 const getWalletStatus = async (): Promise<GetWalletStatusResult> => {
   const { result, error }: AxiosFullServiceResponse<{ walletStatus: WalletStatusV2 }> =
-    await axiosFullService(GET_WALLET_STATUS_METHOD, {});
+    await axiosFullService(GET_WALLET_STATUS_METHOD, null);
 
   const accounts = await getAllAccounts();
 

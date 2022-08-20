@@ -10,7 +10,7 @@ type GetAllGiftCodesResult = {
 const getAllGiftCodes = async (): Promise<GetAllGiftCodesResult> => {
   const { result, error }: AxiosFullServiceResponse<GetAllGiftCodesResult> = await axiosFullService(
     GET_ALL_GIFT_CODES_METHOD,
-    {},
+    null,
     'v1'
   );
   if (error) {

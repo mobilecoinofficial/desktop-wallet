@@ -194,8 +194,8 @@ export const AuthPage: FC = (): JSX.Element => {
     try {
       const status = await getWalletStatus();
       await unlockWallet(password, status.networkBlockHeight === '0');
-      if ((status?.accountIds ?? []).length > 0) {
-        await selectAccount((status?.accountIds ?? [])[0]);
+      if (status?.accountIds?.length) {
+        await selectAccount(status.accountIds[0]);
       }
       setAccountIds(status?.accountIds ?? []);
     } catch (err) {

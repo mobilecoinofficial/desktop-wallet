@@ -42,7 +42,8 @@ type Status =
   | 'tx_status_succeded'
   | 'tx_status_failed'
   | 'tx_status_unspent'
-  | 'tx_status_spent';
+  | 'tx_status_spent'
+  | 'tx_status_unknown';
 
 export interface TransactionLogV2 {
   // Unique identifier for the transaction log. This value is not associated

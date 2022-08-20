@@ -22,7 +22,7 @@ export function matchStatus(status: string): Status {
     case 'failed':
       return 'tx_status_failed';
     default:
-      return 'tx_status_succeded';
+      return 'tx_status_unknown';
   }
 }
 

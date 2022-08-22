@@ -17,7 +17,8 @@ const getGiftCode = async ({ giftCodeB58 }: GetGiftCodeParams): Promise<GetGiftC
     GET_GIFT_CODE_METHOD,
     {
       giftCodeB58,
-    }
+    },
+    'v1'
   );
 
   if (error) {

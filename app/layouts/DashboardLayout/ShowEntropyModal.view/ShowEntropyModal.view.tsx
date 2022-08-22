@@ -65,7 +65,7 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
   const handleGoBack = () => setAlertOpen(false);
 
   const handleFinalConfirm = async () => {
-    await confirmEntropyKnown();
+    confirmEntropyKnown();
     setAlertOpen(false);
   };
 
@@ -104,9 +104,11 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
                     </Fab>
                   </Box>
                   <Container maxWidth="sm">
-                    <Typography variant="body2" color="textPrimary">
-                      <div style={{ minHeight: 60 }}>{showEntropy ? mnemonic : ''}</div>
-                    </Typography>
+                    <Box minHeight={60}>
+                      <Typography variant="body2" color="textPrimary">
+                        {showEntropy ? mnemonic : ''}
+                      </Typography>
+                    </Box>
                   </Container>
                 </Box>
               </CardContent>

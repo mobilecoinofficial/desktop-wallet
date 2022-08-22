@@ -1,10 +1,10 @@
-import type { Account } from '../../types/Account.d';
+import type { Account, AccountV2 } from '../../types/Account.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import getAccount from './getAccount';
 
 const CREATE_ACCOUNT_METHOD = 'create_account';
 
 type CreateAccountParams = {
-  firstBlockIndex?: string;
   name: string | null;
 };
 
@@ -12,14 +12,14 @@ type CreateAccountResult = {
   account: Account;
 };
 
-const createAccount = async ({
-  firstBlockIndex,
-  name,
-}: CreateAccountParams): Promise<CreateAccountResult> => {
-  const { result, error }: AxiosFullServiceResponse<CreateAccountResult> = await axiosFullService(
+type CreateAccountResultV2 = {
+  account: AccountV2;
+};
+
+const createAccount = async ({ name }: CreateAccountParams): Promise<CreateAccountResult> => {
+  const { result, error }: AxiosFullServiceResponse<CreateAccountResultV2> = await axiosFullService(
     CREATE_ACCOUNT_METHOD,
     {
-      firstBlockIndex,
       name,
     }
   );
@@ -28,9 +28,13 @@ const createAccount = async ({
     throw new Error(error);
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
-  } else {
-    return result;
   }
+
+  const accountId = result.account.id;
+
+  const accountStatus = await getAccount({ accountId });
+
+  return accountStatus;
 };
 
 export default createAccount;

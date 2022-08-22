@@ -1,8 +1,8 @@
+import { TokenIds } from '../../constants/app';
+import type { AccountStatus } from '../../types/Account.d';
 import type { BalanceStatus } from '../../types/BalanceStatus.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
-
-const GET_BALANCE_FOR_ACCOUNT_METHOD = 'get_balance_for_account';
 
 type GetBalanceParams = {
   accountId: StringHex;
@@ -12,9 +12,26 @@ type GetBalanceResult = {
   balance: BalanceStatus; // TODO - lock in name of object
 };
 
+export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatus {
+  return {
+    accountBlockHeight: accountStatus.account.nextBlockIndex,
+    isSynced:
+      Number(accountStatus.account.nextBlockIndex) >= Number(accountStatus.networkBlockHeight),
+    localBlockHeight: accountStatus.localBlockHeight,
+    networkBlockHeight: accountStatus.networkBlockHeight,
+    object: 'balance',
+    orphanedPmob: accountStatus.balancePerToken[TokenIds.MOB]?.orphaned || '0',
+    pendingPmob: accountStatus.balancePerToken[TokenIds.MOB]?.pending || '0',
+    secretedPmob: accountStatus.balancePerToken[TokenIds.MOB]?.secreted || '0',
+    spentPmob: accountStatus.balancePerToken[TokenIds.MOB]?.spent || '0',
+    unspentPmob: accountStatus.balancePerToken[TokenIds.MOB]?.unspent || '0',
+  };
+}
+
+// full service v2 api does not have a balance endpoint. Instead the balance is a field on account status
 const getBalance = async ({ accountId }: GetBalanceParams): Promise<GetBalanceResult> => {
-  const { result, error }: AxiosFullServiceResponse<GetBalanceResult> = await axiosFullService(
-    GET_BALANCE_FOR_ACCOUNT_METHOD,
+  const { result, error }: AxiosFullServiceResponse<AccountStatus> = await axiosFullService(
+    'get_account_status',
     {
       accountId,
     }
@@ -25,7 +42,7 @@ const getBalance = async ({ accountId }: GetBalanceParams): Promise<GetBalanceRe
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    return result;
+    return { balance: convertBalanceFromV2(result) };
   }
 };
 

@@ -7,6 +7,7 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { TokenIds } from '../../../constants/app';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { getFeePmob, updateContacts } from '../../../redux/services';
 import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
@@ -95,7 +96,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
     contacts.push({
       abbreviation: formAlias[0].toUpperCase(),
       alias: formAlias,
-      assignedAddress: result.address.publicAddress,
+      assignedAddress: result.address.public_address_b58,
       color: randomColor(),
       isFavorite: false,
       recipientAddress: formRecipientPublicAddress,
@@ -154,7 +155,13 @@ export const SendReceivePage: FC = (): JSX.Element => {
     setRecipientPublicAddress(recipientPublicAddress);
 
     try {
-      result = await buildTransaction({ accountId, fee, recipientPublicAddress, valuePmob });
+      result = await buildTransaction({
+        accountId,
+        addressesAndAmounts: [
+          [recipientPublicAddress, { tokenId: `${TokenIds.MOB}`, value: valuePmob }],
+        ],
+        feeValue: fee,
+      });
 
       if (result === null || result === undefined) {
         throw new Error(t('sendBuildError'));
@@ -239,7 +246,13 @@ export const SendReceivePage: FC = (): JSX.Element => {
     valuePmob: string;
   }) => {
     try {
-      const result = await buildTransaction({ accountId, fee, recipientPublicAddress, valuePmob });
+      const result = await buildTransaction({
+        accountId,
+        addressesAndAmounts: [
+          [recipientPublicAddress, { tokenId: `${TokenIds.MOB}`, value: valuePmob }],
+        ],
+        feeValue: fee,
+      });
       if (result === null || result === undefined) {
         throw new Error(t('sendBuildError'));
       }

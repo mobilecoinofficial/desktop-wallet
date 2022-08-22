@@ -39,7 +39,6 @@ const ContactsList: FC<ContactsListProps> = ({
   onClickEdit,
 }: ContactsListProps) => {
   const classes = useStyles();
-
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [currentFilter, setCurrentFilter] = useState('');
   const [dataToShow, setDataToShow] = useState(contactsList);
@@ -88,10 +87,10 @@ const ContactsList: FC<ContactsListProps> = ({
       </Box>
       <Container className={classes.root} maxWidth="lg" style={{ paddingTop: '24px' }}>
         <Grid container spacing={3}>
-          {dataToShow.map((contact) => (
+          {dataToShow.map((contact, i) => (
             <ContactCard
-              key={contact.assignedAddress}
-              assignedAddress={contact.assignedAddress}
+              key={contact.assignedAddress ?? `contacts-list-${i}`}
+              recipientAddress={contact.recipientAddress}
               abbreviation={contact.abbreviation}
               alias={contact.alias}
               color={contact.color}

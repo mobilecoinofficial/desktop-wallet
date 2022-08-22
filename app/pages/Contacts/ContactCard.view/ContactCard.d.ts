@@ -1,5 +1,5 @@
 export interface ContactCardProps {
-  assignedAddress?: string;
+  recipientAddress: string;
   abbreviation: string;
   alias: string;
   color: string;

@@ -1,5 +1,6 @@
 import * as fullServiceApi from '../../fullService/api';
 import { decryptContacts } from '../../services';
+import { Accounts } from '../../types';
 import * as localStore from '../../utils/LocalStore';
 import { validatePassphrase } from '../../utils/authentication';
 import { decrypt } from '../../utils/encryption';
@@ -19,18 +20,23 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
 
   const { walletStatus } = await fullServiceApi.getWalletStatus();
 
-  const firstAccountId = walletStatus.accountIds[0];
+  const accounts: Accounts = {
+    accountIds: walletStatus.accountIds ?? [],
+    accountMap: walletStatus.accountMap ?? {},
+  };
+
+  const firstAccountId = (walletStatus.accountIds ?? [])[0];
+  const firstAccount = firstAccountId && (walletStatus.accountMap ?? {})[firstAccountId];
 
   let { selectedAccount, addingAccount } = initialReduxStoreState;
-
   // if an account already exists, use the default to the first account available. Otherwise, use the initial state
-  if (firstAccountId) {
+  if (firstAccountId && firstAccount) {
     const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({
       accountId: firstAccountId,
     });
 
     selectedAccount = {
-      account: walletStatus.accountMap[firstAccountId],
+      account: firstAccount,
       balanceStatus,
     };
   } else {
@@ -59,7 +65,8 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
       secretKey,
       selectedAccount,
       walletStatus,
-      startInOfflineMode
+      startInOfflineMode,
+      accounts
     )
   );
 };

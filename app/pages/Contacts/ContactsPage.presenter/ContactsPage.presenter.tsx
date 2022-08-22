@@ -53,7 +53,7 @@ export const ContactsPage: FC = (): JSX.Element => {
     contacts.push({
       abbreviation,
       alias,
-      assignedAddress: result.address.publicAddress,
+      assignedAddress: result.address.public_address_b58,
       color,
       isFavorite,
       recipientAddress,
@@ -74,7 +74,7 @@ export const ContactsPage: FC = (): JSX.Element => {
   };
 
   const editContact = (idToEdit: string) => {
-    setCurrent(sortedContacts.find((x) => x.assignedAddress === idToEdit) as Contact);
+    setCurrent(sortedContacts.find((x) => x.recipientAddress === idToEdit) as Contact);
     setStatus(PAGE.EDIT);
   };
 

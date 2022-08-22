@@ -6,5 +6,5 @@ export interface Contact {
   assignedAddress?: StringB58;
   color: string;
   isFavorite: boolean;
-  recipientAddress?: StringB58;
+  recipientAddress: StringB58;
 }

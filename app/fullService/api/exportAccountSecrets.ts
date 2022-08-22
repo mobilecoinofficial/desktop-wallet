@@ -1,4 +1,4 @@
-import type { AccountSecrets } from '../../types/AccountSecrets.d';
+import type { AccountSecrets, AccountSecretsV2 } from '../../types/AccountSecrets.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
@@ -12,10 +12,25 @@ type ExportAccountSecretsResult = {
   accountSecrets: AccountSecrets;
 };
 
-const exportAccountSecrets = async ({
+type ExportAccountSecretsV2Result = {
+  accountSecrets: AccountSecretsV2;
+};
+
+function convertAccountSecrets(secrets: AccountSecretsV2): ExportAccountSecretsResult {
+  return {
+    accountSecrets: {
+      accountId: secrets.accountId,
+      accountKey: secrets.accountKey,
+      entropy: secrets.entropy,
+      mnemonic: secrets.mnemonic,
+    },
+  };
+}
+
+export const exportAccountSecretsV2 = async ({
   accountId,
-}: ExportAccountSecretsParams): Promise<ExportAccountSecretsResult> => {
-  const { result, error }: AxiosFullServiceResponse<ExportAccountSecretsResult> =
+}: ExportAccountSecretsParams): Promise<ExportAccountSecretsV2Result> => {
+  const { result, error }: AxiosFullServiceResponse<ExportAccountSecretsV2Result> =
     await axiosFullService(EXPORT_ACCOUNT_SECRETS_METHOD, {
       accountId,
     });
@@ -27,6 +42,14 @@ const exportAccountSecrets = async ({
   } else {
     return result;
   }
+};
+
+const exportAccountSecrets = async ({
+  accountId,
+}: ExportAccountSecretsParams): Promise<ExportAccountSecretsResult> => {
+  const v2secrets = await exportAccountSecretsV2({ accountId });
+
+  return convertAccountSecrets(v2secrets.accountSecrets);
 };
 
 export default exportAccountSecrets;

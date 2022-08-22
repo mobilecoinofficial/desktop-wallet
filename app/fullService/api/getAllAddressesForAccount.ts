@@ -2,7 +2,7 @@ import type { Address, Addresses } from '../../types/Address.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
-const GET_ALL_ADRESSES_FOR_ACCOUNT_METHOD = 'get_all_addresses_for_account';
+const GET_ALL_ADRESSES_FOR_ACCOUNT_METHOD = 'get_addresses';
 
 type GetAllAddressesForAccountParams = {
   accountId: StringHex;

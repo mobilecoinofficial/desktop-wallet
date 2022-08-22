@@ -18,23 +18,23 @@ describe('Contacts list', () => {
           {
             abbreviation: 'F1',
             alias: 'Foxtrot Golf',
-            assignedAddress: '11111',
             color: '#FF0000',
             isFavorite: true,
+            recipientAddress: '11111',
           },
           {
             abbreviation: 'K2',
             alias: 'Kilo Lima',
-            assignedAddress: '22222',
             color: '#00FF00',
             isFavorite: false,
+            recipientAddress: '22222',
           },
           {
             abbreviation: 'ST',
             alias: 'Sierra Tango',
-            assignedAddress: '33333',
             color: '#0000FF',
             isFavorite: true,
+            recipientAddress: '33333',
           },
         ]}
         onClickAdd={handleAddClick}

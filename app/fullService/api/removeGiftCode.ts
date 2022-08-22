@@ -19,7 +19,8 @@ const removeGiftCode = async ({
     REMOVE_GIFT_CODE_METHOD,
     {
       giftCodeB58,
-    }
+    },
+    'v1'
   );
 
   if (error) {

@@ -1,6 +1,6 @@
 import type { GiftCode } from '../../types/GiftCode.d';
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
-import type { TxProposal } from '../../types/TxProposal';
+import type { TxProposal } from '../../types/TxProposalV1';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const BUILD_GIFT_CODE_METHOD = 'build_gift_code';
@@ -46,7 +46,8 @@ const buildGiftCode = async ({
       maxSpendableValue,
       tombstoneBlock,
       valuePmob,
-    }
+    },
+    'v1'
   );
 
   if (error) {

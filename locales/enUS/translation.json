@@ -385,6 +385,7 @@
     "showAll": "Show All",
     "undo": "Undo",
     "View": {
+      "copyApiKey": "Copy FS Api Key",
       "Theme": {
         "title": "Theme",
         "system": "System",

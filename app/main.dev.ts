@@ -23,7 +23,6 @@ import installExtension, {
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
-import { v4 as uuidv4 } from 'uuid';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
@@ -81,8 +80,6 @@ const startFullService = (
   const fullServiceBinariesPath = localStore.getFullServiceBinariesPath();
   const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
   const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
-  const apiKey = uuidv4();
-  keytar.setPassword('MobileCoin', 'api-key', apiKey);
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   console.log(`Offline Mode: ${startInOfflineMode}`);
@@ -110,7 +107,7 @@ const startFullService = (
       fullServiceLedgerDBPath,
       fullServiceWalletDBPath,
       [fullServiceWalletDBPath, 'wallet.db'].join('/'),
-      apiKey,
+      localStore.apiKey,
     ],
     options
   );
@@ -519,6 +516,8 @@ ipcMain.on('remove-accounts', (event) => {
 ipcMain.on('view-path', (_event, filePath: string) => {
   shell.showItemInFolder(filePath);
 });
+
+ipcMain.handle('get-api-key', (_) => localStore.apiKey);
 
 const shutDownFullService = () => {
   const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();

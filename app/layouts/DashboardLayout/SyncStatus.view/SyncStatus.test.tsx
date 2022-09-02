@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/prefer-find-by */
 import React from 'react';
 
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';

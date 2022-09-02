@@ -23,6 +23,7 @@ import installExtension, {
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
+import { v4 as uuidv4 } from 'uuid';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
@@ -34,6 +35,10 @@ import { checkForAppUpdates, initializeAutoUpdater } from './utils/autoupdate';
 import { initLog, writeLog } from './utils/logger';
 
 initializeAutoUpdater();
+
+// Kill any instance of full service running when starting the app. This will make sure
+// that the app starts with the correct version of full service when there is an update.
+exec('pkill -f full-service');
 
 export default class AppUpdater {
   constructor() {
@@ -76,6 +81,8 @@ const startFullService = (
   const fullServiceBinariesPath = localStore.getFullServiceBinariesPath();
   const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
   const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
+  const apiKey = uuidv4();
+  keytar.setPassword('MobileCoin', 'api-key', apiKey);
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   console.log(`Offline Mode: ${startInOfflineMode}`);
@@ -103,6 +110,7 @@ const startFullService = (
       fullServiceLedgerDBPath,
       fullServiceWalletDBPath,
       [fullServiceWalletDBPath, 'wallet.db'].join('/'),
+      apiKey,
     ],
     options
   );

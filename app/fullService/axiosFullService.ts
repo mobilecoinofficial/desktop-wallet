@@ -1,5 +1,6 @@
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
+import keytar from 'keytar';
 import snakeCaseKeys from 'snakecase-keys';
 
 import { errorToString } from '../utils/errorHandler';
@@ -33,9 +34,10 @@ const axiosFullService = async <T>(
   method: string,
   params?: Record<string, any>
 ): Promise<AxiosFullServiceResponse<T>> => {
+  const apiKey = await keytar.getPassword('MobileCoin', 'api-key');
   const axiosInstance = axios.create({
     baseURL: 'http://localhost:9090/wallet',
-    headers: { 'Content-type': 'application/json' },
+    headers: { 'Content-type': 'application/json', 'X-API-KEY': apiKey ?? '' },
     method: 'post',
   });
   axiosInstance.interceptors.response.use(handleResponse, handleError);

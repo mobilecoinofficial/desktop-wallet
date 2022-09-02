@@ -16,12 +16,14 @@ killall full-service || true
 LEDGER_DB_DIR="$1"
 WALLET_DB_DIR="$2"
 WALLET_DB_FILE="$3"
+MC_API_KEY="$4"
 
 mkdir -p "${LEDGER_DB_DIR}"
 mkdir -p "${WALLET_DB_DIR}"
 
-echo "Starting full-service with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR} and ${WALLET_DB_FILE}" > /tmp/mylog
+echo "Starting full-service with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR} and ${WALLET_DB_FILE} and api-key ${MC_API_KEY}" > /tmp/mylog
 
+export MC_API_KEY=${MC_API_KEY}
 RUST_LOG=debug,mc_connection=error,mc_ledger_sync=error ./full-service \
         --ledger-db "${LEDGER_DB_DIR}" \
         --wallet-db "${WALLET_DB_FILE}" \

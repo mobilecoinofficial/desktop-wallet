@@ -1,9 +1,23 @@
 import axios from 'axios';
 import type { AxiosResponse } from 'axios';
+import { ipcRenderer } from 'electron';
 import snakeCaseKeys from 'snakecase-keys';
 
 import { errorToString } from '../utils/errorHandler';
 import { camelCaseObjectKeys } from './utils/camelCase';
+
+let apiKey = '';
+
+ipcRenderer
+  .invoke('get-api-key')
+  .then((newApiKey) => {
+    apiKey = newApiKey;
+    return apiKey;
+  })
+  .catch((error) => {
+    console.log('could not get api key');
+    console.log(error);
+  });
 
 type FullServiceResponse = AxiosResponse & {
   data: {
@@ -35,7 +49,7 @@ const axiosFullService = async <T>(
 ): Promise<AxiosFullServiceResponse<T>> => {
   const axiosInstance = axios.create({
     baseURL: 'http://localhost:9090/wallet',
-    headers: { 'Content-type': 'application/json' },
+    headers: { 'Content-type': 'application/json', 'X-API-KEY': apiKey },
     method: 'post',
   });
   axiosInstance.interceptors.response.use(handleResponse, handleError);

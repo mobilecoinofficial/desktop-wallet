@@ -1,4 +1,4 @@
-import { shell, nativeTheme } from 'electron';
+import { clipboard, shell, nativeTheme } from 'electron';
 
 import config from '../../configs/app.config';
 import * as localStore from '../utils/LocalStore';
@@ -102,6 +102,13 @@ const defaultTemplate = (app, mainWindow, i18n) => {
     accelerator: 'Alt+Command+I',
     click: () => mainWindow.webContents.toggleDevTools(),
     label: i18n.t('Menu.View.toggleDevTools'),
+  });
+
+  submenuViewProd.submenu.push({ type: 'separator' });
+  submenuViewProd.submenu.push({
+    accelerator: 'Alt+Command+C',
+    click: () => clipboard.writeText(localStore.apiKey),
+    label: i18n.t('Menu.View.copyApiKey'),
   });
 
   const submenuWindow = {

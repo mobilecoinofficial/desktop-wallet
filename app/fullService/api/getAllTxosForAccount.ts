@@ -28,6 +28,7 @@ export const getTxosV2 = async ({ accountId }: GetAllTxosByAccountParams): Promi
     GET_ALL_TXOS_FOR_ACCOUNT_METHOD,
     {
       accountId,
+      limit: 10000,
     }
   );
   if (error) {

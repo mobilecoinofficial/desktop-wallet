@@ -27,6 +27,7 @@ const getAllTransactionLogsForAccount = async ({
     GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_METHOD,
     {
       accountId,
+      limit: 10000,
     }
   );
 

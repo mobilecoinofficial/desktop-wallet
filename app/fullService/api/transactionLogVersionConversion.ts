@@ -35,20 +35,27 @@ export function mapTxoToAbbreviation(txo: InputTxo | OutputTxo): TransactionAbbr
 
   return {
     recipientAddressId: address,
-    txoIdHex: txo.txOutProto,
+    txoIdHex: txo.txoIdHex,
     valuePmob: txo.amount.value,
+  };
+}
+
+export function mapTxoV2ToAbbreviation(txo: TxoV2): TransactionAbbreviation {
+  return {
+    recipientAddressId: null,
+    txoIdHex: txo.id,
+    valuePmob: txo.value,
   };
 }
 
 export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2): TransactionLog {
   const assignedAddressId = v2TransactionLog.outputTxos[0].recipientPublicAddressB58;
-
   const direction = 'tx_direction_sent';
 
   return {
     accountId: v2TransactionLog.accountId,
     assignedAddressId,
-    changeTxoIds: v2TransactionLog.changeTxos.map((t) => t.txOutProto),
+    changeTxoIds: v2TransactionLog.changeTxos.map((t) => t.txoIdHex),
     changeTxos: v2TransactionLog.changeTxos.map((t) => mapTxoToAbbreviation(t)),
     comment: v2TransactionLog.comment,
     contact: undefined,
@@ -57,11 +64,11 @@ export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2):
     failureMessage: null,
     feePmob: v2TransactionLog.feeAmount.value,
     finalizedBlockIndex: v2TransactionLog.finalizedBlockIndex,
-    inputTxoIds: v2TransactionLog.inputTxos.map((t) => t.txOutProto),
+    inputTxoIds: v2TransactionLog.inputTxos.map((t) => t.txoIdHex),
     inputTxos: v2TransactionLog.inputTxos.map((t) => mapTxoToAbbreviation(t)),
     object: 'transaction_log',
     offsetCount: 0,
-    outputTxoIds: v2TransactionLog.outputTxos.map((t) => t.txOutProto),
+    outputTxoIds: v2TransactionLog.outputTxos.map((t) => t.txoIdHex),
     outputTxos: v2TransactionLog.outputTxos.map((t) => mapTxoToAbbreviation(t)),
     recipientAddressId: assignedAddressId,
     sentTime: v2TransactionLog.sentTime,
@@ -108,8 +115,8 @@ function convertTxoToTransactionLog(
     inputTxos: [],
     object: 'transaction_log',
     offsetCount: 0,
-    outputTxoIds: [],
-    outputTxos: [],
+    outputTxoIds: [txo.id],
+    outputTxos: [mapTxoV2ToAbbreviation(txo)],
     recipientAddressId: address,
     sentTime: null,
     status: matchStatus(txo.status),

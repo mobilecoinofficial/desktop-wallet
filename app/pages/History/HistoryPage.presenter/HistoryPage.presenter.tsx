@@ -64,7 +64,9 @@ export const HistoryPage: FC = (): JSX.Element => {
         const result = await getConfirmations({
           transactionLogId: currentTransactionLog.transactionLogId,
         });
-        clipboard.writeText(JSON.stringify(result.confirmations));
+        // newer versions of full service use txoId instead of txoIdHex
+        // replace newer field with older to maintain backwards compatibility
+        clipboard.writeText(JSON.stringify(result.confirmations).replace(/txoId/, 'txoIdHex'));
         enqueueSnackbar('Copied Confirmations to Clipboard');
       } catch (err) {
         const errorMessage = errorToString(err);

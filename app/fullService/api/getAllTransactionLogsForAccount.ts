@@ -17,6 +17,7 @@ const getAllTransactionLogsForAccount = async ({
   const { result, error }: AxiosFullServiceResponse<GetAllTransactionLogsForAccountResult> =
     await axiosFullService(GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_METHOD, {
       accountId,
+      limit: '10000',
     });
 
   if (error) {

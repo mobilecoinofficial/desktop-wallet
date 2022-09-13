@@ -16,6 +16,7 @@ const getAllTxosForAccount = async ({
   const { result, error }: AxiosFullServiceResponse<GetAllTxosByAccountResult> =
     await axiosFullService(GET_ALL_TXOS_FOR_ACCOUNT_METHOD, {
       accountId,
+      limit: '10000',
     });
 
   if (error) {

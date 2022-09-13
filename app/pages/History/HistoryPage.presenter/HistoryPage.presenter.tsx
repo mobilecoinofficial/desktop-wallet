@@ -79,9 +79,12 @@ export const HistoryPage: FC = (): JSX.Element => {
     (async () => {
       const confirmationsString = clipboard.readText();
       try {
-        const confirmations = JSON.parse(confirmationsString) as Confirmations;
+        const confirmations = JSON.parse(
+          confirmationsString.replace(/"txoId"/, '"txoIdHex"')
+        ) as Confirmations;
         const results: { [txoId: string]: boolean } = {};
-
+        // newer versions of full service use txoId instead of txoIdHex
+        // replace newer field with older to maintain backwards compatibility
         await Promise.all(
           confirmations.map(async (confirmation) => {
             try {

@@ -15,14 +15,14 @@ type Outlay = {
 };
 
 type InputTxo = {
-  txOutProto: string;
+  txoIdHex: string;
   amount: TransactionAmount;
   subaddressIndex: StringUInt64;
   keyImage: string;
 };
 
 type OutputTxo = {
-  txOutProto: string;
+  txoIdHex: string;
   amount: TransactionAmount;
   recipientPublicAddressB58: StringB58;
   confirmationNumber: StringUInt64;

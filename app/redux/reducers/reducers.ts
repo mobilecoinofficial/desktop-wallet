@@ -1,5 +1,6 @@
 import { SjclCipherEncrypted } from 'sjcl';
 
+import { TokenIds } from '../../constants/app';
 import {
   Accounts,
   Addresses,
@@ -49,6 +50,8 @@ import {
   Action,
   GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   GetAllTransactionLogsForAccountAction,
+  SET_TOKEN_ID,
+  SetTokenIdAction,
 } from '../actions';
 
 export type ReduxStoreState = {
@@ -72,6 +75,7 @@ export type ReduxStoreState = {
   pin: string | undefined;
   txos: Txos;
   walletStatus: WalletStatus;
+  tokenId: TokenIds;
 };
 
 export const initialReduxStoreState: ReduxStoreState = {
@@ -111,6 +115,7 @@ export const initialReduxStoreState: ReduxStoreState = {
       unspentPmob: '',
     },
   },
+  tokenId: TokenIds.MOB,
   transactionLogs: null,
   txos: { txoIds: [], txoMap: {} },
   walletStatus: {
@@ -324,6 +329,14 @@ export const reducer = (
             selectedAccount,
             walletStatus,
           };
+    }
+
+    case SET_TOKEN_ID: {
+      const { tokenId } = (action as SetTokenIdAction).payload;
+      return {
+        ...state,
+        tokenId,
+      };
     }
 
     default: {

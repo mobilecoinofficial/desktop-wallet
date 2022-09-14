@@ -17,4 +17,5 @@ export const randomColor = (): string =>
 
 export enum TokenIds {
   MOB = 0,
+  MOBUSD = 1,
 }

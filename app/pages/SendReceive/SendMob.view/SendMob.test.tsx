@@ -3,8 +3,10 @@ import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
+import { Provider } from 'react-redux';
 
 import '../../../testUtils/i18nForTests';
+import { store } from '../../../redux/store';
 import type { Contact } from '../../../types/Contact';
 import type { SelectedAccount } from '../../../types/SelectedAccount';
 import { SendMob } from './SendMob.view';
@@ -49,7 +51,7 @@ const SELECTED_ACCOUNT = {
   account: {
     accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
     firstBlockIndex: '0',
-    key_derivation_version: '1',
+    keyDerivationVersion: '1',
     mainAddress:
       'syJAd2QoH7xSkZvMDV8Q6DdWhnRsmAKqx3LZ5BaLXKezCDjf6nUfps2b8ywm1scSMp5WDbYxNMu5mNniVkmb1fehAGaKQdNQWEEg4vHrCH',
     name: 'fktt22',
@@ -63,11 +65,15 @@ const SELECTED_ACCOUNT = {
     localBlockHeight: '158974',
     networkBlockHeight: '158974',
     object: 'balance',
-    orphanedPmob: '18000000000001',
-    pendingPmob: '0',
-    secretedPmob: '0',
-    spentPmob: '35410000000000',
-    unspentPmob: String(INITIAL_BALANCE * 1000000000000),
+    balancePerToken: {
+      0: {
+        orphanedPmob: '18000000000001',
+        pendingPmob: '0',
+        secretedPmob: '0',
+        spentPmob: '35410000000000',
+        unspentPmob: String(INITIAL_BALANCE * 1000000000000),
+      },
+    },
   },
 } as SelectedAccount;
 
@@ -95,21 +101,23 @@ const setUpTest = ({
   showing = 0,
 } = {}) => {
   const { container } = render(
-    <SnackbarProvider dense maxSnack={5}>
-      <SendMob
-        confirmation={confirmation}
-        contacts={contacts}
-        existingPin={existingPin}
-        feePmob="3000000000"
-        isSynced={isSynced}
-        onClickCancel={onClickCancel}
-        onClickConfirm={onClickConfirm}
-        onClickSend={onClickSend}
-        pinThresholdPmob={pinThresholdPmob}
-        selectedAccount={selectedAccount}
-        showing={showing}
-      />
-    </SnackbarProvider>
+    <Provider store={store}>
+      <SnackbarProvider dense maxSnack={5}>
+        <SendMob
+          confirmation={confirmation}
+          contacts={contacts}
+          existingPin={existingPin}
+          feePmob="3000000000"
+          isSynced={isSynced}
+          onClickCancel={onClickCancel}
+          onClickConfirm={onClickConfirm}
+          onClickSend={onClickSend}
+          pinThresholdPmob={pinThresholdPmob}
+          selectedAccount={selectedAccount}
+          showing={showing}
+        />
+      </SnackbarProvider>
+    </Provider>
   );
   const contactsSelect = container.querySelector('[id="contactsList"]') as HTMLInputElement;
   const recipientAddress = container.querySelector(

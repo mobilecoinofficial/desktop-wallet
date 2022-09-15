@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Typography } from '@material-ui/core';
@@ -21,7 +21,7 @@ const HISTORY = 'history';
 const DETAILS = 'details';
 
 export const HistoryPage: FC = (): JSX.Element => {
-  const { contacts, selectedAccount, transactionLogs } = useSelector(
+  const { contacts, selectedAccount, transactionLogs, tokenId } = useSelector(
     (state: ReduxStoreState) => state
   );
 
@@ -30,11 +30,9 @@ export const HistoryPage: FC = (): JSX.Element => {
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
-  const [transactionLogsState, setTransactionLogsState] = useState([]);
 
-  const buildList = (): TransactionLog[] => {
-    if (transactionLogs) {
-      return transactionLogs.transactionLogIds
+  const logs: TransactionLog[] = transactionLogs
+    ? transactionLogs.transactionLogIds
         .map((id) => transactionLogs.transactionLogMap[id])
         .map((transactionLog) => {
           // If any transaction is associated to a contact, let's attach the contact object.
@@ -49,14 +47,12 @@ export const HistoryPage: FC = (): JSX.Element => {
           }
           return transactionLog;
         })
-        .sort((a, b) => b.finalizedBlockIndex - a.finalizedBlockIndex);
-    }
-    return [] as TransactionLog[];
-  };
-
-  useEffect(() => {
-    setTransactionLogsState(buildList());
-  }, [transactionLogs]);
+        .filter((log) => {
+          console.log(log, tokenId);
+          return log.tokenId === tokenId;
+        })
+        .sort((a, b) => b.finalizedBlockIndex - a.finalizedBlockIndex)
+    : ([] as TransactionLog[]);
 
   const handleClickCopyConfirmations = () => {
     (async () => {
@@ -125,7 +121,7 @@ export const HistoryPage: FC = (): JSX.Element => {
     case HISTORY:
       return (
         <HistoryList
-          transactionLogsList={transactionLogsState}
+          transactionLogsList={logs}
           onTransactionClick={(transactionLog) => {
             setCurrentTransaction(transactionLog);
             setShowing(DETAILS);

@@ -51,6 +51,8 @@ export function mapTxoV2ToAbbreviation(txo: TxoV2): TransactionAbbreviation {
 export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2): TransactionLog {
   const assignedAddressId = v2TransactionLog.outputTxos[0].recipientPublicAddressB58;
   const direction = 'tx_direction_sent';
+  // assuming one token type per transaction. safe assumption for now. Will not be at some point in the future
+  const tokenId: TokenIds = Number(v2TransactionLog.outputTxos[0].amount.tokenId);
 
   return {
     accountId: v2TransactionLog.accountId,
@@ -75,7 +77,8 @@ export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2):
     status: matchStatus(v2TransactionLog.status),
     submittedBlockIndex: v2TransactionLog.submittedBlockIndex,
     transactionLogId: v2TransactionLog.id,
-    valuePmob: v2TransactionLog.valueMap[TokenIds.MOB],
+    tokenId,
+    valuePmob: v2TransactionLog.valueMap[tokenId],
   };
 }
 
@@ -122,6 +125,7 @@ function convertTxoToTransactionLog(
     status: matchStatus(txo.status),
     submittedBlockIndex: null,
     transactionLogId: txo.id,
+    tokenId: Number(txo.tokenId),
     valuePmob: txo.value,
   };
 }

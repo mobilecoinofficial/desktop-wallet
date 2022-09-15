@@ -47,10 +47,7 @@ export const HistoryPage: FC = (): JSX.Element => {
           }
           return transactionLog;
         })
-        .filter((log) => {
-          console.log(log, tokenId);
-          return log.tokenId === tokenId;
-        })
+        .filter((log) => log.tokenId === tokenId)
         .sort((a, b) => b.finalizedBlockIndex - a.finalizedBlockIndex)
     : ([] as TransactionLog[]);
 

@@ -1,3 +1,4 @@
+import { TokenIds } from '../constants/app';
 import type { Account } from './Account.d';
 import type { StringHex, StringUInt64 } from './SpecialStrings';
 
@@ -10,14 +11,14 @@ export interface WalletStatus {
   networkBlockHeight?: StringUInt64;
   object?: 'wallet_status';
   balancePerToken: {
-    0: {
+    [TokenIds.MOB]: {
       orphanedPmob: StringUInt64;
       pendingPmob: StringUInt64;
       secretedPmob: StringUInt64;
       spentPmob: StringUInt64;
       unspentPmob: StringUInt64;
     };
-    1: {
+    [TokenIds.MOBUSD]: {
       orphanedPmob: StringUInt64;
       pendingPmob: StringUInt64;
       secretedPmob: StringUInt64;

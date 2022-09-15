@@ -1,3 +1,4 @@
+import { TokenIds } from '../constants/app';
 import type { StringUInt64 } from './SpecialStrings';
 
 export interface BalanceStatus {
@@ -6,14 +7,14 @@ export interface BalanceStatus {
   localBlockHeight?: StringUInt64;
   networkBlockHeight?: StringUInt64;
   balancePerToken: {
-    0: {
+    [TokenIds.MOB]: {
       orphanedPmob: StringUInt64;
       pendingPmob: StringUInt64;
       secretedPmob: StringUInt64;
       spentPmob: StringUInt64;
       unspentPmob: StringUInt64;
     };
-    1: {
+    [TokenIds.MOBUSD]: {
       orphanedPmob: StringUInt64;
       pendingPmob: StringUInt64;
       secretedPmob: StringUInt64;

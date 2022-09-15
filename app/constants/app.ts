@@ -17,5 +17,8 @@ export const randomColor = (): string =>
 
 export enum TokenIds {
   MOB = 0,
-  MOBUSD = 1,
+  // TODO for testing we are using 8192 instead of 1
+  // FIX-ME BEFORE MERGING INTO DEV, CHANGE THIS BACK TO 1
+  // MOBUSD = 1,
+  MOBUSD = 8192,
 }

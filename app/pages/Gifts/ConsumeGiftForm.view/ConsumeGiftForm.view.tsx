@@ -18,11 +18,12 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
-import type { Account } from '../../../types/Account.d';
 import { ConsumeGiftFormProps } from './ConsumeGiftForm';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -81,13 +82,18 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
 }: ConsumeGiftFormProps) => {
   const classes = useStyles();
   const { t } = useTranslation('ConsumeGiftForm');
+  const { tokenId } = useSelector((state: ReduxStoreState) => state);
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
-  const mockMultipleAccounts: Array<Account> = [
+  const mockMultipleAccounts: Array<{
+    b58Code: string;
+    balance: bigint;
+    name: string | null;
+  }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: selectedAccount.balanceStatus.unspentPmob,
+      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[tokenId].unspentPmob),
       name: selectedAccount.account.name,
     },
   ];

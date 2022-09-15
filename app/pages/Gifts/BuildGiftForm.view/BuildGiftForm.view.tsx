@@ -17,13 +17,14 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 import { MOBNumberFormat } from '../../../components/MOBNumberFormat';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { MOBIcon } from '../../../components/icons';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
-import type { Account } from '../../../types/Account.d';
 import { convertPicoMobStringToMob } from '../../../utils/convertMob';
 import { BuildGiftFormProps } from './BuildGiftForm';
 
@@ -90,13 +91,18 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
 }: BuildGiftFormProps) => {
   const classes = useStyles();
   const { t } = useTranslation('BuildGiftForm');
+  const { tokenId } = useSelector((state: ReduxStoreState) => state);
 
   // TODO - consider adding minimum gift ~ 1 MOB
   // We'll use this array in prep for future patterns with multiple accounts
-  const mockMultipleAccounts: Array<Account> = [
+  const mockMultipleAccounts: Array<{
+    b58Code: string;
+    balance: bigint;
+    name: string | null;
+  }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: selectedAccount.balanceStatus.unspentPmob,
+      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[tokenId].unspentPmob),
       name: selectedAccount.account.name,
     },
   ];
@@ -158,7 +164,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
         if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
           remainingBalance =
             selectedBalance -
-            (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
+            BigInt(confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
           totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
@@ -180,7 +186,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                 onFocus={handleSelect}
                 validate={validateAmount(
                   selectedBalance,
-                  BigInt(values.feeAmount * 1_000_000_000_000)
+                  BigInt(Number(values.feeAmount) * 1_000_000_000_000)
                 )}
                 InputProps={{
                   inputComponent: MOBNumberFormat,

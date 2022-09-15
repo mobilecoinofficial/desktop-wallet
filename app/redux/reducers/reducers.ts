@@ -99,7 +99,7 @@ export const initialReduxStoreState: ReduxStoreState = {
     account: {
       accountId: '',
       firstBlockIndex: '',
-      key_derivation_version: '',
+      keyDerivationVersion: '',
       mainAddress: '',
       name: '',
       nextSubaddressIndex: '',
@@ -107,12 +107,23 @@ export const initialReduxStoreState: ReduxStoreState = {
       recoveryMode: false,
     },
     balanceStatus: {
+      balancePerToken: {
+        0: {
+          orphanedPmob: '',
+          pendingPmob: '',
+          secretedPmob: '',
+          spentPmob: '',
+          unspentPmob: '',
+        },
+        1: {
+          orphanedPmob: '',
+          pendingPmob: '',
+          secretedPmob: '',
+          spentPmob: '',
+          unspentPmob: '',
+        },
+      },
       isSynced: false,
-      orphanedPmob: '',
-      pendingPmob: '',
-      secretedPmob: '',
-      spentPmob: '',
-      unspentPmob: '',
     },
   },
   tokenId: TokenIds.MOB,

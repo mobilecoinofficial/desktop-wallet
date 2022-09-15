@@ -64,13 +64,6 @@ module.exports = {
     ],
     'no-use-before-define': 'off',
     'react/jsx-props-no-spreading': 0,
-    'sort-keys': [
-      'error',
-      'asc',
-      {
-        natural: true,
-      },
-    ],
     'sort-vars': 'error',
     'testing-library/no-container': 'off',
     'testing-library/no-node-access': 'off',

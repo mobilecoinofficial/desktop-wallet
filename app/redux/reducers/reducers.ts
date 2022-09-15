@@ -108,14 +108,14 @@ export const initialReduxStoreState: ReduxStoreState = {
     },
     balanceStatus: {
       balancePerToken: {
-        0: {
+        [TokenIds.MOB]: {
           orphanedPmob: '',
           pendingPmob: '',
           secretedPmob: '',
           spentPmob: '',
           unspentPmob: '',
         },
-        1: {
+        [TokenIds.MOBUSD]: {
           orphanedPmob: '',
           pendingPmob: '',
           secretedPmob: '',
@@ -136,11 +136,22 @@ export const initialReduxStoreState: ReduxStoreState = {
     localBlockHeight: '',
     minSyncedBlockIndex: '',
     networkBlockHeight: '',
-    totalOrphanedPmob: '',
-    totalPendingPmob: '',
-    totalSecretedPmob: '',
-    totalSpentPmob: '',
-    totalUnspentPmob: '',
+    balancePerToken: {
+      [TokenIds.MOB]: {
+        orphanedPmob: '',
+        pendingPmob: '',
+        secretedPmob: '',
+        spentPmob: '',
+        unspentPmob: '',
+      },
+      [TokenIds.MOBUSD]: {
+        orphanedPmob: '',
+        pendingPmob: '',
+        secretedPmob: '',
+        spentPmob: '',
+        unspentPmob: '',
+      },
+    },
   },
 };
 

@@ -62,8 +62,14 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
   const { tokenId } = useSelector((state: ReduxStoreState) => state);
-
   const { t } = useTranslation('BalanceIndicator');
+
+  const renderIcon = (token: TokenIds) =>
+    token === TokenIds.MOB ? (
+      <MOBIcon className={classes.iconElement} />
+    ) : (
+      <MonetizationOnOutlinedIcon className={classes.icon} />
+    );
 
   return (
     <Box className={classes.item} style={matches ? {} : { padding: '0' }}>
@@ -75,24 +81,14 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
           value={tokenId}
           classes={{ icon: classes.icon, iconOpen: classes.iconOpen, select: classes.selectSelect }}
           onChange={(e) => setTokenId(e.target.value as TokenIds)}
-          renderValue={(value: any) =>
-            value === TokenIds.MOB ? (
-              <MOBIcon className={classes.iconElement} />
-            ) : (
-              <MonetizationOnOutlinedIcon className={classes.icon} />
-            )
-          }
+          renderValue={(value: any) => renderIcon(value)}
         >
           <MenuItem value={TokenIds.MOB}>
-            <ListItemIcon>
-              <MOBIcon className={classes.iconElement} />
-            </ListItemIcon>
+            <ListItemIcon>{renderIcon(TokenIds.MOB)}</ListItemIcon>
             MOB
           </MenuItem>
           <MenuItem value={TokenIds.MOBUSD}>
-            <ListItemIcon>
-              <MonetizationOnOutlinedIcon className={classes.iconElement} />
-            </ListItemIcon>
+            <ListItemIcon>{renderIcon(TokenIds.MOBUSD)}</ListItemIcon>
             MobileUSD
           </MenuItem>
         </Select>

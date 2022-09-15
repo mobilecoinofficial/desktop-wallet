@@ -11,6 +11,7 @@ import { getFeePmob } from './getFeePmob';
 import { importAccount, importLegacyAccount } from './importAccount';
 import { initialize } from './initialize';
 import { selectAccount } from './selectAccount';
+import { setTokenId } from './setTokenId';
 import { unlockWallet } from './unlockWallet';
 import { updateContacts } from './updateContacts';
 import { updatePassword } from './updatePassword';
@@ -32,6 +33,7 @@ export {
   importLegacyAccount,
   initialize,
   selectAccount,
+  setTokenId,
   unlockWallet,
   updateContacts,
   updatePassword,

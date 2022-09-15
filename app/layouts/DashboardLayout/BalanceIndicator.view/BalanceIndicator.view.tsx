@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { FC } from 'react';
 
 import {
@@ -13,22 +13,38 @@ import {
 } from '@material-ui/core';
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOn';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import { MOBNumberFormat } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { TokenIds } from '../../../constants/app';
 import { GOLD_LIGHT } from '../../../constants/colors';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { setTokenId } from '../../../redux/services';
 import { Theme } from '../../../theme';
 import { BalanceIndicatorProps } from './BalanceIndicator';
 
 const useStyles = makeStyles((theme: Theme) => ({
+  formControlLabel: {
+    left: 24,
+  },
   icon: {
+    left: 0,
+  },
+  iconElement: {
     height: 24,
     width: 24,
+  },
+  iconOpen: {
+    transform: 'none',
   },
   item: {
     padding: theme.spacing(3, 0, 0, 0),
     textAlign: 'center',
+  },
+  selectSelect: {
+    paddingLeft: '24px',
+    paddingRight: '8px !important',
   },
   valueContainer: {
     alignItems: 'center',
@@ -45,7 +61,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
 }: BalanceIndicatorProps) => {
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
-  const [icon, setIcon] = useState(TokenIds.MOB);
+  const { tokenId } = useSelector((state: ReduxStoreState) => state);
 
   const { t } = useTranslation('BalanceIndicator');
 
@@ -56,14 +72,12 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
       </Typography>
       <Box className={classes.valueContainer}>
         <Select
-          value={icon}
-          style={{ marginRight: 4 }}
-          SelectDisplayProps={{ style: { paddingBottom: 4, paddingLeft: 8, paddingRight: 8 } }}
-          onChange={(e) => setIcon(e.target.value as TokenIds)}
-          IconComponent={() => null}
+          value={tokenId}
+          classes={{ icon: classes.icon, iconOpen: classes.iconOpen, select: classes.selectSelect }}
+          onChange={(e) => setTokenId(e.target.value as TokenIds)}
           renderValue={(value: any) =>
             value === TokenIds.MOB ? (
-              <MOBIcon className={classes.icon} />
+              <MOBIcon className={classes.iconElement} />
             ) : (
               <MonetizationOnOutlinedIcon className={classes.icon} />
             )
@@ -71,13 +85,13 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         >
           <MenuItem value={TokenIds.MOB}>
             <ListItemIcon>
-              <MOBIcon className={classes.icon} />
+              <MOBIcon className={classes.iconElement} />
             </ListItemIcon>
             MOB
           </MenuItem>
           <MenuItem value={TokenIds.MOBUSD}>
             <ListItemIcon>
-              <MonetizationOnOutlinedIcon className={classes.icon} />
+              <MonetizationOnOutlinedIcon className={classes.iconElement} />
             </ListItemIcon>
             MobileUSD
           </MenuItem>

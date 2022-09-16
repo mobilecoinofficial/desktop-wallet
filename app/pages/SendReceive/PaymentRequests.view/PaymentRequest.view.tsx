@@ -17,10 +17,12 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
+import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { checkB58PaymentRequest } from '../../../services/checkB58PaymentRequest.service';
 import type { Theme } from '../../../theme';
 import type { StringB58 } from '../../../types/SpecialStrings.d';
@@ -78,6 +80,7 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
   enqueueSnackbar,
 }: PaymentRequestProps) => {
   const classes = useStyles();
+  const { tokenId } = useSelector((state: ReduxStoreState) => state);
 
   const handleCancel = onClickCancel;
 
@@ -100,10 +103,14 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
     }
   };
 
-  const mockMultipleAccounts: Array<Account> = [
+  const mockMultipleAccounts: Array<{
+    b58Code: string;
+    balance: bigint;
+    name: string | null;
+  }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: selectedAccount.balanceStatus.unspentPmob,
+      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[tokenId].unspentPmob),
       name: selectedAccount.account.name,
     },
   ];

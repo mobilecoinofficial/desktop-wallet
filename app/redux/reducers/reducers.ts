@@ -99,7 +99,7 @@ export const initialReduxStoreState: ReduxStoreState = {
     account: {
       accountId: '',
       firstBlockIndex: '',
-      key_derivation_version: '',
+      keyDerivationVersion: '',
       mainAddress: '',
       name: '',
       nextSubaddressIndex: '',
@@ -107,12 +107,23 @@ export const initialReduxStoreState: ReduxStoreState = {
       recoveryMode: false,
     },
     balanceStatus: {
+      balancePerToken: {
+        [TokenIds.MOB]: {
+          orphanedPmob: '',
+          pendingPmob: '',
+          secretedPmob: '',
+          spentPmob: '',
+          unspentPmob: '',
+        },
+        [TokenIds.MOBUSD]: {
+          orphanedPmob: '',
+          pendingPmob: '',
+          secretedPmob: '',
+          spentPmob: '',
+          unspentPmob: '',
+        },
+      },
       isSynced: false,
-      orphanedPmob: '',
-      pendingPmob: '',
-      secretedPmob: '',
-      spentPmob: '',
-      unspentPmob: '',
     },
   },
   tokenId: TokenIds.MOB,
@@ -125,11 +136,22 @@ export const initialReduxStoreState: ReduxStoreState = {
     localBlockHeight: '',
     minSyncedBlockIndex: '',
     networkBlockHeight: '',
-    totalOrphanedPmob: '',
-    totalPendingPmob: '',
-    totalSecretedPmob: '',
-    totalSpentPmob: '',
-    totalUnspentPmob: '',
+    balancePerToken: {
+      [TokenIds.MOB]: {
+        orphanedPmob: '',
+        pendingPmob: '',
+        secretedPmob: '',
+        spentPmob: '',
+        unspentPmob: '',
+      },
+      [TokenIds.MOBUSD]: {
+        orphanedPmob: '',
+        pendingPmob: '',
+        secretedPmob: '',
+        spentPmob: '',
+        unspentPmob: '',
+      },
+    },
   },
 };
 

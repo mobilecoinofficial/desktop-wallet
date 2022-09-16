@@ -23,11 +23,22 @@ function convertWalletStatusFromV2(
       minSyncedBlockIndex: status.minSyncedBlockIndex,
       networkBlockHeight: status.networkBlockHeight,
       object: 'wallet_status',
-      totalOrphanedPmob: status.balancePerToken[TokenIds.MOB]?.orphaned,
-      totalPendingPmob: status.balancePerToken[TokenIds.MOB]?.pending,
-      totalSecretedPmob: status.balancePerToken[TokenIds.MOB]?.secreted,
-      totalSpentPmob: status.balancePerToken[TokenIds.MOB]?.spent,
-      totalUnspentPmob: status.balancePerToken[TokenIds.MOB]?.unspent,
+      balancePerToken: {
+        [TokenIds.MOB]: {
+          orphanedPmob: status.balancePerToken[TokenIds.MOB]?.orphaned || '0',
+          pendingPmob: status.balancePerToken[TokenIds.MOB]?.pending || '0',
+          secretedPmob: status.balancePerToken[TokenIds.MOB]?.secreted || '0',
+          spentPmob: status.balancePerToken[TokenIds.MOB]?.spent || '0',
+          unspentPmob: status.balancePerToken[TokenIds.MOB]?.unspent || '0',
+        },
+        [TokenIds.MOBUSD]: {
+          orphanedPmob: status.balancePerToken[TokenIds.MOBUSD]?.orphaned || '0',
+          pendingPmob: status.balancePerToken[TokenIds.MOBUSD]?.pending || '0',
+          secretedPmob: status.balancePerToken[TokenIds.MOBUSD]?.secreted || '0',
+          spentPmob: status.balancePerToken[TokenIds.MOBUSD]?.spent || '0',
+          unspentPmob: status.balancePerToken[TokenIds.MOBUSD]?.unspent || '0',
+        },
+      },
     },
   };
 }

@@ -30,6 +30,7 @@ describe('History Item', () => {
             finalizedBlockIndex: '123456',
             recipientAddressId: null,
             valuePmob: '220960000000',
+            tokenId: 0,
           } as TransactionLog
         }
         onClick={() => undefined}
@@ -52,6 +53,7 @@ describe('History Item', () => {
             finalizedBlockIndex: '123456',
             recipientAddressId: 'eo7bLKA1kNNgLHGUMnf5sHZ5Hj52YqGNyia52e',
             valuePmob: '220960000000',
+            tokenId: 0,
           } as TransactionLog
         }
         onClick={() => undefined}
@@ -73,6 +75,7 @@ describe('History Item', () => {
             finalizedBlockIndex: '123456',
             recipientAddressId: null,
             valuePmob: '220960000000',
+            tokenId: 0,
           } as TransactionLog
         }
         onClick={() => undefined}
@@ -95,6 +98,7 @@ describe('History Item', () => {
             finalizedBlockIndex: '345678',
             recipientAddressId: '101010101010101',
             valuePmob: '31415926',
+            tokenId: 0,
           } as TransactionLog
         }
         onClick={() => undefined}
@@ -116,6 +120,7 @@ describe('History Item', () => {
             finalizedBlockIndex: '345678',
             recipientAddressId: null,
             valuePmob: '31415926',
+            tokenId: 0,
           } as TransactionLog
         }
         onClick={() => undefined}

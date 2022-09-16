@@ -27,6 +27,7 @@ import { getFeePmobAction, GetFeePmobAction, GET_FEE_PMOB } from './getFeePmobAc
 import { importAccountAction, IMPORT_ACCOUNT, ImportAccountAction } from './importAccountAction';
 import { initializeAction, INITIALIZE, InitializeAction } from './initializeAction';
 import { selectAccountAction, SELECT_ACCOUNT, SelectAccountAction } from './selectAccountAction';
+import { SET_TOKEN_ID, setTokenIdAction, SetTokenIdAction } from './setTokenIdAction';
 import { unlockWalletAction, UNLOCK_WALLET, UnlockWalletAction } from './unlockWalletAction';
 import {
   updateContactsAction,
@@ -61,6 +62,7 @@ export {
   UPDATE_PASSWORD,
   UPDATE_PIN,
   UPDATE_WALLET_STATUS,
+  SET_TOKEN_ID,
 };
 
 type Action =
@@ -77,6 +79,7 @@ type Action =
   | ImportAccountAction
   | InitializeAction
   | SelectAccountAction
+  | SetTokenIdAction
   | UnlockWalletAction
   | UpdateContactsAction
   | UpdatePasswordAction
@@ -98,6 +101,7 @@ export type {
   ImportAccountAction,
   InitializeAction,
   SelectAccountAction,
+  SetTokenIdAction,
   UnlockWalletAction,
   UpdateContactsAction,
   GetAllGiftCodesAction,
@@ -120,6 +124,7 @@ export {
   importAccountAction,
   initializeAction,
   selectAccountAction,
+  setTokenIdAction,
   unlockWalletAction,
   updateContactsAction,
   getAllGiftCodesAction,

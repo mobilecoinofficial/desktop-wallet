@@ -1,24 +1,50 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box, Button, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  makeStyles,
+  Typography,
+  useMediaQuery,
+  Select,
+  MenuItem,
+  ListItemIcon,
+} from '@material-ui/core';
+import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOn';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import { MOBNumberFormat } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
+import { TokenIds } from '../../../constants/app';
 import { GOLD_LIGHT } from '../../../constants/colors';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
+import { setTokenId } from '../../../redux/services';
 import { Theme } from '../../../theme';
 import { BalanceIndicatorProps } from './BalanceIndicator';
 
 const useStyles = makeStyles((theme: Theme) => ({
+  formControlLabel: {
+    left: 24,
+  },
   icon: {
-    height: 25,
-    paddingRight: 5,
-    width: 25,
+    left: 0,
+  },
+  iconElement: {
+    height: 24,
+    width: 24,
+  },
+  iconOpen: {
+    transform: 'none',
   },
   item: {
     padding: theme.spacing(3, 0, 0, 0),
     textAlign: 'center',
+  },
+  selectSelect: {
+    paddingLeft: '24px',
+    paddingRight: '8px !important',
   },
   valueContainer: {
     alignItems: 'center',
@@ -35,8 +61,15 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
 }: BalanceIndicatorProps) => {
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
-
+  const { tokenId } = useSelector((state: ReduxStoreState) => state);
   const { t } = useTranslation('BalanceIndicator');
+
+  const renderIcon = (token: TokenIds) =>
+    token === TokenIds.MOB ? (
+      <MOBIcon className={classes.iconElement} />
+    ) : (
+      <MonetizationOnOutlinedIcon className={classes.icon} />
+    );
 
   return (
     <Box className={classes.item} style={matches ? {} : { padding: '0' }}>
@@ -44,7 +77,21 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         {t('title')}
       </Typography>
       <Box className={classes.valueContainer}>
-        <MOBIcon className={classes.icon} />
+        <Select
+          value={tokenId}
+          classes={{ icon: classes.icon, iconOpen: classes.iconOpen, select: classes.selectSelect }}
+          onChange={(e) => setTokenId(e.target.value as TokenIds)}
+          renderValue={(value: any) => renderIcon(value)}
+        >
+          <MenuItem value={TokenIds.MOB}>
+            <ListItemIcon>{renderIcon(TokenIds.MOB)}</ListItemIcon>
+            MOB
+          </MenuItem>
+          <MenuItem value={TokenIds.MOBUSD}>
+            <ListItemIcon>{renderIcon(TokenIds.MOBUSD)}</ListItemIcon>
+            MobileUSD
+          </MenuItem>
+        </Select>
         <Typography data-testid="balance-figure" variant="h3" color="textPrimary">
           <MOBNumberFormat valueUnit="pMOB" value={balance} />
         </Typography>

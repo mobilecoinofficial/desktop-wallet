@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ShortCode, SubmitButton } from '../../../components';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
+import { TokenIds } from '../../../constants/app';
 import type { Theme } from '../../../theme';
 import type { TransactionDetailsViewProps } from './TransactionDetails.d';
 
@@ -62,8 +63,10 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     recipientAddressId,
     outputTxoIds,
     valuePmob,
+    tokenId,
   } = transactionLog;
 
+  const tokenName = tokenId === TokenIds.MOB ? ' MOB' : ' mUSD';
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
 
   const renderRow = (title: string, value: string | ReactNode, noWrap?: boolean) => (
@@ -152,7 +155,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
           {renderSenderOrReceiver()}
           {renderRow(
             `${t('amount')}:`,
-            <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label=" MOB" />
+            <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label={tokenName} />
           )}
         </CardContent>
       </Card>

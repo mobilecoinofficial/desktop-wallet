@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { ShortCode } from '../../../components/ShortCode';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import MOBIcon from '../../../components/icons/MOBIcon';
+import { TokenIds } from '../../../constants/app';
 import type { Theme } from '../../../theme';
 import type { HistoryItemProps } from './HistoryItem.d';
 
@@ -50,6 +51,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
     recipientAddressId,
     // status, TODO - Add status state for "pending" or errors
     valuePmob,
+    tokenId,
   } = transactionLog;
 
   // debugger;
@@ -58,7 +60,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
   const directionText =
     direction === 'tx_direction_sent' ? t('historyItemSent') : t('historyItemReceived');
-
+  const tokenName = tokenId === TokenIds.MOB ? ' MOB' : ' mUSD';
   let aliasOrAddress;
 
   // If there's a contact Object...
@@ -105,7 +107,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
             subheader={`${t('finalizedBlockHeight')}${finalizedBlockIndex}`}
             action={
               <Box display="flex" flexDirection="column" justifyContent="space-between">
-                <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label="&nbsp;MOB" />
+                <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label={tokenName} />
                 <Typography className={classes.textSmallRight} display="inline">
                   {directionText}
                 </Typography>

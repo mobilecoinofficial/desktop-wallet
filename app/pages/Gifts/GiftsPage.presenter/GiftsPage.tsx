@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { getAllGiftCodes, getFeePmob } from '../../../redux/services';
+import { getAllGiftCodes, getFees } from '../../../redux/services';
 import {
   buildGiftCode,
   checkGiftCodeStatus,
@@ -65,7 +65,7 @@ const EMPTY_CONFIRMATION_BUILD = {
 export const GiftsPage: FC = (): JSX.Element => {
   const {
     accounts,
-    feePmob,
+    fee,
     giftCodes,
     pin: existingPin,
     pinThresholdPmob,
@@ -226,7 +226,7 @@ export const GiftsPage: FC = (): JSX.Element => {
     getAllGiftCodes();
   }, []);
   useEffect(() => {
-    getFeePmob();
+    getFees();
   }, []);
 
   return (
@@ -252,7 +252,7 @@ export const GiftsPage: FC = (): JSX.Element => {
                 confirmation={confirmationBuild}
                 deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
                 existingPin={existingPin as string}
-                feePmob={feePmob || '400000000'}
+                fee={fee || '400000000'}
                 getAllGiftCodes={getAllGiftCodes}
                 giftCodes={giftCodes}
                 handleCopyClick={handleCodeClicked}
@@ -302,7 +302,7 @@ export const GiftsPage: FC = (): JSX.Element => {
           {selectedTabIndex === 1 && (
             <ConsumeGiftForm
               confirmation={confirmationConsume}
-              feePmob={feePmob || '400000000'}
+              fee={fee || '400000000'}
               onClickCancel={onClickCancelConsume}
               onClickClaimGift={onClickClaimGiftConsume}
               onClickOpenGift={onClickOpenGiftConsume}

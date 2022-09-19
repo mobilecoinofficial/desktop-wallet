@@ -50,7 +50,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
     finalizedBlockIndex,
     recipientAddressId,
     // status, TODO - Add status state for "pending" or errors
-    valuePmob,
+    value,
     tokenId,
   } = transactionLog;
 
@@ -107,7 +107,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
             subheader={`${t('finalizedBlockHeight')}${finalizedBlockIndex}`}
             action={
               <Box display="flex" flexDirection="column" justifyContent="space-between">
-                <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label={tokenName} />
+                <TransactionInfoLabel value={value} sign={sign} label={tokenName} />
                 <Typography className={classes.textSmallRight} display="inline">
                   {directionText}
                 </Typography>

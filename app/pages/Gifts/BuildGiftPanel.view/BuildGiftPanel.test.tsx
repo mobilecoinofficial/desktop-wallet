@@ -87,7 +87,7 @@ describe('Build gift', () => {
           <BuildGiftPanel
             confirmation={CONFIRMATION}
             existingPin="111111"
-            feePmob={FEE_PMOB}
+            fee={FEE_PMOB}
             giftCodes={GIFT_CODES}
             handleCopyClick={handleCopyClick}
             isSynced
@@ -143,7 +143,7 @@ describe('Build gift', () => {
           <BuildGiftPanel
             confirmation={CONFIRMATION}
             existingPin="111111"
-            feePmob={FEE_PMOB}
+            fee={FEE_PMOB}
             giftCodes={[]}
             handleCopyClick={handleCopyClick}
             isSynced
@@ -180,7 +180,7 @@ describe('Build gift', () => {
           <BuildGiftPanel
             confirmation={CONFIRMATION}
             existingPin="111111"
-            feePmob={FEE_PMOB}
+            fee={FEE_PMOB}
             giftCodes={[]}
             handleCopyClick={handleCopyClick}
             isSynced
@@ -228,7 +228,7 @@ describe('Build gift', () => {
           <BuildGiftPanel
             confirmation={CONFIRMATION}
             existingPin="111111"
-            feePmob={FEE_PMOB}
+            fee={FEE_PMOB}
             giftCodes={[]}
             handleCopyClick={handleCopyClick}
             isSynced

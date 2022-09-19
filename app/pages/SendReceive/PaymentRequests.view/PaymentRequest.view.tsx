@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const PaymentRequest: FC<PaymentRequestProps> = ({
   confirmation,
-  feePmob,
+  fee,
   onClickCancel,
   onClickConfirm,
   selectedAccount,
@@ -93,7 +93,7 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
       const { publicAddressB58, value } = result;
       await onClickViewPaymentRequest({
         accountId: selectedAccount.account.accountId,
-        fee: feePmob,
+        fee,
         recipientPublicAddress: publicAddressB58,
         valuePmob: value,
       });
@@ -258,7 +258,7 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
                             <Box display="flex" justifyContent="space-between">
                               <Typography color="textPrimary">Fee:</Typography>
                               <Typography color="textPrimary">
-                                <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={feePmob} />
+                                <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={fee} />
                               </Typography>
                             </Box>
                             <Box

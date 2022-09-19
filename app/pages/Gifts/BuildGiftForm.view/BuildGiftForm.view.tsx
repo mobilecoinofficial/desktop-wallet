@@ -23,6 +23,7 @@ import * as Yup from 'yup';
 import { MOBNumberFormat } from '../../../components/MOBNumberFormat';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { MOBIcon } from '../../../components/icons';
+import { TokenIds } from '../../../constants/app';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
 import { convertPicoMobStringToMob } from '../../../utils/convertMob';
@@ -80,7 +81,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const BuildGiftForm: FC<BuildGiftFormProps> = ({
   confirmation,
   existingPin,
-  feePmob,
+  fee,
   isSynced,
   onClickCancelBuild,
   onClickConfirmBuild,
@@ -107,12 +108,13 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
     },
   ];
 
-  const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
+  const validateAmount = (selectedBalance: bigint, txFee: bigint) => (valueString: string) => {
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-    if (valueAsPicoMob + fee + fee > selectedBalance) {
+    const divisor = tokenId === TokenIds.MOB ? 1000000000000 : 1000000;
+    if (valueAsPicoMob + txFee + txFee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee', { limit: Number(fee) / 1000000000000 });
+      error = t('errorFee', { limit: Number(txFee) / divisor });
     }
     return error;
   };
@@ -127,7 +129,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
   return (
     <Formik
       initialValues={{
-        feeAmount: convertPicoMobStringToMob(feePmob),
+        feeAmount: convertPicoMobStringToMob(fee),
         mobValue: '0', // mobs
         pin: '',
         senderPublicAddress: mockMultipleAccounts[0].b58Code,
@@ -186,7 +188,10 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                 onFocus={handleSelect}
                 validate={validateAmount(
                   selectedBalance,
-                  BigInt(Number(values.feeAmount) * 1_000_000_000_000)
+                  BigInt(
+                    Number(values.feeAmount) *
+                      (tokenId === TokenIds.MOB ? 1_000_000_000_000 : 1_000_000)
+                  )
                 )}
                 InputProps={{
                   inputComponent: MOBNumberFormat,

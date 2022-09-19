@@ -70,7 +70,7 @@ describe('Consume gift form', () => {
         <SnackbarProvider>
           <ConsumeGiftForm
             confirmation={confirmation}
-            feePmob="4000000000"
+            fee="4000000000"
             onClickCancel={onClickCancel}
             onClickClaimGift={onClickClaimGift}
             onClickOpenGift={onClickOpenGift}
@@ -111,7 +111,7 @@ describe('Consume gift form', () => {
         <SnackbarProvider>
           <ConsumeGiftForm
             confirmation={confirmation}
-            feePmob="4000000000"
+            fee="4000000000"
             onClickCancel={onClickCancel}
             onClickClaimGift={onClickClaimGift}
             onClickOpenGift={onClickOpenGift}
@@ -143,7 +143,7 @@ describe('Consume gift form', () => {
         <SnackbarProvider>
           <ConsumeGiftForm
             confirmation={confirmation}
-            feePmob="4000000000"
+            fee="4000000000"
             onClickCancel={onClickCancel}
             onClickClaimGift={onClickClaimGift}
             onClickOpenGift={onClickOpenGift}

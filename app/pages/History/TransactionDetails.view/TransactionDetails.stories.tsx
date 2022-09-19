@@ -25,7 +25,7 @@ const currentTransactionLog = {
   direction: 'tx_direction_received',
   failureCode: null,
   failureMessage: null,
-  feePmob: null,
+  fee: null,
   finalizedBlockIndex: '159566',
   inputTxoIds: [],
   object: 'transaction_log',

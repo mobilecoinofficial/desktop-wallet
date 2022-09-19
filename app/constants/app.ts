@@ -22,3 +22,10 @@ export enum TokenIds {
   // MOBUSD = 1,
   MOBUSD = 8192,
 }
+
+export enum TokenPrecision {
+  // pico
+  MOB = 1000000000000,
+  // micro
+  MOBUSD = 1000000,
+}

@@ -12,7 +12,7 @@ export interface BuildGiftPanelProps {
     txProposal: TxProposal;
   };
   existingPin: string;
-  feePmob: string;
+  fee: string;
   giftCodes: GiftCode[];
   handleCopyClick: (s1: string, s2?: string) => void;
   isSynced: boolean;

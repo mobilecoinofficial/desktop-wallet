@@ -13,6 +13,7 @@ import {
   Txos,
   WalletStatus,
 } from '../../types';
+import { Fees } from '../../types/NetworkStatus';
 import sameObject from '../../utils/sameObject';
 import {
   INITIALIZE,
@@ -40,7 +41,7 @@ import {
   UPDATE_CONTACTS,
   UpdateContactsAction,
   GET_FEE_PMOB,
-  GetFeePmobAction,
+  getFeesAction,
   UPDATE_PASSWORD,
   UpdatePasswordAction,
   UPDATE_PIN,
@@ -61,7 +62,7 @@ export type ReduxStoreState = {
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
   encryptedPassword: SjclCipherEncrypted | undefined;
-  feePmob: StringUInt64;
+  fees: Fees;
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
   isInitialized: boolean;
@@ -84,7 +85,7 @@ export const initialReduxStoreState: ReduxStoreState = {
   addresses: { addressIds: [], addressMap: {} },
   contacts: [],
   encryptedPassword: undefined,
-  feePmob: '',
+  fees: {},
   giftCodes: null,
   isAuthenticated: false,
   isEntropyKnown: false,
@@ -240,10 +241,10 @@ export const reducer = (
     }
 
     case GET_FEE_PMOB: {
-      const { feePmob } = (action as GetFeePmobAction).payload;
+      const { fees } = (action as getFeesAction).payload;
       return {
         ...state,
-        feePmob,
+        fees,
       };
     }
 

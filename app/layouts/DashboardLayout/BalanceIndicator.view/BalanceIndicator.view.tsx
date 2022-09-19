@@ -71,6 +71,8 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
       <MonetizationOnOutlinedIcon className={classes.icon} />
     );
 
+  const valueUnit = tokenId === TokenIds.MOB ? 'pMOB' : 'mmUSD';
+
   return (
     <Box className={classes.item} style={matches ? {} : { padding: '0' }}>
       <Typography variant="h3" color="textSecondary" gutterBottom>
@@ -93,7 +95,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
           </MenuItem>
         </Select>
         <Typography data-testid="balance-figure" variant="h3" color="textPrimary">
-          <MOBNumberFormat valueUnit="pMOB" value={balance} />
+          <MOBNumberFormat valueUnit={valueUnit} value={balance} />
         </Typography>
       </Box>
       {!isSynced && !offlineModeEnabled && (

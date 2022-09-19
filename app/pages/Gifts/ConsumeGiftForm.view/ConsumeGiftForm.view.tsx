@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // this component managable.
 const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
   confirmation,
-  feePmob,
+  fee,
   onClickCancel,
   onClickClaimGift,
   onClickOpenGift,
@@ -131,7 +131,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
         let totalSent;
 
         if (confirmation?.giftValue) {
-          increasedBalance = Number(selectedBalance) + confirmation?.giftValue - Number(feePmob);
+          increasedBalance = Number(selectedBalance) + confirmation?.giftValue - Number(fee);
           totalSent = confirmation?.giftValue;
         }
 
@@ -229,7 +229,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                         <Box display="flex" justifyContent="space-between">
                           <Typography color="textPrimary">{t('fee')}:</Typography>
                           <Typography color="textPrimary">
-                            <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={feePmob} />
+                            <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={fee} />
                           </Typography>
                         </Box>
                         <Box
@@ -242,7 +242,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                             <MOBNumberFormat
                               suffix=" MOB"
                               valueUnit="pMOB"
-                              value={(confirmation?.giftValue - Number(feePmob)).toString()}
+                              value={(confirmation?.giftValue - Number(fee)).toString()}
                             />
                           </Typography>
                         </Box>

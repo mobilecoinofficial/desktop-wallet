@@ -46,7 +46,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   accounts,
   confirmation,
   existingPin,
-  feePmob,
+  fee,
   giftCodes,
   handleCopyClick,
   isSynced,
@@ -100,7 +100,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
               accounts={accounts}
               confirmation={confirmation}
               existingPin={existingPin}
-              feePmob={feePmob}
+              fee={fee}
               isSynced={isSynced}
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}
@@ -143,7 +143,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                           </TableCell>
                           <TableCell>
                             <MOBNumberFormat
-                              value={(BigInt(giftCode.valuePmob) - BigInt(feePmob)).toString()}
+                              value={(BigInt(giftCode.valuePmob) - BigInt(fee)).toString()}
                               valueUnit="pMOB"
                             />
                           </TableCell>
@@ -205,7 +205,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                   <Box py={2} display="flex" justifyContent="space-between">
                     <Typography color="textPrimary">{t('giftValue')}</Typography>
                     <MOBNumberFormat
-                      value={(BigInt(pendingDeleteCode[1]) - BigInt(feePmob)).toString()}
+                      value={(BigInt(pendingDeleteCode[1]) - BigInt(fee)).toString()}
                       valueUnit="pMOB"
                       suffix=" MOB"
                     />

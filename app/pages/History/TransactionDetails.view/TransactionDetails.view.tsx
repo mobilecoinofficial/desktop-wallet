@@ -62,7 +62,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     assignedAddressId,
     recipientAddressId,
     outputTxoIds,
-    valuePmob,
+    value: transactionValue,
     tokenId,
   } = transactionLog;
 
@@ -155,7 +155,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
           {renderSenderOrReceiver()}
           {renderRow(
             `${t('amount')}:`,
-            <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label={tokenName} />
+            <TransactionInfoLabel value={transactionValue} sign={sign} label={tokenName} />
           )}
         </CardContent>
       </Card>

@@ -1,9 +1,13 @@
 import type { StringUInt64 } from './SpecialStrings';
 
+export type Fees = {
+  [tokenId: StringUInt64]: StringUInt64;
+};
+
 export interface NetworkStatus {
   localBlockHeight: StringUInt64;
   networkBlockHeight: StringUInt64;
-  feePmob: StringUInt64;
+  fees: Fees;
 }
 
 export interface NetworkStatusV2 {
@@ -13,9 +17,7 @@ export interface NetworkStatusV2 {
   // is synced when the local_block_height reaches the network_block_height.
   localBlockHeight: string;
   // The current network fee per token_id.
-  fees: {
-    [tokenId: StringUInt64]: StringUInt64;
-  };
+  fees: Fees;
   // The current block version
   blockVersion: StringUInt64;
 }

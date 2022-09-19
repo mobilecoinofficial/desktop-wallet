@@ -12,6 +12,12 @@ export const convertMobStringToPicoMobString = (mobString: string): string => {
   return picoMobBigInt.toString();
 };
 
+export const convertMUSDStringToMMUSDString = (mUSDString: string): string => {
+  const microMobBigDec = bigDecimal.multiply(mUSDString, '1000000');
+  const microMobBigInt = BigInt(microMobBigDec);
+  return microMobBigInt.toString();
+};
+
 // TODO, handle value of BigInt
 export const convertPicoMobStringToMob = (picoMobString: string): string => {
   if (picoMobString.length <= 12) {
@@ -22,6 +28,18 @@ export const convertPicoMobStringToMob = (picoMobString: string): string => {
     picoMobString.slice(0, picoMobString.length - 12),
     '.',
     picoMobString.slice(picoMobString.length - 12),
+  ].join('');
+};
+
+export const convertMicroMUSDToStringMUSD = (microMUSDString: string): string => {
+  if (microMUSDString.length <= 6) {
+    return `0.${'0'.repeat(6 - microMUSDString.length)}${microMUSDString}`;
+  }
+
+  return [
+    microMUSDString.slice(0, microMUSDString.length - 6),
+    '.',
+    microMUSDString.slice(microMUSDString.length - 6),
   ].join('');
 };
 

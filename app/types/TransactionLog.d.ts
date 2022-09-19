@@ -20,7 +20,7 @@ export interface TransactionLog {
   direction: 'tx_direction_received' | 'tx_direction_sent';
   failureCode: number | null;
   failureMessage: string | null;
-  feePmob: StringUInt64 | null;
+  fee: StringUInt64 | null;
   finalizedBlockIndex: StringUInt64 | null;
   inputTxoIds: StringHex[]; // FK this is gone?
   inputTxos: TransactionAbbreviation[];
@@ -34,7 +34,7 @@ export interface TransactionLog {
   submittedBlockIndex: StringUInt64 | null;
   transactionLogId: StringHex;
   tokenId: TokenIds;
-  valuePmob: StringUInt64;
+  value: StringUInt64;
 }
 
 type Status =

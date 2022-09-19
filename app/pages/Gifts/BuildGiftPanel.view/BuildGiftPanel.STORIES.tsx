@@ -30,7 +30,7 @@ InitialInput.args = {
     totalValueConfirmation: 1000400000000n,
   },
   existingPin: '12345678',
-  feePmob: '3000000000',
+  fee: '3000000000',
   giftCodes: [
     {
       accountId: 'dc46d2ce3f4e676b3b9178d4833f6bf89b4d1f79634694e895fb3111af81ff4e',
@@ -103,7 +103,7 @@ ConfirmBuild.args = {
     totalValueConfirmation: 1000400000000n,
   },
   existingPin: '12345678',
-  feePmob: '3000000000',
+  fee: '3000000000',
   giftCodes: [
     {
       accountId: 'dc46d2ce3f4e676b3b9178d4833f6bf89b4d1f79634694e895fb3111af81ff4e',

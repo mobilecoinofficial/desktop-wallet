@@ -23,7 +23,7 @@ import {
   GET_ALL_TXOS_FOR_ACCOUNT,
   GetAllTxosForAccountAction,
 } from './getAllTxosForAccountAction';
-import { getFeePmobAction, GetFeePmobAction, GET_FEE_PMOB } from './getFeePmobAction';
+import { getFeesAction, GetFeesAction, GET_FEE_PMOB } from './getFeesAction';
 import { importAccountAction, IMPORT_ACCOUNT, ImportAccountAction } from './importAccountAction';
 import { initializeAction, INITIALIZE, InitializeAction } from './initializeAction';
 import { selectAccountAction, SELECT_ACCOUNT, SelectAccountAction } from './selectAccountAction';
@@ -75,7 +75,7 @@ type Action =
   | GetAllGiftCodesAction
   | GetAllTransactionLogsForAccountAction
   | GetAllTxosForAccountAction
-  | GetFeePmobAction
+  | GetFeesAction
   | ImportAccountAction
   | InitializeAction
   | SelectAccountAction
@@ -97,7 +97,7 @@ export type {
   DeleteWalletAction,
   GetAllTransactionLogsForAccountAction,
   GetAllTxosForAccountAction,
-  GetFeePmobAction,
+  GetFeesAction,
   ImportAccountAction,
   InitializeAction,
   SelectAccountAction,
@@ -120,7 +120,7 @@ export {
   deleteWalletAction,
   getAllTransactionLogsForAccountAction,
   getAllTxosForAccountAction,
-  getFeePmobAction,
+  getFeesAction,
   importAccountAction,
   initializeAction,
   selectAccountAction,

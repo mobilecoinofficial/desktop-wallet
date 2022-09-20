@@ -26,6 +26,7 @@ import {
   Tooltip,
   IconButton,
 } from '@material-ui/core';
+import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOn';
 import { Formik, Form, Field } from 'formik';
 import { CheckboxWithLabel, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
@@ -172,6 +173,13 @@ const SendMob: FC<SendMobProps> = ({
 
   const feeAmount =
     tokenId === TokenIds.MOB ? convertPicoMobStringToMob(fee) : convertMicroMUSDToStringMUSD(fee);
+
+  const icon =
+    tokenId === TokenIds.MOB ? (
+      <MOBIcon height={20} width={20} />
+    ) : (
+      <MonetizationOnOutlinedIcon height={20} width={20} />
+    );
 
   return (
     <Container maxWidth="sm">
@@ -372,11 +380,7 @@ const SendMob: FC<SendMobProps> = ({
                         )}
                         InputProps={{
                           inputComponent: MOBNumberFormat,
-                          startAdornment: (
-                            <InputAdornment position="start">
-                              <MOBIcon height={20} width={20} />
-                            </InputAdornment>
-                          ),
+                          startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
                         }}
                       />
                       <Field

@@ -1,7 +1,17 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Container, Fade, Grid, makeStyles, Modal, Tab, Tabs } from '@material-ui/core';
+import {
+  Box,
+  Container,
+  Fade,
+  Grid,
+  makeStyles,
+  Modal,
+  Tab,
+  Tabs,
+  Typography,
+} from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +19,7 @@ import { useSelector } from 'react-redux';
 
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
+import { TokenIds } from '../../../constants/app';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { getAllGiftCodes, getFees } from '../../../redux/services';
 import {
@@ -65,11 +76,12 @@ const EMPTY_CONFIRMATION_BUILD = {
 export const GiftsPage: FC = (): JSX.Element => {
   const {
     accounts,
-    fee,
+    fees,
     giftCodes,
     pin: existingPin,
     pinThresholdPmob,
     selectedAccount,
+    tokenId,
   } = useSelector((state: ReduxStoreState) => state);
 
   const classes = useStyles();
@@ -83,6 +95,21 @@ export const GiftsPage: FC = (): JSX.Element => {
   const [confirmationConsume, setConfirmationConsume] = useState(EMPTY_CONFIRMATION_CONSUME);
 
   const { t } = useTranslation('GiftingView');
+
+  useEffect(() => {
+    getAllGiftCodes();
+  }, []);
+  useEffect(() => {
+    getFees();
+  }, []);
+
+  if (tokenId === TokenIds.MOBUSD) {
+    return (
+      <Box className={classes.root}>
+        <Typography align="center">Gift codes are not yet available for mUSD.</Typography>
+      </Box>
+    );
+  }
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
@@ -100,9 +127,9 @@ export const GiftsPage: FC = (): JSX.Element => {
     }
   };
 
-  const onClickCreateGift = async (mobValue: string, feeAmount: string) => {
+  const onClickCreateGift = async (mobValue: string, sAmount: string) => {
     try {
-      const adjustedValue = Number(mobValue) + Number(feeAmount);
+      const adjustedValue = Number(mobValue) + Number(sAmount);
 
       const result = await buildGiftCode({
         accountId: selectedAccount.account.accountId,
@@ -113,10 +140,10 @@ export const GiftsPage: FC = (): JSX.Element => {
         throw new Error(t('errorBuild'));
       }
 
-      const { feeConfirmation, giftCodeB58, totalValueConfirmation, txProposal } = result;
+      const { sConfirmation, giftCodeB58, totalValueConfirmation, txProposal } = result;
 
       setConfirmationBuild({
-        feeConfirmation,
+        sConfirmation,
         giftCodeB58,
         totalValueConfirmation,
         txProposal,
@@ -222,13 +249,6 @@ export const GiftsPage: FC = (): JSX.Element => {
     setShowModalConsume(false);
   };
 
-  useEffect(() => {
-    getAllGiftCodes();
-  }, []);
-  useEffect(() => {
-    getFees();
-  }, []);
-
   return (
     <Box className={classes.root}>
       <Grid container spacing={3}>
@@ -252,7 +272,7 @@ export const GiftsPage: FC = (): JSX.Element => {
                 confirmation={confirmationBuild}
                 deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
                 existingPin={existingPin as string}
-                fee={fee || '400000000'}
+                fee={fees[tokenId]}
                 getAllGiftCodes={getAllGiftCodes}
                 giftCodes={giftCodes}
                 handleCopyClick={handleCodeClicked}
@@ -302,7 +322,7 @@ export const GiftsPage: FC = (): JSX.Element => {
           {selectedTabIndex === 1 && (
             <ConsumeGiftForm
               confirmation={confirmationConsume}
-              fee={fee || '400000000'}
+              fee={fees[tokenId]}
               onClickCancel={onClickCancelConsume}
               onClickClaimGift={onClickClaimGiftConsume}
               onClickOpenGift={onClickOpenGiftConsume}

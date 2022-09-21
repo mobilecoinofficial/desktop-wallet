@@ -2,7 +2,9 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { Provider } from 'react-redux';
 
+import { store } from '../../../redux/store';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
 import '../../../testUtils/i18nForTests';
 import { HistoryItem } from './HistoryItem.view';
@@ -21,20 +23,22 @@ const CONTACT = {
 describe('History Item', () => {
   test('shows sent TXO, with contact', () => {
     const { getByText } = render(
-      <HistoryItem
-        transactionLog={
-          {
-            assignedAddressId: 'XYZABC123456',
-            contact: CONTACT,
-            direction: 'tx_direction_sent',
-            finalizedBlockIndex: '123456',
-            recipientAddressId: null,
-            valuePmob: '220960000000',
-            tokenId: 0,
-          } as TransactionLog
-        }
-        onClick={() => undefined}
-      />
+      <Provider store={store}>
+        <HistoryItem
+          transactionLog={
+            {
+              assignedAddressId: 'XYZABC123456',
+              contact: CONTACT,
+              direction: 'tx_direction_sent',
+              finalizedBlockIndex: '123456',
+              recipientAddressId: null,
+              value: '220960000000',
+              tokenId: 0,
+            } as TransactionLog
+          }
+          onClick={() => undefined}
+        />
+      </Provider>
     );
 
     expect(getByText('JOHN')).toBeInTheDocument();
@@ -44,20 +48,22 @@ describe('History Item', () => {
 
   test('shows sent TXO, without contact', () => {
     const { getByText } = render(
-      <HistoryItem
-        transactionLog={
-          {
-            assignedAddressId: 'XYZABC123456',
-            contact: undefined,
-            direction: 'tx_direction_sent',
-            finalizedBlockIndex: '123456',
-            recipientAddressId: 'eo7bLKA1kNNgLHGUMnf5sHZ5Hj52YqGNyia52e',
-            valuePmob: '220960000000',
-            tokenId: 0,
-          } as TransactionLog
-        }
-        onClick={() => undefined}
-      />
+      <Provider store={store}>
+        <HistoryItem
+          transactionLog={
+            {
+              assignedAddressId: 'XYZABC123456',
+              contact: undefined,
+              direction: 'tx_direction_sent',
+              finalizedBlockIndex: '123456',
+              recipientAddressId: 'eo7bLKA1kNNgLHGUMnf5sHZ5Hj52YqGNyia52e',
+              value: '220960000000',
+              tokenId: 0,
+            } as TransactionLog
+          }
+          onClick={() => undefined}
+        />
+      </Provider>
     );
 
     expect(getByText('SENT')).toBeInTheDocument();
@@ -66,20 +72,22 @@ describe('History Item', () => {
 
   test('shows sent TXO, without contact nor addresses', () => {
     const { getByText, container } = render(
-      <HistoryItem
-        transactionLog={
-          {
-            assignedAddressId: '',
-            contact: undefined,
-            direction: 'tx_direction_sent',
-            finalizedBlockIndex: '123456',
-            recipientAddressId: null,
-            valuePmob: '220960000000',
-            tokenId: 0,
-          } as TransactionLog
-        }
-        onClick={() => undefined}
-      />
+      <Provider store={store}>
+        <HistoryItem
+          transactionLog={
+            {
+              assignedAddressId: '',
+              contact: undefined,
+              direction: 'tx_direction_sent',
+              finalizedBlockIndex: '123456',
+              recipientAddressId: null,
+              value: '220960000000',
+              tokenId: 0,
+            } as TransactionLog
+          }
+          onClick={() => undefined}
+        />
+      </Provider>
     );
 
     expect(container.innerHTML.includes('---')).toBeTruthy();
@@ -89,20 +97,22 @@ describe('History Item', () => {
 
   test('shows received TXO, without contact, with recipient address Id', () => {
     const { getByText } = render(
-      <HistoryItem
-        transactionLog={
-          {
-            assignedAddressId: 'XYZABC123456',
-            contact: undefined,
-            direction: 'tx_direction_received',
-            finalizedBlockIndex: '345678',
-            recipientAddressId: '101010101010101',
-            valuePmob: '31415926',
-            tokenId: 0,
-          } as TransactionLog
-        }
-        onClick={() => undefined}
-      />
+      <Provider store={store}>
+        <HistoryItem
+          transactionLog={
+            {
+              assignedAddressId: 'XYZABC123456',
+              contact: undefined,
+              direction: 'tx_direction_received',
+              finalizedBlockIndex: '345678',
+              recipientAddressId: '101010101010101',
+              value: '31415926',
+              tokenId: 0,
+            } as TransactionLog
+          }
+          onClick={() => undefined}
+        />
+      </Provider>
     );
 
     expect(getByText('RECEIVED')).toBeInTheDocument();
@@ -111,20 +121,22 @@ describe('History Item', () => {
 
   test('shows received TXO, without contact, without addresses', () => {
     const { getByText, container } = render(
-      <HistoryItem
-        transactionLog={
-          {
-            assignedAddressId: '',
-            contact: undefined,
-            direction: 'tx_direction_received',
-            finalizedBlockIndex: '345678',
-            recipientAddressId: null,
-            valuePmob: '31415926',
-            tokenId: 0,
-          } as TransactionLog
-        }
-        onClick={() => undefined}
-      />
+      <Provider store={store}>
+        <HistoryItem
+          transactionLog={
+            {
+              assignedAddressId: '',
+              contact: undefined,
+              direction: 'tx_direction_received',
+              finalizedBlockIndex: '345678',
+              recipientAddressId: null,
+              value: '31415926',
+              tokenId: 0,
+            } as TransactionLog
+          }
+          onClick={() => undefined}
+        />
+      </Provider>
     );
 
     expect(container.innerHTML.includes('Orphaned')).toBeTruthy();

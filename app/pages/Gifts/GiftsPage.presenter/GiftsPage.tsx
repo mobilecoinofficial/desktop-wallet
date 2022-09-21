@@ -127,9 +127,9 @@ export const GiftsPage: FC = (): JSX.Element => {
     }
   };
 
-  const onClickCreateGift = async (mobValue: string, sAmount: string) => {
+  const onClickCreateGift = async (mobValue: string, feeAmount: string) => {
     try {
-      const adjustedValue = Number(mobValue) + Number(sAmount);
+      const adjustedValue = Number(mobValue) + Number(feeAmount);
 
       const result = await buildGiftCode({
         accountId: selectedAccount.account.accountId,
@@ -140,10 +140,10 @@ export const GiftsPage: FC = (): JSX.Element => {
         throw new Error(t('errorBuild'));
       }
 
-      const { sConfirmation, giftCodeB58, totalValueConfirmation, txProposal } = result;
+      const { feeConfirmation, giftCodeB58, totalValueConfirmation, txProposal } = result;
 
       setConfirmationBuild({
-        sConfirmation,
+        feeConfirmation,
         giftCodeB58,
         totalValueConfirmation,
         txProposal,
@@ -274,7 +274,7 @@ export const GiftsPage: FC = (): JSX.Element => {
                 existingPin={existingPin as string}
                 fee={fees[tokenId]}
                 getAllGiftCodes={getAllGiftCodes}
-                giftCodes={giftCodes}
+                giftCodes={giftCodes ?? []}
                 handleCopyClick={handleCodeClicked}
                 isSynced={isSynced}
                 onClickCancelBuild={onClickCancelBuild}

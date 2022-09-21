@@ -148,7 +148,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
     setAlias(alias);
     setIsChecked(isChecked);
     setRecipientPublicAddress(recipientPublicAddress);
-    console.log(value);
+
     try {
       result = await buildTransaction({
         accountId,

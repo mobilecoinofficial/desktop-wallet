@@ -6,9 +6,9 @@ import type { TxProposal } from '../../../types/TxProposal';
 export interface BuildGiftPanelProps {
   accounts: Accounts;
   confirmation: {
-    feeConfirmation: number;
+    feeConfirmation: bigint;
     giftCodeB58: string;
-    totalValueConfirmation: number;
+    totalValueConfirmation: bigint;
     txProposal: TxProposal;
   };
   existingPin: string;

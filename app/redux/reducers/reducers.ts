@@ -116,7 +116,7 @@ export const initialReduxStoreState: ReduxStoreState = {
           spentPmob: '',
           unspentPmob: '',
         },
-        [TokenIds.MOBUSD]: {
+        [TokenIds.USDM]: {
           orphanedPmob: '',
           pendingPmob: '',
           secretedPmob: '',
@@ -145,7 +145,7 @@ export const initialReduxStoreState: ReduxStoreState = {
         spentPmob: '',
         unspentPmob: '',
       },
-      [TokenIds.MOBUSD]: {
+      [TokenIds.USDM]: {
         orphanedPmob: '',
         pendingPmob: '',
         secretedPmob: '',

@@ -19,13 +19,13 @@ export enum TokenIds {
   MOB = 0,
   // TODO for testing we are using 8192 instead of 1
   // FIX-ME BEFORE MERGING INTO DEV, CHANGE THIS BACK TO 1
-  // MOBUSD = 1,
-  MOBUSD = 8192,
+  // USDM = 1,
+  USDM = 8192,
 }
 
 export enum TokenPrecision {
   // pico
   MOB = 1000000000000,
   // micro
-  MOBUSD = 1000000,
+  USDM = 1000000,
 }

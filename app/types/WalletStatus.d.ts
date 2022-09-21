@@ -18,7 +18,7 @@ export interface WalletStatus {
       spentPmob: StringUInt64;
       unspentPmob: StringUInt64;
     };
-    [TokenIds.MOBUSD]: {
+    [TokenIds.USDM]: {
       orphanedPmob: StringUInt64;
       pendingPmob: StringUInt64;
       secretedPmob: StringUInt64;

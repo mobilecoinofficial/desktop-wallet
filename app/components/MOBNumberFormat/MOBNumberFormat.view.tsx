@@ -3,7 +3,7 @@ import React from 'react';
 import NumberFormat from 'react-number-format';
 import type { NumberFormatValues } from 'react-number-format';
 
-import { convertPicoMobStringToMob, convertMicroMUSDToStringMUSD } from '../../utils/convertMob';
+import { convertPicoMobStringToMob, convertMicroUSDMToStringUSDM } from '../../utils/convertMob';
 import { MOBNumberFormatProps } from './MOBNumberFormat';
 
 // This component handles converting incoming pico-mobs and mobs into mobs.
@@ -12,7 +12,7 @@ import { MOBNumberFormatProps } from './MOBNumberFormat';
 // word... The real reason is I have to debug seperating the display value from)
 // the calculated value. This would simplify the matter). So, until we have
 // standardized all values are pico-mob with flex display, this is what we got.
-// MOBUSD comes in micro precison, rather than pico precision
+// USDM comes in micro precison, rather than pico precision
 const MOBNumberFormat = (props: MOBNumberFormatProps): JSX.Element => {
   const { inputRef, onChange, name, value, valueUnit, ...rest } = props;
 
@@ -22,8 +22,8 @@ const MOBNumberFormat = (props: MOBNumberFormatProps): JSX.Element => {
   if (valueUnit === 'pMOB' && typeof value === 'string') {
     parsedValue = convertPicoMobStringToMob(value);
   }
-  if (valueUnit === 'mmUSD' && typeof value === 'string') {
-    parsedValue = convertMicroMUSDToStringMUSD(value);
+  if (valueUnit === 'mUSDM' && typeof value === 'string') {
+    parsedValue = convertMicroUSDMToStringUSDM(value);
   }
 
   const displayType = onChange ? 'input' : 'text';

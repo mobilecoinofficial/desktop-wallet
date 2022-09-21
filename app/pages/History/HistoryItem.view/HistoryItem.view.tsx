@@ -60,7 +60,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
   const directionText =
     direction === 'tx_direction_sent' ? t('historyItemSent') : t('historyItemReceived');
-  const tokenName = tokenId === TokenIds.MOB ? ' MOB' : ' mUSD';
+  const tokenName = tokenId === TokenIds.MOB ? ' MOB' : ' USDM';
   let aliasOrAddress;
 
   // If there's a contact Object...

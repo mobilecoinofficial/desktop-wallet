@@ -66,7 +66,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     tokenId,
   } = transactionLog;
 
-  const tokenName = tokenId === TokenIds.MOB ? ' MOB' : ' mUSD';
+  const tokenName = tokenId === TokenIds.MOB ? ' MOB' : ' USDM';
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
 
   const renderRow = (title: string, value: string | ReactNode, noWrap?: boolean) => (

@@ -28,7 +28,7 @@ const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
 }: TransactionInfoLabelProps) => {
   const classes = useStyles();
   const { tokenId } = useSelector((state: ReduxStoreState) => state);
-  const valueUnit = tokenId === TokenIds.MOB ? 'pMOB' : 'mmUSD';
+  const valueUnit = tokenId === TokenIds.MOB ? 'pMOB' : 'mUSDM';
 
   return (
     <Typography

@@ -6,6 +6,6 @@ export interface MOBNumberFormatProps {
   name?: string;
   prefix?: string;
   suffix?: string;
-  valueUnit: 'pMOB' | 'MOB' | 'mUSD' | 'mmUSD';
+  valueUnit: 'pMOB' | 'MOB' | 'mUSDM' | 'USDM';
   value: string | number;
 }

@@ -31,12 +31,12 @@ function convertWalletStatusFromV2(
           spentPmob: status.balancePerToken[TokenIds.MOB]?.spent || '0',
           unspentPmob: status.balancePerToken[TokenIds.MOB]?.unspent || '0',
         },
-        [TokenIds.MOBUSD]: {
-          orphanedPmob: status.balancePerToken[TokenIds.MOBUSD]?.orphaned || '0',
-          pendingPmob: status.balancePerToken[TokenIds.MOBUSD]?.pending || '0',
-          secretedPmob: status.balancePerToken[TokenIds.MOBUSD]?.secreted || '0',
-          spentPmob: status.balancePerToken[TokenIds.MOBUSD]?.spent || '0',
-          unspentPmob: status.balancePerToken[TokenIds.MOBUSD]?.unspent || '0',
+        [TokenIds.USDM]: {
+          orphanedPmob: status.balancePerToken[TokenIds.USDM]?.orphaned || '0',
+          pendingPmob: status.balancePerToken[TokenIds.USDM]?.pending || '0',
+          secretedPmob: status.balancePerToken[TokenIds.USDM]?.secreted || '0',
+          spentPmob: status.balancePerToken[TokenIds.USDM]?.spent || '0',
+          unspentPmob: status.balancePerToken[TokenIds.USDM]?.unspent || '0',
         },
       },
     },

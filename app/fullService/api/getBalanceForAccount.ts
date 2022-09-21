@@ -27,12 +27,12 @@ export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatu
         spentPmob: accountStatus.balancePerToken[TokenIds.MOB]?.spent || '0',
         unspentPmob: accountStatus.balancePerToken[TokenIds.MOB]?.unspent || '0',
       },
-      [TokenIds.MOBUSD]: {
-        orphanedPmob: accountStatus.balancePerToken[TokenIds.MOBUSD]?.orphaned || '0',
-        pendingPmob: accountStatus.balancePerToken[TokenIds.MOBUSD]?.pending || '0',
-        secretedPmob: accountStatus.balancePerToken[TokenIds.MOBUSD]?.secreted || '0',
-        spentPmob: accountStatus.balancePerToken[TokenIds.MOBUSD]?.spent || '0',
-        unspentPmob: accountStatus.balancePerToken[TokenIds.MOBUSD]?.unspent || '0',
+      [TokenIds.USDM]: {
+        orphanedPmob: accountStatus.balancePerToken[TokenIds.USDM]?.orphaned || '0',
+        pendingPmob: accountStatus.balancePerToken[TokenIds.USDM]?.pending || '0',
+        secretedPmob: accountStatus.balancePerToken[TokenIds.USDM]?.secreted || '0',
+        spentPmob: accountStatus.balancePerToken[TokenIds.USDM]?.spent || '0',
+        unspentPmob: accountStatus.balancePerToken[TokenIds.USDM]?.unspent || '0',
       },
     },
   };

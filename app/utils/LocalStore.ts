@@ -2,6 +2,7 @@ import * as fs from 'fs';
 
 import Store from 'electron-store';
 import { SjclCipherEncrypted } from 'sjcl';
+import { v4 as uuidv4 } from 'uuid';
 
 import type { StringUInt64 } from '../types/SpecialStrings.d';
 
@@ -10,6 +11,8 @@ interface LocalStoreSchema {
 }
 
 const STORE_NAME = 'mobilecoin_config';
+
+export const apiKey = uuidv4();
 
 export const schemaKeys = {
   ENCRYPTED_CONTACTS: 'encryptedContacts',

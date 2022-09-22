@@ -176,7 +176,6 @@
     "recipientAddress": "联系人的地址",
     "removeContact": "删除联系人"
   },
-
   "CreateAccount": {
     "acceptTerms": "我已阅读并接受",
     "acceptTermsButton": "用户条款",
@@ -196,7 +195,6 @@
     "passwordRequired": "请设置密码",
     "title": "创建账户"
   },
-
   "Dates": {
     "m00": "一月",
     "m01": "二月",
@@ -211,7 +209,6 @@
     "m10": "十一月",
     "m11": "十二月"
   },
-
   "DeleteAccountConfirmationView": {
     "acceptTerms": "I understand that I will not be able to recover my account if I don't have the mnemonic backed up somewhere safe",
     "cancelButton": "Cancel",
@@ -223,7 +220,6 @@
     "shortCodeConfirmationDoesntMatch": "Must match the main address short code for selected account",
     "verifyShortCodeRequired": "Please enter the main address short code for this account"
   },
-
   "GiftingView": {
     "hideCode": "关闭",
     "tabs": {
@@ -242,7 +238,6 @@
     "showReceivedTransactions": "已收",
     "showSentTransactions": "已发"
   },
-
   "ImportAccount": {
     "acceptTerms": "我已阅读并接受",
     "acceptTermsButton": "用户条款",
@@ -269,7 +264,6 @@
     "unlockWalletButton": "解锁钱包",
     "warning": "请不要同时在多个钱包里使用同一个账户以免损坏您的本地历史记录。"
   },
-
   "InactivityDetect": {
     "confirmToStay": "鉴于您长时间没有操作，程序即将退出。",
     "keepWorking": "点击以保持程序运行",
@@ -328,6 +322,7 @@
     "showAll": "显示全部",
     "undo": "撤销",
     "View": {
+      "copyApiKey": "Copy FS Api Key",
       "Theme": {
         "title": "主题",
         "system": "跟随系统",

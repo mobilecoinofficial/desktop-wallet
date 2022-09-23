@@ -16,9 +16,9 @@ import { useTranslation } from 'react-i18next';
 import { ShortCode } from '../../../components/ShortCode';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import MOBIcon from '../../../components/icons/MOBIcon';
-import { TokenIds } from '../../../constants/app';
 import type { Theme } from '../../../theme';
 import type { HistoryItemProps } from './HistoryItem.d';
+import { TOKENS } from '../../../constants/tokens';
 
 const useStyles = makeStyles((theme: Theme) => ({
   action: { margin: 'unset' },
@@ -54,13 +54,10 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
     tokenId,
   } = transactionLog;
 
-  // debugger;
-
   // TODO - this should be a helper somewhere
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
   const directionText =
     direction === 'tx_direction_sent' ? t('historyItemSent') : t('historyItemReceived');
-  const tokenName = tokenId === TokenIds.MOB ? ' MOB' : ' USDM';
   let aliasOrAddress;
 
   // If there's a contact Object...
@@ -107,7 +104,11 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
             subheader={`${t('finalizedBlockHeight')}${finalizedBlockIndex}`}
             action={
               <Box display="flex" flexDirection="column" justifyContent="space-between">
-                <TransactionInfoLabel value={value} sign={sign} label={tokenName} />
+                <TransactionInfoLabel
+                  value={value}
+                  sign={sign}
+                  label={` ${Object.values(TOKENS).find((token) => token.id === tokenId)?.name}`}
+                />
                 <Typography className={classes.textSmallRight} display="inline">
                   {directionText}
                 </Typography>

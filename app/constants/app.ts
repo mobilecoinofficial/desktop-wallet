@@ -14,18 +14,3 @@ export const RANDOM_COLORS = ['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D96
 
 export const randomColor = (): string =>
   RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
-
-export enum TokenIds {
-  MOB = 0,
-  // TODO for testing we are using 8192 instead of 1
-  // FIX-ME BEFORE MERGING INTO DEV, CHANGE THIS BACK TO 1
-  // USDM = 1,
-  USDM = 8192,
-}
-
-export enum TokenPrecision {
-  // pico
-  MOB = 1000000000000,
-  // micro
-  USDM = 1000000,
-}

@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import '../../../testUtils/i18nForTests';
 import { createStore } from 'redux';
 
-import { TokenIds } from '../../../constants/app';
+import { TOKENS } from '../../../constants/tokens';
 import { initialReduxStoreState, reducer } from '../../../redux/reducers/reducers';
 import type { Contact } from '../../../types/Contact';
 import type { SelectedAccount } from '../../../types/SelectedAccount';
@@ -68,14 +68,14 @@ const SELECTED_ACCOUNT = {
     networkBlockHeight: '158974',
     object: 'balance',
     balancePerToken: {
-      [TokenIds.MOB]: {
+      [TOKENS.MOB.id]: {
         orphanedPmob: '18000000000001',
         pendingPmob: '0',
         secretedPmob: '0',
         spentPmob: '35410000000000',
         unspentPmob: String(INITIAL_BALANCE * 1000000000000),
       },
-      [TokenIds.USDM]: {
+      [TOKENS.USDM.id]: {
         orphanedPmob: '18000000000001',
         pendingPmob: '0',
         secretedPmob: '0',
@@ -89,7 +89,7 @@ const SELECTED_ACCOUNT = {
 const store = createStore(reducer, {
   ...initialReduxStoreState,
   fees: {
-    [TokenIds.MOB]: '1000000000',
+    [TOKENS.MOB.id]: '1000000000',
   },
 });
 

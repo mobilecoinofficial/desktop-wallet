@@ -19,7 +19,6 @@ import { useSelector } from 'react-redux';
 
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
-import { TokenIds } from '../../../constants/app';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { getAllGiftCodes, getFees } from '../../../redux/services';
 import {
@@ -36,6 +35,8 @@ import { errorToString } from '../../../utils/errorHandler';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
 import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
+import { TOKENS } from '../../../constants/tokens';
 
 const useStyles = makeStyles((theme: Theme) => ({
   modal: {
@@ -81,8 +82,8 @@ export const GiftsPage: FC = (): JSX.Element => {
     pin: existingPin,
     pinThresholdPmob,
     selectedAccount,
-    tokenId,
   } = useSelector((state: ReduxStoreState) => state);
+  const token = useCurrentToken();
 
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -103,7 +104,7 @@ export const GiftsPage: FC = (): JSX.Element => {
     getFees();
   }, []);
 
-  if (tokenId === TokenIds.USDM) {
+  if (token.id === TOKENS.USDM.id) {
     return (
       <Box className={classes.root}>
         <Typography align="center">Gift codes are not yet available for USDM.</Typography>
@@ -272,7 +273,7 @@ export const GiftsPage: FC = (): JSX.Element => {
                 confirmation={confirmationBuild}
                 deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
                 existingPin={existingPin as string}
-                fee={fees[tokenId]}
+                fee={fees[token.id]}
                 getAllGiftCodes={getAllGiftCodes}
                 giftCodes={giftCodes ?? []}
                 handleCopyClick={handleCodeClicked}
@@ -322,7 +323,7 @@ export const GiftsPage: FC = (): JSX.Element => {
           {selectedTabIndex === 1 && (
             <ConsumeGiftForm
               confirmation={confirmationConsume}
-              fee={fees[tokenId]}
+              fee={fees[token.id]}
               onClickCancel={onClickCancelConsume}
               onClickClaimGift={onClickClaimGiftConsume}
               onClickOpenGift={onClickOpenGiftConsume}

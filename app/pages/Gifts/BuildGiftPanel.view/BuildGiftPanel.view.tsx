@@ -30,6 +30,7 @@ import { ShortCode } from '../../../components/ShortCode';
 import { CopyIcon, TrashcanIcon } from '../../../components/icons';
 import { BuildGiftForm } from '../BuildGiftForm.view';
 import type { BuildGiftPanelProps } from './BuildGiftPanel.d';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
 
@@ -62,6 +63,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pendingDeleteCode, setPendingDeleteCode] = useState(EMPTY_PENDING_DELETE_CODE);
+  const token = useCurrentToken();
 
   const { t } = useTranslation('BuildGiftPanel');
 
@@ -144,7 +146,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                           <TableCell>
                             <MOBNumberFormat
                               value={(BigInt(giftCode.valuePmob) - BigInt(fee)).toString()}
-                              valueUnit="pMOB"
+                              token={token}
                             />
                           </TableCell>
                           <TableCell align="right">
@@ -206,8 +208,8 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                     <Typography color="textPrimary">{t('giftValue')}</Typography>
                     <MOBNumberFormat
                       value={(BigInt(pendingDeleteCode[1]) - BigInt(fee)).toString()}
-                      valueUnit="pMOB"
-                      suffix=" MOB"
+                      token={token}
+                      suffix={` ${token.name}`}
                     />
                   </Box>
                   <DialogContentText color="textPrimary">{t('deleteDialogText')}</DialogContentText>

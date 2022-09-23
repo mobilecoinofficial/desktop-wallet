@@ -2,10 +2,8 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { makeStyles, Typography } from '@material-ui/core';
-import { useSelector } from 'react-redux';
 
-import { TokenIds } from '../../constants/app';
-import { ReduxStoreState } from '../../redux/reducers/reducers';
+import { useCurrentToken } from '../../hooks/useCurrentToken';
 import type { Theme } from '../../theme';
 import { MOBNumberFormat } from '../MOBNumberFormat';
 import type { TransactionInfoLabelProps } from './TransactionInfoLabel.d';
@@ -27,8 +25,7 @@ const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
   label,
 }: TransactionInfoLabelProps) => {
   const classes = useStyles();
-  const { tokenId } = useSelector((state: ReduxStoreState) => state);
-  const valueUnit = tokenId === TokenIds.MOB ? 'pMOB' : 'mUSDM';
+  const token = useCurrentToken();
 
   return (
     <Typography
@@ -36,7 +33,7 @@ const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
     ${sign === '+' ? classes?.positive : classes?.negative}`}
       display="inline"
     >
-      <MOBNumberFormat valueUnit={valueUnit} value={value} prefix={sign} suffix={label} />
+      <MOBNumberFormat token={token} value={value} prefix={sign} suffix={label} />
     </Typography>
   );
 };

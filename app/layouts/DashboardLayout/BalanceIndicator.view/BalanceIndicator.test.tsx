@@ -8,7 +8,7 @@ import '../../../testUtils/i18nForTests';
 import { store } from '../../../redux/store';
 import { BalanceIndicator } from './BalanceIndicator.view';
 
-const MOCK_BALANCE = '10.000000000000';
+const MOCK_BALANCE = '10000000000000';
 
 describe('BalanceIndicator', () => {
   test('renders the correct balance', () => {

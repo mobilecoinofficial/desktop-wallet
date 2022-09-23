@@ -13,12 +13,13 @@ import { assignAddressForAccount, buildTransaction, submitTransaction } from '..
 import type { Theme } from '../../../theme';
 import { StringHex } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
-import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
+import { commafy, convertTokenValueToDisplayValue } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 interface TxConfirmation {
   feeConfirmation: bigint;
@@ -53,10 +54,10 @@ export const SendReceivePage: FC = (): JSX.Element => {
     fees,
     pinThresholdPmob,
     selectedAccount,
-    tokenId,
   } = useSelector((state: ReduxStoreState) => state);
+  const token = useCurrentToken();
 
-  const fee = fees[tokenId];
+  const fee = fees[token.id];
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [sendingStatus, setSendingStatus] = useState(Showing.INPUT_FORM);
@@ -107,14 +108,15 @@ export const SendReceivePage: FC = (): JSX.Element => {
       // fk setSlideExitSpeed(1000);
       submitTransaction(confirmation.txProposal, includeAccountId);
 
-      const totalValueConfirmationAsMob = convertPicoMobStringToMob(
-        confirmation.totalValueConfirmation.toString()
+      const totalValueConfirmationAsMob = convertTokenValueToDisplayValue(
+        Number(confirmation.totalValueConfirmation),
+        token
       );
-      const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
+      const totalValueConfirmationAsMobComma = commafy(`${totalValueConfirmationAsMob}`);
       if (formIsChecked) {
         saveToContacts();
       }
-      enqueueSnackbar(`${t('sendSuccess')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`, {
+      enqueueSnackbar(`${t('sendSuccess')} ${totalValueConfirmationAsMobComma} ${token.name}!`, {
         variant: 'success',
       });
     } catch (err) {
@@ -152,7 +154,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
     try {
       result = await buildTransaction({
         accountId,
-        addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${tokenId}`, value }]],
+        addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
         feeValue: fee,
       });
 
@@ -240,7 +242,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
       const result = await buildTransaction({
         accountId,
         addressesAndAmounts: [
-          [recipientPublicAddress, { tokenId: `${tokenId}`, value: valuePmob }],
+          [recipientPublicAddress, { tokenId: `${token.id}`, value: valuePmob }],
         ],
         feeValue: fee,
       });

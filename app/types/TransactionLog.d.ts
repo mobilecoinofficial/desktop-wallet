@@ -1,4 +1,3 @@
-import { TokenIds } from '../constants/app';
 import { TransactionAmount } from '../fullService/api/buildTransaction';
 import type { Contact } from './Contact';
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
@@ -33,7 +32,7 @@ export interface TransactionLog {
   status: Status;
   submittedBlockIndex: StringUInt64 | null;
   transactionLogId: StringHex;
-  tokenId: TokenIds;
+  tokenId: number;
   value: StringUInt64;
 }
 

@@ -38,10 +38,6 @@ module.exports = {
     'import/order': [
       'error',
       {
-        alphabetize: {
-          caseInsensitive: false,
-          order: 'asc',
-        },
         groups: ['builtin', 'external', 'internal'],
         'newlines-between': 'always',
         pathGroups: [

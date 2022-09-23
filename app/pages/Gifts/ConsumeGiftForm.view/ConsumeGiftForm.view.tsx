@@ -18,13 +18,12 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
-import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
 import { ConsumeGiftFormProps } from './ConsumeGiftForm';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -82,7 +81,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
 }: ConsumeGiftFormProps) => {
   const classes = useStyles();
   const { t } = useTranslation('ConsumeGiftForm');
-  const { tokenId } = useSelector((state: ReduxStoreState) => state);
+  const token = useCurrentToken();
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
@@ -93,7 +92,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
   }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[tokenId].unspentPmob),
+      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob),
       name: selectedAccount.account.name,
     },
   ];
@@ -210,8 +209,8 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                           <Typography color="textPrimary">{t('accountBalance')}:</Typography>
                           <Typography color="textPrimary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
+                              suffix={` ${token.name}`}
+                              token={token}
                               value={selectedBalance?.toString()}
                             />
                           </Typography>
@@ -220,8 +219,8 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                           <Typography color="textPrimary">{t('total')}:</Typography>
                           <Typography color="textPrimary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
+                              suffix={` ${token.name}`}
+                              token={token}
                               value={totalSent?.toString() as string}
                             />
                           </Typography>
@@ -229,7 +228,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                         <Box display="flex" justifyContent="space-between">
                           <Typography color="textPrimary">{t('fee')}:</Typography>
                           <Typography color="textPrimary">
-                            <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={fee} />
+                            <MOBNumberFormat suffix={` ${token.name}`} token={token} value={fee} />
                           </Typography>
                         </Box>
                         <Box
@@ -240,8 +239,8 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                           <Typography color="primary">{t('giftValue')}:</Typography>
                           <Typography color="primary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
+                              suffix={` ${token.name}`}
+                              token={token}
                               value={(confirmation?.giftValue - Number(fee)).toString()}
                             />
                           </Typography>
@@ -250,8 +249,8 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                           <Typography color="primary">{t('newBalance')}:</Typography>
                           <Typography color="primary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
+                              suffix={` ${token.name}`}
+                              token={token}
                               value={increasedBalance?.toString() as string}
                             />
                           </Typography>

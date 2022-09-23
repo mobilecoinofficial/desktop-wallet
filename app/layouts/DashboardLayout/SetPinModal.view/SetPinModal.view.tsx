@@ -26,6 +26,7 @@ import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
 import { isValidPin } from '../../../utils/isValidPin';
 import { SetPinModalProps } from './SetPinModal';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: {
@@ -50,12 +51,15 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
   const classes = useStyles();
   const { t } = useTranslation('SetPinModal');
   const isMountedRef = useIsMountedRef();
+  const token = useCurrentToken();
 
   const validatePin = (st: string) => (isValidPin(st) ? '' : t('errorPin'));
 
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.select();
   };
+
+  const renderInput = (props) => <MOBNumberFormat token={token} convert={false} {...props} />;
 
   return (
     <Modal
@@ -165,7 +169,7 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
                       type="text"
                       onFocus={handleSelect}
                       InputProps={{
-                        inputComponent: MOBNumberFormat,
+                        inputComponent: renderInput,
                         startAdornment: (
                           <InputAdornment position="start">
                             <MOBIcon height={20} width={20} />

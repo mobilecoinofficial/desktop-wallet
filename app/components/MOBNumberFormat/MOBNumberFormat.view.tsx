@@ -3,7 +3,7 @@ import React from 'react';
 import NumberFormat from 'react-number-format';
 import type { NumberFormatValues } from 'react-number-format';
 
-import { convertPicoMobStringToMob, convertMicroUSDMToStringUSDM } from '../../utils/convertMob';
+import { convertTokenValueToDisplayValue } from '../../utils/convertMob';
 import { MOBNumberFormatProps } from './MOBNumberFormat';
 
 // This component handles converting incoming pico-mobs and mobs into mobs.
@@ -14,17 +14,9 @@ import { MOBNumberFormatProps } from './MOBNumberFormat';
 // standardized all values are pico-mob with flex display, this is what we got.
 // USDM comes in micro precison, rather than pico precision
 const MOBNumberFormat = (props: MOBNumberFormatProps): JSX.Element => {
-  const { inputRef, onChange, name, value, valueUnit, ...rest } = props;
+  const { inputRef, onChange, name, value, token, convert, ...rest } = props;
 
-  const decimalScale = valueUnit === 'MOB' || valueUnit === 'pMOB' ? 12 : 6;
-
-  let parsedValue = value;
-  if (valueUnit === 'pMOB' && typeof value === 'string') {
-    parsedValue = convertPicoMobStringToMob(value);
-  }
-  if (valueUnit === 'mUSDM' && typeof value === 'string') {
-    parsedValue = convertMicroUSDMToStringUSDM(value);
-  }
+  const fieldValue = convert ? convertTokenValueToDisplayValue(value, token) : value;
 
   const displayType = onChange ? 'input' : 'text';
   const handleOnChange = onChange
@@ -41,13 +33,13 @@ const MOBNumberFormat = (props: MOBNumberFormatProps): JSX.Element => {
     <NumberFormat
       allowNegative={false}
       fixedDecimalScale
-      decimalScale={decimalScale}
+      decimalScale={Math.log10(token.precision)}
       displayType={displayType}
       getInputRef={inputRef}
       isNumericString
       onValueChange={handleOnChange}
       thousandSeparator
-      value={parsedValue}
+      value={fieldValue}
       {...rest}
     />
   );
@@ -59,6 +51,7 @@ MOBNumberFormat.defaultProps = {
   onChange: null,
   prefix: '',
   suffix: '',
+  convert: true,
 };
 
 export default MOBNumberFormat;

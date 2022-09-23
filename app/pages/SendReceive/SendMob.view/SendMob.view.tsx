@@ -26,7 +26,6 @@ import {
   Tooltip,
   IconButton,
 } from '@material-ui/core';
-import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOn';
 import { Formik, Form, Field } from 'formik';
 import { CheckboxWithLabel, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
@@ -35,8 +34,8 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat, QRScanner } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
-import { StarIcon, MOBIcon, QRCodeIcon } from '../../../components/icons';
-import { TokenIds } from '../../../constants/app';
+import { StarIcon, QRCodeIcon } from '../../../components/icons';
+import { TOKENS } from '../../../constants/tokens';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
 import {
@@ -47,6 +46,7 @@ import {
 } from '../../../utils/convertMob';
 import type { SendMobProps } from './SendMob.d';
 import { Showing } from './SendMob.d';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: { width: 200 },
@@ -108,8 +108,9 @@ const SendMob: FC<SendMobProps> = ({
   const [contactName, setContactName] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [isScanningQR, setIsScanningQR] = useState(false);
-  const { tokenId, fees } = useSelector((state: ReduxStoreState) => state);
-  const fee = fees[tokenId];
+  const { fees } = useSelector((state: ReduxStoreState) => state);
+  const token = useCurrentToken();
+  const fee = fees[token.id];
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
@@ -120,7 +121,7 @@ const SendMob: FC<SendMobProps> = ({
   }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[tokenId].unspentPmob),
+      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob),
       name: selectedAccount.account.name,
     },
   ];
@@ -130,7 +131,7 @@ const SendMob: FC<SendMobProps> = ({
 
   const handleOpen = (values) => async () => {
     const convertFunction =
-      tokenId === TokenIds.MOB
+      token.id === TOKENS.MOB.id
         ? convertMobStringToPicoMobString
         : convertUSDMStringToMicroUSDMString;
 
@@ -159,8 +160,7 @@ const SendMob: FC<SendMobProps> = ({
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
     if (valueAsPicoMob + txFee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      const divisor = tokenId === TokenIds.MOB ? 1000000000000 : 1000000;
-      error = t('errorFee', { limit: Number(txFee) / divisor });
+      error = t('errorFee', { limit: Number(txFee) / token.precision });
     }
     return error;
   };
@@ -174,14 +174,9 @@ const SendMob: FC<SendMobProps> = ({
   const NO_CONTACT_SELECTED = '';
 
   const feeAmount =
-    tokenId === TokenIds.MOB ? convertPicoMobStringToMob(fee) : convertMicroUSDMToStringUSDM(fee);
+    token.id === TOKENS.MOB.id ? convertPicoMobStringToMob(fee) : convertMicroUSDMToStringUSDM(fee);
 
-  const icon =
-    tokenId === TokenIds.MOB ? (
-      <MOBIcon height={20} width={20} />
-    ) : (
-      <MonetizationOnOutlinedIcon height={20} width={20} />
-    );
+  const renderInput = (props) => <MOBNumberFormat token={token} convert={false} {...props} />;
 
   return (
     <Container maxWidth="sm">
@@ -375,14 +370,15 @@ const SendMob: FC<SendMobProps> = ({
                         onFocus={handleSelect}
                         validate={validateAmount(
                           selectedBalance,
-                          BigInt(
-                            Number(values.feeAmount) *
-                              (tokenId === TokenIds.MOB ? 1_000_000_000_000 : 1_000_000)
-                          )
+                          BigInt(Number(values.feeAmount) * token.precision)
                         )}
                         InputProps={{
-                          inputComponent: MOBNumberFormat,
-                          startAdornment: <InputAdornment position="start">{icon}</InputAdornment>,
+                          inputComponent: renderInput,
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              {token.icon({ height: 20, width: 20 })}
+                            </InputAdornment>
+                          ),
                         }}
                       />
                       <Field
@@ -466,8 +462,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">
                               <MOBNumberFormat
                                 id="balanceValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={selectedBalance?.toString()}
                               />
                             </Typography>
@@ -481,8 +477,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="primary">
                               <MOBNumberFormat
                                 id="totalValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={confirmation.totalValueConfirmation.toString()}
                               />
                             </Typography>
@@ -492,8 +488,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">
                               <MOBNumberFormat
                                 id="feeValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={confirmation.feeConfirmation.toString()}
                               />
                             </Typography>
@@ -503,8 +499,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">
                               <MOBNumberFormat
                                 id="sentValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={totalSent.toString()}
                               />
                             </Typography>
@@ -518,8 +514,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="primary">
                               <MOBNumberFormat
                                 id="remainingValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={remainingBalance?.toString() as string}
                               />
                             </Typography>

@@ -7,7 +7,9 @@ import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
+import { Provider } from 'react-redux';
 
+import { store } from '../../../redux/store';
 import { ChangePinView } from './ChangePin.view';
 
 const PASSWORD = 'password';
@@ -20,13 +22,15 @@ const setUpTest = () => {
   const handleOnClickChangePin = jest.fn();
 
   const { container } = render(
-    <ChangePinView
-      accounts={[]}
-      onClickBack={handleOnClickBack}
-      onClickChangePin={handleOnClickChangePin}
-      pin=""
-      pinThresholdPmob="15.0000000"
-    />
+    <Provider store={store}>
+      <ChangePinView
+        accounts={[]}
+        onClickBack={handleOnClickBack}
+        onClickChangePin={handleOnClickChangePin}
+        pin=""
+        pinThresholdPmob="15.0000000"
+      />
+    </Provider>
   );
 
   const passwordField = container.querySelector(

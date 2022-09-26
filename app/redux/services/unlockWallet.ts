@@ -7,6 +7,7 @@ import { decrypt } from '../../utils/encryption';
 import { unlockWalletAction } from '../actions';
 import { initialReduxStoreState } from '../reducers/reducers';
 import { store } from '../store';
+import { getFees } from './getFees';
 
 export const unlockWallet = async (password: string, startInOfflineMode = false): Promise<void> => {
   const { encryptedPassword } = store.getState();
@@ -19,6 +20,8 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
   const contacts = await decryptContacts(secretKey);
 
   const { walletStatus } = await fullServiceApi.getWalletStatus();
+
+  await getFees();
 
   const accounts: Accounts = {
     accountIds: walletStatus.accountIds ?? [],

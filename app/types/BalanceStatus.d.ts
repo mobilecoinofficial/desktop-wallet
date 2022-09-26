@@ -1,27 +1,20 @@
-import { TokenIds } from '../constants/app';
+// import { TOKENS } from '../constants/tokens';
 import type { StringUInt64 } from './SpecialStrings';
+
+type Balance = {
+  orphanedPmob: StringUInt64;
+  pendingPmob: StringUInt64;
+  secretedPmob: StringUInt64;
+  spentPmob: StringUInt64;
+  unspentPmob: StringUInt64;
+};
 
 export interface BalanceStatus {
   isSynced: boolean;
   accountBlockHeight?: StringUInt64;
   localBlockHeight?: StringUInt64;
   networkBlockHeight?: StringUInt64;
-  balancePerToken: {
-    [TokenIds.MOB]: {
-      orphanedPmob: StringUInt64;
-      pendingPmob: StringUInt64;
-      secretedPmob: StringUInt64;
-      spentPmob: StringUInt64;
-      unspentPmob: StringUInt64;
-    };
-    [TokenIds.MOBUSD]: {
-      orphanedPmob: StringUInt64;
-      pendingPmob: StringUInt64;
-      secretedPmob: StringUInt64;
-      spentPmob: StringUInt64;
-      unspentPmob: StringUInt64;
-    };
-  };
+  balancePerToken: Record<number, Balance>;
 }
 
 export interface BalanceFromV2Api {

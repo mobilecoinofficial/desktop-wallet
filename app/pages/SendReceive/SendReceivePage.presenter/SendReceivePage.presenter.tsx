@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
@@ -7,19 +7,19 @@ import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
-import { TokenIds } from '../../../constants/app';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { getFeePmob, updateContacts } from '../../../redux/services';
+import { updateContacts } from '../../../redux/services';
 import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
 import type { Theme } from '../../../theme';
 import { StringHex } from '../../../types';
 import type { TxProposal } from '../../../types/TxProposal';
-import { commafy, convertPicoMobStringToMob } from '../../../utils/convertMob';
+import { commafy, convertTokenValueToDisplayValue } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 interface TxConfirmation {
   feeConfirmation: bigint;
@@ -51,11 +51,13 @@ export const SendReceivePage: FC = (): JSX.Element => {
     contacts,
     pin: existingPin,
     offlineModeEnabled,
-    feePmob,
+    fees,
     pinThresholdPmob,
     selectedAccount,
   } = useSelector((state: ReduxStoreState) => state);
+  const token = useCurrentToken();
 
+  const fee = fees[token.id];
   const classes = useStyles();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [sendingStatus, setSendingStatus] = useState(Showing.INPUT_FORM);
@@ -64,10 +66,6 @@ export const SendReceivePage: FC = (): JSX.Element => {
   const [formIsChecked, setIsChecked] = useState(false);
   const [formAlias, setAlias] = useState('');
   const [formRecipientPublicAddress, setRecipientPublicAddress] = useState('');
-
-  useEffect(() => {
-    getFeePmob();
-  }, []);
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
@@ -110,14 +108,15 @@ export const SendReceivePage: FC = (): JSX.Element => {
       // fk setSlideExitSpeed(1000);
       submitTransaction(confirmation.txProposal, includeAccountId);
 
-      const totalValueConfirmationAsMob = convertPicoMobStringToMob(
-        confirmation.totalValueConfirmation.toString()
+      const totalValueConfirmationAsMob = convertTokenValueToDisplayValue(
+        Number(confirmation.totalValueConfirmation),
+        token
       );
-      const totalValueConfirmationAsMobComma = commafy(totalValueConfirmationAsMob);
+      const totalValueConfirmationAsMobComma = commafy(`${totalValueConfirmationAsMob}`);
       if (formIsChecked) {
         saveToContacts();
       }
-      enqueueSnackbar(`${t('sendSuccess')} ${totalValueConfirmationAsMobComma} ${t('mob')}!`, {
+      enqueueSnackbar(`${t('sendSuccess')} ${totalValueConfirmationAsMobComma} ${token.name}!`, {
         variant: 'success',
       });
     } catch (err) {
@@ -136,17 +135,15 @@ export const SendReceivePage: FC = (): JSX.Element => {
   const onClickSend = async ({
     accountId,
     alias,
-    fee,
     isChecked,
     recipientPublicAddress,
-    valuePmob,
+    value,
   }: {
     accountId: string;
     alias: string;
-    fee: string;
     isChecked: boolean;
     recipientPublicAddress: StringHex;
-    valuePmob: string;
+    value: string;
   }) => {
     let result;
 
@@ -157,9 +154,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
     try {
       result = await buildTransaction({
         accountId,
-        addressesAndAmounts: [
-          [recipientPublicAddress, { tokenId: `${TokenIds.MOB}`, value: valuePmob }],
-        ],
+        addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
         feeValue: fee,
       });
 
@@ -236,12 +231,10 @@ export const SendReceivePage: FC = (): JSX.Element => {
 
   const onClickViewPaymentRequest = async ({
     accountId,
-    fee,
     recipientPublicAddress,
     valuePmob,
   }: {
     accountId: string;
-    fee: string;
     recipientPublicAddress: StringHex;
     valuePmob: string;
   }) => {
@@ -249,7 +242,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
       const result = await buildTransaction({
         accountId,
         addressesAndAmounts: [
-          [recipientPublicAddress, { tokenId: `${TokenIds.MOB}`, value: valuePmob }],
+          [recipientPublicAddress, { tokenId: `${token.id}`, value: valuePmob }],
         ],
         feeValue: fee,
       });
@@ -297,7 +290,6 @@ export const SendReceivePage: FC = (): JSX.Element => {
               confirmation={confirmation}
               contacts={contacts}
               existingPin={existingPin as string}
-              feePmob={feePmob || '400000000'}
               importTxConfirmation={importTxConfirmation}
               isSynced={isSynced}
               offlineModeEnabled={offlineModeEnabled}
@@ -323,7 +315,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
               selectedAccount={selectedAccount}
               confirmation={confirmation}
               existingPin={existingPin as string}
-              feePmob={feePmob || '400000000'}
+              fee={fee}
               isSynced={isSynced}
               onClickCancel={onClickCancelPaymentRequest}
               onClickConfirm={onClickConfirm}

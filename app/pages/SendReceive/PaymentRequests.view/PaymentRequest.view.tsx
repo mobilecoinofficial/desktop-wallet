@@ -17,17 +17,16 @@ import {
 } from '@material-ui/core';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
-import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
-import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { checkB58PaymentRequest } from '../../../services/checkB58PaymentRequest.service';
 import type { Theme } from '../../../theme';
 import type { StringB58 } from '../../../types/SpecialStrings.d';
 import { errorToString } from '../../../utils/errorHandler';
 import { PaymentRequestProps } from './PaymentRequest.d';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -72,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const PaymentRequest: FC<PaymentRequestProps> = ({
   confirmation,
-  feePmob,
+  fee,
   onClickCancel,
   onClickConfirm,
   selectedAccount,
@@ -80,7 +79,7 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
   enqueueSnackbar,
 }: PaymentRequestProps) => {
   const classes = useStyles();
-  const { tokenId } = useSelector((state: ReduxStoreState) => state);
+  const token = useCurrentToken();
 
   const handleCancel = onClickCancel;
 
@@ -93,7 +92,7 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
       const { publicAddressB58, value } = result;
       await onClickViewPaymentRequest({
         accountId: selectedAccount.account.accountId,
-        fee: feePmob,
+        fee,
         recipientPublicAddress: publicAddressB58,
         valuePmob: value,
       });
@@ -110,7 +109,7 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
   }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[tokenId].unspentPmob),
+      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob),
       name: selectedAccount.account.name,
     },
   ];
@@ -245,8 +244,8 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
                               </Typography>
                               <Typography color="primary">
                                 <MOBNumberFormat
-                                  suffix=" MOB"
-                                  valueUnit="pMOB"
+                                  suffix={` ${token.name}`}
+                                  token={token}
                                   value={(confirmation?.totalValueConfirmation).toString()}
                                 />
                               </Typography>
@@ -258,7 +257,11 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
                             <Box display="flex" justifyContent="space-between">
                               <Typography color="textPrimary">Fee:</Typography>
                               <Typography color="textPrimary">
-                                <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={feePmob} />
+                                <MOBNumberFormat
+                                  suffix={` ${token.name}`}
+                                  token={token}
+                                  value={fee}
+                                />
                               </Typography>
                             </Box>
                             <Box
@@ -281,8 +284,8 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
                               </Typography>
                               <Typography color="textPrimary" variant="h4">
                                 <MOBNumberFormat
-                                  suffix=" MOB"
-                                  valueUnit="pMOB"
+                                  suffix={` ${token.name}`}
+                                  token={token}
                                   value={totalSent?.toString() as string}
                                 />
                               </Typography>
@@ -297,8 +300,8 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
                           <Typography color="textPrimary">Account Balance:</Typography>
                           <Typography color="textPrimary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
+                              suffix={` ${token.name}`}
+                              token={token}
                               value={selectedBalance?.toString()}
                             />
                           </Typography>
@@ -307,8 +310,8 @@ const PaymentRequest: FC<PaymentRequestProps> = ({
                           <Typography color="primary">Balance After Payment:</Typography>
                           <Typography color="primary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
+                              suffix={` ${token.name}`}
+                              token={token}
                               value={remainingBalance?.toString() as string}
                             />
                           </Typography>

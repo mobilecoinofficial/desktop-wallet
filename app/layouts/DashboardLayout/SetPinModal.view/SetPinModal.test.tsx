@@ -4,7 +4,9 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
+import { Provider } from 'react-redux';
 
+import { store } from '../../../redux/store';
 import { SetPinModal } from './SetPinModal.view';
 
 describe('SetPinModal', () => {
@@ -13,7 +15,11 @@ describe('SetPinModal', () => {
   test('when isShown prop is false the modal is not rendered', () => {
     const handleOnClick = jest.fn();
 
-    render(<SetPinModal onPinSubmit={handleOnClick} isShown={false} />);
+    render(
+      <Provider store={store}>
+        <SetPinModal onPinSubmit={handleOnClick} isShown={false} />
+      </Provider>
+    );
 
     const pinModal = screen.queryByText(setPinMsg);
     expect(pinModal).toBeNull();
@@ -24,7 +30,11 @@ describe('SetPinModal', () => {
     const pin = '123456';
     const pinThreshold = '10.000000000000';
 
-    render(<SetPinModal onPinSubmit={handleOnClick} isShown />);
+    render(
+      <Provider store={store}>
+        <SetPinModal onPinSubmit={handleOnClick} isShown />
+      </Provider>
+    );
 
     const newPinField = screen.getByLabelText('PIN', {
       selector: 'input',
@@ -52,7 +62,11 @@ describe('SetPinModal', () => {
     const pin = '1234';
     const pinThreshold = '10.000000000000';
 
-    render(<SetPinModal onPinSubmit={handleOnClick} isShown />);
+    render(
+      <Provider store={store}>
+        <SetPinModal onPinSubmit={handleOnClick} isShown />
+      </Provider>
+    );
 
     const newPinField = screen.getByLabelText('PIN', {
       selector: 'input',

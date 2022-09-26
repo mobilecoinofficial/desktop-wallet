@@ -34,15 +34,19 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat, QRScanner } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
-import { StarIcon, MOBIcon, QRCodeIcon } from '../../../components/icons';
+import { StarIcon, QRCodeIcon } from '../../../components/icons';
+import { TOKENS } from '../../../constants/tokens';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
 import {
   convertMobStringToPicoMobString,
   convertPicoMobStringToMob,
+  convertMicroUSDMToStringUSDM,
+  convertUSDMStringToMicroUSDMString,
 } from '../../../utils/convertMob';
 import type { SendMobProps } from './SendMob.d';
 import { Showing } from './SendMob.d';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: { width: 200 },
@@ -86,7 +90,6 @@ const SendMob: FC<SendMobProps> = ({
   confirmation,
   contacts,
   existingPin,
-  feePmob,
   importTxConfirmation,
   isSynced,
   offlineModeEnabled,
@@ -105,7 +108,9 @@ const SendMob: FC<SendMobProps> = ({
   const [contactName, setContactName] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [isScanningQR, setIsScanningQR] = useState(false);
-  const { tokenId } = useSelector((state: ReduxStoreState) => state);
+  const { fees } = useSelector((state: ReduxStoreState) => state);
+  const token = useCurrentToken();
+  const fee = fees[token.id];
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
@@ -116,7 +121,7 @@ const SendMob: FC<SendMobProps> = ({
   }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[tokenId].unspentPmob),
+      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob),
       name: selectedAccount.account.name,
     },
   ];
@@ -125,13 +130,18 @@ const SendMob: FC<SendMobProps> = ({
   const handleScanningQR = () => setIsScanningQR(!isScanningQR);
 
   const handleOpen = (values) => async () => {
+    const convertFunction =
+      token.id === TOKENS.MOB.id
+        ? convertMobStringToPicoMobString
+        : convertUSDMStringToMicroUSDMString;
+
     onClickSend({
       accountId: selectedAccount.account.accountId,
       alias: values.alias,
-      fee: convertMobStringToPicoMobString(values.feeAmount),
+      fee: convertFunction(values.feeAmount),
       isChecked,
       recipientPublicAddress: values.recipientPublicAddress,
-      valuePmob: convertMobStringToPicoMobString(values.mobAmount),
+      value: convertFunction(values.mobAmount),
     });
   };
 
@@ -145,12 +155,12 @@ const SendMob: FC<SendMobProps> = ({
 
   const handleConfirmSubmit = (resetForm: () => void) => onClickConfirm(resetForm);
 
-  const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
+  const validateAmount = (selectedBalance: bigint, txFee: bigint) => (valueString: string) => {
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-    if (valueAsPicoMob + fee > selectedBalance) {
+    if (valueAsPicoMob + txFee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee', { limit: Number(fee) / 1000000000000 });
+      error = t('errorFee', { limit: Number(txFee) / token.precision });
     }
     return error;
   };
@@ -162,6 +172,11 @@ const SendMob: FC<SendMobProps> = ({
     event.target.select();
   };
   const NO_CONTACT_SELECTED = '';
+
+  const feeAmount =
+    token.id === TOKENS.MOB.id ? convertPicoMobStringToMob(fee) : convertMicroUSDMToStringUSDM(fee);
+
+  const renderInput = (props) => <MOBNumberFormat token={token} convert={false} {...props} />;
 
   return (
     <Container maxWidth="sm">
@@ -183,8 +198,8 @@ const SendMob: FC<SendMobProps> = ({
               initialValues={{
                 alias: '',
                 contactId: NO_CONTACT_SELECTED,
-                feeAmount: convertPicoMobStringToMob(feePmob), // TODO we need to pull this from constants
-                mobAmount: '0', // mobs
+                feeAmount,
+                mobAmount: '0',
                 pin: '',
                 recipientPublicAddress: '',
                 senderPublicAddress: mockMultipleAccounts[0].b58Code,
@@ -355,13 +370,13 @@ const SendMob: FC<SendMobProps> = ({
                         onFocus={handleSelect}
                         validate={validateAmount(
                           selectedBalance,
-                          BigInt(Number(values.feeAmount) * 1_000_000_000_000)
+                          BigInt(Number(values.feeAmount) * token.precision)
                         )}
                         InputProps={{
-                          inputComponent: MOBNumberFormat,
+                          inputComponent: renderInput,
                           startAdornment: (
                             <InputAdornment position="start">
-                              <MOBIcon height={20} width={20} />
+                              {token.icon({ height: 20, width: 20 })}
                             </InputAdornment>
                           ),
                         }}
@@ -447,8 +462,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">
                               <MOBNumberFormat
                                 id="balanceValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={selectedBalance?.toString()}
                               />
                             </Typography>
@@ -462,8 +477,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="primary">
                               <MOBNumberFormat
                                 id="totalValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={confirmation.totalValueConfirmation.toString()}
                               />
                             </Typography>
@@ -473,8 +488,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">
                               <MOBNumberFormat
                                 id="feeValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={confirmation.feeConfirmation.toString()}
                               />
                             </Typography>
@@ -484,8 +499,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">
                               <MOBNumberFormat
                                 id="sentValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={totalSent.toString()}
                               />
                             </Typography>
@@ -499,8 +514,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="primary">
                               <MOBNumberFormat
                                 id="remainingValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={remainingBalance?.toString() as string}
                               />
                             </Typography>

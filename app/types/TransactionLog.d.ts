@@ -1,4 +1,3 @@
-import { TokenIds } from '../constants/app';
 import { TransactionAmount } from '../fullService/api/buildTransaction';
 import type { Contact } from './Contact';
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
@@ -20,7 +19,7 @@ export interface TransactionLog {
   direction: 'tx_direction_received' | 'tx_direction_sent';
   failureCode: number | null;
   failureMessage: string | null;
-  feePmob: StringUInt64 | null;
+  fee: StringUInt64 | null;
   finalizedBlockIndex: StringUInt64 | null;
   inputTxoIds: StringHex[]; // FK this is gone?
   inputTxos: TransactionAbbreviation[];
@@ -33,8 +32,8 @@ export interface TransactionLog {
   status: Status;
   submittedBlockIndex: StringUInt64 | null;
   transactionLogId: StringHex;
-  tokenId: TokenIds;
-  valuePmob: StringUInt64;
+  tokenId: number;
+  value: StringUInt64;
 }
 
 type Status =

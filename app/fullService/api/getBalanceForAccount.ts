@@ -1,4 +1,4 @@
-import { TokenIds } from '../../constants/app';
+import { TOKENS } from '../../constants/tokens';
 import type { AccountStatus } from '../../types/Account.d';
 import type { BalanceStatus } from '../../types/BalanceStatus.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
@@ -20,19 +20,19 @@ export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatu
     localBlockHeight: accountStatus.localBlockHeight,
     networkBlockHeight: accountStatus.networkBlockHeight,
     balancePerToken: {
-      [TokenIds.MOB]: {
-        orphanedPmob: accountStatus.balancePerToken[TokenIds.MOB]?.orphaned || '0',
-        pendingPmob: accountStatus.balancePerToken[TokenIds.MOB]?.pending || '0',
-        secretedPmob: accountStatus.balancePerToken[TokenIds.MOB]?.secreted || '0',
-        spentPmob: accountStatus.balancePerToken[TokenIds.MOB]?.spent || '0',
-        unspentPmob: accountStatus.balancePerToken[TokenIds.MOB]?.unspent || '0',
+      [TOKENS.MOB.id]: {
+        orphanedPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.orphaned || '0',
+        pendingPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.pending || '0',
+        secretedPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.secreted || '0',
+        spentPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.spent || '0',
+        unspentPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.unspent || '0',
       },
-      [TokenIds.MOBUSD]: {
-        orphanedPmob: accountStatus.balancePerToken[TokenIds.MOBUSD]?.orphaned || '0',
-        pendingPmob: accountStatus.balancePerToken[TokenIds.MOBUSD]?.pending || '0',
-        secretedPmob: accountStatus.balancePerToken[TokenIds.MOBUSD]?.secreted || '0',
-        spentPmob: accountStatus.balancePerToken[TokenIds.MOBUSD]?.spent || '0',
-        unspentPmob: accountStatus.balancePerToken[TokenIds.MOBUSD]?.unspent || '0',
+      [TOKENS.USDM.id]: {
+        orphanedPmob: accountStatus.balancePerToken[TOKENS.USDM.id]?.orphaned || '0',
+        pendingPmob: accountStatus.balancePerToken[TOKENS.USDM.id]?.pending || '0',
+        secretedPmob: accountStatus.balancePerToken[TOKENS.USDM.id]?.secreted || '0',
+        spentPmob: accountStatus.balancePerToken[TOKENS.USDM.id]?.spent || '0',
+        unspentPmob: accountStatus.balancePerToken[TOKENS.USDM.id]?.unspent || '0',
       },
     },
   };

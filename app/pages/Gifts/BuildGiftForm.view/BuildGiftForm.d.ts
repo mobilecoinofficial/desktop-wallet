@@ -11,7 +11,7 @@ export interface BuildGiftFormProps {
     txProposal: TxProposal;
   };
   existingPin: string;
-  feePmob: string;
+  fee: string;
   isSynced: boolean;
   onClickCancelBuild: () => void;
   onClickConfirmBuild: () => void;

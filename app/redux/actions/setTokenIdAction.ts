@@ -1,15 +1,13 @@
-import { TokenIds } from '../../constants/app';
-
 export const SET_TOKEN_ID = 'SET_TOKEN_ID';
 
 export type SetTokenIdAction = {
   type: 'SET_TOKEN_ID';
   payload: {
-    tokenId: TokenIds;
+    tokenId: number;
   };
 };
 
-export const setTokenIdAction = (tokenId: TokenIds): SetTokenIdAction => ({
+export const setTokenIdAction = (tokenId: number): SetTokenIdAction => ({
   payload: {
     tokenId,
   },

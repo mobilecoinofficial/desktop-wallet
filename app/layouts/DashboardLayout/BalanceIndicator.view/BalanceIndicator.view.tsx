@@ -11,18 +11,15 @@ import {
   MenuItem,
   ListItemIcon,
 } from '@material-ui/core';
-import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOn';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { MOBNumberFormat } from '../../../components';
-import { MOBIcon } from '../../../components/icons';
-import { TokenIds } from '../../../constants/app';
+import { TOKENS } from '../../../constants/tokens';
 import { GOLD_LIGHT } from '../../../constants/colors';
-import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { setTokenId } from '../../../redux/services';
 import { Theme } from '../../../theme';
 import { BalanceIndicatorProps } from './BalanceIndicator';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   formControlLabel: {
@@ -61,15 +58,8 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
 }: BalanceIndicatorProps) => {
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
-  const { tokenId } = useSelector((state: ReduxStoreState) => state);
+  const token = useCurrentToken();
   const { t } = useTranslation('BalanceIndicator');
-
-  const renderIcon = (token: TokenIds) =>
-    token === TokenIds.MOB ? (
-      <MOBIcon className={classes.iconElement} />
-    ) : (
-      <MonetizationOnOutlinedIcon className={classes.icon} />
-    );
 
   return (
     <Box className={classes.item} style={matches ? {} : { padding: '0' }}>
@@ -78,22 +68,26 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
       </Typography>
       <Box className={classes.valueContainer}>
         <Select
-          value={tokenId}
-          classes={{ icon: classes.icon, iconOpen: classes.iconOpen, select: classes.selectSelect }}
-          onChange={(e) => setTokenId(e.target.value as TokenIds)}
-          renderValue={(value: any) => renderIcon(value)}
+          value={token.id}
+          classes={{
+            icon: classes.icon,
+            iconOpen: classes.iconOpen,
+            select: classes.selectSelect,
+          }}
+          onChange={(e) => setTokenId(e.target.value as number)}
+          renderValue={() => token.icon({ className: classes.iconElement })}
         >
-          <MenuItem value={TokenIds.MOB}>
-            <ListItemIcon>{renderIcon(TokenIds.MOB)}</ListItemIcon>
+          <MenuItem value={TOKENS.MOB.id}>
+            <ListItemIcon>{TOKENS.MOB.icon({ className: classes.iconElement })}</ListItemIcon>
             MOB
           </MenuItem>
-          <MenuItem value={TokenIds.MOBUSD}>
-            <ListItemIcon>{renderIcon(TokenIds.MOBUSD)}</ListItemIcon>
-            MobileUSD
+          <MenuItem value={TOKENS.USDM.id}>
+            <ListItemIcon>{TOKENS.USDM.icon({ className: classes.icon })}</ListItemIcon>
+            USDM
           </MenuItem>
         </Select>
         <Typography data-testid="balance-figure" variant="h3" color="textPrimary">
-          <MOBNumberFormat valueUnit="pMOB" value={balance} />
+          <MOBNumberFormat token={token} value={balance} />
         </Typography>
       </Box>
       {!isSynced && !offlineModeEnabled && (

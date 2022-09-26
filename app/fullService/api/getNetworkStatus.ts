@@ -1,4 +1,3 @@
-import { TokenIds } from '../../constants/app';
 import type { NetworkStatus, NetworkStatusV2 } from '../../types/NetworkStatus.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
@@ -15,7 +14,7 @@ type GetNetworkStatusResultV2 = {
 function convertNetworkStatusFromV2(networkStatus: NetworkStatusV2): GetNetworkStatusResult {
   return {
     networkStatus: {
-      feePmob: networkStatus.fees[TokenIds.MOB],
+      fees: networkStatus.fees,
       localBlockHeight: networkStatus.localBlockHeight,
       networkBlockHeight: networkStatus.networkBlockHeight,
     },

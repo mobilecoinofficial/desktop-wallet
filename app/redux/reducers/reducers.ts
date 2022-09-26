@@ -1,6 +1,6 @@
 import { SjclCipherEncrypted } from 'sjcl';
 
-import { TokenIds } from '../../constants/app';
+import { TOKENS } from '../../constants/tokens';
 import {
   Accounts,
   Addresses,
@@ -13,6 +13,7 @@ import {
   Txos,
   WalletStatus,
 } from '../../types';
+import { Fees } from '../../types/NetworkStatus';
 import sameObject from '../../utils/sameObject';
 import {
   INITIALIZE,
@@ -40,7 +41,7 @@ import {
   UPDATE_CONTACTS,
   UpdateContactsAction,
   GET_FEE_PMOB,
-  GetFeePmobAction,
+  GetFeesAction,
   UPDATE_PASSWORD,
   UpdatePasswordAction,
   UPDATE_PIN,
@@ -61,7 +62,7 @@ export type ReduxStoreState = {
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
   encryptedPassword: SjclCipherEncrypted | undefined;
-  feePmob: StringUInt64;
+  fees: Fees;
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
   isInitialized: boolean;
@@ -75,7 +76,7 @@ export type ReduxStoreState = {
   pin: string | undefined;
   txos: Txos;
   walletStatus: WalletStatus;
-  tokenId: TokenIds;
+  tokenId: number;
 };
 
 export const initialReduxStoreState: ReduxStoreState = {
@@ -84,7 +85,7 @@ export const initialReduxStoreState: ReduxStoreState = {
   addresses: { addressIds: [], addressMap: {} },
   contacts: [],
   encryptedPassword: undefined,
-  feePmob: '',
+  fees: {},
   giftCodes: null,
   isAuthenticated: false,
   isEntropyKnown: false,
@@ -108,14 +109,14 @@ export const initialReduxStoreState: ReduxStoreState = {
     },
     balanceStatus: {
       balancePerToken: {
-        [TokenIds.MOB]: {
+        [TOKENS.MOB.id]: {
           orphanedPmob: '',
           pendingPmob: '',
           secretedPmob: '',
           spentPmob: '',
           unspentPmob: '',
         },
-        [TokenIds.MOBUSD]: {
+        [TOKENS.USDM.id]: {
           orphanedPmob: '',
           pendingPmob: '',
           secretedPmob: '',
@@ -126,7 +127,7 @@ export const initialReduxStoreState: ReduxStoreState = {
       isSynced: false,
     },
   },
-  tokenId: TokenIds.MOB,
+  tokenId: TOKENS.MOB.id,
   transactionLogs: null,
   txos: { txoIds: [], txoMap: {} },
   walletStatus: {
@@ -137,14 +138,14 @@ export const initialReduxStoreState: ReduxStoreState = {
     minSyncedBlockIndex: '',
     networkBlockHeight: '',
     balancePerToken: {
-      [TokenIds.MOB]: {
+      [TOKENS.MOB.id]: {
         orphanedPmob: '',
         pendingPmob: '',
         secretedPmob: '',
         spentPmob: '',
         unspentPmob: '',
       },
-      [TokenIds.MOBUSD]: {
+      [TOKENS.USDM.id]: {
         orphanedPmob: '',
         pendingPmob: '',
         secretedPmob: '',
@@ -240,10 +241,10 @@ export const reducer = (
     }
 
     case GET_FEE_PMOB: {
-      const { feePmob } = (action as GetFeePmobAction).payload;
+      const { fees } = (action as GetFeesAction).payload;
       return {
         ...state,
-        feePmob,
+        fees,
       };
     }
 

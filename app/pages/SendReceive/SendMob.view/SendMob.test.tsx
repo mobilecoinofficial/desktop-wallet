@@ -4,9 +4,11 @@ import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
-
 import '../../../testUtils/i18nForTests';
-import { store } from '../../../redux/store';
+import { createStore } from 'redux';
+
+import { TOKENS } from '../../../constants/tokens';
+import { initialReduxStoreState, reducer } from '../../../redux/reducers/reducers';
 import type { Contact } from '../../../types/Contact';
 import type { SelectedAccount } from '../../../types/SelectedAccount';
 import { SendMob } from './SendMob.view';
@@ -66,7 +68,14 @@ const SELECTED_ACCOUNT = {
     networkBlockHeight: '158974',
     object: 'balance',
     balancePerToken: {
-      0: {
+      [TOKENS.MOB.id]: {
+        orphanedPmob: '18000000000001',
+        pendingPmob: '0',
+        secretedPmob: '0',
+        spentPmob: '35410000000000',
+        unspentPmob: String(INITIAL_BALANCE * 1000000000000),
+      },
+      [TOKENS.USDM.id]: {
         orphanedPmob: '18000000000001',
         pendingPmob: '0',
         secretedPmob: '0',
@@ -76,6 +85,13 @@ const SELECTED_ACCOUNT = {
     },
   },
 } as SelectedAccount;
+
+const store = createStore(reducer, {
+  ...initialReduxStoreState,
+  fees: {
+    [TOKENS.MOB.id]: '1000000000',
+  },
+});
 
 const setUpTest = ({
   confirmation = {
@@ -107,7 +123,6 @@ const setUpTest = ({
           confirmation={confirmation}
           contacts={contacts}
           existingPin={existingPin}
-          feePmob="3000000000"
           isSynced={isSynced}
           onClickCancel={onClickCancel}
           onClickConfirm={onClickConfirm}

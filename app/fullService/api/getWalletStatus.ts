@@ -1,4 +1,4 @@
-import { TokenIds } from '../../constants/app';
+import { TOKENS } from '../../constants/tokens';
 import type { Accounts } from '../../types/Account.d';
 import type { WalletStatusV2, WalletStatus } from '../../types/WalletStatus.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
@@ -24,19 +24,19 @@ function convertWalletStatusFromV2(
       networkBlockHeight: status.networkBlockHeight,
       object: 'wallet_status',
       balancePerToken: {
-        [TokenIds.MOB]: {
-          orphanedPmob: status.balancePerToken[TokenIds.MOB]?.orphaned || '0',
-          pendingPmob: status.balancePerToken[TokenIds.MOB]?.pending || '0',
-          secretedPmob: status.balancePerToken[TokenIds.MOB]?.secreted || '0',
-          spentPmob: status.balancePerToken[TokenIds.MOB]?.spent || '0',
-          unspentPmob: status.balancePerToken[TokenIds.MOB]?.unspent || '0',
+        [TOKENS.MOB.id]: {
+          orphanedPmob: status.balancePerToken[TOKENS.MOB.id]?.orphaned || '0',
+          pendingPmob: status.balancePerToken[TOKENS.MOB.id]?.pending || '0',
+          secretedPmob: status.balancePerToken[TOKENS.MOB.id]?.secreted || '0',
+          spentPmob: status.balancePerToken[TOKENS.MOB.id]?.spent || '0',
+          unspentPmob: status.balancePerToken[TOKENS.MOB.id]?.unspent || '0',
         },
-        [TokenIds.MOBUSD]: {
-          orphanedPmob: status.balancePerToken[TokenIds.MOBUSD]?.orphaned || '0',
-          pendingPmob: status.balancePerToken[TokenIds.MOBUSD]?.pending || '0',
-          secretedPmob: status.balancePerToken[TokenIds.MOBUSD]?.secreted || '0',
-          spentPmob: status.balancePerToken[TokenIds.MOBUSD]?.spent || '0',
-          unspentPmob: status.balancePerToken[TokenIds.MOBUSD]?.unspent || '0',
+        [TOKENS.USDM.id]: {
+          orphanedPmob: status.balancePerToken[TOKENS.USDM.id]?.orphaned || '0',
+          pendingPmob: status.balancePerToken[TOKENS.USDM.id]?.pending || '0',
+          secretedPmob: status.balancePerToken[TOKENS.USDM.id]?.secreted || '0',
+          spentPmob: status.balancePerToken[TOKENS.USDM.id]?.spent || '0',
+          unspentPmob: status.balancePerToken[TOKENS.USDM.id]?.unspent || '0',
         },
       },
     },

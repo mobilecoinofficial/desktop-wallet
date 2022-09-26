@@ -53,7 +53,7 @@ const confirmation = {
 export const InitialForm = Template.bind({});
 InitialForm.args = {
   confirmation,
-  feePmob: '0.004',
+  fee: '0.004',
   selectedAccount,
   showModal: false,
 };
@@ -61,7 +61,7 @@ InitialForm.args = {
 export const ConfirmationForm = Template.bind({});
 ConfirmationForm.args = {
   confirmation,
-  feePmob: '0.004',
+  fee: '0.004',
   selectedAccount,
   showModal: true,
 };

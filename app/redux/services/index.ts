@@ -7,7 +7,7 @@ import { deleteWallet } from './deleteWallet';
 import { getAllGiftCodes } from './getAllGiftCodes';
 import { getAllTransactionLogsForAccount } from './getAllTransactionLogsForAccount';
 import { getAllTxosForAccount } from './getAllTxosForAccount';
-import { getFeePmob } from './getFeePmob';
+import { getFees } from './getFees';
 import { importAccount, importLegacyAccount } from './importAccount';
 import { initialize } from './initialize';
 import { selectAccount } from './selectAccount';
@@ -28,7 +28,7 @@ export {
   getAllTransactionLogsForAccount,
   getAllTxosForAccount,
   getAllGiftCodes,
-  getFeePmob,
+  getFees,
   importAccount,
   importLegacyAccount,
   initialize,

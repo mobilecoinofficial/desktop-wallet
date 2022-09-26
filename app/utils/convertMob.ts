@@ -14,8 +14,8 @@ export const convertMobStringToPicoMobString = (mobString: string): string => {
   return picoMobBigInt.toString();
 };
 
-export const convertUSDMStringToMicroUSDMString = (USDMString: string): string => {
-  const microMobBigDec = bigDecimal.multiply(USDMString, '1000000');
+export const convertEUSDStringToMicroEUSDString = (eUSDString: string): string => {
+  const microMobBigDec = bigDecimal.multiply(eUSDString, '1000000');
   const microMobBigInt = BigInt(microMobBigDec);
   return microMobBigInt.toString();
 };
@@ -39,16 +39,16 @@ export const convertPicoMobStringToMob = (picoMobString: string): string => {
   ].join('');
 };
 
-export const convertMicroUSDMToStringUSDM = (microUSDMString: string): string => {
-  const precision = Math.log10(TOKENS.USDM.precision);
-  if (microUSDMString.length <= precision) {
-    return `0.${'0'.repeat(precision - microUSDMString.length)}${microUSDMString}`;
+export const convertMicroEUSDToStringEUSD = (microEUSDString: string): string => {
+  const precision = Math.log10(TOKENS.EUSD.precision);
+  if (microEUSDString.length <= precision) {
+    return `0.${'0'.repeat(precision - microEUSDString.length)}${microEUSDString}`;
   }
 
   return [
-    microUSDMString.slice(0, microUSDMString.length - precision),
+    microEUSDString.slice(0, microEUSDString.length - precision),
     '.',
-    microUSDMString.slice(microUSDMString.length - precision),
+    microEUSDString.slice(microEUSDString.length - precision),
   ].join('');
 };
 

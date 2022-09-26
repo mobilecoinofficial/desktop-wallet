@@ -75,7 +75,7 @@ const SELECTED_ACCOUNT = {
         spentPmob: '35410000000000',
         unspentPmob: String(INITIAL_BALANCE * 1000000000000),
       },
-      [TOKENS.USDM.id]: {
+      [TOKENS.EUSD.id]: {
         orphanedPmob: '18000000000001',
         pendingPmob: '0',
         secretedPmob: '0',

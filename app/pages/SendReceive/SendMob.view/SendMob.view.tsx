@@ -41,8 +41,8 @@ import type { Theme } from '../../../theme';
 import {
   convertMobStringToPicoMobString,
   convertPicoMobStringToMob,
-  convertMicroUSDMToStringUSDM,
-  convertUSDMStringToMicroUSDMString,
+  convertMicroEUSDToStringEUSD,
+  convertEUSDStringToMicroEUSDString,
 } from '../../../utils/convertMob';
 import type { SendMobProps } from './SendMob.d';
 import { Showing } from './SendMob.d';
@@ -133,7 +133,7 @@ const SendMob: FC<SendMobProps> = ({
     const convertFunction =
       token.id === TOKENS.MOB.id
         ? convertMobStringToPicoMobString
-        : convertUSDMStringToMicroUSDMString;
+        : convertEUSDStringToMicroEUSDString;
 
     onClickSend({
       accountId: selectedAccount.account.accountId,
@@ -174,7 +174,7 @@ const SendMob: FC<SendMobProps> = ({
   const NO_CONTACT_SELECTED = '';
 
   const feeAmount =
-    token.id === TOKENS.MOB.id ? convertPicoMobStringToMob(fee) : convertMicroUSDMToStringUSDM(fee);
+    token.id === TOKENS.MOB.id ? convertPicoMobStringToMob(fee) : convertMicroEUSDToStringEUSD(fee);
 
   const renderInput = (props) => <MOBNumberFormat token={token} convert={false} {...props} />;
 

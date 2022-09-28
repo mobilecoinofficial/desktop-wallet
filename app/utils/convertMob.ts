@@ -1,5 +1,7 @@
 import bigDecimal from 'js-big-decimal';
 
+import { Token, TOKENS } from '../constants/tokens';
+
 // This function assumes basic US style decimal places.
 // We'll need to revisit for different formats
 // Right now, we are aggressively assuming the number format is US local.
@@ -12,16 +14,41 @@ export const convertMobStringToPicoMobString = (mobString: string): string => {
   return picoMobBigInt.toString();
 };
 
+export const convertEUSDStringToMicroEUSDString = (eUSDString: string): string => {
+  const microMobBigDec = bigDecimal.multiply(eUSDString, '1000000');
+  const microMobBigInt = BigInt(microMobBigDec);
+  return microMobBigInt.toString();
+};
+
+export const convertTokenValueToDisplayValue = (
+  tokenValue: string | number,
+  token: Token
+): number => Number(tokenValue) / token.precision;
+
 // TODO, handle value of BigInt
 export const convertPicoMobStringToMob = (picoMobString: string): string => {
-  if (picoMobString.length <= 12) {
-    return `0.${'0'.repeat(12 - picoMobString.length)}${picoMobString}`;
+  const precision = Math.log10(TOKENS.MOB.precision);
+  if (picoMobString.length <= precision) {
+    return `0.${'0'.repeat(precision - picoMobString.length)}${picoMobString}`;
   }
 
   return [
-    picoMobString.slice(0, picoMobString.length - 12),
+    picoMobString.slice(0, picoMobString.length - precision),
     '.',
-    picoMobString.slice(picoMobString.length - 12),
+    picoMobString.slice(picoMobString.length - precision),
+  ].join('');
+};
+
+export const convertMicroEUSDToStringEUSD = (microEUSDString: string): string => {
+  const precision = Math.log10(TOKENS.EUSD.precision);
+  if (microEUSDString.length <= precision) {
+    return `0.${'0'.repeat(precision - microEUSDString.length)}${microEUSDString}`;
+  }
+
+  return [
+    microEUSDString.slice(0, microEUSDString.length - precision),
+    '.',
+    microEUSDString.slice(microEUSDString.length - precision),
   ].join('');
 };
 

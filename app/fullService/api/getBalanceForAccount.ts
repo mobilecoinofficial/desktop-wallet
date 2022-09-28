@@ -1,4 +1,4 @@
-import { TokenIds } from '../../constants/app';
+import { TOKENS } from '../../constants/tokens';
 import type { AccountStatus } from '../../types/Account.d';
 import type { BalanceStatus } from '../../types/BalanceStatus.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
@@ -19,12 +19,22 @@ export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatu
       Number(accountStatus.account.nextBlockIndex) >= Number(accountStatus.networkBlockHeight),
     localBlockHeight: accountStatus.localBlockHeight,
     networkBlockHeight: accountStatus.networkBlockHeight,
-    object: 'balance',
-    orphanedPmob: accountStatus.balancePerToken[TokenIds.MOB]?.orphaned || '0',
-    pendingPmob: accountStatus.balancePerToken[TokenIds.MOB]?.pending || '0',
-    secretedPmob: accountStatus.balancePerToken[TokenIds.MOB]?.secreted || '0',
-    spentPmob: accountStatus.balancePerToken[TokenIds.MOB]?.spent || '0',
-    unspentPmob: accountStatus.balancePerToken[TokenIds.MOB]?.unspent || '0',
+    balancePerToken: {
+      [TOKENS.MOB.id]: {
+        orphanedPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.orphaned || '0',
+        pendingPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.pending || '0',
+        secretedPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.secreted || '0',
+        spentPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.spent || '0',
+        unspentPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.unspent || '0',
+      },
+      [TOKENS.EUSD.id]: {
+        orphanedPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.orphaned || '0',
+        pendingPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.pending || '0',
+        secretedPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.secreted || '0',
+        spentPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.spent || '0',
+        unspentPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.unspent || '0',
+      },
+    },
   };
 }
 

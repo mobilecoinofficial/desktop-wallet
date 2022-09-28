@@ -1,4 +1,4 @@
-import { TokenIds } from '../../constants/app';
+import { TOKENS } from '../../constants/tokens';
 import type { Accounts } from '../../types/Account.d';
 import type { WalletStatusV2, WalletStatus } from '../../types/WalletStatus.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
@@ -23,11 +23,22 @@ function convertWalletStatusFromV2(
       minSyncedBlockIndex: status.minSyncedBlockIndex,
       networkBlockHeight: status.networkBlockHeight,
       object: 'wallet_status',
-      totalOrphanedPmob: status.balancePerToken[TokenIds.MOB]?.orphaned,
-      totalPendingPmob: status.balancePerToken[TokenIds.MOB]?.pending,
-      totalSecretedPmob: status.balancePerToken[TokenIds.MOB]?.secreted,
-      totalSpentPmob: status.balancePerToken[TokenIds.MOB]?.spent,
-      totalUnspentPmob: status.balancePerToken[TokenIds.MOB]?.unspent,
+      balancePerToken: {
+        [TOKENS.MOB.id]: {
+          orphanedPmob: status.balancePerToken[TOKENS.MOB.id]?.orphaned || '0',
+          pendingPmob: status.balancePerToken[TOKENS.MOB.id]?.pending || '0',
+          secretedPmob: status.balancePerToken[TOKENS.MOB.id]?.secreted || '0',
+          spentPmob: status.balancePerToken[TOKENS.MOB.id]?.spent || '0',
+          unspentPmob: status.balancePerToken[TOKENS.MOB.id]?.unspent || '0',
+        },
+        [TOKENS.EUSD.id]: {
+          orphanedPmob: status.balancePerToken[TOKENS.EUSD.id]?.orphaned || '0',
+          pendingPmob: status.balancePerToken[TOKENS.EUSD.id]?.pending || '0',
+          secretedPmob: status.balancePerToken[TOKENS.EUSD.id]?.secreted || '0',
+          spentPmob: status.balancePerToken[TOKENS.EUSD.id]?.spent || '0',
+          unspentPmob: status.balancePerToken[TOKENS.EUSD.id]?.unspent || '0',
+        },
+      },
     },
   };
 }

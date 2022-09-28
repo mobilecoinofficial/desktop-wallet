@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ShortCode, SubmitButton } from '../../../components';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
+import { TOKENS } from '../../../constants/tokens';
 import type { Theme } from '../../../theme';
 import type { TransactionDetailsViewProps } from './TransactionDetails.d';
 
@@ -61,7 +62,8 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     assignedAddressId,
     recipientAddressId,
     outputTxoIds,
-    valuePmob,
+    value: transactionValue,
+    tokenId,
   } = transactionLog;
 
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
@@ -152,7 +154,11 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
           {renderSenderOrReceiver()}
           {renderRow(
             `${t('amount')}:`,
-            <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label=" MOB" />
+            <TransactionInfoLabel
+              value={transactionValue}
+              sign={sign}
+              label={` ${Object.values(TOKENS).find((token) => token.id === tokenId)?.name}`}
+            />
           )}
         </CardContent>
       </Card>

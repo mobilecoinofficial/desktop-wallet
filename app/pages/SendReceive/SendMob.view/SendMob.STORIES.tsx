@@ -45,7 +45,7 @@ SendMobsOne.args = {
     },
   ],
   existingPin: '111111',
-  feePmob: '5000000000',
+  fee: '5000000000',
   isSynced: true,
   pinThresholdPmob: 10,
   selectedAccount: {
@@ -106,7 +106,7 @@ SendMobsTwo.args = {
     },
   ],
   existingPin: '111111',
-  feePmob: '5000000000',
+  fee: '5000000000',
   isSynced: true,
   pinThresholdPmob: 10,
   selectedAccount: {
@@ -167,7 +167,7 @@ SendMobsThree.args = {
     },
   ],
   existingPin: '111111',
-  feePmob: '5000000000',
+  fee: '5000000000',
   isSynced: true,
   pinThresholdPmob: 10,
   selectedAccount: {

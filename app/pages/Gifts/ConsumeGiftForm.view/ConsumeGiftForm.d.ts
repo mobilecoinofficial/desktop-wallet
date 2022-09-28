@@ -6,7 +6,7 @@ export interface ConsumeGiftFormProps {
     giftCodeStatus: string;
     giftValue: number;
   };
-  feePmob: string;
+  fee: string;
   onClickCancel: () => void;
   onClickClaimGift: () => void;
   onClickOpenGift: (x: string) => void;

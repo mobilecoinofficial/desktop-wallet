@@ -1,4 +1,3 @@
-import { TokenIds } from '../../constants/app';
 import { StringB58 } from '../../types';
 import type {
   TransactionLog,
@@ -51,6 +50,8 @@ export function mapTxoV2ToAbbreviation(txo: TxoV2): TransactionAbbreviation {
 export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2): TransactionLog {
   const assignedAddressId = v2TransactionLog.outputTxos[0].recipientPublicAddressB58;
   const direction = 'tx_direction_sent';
+  // assuming one token type per transaction. safe assumption for now. Will not be at some point in the future
+  const tokenId = Number(v2TransactionLog.outputTxos[0].amount.tokenId);
 
   return {
     accountId: v2TransactionLog.accountId,
@@ -62,7 +63,7 @@ export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2):
     direction,
     failureCode: null,
     failureMessage: null,
-    feePmob: v2TransactionLog.feeAmount.value,
+    fee: v2TransactionLog.feeAmount.value,
     finalizedBlockIndex: v2TransactionLog.finalizedBlockIndex,
     inputTxoIds: v2TransactionLog.inputTxos.map((t) => t.txoIdHex),
     inputTxos: v2TransactionLog.inputTxos.map((t) => mapTxoToAbbreviation(t)),
@@ -75,7 +76,8 @@ export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2):
     status: matchStatus(v2TransactionLog.status),
     submittedBlockIndex: v2TransactionLog.submittedBlockIndex,
     transactionLogId: v2TransactionLog.id,
-    valuePmob: v2TransactionLog.valueMap[TokenIds.MOB],
+    tokenId,
+    value: v2TransactionLog.valueMap[tokenId],
   };
 }
 
@@ -109,7 +111,7 @@ function convertTxoToTransactionLog(
     direction: 'tx_direction_received',
     failureCode: null,
     failureMessage: null,
-    feePmob: null,
+    fee: null,
     finalizedBlockIndex: txo.receivedBlockIndex ?? null,
     inputTxoIds: [],
     inputTxos: [],
@@ -122,7 +124,8 @@ function convertTxoToTransactionLog(
     status: matchStatus(txo.status),
     submittedBlockIndex: null,
     transactionLogId: txo.id,
-    valuePmob: txo.value,
+    tokenId: Number(txo.tokenId),
+    value: txo.value,
   };
 }
 

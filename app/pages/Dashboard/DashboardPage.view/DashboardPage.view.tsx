@@ -2,8 +2,10 @@ import React from 'react';
 import type { FC } from 'react';
 
 import { Box, Container, makeStyles } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 import { AccountCard } from '../../../components';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { CloseWalletModal } from '../CloseWalletModal.view/CloseWalletModal.view';
 import type { DashboardPageProps } from './DashboardPage.d';
 
@@ -20,6 +22,7 @@ const DashboardView: FC<DashboardPageProps> = ({
   selectedAccount,
 }: DashboardPageProps) => {
   const classes = useStyles();
+  const { tokenId } = useSelector((state: ReduxStoreState) => state);
 
   return (
     <Container data-testid="DashboardOverview" className={classes.root} maxWidth="sm">
@@ -28,7 +31,7 @@ const DashboardView: FC<DashboardPageProps> = ({
         account={{
           accountId: selectedAccount.account.accountId,
           b58Code: selectedAccount.account.mainAddress,
-          balance: selectedAccount.balanceStatus.unspentPmob,
+          balance: selectedAccount.balanceStatus.balancePerToken[tokenId].unspentPmob,
           name: selectedAccount.account.name as string,
         }}
         accounts={accounts}

@@ -1,24 +1,47 @@
 import React from 'react';
 import type { FC } from 'react';
 
-import { Box, Button, makeStyles, Typography, useMediaQuery } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  makeStyles,
+  Typography,
+  useMediaQuery,
+  Select,
+  MenuItem,
+  ListItemIcon,
+} from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { MOBNumberFormat } from '../../../components';
-import { MOBIcon } from '../../../components/icons';
+import { TOKENS } from '../../../constants/tokens';
 import { GOLD_LIGHT } from '../../../constants/colors';
+import { setTokenId } from '../../../redux/services';
 import { Theme } from '../../../theme';
 import { BalanceIndicatorProps } from './BalanceIndicator';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
+  formControlLabel: {
+    left: 24,
+  },
   icon: {
-    height: 25,
-    paddingRight: 5,
-    width: 25,
+    left: 0,
+  },
+  iconElement: {
+    height: 24,
+    width: 24,
+  },
+  iconOpen: {
+    transform: 'none',
   },
   item: {
     padding: theme.spacing(3, 0, 0, 0),
     textAlign: 'center',
+  },
+  selectSelect: {
+    paddingLeft: '24px',
+    paddingRight: '8px !important',
   },
   valueContainer: {
     alignItems: 'center',
@@ -35,7 +58,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
 }: BalanceIndicatorProps) => {
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
-
+  const token = useCurrentToken();
   const { t } = useTranslation('BalanceIndicator');
 
   return (
@@ -44,9 +67,27 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         {t('title')}
       </Typography>
       <Box className={classes.valueContainer}>
-        <MOBIcon className={classes.icon} />
+        <Select
+          value={token.id}
+          classes={{
+            icon: classes.icon,
+            iconOpen: classes.iconOpen,
+            select: classes.selectSelect,
+          }}
+          onChange={(e) => setTokenId(e.target.value as number)}
+          renderValue={() => token.icon({ className: classes.iconElement })}
+        >
+          <MenuItem value={TOKENS.MOB.id}>
+            <ListItemIcon>{TOKENS.MOB.icon({ className: classes.iconElement })}</ListItemIcon>
+            MOB
+          </MenuItem>
+          <MenuItem value={TOKENS.EUSD.id}>
+            <ListItemIcon>{TOKENS.EUSD.icon({ className: classes.icon })}</ListItemIcon>
+            eUSD
+          </MenuItem>
+        </Select>
         <Typography data-testid="balance-figure" variant="h3" color="textPrimary">
-          <MOBNumberFormat valueUnit="pMOB" value={balance} />
+          <MOBNumberFormat token={token} value={balance} />
         </Typography>
       </Box>
       {!isSynced && !offlineModeEnabled && (

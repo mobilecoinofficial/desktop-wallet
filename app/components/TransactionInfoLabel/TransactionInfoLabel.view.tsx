@@ -3,6 +3,7 @@ import type { FC } from 'react';
 
 import { makeStyles, Typography } from '@material-ui/core';
 
+import { useCurrentToken } from '../../hooks/useCurrentToken';
 import type { Theme } from '../../theme';
 import { MOBNumberFormat } from '../MOBNumberFormat';
 import type { TransactionInfoLabelProps } from './TransactionInfoLabel.d';
@@ -19,11 +20,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
-  valuePmob,
+  value,
   sign,
   label,
 }: TransactionInfoLabelProps) => {
   const classes = useStyles();
+  const token = useCurrentToken();
 
   return (
     <Typography
@@ -31,13 +33,13 @@ const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
     ${sign === '+' ? classes?.positive : classes?.negative}`}
       display="inline"
     >
-      <MOBNumberFormat valueUnit="pMOB" value={valuePmob} prefix={sign} suffix={label} />
+      <MOBNumberFormat token={token} value={value} prefix={sign} suffix={label} />
     </Typography>
   );
 };
 
 TransactionInfoLabel.defaultProps = {
-  valuePmob: undefined,
+  value: undefined,
 };
 
 export default TransactionInfoLabel;

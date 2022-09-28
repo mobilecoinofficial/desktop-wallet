@@ -30,6 +30,7 @@ import { ShortCode } from '../../../components/ShortCode';
 import { CopyIcon, TrashcanIcon } from '../../../components/icons';
 import { BuildGiftForm } from '../BuildGiftForm.view';
 import type { BuildGiftPanelProps } from './BuildGiftPanel.d';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
 
@@ -46,7 +47,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   accounts,
   confirmation,
   existingPin,
-  feePmob,
+  fee,
   giftCodes,
   handleCopyClick,
   isSynced,
@@ -62,6 +63,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
   const classes = useStyles();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [pendingDeleteCode, setPendingDeleteCode] = useState(EMPTY_PENDING_DELETE_CODE);
+  const token = useCurrentToken();
 
   const { t } = useTranslation('BuildGiftPanel');
 
@@ -100,7 +102,7 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
               accounts={accounts}
               confirmation={confirmation}
               existingPin={existingPin}
-              feePmob={feePmob}
+              fee={fee}
               isSynced={isSynced}
               pinThresholdPmob={pinThresholdPmob}
               selectedAccount={selectedAccount}
@@ -143,8 +145,8 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                           </TableCell>
                           <TableCell>
                             <MOBNumberFormat
-                              value={(BigInt(giftCode.valuePmob) - BigInt(feePmob)).toString()}
-                              valueUnit="pMOB"
+                              value={(BigInt(giftCode.valuePmob) - BigInt(fee)).toString()}
+                              token={token}
                             />
                           </TableCell>
                           <TableCell align="right">
@@ -205,9 +207,9 @@ const BuildGiftPanel: FC<BuildGiftPanelProps> = ({
                   <Box py={2} display="flex" justifyContent="space-between">
                     <Typography color="textPrimary">{t('giftValue')}</Typography>
                     <MOBNumberFormat
-                      value={(BigInt(pendingDeleteCode[1]) - BigInt(feePmob)).toString()}
-                      valueUnit="pMOB"
-                      suffix=" MOB"
+                      value={(BigInt(pendingDeleteCode[1]) - BigInt(fee)).toString()}
+                      token={token}
+                      suffix={` ${token.name}`}
                     />
                   </Box>
                   <DialogContentText color="textPrimary">{t('deleteDialogText')}</DialogContentText>

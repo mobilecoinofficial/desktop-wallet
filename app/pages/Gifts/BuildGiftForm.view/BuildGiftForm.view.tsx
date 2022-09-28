@@ -23,9 +23,9 @@ import { MOBNumberFormat } from '../../../components/MOBNumberFormat';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { MOBIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
-import type { Account } from '../../../types/Account.d';
 import { convertPicoMobStringToMob } from '../../../utils/convertMob';
 import { BuildGiftFormProps } from './BuildGiftForm';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const BuildGiftForm: FC<BuildGiftFormProps> = ({
   confirmation,
   existingPin,
-  feePmob,
+  fee,
   isSynced,
   onClickCancelBuild,
   onClickConfirmBuild,
@@ -90,23 +90,28 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
 }: BuildGiftFormProps) => {
   const classes = useStyles();
   const { t } = useTranslation('BuildGiftForm');
+  const token = useCurrentToken();
 
   // TODO - consider adding minimum gift ~ 1 MOB
   // We'll use this array in prep for future patterns with multiple accounts
-  const mockMultipleAccounts: Array<Account> = [
+  const mockMultipleAccounts: Array<{
+    b58Code: string;
+    balance: bigint;
+    name: string | null;
+  }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: selectedAccount.balanceStatus.unspentPmob,
+      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob),
       name: selectedAccount.account.name,
     },
   ];
 
-  const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
+  const validateAmount = (selectedBalance: bigint, txFee: bigint) => (valueString: string) => {
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-    if (valueAsPicoMob + fee + fee > selectedBalance) {
+    if (valueAsPicoMob + txFee + txFee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee', { limit: Number(fee) / 1000000000000 });
+      error = t('errorFee', { limit: Number(txFee) / token.precision });
     }
     return error;
   };
@@ -118,10 +123,12 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
     event.target.select();
   };
 
+  const renderInput = (props) => <MOBNumberFormat token={token} convert={false} {...props} />;
+
   return (
     <Formik
       initialValues={{
-        feeAmount: convertPicoMobStringToMob(feePmob),
+        feeAmount: convertPicoMobStringToMob(fee),
         mobValue: '0', // mobs
         pin: '',
         senderPublicAddress: mockMultipleAccounts[0].b58Code,
@@ -158,7 +165,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
         if (confirmation?.totalValueConfirmation && confirmation?.feeConfirmation) {
           remainingBalance =
             selectedBalance -
-            (confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
+            BigInt(confirmation?.totalValueConfirmation + confirmation?.feeConfirmation);
           totalSent = confirmation?.totalValueConfirmation + confirmation?.feeConfirmation;
         }
 
@@ -180,10 +187,10 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                 onFocus={handleSelect}
                 validate={validateAmount(
                   selectedBalance,
-                  BigInt(values.feeAmount * 1_000_000_000_000)
+                  BigInt(Number(values.feeAmount) * token.precision)
                 )}
                 InputProps={{
-                  inputComponent: MOBNumberFormat,
+                  inputComponent: renderInput,
                   startAdornment: (
                     <InputAdornment position="start">
                       <MOBIcon height={20} width={20} />
@@ -240,7 +247,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
-                        valueUnit="pMOB"
+                        token={token}
                         value={selectedBalance?.toString()}
                       />
                     </Typography>
@@ -250,7 +257,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
-                        valueUnit="pMOB"
+                        token={token}
                         value={(
                           confirmation?.totalValueConfirmation - confirmation?.feeConfirmation
                         ).toString()}
@@ -262,7 +269,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     <Typography color="textPrimary">
                       <MOBNumberFormat
                         suffix=" MOB"
-                        valueUnit="pMOB"
+                        token={token}
                         value={(
                           confirmation?.feeConfirmation + confirmation?.feeConfirmation
                         ).toString()}
@@ -276,11 +283,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                   >
                     <Typography color="textPrimary">{t('total')}:</Typography>
                     <Typography color="textPrimary">
-                      <MOBNumberFormat
-                        suffix=" MOB"
-                        valueUnit="pMOB"
-                        value={totalSent?.toString()}
-                      />
+                      <MOBNumberFormat suffix=" MOB" token={token} value={totalSent?.toString()} />
                     </Typography>
                   </Box>
                   <Box display="flex" justifyContent="space-between">
@@ -288,7 +291,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
                     <Typography color="primary">
                       <MOBNumberFormat
                         suffix=" MOB"
-                        valueUnit="pMOB"
+                        token={token}
                         value={remainingBalance?.toString()}
                       />
                     </Typography>

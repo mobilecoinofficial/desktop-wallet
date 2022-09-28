@@ -14,14 +14,13 @@ interface SendParameters {
   fee: string;
   isChecked: boolean;
   recipientPublicAddress: StringHex;
-  valuePmob: string;
+  value: string;
 }
 
 export interface SendMobProps {
   confirmation?: unknown;
   contacts: Contact[];
   existingPin: string;
-  feePmob: string;
   importTxConfirmation: () => void;
   isSynced: boolean;
   offlineModeEnabled: boolean;

@@ -46,8 +46,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const DashboardLayout: FC<DashboardLayoutProps> = (
   props: DashboardLayoutProps
 ): JSX.Element => {
-  const { offlineModeEnabled, selectedAccount, isEntropyKnown, isPinRequired, pendingSecrets } =
-    useSelector((state: ReduxStoreState) => state);
+  const {
+    offlineModeEnabled,
+    selectedAccount,
+    isEntropyKnown,
+    isPinRequired,
+    pendingSecrets,
+    tokenId,
+  } = useSelector((state: ReduxStoreState) => state);
   const { children } = props;
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
@@ -73,7 +79,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
             sendSyncStatus={sendSyncStatus}
           />
           <BalanceIndicator
-            balance={selectedAccount.balanceStatus.unspentPmob}
+            balance={selectedAccount.balanceStatus.balancePerToken[tokenId].unspentPmob}
             importLedger={importLedger}
             isSynced={selectedAccount.balanceStatus.isSynced}
             offlineModeEnabled={offlineModeEnabled}

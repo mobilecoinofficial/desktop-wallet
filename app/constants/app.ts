@@ -14,7 +14,3 @@ export const RANDOM_COLORS = ['#8B35E0', '#1F639A', '#EAA520', '#15A389', '#8D96
 
 export const randomColor = (): string =>
   RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
-
-export enum TokenIds {
-  MOB = 0,
-}

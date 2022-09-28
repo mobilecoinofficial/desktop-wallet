@@ -1,5 +1,6 @@
 import { SjclCipherEncrypted } from 'sjcl';
 
+import { TOKENS } from '../../constants/tokens';
 import {
   Accounts,
   Addresses,
@@ -12,6 +13,7 @@ import {
   Txos,
   WalletStatus,
 } from '../../types';
+import { Fees } from '../../types/NetworkStatus';
 import sameObject from '../../utils/sameObject';
 import {
   INITIALIZE,
@@ -39,7 +41,7 @@ import {
   UPDATE_CONTACTS,
   UpdateContactsAction,
   GET_FEE_PMOB,
-  GetFeePmobAction,
+  GetFeesAction,
   UPDATE_PASSWORD,
   UpdatePasswordAction,
   UPDATE_PIN,
@@ -49,6 +51,8 @@ import {
   Action,
   GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   GetAllTransactionLogsForAccountAction,
+  SET_TOKEN_ID,
+  SetTokenIdAction,
 } from '../actions';
 
 export type ReduxStoreState = {
@@ -58,7 +62,7 @@ export type ReduxStoreState = {
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
   encryptedPassword: SjclCipherEncrypted | undefined;
-  feePmob: StringUInt64;
+  fees: Fees;
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
   isInitialized: boolean;
@@ -72,6 +76,7 @@ export type ReduxStoreState = {
   pin: string | undefined;
   txos: Txos;
   walletStatus: WalletStatus;
+  tokenId: number;
 };
 
 export const initialReduxStoreState: ReduxStoreState = {
@@ -80,7 +85,7 @@ export const initialReduxStoreState: ReduxStoreState = {
   addresses: { addressIds: [], addressMap: {} },
   contacts: [],
   encryptedPassword: undefined,
-  feePmob: '',
+  fees: {},
   giftCodes: null,
   isAuthenticated: false,
   isEntropyKnown: false,
@@ -95,7 +100,7 @@ export const initialReduxStoreState: ReduxStoreState = {
     account: {
       accountId: '',
       firstBlockIndex: '',
-      key_derivation_version: '',
+      keyDerivationVersion: '',
       mainAddress: '',
       name: '',
       nextSubaddressIndex: '',
@@ -103,14 +108,26 @@ export const initialReduxStoreState: ReduxStoreState = {
       recoveryMode: false,
     },
     balanceStatus: {
+      balancePerToken: {
+        [TOKENS.MOB.id]: {
+          orphanedPmob: '',
+          pendingPmob: '',
+          secretedPmob: '',
+          spentPmob: '',
+          unspentPmob: '',
+        },
+        [TOKENS.EUSD.id]: {
+          orphanedPmob: '',
+          pendingPmob: '',
+          secretedPmob: '',
+          spentPmob: '',
+          unspentPmob: '',
+        },
+      },
       isSynced: false,
-      orphanedPmob: '',
-      pendingPmob: '',
-      secretedPmob: '',
-      spentPmob: '',
-      unspentPmob: '',
     },
   },
+  tokenId: TOKENS.MOB.id,
   transactionLogs: null,
   txos: { txoIds: [], txoMap: {} },
   walletStatus: {
@@ -120,11 +137,22 @@ export const initialReduxStoreState: ReduxStoreState = {
     localBlockHeight: '',
     minSyncedBlockIndex: '',
     networkBlockHeight: '',
-    totalOrphanedPmob: '',
-    totalPendingPmob: '',
-    totalSecretedPmob: '',
-    totalSpentPmob: '',
-    totalUnspentPmob: '',
+    balancePerToken: {
+      [TOKENS.MOB.id]: {
+        orphanedPmob: '',
+        pendingPmob: '',
+        secretedPmob: '',
+        spentPmob: '',
+        unspentPmob: '',
+      },
+      [TOKENS.EUSD.id]: {
+        orphanedPmob: '',
+        pendingPmob: '',
+        secretedPmob: '',
+        spentPmob: '',
+        unspentPmob: '',
+      },
+    },
   },
 };
 
@@ -213,10 +241,10 @@ export const reducer = (
     }
 
     case GET_FEE_PMOB: {
-      const { feePmob } = (action as GetFeePmobAction).payload;
+      const { fees } = (action as GetFeesAction).payload;
       return {
         ...state,
-        feePmob,
+        fees,
       };
     }
 
@@ -324,6 +352,14 @@ export const reducer = (
             selectedAccount,
             walletStatus,
           };
+    }
+
+    case SET_TOKEN_ID: {
+      const { tokenId } = (action as SetTokenIdAction).payload;
+      return {
+        ...state,
+        tokenId,
+      };
     }
 
     default: {

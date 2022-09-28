@@ -18,6 +18,7 @@ import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import MOBIcon from '../../../components/icons/MOBIcon';
 import type { Theme } from '../../../theme';
 import type { HistoryItemProps } from './HistoryItem.d';
+import { TOKENS } from '../../../constants/tokens';
 
 const useStyles = makeStyles((theme: Theme) => ({
   action: { margin: 'unset' },
@@ -49,16 +50,14 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
     finalizedBlockIndex,
     recipientAddressId,
     // status, TODO - Add status state for "pending" or errors
-    valuePmob,
+    value,
+    tokenId,
   } = transactionLog;
-
-  // debugger;
 
   // TODO - this should be a helper somewhere
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
   const directionText =
     direction === 'tx_direction_sent' ? t('historyItemSent') : t('historyItemReceived');
-
   let aliasOrAddress;
 
   // If there's a contact Object...
@@ -105,7 +104,11 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
             subheader={`${t('finalizedBlockHeight')}${finalizedBlockIndex}`}
             action={
               <Box display="flex" flexDirection="column" justifyContent="space-between">
-                <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label="&nbsp;MOB" />
+                <TransactionInfoLabel
+                  value={value}
+                  sign={sign}
+                  label={` ${Object.values(TOKENS).find((token) => token.id === tokenId)?.name}`}
+                />
                 <Typography className={classes.textSmallRight} display="inline">
                   {directionText}
                 </Typography>

@@ -1,5 +1,5 @@
 export interface TransactionInfoLabelProps {
-  valuePmob: string;
+  value: string;
   sign: '+' | '-';
   label: string;
 }

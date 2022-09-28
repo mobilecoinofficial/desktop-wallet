@@ -30,6 +30,7 @@ export interface TransactionLog {
   recipientAddressId: StringB58;
   sentTime: string | null; // FIX-ME: Confirm type
   status: Status;
+  subaddressIndex?: StringUInt64;
   submittedBlockIndex: StringUInt64 | null;
   transactionLogId: StringHex;
   tokenId: number;

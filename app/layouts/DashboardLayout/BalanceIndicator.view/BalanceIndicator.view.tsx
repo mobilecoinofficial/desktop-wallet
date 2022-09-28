@@ -81,9 +81,9 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
             <ListItemIcon>{TOKENS.MOB.icon({ className: classes.iconElement })}</ListItemIcon>
             MOB
           </MenuItem>
-          <MenuItem value={TOKENS.USDM.id}>
-            <ListItemIcon>{TOKENS.USDM.icon({ className: classes.icon })}</ListItemIcon>
-            USDM
+          <MenuItem value={TOKENS.EUSD.id}>
+            <ListItemIcon>{TOKENS.EUSD.icon({ className: classes.icon })}</ListItemIcon>
+            eUSD
           </MenuItem>
         </Select>
         <Typography data-testid="balance-figure" variant="h3" color="textPrimary">

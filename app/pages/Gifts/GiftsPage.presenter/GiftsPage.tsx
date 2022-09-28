@@ -104,10 +104,10 @@ export const GiftsPage: FC = (): JSX.Element => {
     getFees();
   }, []);
 
-  if (token.id === TOKENS.USDM.id) {
+  if (token.id === TOKENS.EUSD.id) {
     return (
       <Box className={classes.root}>
-        <Typography align="center">Gift codes are not yet available for USDM.</Typography>
+        <Typography align="center">Gift codes are not yet available for eUSD.</Typography>
       </Box>
     );
   }

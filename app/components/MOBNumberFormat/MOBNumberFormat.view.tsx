@@ -12,7 +12,7 @@ import { MOBNumberFormatProps } from './MOBNumberFormat';
 // word... The real reason is I have to debug seperating the display value from)
 // the calculated value. This would simplify the matter). So, until we have
 // standardized all values are pico-mob with flex display, this is what we got.
-// USDM comes in micro precison, rather than pico precision
+// eUSD comes in micro precison, rather than pico precision
 const MOBNumberFormat = (props: MOBNumberFormatProps): JSX.Element => {
   const { inputRef, onChange, name, value, token, convert, ...rest } = props;
 

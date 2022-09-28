@@ -434,8 +434,8 @@
   "ReceiveMobPanel": {
     "assignedAddress": "Assigned Address",
     "assignedAddressDetails": "If you want a record of your transaction history, you may create a new contact. Each new contact will have their own, unique public address. You can give this new contact an alias and abbreviation. A contact doesn’t have to be an individual, you can share it with businesses, groups, or even treat it as another public address. At rest, your contacts are encrypted, and they never leave your local device.",
-    "howTo": "How To Receive MOB/USDM",
-    "howToReceiveDetails": "To receive MOB/USDM, you must give the sender an address for your account. You may use your Public Address or an Assigned Address (assigned to the sender).",
+    "howTo": "How To Receive MOB/eUSD",
+    "howToReceiveDetails": "To receive MOB/eUSD, you must give the sender an address for your account. You may use your Public Address or an Assigned Address (assigned to the sender).",
     "mainPublicAddress": "Public Address",
     "mainPublicAddressDetails": "Your Public Address can be shared with everyone. The sender will be unknown to the wallet. This is a feature, not a bug. If you do not care about explicit transaction history, or if you purposely want to keep your history ambiguous, use this address."
   },

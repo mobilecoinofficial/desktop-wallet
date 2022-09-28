@@ -16,7 +16,7 @@ function renderMobIcon(props: IconProps): JSX.Element {
   return <MOBIcon {...props} />;
 }
 
-function renderUSDMIcon({ color: _, ...rest }: IconProps): JSX.Element {
+function renderEUSDIcon({ color: _, ...rest }: IconProps): JSX.Element {
   // removing color for now. Eventually we will replace this icon with a custom icon that accepts color
   return <MonetizationOnOutlinedIcon {...rest} />;
 }
@@ -28,13 +28,12 @@ export const TOKENS: Record<string, Token> = {
     icon: renderMobIcon,
     name: 'MOB',
   },
-  USDM: {
+  EUSD: {
     // TODO for testing we are using 8192 instead of 1
     // FIX-ME BEFORE MERGING INTO DEV, CHANGE THIS BACK TO 1
-    // USDM = 1,
     id: 8192,
     precision: 1_000_000,
-    icon: renderUSDMIcon,
-    name: 'USDM',
+    icon: renderEUSDIcon,
+    name: 'eUSD',
   },
 };

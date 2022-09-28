@@ -16,40 +16,20 @@ import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { errorToString } from '../../../utils/errorHandler';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
+import { useTransactionLogs } from '../../../hooks/useTransactionLogs';
 
 const HISTORY = 'history';
 const DETAILS = 'details';
 
 export const HistoryPage: FC = (): JSX.Element => {
-  const { contacts, selectedAccount, transactionLogs, tokenId } = useSelector(
-    (state: ReduxStoreState) => state
-  );
+  const { selectedAccount, transactionLogs } = useSelector((state: ReduxStoreState) => state);
 
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [txoValidations, setTxoValidations] = useState({});
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
-
-  const logs: TransactionLog[] = transactionLogs
-    ? transactionLogs.transactionLogIds
-        .map((id) => transactionLogs.transactionLogMap[id])
-        .map((transactionLog) => {
-          // If any transaction is associated to a contact, let's attach the contact object.
-          // TODO - we can improve this greatly by changing how this information is stored.
-          const contact = contacts.find(
-            (x) =>
-              x.assignedAddress === transactionLog.assignedAddressId ||
-              x.recipientAddress === transactionLog.recipientAddressId
-          );
-          if (contact) {
-            transactionLog.contact = contact; /* eslint-disable-line no-param-reassign */
-          }
-          return transactionLog;
-        })
-        .filter((log) => log.tokenId === tokenId)
-        .sort((a, b) => b.finalizedBlockIndex - a.finalizedBlockIndex)
-    : ([] as TransactionLog[]);
+  const logs = useTransactionLogs();
 
   const handleClickCopyConfirmations = () => {
     (async () => {

@@ -47,6 +47,7 @@ export function mapTxoV2ToAbbreviation(txo: TxoV2): TransactionAbbreviation {
   };
 }
 
+// all transaction logs are sent txos
 export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2): TransactionLog {
   const assignedAddressId = v2TransactionLog.outputTxos[0].recipientPublicAddressB58;
   const direction = 'tx_direction_sent';
@@ -96,6 +97,7 @@ export function convertTransactionLogsResponseFromV2(
   };
 }
 
+// all txos are received txos
 function convertTxoToTransactionLog(
   txo: TxoV2,
   accountId: StringB58,
@@ -123,6 +125,7 @@ function convertTxoToTransactionLog(
     sentTime: null,
     status: matchStatus(txo.status),
     submittedBlockIndex: null,
+    subaddressIndex: txo.subaddressIndex,
     transactionLogId: txo.id,
     tokenId: Number(txo.tokenId),
     value: txo.value,

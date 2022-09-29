@@ -5,6 +5,7 @@ export interface ContactFormProps {
   alias?: string;
   assignedAddress?: string;
   color?: string;
+  id?: string;
   isFavorite?: boolean;
   recipientAddress?: string;
   onClickCancel: () => void;

@@ -18,11 +18,6 @@ function convertWalletStatusFromV2(
     walletStatus: {
       accountIds: accounts.accountIds,
       accountMap: accounts.accountMap,
-      isSyncedAll: status.isSyncedAll,
-      localBlockHeight: status.localBlockHeight,
-      minSyncedBlockIndex: status.minSyncedBlockIndex,
-      networkBlockHeight: status.networkBlockHeight,
-      object: 'wallet_status',
       balancePerToken: {
         [TOKENS.MOB.id]: {
           orphanedPmob: status.balancePerToken[TOKENS.MOB.id]?.orphaned || '0',
@@ -39,6 +34,11 @@ function convertWalletStatusFromV2(
           unspentPmob: status.balancePerToken[TOKENS.EUSD.id]?.unspent || '0',
         },
       },
+      isSyncedAll: status.isSyncedAll,
+      localBlockHeight: status.localBlockHeight,
+      minSyncedBlockIndex: status.minSyncedBlockIndex,
+      networkBlockHeight: status.networkBlockHeight,
+      object: 'wallet_status',
     },
   };
 }

@@ -20,6 +20,7 @@ import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { CirclePicker } from 'react-color';
 import { useTranslation } from 'react-i18next';
+import { v4 as uuidv4 } from 'uuid';
 import * as Yup from 'yup';
 
 import { SubmitButton, StarCheckbox } from '../../../components';
@@ -142,6 +143,7 @@ const ContactForm: FC<ContactFormProps> = ({
                       abbreviation: values.abbreviation,
                       alias: values.alias,
                       color: values.color,
+                      id: uuidv4(),
                       isFavorite: values.isFavorite,
                       recipientAddress: values.recipientAddress,
                     });

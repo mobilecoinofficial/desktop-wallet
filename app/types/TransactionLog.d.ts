@@ -11,7 +11,7 @@ export interface TransactionAbbreviation {
 
 export interface TransactionLog {
   accountId: StringHex;
-  assignedAddressId?: StringB58;
+  address: StringB58; // the public address this tx was sent to
   changeTxoIds: StringHex[]; // FK this is gone?
   changeTxos: TransactionAbbreviation[];
   comment: string;
@@ -27,7 +27,6 @@ export interface TransactionLog {
   offsetCount: number;
   outputTxoIds: StringHex[]; // FK this is gone?
   outputTxos: TransactionAbbreviation[];
-  recipientAddressId: StringB58;
   sentTime: string | null; // FIX-ME: Confirm type
   status: Status;
   subaddressIndex?: StringUInt64;

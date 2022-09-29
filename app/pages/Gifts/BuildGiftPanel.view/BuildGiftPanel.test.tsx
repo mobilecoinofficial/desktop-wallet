@@ -49,10 +49,6 @@ const SELECTED_ACCOUNT = {
   },
   balanceStatus: {
     accountBlockHeight: '158974',
-    isSynced: true,
-    localBlockHeight: '158974',
-    networkBlockHeight: '158974',
-    object: 'balance',
     balancePerToken: {
       0: {
         orphanedPmob: '18000000000001',
@@ -62,6 +58,10 @@ const SELECTED_ACCOUNT = {
         unspentPmob: '908298888888888',
       },
     },
+    isSynced: true,
+    localBlockHeight: '158974',
+    networkBlockHeight: '158974',
+    object: 'balance',
   },
 };
 

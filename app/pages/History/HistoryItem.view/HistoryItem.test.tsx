@@ -32,8 +32,8 @@ describe('History Item', () => {
               direction: 'tx_direction_sent',
               finalizedBlockIndex: '123456',
               recipientAddressId: null,
-              value: '220960000000',
               tokenId: 0,
+              value: '220960000000',
             } as TransactionLog
           }
           onClick={() => undefined}
@@ -57,8 +57,8 @@ describe('History Item', () => {
               direction: 'tx_direction_sent',
               finalizedBlockIndex: '123456',
               recipientAddressId: 'eo7bLKA1kNNgLHGUMnf5sHZ5Hj52YqGNyia52e',
-              value: '220960000000',
               tokenId: 0,
+              value: '220960000000',
             } as TransactionLog
           }
           onClick={() => undefined}
@@ -81,8 +81,8 @@ describe('History Item', () => {
               direction: 'tx_direction_sent',
               finalizedBlockIndex: '123456',
               recipientAddressId: null,
-              value: '220960000000',
               tokenId: 0,
+              value: '220960000000',
             } as TransactionLog
           }
           onClick={() => undefined}
@@ -106,8 +106,8 @@ describe('History Item', () => {
               direction: 'tx_direction_received',
               finalizedBlockIndex: '345678',
               recipientAddressId: '101010101010101',
-              value: '31415926',
               tokenId: 0,
+              value: '31415926',
             } as TransactionLog
           }
           onClick={() => undefined}
@@ -130,8 +130,8 @@ describe('History Item', () => {
               direction: 'tx_direction_received',
               finalizedBlockIndex: '345678',
               recipientAddressId: null,
-              value: '31415926',
               tokenId: 0,
+              value: '31415926',
             } as TransactionLog
           }
           onClick={() => undefined}

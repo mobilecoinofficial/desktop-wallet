@@ -87,10 +87,10 @@ const ContactsList: FC<ContactsListProps> = ({
       </Box>
       <Container className={classes.root} maxWidth="lg" style={{ paddingTop: '24px' }}>
         <Grid container spacing={3}>
-          {dataToShow.map((contact, i) => (
+          {dataToShow.map((contact) => (
             <ContactCard
-              key={contact.assignedAddress ?? `contacts-list-${i}`}
-              recipientAddress={contact.recipientAddress}
+              key={contact.id}
+              id={contact.id}
               abbreviation={contact.abbreviation}
               alias={contact.alias}
               color={contact.color}

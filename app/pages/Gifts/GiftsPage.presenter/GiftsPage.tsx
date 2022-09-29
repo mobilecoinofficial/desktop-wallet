@@ -19,6 +19,8 @@ import { useSelector } from 'react-redux';
 
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
+import { TOKENS } from '../../../constants/tokens';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { getAllGiftCodes, getFees } from '../../../redux/services';
 import {
@@ -35,8 +37,6 @@ import { errorToString } from '../../../utils/errorHandler';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { BuildGiftPanel } from '../BuildGiftPanel.view';
 import { ConsumeGiftForm } from '../ConsumeGiftForm.view';
-import { useCurrentToken } from '../../../hooks/useCurrentToken';
-import { TOKENS } from '../../../constants/tokens';
 
 const useStyles = makeStyles((theme: Theme) => ({
   modal: {

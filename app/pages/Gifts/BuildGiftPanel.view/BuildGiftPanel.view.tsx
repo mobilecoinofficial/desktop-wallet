@@ -28,9 +28,9 @@ import { useTranslation } from 'react-i18next';
 import { AccountCard, MOBNumberFormat } from '../../../components';
 import { ShortCode } from '../../../components/ShortCode';
 import { CopyIcon, TrashcanIcon } from '../../../components/icons';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { BuildGiftForm } from '../BuildGiftForm.view';
 import type { BuildGiftPanelProps } from './BuildGiftPanel.d';
-import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const EMPTY_PENDING_DELETE_CODE = ['', '0'];
 

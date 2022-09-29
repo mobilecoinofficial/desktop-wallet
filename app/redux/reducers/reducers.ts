@@ -133,10 +133,6 @@ export const initialReduxStoreState: ReduxStoreState = {
   walletStatus: {
     accountIds: [],
     accountMap: {},
-    isSyncedAll: false,
-    localBlockHeight: '',
-    minSyncedBlockIndex: '',
-    networkBlockHeight: '',
     balancePerToken: {
       [TOKENS.MOB.id]: {
         orphanedPmob: '',
@@ -153,6 +149,10 @@ export const initialReduxStoreState: ReduxStoreState = {
         unspentPmob: '',
       },
     },
+    isSyncedAll: false,
+    localBlockHeight: '',
+    minSyncedBlockIndex: '',
+    networkBlockHeight: '',
   },
 };
 

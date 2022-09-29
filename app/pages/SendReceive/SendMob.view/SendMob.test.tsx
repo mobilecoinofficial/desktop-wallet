@@ -28,6 +28,7 @@ const CONTACTS = [
     alias: 'Foxtrot Golf',
     assignedAddress: '11111',
     color: '#FF0000',
+    id: 'abd',
     isFavorite: true,
     recipientAddress: '99999',
   },
@@ -36,6 +37,7 @@ const CONTACTS = [
     alias: 'Kilo Lima',
     assignedAddress: '22222',
     color: '#00FF00',
+    id: 'abdc',
     isFavorite: false,
     recipientAddress: '88888',
   },
@@ -44,6 +46,7 @@ const CONTACTS = [
     alias: 'Sierra Tango',
     assignedAddress: '33333',
     color: '#0000FF',
+    id: 'abdaa',
     isFavorite: true,
     recipientAddress: '77777',
   },
@@ -280,9 +283,7 @@ describe('Send Mob', () => {
 
     await waitFor(() => expect(saveToContactsCheck.disabled).not.toBeFalsy());
     await act(async () => userEvent.click(contactsSelect));
-    const klContact = container?.parentElement?.querySelector(
-      '[id="contact_22222"]'
-    ) as HTMLElement; // Kilo Lima
+    const klContact = container?.parentElement?.querySelector('[id="abdc"]') as HTMLElement; // Kilo Lima
     await waitFor(() => expect(klContact).toBeTruthy());
     await act(async () => userEvent.click(klContact));
     await waitFor(() => expect(saveToContactsCheck.disabled).toBeTruthy());

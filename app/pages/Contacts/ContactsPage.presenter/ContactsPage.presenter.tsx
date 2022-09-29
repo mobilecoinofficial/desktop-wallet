@@ -88,7 +88,7 @@ export const ContactsPage: FC = (): JSX.Element => {
     isFavorite,
     recipientAddress,
   }: Contact) => {
-    contacts[contacts.findIndex((c) => c.id === current.assignedAddress)] = {
+    contacts[contacts.findIndex((c) => c.id === current.id)] = {
       abbreviation,
       alias,
       assignedAddress: current.assignedAddress,

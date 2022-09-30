@@ -36,6 +36,7 @@ import { SubmitButton, MOBNumberFormat, QRScanner } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
 import { StarIcon, QRCodeIcon } from '../../../components/icons';
 import { TOKENS } from '../../../constants/tokens';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
 import {
@@ -46,7 +47,6 @@ import {
 } from '../../../utils/convertMob';
 import type { SendMobProps } from './SendMob.d';
 import { Showing } from './SendMob.d';
-import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: { width: 200 },
@@ -286,9 +286,7 @@ const SendMob: FC<SendMobProps> = ({
                             if (x.target.value !== NO_CONTACT_SELECTED) {
                               // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                               isChecked ? handleChecked() : null;
-                              const selectedContact = contacts.find(
-                                (z) => z.assignedAddress === x.target.value
-                              );
+                              const selectedContact = contacts.find((z) => z.id === x.target.value);
                               setFieldValue(
                                 'recipientPublicAddress',
                                 selectedContact?.recipientAddress
@@ -304,11 +302,7 @@ const SendMob: FC<SendMobProps> = ({
                             {t('pickContact')}
                           </MenuItem>
                           {sortedContacts.map((contact) => (
-                            <MenuItem
-                              value={contact.assignedAddress}
-                              id={`contact_${contact.assignedAddress}`}
-                              key={contact.assignedAddress || contact.recipientAddress}
-                            >
+                            <MenuItem value={contact.id} id={contact.id} key={contact.id}>
                               {contact.isFavorite ? (
                                 <ListItemIcon style={{ margin: '0px' }}>
                                   <StarIcon />

@@ -79,6 +79,8 @@ export const setEncryptedPin = (encryptedPin: SjclCipherEncrypted): void =>
 
 export const deleteEncryptedPin = (): void => store.delete(schemaKeys.ENCRYPTED_PIN);
 
+export const deleteContacts = (): void => store.delete(schemaKeys.ENCRYPTED_CONTACTS);
+
 export const getLeaveFullServiceRunning = (): boolean =>
   store.get(schemaKeys.LEAVE_FULL_SERVICE_RUNNING) as boolean;
 

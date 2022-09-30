@@ -3,8 +3,8 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
-import { MOBNumberFormat } from './MOBNumberFormat.view';
 import { TOKENS } from '../../constants/tokens';
+import { MOBNumberFormat } from './MOBNumberFormat.view';
 
 describe('MOBNumberFormat', () => {
   test('renders formatted pMob value', () => {

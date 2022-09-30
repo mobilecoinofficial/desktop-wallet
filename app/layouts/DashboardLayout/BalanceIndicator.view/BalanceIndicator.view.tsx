@@ -14,12 +14,12 @@ import {
 import { useTranslation } from 'react-i18next';
 
 import { MOBNumberFormat } from '../../../components';
-import { TOKENS } from '../../../constants/tokens';
 import { GOLD_LIGHT } from '../../../constants/colors';
+import { TOKENS } from '../../../constants/tokens';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { setTokenId } from '../../../redux/services';
 import { Theme } from '../../../theme';
 import { BalanceIndicatorProps } from './BalanceIndicator';
-import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   formControlLabel: {

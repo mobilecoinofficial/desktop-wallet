@@ -60,7 +60,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     direction,
     finalizedBlockIndex,
     assignedAddressId,
-    recipientAddressId,
+    address,
     outputTxoIds,
     value: transactionValue,
     tokenId,
@@ -121,11 +121,11 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
 
   const renderSenderOrReceiver = () => {
     let aliasOrAddress: string | ReactNode;
-    if (assignedAddressId || recipientAddressId) {
+    if (assignedAddressId || address) {
       aliasOrAddress = contact ? (
         contact.alias
       ) : (
-        <ShortCode code={assignedAddressId || recipientAddressId || ''} />
+        <ShortCode code={assignedAddressId || address || ''} />
       );
     } else {
       aliasOrAddress = (

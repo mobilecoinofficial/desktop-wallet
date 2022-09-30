@@ -22,18 +22,18 @@ function renderEUSDIcon({ color: _, ...rest }: IconProps): JSX.Element {
 }
 
 export const TOKENS: Record<string, Token> = {
-  MOB: {
-    id: 0,
-    precision: 1_000_000_000_000,
-    icon: renderMobIcon,
-    name: 'MOB',
-  },
   EUSD: {
     // TODO for testing we are using 8192 instead of 1
     // FIX-ME BEFORE MERGING INTO DEV, CHANGE THIS BACK TO 1
-    id: 8192,
-    precision: 1_000_000,
     icon: renderEUSDIcon,
+    id: 8192,
     name: 'eUSD',
+    precision: 1_000_000,
+  },
+  MOB: {
+    icon: renderMobIcon,
+    id: 0,
+    name: 'MOB',
+    precision: 1_000_000_000_000,
   },
 };

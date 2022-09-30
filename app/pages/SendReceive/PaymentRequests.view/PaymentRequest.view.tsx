@@ -21,12 +21,12 @@ import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { checkB58PaymentRequest } from '../../../services/checkB58PaymentRequest.service';
 import type { Theme } from '../../../theme';
 import type { StringB58 } from '../../../types/SpecialStrings.d';
 import { errorToString } from '../../../utils/errorHandler';
 import { PaymentRequestProps } from './PaymentRequest.d';
-import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

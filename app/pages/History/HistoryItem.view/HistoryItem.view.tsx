@@ -16,9 +16,9 @@ import { useTranslation } from 'react-i18next';
 import { ShortCode } from '../../../components/ShortCode';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import MOBIcon from '../../../components/icons/MOBIcon';
+import { TOKENS } from '../../../constants/tokens';
 import type { Theme } from '../../../theme';
 import type { HistoryItemProps } from './HistoryItem.d';
-import { TOKENS } from '../../../constants/tokens';
 
 const useStyles = makeStyles((theme: Theme) => ({
   action: { margin: 'unset' },
@@ -44,11 +44,10 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
   const { t } = useTranslation('HistoryView');
 
   const {
-    assignedAddressId,
     contact,
     direction,
     finalizedBlockIndex,
-    recipientAddressId,
+    address,
     // status, TODO - Add status state for "pending" or errors
     value,
     tokenId,
@@ -68,10 +67,10 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
       </Typography>
     );
     // Has a known address
-  } else if (assignedAddressId || recipientAddressId) {
+  } else if (address) {
     aliasOrAddress = (
       <Typography display="inline" color="textPrimary">
-        <ShortCode code={assignedAddressId || recipientAddressId || ''} />
+        <ShortCode code={address} />
       </Typography>
     );
     // Else it is an orphan

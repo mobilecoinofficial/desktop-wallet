@@ -46,12 +46,12 @@ const MOBNumberFormat = (props: MOBNumberFormatProps): JSX.Element => {
 };
 
 MOBNumberFormat.defaultProps = {
+  convert: true,
   inputRef: null,
   name: '',
   onChange: null,
   prefix: '',
   suffix: '',
-  convert: true,
 };
 
 export default MOBNumberFormat;

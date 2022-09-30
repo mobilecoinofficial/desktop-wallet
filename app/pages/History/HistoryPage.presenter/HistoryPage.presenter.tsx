@@ -10,13 +10,13 @@ import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
 import { getConfirmations, validateConfirmation } from '../../../fullService/api';
+import { useTransactionLogs } from '../../../hooks/useTransactionLogs';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { Confirmations } from '../../../types/Confirmation';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { errorToString } from '../../../utils/errorHandler';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
-import { useTransactionLogs } from '../../../hooks/useTransactionLogs';
 
 const HISTORY = 'history';
 const DETAILS = 'details';

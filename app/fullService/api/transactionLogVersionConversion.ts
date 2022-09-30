@@ -1,4 +1,4 @@
-import { StringB58 } from '../../types';
+import { Addresses, StringB58 } from '../../types';
 import type {
   TransactionLog,
   TransactionLogV2,
@@ -49,14 +49,13 @@ export function mapTxoV2ToAbbreviation(txo: TxoV2): TransactionAbbreviation {
 
 // all transaction logs are sent txos
 export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2): TransactionLog {
-  const assignedAddressId = v2TransactionLog.outputTxos[0].recipientPublicAddressB58;
   const direction = 'tx_direction_sent';
   // assuming one token type per transaction. safe assumption for now. Will not be at some point in the future
   const tokenId = Number(v2TransactionLog.outputTxos[0].amount.tokenId);
 
   return {
     accountId: v2TransactionLog.accountId,
-    assignedAddressId,
+    address: v2TransactionLog.outputTxos[0].recipientPublicAddressB58,
     changeTxoIds: v2TransactionLog.changeTxos.map((t) => t.txoIdHex),
     changeTxos: v2TransactionLog.changeTxos.map((t) => mapTxoToAbbreviation(t)),
     comment: v2TransactionLog.comment,
@@ -72,12 +71,11 @@ export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2):
     offsetCount: 0,
     outputTxoIds: v2TransactionLog.outputTxos.map((t) => t.txoIdHex),
     outputTxos: v2TransactionLog.outputTxos.map((t) => mapTxoToAbbreviation(t)),
-    recipientAddressId: assignedAddressId,
     sentTime: v2TransactionLog.sentTime,
     status: matchStatus(v2TransactionLog.status),
     submittedBlockIndex: v2TransactionLog.submittedBlockIndex,
-    transactionLogId: v2TransactionLog.id,
     tokenId,
+    transactionLogId: v2TransactionLog.id,
     value: v2TransactionLog.valueMap[tokenId],
   };
 }
@@ -101,11 +99,23 @@ export function convertTransactionLogsResponseFromV2(
 function convertTxoToTransactionLog(
   txo: TxoV2,
   accountId: StringB58,
-  address: StringB58
+  addresses: Addresses
 ): TransactionLog {
+  let address;
+  address = Object.values(addresses.addressMap).find(
+    (a) => a.subaddressIndex === txo.subaddressIndex
+  )?.publicAddressB58;
+
+  if (!address) {
+    console.warn(`no address match for subaddress index for txo id ${txo.id}`);
+    address =
+      Object.values(addresses.addressMap).find((a) => a.subaddressIndex === '0')
+        ?.publicAddressB58 || '';
+  }
+
   return {
     accountId,
-    assignedAddressId: address,
+    address,
     changeTxoIds: [],
     changeTxos: [],
     comment: '',
@@ -121,13 +131,12 @@ function convertTxoToTransactionLog(
     offsetCount: 0,
     outputTxoIds: [txo.id],
     outputTxos: [mapTxoV2ToAbbreviation(txo)],
-    recipientAddressId: address,
     sentTime: null,
     status: matchStatus(txo.status),
-    submittedBlockIndex: null,
     subaddressIndex: txo.subaddressIndex,
-    transactionLogId: txo.id,
+    submittedBlockIndex: null,
     tokenId: Number(txo.tokenId),
+    transactionLogId: txo.id,
     value: txo.value,
   };
 }
@@ -135,14 +144,14 @@ function convertTxoToTransactionLog(
 export function convertTxosToTransactionLogs(
   txos: TxosV2,
   accountId: StringB58,
-  address: StringB58
+  addresses: Addresses
 ): TransactionLogs {
   return {
     transactionLogIds: txos.txoIds,
     transactionLogMap: txos.txoIds.reduce(
       (accum: { [transactionLogId: string]: TransactionLog }, key) => ({
         ...accum,
-        [key]: convertTxoToTransactionLog(txos.txoMap[key], accountId, address),
+        [key]: convertTxoToTransactionLog(txos.txoMap[key], accountId, addresses),
       }),
       {}
     ),

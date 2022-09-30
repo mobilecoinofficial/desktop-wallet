@@ -15,10 +15,6 @@ type GetBalanceResult = {
 export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatus {
   return {
     accountBlockHeight: accountStatus.account.nextBlockIndex,
-    isSynced:
-      Number(accountStatus.account.nextBlockIndex) >= Number(accountStatus.networkBlockHeight),
-    localBlockHeight: accountStatus.localBlockHeight,
-    networkBlockHeight: accountStatus.networkBlockHeight,
     balancePerToken: {
       [TOKENS.MOB.id]: {
         orphanedPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.orphaned || '0',
@@ -35,6 +31,10 @@ export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatu
         unspentPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.unspent || '0',
       },
     },
+    isSynced:
+      Number(accountStatus.account.nextBlockIndex) >= Number(accountStatus.networkBlockHeight),
+    localBlockHeight: accountStatus.localBlockHeight,
+    networkBlockHeight: accountStatus.networkBlockHeight,
   };
 }
 

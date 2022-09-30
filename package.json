@@ -234,6 +234,7 @@
     "@types/redux-logger": "^3.0.9",
     "@types/sjcl": "^1.0.30",
     "@types/testing-library__jest-dom": "^5.14.0",
+    "@types/uuid": "^8.3.4",
     "@types/webpack": "^5.28.0",
     "@types/webpack-env": "^1.16.2",
     "@types/yup": "^0.29.13",
@@ -332,6 +333,7 @@
     "snakecase-keys": "^4.0.2",
     "source-map-support": "^0.5.19",
     "util.promisify": "^1.0.1",
+    "uuid": "^9.0.0",
     "yup": "^0.32.8"
   },
   "devEngines": {

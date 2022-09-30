@@ -43,6 +43,7 @@ export const ContactsPage: FC = (): JSX.Element => {
     alias,
     color,
     isFavorite,
+    id,
     recipientAddress,
   }: Contact) => {
     const result = await assignAddressForAccount(
@@ -53,8 +54,9 @@ export const ContactsPage: FC = (): JSX.Element => {
     contacts.push({
       abbreviation,
       alias,
-      assignedAddress: result.address.public_address_b58,
+      assignedAddress: result.address.publicAddressB58,
       color,
+      id,
       isFavorite,
       recipientAddress,
     });
@@ -65,7 +67,7 @@ export const ContactsPage: FC = (): JSX.Element => {
 
   const deleteContact = async () => {
     contacts.splice(
-      contacts.findIndex((x) => x.assignedAddress === current.assignedAddress),
+      contacts.findIndex((c) => c.id === current.id),
       1
     );
     await updateContacts(contacts);
@@ -73,8 +75,8 @@ export const ContactsPage: FC = (): JSX.Element => {
     enqueueSnackbar(t('removed'), { variant: 'success' });
   };
 
-  const editContact = (idToEdit: string) => {
-    setCurrent(sortedContacts.find((x) => x.recipientAddress === idToEdit) as Contact);
+  const editContact = (id: string) => {
+    setCurrent(sortedContacts.find((c) => c.id === id) as Contact);
     setStatus(PAGE.EDIT);
   };
 
@@ -82,14 +84,16 @@ export const ContactsPage: FC = (): JSX.Element => {
     abbreviation,
     alias,
     color,
+    id,
     isFavorite,
     recipientAddress,
   }: Contact) => {
-    contacts[contacts.findIndex((x) => x.assignedAddress === current.assignedAddress)] = {
+    contacts[contacts.findIndex((c) => c.id === current.id)] = {
       abbreviation,
       alias,
       assignedAddress: current.assignedAddress,
       color: color || randomColor(),
+      id,
       isFavorite,
       recipientAddress,
     };
@@ -116,6 +120,7 @@ export const ContactsPage: FC = (): JSX.Element => {
     case PAGE.EDIT:
       return (
         <ContactForm
+          id={current.id}
           abbreviation={current.abbreviation}
           alias={current.alias}
           assignedAddress={current.assignedAddress}

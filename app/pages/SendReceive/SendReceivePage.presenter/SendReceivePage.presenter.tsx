@@ -6,7 +6,9 @@ import { clipboard, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { updateContacts } from '../../../redux/services';
 import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
@@ -19,7 +21,6 @@ import isSyncedBuffered from '../../../utils/isSyncedBuffered';
 import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
-import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 interface TxConfirmation {
   feeConfirmation: bigint;
@@ -94,8 +95,9 @@ export const SendReceivePage: FC = (): JSX.Element => {
     contacts.push({
       abbreviation: formAlias[0].toUpperCase(),
       alias: formAlias,
-      assignedAddress: result.address.public_address_b58,
+      assignedAddress: result.address.publicAddressB58,
       color: randomColor(),
+      id: uuidv4(),
       isFavorite: false,
       recipientAddress: formRecipientPublicAddress,
     });

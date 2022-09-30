@@ -20,13 +20,13 @@ import * as Yup from 'yup';
 import { MOBNumberFormat, SubmitButton } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
 import { isValidPin } from '../../../utils/isValidPin';
 import { SetPinModalProps } from './SetPinModal';
-import { useCurrentToken } from '../../../hooks/useCurrentToken';
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: {

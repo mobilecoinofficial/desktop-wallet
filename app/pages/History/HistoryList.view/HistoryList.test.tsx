@@ -24,9 +24,9 @@ describe('History list', () => {
               direction: 'tx_direction_sent',
               finalizedBlockIndex: '123456',
               recipientAddressId: null,
+              tokenId: 0,
               transactionLogId: '123456',
               value: '220960000000',
-              tokenId: 0,
             } as TransactionLog,
             {
               assignedAddressId: 'LMNTARYWATSON',
@@ -34,9 +34,9 @@ describe('History list', () => {
               direction: 'tx_direction_received',
               finalizedBlockIndex: '345678',
               recipientAddressId: '101010101010101',
+              tokenId: 0,
               transactionLogId: '789012',
               value: '31415926',
-              tokenId: 0,
             } as TransactionLog,
           ]}
           onTransactionClick={handleClick}

@@ -19,6 +19,7 @@ describe('Contacts list', () => {
             abbreviation: 'F1',
             alias: 'Foxtrot Golf',
             color: '#FF0000',
+            id: 'abd',
             isFavorite: true,
             recipientAddress: '11111',
           },
@@ -26,6 +27,7 @@ describe('Contacts list', () => {
             abbreviation: 'K2',
             alias: 'Kilo Lima',
             color: '#00FF00',
+            id: 'abdasd',
             isFavorite: false,
             recipientAddress: '22222',
           },
@@ -33,6 +35,7 @@ describe('Contacts list', () => {
             abbreviation: 'ST',
             alias: 'Sierra Tango',
             color: '#0000FF',
+            id: 'abdasdasd',
             isFavorite: true,
             recipientAddress: '33333',
           },
@@ -51,13 +54,13 @@ describe('Contacts list', () => {
     expect(container.innerHTML.includes('ST')).toBeTruthy();
 
     await act(async () => userEvent.click(screen.getByText('Foxtrot Golf')));
-    expect(handleEditClick).toHaveBeenCalledWith('11111');
+    expect(handleEditClick).toHaveBeenCalledWith('abd');
 
     await act(async () => userEvent.click(screen.getByText('Kilo Lima')));
-    expect(handleEditClick).toHaveBeenCalledWith('22222');
+    expect(handleEditClick).toHaveBeenCalledWith('abdasd');
 
     await act(async () => userEvent.click(screen.getByText('Sierra Tango')));
-    expect(handleEditClick).toHaveBeenCalledWith('33333');
+    expect(handleEditClick).toHaveBeenCalledWith('abdasdasd');
 
     await act(async () => userEvent.click(screen.getByText('+')));
     expect(handleAddClick).toHaveBeenCalledTimes(1);

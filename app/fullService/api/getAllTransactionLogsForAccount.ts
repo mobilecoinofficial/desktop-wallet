@@ -1,7 +1,7 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
 import type { TransactionLogs, TransactionLogsFromV2 } from '../../types/TransactionLog.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
-import getAccount from './getAccount';
+import getAllAddressesForAccount from './getAllAddressesForAccount';
 import { getTxosV2 } from './getAllTxosForAccount';
 import {
   convertTransactionLogsResponseFromV2,
@@ -20,9 +20,7 @@ type GetAllTransactionLogsForAccountResult = TransactionLogs;
 const getAllTransactionLogsForAccount = async ({
   accountId,
 }: GetAllTransactionLogsForAccountParams): Promise<GetAllTransactionLogsForAccountResult> => {
-  const account = await getAccount({ accountId });
-  const address = account.account.mainAddress;
-
+  const addresses = await getAllAddressesForAccount({ accountId });
   const { result, error }: AxiosFullServiceResponse<TransactionLogsFromV2> = await axiosFullService(
     GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT_METHOD,
     {
@@ -39,7 +37,7 @@ const getAllTransactionLogsForAccount = async ({
   const txos = await getTxosV2({ accountId });
   // fetching txos and converting them to transaction logs for the tx history
   // might be better to refactor and create a history item derrivable from either
-  const convertedTxos: TransactionLogs = convertTxosToTransactionLogs(txos, accountId, address);
+  const convertedTxos: TransactionLogs = convertTxosToTransactionLogs(txos, accountId, addresses);
   const logs = convertTransactionLogsResponseFromV2(result);
 
   return {

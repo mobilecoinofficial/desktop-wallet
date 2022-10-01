@@ -16,6 +16,7 @@ import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { errorToString } from '../../../utils/errorHandler';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
+import { getValuesFromArgTypes } from '@storybook/store';
 
 const HISTORY = 'history';
 const DETAILS = 'details';
@@ -34,9 +35,24 @@ export const HistoryPage: FC = (): JSX.Element => {
 
   const buildList = (): TransactionLog[] => {
     if (transactionLogs) {
+
+      let changeAddressId = "None";
+      let legacyChangeAddressId = "None";
+
+      let myAddresses = Object.values(addresses.addressMap)
+      myAddresses.forEach((address) => {
+        if (address.subaddressIndex == "18446744073709551614") {
+          changeAddressId = address.publicAddress;
+        }
+        if (address.subaddressIndex == "1") {
+          legacyChangeAddressId = address.publicAddress;
+        }
+      });
+
       return transactionLogs.transactionLogIds
         .map((id) => transactionLogs.transactionLogMap[id])
-        .filter((transactionLog) => transactionLog.assignedAddressId !== addresses.addressIds[1])
+        .filter((transactionLog) => transactionLog.assignedAddressId !== legacyChangeAddressId)
+        .filter((transactionLog) => transactionLog.assignedAddressId !== changeAddressId)
         .map((transactionLog) => {
           // If any transaction is associated to a contact, let's attach the contact object.
           // TODO - we can improve this greatly by changing how this information is stored.

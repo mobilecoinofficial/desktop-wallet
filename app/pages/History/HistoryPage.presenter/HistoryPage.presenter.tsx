@@ -39,6 +39,9 @@ export const HistoryPage: FC = (): JSX.Element => {
       let legacyChangeAddressId = "None";
 
       let myAddresses = Object.values(addresses.addressMap)
+      // find the public addresses for this account that correspond to the current and legacy change addresses.
+      // for all accounts, the current change address is at subaddress index 18446744073709551614 (largest u64 minus 1)
+      // for all accounts, the legacy change address is at subaddress index 1
       myAddresses.forEach((address) => {
         if (address.subaddressIndex == "18446744073709551614") {
           changeAddressId = address.publicAddress;

@@ -16,7 +16,6 @@ import type { TransactionLog } from '../../../types/TransactionLog.d';
 import { errorToString } from '../../../utils/errorHandler';
 import { HistoryList } from '../HistoryList.view';
 import { TransactionDetails } from '../TransactionDetails.view';
-import { getValuesFromArgTypes } from '@storybook/store';
 
 const HISTORY = 'history';
 const DETAILS = 'details';

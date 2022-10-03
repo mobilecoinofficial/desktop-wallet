@@ -107,7 +107,7 @@ const defaultTemplate = (app, mainWindow, i18n) => {
   submenuViewProd.submenu.push({ type: 'separator' });
   submenuViewProd.submenu.push({
     accelerator: 'Alt+Command+C',
-    click: () => clipboard.writeText(localStore.apiKey),
+    click: () => clipboard.writeText(localStore.getAPIKey()),
     label: 'Copy full-service Api Key',
   });
 

@@ -2,6 +2,7 @@ import * as fs from 'fs';
 
 import Store from 'electron-store';
 import { SjclCipherEncrypted } from 'sjcl';
+import { v4 as uuidv4 } from 'uuid';
 
 import type { StringUInt64 } from '../types/SpecialStrings.d';
 
@@ -12,6 +13,7 @@ interface LocalStoreSchema {
 const STORE_NAME = 'mobilecoin_config';
 
 export const schemaKeys = {
+  API_KEY: 'apiKey',
   ENCRYPTED_CONTACTS: 'encryptedContacts',
   ENCRYPTED_PASSPHRASE: 'encryptedPassphrase',
   ENCRYPTED_PIN: 'encryptedPin',
@@ -30,6 +32,7 @@ export const schemaKeys = {
 };
 
 export const schema: LocalStoreSchema = {
+  [schemaKeys.API_KEY]: { type: 'string' },
   [schemaKeys.ENCRYPTED_CONTACTS]: { type: 'string' },
   [schemaKeys.ENCRYPTED_PASSPHRASE]: { type: 'string' },
   [schemaKeys.ENCRYPTED_PIN]: { type: 'string' },
@@ -47,7 +50,13 @@ export const schema: LocalStoreSchema = {
   [schemaKeys.THEME]: { type: 'string' },
 };
 
-let store = new Store({ name: STORE_NAME, schema });
+let store = new Store({
+  defaults: {
+    [schemaKeys.API_KEY]: uuidv4(),
+  },
+  name: STORE_NAME,
+  schema,
+});
 
 export const setStore = (newStore: Store): void => {
   store = newStore;
@@ -151,3 +160,5 @@ export const setSalt = (salt: string): void => store.set(schemaKeys.SALT, salt);
 
 export const setTheme = (theme: 'system' | 'light' | 'dark'): void =>
   store.set(schemaKeys.THEME, theme);
+
+export const getAPIKey = (): string => store.get(schemaKeys.API_KEY) as string;

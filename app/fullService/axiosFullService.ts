@@ -2,6 +2,7 @@ import axios from 'axios';
 import type { AxiosResponse } from 'axios';
 import snakeCaseKeys from 'snakecase-keys';
 
+import * as localStore from '../utils/LocalStore';
 import { errorToString } from '../utils/errorHandler';
 import { camelCaseObjectKeys } from './utils/camelCase';
 
@@ -37,7 +38,7 @@ const axiosFullService = async <T>(
   const baseURLVersion = apiVersion === 'v1' ? '' : '/v2';
   const axiosInstance = axios.create({
     baseURL: `http://localhost:9090/wallet${baseURLVersion}`,
-    headers: { 'Content-type': 'application/json' },
+    headers: { 'Content-type': 'application/json', 'X-API-KEY': localStore.getAPIKey() },
     method: 'post',
   });
   axiosInstance.interceptors.response.use(handleResponse, handleError);

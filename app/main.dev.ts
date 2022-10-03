@@ -35,6 +35,10 @@ import { initLog, writeLog } from './utils/logger';
 
 initializeAutoUpdater();
 
+// Kill any instance of full service running when starting the app. This will make sure
+// that the app starts with the correct version of full service when there is an update.
+exec('pkill -f full-service');
+
 export default class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -103,6 +107,7 @@ const startFullService = (
       fullServiceLedgerDBPath,
       fullServiceWalletDBPath,
       [fullServiceWalletDBPath, 'wallet.db'].join('/'),
+      localStore.getAPIKey(),
     ],
     options
   );

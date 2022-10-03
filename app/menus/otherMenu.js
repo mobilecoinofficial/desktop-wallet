@@ -1,4 +1,4 @@
-import { shell, nativeTheme, BrowserWindow } from 'electron';
+import { clipboard, shell, nativeTheme, BrowserWindow } from 'electron';
 
 import config from '../../configs/app.config';
 import { version } from '../../package.json';
@@ -130,6 +130,13 @@ const defaultTemplate = (app, mainWindow, i18n) => {
       label: 'Reload',
     });
   }
+
+  submenuViewProd.submenu.push({ type: 'separator' });
+  submenuViewProd.submenu.push({
+    accelerator: 'Alt+Command+C',
+    click: () => clipboard.writeText(localStore.apiKey),
+    label: 'Copy full-service API key',
+  });
 
   const submenuWindow = {
     label: i18n.t('Menu.window'),

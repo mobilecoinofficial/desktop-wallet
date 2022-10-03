@@ -22,8 +22,7 @@ const HISTORY = 'history';
 const DETAILS = 'details';
 
 export const HistoryPage: FC = (): JSX.Element => {
-  const { selectedAccount, transactionLogs } = useSelector((state: ReduxStoreState) => state);
-
+  const { selectedAccount } = useSelector((state: ReduxStoreState) => state);
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [txoValidations, setTxoValidations] = useState({});
   const [showing, setShowing] = useState(HISTORY);
@@ -82,11 +81,11 @@ export const HistoryPage: FC = (): JSX.Element => {
   };
   // CREATE VIEW
 
-  if (transactionLogs === null) {
+  if (logs === null) {
     return <LoadingScreen />;
   }
 
-  if (transactionLogs.transactionLogIds.length === 0) {
+  if (logs.length === 0) {
     return (
       <Box display="flex" justifyContent="center">
         <Typography color="primary">{t('emptyState')}</Typography>

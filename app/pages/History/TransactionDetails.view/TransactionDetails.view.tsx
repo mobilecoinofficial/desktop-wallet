@@ -121,7 +121,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
   const renderSenderOrReceiver = () => {
     let aliasOrAddress: string | ReactNode;
     if (address) {
-      aliasOrAddress = contact ? contact.alias : <ShortCode code={address || ''} />;
+      aliasOrAddress = contact ? contact.alias : <ShortCode code={address} />;
     } else {
       aliasOrAddress = (
         <Typography className={classes?.negative} display="inline">

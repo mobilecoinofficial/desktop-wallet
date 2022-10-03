@@ -59,7 +59,6 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     contact,
     direction,
     finalizedBlockIndex,
-    assignedAddressId,
     address,
     outputTxoIds,
     value: transactionValue,
@@ -121,12 +120,8 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
 
   const renderSenderOrReceiver = () => {
     let aliasOrAddress: string | ReactNode;
-    if (assignedAddressId || address) {
-      aliasOrAddress = contact ? (
-        contact.alias
-      ) : (
-        <ShortCode code={assignedAddressId || address || ''} />
-      );
+    if (address) {
+      aliasOrAddress = contact ? contact.alias : <ShortCode code={address || ''} />;
     } else {
       aliasOrAddress = (
         <Typography className={classes?.negative} display="inline">
@@ -176,7 +171,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
         </CardContent>
       </Card>
 
-      {sign === '+' && !assignedAddressId && (
+      {sign === '+' && !address && (
         <Card className={classes.card}>
           <Typography variant="body2" className={classes?.negative}>
             {t('orphanedTitle')}

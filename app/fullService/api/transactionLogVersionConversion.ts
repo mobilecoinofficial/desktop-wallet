@@ -18,6 +18,8 @@ export function matchStatus(status: string): Status {
       return 'tx_status_succeded';
     case 'pending':
       return 'tx_status_pending';
+    case 'spent':
+      return 'tx_status_spent';
     case 'failed':
       return 'tx_status_failed';
     default:
@@ -39,9 +41,9 @@ export function mapTxoToAbbreviation(txo: InputTxo | OutputTxo): TransactionAbbr
   };
 }
 
-export function mapTxoV2ToAbbreviation(txo: TxoV2): TransactionAbbreviation {
+export function mapTxoV2ToAbbreviation(txo: TxoV2, address: string): TransactionAbbreviation {
   return {
-    recipientAddressId: null,
+    recipientAddressId: address,
     txoIdHex: txo.id,
     valuePmob: txo.value,
   };
@@ -130,7 +132,7 @@ function convertTxoToTransactionLog(
     object: 'transaction_log',
     offsetCount: 0,
     outputTxoIds: [txo.id],
-    outputTxos: [mapTxoV2ToAbbreviation(txo)],
+    outputTxos: [mapTxoV2ToAbbreviation(txo, address)],
     sentTime: null,
     status: matchStatus(txo.status),
     subaddressIndex: txo.subaddressIndex,

@@ -23,10 +23,8 @@ function renderEUSDIcon({ color: _, ...rest }: IconProps): JSX.Element {
 
 export const TOKENS: Record<string, Token> = {
   EUSD: {
-    // TODO for testing we are using 8192 instead of 1
-    // FIX-ME BEFORE MERGING INTO DEV, CHANGE THIS BACK TO 1
     icon: renderEUSDIcon,
-    id: 8192,
+    id: 1,
     name: 'eUSD',
     precision: 1_000_000,
   },

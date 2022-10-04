@@ -253,12 +253,14 @@ export const AuthPage: FC = (): JSX.Element => {
         <Card className={classes.cardContainer}>
           {selectedView === 1 && <CreateAccountView onClickCreate={onClickCreate} />}
           {selectedView === 2 && <ImportAccountView onClickImport={onClickImport} />}
+          {/* {selectedView === 3 && <ImportViewOnlyAccountView />} */}
           <Box my={3}>
             <Divider />
           </Box>
 
           {optButton(1, t('createInstead'))}
           {optButton(2, t('importInstead'))}
+          {optButton(3, 'Import View Only Account')}
           {addingAccount ? <Button onClick={onClickCancel}>Cancel</Button> : <></>}
         </Card>
       </Container>

@@ -3,13 +3,15 @@ import type { FC } from 'react';
 
 import {
   Avatar,
+  Button,
   Card,
   CardActionArea,
   CardHeader,
   Grid,
   makeStyles,
-  Button,
+  Tooltip,
 } from '@material-ui/core';
+import SupervisorAccountOutlinedIcon from '@material-ui/icons/SupervisorAccountOutlined';
 
 import { ShortCode } from '../../../../components/ShortCode';
 import { MOBIcon, TrashcanIcon } from '../../../../components/icons';
@@ -19,6 +21,12 @@ import type { AccountItemProps } from './AccountItem';
 const useStyles = makeStyles((theme: Theme) => ({
   action: { margin: 'unset' },
   card: {
+    color: theme.palette.text.secondary,
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  cardSelected: {
+    border: '1px solid white',
     color: theme.palette.text.secondary,
     display: 'flex',
     flexDirection: 'row',
@@ -38,6 +46,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const AccountItem: FC<AccountItemProps> = ({
   account,
   onClick,
+  onClickExport,
   onDelete,
   selected,
 }: AccountItemProps) => {
@@ -45,7 +54,7 @@ const AccountItem: FC<AccountItemProps> = ({
 
   return (
     <Grid item xs={12}>
-      <Card className={classes.card}>
+      <Card className={selected ? classes.cardSelected : classes.card}>
         <CardActionArea onClick={onClick} name="accountCard">
           <CardHeader
             avatar={
@@ -60,6 +69,11 @@ const AccountItem: FC<AccountItemProps> = ({
             }}
           />
         </CardActionArea>
+        <Tooltip title="copy view only account import request to clipboard">
+          <Button onClick={onClickExport} name="exportViewOnlyButton">
+            <SupervisorAccountOutlinedIcon />
+          </Button>
+        </Tooltip>
         <Button onClick={onDelete} disabled={selected} name="deleteButton">
           <TrashcanIcon color={selected ? 'grey' : 'red'} />
         </Button>

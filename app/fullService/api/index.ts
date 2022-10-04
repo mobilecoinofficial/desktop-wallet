@@ -28,3 +28,4 @@ export { default as submitGiftCode } from './submitGiftCode';
 export { default as submitTransaction } from './submitTransaction';
 export { default as updateAccountName } from './updateAccountName';
 export { default as validateConfirmation } from './validateConfirmation';
+export { default as getViewOnlyAccountImportRequest } from './getViewOnlyAccountImportRequest';

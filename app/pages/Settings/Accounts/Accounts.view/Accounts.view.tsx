@@ -13,8 +13,10 @@ import {
   Fab,
   Dialog,
 } from '@material-ui/core';
+import { clipboard } from 'electron';
 import { useTranslation } from 'react-i18next';
 
+import { getViewOnlyAccountImportRequest } from '../../../../fullService/api';
 import type { Theme } from '../../../../theme';
 import { AccountItem } from '../AccountItem.view';
 import { DeleteAccountConfirmationView } from '../DeleteAccountConfirmation.view';
@@ -92,6 +94,13 @@ const AccountsView: FC<AccountsViewProps> = ({
   const pageBack = () => setFirstToShow(firstToShow - 5);
   const pageForward = () => setFirstToShow(firstToShow + 5);
 
+  const getViewOnlyImport = async () => {
+    const response = await getViewOnlyAccountImportRequest({
+      accountId: selectedAccount.account.accountId,
+    });
+    clipboard.writeText(JSON.stringify(response));
+  };
+
   const handleOpenDeleteAccountConfirmation = (accountId: string) => {
     setAccountIdToDelete(accountId);
     const { mainAddress } = accounts.accountMap[accountId];
@@ -124,6 +133,7 @@ const AccountsView: FC<AccountsViewProps> = ({
               key={accountId}
               account={accounts.accountMap[accountId]}
               onClick={() => selectAccount(accountId)}
+              onClickExport={getViewOnlyImport}
               onDelete={() => handleOpenDeleteAccountConfirmation(accountId)}
               selected={selectedAccount.account.accountId === accountId}
             />

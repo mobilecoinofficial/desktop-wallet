@@ -57,6 +57,15 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
     ipcRenderer.invoke('import-ledger-db');
   };
 
+  const accountBalance = selectedAccount.balanceStatus.balancePerToken[tokenId];
+  const balance = selectedAccount.account.viewOnly
+    ? (
+        Number(accountBalance.unspentPmob) +
+        Number(accountBalance.unverifiedPmob) -
+        Number(accountBalance.spentPmob)
+      ).toString()
+    : accountBalance.unspentPmob;
+
   return (
     <Box className={classes.root}>
       <TopBar />
@@ -73,10 +82,11 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
             sendSyncStatus={sendSyncStatus}
           />
           <BalanceIndicator
-            balance={selectedAccount.balanceStatus.balancePerToken[tokenId].unspentPmob}
+            balance={balance}
             importLedger={importLedger}
             isSynced={selectedAccount.balanceStatus.isSynced}
             offlineModeEnabled={offlineModeEnabled}
+            viewOnly={selectedAccount.account.viewOnly}
           />
         </Box>
         <Box className={classes.contentContainer}>

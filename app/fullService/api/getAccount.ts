@@ -22,6 +22,7 @@ export function convertAccountV2(account: AccountV2): Account {
     name: account.name,
     nextSubaddressIndex: account.nextSubaddressIndex,
     recoveryMode: account.recoveryMode,
+    viewOnly: account.viewOnly,
   };
 }
 

@@ -1,12 +1,13 @@
 // import { TOKENS } from '../constants/tokens';
 import type { StringUInt64 } from './SpecialStrings';
 
-type Balance = {
+export type Balance = {
   orphanedPmob: StringUInt64;
   pendingPmob: StringUInt64;
   secretedPmob: StringUInt64;
   spentPmob: StringUInt64;
   unspentPmob: StringUInt64;
+  unverifiedPmob: StringUInt64;
 };
 
 export interface BalanceStatus {

@@ -17,7 +17,7 @@
   },
   "AuthPage": {
     "createInstead": "Create account instead",
-    "importInstead": "Import account instead",
+    "importInstead": "Import account",
     "unlockInstead": "Unlock account instead"
   },
   "BalanceIndicator": {

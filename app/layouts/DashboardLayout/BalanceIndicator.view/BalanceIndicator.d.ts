@@ -3,4 +3,5 @@ export interface BalanceIndicatorProps {
   importLedger: () => void;
   isSynced: boolean;
   offlineModeEnabled: boolean;
+  viewOnly: boolean;
 }

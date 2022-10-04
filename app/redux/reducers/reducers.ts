@@ -101,6 +101,7 @@ export const initialReduxStoreState: ReduxStoreState = {
       name: '',
       nextSubaddressIndex: '',
       recoveryMode: false,
+      viewOnly: false,
     },
     balanceStatus: {
       balancePerToken: {
@@ -110,6 +111,7 @@ export const initialReduxStoreState: ReduxStoreState = {
           secretedPmob: '',
           spentPmob: '',
           unspentPmob: '',
+          unverifiedPmob: '',
         },
         [TOKENS.EUSD.id]: {
           orphanedPmob: '',
@@ -117,6 +119,7 @@ export const initialReduxStoreState: ReduxStoreState = {
           secretedPmob: '',
           spentPmob: '',
           unspentPmob: '',
+          unverifiedPmob: '',
         },
       },
       isSynced: false,
@@ -133,6 +136,7 @@ export const initialReduxStoreState: ReduxStoreState = {
         secretedPmob: '',
         spentPmob: '',
         unspentPmob: '',
+        unverifiedPmob: '',
       },
       [TOKENS.EUSD.id]: {
         orphanedPmob: '',
@@ -140,6 +144,7 @@ export const initialReduxStoreState: ReduxStoreState = {
         secretedPmob: '',
         spentPmob: '',
         unspentPmob: '',
+        unverifiedPmob: '',
       },
     },
     isSyncedAll: false,

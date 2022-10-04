@@ -18,6 +18,7 @@ function convertWalletStatusFromV2(status: WalletStatusV2): GetWalletStatusResul
           secretedPmob: status.balancePerToken[TOKENS.MOB.id]?.secreted || '0',
           spentPmob: status.balancePerToken[TOKENS.MOB.id]?.spent || '0',
           unspentPmob: status.balancePerToken[TOKENS.MOB.id]?.unspent || '0',
+          unverified: status.balancePerToken[TOKENS.MOB.id]?.unverified || '0',
         },
         [TOKENS.EUSD.id]: {
           orphanedPmob: status.balancePerToken[TOKENS.EUSD.id]?.orphaned || '0',
@@ -25,6 +26,7 @@ function convertWalletStatusFromV2(status: WalletStatusV2): GetWalletStatusResul
           secretedPmob: status.balancePerToken[TOKENS.EUSD.id]?.secreted || '0',
           spentPmob: status.balancePerToken[TOKENS.EUSD.id]?.spent || '0',
           unspentPmob: status.balancePerToken[TOKENS.EUSD.id]?.unspent || '0',
+          unverified: status.balancePerToken[TOKENS.EUSD.id]?.unverified || '0',
         },
       },
       isSyncedAll: status.isSyncedAll,

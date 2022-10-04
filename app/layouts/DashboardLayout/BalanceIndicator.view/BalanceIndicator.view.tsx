@@ -10,7 +10,9 @@ import {
   Select,
   MenuItem,
   ListItemIcon,
+  Tooltip,
 } from '@material-ui/core';
+import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -59,6 +61,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   importLedger,
   isSynced,
   offlineModeEnabled,
+  viewOnly,
 }: BalanceIndicatorProps) => {
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
@@ -101,7 +104,14 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         <Typography data-testid="balance-figure" variant="h3" color="textPrimary">
           <MOBNumberFormat token={token} value={balance} />
         </Typography>
+
+        {viewOnly && (
+          <Tooltip title="The balance for a view only account may not reflect all spent transactions. Learn more at ....">
+            <InfoOutlinedIcon htmlColor={GOLD_LIGHT} style={{ marginLeft: 8 }} />
+          </Tooltip>
+        )}
       </Box>
+
       {!isSynced && !offlineModeEnabled && (
         <Typography data-testid="balance-sync-message" variant="h6">
           <span style={{ color: GOLD_LIGHT }}>{t('syncMessage')}</span>

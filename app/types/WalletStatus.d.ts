@@ -1,12 +1,5 @@
+import { Balance } from './BalanceStatus.d';
 import type { StringUInt64 } from './SpecialStrings';
-
-type Balance = {
-  orphanedPmob: StringUInt64;
-  pendingPmob: StringUInt64;
-  secretedPmob: StringUInt64;
-  spentPmob: StringUInt64;
-  unspentPmob: StringUInt64;
-};
 
 export interface WalletStatus {
   isSyncedAll: boolean;

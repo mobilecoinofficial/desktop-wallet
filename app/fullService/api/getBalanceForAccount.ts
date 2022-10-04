@@ -22,6 +22,7 @@ export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatu
         secretedPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.secreted || '0',
         spentPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.spent || '0',
         unspentPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.unspent || '0',
+        unverifiedPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.unverified || '0',
       },
       [TOKENS.EUSD.id]: {
         orphanedPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.orphaned || '0',
@@ -29,6 +30,7 @@ export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatu
         secretedPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.secreted || '0',
         spentPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.spent || '0',
         unspentPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.unspent || '0',
+        unverifiedPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.unverified || '0',
       },
     },
     isSynced:

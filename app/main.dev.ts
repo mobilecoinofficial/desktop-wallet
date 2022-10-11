@@ -23,6 +23,7 @@ import installExtension, {
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
+import snakeCaseKeys from 'snakecase-keys';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
@@ -449,12 +450,22 @@ ipcMain.handle('save-view-only-sync-request', (_event, syncRequest) => {
     defaultPath: 'view_only_sync_request.json',
   });
 
-  if (filePath === undefined) {
+  if (!filePath) {
     return false;
   }
 
-  fs.writeFileSync(filePath, JSON.stringify(syncRequest));
+  fs.writeFileSync(filePath, JSON.stringify(snakeCaseKeys(syncRequest)));
   return true;
+});
+
+ipcMain.handle('import-view-only-sync', () => {
+  const syncPath = dialog.showOpenDialogSync(mainWindow);
+  if (!syncPath) {
+    return false;
+  }
+  console.log(syncPath);
+  const fileText = fs.readFileSync(syncPath[0]);
+  return fileText.toString();
 });
 
 ipcMain.handle('export-transaction-history', (_event, transactionLogs) => {

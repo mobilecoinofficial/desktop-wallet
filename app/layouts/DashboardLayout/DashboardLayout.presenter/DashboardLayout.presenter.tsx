@@ -59,11 +59,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
 
   const accountBalance = selectedAccount.balanceStatus.balancePerToken[tokenId];
   const balance = selectedAccount.account.viewOnly
-    ? (
-        Number(accountBalance.unspentPmob) +
-        Number(accountBalance.unverifiedPmob) -
-        Number(accountBalance.spentPmob)
-      ).toString()
+    ? (Number(accountBalance.unspentPmob) + Number(accountBalance.unverifiedPmob)).toString()
     : accountBalance.unspentPmob;
 
   return (

@@ -5,6 +5,7 @@ export interface AccountItemProps {
   onClick: () => void;
   onClickExport: () => void;
   onClickSyncExport: () => void;
+  onClickSyncImport: () => void;
   onDelete: () => void;
   selected: boolean;
 }

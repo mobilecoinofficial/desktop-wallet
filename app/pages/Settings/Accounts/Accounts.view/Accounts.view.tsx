@@ -82,6 +82,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const AccountsView: FC<AccountsViewProps> = ({
   accounts,
   deleteAccount,
+  importViewOnlySync,
   onClickAddAccount,
   onClickBack,
   saveViewOnlySyncRequest,
@@ -146,6 +147,7 @@ const AccountsView: FC<AccountsViewProps> = ({
               onClick={() => selectAccount(accountId)}
               onClickExport={getViewOnlyImport}
               onClickSyncExport={getViewOnlySync}
+              onClickSyncImport={importViewOnlySync}
               onDelete={() => handleOpenDeleteAccountConfirmation(accountId)}
               selected={selectedAccount.account.accountId === accountId}
             />

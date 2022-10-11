@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import SupervisorAccountOutlinedIcon from '@material-ui/icons/SupervisorAccountOutlined';
+import SyncOutlinedIcon from '@material-ui/icons/SyncOutlined';
 import SyncProblemOutlinedIcon from '@material-ui/icons/SyncProblemOutlined';
 
 import { ShortCode } from '../../../../components/ShortCode';
@@ -49,6 +50,7 @@ const AccountItem: FC<AccountItemProps> = ({
   onClick,
   onClickExport,
   onClickSyncExport,
+  onClickSyncImport,
   onDelete,
   selected,
 }: AccountItemProps) => {
@@ -89,11 +91,18 @@ const AccountItem: FC<AccountItemProps> = ({
           </Tooltip>
         )}
         {account.viewOnly && (
-          <Tooltip title="copy view only account sync request to clipboard">
-            <Button onClick={onClickSyncExport} name="syncViewOnlyButton">
-              <SyncProblemOutlinedIcon />
-            </Button>
-          </Tooltip>
+          <>
+            <Tooltip title="write view only account sync request to JSON">
+              <Button onClick={onClickSyncExport} name="syncViewOnlyButton">
+                <SyncProblemOutlinedIcon />
+              </Button>
+            </Tooltip>
+            <Tooltip title="import view only account sync from JSON">
+              <Button onClick={onClickSyncImport} name="syncViewOnlyButton">
+                <SyncOutlinedIcon />
+              </Button>
+            </Tooltip>
+          </>
         )}
 
         <Button onClick={onDelete} disabled={selected} name="deleteButton">

@@ -6,6 +6,7 @@ export interface AccountsViewProps {
   accounts: Accounts;
   deleteAccount: (accountId: string) => void;
   onClickAddAccount: () => void;
+  importViewOnlySync: () => Promise<void>;
   onClickBack: () => void;
   saveViewOnlySyncRequest: (syncRequest: GetViewOnlyAccountSyncRequestResult) => Promise<void>;
   selectAccount: (accountId: string) => void;

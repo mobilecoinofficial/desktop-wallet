@@ -16,7 +16,10 @@ import {
 import { clipboard } from 'electron';
 import { useTranslation } from 'react-i18next';
 
-import { getViewOnlyAccountImportRequest } from '../../../../fullService/api';
+import {
+  getViewOnlyAccountImportRequest,
+  getViewOnlyAccountSyncRequest,
+} from '../../../../fullService/api';
 import type { Theme } from '../../../../theme';
 import { AccountItem } from '../AccountItem.view';
 import { DeleteAccountConfirmationView } from '../DeleteAccountConfirmation.view';
@@ -81,6 +84,7 @@ const AccountsView: FC<AccountsViewProps> = ({
   deleteAccount,
   onClickAddAccount,
   onClickBack,
+  saveViewOnlySyncRequest,
   selectAccount,
   selectedAccount,
 }: AccountsViewProps) => {
@@ -99,6 +103,13 @@ const AccountsView: FC<AccountsViewProps> = ({
       accountId: selectedAccount.account.accountId,
     });
     clipboard.writeText(JSON.stringify(response));
+  };
+
+  const getViewOnlySync = async () => {
+    const response = await getViewOnlyAccountSyncRequest({
+      accountId: selectedAccount.account.accountId,
+    });
+    await saveViewOnlySyncRequest(response);
   };
 
   const handleOpenDeleteAccountConfirmation = (accountId: string) => {
@@ -134,6 +145,7 @@ const AccountsView: FC<AccountsViewProps> = ({
               account={accounts.accountMap[accountId]}
               onClick={() => selectAccount(accountId)}
               onClickExport={getViewOnlyImport}
+              onClickSyncExport={getViewOnlySync}
               onDelete={() => handleOpenDeleteAccountConfirmation(accountId)}
               selected={selectedAccount.account.accountId === accountId}
             />

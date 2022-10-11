@@ -30,6 +30,8 @@ export const HistoryPage: FC = (): JSX.Element => {
   const { enqueueSnackbar } = useSnackbar();
   const logs = useTransactionLogs();
 
+  // console.log(logs.map((log) => log.status));
+
   const handleClickCopyConfirmations = () => {
     (async () => {
       try {

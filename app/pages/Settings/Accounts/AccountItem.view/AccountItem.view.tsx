@@ -12,6 +12,7 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import SupervisorAccountOutlinedIcon from '@material-ui/icons/SupervisorAccountOutlined';
+import SyncProblemOutlinedIcon from '@material-ui/icons/SyncProblemOutlined';
 
 import { ShortCode } from '../../../../components/ShortCode';
 import { MOBIcon, TrashcanIcon } from '../../../../components/icons';
@@ -47,10 +48,21 @@ const AccountItem: FC<AccountItemProps> = ({
   account,
   onClick,
   onClickExport,
+  onClickSyncExport,
   onDelete,
   selected,
 }: AccountItemProps) => {
   const classes = useStyles();
+
+  let title: string;
+  if (account.name) {
+    title = account.name;
+    if (account.viewOnly) {
+      title += ' (view only)';
+    }
+  } else {
+    title = 'unnamed account';
+  }
 
   return (
     <Grid item xs={12}>
@@ -62,18 +74,28 @@ const AccountItem: FC<AccountItemProps> = ({
                 <MOBIcon color={selected ? 'blue' : 'white'} />
               </Avatar>
             }
-            title={account.name ?? 'Unnamed'}
+            title={title}
             subheader={<ShortCode code={account.mainAddress} />}
             classes={{
               action: classes.action,
             }}
           />
         </CardActionArea>
-        <Tooltip title="copy view only account import request to clipboard">
-          <Button onClick={onClickExport} name="exportViewOnlyButton">
-            <SupervisorAccountOutlinedIcon />
-          </Button>
-        </Tooltip>
+        {!account.viewOnly && (
+          <Tooltip title="copy view only account import request to clipboard">
+            <Button onClick={onClickExport} name="exportViewOnlyButton">
+              <SupervisorAccountOutlinedIcon />
+            </Button>
+          </Tooltip>
+        )}
+        {account.viewOnly && (
+          <Tooltip title="copy view only account sync request to clipboard">
+            <Button onClick={onClickSyncExport} name="syncViewOnlyButton">
+              <SyncProblemOutlinedIcon />
+            </Button>
+          </Tooltip>
+        )}
+
         <Button onClick={onDelete} disabled={selected} name="deleteButton">
           <TrashcanIcon color={selected ? 'grey' : 'red'} />
         </Button>

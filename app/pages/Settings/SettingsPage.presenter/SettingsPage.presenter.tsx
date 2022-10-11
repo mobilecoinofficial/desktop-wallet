@@ -17,6 +17,7 @@ import {
   ToolsIcon,
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
+import { GetViewOnlyAccountSyncRequestResult } from '../../../fullService/api/getViewOnlyAccountSyncRequest';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
@@ -158,6 +159,11 @@ export const SettingsPage: FC = (): JSX.Element => {
     enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
   };
 
+  const saveViewOnlySyncRequest = async (syncRequest: GetViewOnlyAccountSyncRequestResult) => {
+    const success = await ipcRenderer.invoke('save-view-only-sync-request', syncRequest);
+    enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
+  };
+
   const settingsOptionsList = [
     {
       Icon: MOBIcon,
@@ -232,6 +238,7 @@ export const SettingsPage: FC = (): JSX.Element => {
               deleteAccount={deleteAccount}
               onClickAddAccount={onClickAddAccount}
               onClickBack={onClickBack}
+              saveViewOnlySyncRequest={saveViewOnlySyncRequest}
               selectAccount={selectAccount}
               selectedAccount={selectedAccount}
             />

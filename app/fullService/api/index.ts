@@ -20,6 +20,7 @@ export { default as getNetworkStatus } from './getNetworkStatus';
 export { default as getTransactionLog } from './getTransactionLog';
 export { default as getTxo } from './getTxo';
 export { default as getViewOnlyAccountImportRequest } from './getViewOnlyAccountImportRequest';
+export { default as getViewOnlyAccountSyncRequest } from './getViewOnlyAccountSyncRequest';
 export { default as getWalletStatus } from './getWalletStatus';
 export { default as importAccount } from './importAccount';
 export { default as importLegacyAccount } from './importLegacyAccount';

@@ -444,6 +444,19 @@ ipcMain.handle('import-ledger-db', () => {
   return true;
 });
 
+ipcMain.handle('save-view-only-sync-request', (_event, syncRequest) => {
+  const filePath = dialog.showSaveDialogSync(mainWindow, {
+    defaultPath: 'view_only_sync_request.json',
+  });
+
+  if (filePath === undefined) {
+    return false;
+  }
+
+  fs.writeFileSync(filePath, JSON.stringify(syncRequest));
+  return true;
+});
+
 ipcMain.handle('export-transaction-history', (_event, transactionLogs) => {
   const filePath = dialog.showSaveDialogSync(mainWindow, { defaultPath: 'tx_history.csv' });
 

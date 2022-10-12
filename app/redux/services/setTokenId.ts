@@ -1,6 +1,6 @@
 import { setTokenIdAction } from '../actions';
 import { store } from '../store';
 
-export const setTokenId = async (tokenId: number): Promise<void> => {
+export const setTokenId = (tokenId: number): void => {
   store.dispatch(setTokenIdAction(tokenId));
 };

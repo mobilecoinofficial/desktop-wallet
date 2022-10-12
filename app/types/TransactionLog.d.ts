@@ -4,14 +4,14 @@ import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 import type { InputTxo, OutputTxo } from './TxProposal';
 
 export interface TransactionAbbreviation {
-  recipientAddressId: StringB58 | null;
+  recipientAddressId?: StringB58;
   txoIdHex: StringHex;
   valuePmob: StringUInt64;
 }
 
 export interface TransactionLog {
   accountId: StringHex;
-  address: StringB58; // the public address this tx was sent to
+  address?: StringB58; // the public address this tx was sent to
   changeTxoIds: StringHex[]; // FK this is gone?
   changeTxos: TransactionAbbreviation[];
   comment: string;

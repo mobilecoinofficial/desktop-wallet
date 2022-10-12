@@ -458,6 +458,19 @@ ipcMain.handle('save-view-only-sync-request', (_event, syncRequest) => {
   return true;
 });
 
+ipcMain.handle('save-unsigned-transaction', (_event, unsignedTx) => {
+  const filePath = dialog.showSaveDialogSync(mainWindow, {
+    defaultPath: 'unsigned_transaction.json',
+  });
+
+  if (!filePath) {
+    return false;
+  }
+
+  fs.writeFileSync(filePath, JSON.stringify(snakeCaseKeys(unsignedTx)));
+  return true;
+});
+
 ipcMain.handle('import-view-only-sync', () => {
   const syncPath = dialog.showOpenDialogSync(mainWindow);
   if (!syncPath) {

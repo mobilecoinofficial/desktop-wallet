@@ -1,6 +1,7 @@
 export { default as assignAddressForAccount } from './assignAddressForAccount';
 export { default as buildGiftCode } from './buildGiftCode';
 export { default as buildTransaction } from './buildTransaction';
+export { default as buildUnsignedTransaction } from './buildUnsignedTransaction';
 export { default as checkGiftCodeStatus } from './checkGiftCodeStatus';
 export { default as checkB58PaymentRequest } from './checkB58PaymentRequest';
 export { default as claimGiftCode } from './claimGiftCode';

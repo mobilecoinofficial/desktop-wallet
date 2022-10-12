@@ -36,3 +36,16 @@ export interface TxProposal {
   tombstoneBlockIndex: StringUInt64;
   txProto: string;
 }
+
+type UnsignedInputTxo = {
+  txOutProto: string;
+  amount: TransactionAmount;
+  subaddressIndex: string;
+};
+
+export interface UnsignedTxProposal {
+  unsignedTxProtoBytesHex: string;
+  unsignedInputTxos: UnsignedInputTxo[];
+  payloadTxos: OutputTxo[];
+  changeTxos: OutputTxo[];
+}

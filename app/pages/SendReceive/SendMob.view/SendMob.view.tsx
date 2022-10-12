@@ -103,6 +103,7 @@ const SendMob: FC<SendMobProps> = ({
 }: SendMobProps) => {
   const classes = useStyles();
   const { t } = useTranslation('SendMobForm');
+  const { viewOnly } = selectedAccount.account;
 
   const [contactId, setContactId] = useState('');
   const [contactName, setContactName] = useState('');
@@ -176,6 +177,17 @@ const SendMob: FC<SendMobProps> = ({
     token.id === TOKENS.MOB.id ? convertPicoMobStringToMob(fee) : convertMicroEUSDToStringEUSD(fee);
 
   const renderInput = (props) => <MOBNumberFormat token={token} convert={false} {...props} />;
+
+  let confirmSendText: string = t('confirmSend');
+  let sendButtonText: string = isSynced ? t('send') : t('syncing');
+  if (offlineModeEnabled) {
+    confirmSendText = t('saveTxConfirmation');
+    sendButtonText = t('saveTxConfirmation');
+  }
+  if (viewOnly) {
+    confirmSendText = 'save unsigned transaction';
+    sendButtonText = 'save unsigned transaction';
+  }
 
   return (
     <Container maxWidth="sm">
@@ -417,7 +429,7 @@ const SendMob: FC<SendMobProps> = ({
                       onClick={handleOpen(values)}
                       isSubmitting={/* isAwaitingConformation || */ isSubmitting}
                     >
-                      {isSynced ? t('send') : t('syncing')}
+                      {sendButtonText}
                     </SubmitButton>
                     {!offlineModeEnabled && (
                       <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>
@@ -593,7 +605,7 @@ const SendMob: FC<SendMobProps> = ({
                               type="submit"
                               variant="contained"
                             >
-                              {offlineModeEnabled ? t('saveTxConfirmation') : t('confirmSend')}
+                              {confirmSendText}
                             </Button>
                           </Box>
                         </div>

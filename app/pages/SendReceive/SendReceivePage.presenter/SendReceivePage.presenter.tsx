@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
+import { buildUnsignedTransaction } from '../../../fullService/api';
+import { BuildUnsignedTransactionParams } from '../../../fullService/api/buildUnsignedTransaction';
 import { BLOCK_VERSION } from '../../../fullService/api/getNetworkStatus';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
@@ -160,13 +162,29 @@ export const SendReceivePage: FC = (): JSX.Element => {
     setIsChecked(isChecked);
     setRecipientPublicAddress(recipientPublicAddress);
 
+    const txParams: BuildUnsignedTransactionParams = {
+      accountId,
+      addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
+      feeValue: fee,
+    };
+
     try {
+      if (selectedAccount.account.viewOnly) {
+        const unsignedTx = await buildUnsignedTransaction(txParams);
+        const success = await ipcRenderer.invoke('save-unsigned-transaction', unsignedTx);
+        enqueueSnackbar(success ? 'Success' : 'Failure', {
+          variant: success ? 'success' : 'error',
+        });
+        return;
+      }
+
       result = await buildTransaction({
         accountId,
         addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
         blockVersion: offlineModeEnabled ? BLOCK_VERSION : undefined,
         feeValue: fee,
       });
+      result = await buildTransaction(txParams);
 
       if (result === null || result === undefined) {
         throw new Error(t('sendBuildError'));
@@ -294,7 +312,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
           >
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
-            <Tab label={t('pay')} />
+            {!selectedAccount.account.viewOnly && <Tab label={t('pay')} />}
           </Tabs>
           {selectedTabIndex === 0 && (
             <SendMob

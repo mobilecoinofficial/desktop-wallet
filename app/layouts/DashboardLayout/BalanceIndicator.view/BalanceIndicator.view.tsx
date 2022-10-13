@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
   },
   selectSelect: {
+    display: 'flex',
     paddingLeft: '24px',
     paddingRight: '8px !important',
   },
@@ -74,6 +75,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
             iconOpen: classes.iconOpen,
             select: classes.selectSelect,
           }}
+          disableUnderline
           onChange={(e) => setTokenId(e.target.value as number)}
           renderValue={() => token.icon({ className: classes.iconElement })}
         >
@@ -82,7 +84,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
             MOB
           </MenuItem>
           <MenuItem value={TOKENS.EUSD.id}>
-            <ListItemIcon>{TOKENS.EUSD.icon({ className: classes.icon })}</ListItemIcon>
+            <ListItemIcon>{TOKENS.EUSD.icon({ className: classes.iconElement })}</ListItemIcon>
             eUSD
           </MenuItem>
         </Select>

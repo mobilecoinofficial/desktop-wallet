@@ -111,7 +111,7 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
                   value={value}
                   sign={sign}
                   token={txLogToken}
-                  label={txLogToken?.name ?? ''}
+                  label={` ${txLogToken.name}`}
                 />
                 <Typography className={classes.textSmallRight} display="inline">
                   {directionText}

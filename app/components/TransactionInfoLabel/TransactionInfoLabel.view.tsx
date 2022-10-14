@@ -3,7 +3,6 @@ import type { FC } from 'react';
 
 import { makeStyles, Typography } from '@material-ui/core';
 
-import { useCurrentToken } from '../../hooks/useCurrentToken';
 import type { Theme } from '../../theme';
 import { MOBNumberFormat } from '../MOBNumberFormat';
 import type { TransactionInfoLabelProps } from './TransactionInfoLabel.d';
@@ -23,9 +22,9 @@ const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
   value,
   sign,
   label,
+  token,
 }: TransactionInfoLabelProps) => {
   const classes = useStyles();
-  const token = useCurrentToken();
 
   return (
     <Typography

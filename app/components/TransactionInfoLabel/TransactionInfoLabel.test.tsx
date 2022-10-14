@@ -3,6 +3,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
+import { TOKENS } from '../../constants/tokens';
 import { store } from '../../redux/store';
 import { TransactionInfoLabel } from './TransactionInfoLabel.view';
 import '@testing-library/jest-dom/extend-expect';
@@ -12,7 +13,7 @@ describe('TransactionInfoLabel', () => {
   test('renders positive transaction info label', () => {
     render(
       <Provider store={store}>
-        <TransactionInfoLabel value="10" sign="+" label="received" />
+        <TransactionInfoLabel value="10" sign="+" label="received" token={TOKENS.MOB} />
       </Provider>
     );
 
@@ -22,7 +23,7 @@ describe('TransactionInfoLabel', () => {
   test('renders negative transaction info label', () => {
     render(
       <Provider store={store}>
-        <TransactionInfoLabel value="100000" sign="-" label="sent" />
+        <TransactionInfoLabel value="100000" sign="-" label="sent" token={TOKENS.MOB} />
       </Provider>
     );
 

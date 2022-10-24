@@ -5,6 +5,7 @@ export { default as CodeTextIcon } from './CodeTextIcon';
 export { default as ContactIcon } from './ContactIcon';
 export { default as CogIcon } from './CogIcon';
 export { default as CopyIcon } from './CopyIcon';
+export { default as EUSDIcon } from './EUSD';
 export { default as GiftIcon } from './GiftIcon';
 export { default as HouseIcon } from './HouseIcon';
 export { default as KeyIcon } from './KeyIcon';

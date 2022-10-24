@@ -131,6 +131,7 @@ export const AuthPage: FC = (): JSX.Element => {
   if (!fullServiceIsRunning) {
     if (walletDbExists) {
       const onClickUnlock = async (password: string, startInOfflineMode: boolean) => {
+        confirmEntropyKnown();
         try {
           await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
           await untilFullServiceRuns();
@@ -191,6 +192,7 @@ export const AuthPage: FC = (): JSX.Element => {
   }
 
   const onClickUnlockWallet = async (password: string) => {
+    confirmEntropyKnown();
     try {
       const status = await getWalletStatus();
       await unlockWallet(password, status.networkBlockHeight === '0');

@@ -28,7 +28,7 @@ export function matchStatus(status: string): Status {
 }
 
 export function mapTxoToAbbreviation(txo: InputTxo | OutputTxo): TransactionAbbreviation {
-  let address = null;
+  let address;
 
   if ('recipientPublicAddressB58' in txo) {
     address = txo.recipientPublicAddressB58;
@@ -41,7 +41,7 @@ export function mapTxoToAbbreviation(txo: InputTxo | OutputTxo): TransactionAbbr
   };
 }
 
-export function mapTxoV2ToAbbreviation(txo: TxoV2, address: string): TransactionAbbreviation {
+export function mapTxoV2ToAbbreviation(txo: TxoV2, address?: string): TransactionAbbreviation {
   return {
     recipientAddressId: address,
     txoIdHex: txo.id,
@@ -103,17 +103,9 @@ function convertTxoToTransactionLog(
   accountId: StringB58,
   addresses: Addresses
 ): TransactionLog {
-  let address;
-  address = Object.values(addresses.addressMap).find(
+  const address = Object.values(addresses.addressMap).find(
     (a) => a.subaddressIndex === txo.subaddressIndex
   )?.publicAddressB58;
-
-  if (!address) {
-    console.warn(`no address match for subaddress index for txo id ${txo.id}`);
-    address =
-      Object.values(addresses.addressMap).find((a) => a.subaddressIndex === '0')
-        ?.publicAddressB58 || '';
-  }
 
   return {
     accountId,

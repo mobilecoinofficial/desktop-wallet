@@ -4,6 +4,7 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 
+import { TOKENS } from '../../../constants/tokens';
 import { store } from '../../../redux/store';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
 import '../../../testUtils/i18nForTests';
@@ -32,7 +33,7 @@ describe('History Item', () => {
               direction: 'tx_direction_sent',
               finalizedBlockIndex: '123456',
               recipientAddressId: null,
-              tokenId: 0,
+              tokenId: TOKENS.MOB.id,
               value: '220960000000',
             } as TransactionLog
           }
@@ -57,7 +58,7 @@ describe('History Item', () => {
               direction: 'tx_direction_sent',
               finalizedBlockIndex: '123456',
               recipientAddressId: 'eo7bLKA1kNNgLHGUMnf5sHZ5Hj52YqGNyia52e',
-              tokenId: 0,
+              tokenId: TOKENS.MOB.id,
               value: '220960000000',
             } as TransactionLog
           }
@@ -81,7 +82,7 @@ describe('History Item', () => {
               direction: 'tx_direction_sent',
               finalizedBlockIndex: '123456',
               recipientAddressId: null,
-              tokenId: 0,
+              tokenId: TOKENS.MOB.id,
               value: '220960000000',
             } as TransactionLog
           }
@@ -106,7 +107,7 @@ describe('History Item', () => {
               direction: 'tx_direction_received',
               finalizedBlockIndex: '345678',
               recipientAddressId: '101010101010101',
-              tokenId: 0,
+              tokenId: TOKENS.MOB.id,
               value: '31415926',
             } as TransactionLog
           }
@@ -130,7 +131,7 @@ describe('History Item', () => {
               direction: 'tx_direction_received',
               finalizedBlockIndex: '345678',
               recipientAddressId: null,
-              tokenId: 0,
+              tokenId: TOKENS.MOB.id,
               value: '31415926',
             } as TransactionLog
           }

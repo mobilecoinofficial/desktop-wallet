@@ -111,7 +111,7 @@ const BuildGiftForm: FC<BuildGiftFormProps> = ({
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
     if (valueAsPicoMob + txFee + txFee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee', { limit: Number(txFee) / token.precision });
+      error = t('errorFee', { limit: Number(txFee) / token.precision, name: token.name });
     }
     return error;
   };

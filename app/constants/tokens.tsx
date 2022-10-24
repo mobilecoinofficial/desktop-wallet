@@ -1,8 +1,6 @@
 import React from 'react';
 
-import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOn';
-
-import { MOBIcon } from '../components/icons';
+import { MOBIcon, EUSDIcon } from '../components/icons';
 import { IconProps } from '../components/icons/IconProps';
 
 export type Token = {
@@ -16,9 +14,8 @@ function renderMobIcon(props: IconProps): JSX.Element {
   return <MOBIcon {...props} />;
 }
 
-function renderEUSDIcon({ color: _, ...rest }: IconProps): JSX.Element {
-  // removing color for now. Eventually we will replace this icon with a custom icon that accepts color
-  return <MonetizationOnOutlinedIcon {...rest} />;
+function renderEUSDIcon(props: IconProps): JSX.Element {
+  return <EUSDIcon {...props} />;
 }
 
 export const TOKENS: Record<string, Token> = {

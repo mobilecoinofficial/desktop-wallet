@@ -1,6 +1,6 @@
 import { confirmEntropyKnownAction } from '../actions';
 import { store } from '../store';
 
-export const confirmEntropyKnown = async (): Promise<void> => {
+export const confirmEntropyKnown = (): void => {
   store.dispatch(confirmEntropyKnownAction());
 };

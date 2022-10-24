@@ -138,6 +138,12 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     return renderRow(`${label}:`, aliasOrAddress);
   };
 
+  const token = Object.values(TOKENS).find((tk) => tk.id === tokenId);
+
+  if (!token) {
+    return <>Unable to render transaction details (no token id)</>;
+  }
+
   return (
     <Container maxWidth="md" className={classes.root}>
       <Card className={classes.card}>
@@ -152,7 +158,8 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
             <TransactionInfoLabel
               value={transactionValue}
               sign={sign}
-              label={` ${Object.values(TOKENS).find((token) => token.id === tokenId)?.name}`}
+              label={token.name}
+              token={token}
             />
           )}
         </CardContent>

@@ -90,6 +90,10 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
   }
 
   const avatar = contact ? contact.abbreviation.toUpperCase() : <MOBIcon color="white" />;
+  const txLogToken = Object.values(TOKENS).find((token) => token.id === tokenId);
+  if (!txLogToken) {
+    return <>Error finding transaction history item (no token id)</>;
+  }
 
   return (
     <Grid item xs={12}>
@@ -106,7 +110,8 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
                 <TransactionInfoLabel
                   value={value}
                   sign={sign}
-                  label={` ${Object.values(TOKENS).find((token) => token.id === tokenId)?.name}`}
+                  token={txLogToken}
+                  label={` ${txLogToken.name}`}
                 />
                 <Typography className={classes.textSmallRight} display="inline">
                   {directionText}

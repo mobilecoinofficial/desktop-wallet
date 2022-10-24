@@ -134,11 +134,10 @@ const SendMob: FC<SendMobProps> = ({
       token.id === TOKENS.MOB.id
         ? convertMobStringToPicoMobString
         : convertEUSDStringToMicroEUSDString;
-
     onClickSend({
       accountId: selectedAccount.account.accountId,
       alias: values.alias,
-      fee: convertFunction(values.feeAmount),
+      fee: convertFunction(feeAmount),
       isChecked,
       recipientPublicAddress: values.recipientPublicAddress,
       value: convertFunction(values.mobAmount),
@@ -156,11 +155,12 @@ const SendMob: FC<SendMobProps> = ({
   const handleConfirmSubmit = (resetForm: () => void) => onClickConfirm(resetForm);
 
   const validateAmount = (selectedBalance: bigint, txFee: bigint) => (valueString: string) => {
+    console.log(`feeAmount in validate: ${txFee}`);
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
     if (valueAsPicoMob + txFee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee', { limit: Number(txFee) / token.precision });
+      error = t('errorFee', { limit: Number(txFee) / token.precision, name: token.name });
     }
     return error;
   };
@@ -198,7 +198,6 @@ const SendMob: FC<SendMobProps> = ({
               initialValues={{
                 alias: '',
                 contactId: NO_CONTACT_SELECTED,
-                feeAmount,
                 mobAmount: '0',
                 pin: '',
                 recipientPublicAddress: '',
@@ -364,7 +363,7 @@ const SendMob: FC<SendMobProps> = ({
                         onFocus={handleSelect}
                         validate={validateAmount(
                           selectedBalance,
-                          BigInt(Number(values.feeAmount) * token.precision)
+                          BigInt(Number(feeAmount) * token.precision)
                         )}
                         InputProps={{
                           inputComponent: renderInput,

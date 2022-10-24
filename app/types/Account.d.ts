@@ -1,20 +1,13 @@
-// TODO - change to just Account; delete the other Account type
-import type { AccountKey } from './AccountSecrets';
 import type { BalanceFromV2Api } from './BalanceStatus';
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
 
 export interface Account {
-  // metadata: string used as a wildcard, stringified json object?
   accountId: StringHex;
   accountHeight?: StringUInt64;
-  accountKey?: AccountKey;
-  entropy?: StringHex;
   firstBlockIndex: StringUInt64;
-  keyDerivationVersion: string;
   mainAddress: StringB58;
   name: string | null;
   nextSubaddressIndex: StringUInt64;
-  object: 'account';
   recoveryMode: boolean;
 }
 

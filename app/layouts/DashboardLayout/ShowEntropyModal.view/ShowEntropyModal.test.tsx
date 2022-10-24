@@ -14,21 +14,13 @@ const showEntropyMsg = screen.queryByText(
 
 describe('ShowEntropyModal', () => {
   test('does not render modal when isShown set to false', () => {
-    render(
-      <ShowEntropyModal
-        confirmEntropyKnown={confirmEntropyKnown}
-        mnemonic={mnemonic}
-        isShown={false}
-      />
-    );
+    render(<ShowEntropyModal confirmEntropyKnown={confirmEntropyKnown} isShown={false} />);
 
     expect(showEntropyMsg).toBeNull();
   });
 
   test('mnemonic is hidden and shown based on toggle', () => {
-    render(
-      <ShowEntropyModal confirmEntropyKnown={confirmEntropyKnown} mnemonic={mnemonic} isShown />
-    );
+    render(<ShowEntropyModal confirmEntropyKnown={confirmEntropyKnown} isShown />);
 
     fireEvent.click(screen.getByText('Show Secret Entropy'));
     expect(screen.getByText(mnemonic)).toBeInTheDocument();

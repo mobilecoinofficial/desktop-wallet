@@ -9,18 +9,15 @@ const OnboardingModal: FC<OnboardingModalProps> = ({
   confirmEntropyKnown,
   isEntropyKnown,
   isPinRequired,
-  pendingSecrets,
   updatePin,
 }: OnboardingModalProps) => {
   const isShowEntropyModalShown = !isEntropyKnown;
   const isSetPinModalShown = isPinRequired;
-  const mnemonic = pendingSecrets?.mnemonic || '';
 
   if (isShowEntropyModalShown) {
     return (
       <ShowEntropyModal
         isShown={isShowEntropyModalShown}
-        mnemonic={mnemonic}
         confirmEntropyKnown={confirmEntropyKnown}
       />
     );

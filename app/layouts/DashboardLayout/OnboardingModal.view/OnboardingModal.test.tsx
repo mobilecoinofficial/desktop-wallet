@@ -10,7 +10,6 @@ import { OnboardingModal } from './OnboardingModal.view';
 
 const confirmEntropyKnown = jest.fn();
 const updatePin = jest.fn();
-const pendingSecrets = null;
 const showEntropyMsg =
   'We generated a random Entropy to create your new account. Please store this code in a secure, private manner. You will need your Entropy to import this account into other wallets.';
 const setPinMsg =
@@ -23,7 +22,6 @@ describe('OnboardingModal', () => {
         <OnboardingModal
           confirmEntropyKnown={confirmEntropyKnown}
           updatePin={updatePin}
-          pendingSecrets={pendingSecrets}
           isEntropyKnown={false}
           isPinRequired
         />
@@ -39,7 +37,6 @@ describe('OnboardingModal', () => {
         <OnboardingModal
           confirmEntropyKnown={confirmEntropyKnown}
           updatePin={updatePin}
-          pendingSecrets={pendingSecrets}
           isEntropyKnown
           isPinRequired
         />
@@ -55,7 +52,6 @@ describe('OnboardingModal', () => {
         <OnboardingModal
           confirmEntropyKnown={confirmEntropyKnown}
           updatePin={updatePin}
-          pendingSecrets={pendingSecrets}
           isEntropyKnown
           isPinRequired={false}
         />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { FC } from 'react';
 
 import {
@@ -15,8 +15,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
+import { exportAccountSecrets } from '../../../fullService/api';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
+import { AccountSecrets } from '../../../types';
 import { ShowEntropyModalProps } from './ShowEntropyModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -39,14 +43,27 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
   isShown,
-  mnemonic,
   confirmEntropyKnown,
 }: ShowEntropyModalProps) => {
+  const { selectedAccount } = useSelector((state: ReduxStoreState) => state);
+  const { accountId } = selectedAccount.account;
+  const [secrets, setSecrets] = useState<AccountSecrets | null>(null);
   const classes = useStyles();
   const [alertOpen, setAlertOpen] = useState(false);
   const [canGoForward, setCanGoForward] = useState(false);
   const [showEntropy, setShowEntropy] = useState(false);
   const { t } = useTranslation('ShowEntropyModal');
+
+  useEffect(() => {
+    const fetchSecrets = async () => {
+      const { accountSecrets } = await exportAccountSecrets({
+        accountId,
+      });
+      setSecrets(accountSecrets);
+    };
+
+    fetchSecrets();
+  }, [accountId]);
 
   const handleCloseModal = () => confirmEntropyKnown();
 
@@ -106,7 +123,7 @@ const ShowEntropyModal: FC<ShowEntropyModalProps> = ({
                   <Container maxWidth="sm">
                     <Box minHeight={60}>
                       <Typography variant="body2" color="textPrimary">
-                        {showEntropy ? mnemonic : ''}
+                        {showEntropy ? secrets?.mnemonic : ''}
                       </Typography>
                     </Box>
                   </Container>

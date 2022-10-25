@@ -126,8 +126,6 @@ export const initialReduxStoreState: ReduxStoreState = {
   transactionLogs: null,
   txos: { txoIds: [], txoMap: {} },
   walletStatus: {
-    accountIds: [],
-    accountMap: {},
     balancePerToken: {
       [TOKENS.MOB.id]: {
         orphanedPmob: '',

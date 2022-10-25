@@ -6,7 +6,6 @@ import { Confirmation, Confirmations } from './Confirmation';
 import { Contact } from './Contact';
 import { GiftCode } from './GiftCode';
 import { NetworkStatus } from './NetworkStatus';
-import { PendingSecrets } from './PendingSecrets';
 import { ReceiverReceipt, ReceiverReceipts } from './ReceiverReceipt';
 import { SelectedAccount } from './SelectedAccount';
 import { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
@@ -28,7 +27,6 @@ export type {
   Contact,
   GiftCode,
   NetworkStatus,
-  PendingSecrets,
   ReceiverReceipt,
   ReceiverReceipts,
   SelectedAccount,

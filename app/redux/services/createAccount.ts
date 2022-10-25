@@ -1,5 +1,4 @@
 import * as fullServiceApi from '../../fullService/api';
-import { PendingSecrets } from '../../types';
 import { errorToString } from '../../utils/errorHandler';
 import { createAccountAction } from '../actions';
 import { store } from '../store';
@@ -9,11 +8,6 @@ export const createAccount = async (name: string): Promise<void> => {
     // Attempt create
     const { account } = await fullServiceApi.createAccount({ name });
     const { accountId } = account;
-
-    // Get basic wallet information
-    const { accountSecrets: pendingSecrets } = await fullServiceApi.exportAccountSecrets({
-      accountId,
-    });
 
     const { walletStatus } = await fullServiceApi.getWalletStatus();
     const { accountIds, accountMap } = await fullServiceApi.getAllAccounts();
@@ -28,7 +22,6 @@ export const createAccount = async (name: string): Promise<void> => {
         accountMap,
         addressIds,
         addressMap,
-        pendingSecrets as PendingSecrets,
         account,
         balanceStatus,
         walletStatus

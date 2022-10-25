@@ -6,7 +6,6 @@ import {
   Addresses,
   Contact,
   GiftCode,
-  PendingSecrets,
   SelectedAccount,
   StringUInt64,
   TransactionLogs,
@@ -68,7 +67,6 @@ export type ReduxStoreState = {
   isInitialized: boolean;
   isPinRequired: boolean;
   offlineModeEnabled: boolean;
-  pendingSecrets: PendingSecrets | null;
   secretKey: string;
   selectedAccount: SelectedAccount;
   transactionLogs: TransactionLogs | null;
@@ -92,7 +90,6 @@ export const initialReduxStoreState: ReduxStoreState = {
   isInitialized: false,
   isPinRequired: false,
   offlineModeEnabled: false,
-  pendingSecrets: null,
   pin: undefined,
   pinThresholdPmob: '',
   secretKey: '',
@@ -100,11 +97,9 @@ export const initialReduxStoreState: ReduxStoreState = {
     account: {
       accountId: '',
       firstBlockIndex: '',
-      keyDerivationVersion: '',
       mainAddress: '',
       name: '',
       nextSubaddressIndex: '',
-      object: 'account' as const,
       recoveryMode: false,
     },
     balanceStatus: {
@@ -173,14 +168,12 @@ export const reducer = (
       return {
         ...state,
         isEntropyKnown: true,
-        pendingSecrets: null, // Clear secrets from in-memory
       };
     }
 
     case CREATE_ACCOUNT: {
-      const { accounts, addresses, pendingSecrets, selectedAccount, walletStatus } = (
-        action as CreateAccountAction
-      ).payload;
+      const { accounts, addresses, selectedAccount, walletStatus } = (action as CreateAccountAction)
+        .payload;
       return {
         ...state,
         accounts,
@@ -188,7 +181,6 @@ export const reducer = (
         addresses,
         isAuthenticated: true,
         isEntropyKnown: false,
-        pendingSecrets,
         selectedAccount,
         walletStatus,
       };

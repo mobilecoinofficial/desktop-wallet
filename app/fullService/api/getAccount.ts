@@ -1,5 +1,5 @@
 import { store } from '../../redux/store';
-import type { Account, AccountStatus } from '../../types/Account.d';
+import type { Account, AccountStatus, AccountV2 } from '../../types/Account.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
@@ -13,17 +13,15 @@ type GetAccountResult = {
   account: Account;
 };
 
-export function convertAccountV2(accountStatus: AccountStatus): GetAccountResult {
+export function convertAccountV2(account: AccountV2): Account {
   return {
-    account: {
-      accountHeight: accountStatus.account.nextBlockIndex,
-      accountId: accountStatus.account.id,
-      firstBlockIndex: accountStatus.account.firstBlockIndex,
-      mainAddress: accountStatus.account.mainAddress,
-      name: accountStatus.account.name,
-      nextSubaddressIndex: accountStatus.account.nextSubaddressIndex,
-      recoveryMode: accountStatus.account.recoveryMode,
-    },
+    accountHeight: account.nextBlockIndex,
+    accountId: account.id,
+    firstBlockIndex: account.firstBlockIndex,
+    mainAddress: account.mainAddress,
+    name: account.name,
+    nextSubaddressIndex: account.nextSubaddressIndex,
+    recoveryMode: account.recoveryMode,
   };
 }
 
@@ -62,7 +60,7 @@ const getAccount = async ({ accountId }: GetAccountParams): Promise<GetAccountRe
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    return convertAccountV2(result);
+    return { account: convertAccountV2(result.account) };
   }
 };
 

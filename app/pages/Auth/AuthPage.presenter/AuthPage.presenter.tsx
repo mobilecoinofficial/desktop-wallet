@@ -10,6 +10,7 @@ import { Redirect } from 'react-router-dom';
 import { SplashScreen } from '../../../components/SplashScreen';
 import LogoIcon from '../../../components/icons/LogoIcon';
 import routePaths from '../../../constants/routePaths';
+import { getAllAccounts } from '../../../fullService/api';
 import { initialReduxStoreState, ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   addAccount,
@@ -61,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const untilFullServiceRuns = async () => {
   for (let i = 0; i < 25; i++) {
     try {
-      await getWalletStatus();
+      await getAllAccounts();
       return true;
     } catch (e) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -89,9 +90,9 @@ export const AuthPage: FC = (): JSX.Element => {
     const controller = new AbortController();
     (async () => {
       try {
-        const status = await getWalletStatus();
-        setAccountIds(status.accountIds);
-        if (status.accountIds?.length) {
+        const accounts = await getAllAccounts();
+        setAccountIds(accounts.accountIds);
+        if (accounts.accountIds?.length) {
           confirmEntropyKnown();
         }
 
@@ -135,11 +136,11 @@ export const AuthPage: FC = (): JSX.Element => {
         try {
           await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
           await untilFullServiceRuns();
-          const status = await getWalletStatus();
-          setAccountIds(status.accountIds);
+          const accounts = await getAllAccounts();
+          setAccountIds(accounts.accountIds);
           await unlockWallet(password, startInOfflineMode);
-          if (status.accountIds?.length) {
-            await selectAccount(status.accountIds[0]);
+          if (accounts.accountIds?.length) {
+            await selectAccount(accounts.accountIds[0]);
           }
           setFullServiceIsRunning(true);
         } catch (err) {
@@ -168,10 +169,10 @@ export const AuthPage: FC = (): JSX.Element => {
       try {
         await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
         await untilFullServiceRuns();
-        const status = await getWalletStatus();
+        const accounts = await getAllAccounts();
         await createWallet(password);
         await unlockWallet(password, startInOfflineMode);
-        setAccountIds(status.accountIds);
+        setAccountIds(accounts.accountIds);
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
       } catch (err) {
@@ -195,11 +196,12 @@ export const AuthPage: FC = (): JSX.Element => {
     confirmEntropyKnown();
     try {
       const status = await getWalletStatus();
+      const accounts = await getAllAccounts();
       await unlockWallet(password, status.networkBlockHeight === '0');
-      if (status?.accountIds?.length) {
-        await selectAccount(status.accountIds[0]);
+      if (accounts?.accountIds?.length) {
+        await selectAccount(accounts.accountIds[0]);
       }
-      setAccountIds(status?.accountIds ?? []);
+      setAccountIds(accounts?.accountIds ?? []);
     } catch (err) {
       console.log(err); // eslint-disable-line no-console
     }

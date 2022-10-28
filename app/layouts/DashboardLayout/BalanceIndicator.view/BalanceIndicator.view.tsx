@@ -65,6 +65,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   const token = useCurrentToken();
   const { t } = useTranslation('BalanceIndicator');
   const { walletStatus } = useSelector((state: ReduxStoreState) => state);
+  console.log(walletStatus);
   // Look at all balance values in wallet for eUSD token. If any > 0, wallet has access to eUSD
   const walletHasEUSD = Boolean(
     Object.values(walletStatus.balancePerToken[TOKENS.EUSD.id]).filter((value) => Number(value) > 0)

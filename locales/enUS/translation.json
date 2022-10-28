@@ -263,7 +263,7 @@
     "acceptTerms": "I understand that I will not be able to recover my account if I don't have the mnemonic backed up somewhere safe",
     "cancelButton": "Cancel",
     "checkedConfirmValidation": "Checked Confirm Validation",
-    "confirmShortCodeFieldLabel": "Confirm Main Address Short Code (XxXx-XxXx)",
+    "confirmShortCodeFieldLabel": "Confirm Main Address Short Code ({{ shortCode }})",
     "deleteButton": "Confirm Delete",
     "deleteDialogDescription": "Are you sure you want to delete this account? If you do, you will need the secret mnemonic to recover it and gain access to your MOB on this account! Without that, it will be gone forever.",
     "deleteDialogTitle": "Delete Account",

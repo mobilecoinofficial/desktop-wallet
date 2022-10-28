@@ -48,7 +48,7 @@ const DeleteAccountConfirmationView: FC<DeleteAccountConfirmationViewProps> = ({
               component={TextField}
               fullWidth
               id="shortCodeConfirmationField"
-              label={t('confirmShortCodeFieldLabel')}
+              label={t('confirmShortCodeFieldLabel', { shortCode })}
               name="shortCodeConfirmation"
             />
             <Box display="flex">

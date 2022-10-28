@@ -1,6 +1,5 @@
 import * as fullServiceApi from '../../fullService/api';
 import { decryptContacts } from '../../services';
-import { Accounts } from '../../types';
 import * as localStore from '../../utils/LocalStore';
 import { validatePassphrase } from '../../utils/authentication';
 import { decrypt } from '../../utils/encryption';
@@ -20,16 +19,12 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
   const contacts = await decryptContacts(secretKey);
 
   const { walletStatus } = await fullServiceApi.getWalletStatus();
+  const accounts = await fullServiceApi.getAllAccounts();
 
   await getFees();
 
-  const accounts: Accounts = {
-    accountIds: walletStatus.accountIds ?? [],
-    accountMap: walletStatus.accountMap ?? {},
-  };
-
-  const firstAccountId = (walletStatus.accountIds ?? [])[0];
-  const firstAccount = firstAccountId && (walletStatus.accountMap ?? {})[firstAccountId];
+  const firstAccountId = (accounts.accountIds ?? [])[0];
+  const firstAccount = firstAccountId && (accounts.accountMap ?? {})[firstAccountId];
 
   let { selectedAccount, addingAccount } = initialReduxStoreState;
   // if an account already exists, use the default to the first account available. Otherwise, use the initial state

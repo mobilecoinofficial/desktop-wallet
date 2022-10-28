@@ -1,6 +1,6 @@
 import type { Accounts, Account, AccountsV2 } from '../../types/Account.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
-import getAccount from './getAccount';
+import { convertAccountV2 } from './getAccount';
 
 const GET_ALL_ACCOUNTS_METHOD = 'get_accounts';
 
@@ -23,13 +23,12 @@ export const getAllAccountsV2 = async (): Promise<AccountsV2> => {
 const getAllAccounts = async (): Promise<GetAllAccountsResult> => {
   const result = await getAllAccountsV2();
 
-  const processedAccounts: { [accountId: string]: Account } = {};
-
-  await Promise.all(
-    Object.values(result.accountIds).map(async (accountId: string) => {
-      const processedAccount = await getAccount({ accountId });
-      processedAccounts[accountId] = processedAccount.account;
-    })
+  const processedAccounts = result.accountIds.reduce(
+    (accum: { [accountId: string]: Account }, id) => ({
+      ...accum,
+      [id]: convertAccountV2(result.accountMap[id]),
+    }),
+    {}
   );
 
   return {

@@ -1,5 +1,4 @@
-import type { Account } from './Account.d';
-import type { StringHex, StringUInt64 } from './SpecialStrings';
+import type { StringUInt64 } from './SpecialStrings';
 
 type Balance = {
   orphanedPmob: StringUInt64;
@@ -10,13 +9,10 @@ type Balance = {
 };
 
 export interface WalletStatus {
-  accountIds?: StringHex[];
-  accountMap?: { [accountId: string]: Account };
   isSyncedAll: boolean;
   localBlockHeight?: StringUInt64;
   minSyncedBlockIndex: StringUInt64;
   networkBlockHeight?: StringUInt64;
-  object?: 'wallet_status';
   balancePerToken: Record<number, Balance>;
 }
 

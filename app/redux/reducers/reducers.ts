@@ -126,8 +126,6 @@ export const initialReduxStoreState: ReduxStoreState = {
   transactionLogs: null,
   txos: { txoIds: [], txoMap: {} },
   walletStatus: {
-    accountIds: [],
-    accountMap: {},
     balancePerToken: {
       [TOKENS.MOB.id]: {
         orphanedPmob: '',
@@ -335,14 +333,12 @@ export const reducer = (
     }
 
     case UPDATE_WALLET_STATUS: {
-      const { selectedAccount, walletStatus } = (action as UpdateStatusAction).payload;
-      return sameObject(selectedAccount, state.selectedAccount) &&
-        sameObject(walletStatus, state.walletStatus)
+      const { selectedAccount } = (action as UpdateStatusAction).payload;
+      return sameObject(selectedAccount, state.selectedAccount)
         ? state
         : {
             ...state,
             selectedAccount,
-            walletStatus,
           };
     }
 

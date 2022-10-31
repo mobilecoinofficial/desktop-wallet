@@ -1,4 +1,5 @@
 import * as fullServiceApi from '../../fullService/api';
+import { getWalletStatus } from '../../services';
 import { Accounts, Addresses, SelectedAccount } from '../../types';
 import { errorToString } from '../../utils/errorHandler';
 import { selectAccountAction } from '../actions';
@@ -14,6 +15,7 @@ export const selectAccount = async (accountId: string): Promise<void> => {
     const p3 = fullServiceApi.getBalanceForAccount({ accountId });
     const p4 = getAllTransactionLogsForAccount(accountId);
     const p5 = getAllTxosForAccount(accountId);
+    const walletStatus = await getWalletStatus();
 
     const { account } = await p1;
     const { addressIds, addressMap } = await p2;
@@ -25,7 +27,7 @@ export const selectAccount = async (accountId: string): Promise<void> => {
     const addresses: Addresses = { addressIds, addressMap };
     const selectedAccount: SelectedAccount = { account, balanceStatus };
 
-    store.dispatch(selectAccountAction(accounts, addresses, selectedAccount));
+    store.dispatch(selectAccountAction(accounts, addresses, selectedAccount, walletStatus));
   } catch (err) {
     const errorMessage = errorToString(err);
     throw new Error(errorMessage);

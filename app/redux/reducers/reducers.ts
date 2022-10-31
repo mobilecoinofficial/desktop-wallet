@@ -264,7 +264,8 @@ export const reducer = (
     }
 
     case SELECT_ACCOUNT: {
-      const { accounts, addresses, selectedAccount } = (action as SelectAccountAction).payload;
+      const { accounts, addresses, selectedAccount, walletStatus } = (action as SelectAccountAction)
+        .payload;
       return {
         ...state,
         accounts,
@@ -272,6 +273,7 @@ export const reducer = (
         addresses,
         isEntropyKnown: true,
         selectedAccount,
+        walletStatus,
       };
     }
 

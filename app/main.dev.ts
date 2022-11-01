@@ -445,16 +445,29 @@ ipcMain.handle('import-ledger-db', () => {
   return true;
 });
 
-ipcMain.handle('save-view-only-sync-request', (_event, syncRequest) => {
+// ipcMain.handle('save-view-only-sync-request', (_event, syncRequest) => {
+//   const filePath = dialog.showSaveDialogSync(mainWindow, {
+//     defaultPath: 'view_only_sync_request.json',
+//   });
+
+//   if (!filePath) {
+//     return false;
+//   }
+
+//   fs.writeFileSync(filePath, JSON.stringify(snakeCaseKeys(syncRequest)));
+//   return true;
+// });
+
+ipcMain.handle('download-json', (_event, json, title) => {
   const filePath = dialog.showSaveDialogSync(mainWindow, {
-    defaultPath: 'view_only_sync_request.json',
+    defaultPath: `${title}.json`,
   });
 
   if (!filePath) {
     return false;
   }
 
-  fs.writeFileSync(filePath, JSON.stringify(snakeCaseKeys(syncRequest)));
+  fs.writeFileSync(filePath, json);
   return true;
 });
 
@@ -471,13 +484,12 @@ ipcMain.handle('save-unsigned-transaction', (_event, unsignedTx) => {
   return true;
 });
 
-ipcMain.handle('import-view-only-sync', () => {
-  const syncPath = dialog.showOpenDialogSync(mainWindow);
-  if (!syncPath) {
+ipcMain.handle('import-file', () => {
+  const filePath = dialog.showOpenDialogSync(mainWindow);
+  if (!filePath) {
     return false;
   }
-  console.log(syncPath);
-  const fileText = fs.readFileSync(syncPath[0]);
+  const fileText = fs.readFileSync(filePath[0]);
   return fileText.toString();
 });
 

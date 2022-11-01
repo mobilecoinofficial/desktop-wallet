@@ -2,26 +2,21 @@ import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, FormHelperText, Typography } from '@material-ui/core';
-import { Formik, Form, Field } from 'formik';
-import { TextField } from 'formik-material-ui';
+import { ipcRenderer } from 'electron';
 
 import { SubmitButton } from '../../../components';
 import { importViewOnlyAccount } from '../../../redux/services';
-// import { useTranslation } from 'react-i18next';
-// import * as Yup from 'yup';
-
-interface ImportViewOnlyAccountFormValues {
-  viewOnlyAccountImportRequest: string;
-}
 
 const ImportViewOnlyAccountView: FC = () => {
   const [error, setError] = useState<string | null>(null);
 
-  const handlesubmit = async (formData: ImportViewOnlyAccountFormValues) => {
+  const handleUpload = async () => {
     setError(null);
-    const importRequest = JSON.parse(formData.viewOnlyAccountImportRequest);
+    const rawRequest = await ipcRenderer.invoke('import-file');
+    const parsedParams = JSON.parse(rawRequest).jsonRpcRequest.params;
+
     try {
-      await importViewOnlyAccount(importRequest.jsonRpcRequest.params);
+      await importViewOnlyAccount(parsedParams);
     } catch (_) {
       setError(
         'Something went wrong with the view only account import. Please check your request and try again. For more information see the docs ...(LINK TO DOCS)'
@@ -44,46 +39,15 @@ const ImportViewOnlyAccountView: FC = () => {
         ...more info about import vo accounts?
       </Typography>
 
-      <Formik
-        initialValues={{
-          submit: null,
-          viewOnlyAccountImportRequest: '',
-        }}
-        onSubmit={handlesubmit}
-        // validationSchema={Yup.object().shape({
-        //   accountName: Yup.string().max(64, t('accountNameValidation')),
-        //   entropy: Yup.string()
-        //     .test('format', t('entropyMatches'), isValidMnemonicOrHexFormat)
-        //     .test('validEntropy', t('entropyIsWrong'), isValidMnemonicOrHexValue)
-        //     .required(t('entropyRequired')),
-        // })}
-      >
-        {({ isSubmitting, dirty, isValid, submitForm }) => (
-          <Form name="ImportViewOnlyAccountFormName">
-            <Field
-              id="ImportViewOnlyAccountForm-requestField"
-              component={TextField}
-              multiline
-              rows={8}
-              fullWidth
-              label="Import view only account request"
-              name="viewOnlyAccountImportRequest"
-            />
-            {error && (
-              <Box mt={3}>
-                <FormHelperText error>{error}</FormHelperText>
-              </Box>
-            )}
-            <SubmitButton
-              disabled={!dirty || !isValid || isSubmitting}
-              onClick={submitForm}
-              isSubmitting={isSubmitting}
-            >
-              Import View Only Account
-            </SubmitButton>
-          </Form>
-        )}
-      </Formik>
+      <SubmitButton disabled={false} onClick={handleUpload} isSubmitting={false}>
+        Upload View Only Account Import Request
+      </SubmitButton>
+
+      {error && (
+        <Box mt={3}>
+          <FormHelperText error>{error}</FormHelperText>
+        </Box>
+      )}
     </>
   );
 };

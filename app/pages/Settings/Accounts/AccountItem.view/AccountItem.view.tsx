@@ -84,7 +84,7 @@ const AccountItem: FC<AccountItemProps> = ({
           />
         </CardActionArea>
         {!account.viewOnly && (
-          <Tooltip title="copy view only account import request to clipboard">
+          <Tooltip title="download view only account import request">
             <Button onClick={onClickExport} name="exportViewOnlyButton">
               <SupervisorAccountOutlinedIcon />
             </Button>

@@ -11,6 +11,7 @@ export const importViewOnlyAccount = async (params: ImportViewOnlyAccountParams)
   try {
     // Attempt import
     const { account } = await fullServiceApi.importViewOnlyAccount(params);
+    console.log('account', account);
     const { accountId } = account;
 
     // Get basic wallet information

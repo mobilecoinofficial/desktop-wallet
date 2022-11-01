@@ -1,4 +1,3 @@
-import { GetViewOnlyAccountSyncRequestResult } from '../../../../fullService/api/getViewOnlyAccountSyncRequest';
 import { Accounts } from '../../../../types/Account';
 import { SelectedAccount } from '../../LedgerStatus.view/LedgerStatus';
 
@@ -8,7 +7,7 @@ export interface AccountsViewProps {
   onClickAddAccount: () => void;
   importViewOnlySync: () => Promise<void>;
   onClickBack: () => void;
-  saveViewOnlySyncRequest: (syncRequest: GetViewOnlyAccountSyncRequestResult) => Promise<void>;
+  downloadJson: (json: string, title: string) => Promise<void>;
   selectAccount: (accountId: string) => void;
   selectedAccount: SelectedAccount;
 }

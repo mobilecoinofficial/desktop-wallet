@@ -13,8 +13,8 @@ import {
   Fab,
   Dialog,
 } from '@material-ui/core';
-import { clipboard } from 'electron';
 import { useTranslation } from 'react-i18next';
+import snakeCaseKeys from 'snakecase-keys';
 
 import {
   getViewOnlyAccountImportRequest,
@@ -85,7 +85,7 @@ const AccountsView: FC<AccountsViewProps> = ({
   importViewOnlySync,
   onClickAddAccount,
   onClickBack,
-  saveViewOnlySyncRequest,
+  downloadJson,
   selectAccount,
   selectedAccount,
 }: AccountsViewProps) => {
@@ -103,14 +103,14 @@ const AccountsView: FC<AccountsViewProps> = ({
     const response = await getViewOnlyAccountImportRequest({
       accountId: selectedAccount.account.accountId,
     });
-    clipboard.writeText(JSON.stringify(response));
+    await downloadJson(JSON.stringify(response), 'view_only_import_request');
   };
 
   const getViewOnlySync = async () => {
     const response = await getViewOnlyAccountSyncRequest({
       accountId: selectedAccount.account.accountId,
     });
-    await saveViewOnlySyncRequest(response);
+    await downloadJson(JSON.stringify(snakeCaseKeys(response)), 'view_only_sync_request');
   };
 
   const handleOpenDeleteAccountConfirmation = (accountId: string) => {

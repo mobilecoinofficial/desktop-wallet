@@ -18,7 +18,6 @@ import {
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
 import { syncViewOnlyAccount } from '../../../fullService/api';
-import { GetViewOnlyAccountSyncRequestResult } from '../../../fullService/api/getViewOnlyAccountSyncRequest';
 import { camelCaseObjectKeys } from '../../../fullService/utils';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
@@ -161,13 +160,13 @@ export const SettingsPage: FC = (): JSX.Element => {
     enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
   };
 
-  const saveViewOnlySyncRequest = async (syncRequest: GetViewOnlyAccountSyncRequestResult) => {
-    const success = await ipcRenderer.invoke('save-view-only-sync-request', syncRequest);
+  const downloadJson = async (json: string, title: string) => {
+    const success = await ipcRenderer.invoke('download-json', json, title);
     enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
   };
 
   const importViewOnlySync = async () => {
-    const rawRequest = await ipcRenderer.invoke('import-view-only-sync');
+    const rawRequest = await ipcRenderer.invoke('import-file');
     const parsedParams = camelCaseObjectKeys(JSON.parse(rawRequest).params);
     const success = await syncViewOnlyAccount(parsedParams);
 
@@ -251,7 +250,7 @@ export const SettingsPage: FC = (): JSX.Element => {
               importViewOnlySync={importViewOnlySync}
               onClickAddAccount={onClickAddAccount}
               onClickBack={onClickBack}
-              saveViewOnlySyncRequest={saveViewOnlySyncRequest}
+              downloadJson={downloadJson}
               selectAccount={selectAccount}
               selectedAccount={selectedAccount}
             />

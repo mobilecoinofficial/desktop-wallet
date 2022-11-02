@@ -3,10 +3,10 @@ import { decryptContacts } from '../../services';
 import * as localStore from '../../utils/LocalStore';
 import { validatePassphrase } from '../../utils/authentication';
 import { decrypt } from '../../utils/encryption';
-import { unlockWalletAction } from '../actions';
+import { unlockWalletAction, getFeesAction } from '../actions';
 import { initialReduxStoreState } from '../reducers/reducers';
 import { store } from '../store';
-import { getFees } from './getFees';
+import { getFees, HARDCODED_FEES } from './getFees';
 
 export const unlockWallet = async (password: string, startInOfflineMode = false): Promise<void> => {
   const { encryptedPassword } = store.getState();
@@ -21,7 +21,11 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
   const { walletStatus } = await fullServiceApi.getWalletStatus();
   const accounts = await fullServiceApi.getAllAccounts();
 
-  await getFees();
+  if (startInOfflineMode) {
+    store.dispatch(getFeesAction(HARDCODED_FEES));
+  } else {
+    await getFees();
+  }
 
   const firstAccountId = (accounts.accountIds ?? [])[0];
   const firstAccount = firstAccountId && (accounts.accountMap ?? {})[firstAccountId];

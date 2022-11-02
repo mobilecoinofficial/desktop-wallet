@@ -109,11 +109,11 @@ export const SendReceivePage: FC = (): JSX.Element => {
     await updateContacts(contacts);
   };
 
-  const onClickConfirm = (resetForm: () => void) => {
+  const onClickConfirm = async (resetForm: () => void) => {
     try {
       const accountId = includeAccountId ? selectedAccount.account.accountId : undefined;
       // fk setSlideExitSpeed(1000);
-      submitTransaction(
+      await submitTransaction(
         confirmation.txProposal,
         accountId,
         offlineModeEnabled ? BLOCK_VERSION : undefined
@@ -131,7 +131,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
         variant: 'success',
       });
     } catch (err) {
-      enqueueSnackbar(t('sendError'), { variant: 'error' });
+      enqueueSnackbar('Error submitting transaction', { variant: 'error' });
     }
     resetForm();
     setConfirmation(EMPTY_CONFIRMATION);
@@ -257,6 +257,41 @@ export const SendReceivePage: FC = (): JSX.Element => {
     }
   };
 
+  const importSignedTransaction = async () => {
+    const transaction: string = await ipcRenderer.invoke('import-file');
+    if (!transaction) {
+      return;
+    }
+    const parsed = JSON.parse(transaction);
+    const txConfirmation: TxConfirmation = {} as TxConfirmation;
+    txConfirmation.txProposal = parsed.params?.tx_proposal;
+    txConfirmation.feeConfirmation = BigInt(parsed.params?.tx_proposal?.fee_amount?.value);
+    txConfirmation.totalValueConfirmation = BigInt(
+      parsed.params?.tx_proposal?.payload_txos?.reduce(
+        (accum: number, next: any) => accum + next.amount.value,
+        0
+      )
+    );
+    txConfirmation.txProposalReceiverB58Code =
+      parsed.params?.tx_proposal?.payload_txos[0]?.recipient_public_address_b58;
+
+    try {
+      if (
+        !txConfirmation.feeConfirmation ||
+        !txConfirmation.totalValueConfirmation ||
+        !txConfirmation.txProposal ||
+        !txConfirmation.txProposalReceiverB58Code
+      ) {
+        throw new Error(t('invalidTransaction'));
+      }
+      setConfirmation(txConfirmation);
+      setSendingStatus(Showing.CONFIRM_FORM);
+    } catch (err) {
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
+    }
+  };
+
   const onClickViewPaymentRequest = async ({
     accountId,
     recipientPublicAddress,
@@ -320,6 +355,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
               contacts={contacts}
               existingPin={existingPin as string}
               importTxConfirmation={importTxConfirmation}
+              importSignedTransaction={importSignedTransaction}
               isSynced={isSynced}
               offlineModeEnabled={offlineModeEnabled}
               onClickCancel={onClickCancel}

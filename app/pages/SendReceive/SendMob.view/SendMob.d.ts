@@ -21,7 +21,8 @@ export interface SendMobProps {
   confirmation?: unknown;
   contacts: Contact[];
   existingPin: string;
-  importTxConfirmation: () => void;
+  importTxConfirmation: () => Promise<void>;
+  importSignedTransaction: () => Promise<void>;
   isSynced: boolean;
   offlineModeEnabled: boolean;
   onClickCancel: () => void;

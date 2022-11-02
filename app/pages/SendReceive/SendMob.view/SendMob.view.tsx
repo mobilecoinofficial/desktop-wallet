@@ -90,6 +90,7 @@ const SendMob: FC<SendMobProps> = ({
   confirmation,
   contacts,
   existingPin,
+  importSignedTransaction,
   importTxConfirmation,
   isSynced,
   offlineModeEnabled,
@@ -122,7 +123,9 @@ const SendMob: FC<SendMobProps> = ({
   }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob),
+      balance:
+        BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob) +
+        BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unverifiedPmob),
       name: selectedAccount.account.name,
     },
   ];
@@ -185,7 +188,6 @@ const SendMob: FC<SendMobProps> = ({
     sendButtonText = t('saveTxConfirmation');
   }
   if (viewOnly) {
-    confirmSendText = 'save unsigned transaction';
     sendButtonText = 'save unsigned transaction';
   }
 
@@ -431,9 +433,14 @@ const SendMob: FC<SendMobProps> = ({
                     >
                       {sendButtonText}
                     </SubmitButton>
-                    {!offlineModeEnabled && (
-                      <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>
-                    )}
+                    <Box marginTop={1}>
+                      {!offlineModeEnabled && !viewOnly && (
+                        <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>
+                      )}
+                      {viewOnly && (
+                        <Button onClick={importSignedTransaction}>Import Signed Transaction</Button>
+                      )}
+                    </Box>
                     {/* TODO - disable model if invalid */}
                     <Modal
                       aria-labelledby="transition-modal-title"

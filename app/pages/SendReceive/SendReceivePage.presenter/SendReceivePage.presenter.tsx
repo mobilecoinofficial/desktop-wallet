@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
+import { BLOCK_VERSION } from '../../../fullService/api/getNetworkStatus';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { updateContacts } from '../../../redux/services';
@@ -71,7 +72,8 @@ export const SendReceivePage: FC = (): JSX.Element => {
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
 
-  const isSynced = isSyncedBuffered(networkBlockHeightBigInt, accountBlockHeightBigInt);
+  const isSynced =
+    isSyncedBuffered(networkBlockHeightBigInt, accountBlockHeightBigInt) || offlineModeEnabled;
 
   const { t } = useTranslation('TransactionView');
   const { enqueueSnackbar } = useSnackbar();
@@ -107,8 +109,13 @@ export const SendReceivePage: FC = (): JSX.Element => {
 
   const onClickConfirm = (resetForm: () => void) => {
     try {
+      const accountId = includeAccountId ? selectedAccount.account.accountId : undefined;
       // fk setSlideExitSpeed(1000);
-      submitTransaction(confirmation.txProposal, includeAccountId);
+      submitTransaction(
+        confirmation.txProposal,
+        accountId,
+        offlineModeEnabled ? BLOCK_VERSION : undefined
+      );
 
       const totalValueConfirmationAsMob = convertTokenValueToDisplayValue(
         Number(confirmation.totalValueConfirmation),
@@ -157,6 +164,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
       result = await buildTransaction({
         accountId,
         addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
+        blockVersion: offlineModeEnabled ? BLOCK_VERSION : undefined,
         feeValue: fee,
       });
 
@@ -246,6 +254,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
         addressesAndAmounts: [
           [recipientPublicAddress, { tokenId: `${token.id}`, value: valuePmob }],
         ],
+        blockVersion: offlineModeEnabled ? BLOCK_VERSION : undefined,
         feeValue: fee,
       });
       if (result === null || result === undefined) {

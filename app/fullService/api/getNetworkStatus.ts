@@ -3,6 +3,9 @@ import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService'
 
 const GET_NETWORK_STATUS_METHOD = 'get_network_status';
 
+// ideally this would be fetched from the network, but FS can't know current bloc version in offline mode
+export const BLOCK_VERSION = '2';
+
 type GetNetworkStatusResult = {
   networkStatus: NetworkStatus;
 };

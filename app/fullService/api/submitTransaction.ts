@@ -9,6 +9,7 @@ const SUBMIT_TRANSACTION_METHOD = 'submit_transaction';
 type SubmitTransactionParams = {
   accountId?: StringHex;
   txProposal: TxProposal;
+  blockVersion?: string;
 };
 
 type SubmitTransactionResult = {
@@ -18,10 +19,12 @@ type SubmitTransactionResult = {
 const submitTransaction = async ({
   accountId,
   txProposal,
+  blockVersion,
 }: SubmitTransactionParams): Promise<SubmitTransactionResult> => {
   const { result, error }: AxiosFullServiceResponse<{ transactionLog: TransactionLogV2 }> =
     await axiosFullService(SUBMIT_TRANSACTION_METHOD, {
       accountId,
+      blockVersion,
       txProposal,
     });
 

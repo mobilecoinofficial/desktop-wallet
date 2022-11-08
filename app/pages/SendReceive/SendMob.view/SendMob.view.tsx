@@ -155,7 +155,6 @@ const SendMob: FC<SendMobProps> = ({
   const handleConfirmSubmit = (resetForm: () => void) => onClickConfirm(resetForm);
 
   const validateAmount = (selectedBalance: bigint, txFee: bigint) => (valueString: string) => {
-    console.log(`feeAmount in validate: ${txFee}`);
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
     if (valueAsPicoMob + txFee > selectedBalance) {

@@ -13,6 +13,7 @@ export type BuildTransactionParams = {
   inputTxoIds?: StringHex[];
   maxSpendableValue?: StringUInt64;
   tombstoneBlock?: StringUInt64;
+  blockVersion?: StringUInt64;
 };
 
 export type AddressAndAmount = [StringB58, TransactionAmount];
@@ -40,11 +41,13 @@ const buildTransaction = async ({
   inputTxoIds,
   maxSpendableValue,
   tombstoneBlock,
+  blockVersion,
 }: BuildTransactionParams): Promise<BuildTransactionResult> => {
   const { result, error }: AxiosFullServiceResponse<BuilTransactionProposalResponse> =
     await axiosFullService(BUILD_TRANSACTION_METHOD, {
       accountId,
       addressesAndAmounts,
+      blockVersion,
       feeTokenId,
       feeValue,
       inputTxoIds,

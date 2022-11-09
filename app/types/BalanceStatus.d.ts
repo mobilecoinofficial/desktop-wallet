@@ -1,4 +1,3 @@
-// import { TOKENS } from '../constants/tokens';
 import type { StringUInt64 } from './SpecialStrings';
 
 export type Balance = {

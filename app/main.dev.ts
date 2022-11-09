@@ -445,19 +445,6 @@ ipcMain.handle('import-ledger-db', () => {
   return true;
 });
 
-// ipcMain.handle('save-view-only-sync-request', (_event, syncRequest) => {
-//   const filePath = dialog.showSaveDialogSync(mainWindow, {
-//     defaultPath: 'view_only_sync_request.json',
-//   });
-
-//   if (!filePath) {
-//     return false;
-//   }
-
-//   fs.writeFileSync(filePath, JSON.stringify(snakeCaseKeys(syncRequest)));
-//   return true;
-// });
-
 ipcMain.handle('download-json', (_event, json, title) => {
   const filePath = dialog.showSaveDialogSync(mainWindow, {
     defaultPath: `${title}.json`,

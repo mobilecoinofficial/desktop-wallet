@@ -184,7 +184,6 @@ export const SendReceivePage: FC = (): JSX.Element => {
         blockVersion: offlineModeEnabled ? BLOCK_VERSION : undefined,
         feeValue: fee,
       });
-      result = await buildTransaction(txParams);
 
       if (result === null || result === undefined) {
         throw new Error(t('sendBuildError'));

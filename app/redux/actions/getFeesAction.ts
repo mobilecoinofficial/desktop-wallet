@@ -4,7 +4,7 @@ export const GET_FEE_PMOB = 'GET_FEES';
 
 export type GetFeesAction = {
   type: 'GET_FEES';
-  payload: { fees: Fees; blockVersion: string };
+  payload: { fees: Fees };
 };
 
 export const getFeesAction = (fees: Fees): GetFeesAction => ({

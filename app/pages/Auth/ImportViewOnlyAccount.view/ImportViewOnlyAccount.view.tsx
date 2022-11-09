@@ -5,6 +5,7 @@ import { Box, FormHelperText, Typography } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 
 import { SubmitButton } from '../../../components';
+import { camelCaseObjectKeys } from '../../../fullService/utils';
 import { importViewOnlyAccount } from '../../../redux/services';
 
 const ImportViewOnlyAccountView: FC = () => {
@@ -13,7 +14,7 @@ const ImportViewOnlyAccountView: FC = () => {
   const handleUpload = async () => {
     setError(null);
     const rawRequest = await ipcRenderer.invoke('import-file');
-    const parsedParams = JSON.parse(rawRequest).jsonRpcRequest.params;
+    const parsedParams = camelCaseObjectKeys(JSON.parse(rawRequest).params);
 
     try {
       await importViewOnlyAccount(parsedParams);

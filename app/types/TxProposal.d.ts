@@ -1,5 +1,5 @@
-import { TransactionAmount } from '../fullService/api/buildTransaction';
 import type { StringHex, StringUInt64, StringB58 } from './SpecialStrings';
+import type { TransactionAmount } from './TransactionAmount';
 
 type PublicAddress = {
   fogAuthoritySig: StringHex;
@@ -14,14 +14,14 @@ type Outlay = {
   value: StringUInt64;
 };
 
-type InputTxo = {
+export type InputTxo = {
   txoIdHex: string;
   amount: TransactionAmount;
   subaddressIndex: StringUInt64;
   keyImage: string;
 };
 
-type OutputTxo = {
+export type OutputTxo = {
   txoIdHex: string;
   amount: TransactionAmount;
   recipientPublicAddressB58: StringB58;

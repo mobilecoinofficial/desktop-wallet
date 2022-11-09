@@ -52,7 +52,6 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
   const sendSyncStatus = (statusCode: string) => ipcRenderer.send('sync-status', statusCode);
-
   const importLedger = async () => {
     ipcRenderer.invoke('import-ledger-db');
   };

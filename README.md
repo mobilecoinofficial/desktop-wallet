@@ -4,15 +4,6 @@ A user-friendly desktop wallet with support for transaction history, encrypted c
 
 - You must read and accept the [Terms of Use for MobileCoins and MobileCoin Wallets](./TERMS-OF-USE.md) to use MobileCoin Software.
 
-### Roadmap
-
-Here is a list of some upcoming changes and initiatives:
-
-- User-controlled bug reporting
-- Support for M1
-- Support for Windows
-- Better accessibility support
-
 ### Note to Developers
 
 - Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for notes on contributing bug reports and code.

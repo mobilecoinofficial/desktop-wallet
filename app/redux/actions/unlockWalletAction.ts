@@ -1,4 +1,4 @@
-import { Contact, SelectedAccount, StringUInt64, WalletStatus, Accounts } from '../../types';
+import type { Contact, SelectedAccount, StringUInt64, WalletStatus, Accounts } from '../../types';
 
 export const UNLOCK_WALLET = 'UNLOCK_WALLET';
 

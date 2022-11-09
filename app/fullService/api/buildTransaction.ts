@@ -1,4 +1,5 @@
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
+import type { AddressAndAmount } from '../../types/TransactionLog';
 import type { OutputTxo, TxProposal } from '../../types/TxProposal';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
@@ -14,12 +15,6 @@ export type BuildTransactionParams = {
   maxSpendableValue?: StringUInt64;
   tombstoneBlock?: StringUInt64;
   blockVersion?: StringUInt64;
-};
-
-export type AddressAndAmount = [StringB58, TransactionAmount];
-export type TransactionAmount = {
-  value: StringUInt64;
-  tokenId: StringUInt64;
 };
 
 export type BuildTransactionResult = {

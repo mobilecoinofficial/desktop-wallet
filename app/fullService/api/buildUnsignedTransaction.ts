@@ -1,7 +1,7 @@
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
+import type { AddressAndAmount } from '../../types/TransactionLog';
 import type { UnsignedTxProposal } from '../../types/TxProposal';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
-import { AddressAndAmount } from './buildTransaction';
 
 const BUILD_UNSIGNED_TRANSACTION_METHOD = 'build_unsigned_transaction';
 
@@ -21,7 +21,7 @@ type BuilTransactionProposalResponse = {
   unsignedTxProposal: UnsignedTxProposal;
 };
 
-const buildTransaction = async ({
+const buildUnsignedTransaction = async ({
   addressesAndAmounts,
   accountId,
   feeValue,
@@ -42,4 +42,4 @@ const buildTransaction = async ({
   return result;
 };
 
-export default buildTransaction;
+export default buildUnsignedTransaction;

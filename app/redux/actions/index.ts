@@ -1,3 +1,4 @@
+// @ts-ignore import/no-cycle
 import { addAccountAction, AddAccountAction, ADD_ACCOUNT } from './addAccountAction';
 import {
   confirmEntropyKnownAction,

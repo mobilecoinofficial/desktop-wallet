@@ -1,5 +1,5 @@
 import * as fullServiceApi from '../fullService/api';
-import type { TxProposal } from '../types/TxProposal.d';
+import type { TxProposal } from '../types';
 
 const submitTransaction = async (
   txProposal: TxProposal,

@@ -48,6 +48,8 @@ import {
 import type { SendMobProps } from './SendMob.d';
 import { Showing } from './SendMob.d';
 
+const NO_CONTACT_SELECTED = '';
+
 const useStyles = makeStyles((theme: Theme) => ({
   button: { width: 200 },
   center: { display: 'flex', justifyContent: 'center' },
@@ -106,7 +108,7 @@ const SendMob: FC<SendMobProps> = ({
   const { t } = useTranslation('SendMobForm');
   const { viewOnly } = selectedAccount.account;
 
-  const [contactId, setContactId] = useState('');
+  const [contactId, setContactId] = useState(NO_CONTACT_SELECTED);
   const [contactName, setContactName] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [isScanningQR, setIsScanningQR] = useState(false);
@@ -158,7 +160,11 @@ const SendMob: FC<SendMobProps> = ({
 
   const handleSaveConfirmation = (resetForm: () => void) => saveTxConfirmation(resetForm);
 
-  const handleConfirmSubmit = (resetForm: () => void) => onClickConfirm(resetForm);
+  const handleConfirmSubmit = async (resetForm: () => void) => {
+    await onClickConfirm(resetForm);
+    setContactId(NO_CONTACT_SELECTED);
+    setContactName('');
+  };
 
   const validateAmount = (selectedBalance: bigint, txFee: bigint) => (valueString: string) => {
     let error;
@@ -176,7 +182,6 @@ const SendMob: FC<SendMobProps> = ({
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.select();
   };
-  const NO_CONTACT_SELECTED = '';
 
   const feeAmount =
     token.id === TOKENS.MOB.id ? convertPicoMobStringToMob(fee) : convertMicroEUSDToStringEUSD(fee);

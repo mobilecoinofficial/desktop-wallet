@@ -12,7 +12,9 @@ import {
   ListItemIcon,
   Tooltip,
 } from '@material-ui/core';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import SyncIcon from '@material-ui/icons/Sync';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
@@ -58,7 +60,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   balance,
+  containsUnverified,
+  getViewOnlySync,
   importLedger,
+  importViewOnlySync,
   isSynced,
   offlineModeEnabled,
   viewOnly,
@@ -68,6 +73,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   const token = useCurrentToken();
   const { t } = useTranslation('BalanceIndicator');
   const { walletStatus } = useSelector((state: ReduxStoreState) => state);
+
   // Look at all balance values in wallet for eUSD token. If any > 0, wallet has access to eUSD
   const walletHasEUSD = Boolean(
     Object.values(walletStatus.balancePerToken[TOKENS.EUSD.id]).filter((value) => Number(value) > 0)
@@ -105,8 +111,14 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
           <MOBNumberFormat token={token} value={balance} />
         </Typography>
 
-        {viewOnly && (
-          <Tooltip title="The balance for a view only account may not reflect all spent transactions. Learn more at ....">
+        {viewOnly && !containsUnverified && (
+          <Tooltip title="This is a view-only account. Learn more at https://github.com/mobilecoinofficial/desktop-wallet#view-only">
+            <InfoOutlinedIcon style={{ marginLeft: 8 }} />
+          </Tooltip>
+        )}
+
+        {containsUnverified && (
+          <Tooltip title="The balance for this view only account may contain spent MOB. Please sync the account to ensure an accurate balance. Learn more at https://github.com/mobilecoinofficial/desktop-wallet#view-only">
             <InfoOutlinedIcon htmlColor={GOLD_LIGHT} style={{ marginLeft: 8 }} />
           </Tooltip>
         )}
@@ -128,6 +140,21 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         <Button onClick={importLedger}>
           <Typography variant="h6">Import Ledger</Typography>
         </Button>
+      )}
+
+      {viewOnly && (
+        <Box display="flex" justifyContent="center">
+          <Tooltip title="Download account sync request">
+            <Button onClick={getViewOnlySync} name="syncViewOnlyButtonDL">
+              <GetAppIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Import synced account balance">
+            <Button onClick={importViewOnlySync} name="syncViewOnlyButtonUL">
+              <SyncIcon />
+            </Button>
+          </Tooltip>
+        </Box>
       )}
     </Box>
   );

@@ -17,8 +17,6 @@ import {
   ToolsIcon,
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
-import { syncViewOnlyAccount } from '../../../fullService/api';
-import { camelCaseObjectKeys } from '../../../fullService/utils';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
@@ -160,21 +158,6 @@ export const SettingsPage: FC = (): JSX.Element => {
     enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
   };
 
-  const downloadJson = async (json: string, title: string) => {
-    const success = await ipcRenderer.invoke('download-json', json, title);
-    enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
-  };
-
-  const importViewOnlySync = async () => {
-    const rawRequest = await ipcRenderer.invoke('import-file');
-    const parsedParams = camelCaseObjectKeys(JSON.parse(rawRequest).params);
-    const success = await syncViewOnlyAccount(parsedParams);
-
-    await selectAccount(selectedAccount.account.accountId);
-
-    enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
-  };
-
   const settingsOptionsList = [
     {
       Icon: MOBIcon,
@@ -247,10 +230,8 @@ export const SettingsPage: FC = (): JSX.Element => {
             <AccountsView
               accounts={accounts}
               deleteAccount={deleteAccount}
-              importViewOnlySync={importViewOnlySync}
               onClickAddAccount={onClickAddAccount}
               onClickBack={onClickBack}
-              downloadJson={downloadJson}
               selectAccount={selectAccount}
               selectedAccount={selectedAccount}
             />

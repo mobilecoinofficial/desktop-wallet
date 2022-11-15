@@ -261,7 +261,7 @@ export const AuthPage: FC = (): JSX.Element => {
 
           {optButton(1, t('createInstead'))}
           {optButton(2, t('importInstead'))}
-          {optButton(3, 'Import View Only Account')}
+          {!offlineStart && optButton(3, 'Import View Only Account')}
           {addingAccount ? <Button onClick={onClickCancel}>Cancel</Button> : <></>}
         </Card>
       </Container>

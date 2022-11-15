@@ -73,9 +73,15 @@ export const SendReceivePage: FC = (): JSX.Element => {
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
+  const localBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.localBlockHeight ?? 0);
 
-  const isSynced =
-    isSyncedBuffered(networkBlockHeightBigInt, accountBlockHeightBigInt) || offlineModeEnabled;
+  let isSynced: boolean;
+  if (offlineModeEnabled) {
+    isSynced = isSyncedBuffered(localBlockHeightBigInt, accountBlockHeightBigInt);
+  } else {
+    isSynced =
+      isSyncedBuffered(networkBlockHeightBigInt, accountBlockHeightBigInt) || offlineModeEnabled;
+  }
 
   const { t } = useTranslation('TransactionView');
   const { enqueueSnackbar } = useSnackbar();

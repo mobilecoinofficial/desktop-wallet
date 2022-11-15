@@ -14,12 +14,7 @@ import {
   Dialog,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-import snakeCaseKeys from 'snakecase-keys';
 
-import {
-  getViewOnlyAccountImportRequest,
-  getViewOnlyAccountSyncRequest,
-} from '../../../../fullService/api';
 import type { Theme } from '../../../../theme';
 import { AccountItem } from '../AccountItem.view';
 import { DeleteAccountConfirmationView } from '../DeleteAccountConfirmation.view';
@@ -82,10 +77,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 const AccountsView: FC<AccountsViewProps> = ({
   accounts,
   deleteAccount,
-  importViewOnlySync,
   onClickAddAccount,
   onClickBack,
-  downloadJson,
   selectAccount,
   selectedAccount,
 }: AccountsViewProps) => {
@@ -98,20 +91,6 @@ const AccountsView: FC<AccountsViewProps> = ({
 
   const pageBack = () => setFirstToShow(firstToShow - 5);
   const pageForward = () => setFirstToShow(firstToShow + 5);
-
-  const getViewOnlyImport = async () => {
-    const response = await getViewOnlyAccountImportRequest({
-      accountId: selectedAccount.account.accountId,
-    });
-    await downloadJson(JSON.stringify(response), 'view_only_import_request');
-  };
-
-  const getViewOnlySync = async () => {
-    const response = await getViewOnlyAccountSyncRequest({
-      accountId: selectedAccount.account.accountId,
-    });
-    await downloadJson(JSON.stringify(snakeCaseKeys(response)), 'view_only_sync_request');
-  };
 
   const handleOpenDeleteAccountConfirmation = (accountId: string) => {
     setAccountIdToDelete(accountId);
@@ -145,9 +124,6 @@ const AccountsView: FC<AccountsViewProps> = ({
               key={accountId}
               account={accounts.accountMap[accountId]}
               onClick={() => selectAccount(accountId)}
-              onClickExport={getViewOnlyImport}
-              onClickSyncExport={getViewOnlySync}
-              onClickSyncImport={importViewOnlySync}
               onDelete={() => handleOpenDeleteAccountConfirmation(accountId)}
               selected={selectedAccount.account.accountId === accountId}
             />

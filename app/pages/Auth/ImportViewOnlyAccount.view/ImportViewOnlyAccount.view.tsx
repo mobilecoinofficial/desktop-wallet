@@ -20,7 +20,7 @@ const ImportViewOnlyAccountView: FC = () => {
       await importViewOnlyAccount(parsedParams);
     } catch (_) {
       setError(
-        'Something went wrong with the view only account import. Please check your request and try again. For more information see the docs ...(LINK TO DOCS)'
+        'Something went wrong with the view only account import. Please check your request and try again. For more information see the docs at https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts'
       );
     }
   };
@@ -42,7 +42,7 @@ const ImportViewOnlyAccountView: FC = () => {
         <Link
           target="_blank"
           rel="noreferrer"
-          href="https://github.com/mobilecoinofficial/desktop-wallet#view-only"
+          href="https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts"
         >
           <Typography>Learn more</Typography>
         </Link>

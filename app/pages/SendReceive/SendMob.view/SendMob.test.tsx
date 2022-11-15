@@ -63,6 +63,7 @@ const SELECTED_ACCOUNT = {
     nextSubaddressIndex: '5',
     object: 'account',
     recoveryMode: false,
+    viewOnly: false,
   },
   balanceStatus: {
     accountBlockHeight: '158974',
@@ -73,6 +74,7 @@ const SELECTED_ACCOUNT = {
         secretedPmob: '0',
         spentPmob: '35410000000000',
         unspentPmob: String(INITIAL_BALANCE * 1000000000000),
+        unverifiedPmob: '0',
       },
       [TOKENS.EUSD.id]: {
         orphanedPmob: '18000000000001',
@@ -80,6 +82,7 @@ const SELECTED_ACCOUNT = {
         secretedPmob: '0',
         spentPmob: '35410000000000',
         unspentPmob: String(INITIAL_BALANCE * 1000000000000),
+        unverifiedPmob: '0',
       },
     },
     isSynced: true,

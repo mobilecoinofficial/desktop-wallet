@@ -195,7 +195,7 @@ const SendMob: FC<SendMobProps> = ({
     sendButtonText = t('saveTxConfirmation');
   }
   if (viewOnly) {
-    sendButtonText = 'save unsigned transaction';
+    sendButtonText = 'saveUnsigned';
   }
 
   return (
@@ -445,7 +445,7 @@ const SendMob: FC<SendMobProps> = ({
                         <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>
                       )}
                       {viewOnly && (
-                        <Button onClick={importSignedTransaction}>Import Signed Transaction</Button>
+                        <Button onClick={importSignedTransaction}>{t('importSignedTx')}</Button>
                       )}
                     </Box>
                     {/* TODO - disable model if invalid */}

@@ -11,6 +11,7 @@ import {
   MenuItem,
   ListItemIcon,
   Tooltip,
+  Link,
 } from '@material-ui/core';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
@@ -118,8 +119,14 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         )}
 
         {containsUnverified && (
-          <Tooltip title="The balance for this view only account may contain spent MOB. Please sync the account to ensure an accurate balance. Learn more at https://github.com/mobilecoinofficial/desktop-wallet#view-only">
-            <InfoOutlinedIcon htmlColor={GOLD_LIGHT} style={{ marginLeft: 8 }} />
+          <Tooltip title="The balance for this view only account may contain spent MOB. Please sync the account to ensure an accurate balance. Click here to learn more">
+            <Link
+              target="_blank"
+              rel="noreferrer"
+              href="https://github.com/mobilecoinofficial/desktop-wallet#view-only"
+            >
+              <InfoOutlinedIcon htmlColor={GOLD_LIGHT} style={{ marginLeft: 8 }} />
+            </Link>
           </Tooltip>
         )}
       </Box>
@@ -137,19 +144,21 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
       )}
 
       {offlineModeEnabled && (
-        <Button onClick={importLedger}>
-          <Typography variant="h6">Import Ledger</Typography>
-        </Button>
+        <Tooltip title="Importing the ledger will restart the mobilecoin desktop wallet">
+          <Button onClick={importLedger}>
+            <Typography variant="h6">Import Ledger</Typography>
+          </Button>
+        </Tooltip>
       )}
 
-      {viewOnly && (
+      {containsUnverified && (
         <Box display="flex" justifyContent="center">
-          <Tooltip title="Download account sync request">
+          <Tooltip title="Download account sync request file">
             <Button onClick={getViewOnlySync} name="syncViewOnlyButtonDL">
               <GetAppIcon />
             </Button>
           </Tooltip>
-          <Tooltip title="Import synced account balance">
+          <Tooltip title="Import synced account file">
             <Button onClick={importViewOnlySync} name="syncViewOnlyButtonUL">
               <SyncIcon />
             </Button>

@@ -111,7 +111,9 @@ const SendMob: FC<SendMobProps> = ({
   const [isChecked, setIsChecked] = useState(false);
   const [isScanningQR, setIsScanningQR] = useState(false);
   const { fees } = useSelector((state: ReduxStoreState) => state);
-  const token = useCurrentToken();
+  // when using offline mode flow, the online account submitting the transaction might not have eUSD, so we need to rely on the uploaded tx to get tokenID
+  const confToken = (confirmation?.txProposal?.inputTxos ?? [])[0]?.amount?.tokenId;
+  const token = useCurrentToken(confToken ? Number(confToken) : undefined);
   const fee = fees[token.id];
 
   // We'll use this array in prep for future patterns with multiple accounts

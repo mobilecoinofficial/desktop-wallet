@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, FormHelperText, Typography } from '@material-ui/core';
+import { Box, FormHelperText, Typography, Link } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 
 import { SubmitButton } from '../../../components';
@@ -34,14 +34,22 @@ const ImportViewOnlyAccountView: FC = () => {
         Create a view only version of an existing account
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
-        View only accounts can ....more info about vo accounts and offline flow etc...
+        View only accounts can read transactions, but can not submit transactions or know which
+        transactions have been spent. They are created using your view keys and do not require or
+        save your spend keys.
       </Typography>
       <Typography variant="body2" color="textPrimary" paragraph>
-        ...more info about import vo accounts?
+        <Link
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/mobilecoinofficial/desktop-wallet#view-only"
+        >
+          <Typography>Learn more</Typography>
+        </Link>
       </Typography>
 
       <SubmitButton disabled={false} onClick={handleUpload} isSubmitting={false}>
-        Upload View Only Account Import Request
+        Upload View Only Account Import File
       </SubmitButton>
 
       {error && (

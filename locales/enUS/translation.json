@@ -463,7 +463,7 @@
     "addressRequired": "A Public Address is required to send MOB.",
     "amount": "Amount",
     "cancel": "Cancel",
-    "confirm": "Send MOB Confirmation",
+    "confirm": "Send Confirmation",
     "confirmSend": "Confirm Send",
     "saveTxConfirmation": "Save Signed Transaction",
     "description": "Please enter the recipient’s address and the amount to send",

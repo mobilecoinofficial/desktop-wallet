@@ -1,6 +1,6 @@
-import { TransactionAmount } from '../fullService/api/buildTransaction';
 import type { Contact } from './Contact';
 import type { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
+import type { TransactionAmount } from './TransactionAmount';
 import type { InputTxo, OutputTxo } from './TxProposal';
 
 export interface TransactionAbbreviation {

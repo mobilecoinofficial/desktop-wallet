@@ -31,7 +31,7 @@ const submitTransaction = async ({
   if (error) {
     throw new Error(error);
   } else if (!result) {
-    throw new Error('Failure to retrieve data.');
+    throw new Error('Failure to submit transaction.');
   } else {
     return { transactionLog: convertTransactionLogFromV2(result.transactionLog) };
   }

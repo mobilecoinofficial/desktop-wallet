@@ -111,6 +111,15 @@ export const GiftsPage: FC = (): JSX.Element => {
       </Box>
     );
   }
+  if (selectedAccount.account.viewOnly) {
+    return (
+      <Box className={classes.root}>
+        <Typography align="center">
+          Gift codes can not be created from view only accounts
+        </Typography>
+      </Box>
+    );
+  }
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);

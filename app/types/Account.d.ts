@@ -9,6 +9,7 @@ export interface Account {
   name: string | null;
   nextSubaddressIndex: StringUInt64;
   recoveryMode: boolean;
+  viewOnly: boolean;
 }
 
 export interface AccountV2 {

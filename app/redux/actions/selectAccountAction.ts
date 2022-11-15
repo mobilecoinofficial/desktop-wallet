@@ -1,4 +1,4 @@
-import { Accounts, Addresses, SelectedAccount, WalletStatus } from '../../types';
+import type { Accounts, Addresses, SelectedAccount, WalletStatus } from '../../types';
 
 export const SELECT_ACCOUNT = 'SELECT_ACCOUNT';
 

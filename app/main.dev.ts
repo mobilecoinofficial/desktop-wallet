@@ -23,6 +23,7 @@ import installExtension, {
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
+import snakeCaseKeys from 'snakecase-keys';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
@@ -442,6 +443,41 @@ ipcMain.handle('import-ledger-db', () => {
   app.relaunch();
   app.exit();
   return true;
+});
+
+ipcMain.handle('download-json', (_event, json, title) => {
+  const filePath = dialog.showSaveDialogSync(mainWindow, {
+    defaultPath: `${title}.json`,
+  });
+
+  if (!filePath) {
+    return false;
+  }
+
+  fs.writeFileSync(filePath, json);
+  return true;
+});
+
+ipcMain.handle('save-unsigned-transaction', (_event, unsignedTx) => {
+  const filePath = dialog.showSaveDialogSync(mainWindow, {
+    defaultPath: 'unsigned_transaction.json',
+  });
+
+  if (!filePath) {
+    return false;
+  }
+
+  fs.writeFileSync(filePath, JSON.stringify(snakeCaseKeys(unsignedTx)));
+  return true;
+});
+
+ipcMain.handle('import-file', () => {
+  const filePath = dialog.showOpenDialogSync(mainWindow);
+  if (!filePath) {
+    return false;
+  }
+  const fileText = fs.readFileSync(filePath[0]);
+  return fileText.toString();
 });
 
 ipcMain.handle('export-transaction-history', (_event, transactionLogs) => {

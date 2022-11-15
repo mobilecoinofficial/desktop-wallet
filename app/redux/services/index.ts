@@ -9,6 +9,7 @@ import { getAllTransactionLogsForAccount } from './getAllTransactionLogsForAccou
 import { getAllTxosForAccount } from './getAllTxosForAccount';
 import { getFees } from './getFees';
 import { importAccount, importLegacyAccount } from './importAccount';
+import { importViewOnlyAccount } from './importViewOnlyAccount';
 import { initialize } from './initialize';
 import { selectAccount } from './selectAccount';
 import { setTokenId } from './setTokenId';
@@ -31,6 +32,7 @@ export {
   getFees,
   importAccount,
   importLegacyAccount,
+  importViewOnlyAccount,
   initialize,
   selectAccount,
   setTokenId,

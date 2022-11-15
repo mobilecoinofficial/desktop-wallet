@@ -1,4 +1,4 @@
-import { Account, BalanceStatus, SelectedAccount } from '../../types';
+import type { Account, BalanceStatus, SelectedAccount } from '../../types';
 
 export const UPDATE_WALLET_STATUS = 'UPDATE_WALLET_STATUS';
 

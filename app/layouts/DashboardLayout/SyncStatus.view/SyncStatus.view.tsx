@@ -5,7 +5,7 @@ import { Box, makeStyles, Tooltip, CircularProgress } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import { CircleMOBIcon } from '../../../components/icons';
-import { BLUE_DARK, BLUE_LIGHT, GOLD_LIGHT, RED } from '../../../constants/colors';
+import { BLUE_DARK, GOLD_LIGHT, RED } from '../../../constants/colors';
 import { Theme } from '../../../theme';
 import { getPercentSynced } from '../../../utils/getPercentSynced';
 import { SyncStatusProps } from './SyncStatus';
@@ -13,7 +13,6 @@ import { SyncStatusProps } from './SyncStatus';
 const ERROR = 'ERROR';
 const SYNCED = 'SYNCED';
 const SYNCING = 'SYNCING';
-const OFFLINE = 'OFFLINE';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {},
@@ -68,9 +67,10 @@ const SyncStatus: FC<SyncStatusProps> = ({
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
   const acceptableDiffBigInt = BigInt(2);
   if (offlineModeEnabled) {
-    isSynced = false;
-    percentSynced = 0;
-    statusCode = OFFLINE;
+    isSynced = localBlockHeightBigInt - accountBlockHeightBigInt < acceptableDiffBigInt;
+    percentSynced = getPercentSynced(localBlockHeightBigInt, accountBlockHeightBigInt);
+
+    statusCode = isSynced ? SYNCED : SYNCING;
   } else if (
     networkBlockHeightBigInt < accountBlockHeightBigInt ||
     networkBlockHeightBigInt < localBlockHeightBigInt
@@ -91,19 +91,14 @@ const SyncStatus: FC<SyncStatusProps> = ({
   sendSyncStatus(statusCode);
 
   switch (statusCode) {
-    case OFFLINE: {
-      backgroundColor = BLUE_LIGHT;
-      title = `Block Height: ${localBlockHeightBigInt}`;
+    case SYNCING: {
+      backgroundColor = GOLD_LIGHT;
+      title = `${percentSynced}%: ${t('syncing')}`;
       break;
     }
     case SYNCED: {
       backgroundColor = BLUE_DARK;
       title = t('synced');
-      break;
-    }
-    case SYNCING: {
-      backgroundColor = GOLD_LIGHT;
-      title = `${percentSynced}%: ${t('syncing')}`;
       break;
     }
     default: {

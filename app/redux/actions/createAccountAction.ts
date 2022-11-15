@@ -1,4 +1,4 @@
-import {
+import type {
   Account,
   Accounts,
   Address,

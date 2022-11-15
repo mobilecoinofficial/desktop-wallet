@@ -31,6 +31,7 @@ import { getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { CreateWalletView } from '../CreateWallet.view';
 import { ImportAccountView } from '../ImportAccount.view';
+import { ImportViewOnlyAccountView } from '../ImportViewOnlyAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -253,12 +254,14 @@ export const AuthPage: FC = (): JSX.Element => {
         <Card className={classes.cardContainer}>
           {selectedView === 1 && <CreateAccountView onClickCreate={onClickCreate} />}
           {selectedView === 2 && <ImportAccountView onClickImport={onClickImport} />}
+          {selectedView === 3 && <ImportViewOnlyAccountView />}
           <Box my={3}>
             <Divider />
           </Box>
 
           {optButton(1, t('createInstead'))}
           {optButton(2, t('importInstead'))}
+          {!offlineStart && optButton(3, 'Import View Only Account')}
           {addingAccount ? <Button onClick={onClickCancel}>Cancel</Button> : <></>}
         </Card>
       </Container>

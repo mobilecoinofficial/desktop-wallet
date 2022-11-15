@@ -48,6 +48,8 @@ import {
 import type { SendMobProps } from './SendMob.d';
 import { Showing } from './SendMob.d';
 
+const NO_CONTACT_SELECTED = '';
+
 const useStyles = makeStyles((theme: Theme) => ({
   button: { width: 200 },
   center: { display: 'flex', justifyContent: 'center' },
@@ -90,6 +92,7 @@ const SendMob: FC<SendMobProps> = ({
   confirmation,
   contacts,
   existingPin,
+  importSignedTransaction,
   importTxConfirmation,
   isSynced,
   offlineModeEnabled,
@@ -103,13 +106,16 @@ const SendMob: FC<SendMobProps> = ({
 }: SendMobProps) => {
   const classes = useStyles();
   const { t } = useTranslation('SendMobForm');
+  const { viewOnly } = selectedAccount.account;
 
-  const [contactId, setContactId] = useState('');
+  const [contactId, setContactId] = useState(NO_CONTACT_SELECTED);
   const [contactName, setContactName] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [isScanningQR, setIsScanningQR] = useState(false);
   const { fees } = useSelector((state: ReduxStoreState) => state);
-  const token = useCurrentToken();
+  // when using offline mode flow, the online account submitting the transaction might not have eUSD, so we need to rely on the uploaded tx to get tokenID
+  const confToken = (confirmation?.txProposal?.inputTxos ?? [])[0]?.amount?.tokenId;
+  const token = useCurrentToken(confToken ? Number(confToken) : undefined);
   const fee = fees[token.id];
 
   // We'll use this array in prep for future patterns with multiple accounts
@@ -121,7 +127,9 @@ const SendMob: FC<SendMobProps> = ({
   }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob),
+      balance:
+        BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob) +
+        BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unverifiedPmob),
       name: selectedAccount.account.name,
     },
   ];
@@ -152,7 +160,11 @@ const SendMob: FC<SendMobProps> = ({
 
   const handleSaveConfirmation = (resetForm: () => void) => saveTxConfirmation(resetForm);
 
-  const handleConfirmSubmit = (resetForm: () => void) => onClickConfirm(resetForm);
+  const handleConfirmSubmit = async (resetForm: () => void) => {
+    await onClickConfirm(resetForm);
+    setContactId(NO_CONTACT_SELECTED);
+    setContactName('');
+  };
 
   const validateAmount = (selectedBalance: bigint, txFee: bigint) => (valueString: string) => {
     let error;
@@ -170,12 +182,21 @@ const SendMob: FC<SendMobProps> = ({
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.select();
   };
-  const NO_CONTACT_SELECTED = '';
 
   const feeAmount =
     token.id === TOKENS.MOB.id ? convertPicoMobStringToMob(fee) : convertMicroEUSDToStringEUSD(fee);
 
   const renderInput = (props) => <MOBNumberFormat token={token} convert={false} {...props} />;
+
+  let confirmSendText: string = t('confirmSend');
+  let sendButtonText: string = isSynced ? t('send') : t('syncing');
+  if (offlineModeEnabled) {
+    confirmSendText = t('saveTxConfirmation');
+    sendButtonText = t('saveTxConfirmation');
+  }
+  if (viewOnly) {
+    sendButtonText = 'saveUnsigned';
+  }
 
   return (
     <Container maxWidth="sm">
@@ -417,11 +438,16 @@ const SendMob: FC<SendMobProps> = ({
                       onClick={handleOpen(values)}
                       isSubmitting={/* isAwaitingConformation || */ isSubmitting}
                     >
-                      {isSynced ? t('send') : t('syncing')}
+                      {sendButtonText}
                     </SubmitButton>
-                    {!offlineModeEnabled && (
-                      <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>
-                    )}
+                    <Box marginTop={1}>
+                      {!offlineModeEnabled && !viewOnly && (
+                        <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>
+                      )}
+                      {viewOnly && (
+                        <Button onClick={importSignedTransaction}>{t('importSignedTx')}</Button>
+                      )}
+                    </Box>
                     {/* TODO - disable model if invalid */}
                     <Modal
                       aria-labelledby="transition-modal-title"
@@ -593,7 +619,7 @@ const SendMob: FC<SendMobProps> = ({
                               type="submit"
                               variant="contained"
                             >
-                              {offlineModeEnabled ? t('saveTxConfirmation') : t('confirmSend')}
+                              {confirmSendText}
                             </Button>
                           </Box>
                         </div>

@@ -17,7 +17,7 @@
   },
   "AuthPage": {
     "createInstead": "Create account instead",
-    "importInstead": "Import account instead",
+    "importInstead": "Import account",
     "unlockInstead": "Unlock account instead"
   },
   "BalanceIndicator": {
@@ -463,14 +463,16 @@
     "addressRequired": "A Public Address is required to send MOB.",
     "amount": "Amount",
     "cancel": "Cancel",
-    "confirm": "Send MOB Confirmation",
+    "confirm": "Send Confirmation",
     "confirmSend": "Confirm Send",
-    "saveTxConfirmation": "Save Confirmation",
+    "importSignedTx": "Import Signed Transaction",
+    "saveTxConfirmation": "Save Signed Transaction",
+    "saveUnsigned": "Save Unsigned Transaction",
     "description": "Please enter the recipient’s address and the amount to send",
     "enterPin": "For this amount your PIN is required",
     "errorFee": "Please reserve {{limit}} {{name}} for transaction fee.",
     "fee": "Fee",
-    "importTxConfirmation": "Import TxConfirmation",
+    "importTxConfirmation": "Import Signed Transaction",
     "intent": "Please check and confirm your payment amount",
     "mob": "MOB",
     "mobAmount": "Amount",

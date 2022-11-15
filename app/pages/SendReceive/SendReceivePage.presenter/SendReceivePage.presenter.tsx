@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
+import { buildUnsignedTransaction } from '../../../fullService/api';
+import { BuildUnsignedTransactionParams } from '../../../fullService/api/buildUnsignedTransaction';
 import { BLOCK_VERSION } from '../../../fullService/api/getNetworkStatus';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
@@ -71,9 +73,15 @@ export const SendReceivePage: FC = (): JSX.Element => {
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
+  const localBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.localBlockHeight ?? 0);
 
-  const isSynced =
-    isSyncedBuffered(networkBlockHeightBigInt, accountBlockHeightBigInt) || offlineModeEnabled;
+  let isSynced: boolean;
+  if (offlineModeEnabled) {
+    isSynced = isSyncedBuffered(localBlockHeightBigInt, accountBlockHeightBigInt);
+  } else {
+    isSynced =
+      isSyncedBuffered(networkBlockHeightBigInt, accountBlockHeightBigInt) || offlineModeEnabled;
+  }
 
   const { t } = useTranslation('TransactionView');
   const { enqueueSnackbar } = useSnackbar();
@@ -107,11 +115,11 @@ export const SendReceivePage: FC = (): JSX.Element => {
     await updateContacts(contacts);
   };
 
-  const onClickConfirm = (resetForm: () => void) => {
+  const onClickConfirm = async (resetForm: () => void) => {
     try {
       const accountId = includeAccountId ? selectedAccount.account.accountId : undefined;
       // fk setSlideExitSpeed(1000);
-      submitTransaction(
+      await submitTransaction(
         confirmation.txProposal,
         accountId,
         offlineModeEnabled ? BLOCK_VERSION : undefined
@@ -129,7 +137,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
         variant: 'success',
       });
     } catch (err) {
-      enqueueSnackbar(t('sendError'), { variant: 'error' });
+      enqueueSnackbar('Error submitting transaction', { variant: 'error' });
     }
     resetForm();
     setConfirmation(EMPTY_CONFIRMATION);
@@ -160,7 +168,22 @@ export const SendReceivePage: FC = (): JSX.Element => {
     setIsChecked(isChecked);
     setRecipientPublicAddress(recipientPublicAddress);
 
+    const txParams: BuildUnsignedTransactionParams = {
+      accountId,
+      addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
+      feeValue: fee,
+    };
+
     try {
+      if (selectedAccount.account.viewOnly) {
+        const unsignedTx = await buildUnsignedTransaction(txParams);
+        const success = await ipcRenderer.invoke('save-unsigned-transaction', unsignedTx);
+        enqueueSnackbar(success ? 'Success' : 'Failure', {
+          variant: success ? 'success' : 'error',
+        });
+        return;
+      }
+
       result = await buildTransaction({
         accountId,
         addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
@@ -239,6 +262,41 @@ export const SendReceivePage: FC = (): JSX.Element => {
     }
   };
 
+  const importSignedTransaction = async () => {
+    const transaction: string = await ipcRenderer.invoke('import-file');
+    if (!transaction) {
+      return;
+    }
+    const parsed = JSON.parse(transaction);
+    const txConfirmation: TxConfirmation = {} as TxConfirmation;
+    txConfirmation.txProposal = parsed.params?.tx_proposal;
+    txConfirmation.feeConfirmation = BigInt(parsed.params?.tx_proposal?.fee_amount?.value);
+    txConfirmation.totalValueConfirmation = BigInt(
+      parsed.params?.tx_proposal?.payload_txos?.reduce(
+        (accum: number, next: any) => accum + next.amount.value,
+        0
+      )
+    );
+    txConfirmation.txProposalReceiverB58Code =
+      parsed.params?.tx_proposal?.payload_txos[0]?.recipient_public_address_b58;
+
+    try {
+      if (
+        !txConfirmation.feeConfirmation ||
+        !txConfirmation.totalValueConfirmation ||
+        !txConfirmation.txProposal ||
+        !txConfirmation.txProposalReceiverB58Code
+      ) {
+        throw new Error(t('invalidTransaction'));
+      }
+      setConfirmation(txConfirmation);
+      setSendingStatus(Showing.CONFIRM_FORM);
+    } catch (err) {
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
+    }
+  };
+
   const onClickViewPaymentRequest = async ({
     accountId,
     recipientPublicAddress,
@@ -294,7 +352,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
           >
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
-            <Tab label={t('pay')} />
+            {!selectedAccount.account.viewOnly && <Tab label={t('pay')} />}
           </Tabs>
           {selectedTabIndex === 0 && (
             <SendMob
@@ -302,6 +360,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
               contacts={contacts}
               existingPin={existingPin as string}
               importTxConfirmation={importTxConfirmation}
+              importSignedTransaction={importSignedTransaction}
               isSynced={isSynced}
               offlineModeEnabled={offlineModeEnabled}
               onClickCancel={onClickCancel}

@@ -22,7 +22,6 @@ export const selectAccount = async (accountId: string): Promise<void> => {
     const { balance: balanceStatus } = await p3;
     await p4;
     await p5;
-
     const accounts: Accounts = { accountIds, accountMap };
     const addresses: Addresses = { addressIds, addressMap };
     const selectedAccount: SelectedAccount = { account, balanceStatus };

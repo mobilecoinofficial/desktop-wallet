@@ -4,6 +4,70 @@ A user-friendly desktop wallet with support for transaction history, encrypted c
 
 - You must read and accept the [Terms of Use for MobileCoins and MobileCoin Wallets](./TERMS-OF-USE.md) to use MobileCoin Software.
 
+
+## Offline Use
+
+There are two ways to use desktop wallet (DW) offline: view-only accounts and offline mode. Offline mode is more secure, but view-only mode is more convenient, while still being more secure than a fully-online wallet.
+
+
+### Offline Mode
+
+In offline mode, none of your keys is ever saved to an online computer, the offline computer will save your keys in an encrypted database, and you will have to copy the ledger from an online computer to the offline computer any time you want to update your balance or create a transaction.
+
+
+#### Syncing an account
+
+
+
+1. Get started with offline mode by installing DW on a computer connected to the internet. 
+2. Create a new account. DW will automatically begin downloading the Mobilecoin ledger to that computer. 
+3. Once the download has finished, export the ledger by going to settings -> manage ledger database and click the EXPORT button underneath the “Ledger database path” heading. 
+4. Take this file, along with the installer for DW to your offline computer. Install DW, create a new account or import an existing account, then import the ledger database using the IMPORT button in either the settings or underneath the account balance indicator. DW will restart and then sync the account with the imported ledger DB.
+
+
+#### Creating and submitting a transaction
+
+
+
+1. Once the account is synced, enter the transaction details on the Send/Receive tab. Click “Save signed transaction” to build the transaction, then confirm the transaction build in the preview that pops up. Confirming the build will prompt you to save the signed transaction to disk.
+2. Copy this saved transaction over to the connected computer. Start up DW using the new account you created earlier.Navigate to the Send/Receive page and rather than entering the transaction details into the form, click “Import Signed Transaction”.
+3. Take a look at the transaction details that appear in the confirmation modal. If everything looks correct, click “confirm send” to submit the transaction to the Mobilecoin network.
+
+
+### View-Only Accounts
+
+A view only account allows you to maintain an account on a connected computer using only your view keys. The connected account will be able to sync with the ledger and show you all of the transactions that have been received for that account. However it will not know which transactions have been spent until you use a tool called the transactions-signer to sync the view-only account. You can also build + submit transactions using the view-only account and the transaction signer. The transaction-signer should only be used on an offline computer. By default it will save your mnemonic in an unencrypted JSON file on the computer where it is run.
+
+View only accounts can be identified in the DW by a circular icon with an exclamation mark inside it. The icon will be next to the account balance indicator. If the account contains MOB/eUSD that might be spent, the icon will be yellow and icon-buttons for downloading and uploading sync files will be rendered. If the account contains only MOB/eUSD that is confirmed to be unspent, the view-only icon will be white and the sync buttons will not appear.
+
+
+#### Syncing an account
+
+
+
+1. Get started with view-only mode by downloading the transaction-signer from the [full-service releases](https://github.com/mobilecoinofficial/full-service/releases). Find the most recent release and download the appropriate package for your system. Unzip the package, and move the transaction-signer binary into a directory where you want to keep your secrets.
+2. Create a new account or import an existing account: 
+    1. Create a new account by opening a terminal navigating into the directory with the transaction-signer and running `./transaction-signer create`.
+    2. Import an existing account by running `./transaction-signer import “<your account’s mnemonic>” –-name <your account’s name>`.
+    3. The transaction signer will create two files: `mobilecoin_secret_mnemonic_xxxx.json` and `mobilecoin_view_account_import_package.xxxx.json`. The mnemonic file will be used by the transaction signer to sync the account & sign transactions. The import package contains your view keys and will be used to import a view-only account into the online DW.
+3. Copy the `mobilecoin_view_account_import_package.xxxx.json` file over to the online computer. Install DW and when given the choice to create or import an account, select “Import View Only Account”. Upload the import package json file.
+4. The wallet will create and navigate to the view-only account, which will start syncing. The view only account will have a record of all received transactions and render a balance, but that balance may not be correct because the account does not know which transactions have been spent (this knowledge would require the private spend key).
+5. In order to properly sync the view-only account, you need to download an account-sync package and have the transaction-signer scan it. In the DW, underneath the balance indicator, click on the download arrow. This will download the sync request JSON file.
+6. Copy the sync request JSON file to the offline computer. From within the transaction-signer directory run `./transaction-signer sync &lt;path to mnemonic file> &lt;path to sync package>`. The transaction signer will generate and save a completed sync JSON file.
+7. Copy the completed sync JSON file over to the online computer. In DW, click on the upload sync package icon and select the completed sync jSON file. DW will quickly sync and now it will know which txos have been spent and it will render an accurate balance.
+
+
+##### Creating and submitting a transaction
+
+
+
+1. From the view-only account, navigate to the send/receive tab and enter the transaction details. Click “Save Unsigned Transaction”. This will build an unsigned transaction and save it to disk.
+2. Copy the unsigned transaction over to the offline computer. From inside the directory with the transaction signer run `./transaction-signer sign &lt;path to mnemonic file> &lt;path to unsigned transaction JSON>`. The transaction-signer will sign and save the transaction.
+3. Copy the signed transaction over to the computer with the online DW. From the send/receive tab for the view-only account, click on the “Import Signed Transaction” button. Select the signed transaction JSON. The confirmation window should pop up. Verify the transaction details, then click “Submit” to submit the transaction to the Mobilecoin network.
+
+
+
+
 ### Note to Developers
 
 - Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for notes on contributing bug reports and code.

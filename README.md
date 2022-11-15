@@ -53,7 +53,7 @@ View only accounts can be identified in the DW by a circular icon with an exclam
 3. Copy the `mobilecoin_view_account_import_package.xxxx.json` file over to the online computer. Install DW and when given the choice to create or import an account, select “Import View Only Account”. Upload the import package json file.
 4. The wallet will create and navigate to the view-only account, which will start syncing. The view only account will have a record of all received transactions and render a balance, but that balance may not be correct because the account does not know which transactions have been spent (this knowledge would require the private spend key).
 5. In order to properly sync the view-only account, you need to download an account-sync package and have the transaction-signer scan it. In the DW, underneath the balance indicator, click on the download arrow. This will download the sync request JSON file.
-6. Copy the sync request JSON file to the offline computer. From within the transaction-signer directory run `./transaction-signer sync &lt;path to mnemonic file> &lt;path to sync package>`. The transaction signer will generate and save a completed sync JSON file.
+6. Copy the syn  request JSON file to the offline computer. From within the transaction-signer directory run `./transaction-signer sync <path to mnemonic file> <path to sync package>`. The transaction signer will generate and save a completed sync JSON file. 
 7. Copy the completed sync JSON file over to the online computer. In DW, click on the upload sync package icon and select the completed sync jSON file. DW will quickly sync and now it will know which txos have been spent and it will render an accurate balance.
 
 

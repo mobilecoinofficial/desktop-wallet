@@ -113,7 +113,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         </Typography>
 
         {viewOnly && !containsUnverified && (
-          <Tooltip title="This is a view-only account. Learn more at https://github.com/mobilecoinofficial/desktop-wallet#view-only">
+          <Tooltip title="This is a view-only account. Learn more at https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts">
             <InfoOutlinedIcon style={{ marginLeft: 8 }} />
           </Tooltip>
         )}
@@ -123,7 +123,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
             <Link
               target="_blank"
               rel="noreferrer"
-              href="https://github.com/mobilecoinofficial/desktop-wallet#view-only"
+              href="https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts"
             >
               <InfoOutlinedIcon htmlColor={GOLD_LIGHT} style={{ marginLeft: 8 }} />
             </Link>

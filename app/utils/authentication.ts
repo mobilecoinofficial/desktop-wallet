@@ -16,7 +16,8 @@ export const encryptAndStorePassphrase = async (
 
 export const validatePassphrase = async (
   passphrase: string,
-  encryptedPassphrase: SjclCipherEncrypted
+  encryptedPassphrase: SjclCipherEncrypted,
+  handleError?: (errorMessage: string) => void
 ): Promise<{ secretKey: string }> => {
   try {
     const { secretKey } = await argon2Key(passphrase);
@@ -26,8 +27,16 @@ export const validatePassphrase = async (
     if (decryptedPassphrase === passphrase) {
       return { secretKey };
     }
+    if (handleError) {
+      handleError('Invalid Password');
+    }
+
     throw new Error('Invalid Password');
   } catch (e) {
+    if (handleError) {
+      handleError('Invalid Password');
+    }
+
     if (e.message === "ccm: tag doesn't match") {
       throw new Error('Invalid Password');
     } else {

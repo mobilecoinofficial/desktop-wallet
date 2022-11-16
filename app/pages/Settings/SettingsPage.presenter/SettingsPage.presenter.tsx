@@ -30,6 +30,7 @@ import { retrieveEntropy } from '../../../services';
 import type { Theme } from '../../../theme';
 import type { StringUInt64 } from '../../../types/SpecialStrings.d';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
+import { errorToString } from '../../../utils/errorHandler';
 import { getKeychainAccounts, setKeychainAccount } from '../../../utils/keytarService';
 import { AccountsView } from '../Accounts/Accounts.view';
 import { ChangePasswordView } from '../ChangePassword.view';
@@ -99,6 +100,8 @@ export const SettingsPage: FC = (): JSX.Element => {
     }
   };
 
+  const handlePasswordError = (message: string) => enqueueSnackbar(message, { variant: 'error' });
+
   const onClickChangePassword = async (
     password: string,
     newPassword: string,
@@ -107,10 +110,10 @@ export const SettingsPage: FC = (): JSX.Element => {
     try {
       if (saveChecked) {
         const currentAccount = keychainAccounts[0].account;
-        await updatePassword(password, newPassword);
+        await updatePassword(password, newPassword, handlePasswordError);
         setKeychainAccount(currentAccount, newPassword);
       } else {
-        await updatePassword(password, newPassword);
+        await updatePassword(password, newPassword, handlePasswordError);
       }
       enqueueSnackbar(t('changePasswordSuccess'), {
         variant: 'success',
@@ -126,6 +129,7 @@ export const SettingsPage: FC = (): JSX.Element => {
       /* istanbul ignore next */
       enqueueSnackbar(t('changePinSuccess'), { variant: 'success' });
     } catch (err) {
+      enqueueSnackbar(errorToString(err), { variant: 'error' });
       console.log('ERROR!', err); // eslint-disable-line no-console
     }
   };
@@ -139,6 +143,7 @@ export const SettingsPage: FC = (): JSX.Element => {
       }
       setEntropy(entropyString);
     } catch (err) {
+      enqueueSnackbar(errorToString(err), { variant: 'error' });
       console.log('ERROR!!!', err); // eslint-disable-line no-console
     }
   };

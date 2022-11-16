@@ -62,10 +62,15 @@ const axiosFullService = async <T>(
       throw new Error(errorMessage);
     }
 
-    return {
-      error: response.error ? response.error.data?.details ?? 'unknown full-service error' : null,
-      result: response.result ? camelCaseObjectKeys(response.result) : null,
-    };
+    if (response.result) {
+      return { result: camelCaseObjectKeys(response.result) };
+    }
+
+    if (response.error) {
+      return { error: response.error.data?.details ?? 'unknown full-service error' };
+    }
+
+    return { error: response.error.data?.details ?? 'invalid full-service response' };
   } catch (error) {
     const errorMessage = errorToString(error);
     throw new Error(errorMessage);

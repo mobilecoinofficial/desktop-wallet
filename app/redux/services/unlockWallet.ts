@@ -1,5 +1,8 @@
+import { some } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+
 import * as fullServiceApi from '../../fullService/api';
-import { decryptContacts } from '../../services';
+import { decryptContacts, encryptContacts } from '../../services';
 import * as localStore from '../../utils/LocalStore';
 import { validatePassphrase } from '../../utils/authentication';
 import { decrypt } from '../../utils/encryption';
@@ -16,7 +19,22 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
 
   const { secretKey } = await validatePassphrase(password, encryptedPassword);
 
-  const contacts = await decryptContacts(secretKey);
+  let contacts = await decryptContacts(secretKey);
+  // required for backwards compatibility. pre-1.7 contacts did not have an ID field
+  const hasContactsWithoutID = some(contacts, (c) => !c.id);
+  if (hasContactsWithoutID) {
+    contacts = contacts.map((contact) => {
+      if (contact.id) {
+        return contact;
+      }
+      return {
+        ...contact,
+        id: uuidv4(),
+      };
+    });
+
+    await encryptContacts(contacts, store.getState().secretKey);
+  }
 
   const { walletStatus } = await fullServiceApi.getWalletStatus();
   const accounts = await fullServiceApi.getAllAccounts();

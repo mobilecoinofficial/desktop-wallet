@@ -62,9 +62,10 @@ const axiosFullService = async <T>(
       throw new Error(errorMessage);
     }
 
-    // TODO: determine if we need to handle errors here or elsewhere
-    // such as the API or services
-    return camelCaseObjectKeys(response);
+    return {
+      error: response.error ? response.error.data?.details ?? 'unknown full-service error' : null,
+      result: response.result ? camelCaseObjectKeys(response.result) : null,
+    };
   } catch (error) {
     const errorMessage = errorToString(error);
     throw new Error(errorMessage);

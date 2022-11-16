@@ -8,7 +8,7 @@ const decryptContacts = async (secretKey: string): Promise<Contact[]> => {
     return [];
   }
 
-  const contactsStringified = await decrypt(encryptedContacts, secretKey);
+  const contactsStringified = await decrypt(encryptedContacts, '');
   return JSON.parse(contactsStringified) as Contact[];
 };
 

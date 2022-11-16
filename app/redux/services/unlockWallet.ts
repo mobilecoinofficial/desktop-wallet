@@ -18,7 +18,6 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
   }
 
   const { secretKey } = await validatePassphrase(password, encryptedPassword);
-
   let contacts = await decryptContacts(secretKey);
   // required for backwards compatibility. pre-1.7 contacts did not have an ID field
   const hasContactsWithoutID = some(contacts, (c) => !c.id);

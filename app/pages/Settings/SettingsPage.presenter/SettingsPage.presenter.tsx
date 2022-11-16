@@ -100,8 +100,6 @@ export const SettingsPage: FC = (): JSX.Element => {
     }
   };
 
-  const handlePasswordError = (message: string) => enqueueSnackbar(message, { variant: 'error' });
-
   const onClickChangePassword = async (
     password: string,
     newPassword: string,
@@ -110,10 +108,10 @@ export const SettingsPage: FC = (): JSX.Element => {
     try {
       if (saveChecked) {
         const currentAccount = keychainAccounts[0].account;
-        await updatePassword(password, newPassword, handlePasswordError);
+        await updatePassword(password, newPassword);
         setKeychainAccount(currentAccount, newPassword);
       } else {
-        await updatePassword(password, newPassword, handlePasswordError);
+        await updatePassword(password, newPassword);
       }
       enqueueSnackbar(t('changePasswordSuccess'), {
         variant: 'success',

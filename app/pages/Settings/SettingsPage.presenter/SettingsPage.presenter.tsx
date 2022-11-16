@@ -18,6 +18,7 @@ import {
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
+import { useTransactionLogs } from '../../../hooks/useTransactionLogs';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   addAccount,
@@ -60,15 +61,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const SettingsPage: FC = (): JSX.Element => {
   const classes = useStyles();
-  const {
-    accounts,
-    addingAccount,
-    offlineModeEnabled,
-    pinThresholdPmob,
-    pin,
-    selectedAccount,
-    transactionLogs,
-  } = useSelector((state: ReduxStoreState) => state);
+  const { accounts, addingAccount, offlineModeEnabled, pinThresholdPmob, pin, selectedAccount } =
+    useSelector((state: ReduxStoreState) => state);
+  const transactionLogs = useTransactionLogs();
 
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');

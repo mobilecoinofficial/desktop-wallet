@@ -33,7 +33,7 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
       };
     });
 
-    await encryptContacts(contacts, store.getState().secretKey);
+    await encryptContacts(contacts, secretKey);
   }
 
   const { walletStatus } = await fullServiceApi.getWalletStatus();

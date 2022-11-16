@@ -18,22 +18,23 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
   }
 
   const { secretKey } = await validatePassphrase(password, encryptedPassword);
-  let contacts = await decryptContacts(secretKey);
+  const contacts = await decryptContacts(secretKey);
+  await encryptContacts(contacts, secretKey);
   // required for backwards compatibility. pre-1.7 contacts did not have an ID field
-  const hasContactsWithoutID = some(contacts, (c) => !c.id);
-  if (hasContactsWithoutID) {
-    contacts = contacts.map((contact) => {
-      if (contact.id) {
-        return contact;
-      }
-      return {
-        ...contact,
-        id: uuidv4(),
-      };
-    });
+  // const hasContactsWithoutID = some(contacts, (c) => !c.id);
+  // if (hasContactsWithoutID) {
+  //   contacts = contacts.map((contact) => {
+  //     if (contact.id) {
+  //       return contact;
+  //     }
+  //     return {
+  //       ...contact,
+  //       id: uuidv4(),
+  //     };
+  //   });
 
-    await encryptContacts(contacts, secretKey);
-  }
+  //   await encryptContacts(contacts, secretKey);
+  // }
 
   const { walletStatus } = await fullServiceApi.getWalletStatus();
   const accounts = await fullServiceApi.getAllAccounts();

@@ -3,6 +3,7 @@ import type { FC } from 'react';
 
 import { Box, Button, Card, Container, Divider, makeStyles } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
+import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -85,6 +86,8 @@ export const AuthPage: FC = (): JSX.Element => {
   const [fullServiceIsRunning, setFullServiceIsRunning] = useState(false);
   const [loading, setLoading] = useState(true);
   const [accountIds, setAccountIds] = useState([]);
+  const { enqueueSnackbar } = useSnackbar();
+  const renderPasswordError = (message: string) => enqueueSnackbar(message, { variant: 'error' });
 
   const offlineStart = localStore.getOfflineStart();
   useEffect(() => {
@@ -139,7 +142,7 @@ export const AuthPage: FC = (): JSX.Element => {
           await untilFullServiceRuns();
           const accounts = await getAllAccounts();
           setAccountIds(accounts.accountIds);
-          await unlockWallet(password, startInOfflineMode);
+          await unlockWallet(password, startInOfflineMode, renderPasswordError);
           if (accounts.accountIds?.length) {
             await selectAccount(accounts.accountIds[0]);
           }
@@ -172,7 +175,7 @@ export const AuthPage: FC = (): JSX.Element => {
         await untilFullServiceRuns();
         const accounts = await getAllAccounts();
         await createWallet(password);
-        await unlockWallet(password, startInOfflineMode);
+        await unlockWallet(password, startInOfflineMode, renderPasswordError);
         setAccountIds(accounts.accountIds);
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
@@ -198,7 +201,7 @@ export const AuthPage: FC = (): JSX.Element => {
     try {
       const status = await getWalletStatus();
       const accounts = await getAllAccounts();
-      await unlockWallet(password, status.networkBlockHeight === '0');
+      await unlockWallet(password, status.networkBlockHeight === '0', renderPasswordError);
       if (accounts?.accountIds?.length) {
         await selectAccount(accounts.accountIds[0]);
       }

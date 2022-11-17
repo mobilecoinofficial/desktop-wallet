@@ -487,19 +487,15 @@ ipcMain.handle('export-transaction-history', (_event, transactionLogs) => {
     return false;
   }
 
-  if (transactionLogs.transactionLogMap.length === 0) {
+  if (transactionLogs.length === 0) {
     return false;
   }
 
-  const fields = Object.keys(
-    transactionLogs.transactionLogMap[transactionLogs.transactionLogIds[0]]
-  );
+  const fields = Object.keys(transactionLogs[0]);
   const replacer = (key, value) => (value === null ? '' : value);
 
-  let csv = transactionLogs.transactionLogIds.map((txLogId) =>
-    fields
-      .map((field) => JSON.stringify(transactionLogs.transactionLogMap[txLogId][field], replacer))
-      .join('\t')
+  let csv = transactionLogs.map((txLog) =>
+    fields.map((field) => JSON.stringify(txLog[field], replacer)).join('\t')
   );
   csv.unshift(fields.join('\t'));
   csv = csv.join('\r\n');

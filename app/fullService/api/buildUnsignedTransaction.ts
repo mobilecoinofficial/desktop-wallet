@@ -9,6 +9,7 @@ export type BuildUnsignedTransactionParams = {
   accountId: StringHex;
   addressesAndAmounts: AddressAndAmount[];
   feeValue: StringUInt64;
+  tombstoneBlock: StringUInt64;
 };
 
 export type BuildUnsignedTransactionResult = {
@@ -25,12 +26,14 @@ const buildUnsignedTransaction = async ({
   addressesAndAmounts,
   accountId,
   feeValue,
+  tombstoneBlock,
 }: BuildUnsignedTransactionParams): Promise<BuildUnsignedTransactionResult> => {
   const { result, error }: AxiosFullServiceResponse<BuilTransactionProposalResponse> =
     await axiosFullService(BUILD_UNSIGNED_TRANSACTION_METHOD, {
       accountId,
       addressesAndAmounts,
       feeValue,
+      tombstoneBlock,
     });
 
   if (error) {

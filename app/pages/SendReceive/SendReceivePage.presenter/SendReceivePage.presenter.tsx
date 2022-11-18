@@ -74,6 +74,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
   const localBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.localBlockHeight ?? 0);
+  const offlineTombstone = `${Number(localBlockHeightBigInt) + 100}`;
 
   let isSynced: boolean;
   if (offlineModeEnabled) {
@@ -172,6 +173,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
       accountId,
       addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
       feeValue: fee,
+      tombstoneBlock: offlineTombstone,
     };
 
     try {
@@ -189,6 +191,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
         addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
         blockVersion: offlineModeEnabled ? BLOCK_VERSION : undefined,
         feeValue: fee,
+        tombstoneBlock: offlineModeEnabled ? offlineTombstone : null,
       });
 
       if (result === null || result === undefined) {

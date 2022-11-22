@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { buildUnsignedTransaction } from '../../../fullService/api';
+import { MAX_TOMBSTONE_BLOCKS } from '../../../fullService/api/buildTransaction';
 import { BuildUnsignedTransactionParams } from '../../../fullService/api/buildUnsignedTransaction';
 import { BLOCK_VERSION } from '../../../fullService/api/getNetworkStatus';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
@@ -74,7 +75,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
   const localBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.localBlockHeight ?? 0);
-  const offlineTombstone = `${Number(localBlockHeightBigInt) + 100}`;
+  const offlineTombstone = `${Number(localBlockHeightBigInt) + MAX_TOMBSTONE_BLOCKS}`;
 
   let isSynced: boolean;
   if (offlineModeEnabled) {
@@ -191,7 +192,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
         addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
         blockVersion: offlineModeEnabled ? BLOCK_VERSION : undefined,
         feeValue: fee,
-        tombstoneBlock: offlineModeEnabled ? offlineTombstone : null,
+        tombstoneBlock: offlineModeEnabled ? offlineTombstone : undefined,
       });
 
       if (result === null || result === undefined) {

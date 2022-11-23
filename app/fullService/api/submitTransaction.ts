@@ -20,7 +20,7 @@ const submitTransaction = async ({
   accountId,
   txProposal,
   blockVersion,
-}: SubmitTransactionParams): Promise<SubmitTransactionResult> => {
+}: SubmitTransactionParams): Promise<SubmitTransactionResult | undefined> => {
   const { result, error }: AxiosFullServiceResponse<{ transactionLog: TransactionLogV2 }> =
     await axiosFullService(SUBMIT_TRANSACTION_METHOD, {
       accountId,
@@ -30,10 +30,11 @@ const submitTransaction = async ({
 
   if (error) {
     throw new Error(error);
-  } else if (!result) {
-    throw new Error('Failure to submit transaction.');
-  } else {
+    // submitting a tx created in offline mode will not return a transaction log
+  } else if (result?.transactionLog) {
     return { transactionLog: convertTransactionLogFromV2(result.transactionLog) };
+  } else {
+    return undefined;
   }
 };
 

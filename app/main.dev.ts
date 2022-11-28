@@ -81,6 +81,7 @@ const startFullService = (
   const fullServiceBinariesPath = localStore.getFullServiceBinariesPath();
   const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
   const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
+  const apiKey = localStore.getAPIKey();
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   console.log(`Offline Mode: ${startInOfflineMode}`);
@@ -92,6 +93,7 @@ const startFullService = (
   const options: { [k: string]: { [j: string]: string } } = {
     env: {
       ...process.env,
+      MC_API_KEY: apiKey,
       MC_PASSWORD: password,
     },
   };
@@ -108,7 +110,6 @@ const startFullService = (
       fullServiceLedgerDBPath,
       fullServiceWalletDBPath,
       [fullServiceWalletDBPath, 'wallet.db'].join('/'),
-      localStore.getAPIKey(),
     ],
     options
   );

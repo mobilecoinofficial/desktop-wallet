@@ -15,9 +15,8 @@ import { MOBNumberFormatProps } from './MOBNumberFormat';
 // eUSD comes in micro precison, rather than pico precision
 const MOBNumberFormat = (props: MOBNumberFormatProps): JSX.Element => {
   const { inputRef, onChange, name, value, token, convert, ...rest } = props;
-
   const fieldValue = convert ? convertTokenValueToDisplayValue(value, token) : value;
-
+  console.log(value);
   const displayType = onChange ? 'input' : 'text';
   const handleOnChange = onChange
     ? (values: NumberFormatValues) => {

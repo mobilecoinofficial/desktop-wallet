@@ -361,7 +361,8 @@ export const SendReceivePage: FC = (): JSX.Element => {
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
             {!selectedAccount.account.viewOnly && <Tab label={t('pay')} />}
-            {burnMenuState === 'enabled' && <Tab label="burn" />}
+            {/* {burnMenuState === 'enabled' && <Tab label="burn" />} */}
+            <Tab label="burn" />
           </Tabs>
           {selectedTabIndex === 0 && (
             <SendMob

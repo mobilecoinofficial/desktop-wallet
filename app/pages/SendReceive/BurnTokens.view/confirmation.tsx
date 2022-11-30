@@ -13,6 +13,7 @@ import type { Theme } from '../../../theme';
 type BurnConfirmationProps = {
   amount: number;
   closeDialog: () => void;
+  enableSubmit: boolean;
   open: boolean;
   submitBurn: () => void;
 };
@@ -27,9 +28,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginRight: '-.70rem',
     padding: theme.spacing(1),
   },
-  form: { paddingBottom: theme.spacing(2) },
-  formControlLabelRoot: { marginRight: 0 },
-  label: { width: '100%' },
   modal: {
     alignItems: 'center',
     display: 'flex',
@@ -47,6 +45,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const BurnConfirmation: FC<BurnConfirmationProps> = ({
   amount,
   closeDialog,
+  enableSubmit,
   open,
   submitBurn,
 }: BurnConfirmationProps) => {
@@ -171,6 +170,7 @@ export const BurnConfirmation: FC<BurnConfirmationProps> = ({
             size="large"
             type="submit"
             variant="contained"
+            disabled={!enableSubmit}
           >
             Confirm Burn
           </Button>

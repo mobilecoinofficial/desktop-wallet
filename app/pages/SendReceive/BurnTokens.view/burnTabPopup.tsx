@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 
 import {
   Button,
@@ -43,9 +43,7 @@ export const BurnTabPopup: FC<BurnPopupProps> = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setBurnMenuState('off')} autoFocus>
-          Cancel
-        </Button>
+        <Button onClick={() => setBurnMenuState('off')}>Cancel</Button>
         <Button onClick={() => setBurnMenuState('enabled')} color="primary">
           Enable Burning
         </Button>

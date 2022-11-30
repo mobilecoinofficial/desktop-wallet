@@ -21,15 +21,10 @@ import { TxProposal } from '../../../types';
 import { errorToString } from '../../../utils/errorHandler';
 import { BurnConfirmation } from './confirmation';
 
-let tempMemoExample = '';
-for (let i = 0; i < 128; i++) {
-  tempMemoExample += '0';
-}
-
 const BurnTokens: FC = () => {
   const [amount, setAmount] = useState(0);
   const [amountError, setAmountError] = useState<string | null>(null);
-  const [memo, setMemo] = useState(tempMemoExample);
+  const [memo, setMemo] = useState('');
   const [memoError, setMemoError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [burnTx, setBurnTx] = useState<TxProposal | null>(null);
@@ -65,8 +60,6 @@ const BurnTokens: FC = () => {
   const validateMemo = (mem: string) => {
     if (mem.length !== 128) {
       setMemoError('memo length must be 128 characters');
-      // } else if (memo.slice(0, 4) !== '0x01') {
-      //   setMemoError('memo should start with 0x01');
     } else {
       setMemoError(null);
     }
@@ -92,8 +85,10 @@ const BurnTokens: FC = () => {
   };
 
   const handleSubmitBurn = async () => {
+    // this shouldn't happen because the submit button is disabled if no burn
+    // tx proposal is set, but putting it here to make the types happy
     if (!burnTx) {
-      // TODO handle this situation better
+      enqueueSnackbar('no burn transaction proposal available', { variant: 'error' });
       return;
     }
     try {
@@ -104,7 +99,8 @@ const BurnTokens: FC = () => {
         variant: 'success',
       });
     } catch (err) {
-      enqueueSnackbar('Error submitting transaction', { variant: 'error' });
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -193,6 +189,7 @@ const BurnTokens: FC = () => {
         closeDialog={() => setShowConfirm(false)}
         open={showConfirm}
         submitBurn={handleSubmitBurn}
+        enableSubmit={Boolean(burnTx)}
       />
     </Container>
   );

@@ -15,7 +15,9 @@ import {
   Typography,
 } from '@material-ui/core';
 import ReportProblemOutlinedIcon from '@material-ui/icons/ReportProblemOutlined';
+import { validateMnemonic } from 'bip39';
 import { Formik, Form, Field } from 'formik';
+import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
@@ -23,15 +25,18 @@ import * as Yup from 'yup';
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
 import { TOKENS, Token } from '../../../constants/tokens';
+import { buildBurnTransaction } from '../../../fullService/api';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
+import { TxProposal } from '../../../types';
 import {
   convertMobStringToPicoMobString,
   convertPicoMobStringToMob,
   convertMicroEUSDToStringEUSD,
   convertEUSDStringToMicroEUSDString,
 } from '../../../utils/convertMob';
+import { errorToString } from '../../../utils/errorHandler';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: { width: 200 },
@@ -53,30 +58,33 @@ const useStyles = makeStyles((theme: Theme) => ({
     overflow: 'auto',
   },
   paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
     margin: '2rem',
     maxHeight: '-webkit-fill-available',
     maxWidth: 800,
     overflow: 'auto',
-    padding: theme.spacing(2, 4, 3),
   },
-  root: {},
 }));
+
+let tempMemoExample = '';
+for (let i = 0; i < 128; i++) {
+  tempMemoExample += '0';
+}
 
 const BurnTokens: FC = () => {
   const [amount, setAmount] = useState(0);
   const [amountError, setAmountError] = useState<string | null>(null);
-  const [memo, setMemo] = useState('');
+  const [memo, setMemo] = useState(tempMemoExample);
+  const [memoError, setMemoError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [burnTx, setBurnTx] = useState<TxProposal | null>(null);
 
+  const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   const { fees, selectedAccount } = useSelector((state: ReduxStoreState) => state);
   const token = useCurrentToken();
   const fee = Number(fees[token.id]);
   const balance = Number(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob);
-  const submitEnabled = !amountError && memo.length;
+  const submitEnabled = amount > 0 && !amountError && memo.length && !memoError;
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newAmount = Number(event.target.value);
@@ -85,7 +93,6 @@ const BurnTokens: FC = () => {
   };
 
   const validateAmount = (newAmount: number) => {
-    // const fee = Number(feeAmount) * token.precision;
     const bigAmount = newAmount * token.precision;
     if (balance < bigAmount + fee) {
       setAmountError('eUSD amount must be less than account balance - fee (0.002560)');
@@ -95,28 +102,44 @@ const BurnTokens: FC = () => {
   };
 
   const handleMemoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newMemo = event.target.value;
     setMemo(event.target.value);
+    validateMemo(newMemo);
   };
 
-  //   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
-  //     event.target.select();
-  //   };
+  const validateMemo = (mem: string) => {
+    if (mem.length !== 128) {
+      setMemoError('memo length must be 128 characters');
+      // } else if (memo.slice(0, 4) !== '0x01') {
+      //   setMemoError('memo should start with 0x01');
+    } else {
+      setMemoError(null);
+    }
+  };
+
+  const handleClickBuild = async () => {
+    try {
+      const txProposal = await buildBurnTransaction({
+        accountId: selectedAccount.account.accountId,
+        amount: {
+          tokenId: token.id.toString(),
+          value: (amount * token.precision).toString(),
+        },
+        memo,
+      });
+
+      setBurnTx(txProposal);
+      setShowConfirm(true);
+    } catch (err) {
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
+    }
+  };
 
   const renderInput = useCallback(
     (props) => <MOBNumberFormat token={token} convert={false} {...props} />,
     [token]
   );
-
-  //   const validateAmount = (balance: bigint, txFee: bigint) => (valueString: string) => {
-  //     console.log(balance, txFee, valueString);
-  //     let error;
-  //     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-  //     if (valueAsPicoMob + txFee > balance) {
-  //       // TODO - probably want to replace this before launch
-  //       error = t('errorFee', { limit: Number(txFee) / token.precision, name: token.name });
-  //     }
-  //     return error;
-  //   };
 
   if (token.id === TOKENS.MOB.id) {
     return (
@@ -135,8 +158,6 @@ const BurnTokens: FC = () => {
       </Box>
     );
   }
-
-  console.log(amount, fee, balance);
 
   return (
     <Container maxWidth="sm">
@@ -179,9 +200,16 @@ const BurnTokens: FC = () => {
                 onChange={handleMemoChange}
                 fullWidth
                 value={memo}
-                style={{ marginTop: 8, marginBottom: 8 }}
+                multiline
+                error={Boolean(memoError)}
+                helperText={memoError}
+                style={{ marginBottom: 8, marginTop: 8 }}
               />
-              <SubmitButton disabled={!submitEnabled} onClick={() => setShowConfirm(true)}>
+              <SubmitButton
+                disabled={!submitEnabled}
+                onClick={handleClickBuild}
+                isSubmitting={false}
+              >
                 Build Burn Transaction
               </SubmitButton>
             </form>
@@ -193,18 +221,7 @@ const BurnTokens: FC = () => {
         onClose={() => setShowConfirm(false)}
         PaperProps={{ style: { width: '100%' } }}
       >
-        <Box
-          style={{
-            // backgroundColor: theme.palette.background.paper,
-            // border: '2px solid #000',
-            // boxShadow: theme.shadows[5],
-            margin: '2rem',
-            maxHeight: '-webkit-fill-available',
-            maxWidth: 800,
-            overflow: 'auto',
-            // padding: theme.spacing(2, 4, 3),
-          }}
-        >
+        <Box className={classes.paper}>
           <Typography color="textPrimary" variant="h2">
             Burn Confirmation
           </Typography>
@@ -285,7 +302,7 @@ const BurnTokens: FC = () => {
             >
               <ReportProblemOutlinedIcon
                 color="error"
-                style={{ height: '72px', width: '72px', marginBottom: '8px' }}
+                style={{ height: '72px', marginBottom: '8px', width: '72px' }}
               />
               <Typography align="center">
                 {((fee + amount * token.precision) / token.precision).toString()} eUSD will be
@@ -328,33 +345,3 @@ const BurnTokens: FC = () => {
 
 export default BurnTokens;
 export { BurnTokens };
-
-{
-  /* <MOBNumberFormat value={amount} onChange={handleAmountChange} token={token} />; */
-}
-
-{
-  /* <Field
-component={TextField}
-fullWidth
-label="Amount"
-margin="normal"
-name="amount"
-id="amount"
-type="text"
-// value={values.amount}
-onFocus={handleSelect}
-validate={validateAmount(
-  BigInt(Number(eUSDBalance)),
-  BigInt(Number(feeAmount) * token.precision)
-)}
-InputProps={{
-  inputComponent: renderInput,
-  startAdornment: (
-    <InputAdornment position="start">
-      {token.icon({ height: 20, width: 20 })}
-    </InputAdornment>
-  ),
-}}
-/> */
-}

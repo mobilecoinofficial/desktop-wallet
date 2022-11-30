@@ -104,7 +104,7 @@ const BurnTokens: FC = () => {
     }
   };
 
-  const renderInput = useCallback(
+  const renderNumberFormat = useCallback(
     (props) => <MOBNumberFormat token={token} convert={false} {...props} />,
     [token]
   );
@@ -150,7 +150,7 @@ const BurnTokens: FC = () => {
               <TextField
                 label="Amount"
                 InputProps={{
-                  inputComponent: renderInput,
+                  inputComponent: renderNumberFormat,
                   startAdornment: (
                     <InputAdornment position="start">
                       {token.icon({ height: 20, width: 20 })}

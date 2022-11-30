@@ -23,7 +23,7 @@ const submitTransaction = async ({
 }: SubmitTransactionParams): Promise<SubmitTransactionResult | undefined> => {
   const { result, error }: AxiosFullServiceResponse<{ transactionLog: TransactionLogV2 }> =
     await axiosFullService(SUBMIT_TRANSACTION_METHOD, {
-      // accountId,
+      accountId,
       blockVersion,
       txProposal,
     });

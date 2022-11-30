@@ -25,7 +25,7 @@ import * as Yup from 'yup';
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
 import { TOKENS, Token } from '../../../constants/tokens';
-import { buildBurnTransaction } from '../../../fullService/api';
+import { buildBurnTransaction, submitTransaction } from '../../../fullService/api';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
@@ -133,6 +133,23 @@ const BurnTokens: FC = () => {
     } catch (err) {
       const errorMessage = errorToString(err);
       enqueueSnackbar(errorMessage, { variant: 'error' });
+    }
+  };
+
+  const handleSubmitBurn = async () => {
+    if (!burnTx) {
+      // TODO handle this situation better
+      return;
+    }
+    try {
+      const { accountId } = selectedAccount.account;
+      await submitTransaction({ accountId, txProposal: burnTx });
+      setShowConfirm(false);
+      enqueueSnackbar(`sucesffuly burned ${amount} ${token.name}!`, {
+        variant: 'success',
+      });
+    } catch (err) {
+      enqueueSnackbar('Error submitting transaction', { variant: 'error' });
     }
   };
 
@@ -329,7 +346,7 @@ const BurnTokens: FC = () => {
               className={classes.button}
               color="secondary"
               fullWidth
-              onClick={() => setShowConfirm(false)}
+              onClick={handleSubmitBurn}
               size="large"
               type="submit"
               variant="contained"

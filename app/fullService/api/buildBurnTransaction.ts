@@ -1,6 +1,6 @@
-import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
+import type { StringHex, StringUInt64 } from '../../types/SpecialStrings.d';
 import type { TransactionAmount } from '../../types/TransactionAmount';
-import type { OutputTxo, TxProposal } from '../../types/TxProposal';
+import type { TxProposal } from '../../types/TxProposal';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
 const BUILD_BURN_TRANSACTION_METHOD = 'build_burn_transaction';
@@ -46,7 +46,7 @@ const buildBurnTransaction = async ({
   } else if (!result) {
     throw new Error('Failed to build burn transaction.');
   }
-  console.log(result);
+
   const { txProposal } = result;
 
   return txProposal;

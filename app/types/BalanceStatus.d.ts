@@ -1,5 +1,6 @@
 import type { StringUInt64 } from './SpecialStrings';
 
+// TODO rename this so it's no longer Pmob. not correct term when referring to eUSD
 export type Balance = {
   orphanedPmob: StringUInt64;
   pendingPmob: StringUInt64;

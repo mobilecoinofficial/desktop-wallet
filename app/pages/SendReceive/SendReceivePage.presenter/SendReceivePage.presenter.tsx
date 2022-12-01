@@ -22,6 +22,8 @@ import type { TxProposal } from '../../../types/TxProposal';
 import { commafy, convertTokenValueToDisplayValue } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
 import isSyncedBuffered from '../../../utils/isSyncedBuffered';
+import { BurnTokens } from '../BurnTokens.view';
+import { BurnTabPopup, BurnMenuState } from '../BurnTokens.view/burnTabPopup';
 import { PaymentRequest } from '../PaymentRequests.view';
 import { ReceiveMob } from '../ReceiveMob.view';
 import { SendMob, Showing } from '../SendMob.view';
@@ -60,6 +62,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
     pinThresholdPmob,
     selectedAccount,
   } = useSelector((state: ReduxStoreState) => state);
+
   const token = useCurrentToken();
 
   const fee = fees[token.id];
@@ -71,6 +74,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
   const [formIsChecked, setIsChecked] = useState(false);
   const [formAlias, setAlias] = useState('');
   const [formRecipientPublicAddress, setRecipientPublicAddress] = useState('');
+  const [burnMenuState, setBurnMenuState] = useState<BurnMenuState>('off');
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
@@ -357,6 +361,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
             {!selectedAccount.account.viewOnly && <Tab label={t('pay')} />}
+            {burnMenuState === 'enabled' && <Tab label="burn" />}
           </Tabs>
           {selectedTabIndex === 0 && (
             <SendMob
@@ -398,8 +403,10 @@ export const SendReceivePage: FC = (): JSX.Element => {
               enqueueSnackbar={enqueueSnackbar}
             />
           )}
+          {selectedTabIndex === 3 && <BurnTokens />}
         </Grid>
       </Grid>
+      <BurnTabPopup burnMenuState={burnMenuState} setBurnMenuState={setBurnMenuState} />
     </Box>
   );
 };

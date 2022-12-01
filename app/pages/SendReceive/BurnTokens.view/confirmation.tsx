@@ -14,6 +14,7 @@ type BurnConfirmationProps = {
   amount: number;
   closeDialog: () => void;
   enableSubmit: boolean;
+  memo: string;
   open: boolean;
   submitBurn: () => void;
 };
@@ -46,6 +47,7 @@ export const BurnConfirmation: FC<BurnConfirmationProps> = ({
   amount,
   closeDialog,
   enableSubmit,
+  memo,
   open,
   submitBurn,
 }: BurnConfirmationProps) => {
@@ -128,23 +130,28 @@ export const BurnConfirmation: FC<BurnConfirmationProps> = ({
             </Typography>
             <LongCode code={selectedAccount.account.mainAddress} codeClass={classes.code} />
           </Box>
-          <Box
-            width="100%"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            padding="1rem"
-            flexDirection="column"
-          >
-            <ReportProblemOutlinedIcon
-              color="error"
-              style={{ height: '72px', marginBottom: '8px', width: '72px' }}
-            />
-            <Typography align="center">
-              {((fee + amount * token.precision) / token.precision).toString()} eUSD will be
-              permanently destroyed
+          <Box width="50%" padding="1rem" justifyContent="center">
+            <Typography color="textPrimary" className={classes.center}>
+              Memo
             </Typography>
+            <LongCode code={memo} codeClass={classes.code} />
           </Box>
+        </Box>
+        <Box
+          width="100%"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          flexDirection="column"
+        >
+          <ReportProblemOutlinedIcon
+            color="error"
+            style={{ height: '72px', marginBottom: '8px', width: '72px' }}
+          />
+          <Typography align="center">
+            {((fee + amount * token.precision) / token.precision).toString()} eUSD will be
+            permanently destroyed
+          </Typography>
         </Box>
         <br />
         <Box display="flex" justifyContent="space-around" padding=".5em 0">

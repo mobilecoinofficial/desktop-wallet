@@ -187,9 +187,10 @@ const BurnTokens: FC = () => {
       <BurnConfirmation
         amount={amount}
         closeDialog={() => setShowConfirm(false)}
+        enableSubmit={Boolean(burnTx)}
+        memo={memo}
         open={showConfirm}
         submitBurn={handleSubmitBurn}
-        enableSubmit={Boolean(burnTx)}
       />
     </Container>
   );

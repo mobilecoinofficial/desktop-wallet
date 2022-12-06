@@ -2,6 +2,7 @@ import React, { useState, FC, useCallback } from 'react';
 
 import {
   Box,
+  Button,
   Card,
   CardContent,
   Container,
@@ -9,12 +10,18 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
+import { ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
+import { MAX_TOMBSTONE_BLOCK } from '../../../constants/app';
 import { TOKENS } from '../../../constants/tokens';
-import { buildBurnTransaction, submitTransaction } from '../../../fullService/api';
+import {
+  buildBurnTransaction,
+  submitTransaction,
+  buildUnsignedBurnTransaction,
+} from '../../../fullService/api';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { TxProposal } from '../../../types';
@@ -35,6 +42,10 @@ const BurnTokens: FC = () => {
   const fee = Number(fees[token.id]);
   const balance = Number(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob);
   const submitEnabled = amount > 0 && !amountError && memo.length && !memoError;
+  const { viewOnly } = selectedAccount.account;
+  const buttonText = viewOnly ? 'Save Unsigned Burn Transaction' : 'Build Burn Transaction';
+  const localBlockHeightBigInt = Number(selectedAccount.balanceStatus.localBlockHeight ?? 0);
+  const offlineTombstone = `${localBlockHeightBigInt + MAX_TOMBSTONE_BLOCK}`;
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newAmount = Number(event.target.value);
@@ -62,6 +73,30 @@ const BurnTokens: FC = () => {
       setMemoError('memo length must be 128 characters');
     } else {
       setMemoError(null);
+    }
+  };
+
+  const handleSubmit = () => (viewOnly ? handleClickSave() : handleClickBuild());
+
+  const handleClickSave = async () => {
+    try {
+      const unsignedTx = await buildUnsignedBurnTransaction({
+        accountId: selectedAccount.account.accountId,
+        amount: {
+          tokenId: token.id.toString(),
+          value: (amount * token.precision).toString(),
+        },
+        memo,
+        tombstoneBlock: offlineTombstone,
+      });
+      const success = await ipcRenderer.invoke('save-unsigned-transaction', unsignedTx);
+      enqueueSnackbar(success ? 'Success' : 'Failure', {
+        variant: success ? 'success' : 'error',
+      });
+      return;
+    } catch (err) {
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -102,6 +137,19 @@ const BurnTokens: FC = () => {
       const errorMessage = errorToString(err);
       enqueueSnackbar(errorMessage, { variant: 'error' });
     }
+  };
+
+  const importSignedBurnTransaction = async () => {
+    const transaction: string = await ipcRenderer.invoke('import-file');
+    if (!transaction) {
+      return;
+    }
+    const parsed = JSON.parse(transaction);
+    const payload = parsed.params?.tx_proposal?.payload_txos[0];
+    const txAmount = Number(payload?.amount?.value) / token.precision;
+    setBurnTx(parsed.params?.tx_proposal);
+    setAmount(txAmount);
+    setShowConfirm(true);
   };
 
   const renderNumberFormat = useCallback(
@@ -173,15 +221,14 @@ const BurnTokens: FC = () => {
                 helperText={memoError}
                 style={{ marginBottom: 8, marginTop: 8 }}
               />
-              <SubmitButton
-                disabled={!submitEnabled}
-                onClick={handleClickBuild}
-                isSubmitting={false}
-              >
-                Build Burn Transaction
+              <SubmitButton disabled={!submitEnabled} onClick={handleSubmit} isSubmitting={false}>
+                {buttonText}
               </SubmitButton>
             </form>
           </Box>
+          {viewOnly && (
+            <Button onClick={importSignedBurnTransaction}>Import Signed Burn Transcation</Button>
+          )}
         </CardContent>
       </Card>
       <BurnConfirmation

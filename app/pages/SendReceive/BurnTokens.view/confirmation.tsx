@@ -131,10 +131,14 @@ export const BurnConfirmation: FC<BurnConfirmationProps> = ({
             <LongCode code={selectedAccount.account.mainAddress} codeClass={classes.code} />
           </Box>
           <Box width="50%" padding="1rem" justifyContent="center">
-            <Typography color="textPrimary" className={classes.center}>
-              Memo
-            </Typography>
-            <LongCode code={memo} codeClass={classes.code} />
+            {memo && (
+              <>
+                <Typography color="textPrimary" className={classes.center}>
+                  Memo
+                </Typography>
+                <LongCode code={memo} codeClass={classes.code} />
+              </>
+            )}
           </Box>
         </Box>
         <Box

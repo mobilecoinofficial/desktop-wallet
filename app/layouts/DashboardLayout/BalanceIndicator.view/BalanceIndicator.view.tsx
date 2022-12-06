@@ -119,7 +119,9 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         )}
 
         {containsUnverified && (
-          <Tooltip title="The balance for this view only account may contain spent MOB. Please sync the account to ensure an accurate balance. Click here to learn more">
+          <Tooltip
+            title={`The balance for this view only account may contain spent ${token.name} Please sync the account to ensure an accurate balance.`}
+          >
             <Link
               target="_blank"
               rel="noreferrer"

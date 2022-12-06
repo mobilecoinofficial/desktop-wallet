@@ -195,7 +195,7 @@ const SendMob: FC<SendMobProps> = ({
     sendButtonText = t('saveTxConfirmation');
   }
   if (viewOnly) {
-    sendButtonText = 'saveUnsigned';
+    sendButtonText = 'save unsigned transaction';
   }
 
   return (

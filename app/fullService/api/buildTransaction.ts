@@ -6,7 +6,6 @@ import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService'
 const BUILD_TRANSACTION_METHOD = 'build_transaction';
 // this value comes from the mobilecoin lib. Ideally it would be exposed by full-service but in
 // the interest of getting things done fast, we're just hard-coding it here for now
-export const MAX_TOMBSTONE_BLOCKS = 20160;
 
 export type BuildTransactionParams = {
   addressesAndAmounts: AddressAndAmount[];

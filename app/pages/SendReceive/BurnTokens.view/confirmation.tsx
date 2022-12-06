@@ -131,22 +131,20 @@ export const BurnConfirmation: FC<BurnConfirmationProps> = ({
             <LongCode code={selectedAccount.account.mainAddress} codeClass={classes.code} />
           </Box>
           <Box width="50%" padding="1rem" justifyContent="center">
-            <Typography color="textPrimary" className={classes.center}>
-              Memo
-            </Typography>
-            <LongCode code={memo} codeClass={classes.code} />
+            {memo && (
+              <>
+                <Typography color="textPrimary" className={classes.center}>
+                  Memo
+                </Typography>
+                <LongCode code={memo} codeClass={classes.code} />
+              </>
+            )}
           </Box>
         </Box>
-        <Box
-          width="100%"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          flexDirection="column"
-        >
+        <Box width="100%" display="flex" justifyContent="center" alignItems="center">
           <ReportProblemOutlinedIcon
             color="error"
-            style={{ height: '72px', marginBottom: '8px', width: '72px' }}
+            style={{ height: '32px', marginRight: '8px', width: '32px' }}
           />
           <Typography align="center">
             {((fee + amount * token.precision) / token.precision).toString()} eUSD will be

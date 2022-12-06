@@ -9,10 +9,10 @@ import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
 import { buildUnsignedTransaction } from '../../../fullService/api';
-import { MAX_TOMBSTONE_BLOCKS } from '../../../fullService/api/buildTransaction';
 import { BuildUnsignedTransactionParams } from '../../../fullService/api/buildUnsignedTransaction';
 import { BLOCK_VERSION } from '../../../fullService/api/getNetworkStatus';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
+import { useMaxTombstone } from '../../../hooks/useMaxTombstone';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { updateContacts } from '../../../redux/services';
 import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
@@ -79,7 +79,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
   const localBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.localBlockHeight ?? 0);
-  const offlineTombstone = `${Number(localBlockHeightBigInt) + MAX_TOMBSTONE_BLOCKS}`;
+  const offlineTombstone = useMaxTombstone();
 
   let isSynced: boolean;
   if (offlineModeEnabled) {
@@ -361,7 +361,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
             <Tab label={t('send')} />
             <Tab label={t('receive')} />
             {!selectedAccount.account.viewOnly && <Tab label={t('pay')} />}
-            {burnMenuState === 'enabled' && <Tab label="burn" />}
+            {burnMenuState === 'enabled' && <Tab label="burn" value={3} />}
           </Tabs>
           {selectedTabIndex === 0 && (
             <SendMob

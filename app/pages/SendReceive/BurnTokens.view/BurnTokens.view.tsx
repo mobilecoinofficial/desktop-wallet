@@ -15,7 +15,6 @@ import { useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
-import { MAX_TOMBSTONE_BLOCK } from '../../../constants/app';
 import { TOKENS } from '../../../constants/tokens';
 import {
   buildBurnTransaction,
@@ -23,6 +22,7 @@ import {
   buildUnsignedBurnTransaction,
 } from '../../../fullService/api';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
+import { useMaxTombstone } from '../../../hooks/useMaxTombstone';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { TxProposal } from '../../../types';
 import { errorToString } from '../../../utils/errorHandler';
@@ -44,8 +44,7 @@ const BurnTokens: FC = () => {
   const submitEnabled = amount > 0 && !amountError && memo.length && !memoError;
   const { viewOnly } = selectedAccount.account;
   const buttonText = viewOnly ? 'Save Unsigned Burn Transaction' : 'Build Burn Transaction';
-  const localBlockHeightBigInt = Number(selectedAccount.balanceStatus.localBlockHeight ?? 0);
-  const offlineTombstone = `${localBlockHeightBigInt + MAX_TOMBSTONE_BLOCK}`;
+  const offlineTombstone = useMaxTombstone();
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newAmount = Number(event.target.value);
@@ -93,7 +92,6 @@ const BurnTokens: FC = () => {
       enqueueSnackbar(success ? 'Success' : 'Failure', {
         variant: success ? 'success' : 'error',
       });
-      return;
     } catch (err) {
       const errorMessage = errorToString(err);
       enqueueSnackbar(errorMessage, { variant: 'error' });

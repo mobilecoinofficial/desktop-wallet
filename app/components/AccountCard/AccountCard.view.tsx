@@ -5,7 +5,9 @@ import {
   Box,
   Card,
   CardContent,
+  CircularProgress,
   Container,
+  Dialog,
   IconButton,
   MenuItem,
   Select,
@@ -55,6 +57,7 @@ const AccountCard: FC<AccountCardProps> = ({
   ...rest
 }: AccountCardProps) => {
   const [isQRCode, setIsQRCode] = useState(false);
+  const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const { t } = useTranslation('AccountCard');
 
@@ -65,6 +68,13 @@ const AccountCard: FC<AccountCardProps> = ({
 
   const handleToggleClick = () => setIsQRCode(!isQRCode);
 
+  const handleDialogClose = (event, reason) => {
+    // see https://v4.mui.com/api/dialog/
+    if (!reason) {
+      setLoading(false);
+    }
+  };
+
   let headerString = '';
   if (isQRCode) {
     headerString = isGift ? t('giftQR') : t('accountQR');
@@ -72,7 +82,11 @@ const AccountCard: FC<AccountCardProps> = ({
     headerString = isGift ? t('giftHeader') : t('accountHeader');
   }
 
-  const handleAccountSelectChange = (event) => selectAccount(event.target.value);
+  const handleAccountSelectChange = async (event) => {
+    setLoading(true);
+    await selectAccount(event.target.value);
+    setLoading(false);
+  };
 
   return (
     <Container className={classes.container} fixed maxWidth="sm">
@@ -154,6 +168,13 @@ const AccountCard: FC<AccountCardProps> = ({
           </Box>
         </CardContent>
       </Card>
+      <Dialog
+        open={loading}
+        onClose={handleDialogClose}
+        PaperProps={{ style: { background: 'none' } }}
+      >
+        <CircularProgress style={{ height: '72px', width: '72px' }} />
+      </Dialog>
     </Container>
   );
 };

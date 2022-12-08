@@ -1,7 +1,9 @@
 import { store } from '../../redux/store';
+import { BalanceStatus } from '../../types';
 import type { Account, AccountStatus, AccountV2 } from '../../types/Account.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { convertBalanceFromV2 } from './getBalanceForAccount';
 
 const GET_ACCOUNT_METHOD = 'get_account_status';
 
@@ -62,6 +64,31 @@ const getAccount = async ({ accountId }: GetAccountParams): Promise<GetAccountRe
     throw new Error('Failure to retrieve data.');
   } else {
     return { account: convertAccountV2(result.account) };
+  }
+};
+
+export const getAccountAndBalance = async ({
+  accountId,
+}: GetAccountParams): Promise<{ account: Account; balance: BalanceStatus }> => {
+  const { result, error }: AxiosFullServiceResponse<AccountStatus> = await axiosFullService(
+    GET_ACCOUNT_METHOD,
+    {
+      accountId,
+    }
+  );
+
+  if (error) {
+    throw new Error(error);
+  } else if (!result) {
+    throw new Error('Failure to retrieve data.');
+  } else {
+    const account = convertAccountV2(result.account);
+    const balance = convertBalanceFromV2(result);
+
+    return {
+      account,
+      balance,
+    };
   }
 };
 

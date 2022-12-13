@@ -15,6 +15,7 @@ interface SendParameters {
   isChecked: boolean;
   recipientPublicAddress: StringHex;
   value: string;
+  useLedger: boolean;
 }
 
 export interface SendMobProps {

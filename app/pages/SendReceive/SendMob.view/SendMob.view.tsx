@@ -148,6 +148,7 @@ const SendMob: FC<SendMobProps> = ({
       fee: convertFunction(feeAmount),
       isChecked,
       recipientPublicAddress: values.recipientPublicAddress,
+      useLedger: values.useLedger,
       value: convertFunction(values.mobAmount),
     });
   };
@@ -440,6 +441,23 @@ const SendMob: FC<SendMobProps> = ({
                     >
                       {sendButtonText}
                     </SubmitButton>
+
+                    {viewOnly && (
+                      <SubmitButton
+                        disabled={
+                          !dirty ||
+                          !isSynced ||
+                          !isValid ||
+                          isSubmitting ||
+                          (isChecked && !values.alias)
+                        }
+                        onClick={handleOpen({ ...values, useLedger: true })}
+                        isSubmitting={/* isAwaitingConformation || */ isSubmitting}
+                      >
+                        Build Transaction Using Ledger
+                      </SubmitButton>
+                    )}
+
                     <Box marginTop={1}>
                       {!offlineModeEnabled && !viewOnly && (
                         <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>

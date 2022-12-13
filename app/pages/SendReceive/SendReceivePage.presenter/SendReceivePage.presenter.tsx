@@ -161,12 +161,14 @@ export const SendReceivePage: FC = (): JSX.Element => {
     isChecked,
     recipientPublicAddress,
     value,
+    useLedger,
   }: {
     accountId: string;
     alias: string;
     isChecked: boolean;
     recipientPublicAddress: StringHex;
     value: string;
+    useLedger: boolean;
   }) => {
     let result;
 
@@ -182,7 +184,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
     };
 
     try {
-      if (selectedAccount.account.viewOnly) {
+      if (selectedAccount.account.viewOnly && !useLedger) {
         const unsignedTx = await buildUnsignedTransaction(txParams);
         const success = await ipcRenderer.invoke('save-unsigned-transaction', unsignedTx);
         enqueueSnackbar(success ? 'Success' : 'Failure', {

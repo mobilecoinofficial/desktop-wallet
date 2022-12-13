@@ -2,8 +2,10 @@ import React from 'react';
 
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { Provider } from 'react-redux';
 
 import '../../../testUtils/i18nForTests';
+import { store } from '../../../redux/store';
 import { DashboardView } from './DashboardPage.view';
 
 const selectedAccount = {
@@ -20,15 +22,19 @@ const selectedAccount = {
   },
   balanceStatus: {
     accountBlockHeight: '158974',
+    balancePerToken: {
+      0: {
+        orphanedPmob: '18000000000001',
+        pendingPmob: '0',
+        secretedPmob: '0',
+        spentPmob: '35410000000000',
+        unspentPmob: '908298888888888',
+      },
+    },
     isSynced: true,
     localBlockHeight: '158974',
     networkBlockHeight: '158974',
     object: 'balance',
-    orphanedPmob: '18000000000001',
-    pendingPmob: '0',
-    secretedPmob: '0',
-    spentPmob: '35410000000000',
-    unspentPmob: '908298888888888',
   },
 };
 
@@ -67,11 +73,13 @@ const accounts = {
 
 test('Dashboard shows account address code', () => {
   const { container } = render(
-    <DashboardView
-      onClose={() => undefined}
-      selectedAccount={selectedAccount}
-      accounts={accounts}
-    />
+    <Provider store={store}>
+      <DashboardView
+        onClose={() => undefined}
+        selectedAccount={selectedAccount}
+        accounts={accounts}
+      />
+    </Provider>
   );
 
   expect(container.innerHTML.includes('Account Address Code')).toBeTruthy();

@@ -14,7 +14,7 @@ export const getAllTransactionLogsForAccount = async (accountId: StringHex): Pro
       w.inputTxoIds = w.inputTxos.map((x: TransactionAbbreviation) => x.txoIdHex);
       w.outputTxoIds = w.outputTxos.map((x: TransactionAbbreviation) => x.txoIdHex);
 
-      w.recipientAddressId = w.outputTxos.length > 0 ? w.outputTxos[0].recipientAddressId : null;
+      w.address = w.outputTxos[0].recipientAddressId || '';
     });
     store.dispatch(getAllTransactionLogsForAccountAction(transactionLogs));
   } catch (err) {

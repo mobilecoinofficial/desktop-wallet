@@ -30,7 +30,9 @@ const ReceiveMob: FC<ReceiveMobProps> = ({
 
   const dropDownValues = [
     { alias: t('mainPublicAddress'), assignedAddress: mainAddress } as Contact,
-  ].concat(contacts);
+  ]
+    .concat(contacts)
+    .filter((a) => Boolean(a.assignedAddress));
 
   return (
     <Container maxWidth="sm">
@@ -70,8 +72,11 @@ const ReceiveMob: FC<ReceiveMobProps> = ({
         variant="outlined"
         onChange={(x) => setSelectedAddress(x.target.value as string)}
       >
-        {dropDownValues.map((contact) => (
-          <MenuItem value={contact.assignedAddress} key={contact.assignedAddress}>
+        {dropDownValues.map((contact, i) => (
+          <MenuItem
+            value={contact.assignedAddress}
+            key={contact.assignedAddress ?? `contacts-${i}`}
+          >
             {contact.alias}
           </MenuItem>
         ))}

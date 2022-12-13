@@ -4,7 +4,9 @@ import { act, render, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
+import { Provider } from 'react-redux';
 
+import { store } from '../../../redux/store';
 import '../../../testUtils/i18nForTests';
 import { BuildGiftPanel } from './BuildGiftPanel.view';
 
@@ -47,15 +49,19 @@ const SELECTED_ACCOUNT = {
   },
   balanceStatus: {
     accountBlockHeight: '158974',
+    balancePerToken: {
+      0: {
+        orphanedPmob: '18000000000001',
+        pendingPmob: '0',
+        secretedPmob: '0',
+        spentPmob: '35410000000000',
+        unspentPmob: '908298888888888',
+      },
+    },
     isSynced: true,
     localBlockHeight: '158974',
     networkBlockHeight: '158974',
     object: 'balance',
-    orphanedPmob: '18000000000001',
-    pendingPmob: '0',
-    secretedPmob: '0',
-    spentPmob: '35410000000000',
-    unspentPmob: '908298888888888',
   },
 };
 
@@ -76,24 +82,26 @@ describe('Build gift', () => {
     const onClickDeleteGiftCode = jest.fn();
 
     const { container } = render(
-      <SnackbarProvider>
-        <BuildGiftPanel
-          confirmation={CONFIRMATION}
-          existingPin="111111"
-          feePmob={FEE_PMOB}
-          giftCodes={GIFT_CODES}
-          handleCopyClick={handleCopyClick}
-          isSynced
-          onClickCancelBuild={onClickCancelBuild}
-          onClickCode={onClickCode}
-          onClickConfirmBuild={onClickConfirmBuild}
-          onClickCreateGift={onClickCreateGift}
-          onClickDeleteGiftCode={onClickDeleteGiftCode}
-          pinThresholdPmob="1"
-          selectedAccount={SELECTED_ACCOUNT}
-          showModal={false}
-        />
-      </SnackbarProvider>
+      <Provider store={store}>
+        <SnackbarProvider>
+          <BuildGiftPanel
+            confirmation={CONFIRMATION}
+            existingPin="111111"
+            fee={FEE_PMOB}
+            giftCodes={GIFT_CODES}
+            handleCopyClick={handleCopyClick}
+            isSynced
+            onClickCancelBuild={onClickCancelBuild}
+            onClickCode={onClickCode}
+            onClickConfirmBuild={onClickConfirmBuild}
+            onClickCreateGift={onClickCreateGift}
+            onClickDeleteGiftCode={onClickDeleteGiftCode}
+            pinThresholdPmob="1"
+            selectedAccount={SELECTED_ACCOUNT}
+            showModal={false}
+          />
+        </SnackbarProvider>
+      </Provider>
     );
 
     expect(container.innerHTML.includes('Create Gifts of MOB')).toBeTruthy();
@@ -130,24 +138,26 @@ describe('Build gift', () => {
     const onClickDeleteGiftCode = jest.fn();
 
     const { container } = render(
-      <SnackbarProvider>
-        <BuildGiftPanel
-          confirmation={CONFIRMATION}
-          existingPin="111111"
-          feePmob={FEE_PMOB}
-          giftCodes={[]}
-          handleCopyClick={handleCopyClick}
-          isSynced
-          onClickCancelBuild={onClickCancelBuild}
-          onClickCode={onClickCode}
-          onClickConfirmBuild={onClickConfirmBuild}
-          onClickCreateGift={onClickCreateGift}
-          onClickDeleteGiftCode={onClickDeleteGiftCode}
-          pinThresholdPmob="1"
-          selectedAccount={SELECTED_ACCOUNT}
-          showModal={false}
-        />
-      </SnackbarProvider>
+      <Provider store={store}>
+        <SnackbarProvider>
+          <BuildGiftPanel
+            confirmation={CONFIRMATION}
+            existingPin="111111"
+            fee={FEE_PMOB}
+            giftCodes={[]}
+            handleCopyClick={handleCopyClick}
+            isSynced
+            onClickCancelBuild={onClickCancelBuild}
+            onClickCode={onClickCode}
+            onClickConfirmBuild={onClickConfirmBuild}
+            onClickCreateGift={onClickCreateGift}
+            onClickDeleteGiftCode={onClickDeleteGiftCode}
+            pinThresholdPmob="1"
+            selectedAccount={SELECTED_ACCOUNT}
+            showModal={false}
+          />
+        </SnackbarProvider>
+      </Provider>
     );
 
     expect(container.innerHTML.includes('Create Gifts of MOB')).toBeTruthy();
@@ -165,24 +175,26 @@ describe('Build gift', () => {
     const onClickDeleteGiftCode = jest.fn();
 
     const { container } = render(
-      <SnackbarProvider>
-        <BuildGiftPanel
-          confirmation={CONFIRMATION}
-          existingPin="111111"
-          feePmob={FEE_PMOB}
-          giftCodes={[]}
-          handleCopyClick={handleCopyClick}
-          isSynced
-          onClickCancelBuild={onClickCancelBuild}
-          onClickCode={onClickCode}
-          onClickConfirmBuild={onClickConfirmBuild}
-          onClickCreateGift={onClickCreateGift}
-          onClickDeleteGiftCode={onClickDeleteGiftCode}
-          pinThresholdPmob="1"
-          selectedAccount={SELECTED_ACCOUNT}
-          showModal
-        />
-      </SnackbarProvider>
+      <Provider store={store}>
+        <SnackbarProvider>
+          <BuildGiftPanel
+            confirmation={CONFIRMATION}
+            existingPin="111111"
+            fee={FEE_PMOB}
+            giftCodes={[]}
+            handleCopyClick={handleCopyClick}
+            isSynced
+            onClickCancelBuild={onClickCancelBuild}
+            onClickCode={onClickCode}
+            onClickConfirmBuild={onClickConfirmBuild}
+            onClickCreateGift={onClickCreateGift}
+            onClickDeleteGiftCode={onClickDeleteGiftCode}
+            pinThresholdPmob="1"
+            selectedAccount={SELECTED_ACCOUNT}
+            showModal
+          />
+        </SnackbarProvider>
+      </Provider>
     );
 
     expect(container.parentElement.innerHTML.includes('Create Gifts of MOB')).toBeTruthy();
@@ -211,24 +223,26 @@ describe('Build gift', () => {
     const onClickDeleteGiftCode = jest.fn();
 
     const { container } = render(
-      <SnackbarProvider>
-        <BuildGiftPanel
-          confirmation={CONFIRMATION}
-          existingPin="111111"
-          feePmob={FEE_PMOB}
-          giftCodes={[]}
-          handleCopyClick={handleCopyClick}
-          isSynced
-          onClickCancelBuild={onClickCancelBuild}
-          onClickCode={onClickCode}
-          onClickConfirmBuild={onClickConfirmBuild}
-          onClickCreateGift={onClickCreateGift}
-          onClickDeleteGiftCode={onClickDeleteGiftCode}
-          pinThresholdPmob="1"
-          selectedAccount={SELECTED_ACCOUNT}
-          showModal
-        />
-      </SnackbarProvider>
+      <Provider store={store}>
+        <SnackbarProvider>
+          <BuildGiftPanel
+            confirmation={CONFIRMATION}
+            existingPin="111111"
+            fee={FEE_PMOB}
+            giftCodes={[]}
+            handleCopyClick={handleCopyClick}
+            isSynced
+            onClickCancelBuild={onClickCancelBuild}
+            onClickCode={onClickCode}
+            onClickConfirmBuild={onClickConfirmBuild}
+            onClickCreateGift={onClickCreateGift}
+            onClickDeleteGiftCode={onClickDeleteGiftCode}
+            pinThresholdPmob="1"
+            selectedAccount={SELECTED_ACCOUNT}
+            showModal
+          />
+        </SnackbarProvider>
+      </Provider>
     );
 
     expect(container.parentElement.innerHTML.includes('Create Gifts of MOB')).toBeTruthy();

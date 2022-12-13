@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ShortCode, SubmitButton } from '../../../components';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
+import { TOKENS } from '../../../constants/tokens';
 import type { Theme } from '../../../theme';
 import type { TransactionDetailsViewProps } from './TransactionDetails.d';
 
@@ -58,10 +59,10 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     contact,
     direction,
     finalizedBlockIndex,
-    assignedAddressId,
-    recipientAddressId,
+    address,
     outputTxoIds,
-    valuePmob,
+    value: transactionValue,
+    tokenId,
   } = transactionLog;
 
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
@@ -119,12 +120,8 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
 
   const renderSenderOrReceiver = () => {
     let aliasOrAddress: string | ReactNode;
-    if (assignedAddressId || recipientAddressId) {
-      aliasOrAddress = contact ? (
-        contact.alias
-      ) : (
-        <ShortCode code={assignedAddressId || recipientAddressId || ''} />
-      );
+    if (address) {
+      aliasOrAddress = contact ? contact.alias : <ShortCode code={address} />;
     } else {
       aliasOrAddress = (
         <Typography className={classes?.negative} display="inline">
@@ -141,6 +138,12 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
     return renderRow(`${label}:`, aliasOrAddress);
   };
 
+  const token = Object.values(TOKENS).find((tk) => tk.id === tokenId);
+
+  if (!token) {
+    return <>Unable to render transaction details (no token id)</>;
+  }
+
   return (
     <Container maxWidth="md" className={classes.root}>
       <Card className={classes.card}>
@@ -152,7 +155,12 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
           {renderSenderOrReceiver()}
           {renderRow(
             `${t('amount')}:`,
-            <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label=" MOB" />
+            <TransactionInfoLabel
+              value={transactionValue}
+              sign={sign}
+              label={token.name}
+              token={token}
+            />
           )}
         </CardContent>
       </Card>
@@ -170,7 +178,7 @@ const TransactionDetails: FC<TransactionDetailsViewProps> = ({
         </CardContent>
       </Card>
 
-      {sign === '+' && !assignedAddressId && (
+      {sign === '+' && !address && (
         <Card className={classes.card}>
           <Typography variant="body2" className={classes?.negative}>
             {t('orphanedTitle')}

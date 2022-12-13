@@ -19,9 +19,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
-  valuePmob,
+  value,
   sign,
   label,
+  token,
 }: TransactionInfoLabelProps) => {
   const classes = useStyles();
 
@@ -31,13 +32,13 @@ const TransactionInfoLabel: FC<TransactionInfoLabelProps> = ({
     ${sign === '+' ? classes?.positive : classes?.negative}`}
       display="inline"
     >
-      <MOBNumberFormat valueUnit="pMOB" value={valuePmob} prefix={sign} suffix={label} />
+      <MOBNumberFormat token={token} value={value} prefix={sign} suffix={label} />
     </Typography>
   );
 };
 
 TransactionInfoLabel.defaultProps = {
-  valuePmob: undefined,
+  value: undefined,
 };
 
 export default TransactionInfoLabel;

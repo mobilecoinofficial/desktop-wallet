@@ -19,6 +19,7 @@ import * as Yup from 'yup';
 import { SubmitButton, MOBNumberFormat, SavedPasswordsModal } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import type { Theme } from '../../../theme';
 import { convertPicoMobStringToMob } from '../../../utils/convertMob';
 import { isValidPin } from '../../../utils/isValidPin';
@@ -84,6 +85,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
 }: ChangePinViewProps) => {
   const classes = useStyles();
   const { t } = useTranslation('ChangePinView');
+  const token = useCurrentToken();
 
   const validatePin = (st: string) => (isValidPin(st) ? '' : t('errorPin'));
 
@@ -96,6 +98,8 @@ const ChangePinView: FC<ChangePinViewProps> = ({
     }
   };
   const handleClose = () => setAnchorEl(null);
+
+  const renderInput = (props) => <MOBNumberFormat token={token} convert={false} {...props} />;
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">
@@ -184,7 +188,7 @@ const ChangePinView: FC<ChangePinViewProps> = ({
                   type="text"
                   onFocus={handleSelect}
                   InputProps={{
-                    inputComponent: MOBNumberFormat,
+                    inputComponent: renderInput,
                     startAdornment: (
                       <InputAdornment position="start">
                         <MOBIcon height={20} width={20} />

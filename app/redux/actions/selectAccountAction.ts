@@ -1,4 +1,4 @@
-import { Accounts, Addresses, SelectedAccount } from '../../types';
+import type { Accounts, Addresses, SelectedAccount, WalletStatus } from '../../types';
 
 export const SELECT_ACCOUNT = 'SELECT_ACCOUNT';
 
@@ -8,18 +8,21 @@ export type SelectAccountAction = {
     accounts: Accounts;
     addresses: Addresses;
     selectedAccount: SelectedAccount;
+    walletStatus: WalletStatus;
   };
 };
 
 export const selectAccountAction = (
   accounts: Accounts,
   addresses: Addresses,
-  selectedAccount: SelectedAccount
+  selectedAccount: SelectedAccount,
+  walletStatus: WalletStatus
 ): SelectAccountAction => ({
   payload: {
     accounts,
     addresses,
     selectedAccount,
+    walletStatus,
   },
   type: SELECT_ACCOUNT,
 });

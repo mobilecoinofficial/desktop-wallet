@@ -1,5 +1,8 @@
+import { Token } from '../../constants/tokens';
+
 export interface TransactionInfoLabelProps {
-  valuePmob: string;
+  value: string;
   sign: '+' | '-';
   label: string;
+  token: Token;
 }

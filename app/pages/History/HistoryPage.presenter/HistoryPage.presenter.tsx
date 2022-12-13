@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
 import { Box, Typography } from '@material-ui/core';
@@ -10,6 +10,7 @@ import { Redirect } from 'react-router-dom';
 
 import { LoadingScreen } from '../../../components';
 import { getConfirmations, validateConfirmation } from '../../../fullService/api';
+import { useTransactionLogs } from '../../../hooks/useTransactionLogs';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { Confirmations } from '../../../types/Confirmation';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
@@ -21,43 +22,13 @@ const HISTORY = 'history';
 const DETAILS = 'details';
 
 export const HistoryPage: FC = (): JSX.Element => {
-  const { addresses, contacts, selectedAccount, transactionLogs } = useSelector(
-    (state: ReduxStoreState) => state
-  );
-
+  const { selectedAccount } = useSelector((state: ReduxStoreState) => state);
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [txoValidations, setTxoValidations] = useState({});
   const [showing, setShowing] = useState(HISTORY);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
-  const [transactionLogsState, setTransactionLogsState] = useState([]);
-
-  const buildList = (): TransactionLog[] => {
-    if (transactionLogs) {
-      return transactionLogs.transactionLogIds
-        .map((id) => transactionLogs.transactionLogMap[id])
-        .filter((transactionLog) => transactionLog.assignedAddressId !== addresses.addressIds[1])
-        .map((transactionLog) => {
-          // If any transaction is associated to a contact, let's attach the contact object.
-          // TODO - we can improve this greatly by changing how this information is stored.
-          const contact = contacts.find(
-            (x) =>
-              x.assignedAddress === transactionLog.assignedAddressId ||
-              x.recipientAddress === transactionLog.recipientAddressId
-          );
-          if (contact) {
-            transactionLog.contact = contact; /* eslint-disable-line no-param-reassign */
-          }
-          return transactionLog;
-        })
-        .sort((a, b) => b.finalizedBlockIndex - a.finalizedBlockIndex);
-    }
-    return [] as TransactionLog[];
-  };
-
-  useEffect(() => {
-    setTransactionLogsState(buildList());
-  }, [transactionLogs]);
+  const logs = useTransactionLogs();
 
   const handleClickCopyConfirmations = () => {
     (async () => {
@@ -65,7 +36,9 @@ export const HistoryPage: FC = (): JSX.Element => {
         const result = await getConfirmations({
           transactionLogId: currentTransactionLog.transactionLogId,
         });
-        clipboard.writeText(JSON.stringify(result.confirmations));
+        // newer versions of full service use txoId instead of txoIdHex
+        // replace newer field with older to maintain backwards compatibility
+        clipboard.writeText(JSON.stringify(result.confirmations).replace(/txoId/, 'txoIdHex'));
         enqueueSnackbar('Copied Confirmations to Clipboard');
       } catch (err) {
         const errorMessage = errorToString(err);
@@ -78,9 +51,12 @@ export const HistoryPage: FC = (): JSX.Element => {
     (async () => {
       const confirmationsString = clipboard.readText();
       try {
-        const confirmations = JSON.parse(confirmationsString) as Confirmations;
+        const confirmations = JSON.parse(
+          confirmationsString.replace(/"txoId"/, '"txoIdHex"')
+        ) as Confirmations;
         const results: { [txoId: string]: boolean } = {};
-
+        // newer versions of full service use txoId instead of txoIdHex
+        // replace newer field with older to maintain backwards compatibility
         await Promise.all(
           confirmations.map(async (confirmation) => {
             try {
@@ -105,11 +81,11 @@ export const HistoryPage: FC = (): JSX.Element => {
   };
   // CREATE VIEW
 
-  if (transactionLogs === null) {
+  if (logs === null) {
     return <LoadingScreen />;
   }
 
-  if (transactionLogs.transactionLogIds.length === 0) {
+  if (logs.length === 0) {
     return (
       <Box display="flex" justifyContent="center">
         <Typography color="primary">{t('emptyState')}</Typography>
@@ -121,7 +97,7 @@ export const HistoryPage: FC = (): JSX.Element => {
     case HISTORY:
       return (
         <HistoryList
-          transactionLogsList={transactionLogsState}
+          transactionLogsList={logs}
           onTransactionClick={(transactionLog) => {
             setCurrentTransaction(transactionLog);
             setShowing(DETAILS);

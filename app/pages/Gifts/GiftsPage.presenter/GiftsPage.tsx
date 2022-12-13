@@ -1,7 +1,17 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, Container, Fade, Grid, makeStyles, Modal, Tab, Tabs } from '@material-ui/core';
+import {
+  Box,
+  Container,
+  Fade,
+  Grid,
+  makeStyles,
+  Modal,
+  Tab,
+  Tabs,
+  Typography,
+} from '@material-ui/core';
 import { clipboard } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
@@ -9,8 +19,10 @@ import { useSelector } from 'react-redux';
 
 import { AccountCard } from '../../../components/AccountCard';
 import { SubmitButton } from '../../../components/SubmitButton';
+import { TOKENS } from '../../../constants/tokens';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { getAllGiftCodes, getFeePmob } from '../../../redux/services';
+import { getAllGiftCodes, getFees } from '../../../redux/services';
 import {
   buildGiftCode,
   checkGiftCodeStatus,
@@ -65,12 +77,13 @@ const EMPTY_CONFIRMATION_BUILD = {
 export const GiftsPage: FC = (): JSX.Element => {
   const {
     accounts,
-    feePmob,
+    fees,
     giftCodes,
     pin: existingPin,
     pinThresholdPmob,
     selectedAccount,
   } = useSelector((state: ReduxStoreState) => state);
+  const token = useCurrentToken();
 
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
@@ -83,6 +96,30 @@ export const GiftsPage: FC = (): JSX.Element => {
   const [confirmationConsume, setConfirmationConsume] = useState(EMPTY_CONFIRMATION_CONSUME);
 
   const { t } = useTranslation('GiftingView');
+
+  useEffect(() => {
+    getAllGiftCodes();
+  }, []);
+  useEffect(() => {
+    getFees();
+  }, []);
+
+  if (token.id === TOKENS.EUSD.id) {
+    return (
+      <Box className={classes.root}>
+        <Typography align="center">Gift codes are not yet available for eUSD.</Typography>
+      </Box>
+    );
+  }
+  if (selectedAccount.account.viewOnly) {
+    return (
+      <Box className={classes.root}>
+        <Typography align="center">
+          Gift codes can not be created from view only accounts
+        </Typography>
+      </Box>
+    );
+  }
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
@@ -222,13 +259,6 @@ export const GiftsPage: FC = (): JSX.Element => {
     setShowModalConsume(false);
   };
 
-  useEffect(() => {
-    getAllGiftCodes();
-  }, []);
-  useEffect(() => {
-    getFeePmob();
-  }, []);
-
   return (
     <Box className={classes.root}>
       <Grid container spacing={3}>
@@ -252,9 +282,9 @@ export const GiftsPage: FC = (): JSX.Element => {
                 confirmation={confirmationBuild}
                 deleteStoredGiftCodeB58={deleteStoredGiftCodeB58}
                 existingPin={existingPin as string}
-                feePmob={feePmob || '400000000'}
+                fee={fees[token.id]}
                 getAllGiftCodes={getAllGiftCodes}
-                giftCodes={giftCodes}
+                giftCodes={giftCodes ?? []}
                 handleCopyClick={handleCodeClicked}
                 isSynced={isSynced}
                 onClickCancelBuild={onClickCancelBuild}
@@ -302,7 +332,7 @@ export const GiftsPage: FC = (): JSX.Element => {
           {selectedTabIndex === 1 && (
             <ConsumeGiftForm
               confirmation={confirmationConsume}
-              feePmob={feePmob || '400000000'}
+              fee={fees[token.id]}
               onClickCancel={onClickCancelConsume}
               onClickClaimGift={onClickClaimGiftConsume}
               onClickOpenGift={onClickOpenGiftConsume}

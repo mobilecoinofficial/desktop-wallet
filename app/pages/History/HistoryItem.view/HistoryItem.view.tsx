@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { ShortCode } from '../../../components/ShortCode';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import MOBIcon from '../../../components/icons/MOBIcon';
+import { TOKENS } from '../../../constants/tokens';
 import type { Theme } from '../../../theme';
 import type { HistoryItemProps } from './HistoryItem.d';
 
@@ -43,22 +44,19 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
   const { t } = useTranslation('HistoryView');
 
   const {
-    assignedAddressId,
     contact,
     direction,
     finalizedBlockIndex,
-    recipientAddressId,
+    address,
     // status, TODO - Add status state for "pending" or errors
-    valuePmob,
+    value,
+    tokenId,
   } = transactionLog;
-
-  // debugger;
 
   // TODO - this should be a helper somewhere
   const sign = direction === 'tx_direction_sent' ? '-' : '+';
   const directionText =
     direction === 'tx_direction_sent' ? t('historyItemSent') : t('historyItemReceived');
-
   let aliasOrAddress;
 
   // If there's a contact Object...
@@ -69,10 +67,10 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
       </Typography>
     );
     // Has a known address
-  } else if (assignedAddressId || recipientAddressId) {
+  } else if (address) {
     aliasOrAddress = (
       <Typography display="inline" color="textPrimary">
-        <ShortCode code={assignedAddressId || recipientAddressId || ''} />
+        <ShortCode code={address} />
       </Typography>
     );
     // Else it is an orphan
@@ -92,6 +90,10 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
   }
 
   const avatar = contact ? contact.abbreviation.toUpperCase() : <MOBIcon color="white" />;
+  const txLogToken = Object.values(TOKENS).find((token) => token.id === tokenId);
+  if (!txLogToken) {
+    return <>Error finding transaction history item (no token id)</>;
+  }
 
   return (
     <Grid item xs={12}>
@@ -105,7 +107,12 @@ const HistoryItem: FC<HistoryItemProps> = ({ onClick, transactionLog }: HistoryI
             subheader={`${t('finalizedBlockHeight')}${finalizedBlockIndex}`}
             action={
               <Box display="flex" flexDirection="column" justifyContent="space-between">
-                <TransactionInfoLabel valuePmob={valuePmob} sign={sign} label="&nbsp;MOB" />
+                <TransactionInfoLabel
+                  value={value}
+                  sign={sign}
+                  token={txLogToken}
+                  label={` ${txLogToken.name}`}
+                />
                 <Typography className={classes.textSmallRight} display="inline">
                   {directionText}
                 </Typography>

@@ -14,20 +14,20 @@ interface SendParameters {
   fee: string;
   isChecked: boolean;
   recipientPublicAddress: StringHex;
-  valuePmob: string;
+  value: string;
 }
 
 export interface SendMobProps {
   confirmation?: unknown;
   contacts: Contact[];
   existingPin: string;
-  feePmob: string;
-  importTxConfirmation: () => void;
+  importTxConfirmation: () => Promise<void>;
+  importSignedTransaction: () => Promise<void>;
   isSynced: boolean;
   offlineModeEnabled: boolean;
   onClickCancel: () => void;
-  onClickConfirm: (resetForm: () => void) => void;
-  onClickSend: (x: SendParameters) => void;
+  onClickConfirm: (resetForm: () => void) => Promise<void>;
+  onClickSend: (x: SendParameters) => Promise<void>;
   pinThresholdPmob: number;
   saveTxConfirmation: (resetForm: () => void) => void;
   selectedAccount: SelectedAccount;

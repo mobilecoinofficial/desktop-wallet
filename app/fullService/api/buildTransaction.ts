@@ -1,18 +1,21 @@
 import type { StringHex, StringB58, StringUInt64 } from '../../types/SpecialStrings.d';
-import type { Outlay, TxProposal } from '../../types/TxProposal';
+import type { AddressAndAmount } from '../../types/TransactionAmount';
+import type { OutputTxo, TxProposal } from '../../types/TxProposal';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 
-// TODO - fix the error handling at this level -- when giving the wrong method, for example
 const BUILD_TRANSACTION_METHOD = 'build_transaction';
+// this value comes from the mobilecoin lib. Ideally it would be exposed by full-service but in
+// the interest of getting things done fast, we're just hard-coding it here for now
 
 export type BuildTransactionParams = {
+  addressesAndAmounts: AddressAndAmount[];
   accountId: StringHex;
-  fee?: StringUInt64;
+  feeValue?: StringUInt64;
+  feeTokenId?: StringUInt64;
   inputTxoIds?: StringHex[];
   maxSpendableValue?: StringUInt64;
-  recipientPublicAddress: StringB58;
   tombstoneBlock?: StringUInt64;
-  valuePmob: StringUInt64;
+  blockVersion?: StringUInt64;
 };
 
 export type BuildTransactionResult = {
@@ -22,24 +25,30 @@ export type BuildTransactionResult = {
   txProposalReceiverB58Code: StringB58;
 };
 
+type BuilTransactionProposalResponse = {
+  txProposal: TxProposal;
+};
+
 const buildTransaction = async ({
+  addressesAndAmounts,
   accountId,
-  fee,
+  feeValue,
+  feeTokenId,
   inputTxoIds,
   maxSpendableValue,
-  recipientPublicAddress,
   tombstoneBlock,
-  valuePmob,
+  blockVersion,
 }: BuildTransactionParams): Promise<BuildTransactionResult> => {
-  const { result, error }: AxiosFullServiceResponse<{ txProposal: TxProposal }> =
+  const { result, error }: AxiosFullServiceResponse<BuilTransactionProposalResponse> =
     await axiosFullService(BUILD_TRANSACTION_METHOD, {
       accountId,
-      fee,
+      addressesAndAmounts,
+      blockVersion,
+      feeTokenId,
+      feeValue,
       inputTxoIds,
       maxSpendableValue,
-      recipientPublicAddress,
       tombstoneBlock,
-      valuePmob,
     });
 
   if (error) {
@@ -50,14 +59,14 @@ const buildTransaction = async ({
 
   const { txProposal } = result;
   // FIX-ME: assumes only 1 recipient
-  const txProposalReceiverB58Code = recipientPublicAddress;
+  const txProposalReceiverB58Code = txProposal.payloadTxos[0].recipientPublicAddressB58;
 
   // TODO fix type, right now it just matches what the component is expecting
-  const totalValueConfirmation = txProposal.outlayList
-    .map((outlay: Outlay) => BigInt(outlay.value))
+  const totalValueConfirmation = txProposal.payloadTxos
+    .map((txo: OutputTxo) => BigInt(txo.amount.value))
     .reduce((acc: bigint, cur: bigint) => acc + cur, BigInt(0));
 
-  const feeConfirmation = BigInt(txProposal.fee);
+  const feeConfirmation = BigInt(txProposal.feeAmount.value);
   return {
     feeConfirmation,
     totalValueConfirmation,

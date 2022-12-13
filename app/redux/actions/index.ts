@@ -1,3 +1,4 @@
+// @ts-ignore import/no-cycle
 import { addAccountAction, AddAccountAction, ADD_ACCOUNT } from './addAccountAction';
 import {
   confirmEntropyKnownAction,
@@ -23,10 +24,11 @@ import {
   GET_ALL_TXOS_FOR_ACCOUNT,
   GetAllTxosForAccountAction,
 } from './getAllTxosForAccountAction';
-import { getFeePmobAction, GetFeePmobAction, GET_FEE_PMOB } from './getFeePmobAction';
+import { getFeesAction, GetFeesAction, GET_FEE_PMOB } from './getFeesAction';
 import { importAccountAction, IMPORT_ACCOUNT, ImportAccountAction } from './importAccountAction';
 import { initializeAction, INITIALIZE, InitializeAction } from './initializeAction';
 import { selectAccountAction, SELECT_ACCOUNT, SelectAccountAction } from './selectAccountAction';
+import { SET_TOKEN_ID, setTokenIdAction, SetTokenIdAction } from './setTokenIdAction';
 import { unlockWalletAction, UNLOCK_WALLET, UnlockWalletAction } from './unlockWalletAction';
 import {
   updateContactsAction,
@@ -61,6 +63,7 @@ export {
   UPDATE_PASSWORD,
   UPDATE_PIN,
   UPDATE_WALLET_STATUS,
+  SET_TOKEN_ID,
 };
 
 type Action =
@@ -73,10 +76,11 @@ type Action =
   | GetAllGiftCodesAction
   | GetAllTransactionLogsForAccountAction
   | GetAllTxosForAccountAction
-  | GetFeePmobAction
+  | GetFeesAction
   | ImportAccountAction
   | InitializeAction
   | SelectAccountAction
+  | SetTokenIdAction
   | UnlockWalletAction
   | UpdateContactsAction
   | UpdatePasswordAction
@@ -94,10 +98,11 @@ export type {
   DeleteWalletAction,
   GetAllTransactionLogsForAccountAction,
   GetAllTxosForAccountAction,
-  GetFeePmobAction,
+  GetFeesAction,
   ImportAccountAction,
   InitializeAction,
   SelectAccountAction,
+  SetTokenIdAction,
   UnlockWalletAction,
   UpdateContactsAction,
   GetAllGiftCodesAction,
@@ -116,10 +121,11 @@ export {
   deleteWalletAction,
   getAllTransactionLogsForAccountAction,
   getAllTxosForAccountAction,
-  getFeePmobAction,
+  getFeesAction,
   importAccountAction,
   initializeAction,
   selectAccountAction,
+  setTokenIdAction,
   unlockWalletAction,
   updateContactsAction,
   getAllGiftCodesAction,

@@ -1,4 +1,4 @@
-import { Contact, SelectedAccount, StringUInt64, WalletStatus } from '../../types';
+import type { Contact, SelectedAccount, StringUInt64, WalletStatus, Accounts } from '../../types';
 
 export const UNLOCK_WALLET = 'UNLOCK_WALLET';
 
@@ -14,6 +14,7 @@ export type UnlockWalletAction = {
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
     offlineModeEnabled: boolean;
+    accounts: Accounts;
   };
 };
 
@@ -26,9 +27,11 @@ export const unlockWalletAction = (
   secretKey: string,
   selectedAccount: SelectedAccount,
   walletStatus: WalletStatus,
-  offlineModeEnabled: boolean
+  offlineModeEnabled: boolean,
+  accounts: Accounts
 ): UnlockWalletAction => ({
   payload: {
+    accounts,
     addingAccount,
     contacts,
     isPinRequired,

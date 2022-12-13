@@ -20,7 +20,7 @@ WALLET_DB_FILE="$3"
 mkdir -p "${LEDGER_DB_DIR}"
 mkdir -p "${WALLET_DB_DIR}"
 
-echo "Starting full-service with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR} and ${WALLET_DB_FILE}" > /tmp/mylog
+echo "Starting full-service with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR}"
 
 RUST_LOG=debug,mc_connection=error,mc_ledger_sync=error ./full-service \
         --ledger-db "${LEDGER_DB_DIR}" \

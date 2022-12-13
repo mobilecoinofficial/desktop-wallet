@@ -1,17 +1,18 @@
 import { SjclCipherEncrypted } from 'sjcl';
 
+import { TOKENS } from '../../constants/tokens';
 import {
   Accounts,
   Addresses,
   Contact,
   GiftCode,
-  PendingSecrets,
   SelectedAccount,
   StringUInt64,
   TransactionLogs,
   Txos,
   WalletStatus,
 } from '../../types';
+import { Fees } from '../../types/NetworkStatus';
 import sameObject from '../../utils/sameObject';
 import {
   INITIALIZE,
@@ -39,7 +40,7 @@ import {
   UPDATE_CONTACTS,
   UpdateContactsAction,
   GET_FEE_PMOB,
-  GetFeePmobAction,
+  GetFeesAction,
   UPDATE_PASSWORD,
   UpdatePasswordAction,
   UPDATE_PIN,
@@ -49,6 +50,8 @@ import {
   Action,
   GET_ALL_TRANSACTION_LOGS_FOR_ACCOUNT,
   GetAllTransactionLogsForAccountAction,
+  SET_TOKEN_ID,
+  SetTokenIdAction,
 } from '../actions';
 
 export type ReduxStoreState = {
@@ -58,13 +61,12 @@ export type ReduxStoreState = {
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
   encryptedPassword: SjclCipherEncrypted | undefined;
-  feePmob: StringUInt64;
+  fees: Fees;
   isAuthenticated: boolean;
   isEntropyKnown: boolean;
   isInitialized: boolean;
   isPinRequired: boolean;
   offlineModeEnabled: boolean;
-  pendingSecrets: PendingSecrets | null;
   secretKey: string;
   selectedAccount: SelectedAccount;
   transactionLogs: TransactionLogs | null;
@@ -72,6 +74,7 @@ export type ReduxStoreState = {
   pin: string | undefined;
   txos: Txos;
   walletStatus: WalletStatus;
+  tokenId: number;
 };
 
 export const initialReduxStoreState: ReduxStoreState = {
@@ -80,14 +83,13 @@ export const initialReduxStoreState: ReduxStoreState = {
   addresses: { addressIds: [], addressMap: {} },
   contacts: [],
   encryptedPassword: undefined,
-  feePmob: '',
+  fees: {},
   giftCodes: null,
   isAuthenticated: false,
   isEntropyKnown: false,
   isInitialized: false,
   isPinRequired: false,
   offlineModeEnabled: false,
-  pendingSecrets: null,
   pin: undefined,
   pinThresholdPmob: '',
   secretKey: '',
@@ -95,36 +97,60 @@ export const initialReduxStoreState: ReduxStoreState = {
     account: {
       accountId: '',
       firstBlockIndex: '',
-      key_derivation_version: '',
       mainAddress: '',
       name: '',
       nextSubaddressIndex: '',
-      object: 'account' as const,
       recoveryMode: false,
+      viewOnly: false,
     },
     balanceStatus: {
+      balancePerToken: {
+        [TOKENS.MOB.id]: {
+          orphanedPmob: '',
+          pendingPmob: '',
+          secretedPmob: '',
+          spentPmob: '',
+          unspentPmob: '',
+          unverifiedPmob: '',
+        },
+        [TOKENS.EUSD.id]: {
+          orphanedPmob: '',
+          pendingPmob: '',
+          secretedPmob: '',
+          spentPmob: '',
+          unspentPmob: '',
+          unverifiedPmob: '',
+        },
+      },
       isSynced: false,
-      orphanedPmob: '',
-      pendingPmob: '',
-      secretedPmob: '',
-      spentPmob: '',
-      unspentPmob: '',
     },
   },
+  tokenId: TOKENS.MOB.id,
   transactionLogs: null,
   txos: { txoIds: [], txoMap: {} },
   walletStatus: {
-    accountIds: [],
-    accountMap: {},
+    balancePerToken: {
+      [TOKENS.MOB.id]: {
+        orphanedPmob: '',
+        pendingPmob: '',
+        secretedPmob: '',
+        spentPmob: '',
+        unspentPmob: '',
+        unverifiedPmob: '',
+      },
+      [TOKENS.EUSD.id]: {
+        orphanedPmob: '',
+        pendingPmob: '',
+        secretedPmob: '',
+        spentPmob: '',
+        unspentPmob: '',
+        unverifiedPmob: '',
+      },
+    },
     isSyncedAll: false,
     localBlockHeight: '',
     minSyncedBlockIndex: '',
     networkBlockHeight: '',
-    totalOrphanedPmob: '',
-    totalPendingPmob: '',
-    totalSecretedPmob: '',
-    totalSpentPmob: '',
-    totalUnspentPmob: '',
   },
 };
 
@@ -145,14 +171,12 @@ export const reducer = (
       return {
         ...state,
         isEntropyKnown: true,
-        pendingSecrets: null, // Clear secrets from in-memory
       };
     }
 
     case CREATE_ACCOUNT: {
-      const { accounts, addresses, pendingSecrets, selectedAccount, walletStatus } = (
-        action as CreateAccountAction
-      ).payload;
+      const { accounts, addresses, selectedAccount, walletStatus } = (action as CreateAccountAction)
+        .payload;
       return {
         ...state,
         accounts,
@@ -160,7 +184,6 @@ export const reducer = (
         addresses,
         isAuthenticated: true,
         isEntropyKnown: false,
-        pendingSecrets,
         selectedAccount,
         walletStatus,
       };
@@ -213,10 +236,10 @@ export const reducer = (
     }
 
     case GET_FEE_PMOB: {
-      const { feePmob } = (action as GetFeePmobAction).payload;
+      const { fees } = (action as GetFeesAction).payload;
       return {
         ...state,
-        feePmob,
+        fees,
       };
     }
 
@@ -246,7 +269,8 @@ export const reducer = (
     }
 
     case SELECT_ACCOUNT: {
-      const { accounts, addresses, selectedAccount } = (action as SelectAccountAction).payload;
+      const { accounts, addresses, selectedAccount, walletStatus } = (action as SelectAccountAction)
+        .payload;
       return {
         ...state,
         accounts,
@@ -254,6 +278,7 @@ export const reducer = (
         addresses,
         isEntropyKnown: true,
         selectedAccount,
+        walletStatus,
       };
     }
 
@@ -268,10 +293,12 @@ export const reducer = (
         secretKey,
         selectedAccount,
         walletStatus,
+        accounts,
       } = (action as UnlockWalletAction).payload;
 
       return {
         ...state,
+        accounts,
         addingAccount,
         contacts,
         isAuthenticated: true,
@@ -313,15 +340,21 @@ export const reducer = (
     }
 
     case UPDATE_WALLET_STATUS: {
-      const { selectedAccount, walletStatus } = (action as UpdateStatusAction).payload;
-      return sameObject(selectedAccount, state.selectedAccount) &&
-        sameObject(walletStatus, state.walletStatus)
+      const { selectedAccount } = (action as UpdateStatusAction).payload;
+      return sameObject(selectedAccount, state.selectedAccount)
         ? state
         : {
             ...state,
             selectedAccount,
-            walletStatus,
           };
+    }
+
+    case SET_TOKEN_ID: {
+      const { tokenId } = (action as SetTokenIdAction).payload;
+      return {
+        ...state,
+        tokenId,
+      };
     }
 
     default: {

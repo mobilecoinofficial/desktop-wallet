@@ -1,10 +1,9 @@
-import {
+import type {
   Account,
   Accounts,
   Address,
   Addresses,
   BalanceStatus,
-  PendingSecrets,
   SelectedAccount,
   StringHex,
   WalletStatus,
@@ -16,7 +15,6 @@ export type CreateAccountAction = {
   payload: {
     accounts: Accounts;
     addresses: Addresses;
-    pendingSecrets: PendingSecrets;
     selectedAccount: SelectedAccount;
     walletStatus: WalletStatus;
   };
@@ -28,7 +26,6 @@ export const createAccountAction = (
   accountMap: { [accountId: string]: Account },
   addressIds: StringHex[],
   addressMap: { [addressId: string]: Address },
-  pendingSecrets: PendingSecrets,
   account: Account,
   balanceStatus: BalanceStatus,
   walletStatus: WalletStatus
@@ -42,7 +39,6 @@ export const createAccountAction = (
       addressIds,
       addressMap,
     },
-    pendingSecrets,
     selectedAccount: {
       account,
       balanceStatus,

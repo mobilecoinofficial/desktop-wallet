@@ -1,6 +1,7 @@
 import type { StringHex } from '../../types/SpecialStrings.d';
-import type { Txo } from '../../types/Txo.d';
+import type { Txo, TxoV2 } from '../../types/Txo.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
+import { convertTxoFromV2 } from './getAllTxosForAccount';
 
 const GET_TXO_METHOD = 'get_txo';
 
@@ -13,7 +14,7 @@ type GetTxoResult = {
 };
 
 const getTxo = async ({ txoId }: GetTxoParams): Promise<GetTxoResult> => {
-  const { result, error }: AxiosFullServiceResponse<GetTxoResult> = await axiosFullService(
+  const { result, error }: AxiosFullServiceResponse<{ txo: TxoV2 }> = await axiosFullService(
     GET_TXO_METHOD,
     {
       txoId,
@@ -25,7 +26,7 @@ const getTxo = async ({ txoId }: GetTxoParams): Promise<GetTxoResult> => {
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    return result;
+    return { txo: convertTxoFromV2(result.txo) };
   }
 };
 

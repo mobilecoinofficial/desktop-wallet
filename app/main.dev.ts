@@ -23,6 +23,7 @@ import installExtension, {
 import log from 'electron-log';
 import { autoUpdater } from 'electron-updater';
 import keytar from 'keytar';
+import snakeCaseKeys from 'snakecase-keys';
 
 import config from '../configs/app.config';
 import { INITIAL_WINDOW_HEIGHT, MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from './constants/app';
@@ -34,6 +35,10 @@ import { checkForAppUpdates, initializeAutoUpdater } from './utils/autoupdate';
 import { initLog, writeLog } from './utils/logger';
 
 initializeAutoUpdater();
+
+// Kill any instance of full service running when starting the app. This will make sure
+// that the app starts with the correct version of full service when there is an update.
+exec('pkill -f full-service');
 
 export default class AppUpdater {
   constructor() {
@@ -76,6 +81,7 @@ const startFullService = (
   const fullServiceBinariesPath = localStore.getFullServiceBinariesPath();
   const fullServiceLedgerDBPath = localStore.getLedgerDbPath();
   const fullServiceWalletDBPath = localStore.getFullServiceDbPath();
+  const apiKey = localStore.getAPIKey();
 
   console.log('Looking for Full Service binary in', fullServiceBinariesPath);
   console.log(`Offline Mode: ${startInOfflineMode}`);
@@ -87,6 +93,7 @@ const startFullService = (
   const options: { [k: string]: { [j: string]: string } } = {
     env: {
       ...process.env,
+      MC_API_KEY: apiKey,
       MC_PASSWORD: password,
     },
   };
@@ -439,6 +446,41 @@ ipcMain.handle('import-ledger-db', () => {
   return true;
 });
 
+ipcMain.handle('download-json', (_event, json, title) => {
+  const filePath = dialog.showSaveDialogSync(mainWindow, {
+    defaultPath: `${title}.json`,
+  });
+
+  if (!filePath) {
+    return false;
+  }
+
+  fs.writeFileSync(filePath, json);
+  return true;
+});
+
+ipcMain.handle('save-unsigned-transaction', (_event, unsignedTx) => {
+  const filePath = dialog.showSaveDialogSync(mainWindow, {
+    defaultPath: 'unsigned_transaction.json',
+  });
+
+  if (!filePath) {
+    return false;
+  }
+
+  fs.writeFileSync(filePath, JSON.stringify(snakeCaseKeys(unsignedTx)));
+  return true;
+});
+
+ipcMain.handle('import-file', () => {
+  const filePath = dialog.showOpenDialogSync(mainWindow);
+  if (!filePath) {
+    return false;
+  }
+  const fileText = fs.readFileSync(filePath[0]);
+  return fileText.toString();
+});
+
 ipcMain.handle('export-transaction-history', (_event, transactionLogs) => {
   const filePath = dialog.showSaveDialogSync(mainWindow, { defaultPath: 'tx_history.csv' });
 
@@ -446,19 +488,15 @@ ipcMain.handle('export-transaction-history', (_event, transactionLogs) => {
     return false;
   }
 
-  if (transactionLogs.transactionLogMap.length === 0) {
+  if (transactionLogs.length === 0) {
     return false;
   }
 
-  const fields = Object.keys(
-    transactionLogs.transactionLogMap[transactionLogs.transactionLogIds[0]]
-  );
+  const fields = Object.keys(transactionLogs[0]);
   const replacer = (key, value) => (value === null ? '' : value);
 
-  let csv = transactionLogs.transactionLogIds.map((txLogId) =>
-    fields
-      .map((field) => JSON.stringify(transactionLogs.transactionLogMap[txLogId][field], replacer))
-      .join('\t')
+  let csv = transactionLogs.map((txLog) =>
+    fields.map((field) => JSON.stringify(txLog[field], replacer)).join('\t')
   );
   csv.unshift(fields.join('\t'));
   csv = csv.join('\r\n');

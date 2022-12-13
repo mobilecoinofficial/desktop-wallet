@@ -21,8 +21,8 @@ import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat } from '../../../components';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import type { Theme } from '../../../theme';
-import type { Account } from '../../../types/Account.d';
 import { ConsumeGiftFormProps } from './ConsumeGiftForm';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 // this component managable.
 const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
   confirmation,
-  feePmob,
+  fee,
   onClickCancel,
   onClickClaimGift,
   onClickOpenGift,
@@ -81,13 +81,18 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
 }: ConsumeGiftFormProps) => {
   const classes = useStyles();
   const { t } = useTranslation('ConsumeGiftForm');
+  const token = useCurrentToken();
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
-  const mockMultipleAccounts: Array<Account> = [
+  const mockMultipleAccounts: Array<{
+    b58Code: string;
+    balance: bigint;
+    name: string | null;
+  }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: selectedAccount.balanceStatus.unspentPmob,
+      balance: BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob),
       name: selectedAccount.account.name,
     },
   ];
@@ -125,7 +130,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
         let totalSent;
 
         if (confirmation?.giftValue) {
-          increasedBalance = Number(selectedBalance) + confirmation?.giftValue - Number(feePmob);
+          increasedBalance = Number(selectedBalance) + confirmation?.giftValue - Number(fee);
           totalSent = confirmation?.giftValue;
         }
 
@@ -204,8 +209,8 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                           <Typography color="textPrimary">{t('accountBalance')}:</Typography>
                           <Typography color="textPrimary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
+                              suffix={` ${token.name}`}
+                              token={token}
                               value={selectedBalance?.toString()}
                             />
                           </Typography>
@@ -214,8 +219,8 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                           <Typography color="textPrimary">{t('total')}:</Typography>
                           <Typography color="textPrimary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
+                              suffix={` ${token.name}`}
+                              token={token}
                               value={totalSent?.toString() as string}
                             />
                           </Typography>
@@ -223,7 +228,7 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                         <Box display="flex" justifyContent="space-between">
                           <Typography color="textPrimary">{t('fee')}:</Typography>
                           <Typography color="textPrimary">
-                            <MOBNumberFormat suffix=" MOB" valueUnit="pMOB" value={feePmob} />
+                            <MOBNumberFormat suffix={` ${token.name}`} token={token} value={fee} />
                           </Typography>
                         </Box>
                         <Box
@@ -234,9 +239,9 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                           <Typography color="primary">{t('giftValue')}:</Typography>
                           <Typography color="primary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
-                              value={(confirmation?.giftValue - Number(feePmob)).toString()}
+                              suffix={` ${token.name}`}
+                              token={token}
+                              value={(confirmation?.giftValue - Number(fee)).toString()}
                             />
                           </Typography>
                         </Box>
@@ -244,8 +249,8 @@ const ConsumeGiftForm: FC<ConsumeGiftFormProps> = ({
                           <Typography color="primary">{t('newBalance')}:</Typography>
                           <Typography color="primary">
                             <MOBNumberFormat
-                              suffix=" MOB"
-                              valueUnit="pMOB"
+                              suffix={` ${token.name}`}
+                              token={token}
                               value={increasedBalance?.toString() as string}
                             />
                           </Typography>

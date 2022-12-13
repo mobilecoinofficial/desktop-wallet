@@ -10,6 +10,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { GlobalStyles } from './components/GlobalStyles';
 import { MOBILE_COIN_DARK, MOBILE_COIN_LIGHT } from './constants/themes';
+import { isAccountSynced } from './fullService/api/getAccount';
 import { initialReduxStoreState } from './redux/reducers/reducers';
 import { getAllTransactionLogsForAccount, initialize, updateStatus } from './redux/services';
 import { store } from './redux/store';
@@ -78,8 +79,12 @@ const App: FC = () => {
         // solves an issue of this component's local state fighting with the redux store.
         const { selectedAccount } = store.getState();
         if (selectedAccount !== initialReduxStoreState.selectedAccount) {
-          await fetchBalance(selectedAccount);
-          await fetchLogs(selectedAccount);
+          // check wallet status to see if we need to update account
+          const isSynced = await isAccountSynced({ accountId: selectedAccount.account.accountId });
+          if (!isSynced) {
+            await fetchBalance(selectedAccount);
+            await fetchLogs(selectedAccount);
+          }
         }
       }, 10000)
     );

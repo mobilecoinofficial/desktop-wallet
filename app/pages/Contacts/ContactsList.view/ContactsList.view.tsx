@@ -39,7 +39,6 @@ const ContactsList: FC<ContactsListProps> = ({
   onClickEdit,
 }: ContactsListProps) => {
   const classes = useStyles();
-
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [currentFilter, setCurrentFilter] = useState('');
   const [dataToShow, setDataToShow] = useState(contactsList);
@@ -90,8 +89,8 @@ const ContactsList: FC<ContactsListProps> = ({
         <Grid container spacing={3}>
           {dataToShow.map((contact) => (
             <ContactCard
-              key={contact.assignedAddress}
-              assignedAddress={contact.assignedAddress}
+              key={contact.id}
+              id={contact.id}
               abbreviation={contact.abbreviation}
               alias={contact.alias}
               color={contact.color}

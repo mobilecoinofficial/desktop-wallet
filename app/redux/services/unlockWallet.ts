@@ -1,36 +1,62 @@
+import { some } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+
 import * as fullServiceApi from '../../fullService/api';
-import { decryptContacts } from '../../services';
+import { decryptContacts, encryptContacts } from '../../services';
 import * as localStore from '../../utils/LocalStore';
 import { validatePassphrase } from '../../utils/authentication';
 import { decrypt } from '../../utils/encryption';
 import { unlockWalletAction } from '../actions';
 import { initialReduxStoreState } from '../reducers/reducers';
 import { store } from '../store';
+import { getFees } from './getFees';
 
-export const unlockWallet = async (password: string, startInOfflineMode = false): Promise<void> => {
+export const unlockWallet = async (
+  password: string,
+  startInOfflineMode = false,
+  enqueueSnackbar: (message: string) => void
+): Promise<void> => {
   const { encryptedPassword } = store.getState();
   if (encryptedPassword === undefined) {
     throw new Error('encryptedPassword assertion failed');
   }
 
-  const { secretKey } = await validatePassphrase(password, encryptedPassword);
+  const { secretKey } = await validatePassphrase(password, encryptedPassword, enqueueSnackbar);
 
-  const contacts = await decryptContacts(secretKey);
+  let contacts = await decryptContacts(secretKey);
+  // required for backwards compatibility. pre-1.7 contacts did not have an ID field
+  const hasContactsWithoutID = some(contacts, (c) => !c.id);
+  if (hasContactsWithoutID) {
+    contacts = contacts.map((contact) => {
+      if (contact.id) {
+        return contact;
+      }
+      return {
+        ...contact,
+        id: uuidv4(),
+      };
+    });
+
+    await encryptContacts(contacts, secretKey);
+  }
 
   const { walletStatus } = await fullServiceApi.getWalletStatus();
+  const accounts = await fullServiceApi.getAllAccounts();
 
-  const firstAccountId = walletStatus.accountIds[0];
+  await getFees();
+
+  const firstAccountId = (accounts.accountIds ?? [])[0];
+  const firstAccount = firstAccountId && (accounts.accountMap ?? {})[firstAccountId];
 
   let { selectedAccount, addingAccount } = initialReduxStoreState;
-
   // if an account already exists, use the default to the first account available. Otherwise, use the initial state
-  if (firstAccountId) {
+  if (firstAccountId && firstAccount) {
     const { balance: balanceStatus } = await fullServiceApi.getBalanceForAccount({
       accountId: firstAccountId,
     });
 
     selectedAccount = {
-      account: walletStatus.accountMap[firstAccountId],
+      account: firstAccount,
       balanceStatus,
     };
   } else {
@@ -59,7 +85,8 @@ export const unlockWallet = async (password: string, startInOfflineMode = false)
       secretKey,
       selectedAccount,
       walletStatus,
-      startInOfflineMode
+      startInOfflineMode,
+      accounts
     )
   );
 };

@@ -18,6 +18,7 @@ import {
 } from '../../../components/icons';
 import routePaths from '../../../constants/routePaths';
 import useFullServiceConfigs from '../../../hooks/useFullServiceConfigs';
+import { useTransactionLogs } from '../../../hooks/useTransactionLogs';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   addAccount,
@@ -30,6 +31,7 @@ import { retrieveEntropy } from '../../../services';
 import type { Theme } from '../../../theme';
 import type { StringUInt64 } from '../../../types/SpecialStrings.d';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
+import { errorToString } from '../../../utils/errorHandler';
 import { getKeychainAccounts, setKeychainAccount } from '../../../utils/keytarService';
 import { AccountsView } from '../Accounts/Accounts.view';
 import { ChangePasswordView } from '../ChangePassword.view';
@@ -60,15 +62,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const SettingsPage: FC = (): JSX.Element => {
   const classes = useStyles();
-  const {
-    accounts,
-    addingAccount,
-    offlineModeEnabled,
-    pinThresholdPmob,
-    pin,
-    selectedAccount,
-    transactionLogs,
-  } = useSelector((state: ReduxStoreState) => state);
+  const { accounts, addingAccount, offlineModeEnabled, pinThresholdPmob, pin, selectedAccount } =
+    useSelector((state: ReduxStoreState) => state);
+  const transactionLogs = useTransactionLogs();
 
   const [showing, setShowing] = useState(SETTINGS);
   const [entropy, setEntropy] = useState('');
@@ -126,6 +122,7 @@ export const SettingsPage: FC = (): JSX.Element => {
       /* istanbul ignore next */
       enqueueSnackbar(t('changePinSuccess'), { variant: 'success' });
     } catch (err) {
+      enqueueSnackbar(errorToString(err), { variant: 'error' });
       console.log('ERROR!', err); // eslint-disable-line no-console
     }
   };
@@ -139,6 +136,7 @@ export const SettingsPage: FC = (): JSX.Element => {
       }
       setEntropy(entropyString);
     } catch (err) {
+      enqueueSnackbar(errorToString(err), { variant: 'error' });
       console.log('ERROR!!!', err); // eslint-disable-line no-console
     }
   };

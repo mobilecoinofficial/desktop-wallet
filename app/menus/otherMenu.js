@@ -1,4 +1,4 @@
-import { shell, nativeTheme, BrowserWindow } from 'electron';
+import { clipboard, shell, nativeTheme, BrowserWindow } from 'electron';
 
 import config from '../../configs/app.config';
 import { version } from '../../package.json';
@@ -116,20 +116,25 @@ const defaultTemplate = (app, mainWindow, i18n) => {
     ],
   };
 
-  if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
-    submenuViewProd.submenu.push({ type: 'separator' });
-    submenuViewProd.submenu.push({
-      accelerator: 'Alt+Command+I',
-      click: () => mainWindow.webContents.toggleDevTools(),
-      label: i18n.t('Menu.View.toggleDevTools'),
-    });
+  submenuViewProd.submenu.push({ type: 'separator' });
+  submenuViewProd.submenu.push({
+    accelerator: 'Alt+Command+I',
+    click: () => mainWindow.webContents.toggleDevTools(),
+    label: i18n.t('Menu.View.toggleDevTools'),
+  });
 
-    submenuViewProd.submenu.push({
-      accelerator: 'Command+R',
-      click: () => mainWindow.webContents.reload(),
-      label: 'Reload',
-    });
-  }
+  submenuViewProd.submenu.push({
+    accelerator: 'Command+R',
+    click: () => mainWindow.webContents.reload(),
+    label: 'Reload',
+  });
+
+  submenuViewProd.submenu.push({ type: 'separator' });
+  submenuViewProd.submenu.push({
+    accelerator: 'Alt+Command+C',
+    click: () => clipboard.writeText(localStore.getAPIKey()),
+    label: 'Copy full-service API key',
+  });
 
   const submenuWindow = {
     label: i18n.t('Menu.window'),

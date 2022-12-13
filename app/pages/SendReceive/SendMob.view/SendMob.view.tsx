@@ -29,18 +29,26 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { CheckboxWithLabel, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 import { SubmitButton, MOBNumberFormat, QRScanner } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
-import { StarIcon, MOBIcon, QRCodeIcon } from '../../../components/icons';
+import { StarIcon, QRCodeIcon } from '../../../components/icons';
+import { TOKENS } from '../../../constants/tokens';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
 import {
   convertMobStringToPicoMobString,
   convertPicoMobStringToMob,
+  convertMicroEUSDToStringEUSD,
+  convertEUSDStringToMicroEUSDString,
 } from '../../../utils/convertMob';
 import type { SendMobProps } from './SendMob.d';
 import { Showing } from './SendMob.d';
+
+const NO_CONTACT_SELECTED = '';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: { width: 200 },
@@ -84,7 +92,7 @@ const SendMob: FC<SendMobProps> = ({
   confirmation,
   contacts,
   existingPin,
-  feePmob,
+  importSignedTransaction,
   importTxConfirmation,
   isSynced,
   offlineModeEnabled,
@@ -98,18 +106,30 @@ const SendMob: FC<SendMobProps> = ({
 }: SendMobProps) => {
   const classes = useStyles();
   const { t } = useTranslation('SendMobForm');
+  const { viewOnly } = selectedAccount.account;
 
-  const [contactId, setContactId] = useState('');
+  const [contactId, setContactId] = useState(NO_CONTACT_SELECTED);
   const [contactName, setContactName] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const [isScanningQR, setIsScanningQR] = useState(false);
+  const { fees } = useSelector((state: ReduxStoreState) => state);
+  // when using offline mode flow, the online account submitting the transaction might not have eUSD, so we need to rely on the uploaded tx to get tokenID
+  const confToken = (confirmation?.txProposal?.inputTxos ?? [])[0]?.amount?.tokenId;
+  const token = useCurrentToken(confToken ? Number(confToken) : undefined);
+  const fee = fees[token.id];
 
   // We'll use this array in prep for future patterns with multiple accounts
   // TODO - fix the type for Account
-  const mockMultipleAccounts: Array<Account> = [
+  const mockMultipleAccounts: Array<{
+    b58Code: string;
+    balance: bigint;
+    name: string | null;
+  }> = [
     {
       b58Code: selectedAccount.account.mainAddress,
-      balance: selectedAccount.balanceStatus.unspentPmob,
+      balance:
+        BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob) +
+        BigInt(selectedAccount.balanceStatus.balancePerToken[token.id].unverifiedPmob),
       name: selectedAccount.account.name,
     },
   ];
@@ -118,13 +138,17 @@ const SendMob: FC<SendMobProps> = ({
   const handleScanningQR = () => setIsScanningQR(!isScanningQR);
 
   const handleOpen = (values) => async () => {
+    const convertFunction =
+      token.id === TOKENS.MOB.id
+        ? convertMobStringToPicoMobString
+        : convertEUSDStringToMicroEUSDString;
     onClickSend({
       accountId: selectedAccount.account.accountId,
       alias: values.alias,
-      fee: convertMobStringToPicoMobString(values.feeAmount),
+      fee: convertFunction(feeAmount),
       isChecked,
       recipientPublicAddress: values.recipientPublicAddress,
-      valuePmob: convertMobStringToPicoMobString(values.mobAmount),
+      value: convertFunction(values.mobAmount),
     });
   };
 
@@ -136,14 +160,18 @@ const SendMob: FC<SendMobProps> = ({
 
   const handleSaveConfirmation = (resetForm: () => void) => saveTxConfirmation(resetForm);
 
-  const handleConfirmSubmit = (resetForm: () => void) => onClickConfirm(resetForm);
+  const handleConfirmSubmit = async (resetForm: () => void) => {
+    await onClickConfirm(resetForm);
+    setContactId(NO_CONTACT_SELECTED);
+    setContactName('');
+  };
 
-  const validateAmount = (selectedBalance: bigint, fee: bigint) => (valueString: string) => {
+  const validateAmount = (selectedBalance: bigint, txFee: bigint) => (valueString: string) => {
     let error;
     const valueAsPicoMob = BigInt(valueString.replace('.', ''));
-    if (valueAsPicoMob + fee > selectedBalance) {
+    if (valueAsPicoMob + txFee > selectedBalance) {
       // TODO - probably want to replace this before launch
-      error = t('errorFee', { limit: Number(fee) / 1000000000000 });
+      error = t('errorFee', { limit: Number(txFee) / token.precision, name: token.name });
     }
     return error;
   };
@@ -154,7 +182,21 @@ const SendMob: FC<SendMobProps> = ({
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.select();
   };
-  const NO_CONTACT_SELECTED = '';
+
+  const feeAmount =
+    token.id === TOKENS.MOB.id ? convertPicoMobStringToMob(fee) : convertMicroEUSDToStringEUSD(fee);
+
+  const renderInput = (props) => <MOBNumberFormat token={token} convert={false} {...props} />;
+
+  let confirmSendText: string = t('confirmSend');
+  let sendButtonText: string = isSynced ? t('send') : t('syncing');
+  if (offlineModeEnabled) {
+    confirmSendText = t('saveTxConfirmation');
+    sendButtonText = t('saveTxConfirmation');
+  }
+  if (viewOnly) {
+    sendButtonText = 'save unsigned transaction';
+  }
 
   return (
     <Container maxWidth="sm">
@@ -176,8 +218,7 @@ const SendMob: FC<SendMobProps> = ({
               initialValues={{
                 alias: '',
                 contactId: NO_CONTACT_SELECTED,
-                feeAmount: convertPicoMobStringToMob(feePmob), // TODO we need to pull this from constants
-                mobAmount: '0', // mobs
+                mobAmount: '0',
                 pin: '',
                 recipientPublicAddress: '',
                 senderPublicAddress: mockMultipleAccounts[0].b58Code,
@@ -264,9 +305,7 @@ const SendMob: FC<SendMobProps> = ({
                             if (x.target.value !== NO_CONTACT_SELECTED) {
                               // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                               isChecked ? handleChecked() : null;
-                              const selectedContact = contacts.find(
-                                (z) => z.assignedAddress === x.target.value
-                              );
+                              const selectedContact = contacts.find((z) => z.id === x.target.value);
                               setFieldValue(
                                 'recipientPublicAddress',
                                 selectedContact?.recipientAddress
@@ -282,11 +321,7 @@ const SendMob: FC<SendMobProps> = ({
                             {t('pickContact')}
                           </MenuItem>
                           {sortedContacts.map((contact) => (
-                            <MenuItem
-                              value={contact.assignedAddress}
-                              id={`contact_${contact.assignedAddress}`}
-                              key={contact.assignedAddress || contact.recipientAddress}
-                            >
+                            <MenuItem value={contact.id} id={contact.id} key={contact.id}>
                               {contact.isFavorite ? (
                                 <ListItemIcon style={{ margin: '0px' }}>
                                   <StarIcon />
@@ -348,13 +383,13 @@ const SendMob: FC<SendMobProps> = ({
                         onFocus={handleSelect}
                         validate={validateAmount(
                           selectedBalance,
-                          BigInt(Number(values.feeAmount) * 1_000_000_000_000)
+                          BigInt(Number(feeAmount) * token.precision)
                         )}
                         InputProps={{
-                          inputComponent: MOBNumberFormat,
+                          inputComponent: renderInput,
                           startAdornment: (
                             <InputAdornment position="start">
-                              <MOBIcon height={20} width={20} />
+                              {token.icon({ height: 20, width: 20 })}
                             </InputAdornment>
                           ),
                         }}
@@ -403,11 +438,16 @@ const SendMob: FC<SendMobProps> = ({
                       onClick={handleOpen(values)}
                       isSubmitting={/* isAwaitingConformation || */ isSubmitting}
                     >
-                      {isSynced ? t('send') : t('syncing')}
+                      {sendButtonText}
                     </SubmitButton>
-                    {!offlineModeEnabled && (
-                      <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>
-                    )}
+                    <Box marginTop={1}>
+                      {!offlineModeEnabled && !viewOnly && (
+                        <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>
+                      )}
+                      {viewOnly && (
+                        <Button onClick={importSignedTransaction}>{t('importSignedTx')}</Button>
+                      )}
+                    </Box>
                     {/* TODO - disable model if invalid */}
                     <Modal
                       aria-labelledby="transition-modal-title"
@@ -440,8 +480,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">
                               <MOBNumberFormat
                                 id="balanceValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={selectedBalance?.toString()}
                               />
                             </Typography>
@@ -455,8 +495,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="primary">
                               <MOBNumberFormat
                                 id="totalValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={confirmation.totalValueConfirmation.toString()}
                               />
                             </Typography>
@@ -466,8 +506,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">
                               <MOBNumberFormat
                                 id="feeValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={confirmation.feeConfirmation.toString()}
                               />
                             </Typography>
@@ -477,8 +517,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="textPrimary">
                               <MOBNumberFormat
                                 id="sentValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={totalSent.toString()}
                               />
                             </Typography>
@@ -492,8 +532,8 @@ const SendMob: FC<SendMobProps> = ({
                             <Typography color="primary">
                               <MOBNumberFormat
                                 id="remainingValue"
-                                suffix=" MOB"
-                                valueUnit="pMOB"
+                                suffix={` ${token.name}`}
+                                token={token}
                                 value={remainingBalance?.toString() as string}
                               />
                             </Typography>
@@ -579,7 +619,7 @@ const SendMob: FC<SendMobProps> = ({
                               type="submit"
                               variant="contained"
                             >
-                              {offlineModeEnabled ? t('saveTxConfirmation') : t('confirmSend')}
+                              {confirmSendText}
                             </Button>
                           </Box>
                         </div>

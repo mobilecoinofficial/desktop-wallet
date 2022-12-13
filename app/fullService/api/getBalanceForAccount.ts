@@ -1,8 +1,8 @@
+import { TOKENS } from '../../constants/tokens';
+import type { AccountStatus } from '../../types/Account.d';
 import type { BalanceStatus } from '../../types/BalanceStatus.d';
 import type { StringHex } from '../../types/SpecialStrings.d';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
-
-const GET_BALANCE_FOR_ACCOUNT_METHOD = 'get_balance_for_account';
 
 type GetBalanceParams = {
   accountId: StringHex;
@@ -12,9 +12,38 @@ type GetBalanceResult = {
   balance: BalanceStatus; // TODO - lock in name of object
 };
 
+export function convertBalanceFromV2(accountStatus: AccountStatus): BalanceStatus {
+  return {
+    accountBlockHeight: accountStatus.account.nextBlockIndex,
+    balancePerToken: {
+      [TOKENS.MOB.id]: {
+        orphanedPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.orphaned || '0',
+        pendingPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.pending || '0',
+        secretedPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.secreted || '0',
+        spentPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.spent || '0',
+        unspentPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.unspent || '0',
+        unverifiedPmob: accountStatus.balancePerToken[TOKENS.MOB.id]?.unverified || '0',
+      },
+      [TOKENS.EUSD.id]: {
+        orphanedPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.orphaned || '0',
+        pendingPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.pending || '0',
+        secretedPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.secreted || '0',
+        spentPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.spent || '0',
+        unspentPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.unspent || '0',
+        unverifiedPmob: accountStatus.balancePerToken[TOKENS.EUSD.id]?.unverified || '0',
+      },
+    },
+    isSynced:
+      Number(accountStatus.account.nextBlockIndex) >= Number(accountStatus.networkBlockHeight),
+    localBlockHeight: accountStatus.localBlockHeight,
+    networkBlockHeight: accountStatus.networkBlockHeight,
+  };
+}
+
+// full service v2 api does not have a balance endpoint. Instead the balance is a field on account status
 const getBalance = async ({ accountId }: GetBalanceParams): Promise<GetBalanceResult> => {
-  const { result, error }: AxiosFullServiceResponse<GetBalanceResult> = await axiosFullService(
-    GET_BALANCE_FOR_ACCOUNT_METHOD,
+  const { result, error }: AxiosFullServiceResponse<AccountStatus> = await axiosFullService(
+    'get_account_status',
     {
       accountId,
     }
@@ -25,7 +54,7 @@ const getBalance = async ({ accountId }: GetBalanceParams): Promise<GetBalanceRe
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    return result;
+    return { balance: convertBalanceFromV2(result) };
   }
 };
 

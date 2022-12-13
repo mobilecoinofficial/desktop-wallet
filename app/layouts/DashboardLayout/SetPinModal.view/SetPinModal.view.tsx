@@ -20,6 +20,7 @@ import * as Yup from 'yup';
 import { MOBNumberFormat, SubmitButton } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
+import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
@@ -50,12 +51,15 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
   const classes = useStyles();
   const { t } = useTranslation('SetPinModal');
   const isMountedRef = useIsMountedRef();
+  const token = useCurrentToken();
 
   const validatePin = (st: string) => (isValidPin(st) ? '' : t('errorPin'));
 
   const handleSelect = (event: ChangeEvent<HTMLInputElement>) => {
     event.target.select();
   };
+
+  const renderInput = (props) => <MOBNumberFormat token={token} convert={false} {...props} />;
 
   return (
     <Modal
@@ -165,7 +169,7 @@ const SetPinModal: FC<SetPinModalProps> = ({ isShown, onPinSubmit }: SetPinModal
                       type="text"
                       onFocus={handleSelect}
                       InputProps={{
-                        inputComponent: MOBNumberFormat,
+                        inputComponent: renderInput,
                         startAdornment: (
                           <InputAdornment position="start">
                             <MOBIcon height={20} width={20} />

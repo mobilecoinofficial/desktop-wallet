@@ -3,8 +3,12 @@ import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
-
+import { Provider } from 'react-redux';
 import '../../../testUtils/i18nForTests';
+import { createStore } from 'redux';
+
+import { TOKENS } from '../../../constants/tokens';
+import { initialReduxStoreState, reducer } from '../../../redux/reducers/reducers';
 import type { Contact } from '../../../types/Contact';
 import type { SelectedAccount } from '../../../types/SelectedAccount';
 import { SendMob } from './SendMob.view';
@@ -24,6 +28,7 @@ const CONTACTS = [
     alias: 'Foxtrot Golf',
     assignedAddress: '11111',
     color: '#FF0000',
+    id: 'abd',
     isFavorite: true,
     recipientAddress: '99999',
   },
@@ -32,6 +37,7 @@ const CONTACTS = [
     alias: 'Kilo Lima',
     assignedAddress: '22222',
     color: '#00FF00',
+    id: 'abdc',
     isFavorite: false,
     recipientAddress: '88888',
   },
@@ -40,6 +46,7 @@ const CONTACTS = [
     alias: 'Sierra Tango',
     assignedAddress: '33333',
     color: '#0000FF',
+    id: 'abdaa',
     isFavorite: true,
     recipientAddress: '77777',
   },
@@ -49,27 +56,48 @@ const SELECTED_ACCOUNT = {
   account: {
     accountId: 'ea8d4b7b6f1044680388ff73b30ffd06dfde4396d02dafe9d966c9648bc7b1b8',
     firstBlockIndex: '0',
-    key_derivation_version: '1',
+    keyDerivationVersion: '1',
     mainAddress:
       'syJAd2QoH7xSkZvMDV8Q6DdWhnRsmAKqx3LZ5BaLXKezCDjf6nUfps2b8ywm1scSMp5WDbYxNMu5mNniVkmb1fehAGaKQdNQWEEg4vHrCH',
     name: 'fktt22',
     nextSubaddressIndex: '5',
     object: 'account',
     recoveryMode: false,
+    viewOnly: false,
   },
   balanceStatus: {
     accountBlockHeight: '158974',
+    balancePerToken: {
+      [TOKENS.MOB.id]: {
+        orphanedPmob: '18000000000001',
+        pendingPmob: '0',
+        secretedPmob: '0',
+        spentPmob: '35410000000000',
+        unspentPmob: String(INITIAL_BALANCE * 1000000000000),
+        unverifiedPmob: '0',
+      },
+      [TOKENS.EUSD.id]: {
+        orphanedPmob: '18000000000001',
+        pendingPmob: '0',
+        secretedPmob: '0',
+        spentPmob: '35410000000000',
+        unspentPmob: String(INITIAL_BALANCE * 1000000000000),
+        unverifiedPmob: '0',
+      },
+    },
     isSynced: true,
     localBlockHeight: '158974',
     networkBlockHeight: '158974',
     object: 'balance',
-    orphanedPmob: '18000000000001',
-    pendingPmob: '0',
-    secretedPmob: '0',
-    spentPmob: '35410000000000',
-    unspentPmob: String(INITIAL_BALANCE * 1000000000000),
   },
 } as SelectedAccount;
+
+const store = createStore(reducer, {
+  ...initialReduxStoreState,
+  fees: {
+    [TOKENS.MOB.id]: '1000000000',
+  },
+});
 
 const setUpTest = ({
   confirmation = {
@@ -95,21 +123,22 @@ const setUpTest = ({
   showing = 0,
 } = {}) => {
   const { container } = render(
-    <SnackbarProvider dense maxSnack={5}>
-      <SendMob
-        confirmation={confirmation}
-        contacts={contacts}
-        existingPin={existingPin}
-        feePmob="3000000000"
-        isSynced={isSynced}
-        onClickCancel={onClickCancel}
-        onClickConfirm={onClickConfirm}
-        onClickSend={onClickSend}
-        pinThresholdPmob={pinThresholdPmob}
-        selectedAccount={selectedAccount}
-        showing={showing}
-      />
-    </SnackbarProvider>
+    <Provider store={store}>
+      <SnackbarProvider dense maxSnack={5}>
+        <SendMob
+          confirmation={confirmation}
+          contacts={contacts}
+          existingPin={existingPin}
+          isSynced={isSynced}
+          onClickCancel={onClickCancel}
+          onClickConfirm={onClickConfirm}
+          onClickSend={onClickSend}
+          pinThresholdPmob={pinThresholdPmob}
+          selectedAccount={selectedAccount}
+          showing={showing}
+        />
+      </SnackbarProvider>
+    </Provider>
   );
   const contactsSelect = container.querySelector('[id="contactsList"]') as HTMLInputElement;
   const recipientAddress = container.querySelector(
@@ -257,9 +286,7 @@ describe('Send Mob', () => {
 
     await waitFor(() => expect(saveToContactsCheck.disabled).not.toBeFalsy());
     await act(async () => userEvent.click(contactsSelect));
-    const klContact = container?.parentElement?.querySelector(
-      '[id="contact_22222"]'
-    ) as HTMLElement; // Kilo Lima
+    const klContact = container?.parentElement?.querySelector('[id="abdc"]') as HTMLElement; // Kilo Lima
     await waitFor(() => expect(klContact).toBeTruthy());
     await act(async () => userEvent.click(klContact));
     await waitFor(() => expect(saveToContactsCheck.disabled).toBeTruthy());

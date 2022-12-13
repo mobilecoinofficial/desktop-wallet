@@ -1,15 +1,21 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, FormHelperText, Typography, Link } from '@material-ui/core';
+import { Box, FormHelperText, TextField, Typography, Link } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 
 import { SubmitButton } from '../../../components';
 import { camelCaseObjectKeys } from '../../../fullService/utils';
 import { importViewOnlyAccount } from '../../../redux/services';
+import { errorToString } from '../../../utils/errorHandler';
 
 const ImportViewOnlyAccountView: FC = () => {
   const [error, setError] = useState<string | null>(null);
+  const [accountName, setAccountName] = useState<string | undefined>();
+
+  const updateAccountName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAccountName(event.target.value);
+  };
 
   const handleUpload = async () => {
     setError(null);
@@ -18,10 +24,18 @@ const ImportViewOnlyAccountView: FC = () => {
 
     try {
       await importViewOnlyAccount(parsedParams);
-    } catch (_) {
-      setError(
-        'Something went wrong with the view only account import. Please check your request and try again. For more information see the docs at https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts'
-      );
+    } catch (err) {
+      setError(errorToString(err));
+    }
+  };
+
+  const handleUploadWithLedger = async () => {
+    setError(null);
+
+    try {
+      await importViewOnlyAccount({ fromLedger: true, name: accountName });
+    } catch (err) {
+      setError(errorToString(err));
     }
   };
 
@@ -50,6 +64,15 @@ const ImportViewOnlyAccountView: FC = () => {
 
       <SubmitButton disabled={false} onClick={handleUpload} isSubmitting={false}>
         Upload View Only Account Import File
+      </SubmitButton>
+
+      <Typography align="center" style={{ marginBottom: 8, marginTop: 36 }}>
+        or
+      </Typography>
+
+      <TextField value={accountName} onChange={updateAccountName} label="Account Name" />
+      <SubmitButton disabled={false} onClick={handleUploadWithLedger} isSubmitting={false}>
+        Import View Only Account Using Ledger
       </SubmitButton>
 
       {error && (

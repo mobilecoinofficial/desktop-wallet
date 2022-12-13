@@ -3,13 +3,15 @@ import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService'
 import getAccount from './getAccount';
 
 const IMPORT_VIEW_ONLY_ACCOUNT_METHOD = 'import_view_only_account';
+const IMPORT_VIEW_ONLY_ACCOUNT_FROM_LEDGER_METHOD = 'import_view_only_account_from_ledger';
 
 export type ImportViewOnlyAccountParams = {
   firstBlockIndex?: string;
   name?: string;
   nextSubaddressIndex?: string;
-  spendPublicKey: string;
-  viewPrivateKey: string;
+  spendPublicKey?: string;
+  viewPrivateKey?: string;
+  fromLedger?: boolean;
 };
 
 type ImportViewOnlyAccountResult = {
@@ -26,15 +28,23 @@ const importViewOnlyAccount = async ({
   nextSubaddressIndex,
   spendPublicKey,
   viewPrivateKey,
+  fromLedger,
 }: ImportViewOnlyAccountParams): Promise<ImportViewOnlyAccountResult> => {
+  const method = fromLedger
+    ? IMPORT_VIEW_ONLY_ACCOUNT_FROM_LEDGER_METHOD
+    : IMPORT_VIEW_ONLY_ACCOUNT_METHOD;
+  const params = fromLedger
+    ? { name }
+    : {
+        firstBlockIndex,
+        name,
+        nextSubaddressIndex,
+        spendPublicKey,
+        viewPrivateKey,
+      };
+
   const { result, error }: AxiosFullServiceResponse<ImportViewOnlyAccountResultV2> =
-    await axiosFullService(IMPORT_VIEW_ONLY_ACCOUNT_METHOD, {
-      firstBlockIndex,
-      name,
-      nextSubaddressIndex,
-      spendPublicKey,
-      viewPrivateKey,
-    });
+    await axiosFullService(method, params);
 
   if (error) {
     throw new Error(error);

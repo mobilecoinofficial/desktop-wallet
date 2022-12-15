@@ -5,7 +5,7 @@ import type { InputTxo, OutputTxo } from './TxProposal';
 
 export interface TransactionAbbreviation {
   recipientAddressId?: StringB58;
-  txoIdHex: StringHex;
+  txoId: StringHex;
   valuePmob: StringUInt64;
 }
 

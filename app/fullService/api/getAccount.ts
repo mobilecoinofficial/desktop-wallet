@@ -41,12 +41,11 @@ export const isAccountSynced = async ({ accountId }: GetAccountParams): Promise<
     throw new Error('Failure to retrieve data.');
   } else {
     const { selectedAccount } = store.getState();
-    const isServerSynced =
+    const isWalletSynced =
       Number(result.account.nextBlockIndex) === Number(result.networkBlockHeight);
-    const isClientSynced =
-      Number(selectedAccount.balanceStatus.accountBlockHeight) ===
-      Number(result.networkBlockHeight);
-    return isServerSynced && isClientSynced;
+    const isLedgerSynced =
+      Number(selectedAccount.balanceStatus.localBlockHeight) === Number(result.networkBlockHeight);
+    return isLedgerSynced && isWalletSynced;
   }
 };
 

@@ -43,7 +43,6 @@ export const isAccountSynced = async ({ accountId }: GetAccountParams): Promise<
     const { selectedAccount } = store.getState();
     const isWalletSynced =
       Number(result.localBlockHeight) === Number(selectedAccount.balanceStatus.accountBlockHeight);
-    console.log(isWalletSynced);
     const isLedgerSynced =
       Number(selectedAccount.balanceStatus.localBlockHeight) === Number(result.networkBlockHeight);
     return isLedgerSynced && isWalletSynced;

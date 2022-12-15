@@ -15,14 +15,14 @@ type Outlay = {
 };
 
 export type InputTxo = {
-  txoIdHex: string;
+  txoId: string;
   amount: TransactionAmount;
   subaddressIndex: StringUInt64;
   keyImage: string;
 };
 
 export type OutputTxo = {
-  txoIdHex: string;
+  txoId: string;
   amount: TransactionAmount;
   recipientPublicAddressB58: StringB58;
   confirmationNumber: StringUInt64;

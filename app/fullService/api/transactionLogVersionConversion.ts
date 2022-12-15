@@ -36,7 +36,7 @@ export function mapTxoToAbbreviation(txo: InputTxo | OutputTxo): TransactionAbbr
 
   return {
     recipientAddressId: address,
-    txoIdHex: txo.txoIdHex,
+    txoId: txo.txoId,
     valuePmob: txo.amount.value,
   };
 }
@@ -44,7 +44,7 @@ export function mapTxoToAbbreviation(txo: InputTxo | OutputTxo): TransactionAbbr
 export function mapTxoV2ToAbbreviation(txo: TxoV2, address?: string): TransactionAbbreviation {
   return {
     recipientAddressId: address,
-    txoIdHex: txo.id,
+    txoId: txo.id,
     valuePmob: txo.value,
   };
 }
@@ -54,11 +54,10 @@ export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2):
   const direction = 'tx_direction_sent';
   // assuming one token type per transaction. safe assumption for now. Will not be at some point in the future
   const tokenId = Number(v2TransactionLog.outputTxos[0].amount.tokenId);
-
   return {
     accountId: v2TransactionLog.accountId,
     address: v2TransactionLog.outputTxos[0].recipientPublicAddressB58,
-    changeTxoIds: v2TransactionLog.changeTxos.map((t) => t.txoIdHex),
+    changeTxoIds: v2TransactionLog.changeTxos.map((t) => t.txoId),
     changeTxos: v2TransactionLog.changeTxos.map((t) => mapTxoToAbbreviation(t)),
     comment: v2TransactionLog.comment,
     contact: undefined,
@@ -67,11 +66,11 @@ export function convertTransactionLogFromV2(v2TransactionLog: TransactionLogV2):
     failureMessage: null,
     fee: v2TransactionLog.feeAmount.value,
     finalizedBlockIndex: v2TransactionLog.finalizedBlockIndex,
-    inputTxoIds: v2TransactionLog.inputTxos.map((t) => t.txoIdHex),
+    inputTxoIds: v2TransactionLog.inputTxos.map((t) => t.txoId),
     inputTxos: v2TransactionLog.inputTxos.map((t) => mapTxoToAbbreviation(t)),
     object: 'transaction_log',
     offsetCount: 0,
-    outputTxoIds: v2TransactionLog.outputTxos.map((t) => t.txoIdHex),
+    outputTxoIds: v2TransactionLog.outputTxos.map((t) => t.txoId),
     outputTxos: v2TransactionLog.outputTxos.map((t) => mapTxoToAbbreviation(t)),
     sentTime: v2TransactionLog.sentTime,
     status: matchStatus(v2TransactionLog.status),

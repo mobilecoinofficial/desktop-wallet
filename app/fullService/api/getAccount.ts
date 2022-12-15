@@ -40,11 +40,15 @@ export const isAccountSynced = async ({ accountId }: GetAccountParams): Promise<
   } else if (!result) {
     throw new Error('Failure to retrieve data.');
   } else {
-    const { selectedAccount } = store.getState();
+    const { selectedAccount, offlineModeEnabled } = store.getState();
     const isWalletSynced =
       Number(result.localBlockHeight) === Number(selectedAccount.balanceStatus.accountBlockHeight);
+
+    const ledgerSyncTarget = offlineModeEnabled
+      ? result.localBlockHeight
+      : result.networkBlockHeight;
     const isLedgerSynced =
-      Number(selectedAccount.balanceStatus.localBlockHeight) === Number(result.networkBlockHeight);
+      Number(selectedAccount.balanceStatus.localBlockHeight) === Number(ledgerSyncTarget);
     return isLedgerSynced && isWalletSynced;
   }
 };

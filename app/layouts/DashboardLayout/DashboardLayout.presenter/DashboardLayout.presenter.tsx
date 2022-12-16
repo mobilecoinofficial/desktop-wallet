@@ -8,7 +8,11 @@ import { useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 import snakeCaseKeys from 'snakecase-keys';
 
-import { getViewOnlyAccountSyncRequest, syncViewOnlyAccount } from '../../../fullService/api';
+import {
+  getViewOnlyAccountSyncRequest,
+  syncViewOnlyAccount,
+  syncViewOnlyAccountWithLedger,
+} from '../../../fullService/api';
 import { camelCaseObjectKeys } from '../../../fullService/utils';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { confirmEntropyKnown, updatePin, selectAccount } from '../../../redux/services';
@@ -84,6 +88,14 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
     await downloadJson(JSON.stringify(snakeCaseKeys(response)), 'view_only_sync_request');
   };
 
+  const syncAccountWithLedger = async () => {
+    const success = await syncViewOnlyAccountWithLedger({
+      accountId: selectedAccount.account.accountId,
+    });
+
+    enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
+  };
+
   const accountBalance = selectedAccount.balanceStatus.balancePerToken[tokenId];
   const balance = selectedAccount.account.viewOnly
     ? (Number(accountBalance.unspentPmob) + Number(accountBalance.unverifiedPmob)).toString()
@@ -111,6 +123,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
             containsUnverified={containsUnverified}
             importViewOnlySync={importViewOnlySync}
             getViewOnlySync={getViewOnlySync}
+            syncAccountWithLedger={syncAccountWithLedger}
             importLedger={importLedger}
             isSynced={selectedAccount.balanceStatus.isSynced}
             offlineModeEnabled={offlineModeEnabled}

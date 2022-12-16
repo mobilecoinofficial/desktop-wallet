@@ -65,6 +65,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   getViewOnlySync,
   importLedger,
   importViewOnlySync,
+  syncAccountWithLedger,
   isSynced,
   offlineModeEnabled,
   viewOnly,
@@ -162,6 +163,11 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
           </Tooltip>
           <Tooltip title="Import synced account file">
             <Button onClick={importViewOnlySync} name="syncViewOnlyButtonUL">
+              <SyncIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Sync account with Ledger">
+            <Button onClick={syncAccountWithLedger} name="syncViewOnlyWithLedgerButtonUL">
               <SyncIcon />
             </Button>
           </Tooltip>

@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 
-import { store } from '../../../redux/store';
+import { store } from '../../redux/store';
 import { AccountCard } from './AccountCard.view';
 import '@testing-library/jest-dom/extend-expect';
 import '../../testUtils/i18nForTests';

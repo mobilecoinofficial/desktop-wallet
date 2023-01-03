@@ -83,7 +83,11 @@ test('Displays and hides contacts', () => {
 });
 
 test("Doesn't include contacts if none are available", () => {
-  const { container } = render(<ReceiveMob contacts={[]} selectedAccount={SELECTED_ACCOUNT} />);
+  const { container } = render(
+    <Provider store={store}>
+      <ReceiveMob contacts={[]} selectedAccount={SELECTED_ACCOUNT} />
+    </Provider>
+  );
   expect(container.innerHTML.includes('To receive MOB')).toBeTruthy();
   expect(container.innerHTML.includes('Public Address')).toBeTruthy();
 });

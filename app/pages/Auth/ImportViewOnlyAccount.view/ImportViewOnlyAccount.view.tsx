@@ -3,6 +3,7 @@ import type { FC } from 'react';
 
 import { Box, FormHelperText, Typography, Link } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
+import { useSnackbar } from 'notistack';
 
 import { SubmitButton } from '../../../components';
 import { camelCaseObjectKeys } from '../../../fullService/utils';
@@ -10,6 +11,7 @@ import { importViewOnlyAccount } from '../../../redux/services';
 
 const ImportViewOnlyAccountView: FC = () => {
   const [error, setError] = useState<string | null>(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleUpload = async () => {
     setError(null);
@@ -18,6 +20,7 @@ const ImportViewOnlyAccountView: FC = () => {
 
     try {
       await importViewOnlyAccount(parsedParams);
+      enqueueSnackbar('Account Imported', { variant: 'success' });
     } catch (_) {
       setError(
         'Something went wrong with the view only account import. Please check your request and try again. For more information see the docs at https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts'

@@ -35,11 +35,11 @@ const ImportViewOnlyAccountView: FC = () => {
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
         View only accounts can read transactions, but can not submit transactions or know which
-        transactions have been spent. They are a way to use mobilecoin without exposing your spend
+        transactions have been spent. They are a way to use MobileCoin without exposing your spend
         keys to an online computer.
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
-        View only account import files are created with the mobilecoin Transaction Signer.
+        View only account import files are created with the MobileCoin Transaction Signer.
         <Link
           target="_blank"
           rel="noreferrer"

@@ -11,7 +11,12 @@ import snakeCaseKeys from 'snakecase-keys';
 import { getViewOnlyAccountSyncRequest, syncViewOnlyAccount } from '../../../fullService/api';
 import { camelCaseObjectKeys } from '../../../fullService/utils';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
-import { confirmEntropyKnown, updatePin, selectAccount } from '../../../redux/services';
+import {
+  confirmEntropyKnown,
+  updatePin,
+  getAllTransactionLogsForAccount,
+  updateStatus,
+} from '../../../redux/services';
 import type { Theme } from '../../../theme';
 import { BalanceIndicator } from '../BalanceIndicator.view';
 // import { InactivityDetect } from '../InactivityDetect';
@@ -72,7 +77,8 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
     const parsedParams = camelCaseObjectKeys(JSON.parse(rawRequest).params);
     const success = await syncViewOnlyAccount(parsedParams);
 
-    await selectAccount(selectedAccount.account.accountId);
+    await getAllTransactionLogsForAccount(selectedAccount.account.accountId);
+    await updateStatus(selectedAccount.account.accountId, selectedAccount.account);
 
     enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
   };

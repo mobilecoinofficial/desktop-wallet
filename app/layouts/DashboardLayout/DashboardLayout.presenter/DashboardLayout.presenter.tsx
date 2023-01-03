@@ -5,11 +5,12 @@ import { Box, makeStyles, useMediaQuery } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 // import { TIME_FOR_INACTIVITY, TIME_FOR_REACTION } from '../../../constants/app';
 import { useSnackbar } from 'notistack';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import snakeCaseKeys from 'snakecase-keys';
 
 import { getViewOnlyAccountSyncRequest, syncViewOnlyAccount } from '../../../fullService/api';
 import { camelCaseObjectKeys } from '../../../fullService/utils';
+import { setLoadingAction } from '../../../redux/actions';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import {
   confirmEntropyKnown,
@@ -57,6 +58,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
 ): JSX.Element => {
   const { offlineModeEnabled, selectedAccount, isEntropyKnown, isPinRequired, tokenId } =
     useSelector((state: ReduxStoreState) => state);
+  const dispatch = useDispatch();
   const { children } = props;
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
@@ -75,12 +77,12 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
   const importViewOnlySync = async () => {
     const rawRequest = await ipcRenderer.invoke('import-file');
     const parsedParams = camelCaseObjectKeys(JSON.parse(rawRequest).params);
-    const success = await syncViewOnlyAccount(parsedParams);
-
+    dispatch(setLoadingAction(true));
+    await syncViewOnlyAccount(parsedParams);
     await getAllTransactionLogsForAccount(selectedAccount.account.accountId);
     await updateStatus(selectedAccount.account.accountId, selectedAccount.account);
-
-    enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
+    dispatch(setLoadingAction(false));
+    enqueueSnackbar('Account Synced', { variant: 'success' });
   };
 
   const getViewOnlySync = async () => {

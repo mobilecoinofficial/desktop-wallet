@@ -16,7 +16,9 @@ import {
   makeStyles,
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 
+import { setLoadingAction } from '../../redux/actions';
 import { selectAccount } from '../../redux/services';
 import type { Theme } from '../../theme';
 import { LongCode } from '../LongCode';
@@ -60,6 +62,7 @@ const AccountCard: FC<AccountCardProps> = ({
   const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const { t } = useTranslation('AccountCard');
+  const dispatch = useDispatch();
 
   const { b58Code } = account;
 
@@ -67,13 +70,6 @@ const AccountCard: FC<AccountCardProps> = ({
     onClickCode(b58Code, isGift ? t('clipboardGift') : t('clipboardAddress'));
 
   const handleToggleClick = () => setIsQRCode(!isQRCode);
-
-  const handleDialogClose = (event, reason) => {
-    // see https://v4.mui.com/api/dialog/
-    if (!reason) {
-      setLoading(false);
-    }
-  };
 
   let headerString = '';
   if (isQRCode) {
@@ -83,9 +79,9 @@ const AccountCard: FC<AccountCardProps> = ({
   }
 
   const handleAccountSelectChange = async (event) => {
-    setLoading(true);
+    dispatch(setLoadingAction(true));
     await selectAccount(event.target.value);
-    setLoading(false);
+    dispatch(setLoadingAction(false));
   };
 
   return (
@@ -168,13 +164,6 @@ const AccountCard: FC<AccountCardProps> = ({
           </Box>
         </CardContent>
       </Card>
-      <Dialog
-        open={loading}
-        onClose={handleDialogClose}
-        PaperProps={{ style: { background: 'none' } }}
-      >
-        <CircularProgress style={{ height: '72px', width: '72px' }} />
-      </Dialog>
     </Container>
   );
 };

@@ -52,6 +52,8 @@ import {
   GetAllTransactionLogsForAccountAction,
   SET_TOKEN_ID,
   SetTokenIdAction,
+  SetLoadingAction,
+  SET_LOADING,
 } from '../actions';
 
 export type ReduxStoreState = {
@@ -66,6 +68,7 @@ export type ReduxStoreState = {
   isEntropyKnown: boolean;
   isInitialized: boolean;
   isPinRequired: boolean;
+  loading: boolean;
   offlineModeEnabled: boolean;
   secretKey: string;
   selectedAccount: SelectedAccount;
@@ -89,6 +92,7 @@ export const initialReduxStoreState: ReduxStoreState = {
   isEntropyKnown: false,
   isInitialized: false,
   isPinRequired: false,
+  loading: false,
   offlineModeEnabled: false,
   pin: undefined,
   pinThresholdPmob: '',
@@ -354,6 +358,14 @@ export const reducer = (
       return {
         ...state,
         tokenId,
+      };
+    }
+
+    case SET_LOADING: {
+      const { isLoading } = (action as SetLoadingAction).payload;
+      return {
+        ...state,
+        loading: isLoading,
       };
     }
 

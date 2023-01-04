@@ -5,7 +5,9 @@ import 'jest-canvas-mock';
 import { screen, render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
+import { Provider } from 'react-redux';
 
+import { store } from '../../redux/store';
 import { AccountCard } from './AccountCard.view';
 import '@testing-library/jest-dom/extend-expect';
 import '../../testUtils/i18nForTests';
@@ -33,16 +35,18 @@ const ACCOUNTS = {
 function setupComponent(props?) {
   const { container } = render(
     <SnackbarProvider>
-      <AccountCard
-        account={{
-          ...{
-            b58Code: MOCK_LONG_CODE,
-            balance: 'one million',
-          },
-          ...props,
-        }}
-        accounts={ACCOUNTS}
-      />
+      <Provider store={store}>
+        <AccountCard
+          account={{
+            ...{
+              b58Code: MOCK_LONG_CODE,
+              balance: 'one million',
+            },
+            ...props,
+          }}
+          accounts={ACCOUNTS}
+        />
+      </Provider>
     </SnackbarProvider>
   );
   return container;

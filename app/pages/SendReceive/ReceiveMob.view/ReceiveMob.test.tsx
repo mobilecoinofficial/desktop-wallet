@@ -3,7 +3,9 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { Provider } from 'react-redux';
 
+import { store } from '../../../redux/store';
 import '../../../testUtils/i18nForTests';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 import { ReceiveMob } from './ReceiveMob.view';
@@ -36,32 +38,34 @@ const SELECTED_ACCOUNT = {
 
 test('Displays and hides contacts', () => {
   const { container } = render(
-    <ReceiveMob
-      contacts={[
-        {
-          abbreviation: 'F1',
-          alias: 'Foxtrot Golf',
-          assignedAddress: '11111',
-          color: '#FF0000',
-          isFavorite: true,
-        },
-        {
-          abbreviation: 'K2',
-          alias: 'Kilo Lima',
-          assignedAddress: '22222',
-          color: '#00FF00',
-          isFavorite: false,
-        },
-        {
-          abbreviation: 'ST',
-          alias: 'Sierra Tango',
-          assignedAddress: '33333',
-          color: '#0000FF',
-          isFavorite: true,
-        },
-      ]}
-      selectedAccount={SELECTED_ACCOUNT}
-    />
+    <Provider store={store}>
+      <ReceiveMob
+        contacts={[
+          {
+            abbreviation: 'F1',
+            alias: 'Foxtrot Golf',
+            assignedAddress: '11111',
+            color: '#FF0000',
+            isFavorite: true,
+          },
+          {
+            abbreviation: 'K2',
+            alias: 'Kilo Lima',
+            assignedAddress: '22222',
+            color: '#00FF00',
+            isFavorite: false,
+          },
+          {
+            abbreviation: 'ST',
+            alias: 'Sierra Tango',
+            assignedAddress: '33333',
+            color: '#0000FF',
+            isFavorite: true,
+          },
+        ]}
+        selectedAccount={SELECTED_ACCOUNT}
+      />
+    </Provider>
   );
 
   const contactsList = container.querySelector('[id="contactsList"]') as HTMLInputElement;
@@ -79,7 +83,11 @@ test('Displays and hides contacts', () => {
 });
 
 test("Doesn't include contacts if none are available", () => {
-  const { container } = render(<ReceiveMob contacts={[]} selectedAccount={SELECTED_ACCOUNT} />);
+  const { container } = render(
+    <Provider store={store}>
+      <ReceiveMob contacts={[]} selectedAccount={SELECTED_ACCOUNT} />
+    </Provider>
+  );
   expect(container.innerHTML.includes('To receive MOB')).toBeTruthy();
   expect(container.innerHTML.includes('Public Address')).toBeTruthy();
 });

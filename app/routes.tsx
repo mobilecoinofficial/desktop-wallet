@@ -1,8 +1,9 @@
 import React, { FC, Fragment, useEffect } from 'react';
 
-import { Button } from '@material-ui/core';
+import { Button, Dialog, CircularProgress } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
+import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Redirect, Route } from 'react-router-dom';
 
 import { WHITE_LIGHT } from './constants/colors';
@@ -20,6 +21,7 @@ import {
   SettingsPage,
   NotFoundPage,
 } from './pages';
+import { ReduxStoreState } from './redux/reducers/reducers';
 
 type Routes = {
   Component?: React.Component;
@@ -120,6 +122,8 @@ export const InternalRoutesRenderer: FC<{ routes: Routes }> = (props: { routes: 
   // TODO: the update checking flow should all get pulled out into an app container layer.
   // TODO: create an app container layer.
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { loading } = useSelector((state: ReduxStoreState) => state);
+
   useEffect(() => {
     ipcRenderer.on('app-update-ready', () => {
       enqueueSnackbar(
@@ -146,29 +150,34 @@ export const InternalRoutesRenderer: FC<{ routes: Routes }> = (props: { routes: 
 
   const { routes } = props;
   return (
-    <Switch>
-      {routes.map((route, i) => {
-        const { Component, layout, exact, path, routes: nestedRoutes } = route;
+    <>
+      <Switch>
+        {routes.map((route, i) => {
+          const { Component, layout, exact, path, routes: nestedRoutes } = route;
 
-        const Layout = layout || Fragment;
+          const Layout = layout || Fragment;
 
-        return (
-          <Route
-            key={[path, i].join('|')}
-            path={path}
-            exact={exact}
-            render={(routeProps) => (
-              <Layout>
-                {nestedRoutes ? (
-                  <InternalRoutesRenderer routes={nestedRoutes} />
-                ) : (
-                  <Component {...routeProps} />
-                )}
-              </Layout>
-            )}
-          />
-        );
-      })}
-    </Switch>
+          return (
+            <Route
+              key={[path, i].join('|')}
+              path={path}
+              exact={exact}
+              render={(routeProps) => (
+                <Layout>
+                  {nestedRoutes ? (
+                    <InternalRoutesRenderer routes={nestedRoutes} />
+                  ) : (
+                    <Component {...routeProps} />
+                  )}
+                </Layout>
+              )}
+            />
+          );
+        })}
+      </Switch>
+      <Dialog open={loading} PaperProps={{ style: { background: 'none', overflow: 'visible' } }}>
+        <CircularProgress style={{ height: '72px', width: '72px' }} />
+      </Dialog>
+    </>
   );
 };

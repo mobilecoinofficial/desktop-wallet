@@ -28,6 +28,7 @@ import { getWalletStatus } from '../../../services';
 import type { Theme } from '../../../theme';
 import * as localStore from '../../../utils/LocalStore';
 import { isHex64 } from '../../../utils/bip39Functions';
+import { errorToString } from '../../../utils/errorHandler';
 import { getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { CreateWalletView } from '../CreateWallet.view';
@@ -148,7 +149,8 @@ export const AuthPage: FC = (): JSX.Element => {
           }
           setFullServiceIsRunning(true);
         } catch (err) {
-          console.log(err); // eslint-disable-line no-console
+          const errorMessage = errorToString(err);
+          enqueueSnackbar(errorMessage, { variant: 'error' });
         }
       };
 
@@ -180,7 +182,8 @@ export const AuthPage: FC = (): JSX.Element => {
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
       } catch (err) {
-        console.log(err); // eslint-disable-line no-console
+        const errorMessage = errorToString(err);
+        enqueueSnackbar(errorMessage, { variant: 'error' });
       }
     };
 
@@ -207,7 +210,8 @@ export const AuthPage: FC = (): JSX.Element => {
       }
       setAccountIds(accounts?.accountIds ?? []);
     } catch (err) {
-      console.log(err); // eslint-disable-line no-console
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -234,8 +238,8 @@ export const AuthPage: FC = (): JSX.Element => {
     try {
       await createAccount(accountName);
     } catch (err) {
-      /* TODO: handle error */
-      console.log('ERROR!', err); // eslint-disable-line no-console
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 

@@ -88,7 +88,6 @@ export const AuthPage: FC = (): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [accountIds, setAccountIds] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
-  const renderPasswordError = (message: string) => enqueueSnackbar(message, { variant: 'error' });
 
   const offlineStart = localStore.getOfflineStart();
   useEffect(() => {
@@ -143,7 +142,7 @@ export const AuthPage: FC = (): JSX.Element => {
           await untilFullServiceRuns();
           const accounts = await getAllAccounts();
           setAccountIds(accounts.accountIds);
-          await unlockWallet(password, startInOfflineMode, renderPasswordError);
+          await unlockWallet(password, startInOfflineMode);
           if (accounts.accountIds?.length) {
             await selectAccount(accounts.accountIds[0]);
           }
@@ -177,7 +176,7 @@ export const AuthPage: FC = (): JSX.Element => {
         await untilFullServiceRuns();
         const accounts = await getAllAccounts();
         await createWallet(password);
-        await unlockWallet(password, startInOfflineMode, renderPasswordError);
+        await unlockWallet(password, startInOfflineMode);
         setAccountIds(accounts.accountIds);
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
@@ -204,7 +203,7 @@ export const AuthPage: FC = (): JSX.Element => {
     try {
       const status = await getWalletStatus();
       const accounts = await getAllAccounts();
-      await unlockWallet(password, status.networkBlockHeight === '0', renderPasswordError);
+      await unlockWallet(password, status.networkBlockHeight === '0');
       if (accounts?.accountIds?.length) {
         await selectAccount(accounts.accountIds[0]);
       }

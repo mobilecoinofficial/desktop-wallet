@@ -11,17 +11,13 @@ import { initialReduxStoreState } from '../reducers/reducers';
 import { store } from '../store';
 import { getFees } from './getFees';
 
-export const unlockWallet = async (
-  password: string,
-  startInOfflineMode = false,
-  enqueueSnackbar: (message: string) => void
-): Promise<void> => {
+export const unlockWallet = async (password: string, startInOfflineMode = false): Promise<void> => {
   const { encryptedPassword } = store.getState();
   if (encryptedPassword === undefined) {
     throw new Error('encryptedPassword assertion failed');
   }
 
-  const { secretKey } = await validatePassphrase(password, encryptedPassword, enqueueSnackbar);
+  const { secretKey } = await validatePassphrase(password, encryptedPassword);
 
   let contacts = await decryptContacts(secretKey);
   // required for backwards compatibility. pre-1.7 contacts did not have an ID field

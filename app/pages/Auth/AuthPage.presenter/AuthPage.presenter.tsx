@@ -27,6 +27,7 @@ import {
 import { getWalletStatus } from '../../../services';
 import type { Theme } from '../../../theme';
 import * as localStore from '../../../utils/LocalStore';
+import { validatePassphrase } from '../../../utils/authentication';
 import { isHex64 } from '../../../utils/bip39Functions';
 import { errorToString } from '../../../utils/errorHandler';
 import { getKeychainAccounts } from '../../../utils/keytarService';
@@ -77,7 +78,7 @@ const untilFullServiceRuns = async () => {
 /* eslint-enable no-await-in-loop */
 
 export const AuthPage: FC = (): JSX.Element => {
-  const { addingAccount, isAuthenticated, selectedAccount } = useSelector(
+  const { addingAccount, isAuthenticated, selectedAccount, encryptedPassword } = useSelector(
     (state: ReduxStoreState) => state
   );
   const classes = useStyles();
@@ -138,6 +139,7 @@ export const AuthPage: FC = (): JSX.Element => {
       const onClickUnlock = async (password: string, startInOfflineMode: boolean) => {
         confirmEntropyKnown();
         try {
+          await validatePassphrase(password, encryptedPassword);
           await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
           await untilFullServiceRuns();
           const accounts = await getAllAccounts();
@@ -201,6 +203,7 @@ export const AuthPage: FC = (): JSX.Element => {
   const onClickUnlockWallet = async (password: string) => {
     confirmEntropyKnown();
     try {
+      await validatePassphrase(password, encryptedPassword);
       const status = await getWalletStatus();
       const accounts = await getAllAccounts();
       await unlockWallet(password, status.networkBlockHeight === '0');

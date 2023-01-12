@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
 
@@ -37,9 +37,7 @@ describe('SyncStatus', () => {
     render(<SyncStatus selectedAccount={selectedAccount} sendSyncStatus={sendSyncStatus} />);
 
     fireEvent.mouseOver(screen.getByTestId('tooltip-title'));
-    await waitFor(() =>
-      expect(screen.getByText('Please see Admin Panel in Settings.')).toBeInTheDocument()
-    );
+    expect(await screen.findByText('Please see Admin Panel in Settings.')).toBeVisible();
   });
 
   test('SyncStatus renders syncing message when the difference between NetworkBlockIndex and AccountBlockIndex is too large', async () => {
@@ -71,7 +69,7 @@ describe('SyncStatus', () => {
     render(<SyncStatus selectedAccount={selectedAccount} sendSyncStatus={sendSyncStatus} />);
 
     fireEvent.mouseOver(screen.getByTestId('tooltip-title'));
-    await waitFor(() => expect(screen.getByText(/Syncing with the ledger/)).toBeInTheDocument());
+    expect(await screen.findByText(/Syncing with the ledger/)).toBeVisible();
   });
 
   test('SyncStatus renders synced message when the difference between NetworkBlockIndex and AccountBlockIndex is acceptable', async () => {
@@ -103,8 +101,6 @@ describe('SyncStatus', () => {
     render(<SyncStatus selectedAccount={selectedAccount} sendSyncStatus={sendSyncStatus} />);
 
     fireEvent.mouseOver(screen.getByTestId('tooltip-title'));
-    await waitFor(() =>
-      expect(screen.getByText(/100% synced with the ledger/)).toBeInTheDocument()
-    );
+    expect(await screen.findByText(/100% synced with the ledger/)).toBeVisible();
   });
 });

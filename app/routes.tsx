@@ -3,7 +3,7 @@ import React, { FC, Fragment, useEffect } from 'react';
 import { Button, Dialog, CircularProgress } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Switch, Redirect, Route } from 'react-router-dom';
 
 import { WHITE_LIGHT } from './constants/colors';

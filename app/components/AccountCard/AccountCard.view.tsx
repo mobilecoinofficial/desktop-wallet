@@ -5,9 +5,7 @@ import {
   Box,
   Card,
   CardContent,
-  CircularProgress,
   Container,
-  Dialog,
   IconButton,
   MenuItem,
   Select,
@@ -59,7 +57,6 @@ const AccountCard: FC<AccountCardProps> = ({
   ...rest
 }: AccountCardProps) => {
   const [isQRCode, setIsQRCode] = useState(false);
-  const [loading, setLoading] = useState(false);
   const classes = useStyles();
   const { t } = useTranslation('AccountCard');
   const dispatch = useDispatch();

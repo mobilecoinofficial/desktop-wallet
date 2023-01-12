@@ -27,7 +27,9 @@ import {
 import { getWalletStatus } from '../../../services';
 import type { Theme } from '../../../theme';
 import * as localStore from '../../../utils/LocalStore';
+import { validatePassphrase } from '../../../utils/authentication';
 import { isHex64 } from '../../../utils/bip39Functions';
+import { errorToString } from '../../../utils/errorHandler';
 import { getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { CreateWalletView } from '../CreateWallet.view';
@@ -76,7 +78,7 @@ const untilFullServiceRuns = async () => {
 /* eslint-enable no-await-in-loop */
 
 export const AuthPage: FC = (): JSX.Element => {
-  const { addingAccount, isAuthenticated, selectedAccount } = useSelector(
+  const { addingAccount, isAuthenticated, selectedAccount, encryptedPassword } = useSelector(
     (state: ReduxStoreState) => state
   );
   const classes = useStyles();
@@ -87,7 +89,6 @@ export const AuthPage: FC = (): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [accountIds, setAccountIds] = useState([]);
   const { enqueueSnackbar } = useSnackbar();
-  const renderPasswordError = (message: string) => enqueueSnackbar(message, { variant: 'error' });
 
   const offlineStart = localStore.getOfflineStart();
   useEffect(() => {
@@ -138,17 +139,19 @@ export const AuthPage: FC = (): JSX.Element => {
       const onClickUnlock = async (password: string, startInOfflineMode: boolean) => {
         confirmEntropyKnown();
         try {
+          await validatePassphrase(password, encryptedPassword);
           await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
           await untilFullServiceRuns();
           const accounts = await getAllAccounts();
           setAccountIds(accounts.accountIds);
-          await unlockWallet(password, startInOfflineMode, renderPasswordError);
+          await unlockWallet(password, startInOfflineMode);
           if (accounts.accountIds?.length) {
             await selectAccount(accounts.accountIds[0]);
           }
           setFullServiceIsRunning(true);
         } catch (err) {
-          console.log(err); // eslint-disable-line no-console
+          const errorMessage = errorToString(err);
+          enqueueSnackbar(errorMessage, { variant: 'error' });
         }
       };
 
@@ -175,12 +178,13 @@ export const AuthPage: FC = (): JSX.Element => {
         await untilFullServiceRuns();
         const accounts = await getAllAccounts();
         await createWallet(password);
-        await unlockWallet(password, startInOfflineMode, renderPasswordError);
+        await unlockWallet(password, startInOfflineMode);
         setAccountIds(accounts.accountIds);
         setWalletDbExists(true);
         setFullServiceIsRunning(true);
       } catch (err) {
-        console.log(err); // eslint-disable-line no-console
+        const errorMessage = errorToString(err);
+        enqueueSnackbar(errorMessage, { variant: 'error' });
       }
     };
 
@@ -199,15 +203,17 @@ export const AuthPage: FC = (): JSX.Element => {
   const onClickUnlockWallet = async (password: string) => {
     confirmEntropyKnown();
     try {
+      await validatePassphrase(password, encryptedPassword);
       const status = await getWalletStatus();
       const accounts = await getAllAccounts();
-      await unlockWallet(password, status.networkBlockHeight === '0', renderPasswordError);
+      await unlockWallet(password, status.networkBlockHeight === '0');
       if (accounts?.accountIds?.length) {
         await selectAccount(accounts.accountIds[0]);
       }
       setAccountIds(accounts?.accountIds ?? []);
     } catch (err) {
-      console.log(err); // eslint-disable-line no-console
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 
@@ -234,8 +240,8 @@ export const AuthPage: FC = (): JSX.Element => {
     try {
       await createAccount(accountName);
     } catch (err) {
-      /* TODO: handle error */
-      console.log('ERROR!', err); // eslint-disable-line no-console
+      const errorMessage = errorToString(err);
+      enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };
 

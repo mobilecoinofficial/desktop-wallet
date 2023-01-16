@@ -1,0 +1,75 @@
+name: Build Desktop Wallet
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # Build desktop wallet
+  build:
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            cmd: package-linux
+          - target: x86_64-apple-darwin
+            os: macos-latest
+            cmd: package-mac
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            cmd: package-win
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 0
+
+    - uses: FranzDiebold/github-env-vars-action@v1.2.1
+
+    - name: Export version tag
+      run: |
+        echo "VERSION=$(git describe --dirty=+ --always --tags)" >> $GITHUB_ENV
+
+    - name: Configure node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Configure caching
+      uses: actions/cache@v3
+      with:
+        key: desktop-wallet-${{ matrix.os }}-${{ matrix.target }}-${{ github.run_id }}
+        restore-keys: desktop-wallet-${{ matrix.os }}-${{ matrix.target }}
+        path: |
+          ./node_modules
+
+    - name: Install dependencies
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: install
+
+    - name: Build app
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: ${{ matrix.cmd }}
+
+    # TODO: use matrix.app to grab -actual- app
+    - name: Upload release artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: mobilecoin-desktop-${{ matrix.target }}
+        path: release/
+
+

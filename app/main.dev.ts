@@ -193,6 +193,12 @@ const createWindow = async () => {
     width: 700,
   });
 
+  // open links in system default browser instead of new electron window
+  mainWindow.webContents.on('new-window', (e, url) => {
+    e.preventDefault();
+    shell.openExternal(url);
+  });
+
   mainWindow.webContents.session.setPermissionRequestHandler(
     (_webContents, _permission, callback, details) => {
       if (details.mediaTypes?.includes('video')) {

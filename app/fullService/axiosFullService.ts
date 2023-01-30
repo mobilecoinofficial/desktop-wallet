@@ -52,7 +52,7 @@ const axiosFullService = async <T>(
         method,
         params: snakeCaseParams,
       },
-      timeout: 10000,
+      timeout: 15000,
     });
     // @ts-ignore override
     if (!response.jsonrpc) {
@@ -70,7 +70,8 @@ const axiosFullService = async <T>(
       return { error: response.error.data?.details ?? 'unknown full-service error' };
     }
 
-    return { error: response.error.data?.details ?? 'invalid full-service response' };
+    console.warn('no result from full-service');
+    return { result: 'no result from full-service' };
   } catch (error) {
     const errorMessage = errorToString(error);
     throw new Error(errorMessage);

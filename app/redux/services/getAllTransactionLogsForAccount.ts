@@ -10,9 +10,9 @@ export const getAllTransactionLogsForAccount = async (accountId: StringHex): Pro
 
     transactionLogs.transactionLogIds.forEach((v: StringHex) => {
       const w = transactionLogs.transactionLogMap[v];
-      w.changeTxoIds = w.changeTxos.map((x: TransactionAbbreviation) => x.txoIdHex);
-      w.inputTxoIds = w.inputTxos.map((x: TransactionAbbreviation) => x.txoIdHex);
-      w.outputTxoIds = w.outputTxos.map((x: TransactionAbbreviation) => x.txoIdHex);
+      w.changeTxoIds = w.changeTxos.map((x: TransactionAbbreviation) => x.txoId);
+      w.inputTxoIds = w.inputTxos.map((x: TransactionAbbreviation) => x.txoId);
+      w.outputTxoIds = w.outputTxos.map((x: TransactionAbbreviation) => x.txoId);
 
       w.address = w.outputTxos[0].recipientAddressId || '';
     });

@@ -20,7 +20,7 @@ const GIFT_CODES = [
       '7kaRstJZ77fNg7mYpr2HPHBvXmFBATvFH2UfVLkC9X3iWLeR1xbkshVDqLZ13zRag7usgyVvVp8dD6JwQJkcmWhX1YTQfHwC5hS6rCqT',
     memo: '',
     object: 'gift_code',
-    txoIdHex: 'db7845b3acc4db4161c770be0b5c10e65989224523e435b0e71a6ce1ab5e03f7',
+    txoId: 'db7845b3acc4db4161c770be0b5c10e65989224523e435b0e71a6ce1ab5e03f7',
     valuePmob: '2003000000000',
   },
   {
@@ -30,7 +30,7 @@ const GIFT_CODES = [
       '3ct94dFPNKwYZ2mBqnaNdVYBTQ6nD8Lu39YyDoqnY2rW1sn3L8gT34vrgkSk5a1roAxbY8fwXLcJFufT8dxuemNoV1h77BEVZX942gAK',
     memo: 'some memo',
     object: 'gift_code',
-    txoIdHex: '2a2c62ff6ad21073a561a4375fdd256a3b60a25a5e2d6524d4e4839d4d2a0d86',
+    txoId: '2a2c62ff6ad21073a561a4375fdd256a3b60a25a5e2d6524d4e4839d4d2a0d86',
     valuePmob: '3003000000000',
   },
 ];

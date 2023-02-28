@@ -3,15 +3,19 @@ import type { FC } from 'react';
 
 import { Box, FormHelperText, TextField, Typography, Link } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
+import { useSnackbar } from 'notistack';
+import { useDispatch } from 'react-redux';
 
 import { SubmitButton } from '../../../components';
 import { camelCaseObjectKeys } from '../../../fullService/utils';
+import { setLoadingAction } from '../../../redux/actions';
 import { importViewOnlyAccount } from '../../../redux/services';
 import { errorToString } from '../../../utils/errorHandler';
 
 const ImportViewOnlyAccountView: FC = () => {
   const [error, setError] = useState<string | null>(null);
-  const [accountName, setAccountName] = useState<string | undefined>();
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
 
   const updateAccountName = (event: React.ChangeEvent<HTMLInputElement>) => {
     setAccountName(event.target.value);
@@ -23,9 +27,14 @@ const ImportViewOnlyAccountView: FC = () => {
     const parsedParams = camelCaseObjectKeys(JSON.parse(rawRequest).params);
 
     try {
+      dispatch(setLoadingAction(true));
       await importViewOnlyAccount(parsedParams);
-    } catch (err) {
-      setError(errorToString(err));
+      dispatch(setLoadingAction(false));
+      enqueueSnackbar('Account Imported', { variant: 'success' });
+    } catch (_) {
+      setError(
+        'Something went wrong with the view only account import. Please check your request and try again. For more information see the docs at https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts'
+      );
     }
   };
 
@@ -49,10 +58,11 @@ const ImportViewOnlyAccountView: FC = () => {
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
         View only accounts can read transactions, but can not submit transactions or know which
-        transactions have been spent. They are created using your view keys and do not require or
-        save your spend keys.
+        transactions have been spent. They are a way to use MobileCoin without exposing your spend
+        keys to an online computer.
       </Typography>
-      <Typography variant="body2" color="textPrimary" paragraph>
+      <Typography variant="body2" color="textSecondary" paragraph>
+        View only account import files are created with the MobileCoin Transaction Signer.
         <Link
           target="_blank"
           rel="noreferrer"

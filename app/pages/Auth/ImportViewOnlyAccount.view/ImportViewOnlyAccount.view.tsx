@@ -14,6 +14,7 @@ import { errorToString } from '../../../utils/errorHandler';
 
 const ImportViewOnlyAccountView: FC = () => {
   const [error, setError] = useState<string | null>(null);
+  const [accountName, setAccountName] = useState<string | undefined>();
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 

@@ -149,6 +149,9 @@ const BurnTokens: FC = () => {
       enqueueSnackbar(`sucesffuly burned ${amount} ${token.name}!`, {
         variant: 'success',
       });
+      setAmount(0);
+      setPin('');
+      setMemo('');
     } catch (err) {
       const errorMessage = errorToString(err);
       enqueueSnackbar(errorMessage, { variant: 'error' });

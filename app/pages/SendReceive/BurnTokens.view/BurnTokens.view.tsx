@@ -1,5 +1,7 @@
 import React, { useState, FC, useCallback } from 'react';
 
+// TODO REMOVE TRHIS BEFORE COMITTING
+// 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 import {
   Box,
   Button,
@@ -33,15 +35,17 @@ const BurnTokens: FC = () => {
   const [amountError, setAmountError] = useState<string | null>(null);
   const [memo, setMemo] = useState('');
   const [memoError, setMemoError] = useState<string | null>(null);
+  const [pin, setPin] = useState('');
+  const [pinError, setPinError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [burnTx, setBurnTx] = useState<TxProposal | null>(null);
 
   const { enqueueSnackbar } = useSnackbar();
-  const { fees, selectedAccount } = useSelector((state: ReduxStoreState) => state);
+  const { fees, selectedAccount, pin: accountPin } = useSelector((state: ReduxStoreState) => state);
   const token = useCurrentToken();
   const fee = Number(fees[token.id]);
   const balance = Number(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob);
-  const submitEnabled = amount > 0 && !amountError && memo.length && !memoError;
+  const submitEnabled = amount > 0 && !amountError && memo.length && !memoError && pin && !pinError;
   const { viewOnly } = selectedAccount.account;
   const buttonText = viewOnly ? 'Save Unsigned Burn Transaction' : 'Build Burn Transaction';
   const offlineTombstone = useMaxTombstone();
@@ -72,6 +76,20 @@ const BurnTokens: FC = () => {
       setMemoError('memo length must be 128 characters');
     } else {
       setMemoError(null);
+    }
+  };
+
+  const handlePinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const suppliedPin = event.target.value;
+    setPin(event.target.value);
+    validatePin(suppliedPin);
+  };
+
+  const validatePin = (suppliedPin: string) => {
+    if (suppliedPin !== accountPin) {
+      setPinError('incorrect PIN');
+    } else {
+      setPinError(null);
     }
   };
 
@@ -190,7 +208,7 @@ const BurnTokens: FC = () => {
           </Box>
           <Box flexGrow={1} mt={3}>
             <Box marginBottom={1} marginTop={6}>
-              <Typography color="primary">Burn Details</Typography>
+              <Typography color="primary">Burn Detailssssss</Typography>
             </Box>
             <form>
               <TextField
@@ -217,6 +235,15 @@ const BurnTokens: FC = () => {
                 multiline
                 error={Boolean(memoError)}
                 helperText={memoError}
+                style={{ marginBottom: 8, marginTop: 8 }}
+              />
+              <TextField
+                label="PIN"
+                onChange={handlePinChange}
+                fullWidth
+                value={pin}
+                error={Boolean(pinError)}
+                helperText={pinError}
                 style={{ marginBottom: 8, marginTop: 8 }}
               />
               <SubmitButton disabled={!submitEnabled} onClick={handleSubmit} isSubmitting={false}>

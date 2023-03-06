@@ -1,7 +1,7 @@
 import React, { useState, FC, useCallback } from 'react';
 
 // TODO REMOVE TRHIS BEFORE COMITTING
-// 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+// 0xf9c2cA545e343d93fc9E7980B789757c961B1c56
 import {
   Box,
   Button,
@@ -27,6 +27,7 @@ import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { useMaxTombstone } from '../../../hooks/useMaxTombstone';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { TxProposal } from '../../../types';
+import { convertEthAddressToMemo } from '../../../utils/bip39Functions';
 import { errorToString } from '../../../utils/errorHandler';
 import { BurnConfirmation } from './confirmation';
 
@@ -72,8 +73,10 @@ const BurnTokens: FC = () => {
   };
 
   const validateMemo = (mem: string) => {
-    if (mem.length !== 128) {
-      setMemoError('memo length must be 128 characters');
+    if (mem.length !== 42) {
+      setMemoError('memo is an ETH address and should be 42 characters');
+    } else if (mem.slice(0, 2) !== '0x') {
+      setMemoError('memo should be an ETH wallet address that starts with 0x');
     } else {
       setMemoError(null);
     }
@@ -118,13 +121,14 @@ const BurnTokens: FC = () => {
 
   const handleClickBuild = async () => {
     try {
+      const convertedMemo = convertEthAddressToMemo(memo);
       const txProposal = await buildBurnTransaction({
         accountId: selectedAccount.account.accountId,
         amount: {
           tokenId: token.id.toString(),
           value: (amount * token.precision).toString(),
         },
-        memo,
+        memo: convertedMemo,
       });
 
       setBurnTx(txProposal);
@@ -231,7 +235,7 @@ const BurnTokens: FC = () => {
                 helperText={amountError}
               />
               <TextField
-                label="Memo"
+                label="Memo (eth wallet address)"
                 onChange={handleMemoChange}
                 fullWidth
                 value={memo}

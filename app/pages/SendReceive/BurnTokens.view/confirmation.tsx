@@ -134,7 +134,7 @@ export const BurnConfirmation: FC<BurnConfirmationProps> = ({
             {memo && (
               <>
                 <Typography color="textPrimary" className={classes.center}>
-                  Memo
+                  Memo (eth wallet address)
                 </Typography>
                 <LongCode code={memo} codeClass={classes.code} />
               </>

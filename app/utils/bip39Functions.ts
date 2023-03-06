@@ -30,3 +30,26 @@ export const isValidMnemonicOrHexValue = (st: string | undefined): boolean => {
 };
 
 export const entropyToMnemonic = (st: string): string => bip39.entropyToMnemonic(st);
+
+export function nullPad(str: string, totalLen: number): string {
+  if (str.length >= totalLen) {
+    return str;
+  }
+
+  return str + Array(totalLen - str.length + 1).join('\x00');
+}
+
+export function utf8ToHex(string: string): string {
+  const utf8Encoder = new TextEncoder();
+  const byteArray = utf8Encoder.encode(string);
+  let hex = '';
+  byteArray.forEach((byte) => {
+    hex += `0${byte.toString(16)}`.slice(-2);
+  });
+  return hex;
+}
+
+export function convertEthAddressToMemo(address: string): string {
+  const paddedAddress = nullPad(address, 64);
+  return utf8ToHex(paddedAddress);
+}

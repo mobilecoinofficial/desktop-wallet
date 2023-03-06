@@ -25,6 +25,7 @@ import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { useMaxTombstone } from '../../../hooks/useMaxTombstone';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { TxProposal } from '../../../types';
+import { convertEthAddressToMemo } from '../../../utils/bip39Functions';
 import { errorToString } from '../../../utils/errorHandler';
 import { BurnConfirmation } from './confirmation';
 
@@ -33,15 +34,17 @@ const BurnTokens: FC = () => {
   const [amountError, setAmountError] = useState<string | null>(null);
   const [memo, setMemo] = useState('');
   const [memoError, setMemoError] = useState<string | null>(null);
+  const [pin, setPin] = useState('');
+  const [pinError, setPinError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [burnTx, setBurnTx] = useState<TxProposal | null>(null);
 
   const { enqueueSnackbar } = useSnackbar();
-  const { fees, selectedAccount } = useSelector((state: ReduxStoreState) => state);
+  const { fees, selectedAccount, pin: accountPin } = useSelector((state: ReduxStoreState) => state);
   const token = useCurrentToken();
   const fee = Number(fees[token.id]);
   const balance = Number(selectedAccount.balanceStatus.balancePerToken[token.id].unspentPmob);
-  const submitEnabled = amount > 0 && !amountError && memo.length && !memoError;
+  const submitEnabled = amount > 0 && !amountError && memo.length && !memoError && pin && !pinError;
   const { viewOnly } = selectedAccount.account;
   const buttonText = viewOnly ? 'Save Unsigned Burn Transaction' : 'Build Burn Transaction';
   const offlineTombstone = useMaxTombstone();
@@ -68,10 +71,26 @@ const BurnTokens: FC = () => {
   };
 
   const validateMemo = (mem: string) => {
-    if (mem.length !== 128) {
-      setMemoError('memo length must be 128 characters');
+    if (mem.length !== 42) {
+      setMemoError('memo is an ETH address and should be 42 characters');
+    } else if (mem.slice(0, 2) !== '0x') {
+      setMemoError('memo should be an ETH wallet address that starts with 0x');
     } else {
       setMemoError(null);
+    }
+  };
+
+  const handlePinChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const suppliedPin = event.target.value;
+    setPin(event.target.value);
+    validatePin(suppliedPin);
+  };
+
+  const validatePin = (suppliedPin: string) => {
+    if (suppliedPin !== accountPin) {
+      setPinError('incorrect PIN');
+    } else {
+      setPinError(null);
     }
   };
 
@@ -100,13 +119,14 @@ const BurnTokens: FC = () => {
 
   const handleClickBuild = async () => {
     try {
+      const convertedMemo = convertEthAddressToMemo(memo);
       const txProposal = await buildBurnTransaction({
         accountId: selectedAccount.account.accountId,
         amount: {
           tokenId: token.id.toString(),
           value: (amount * token.precision).toString(),
         },
-        memo,
+        memo: convertedMemo,
       });
 
       setBurnTx(txProposal);
@@ -131,6 +151,9 @@ const BurnTokens: FC = () => {
       enqueueSnackbar(`sucesffuly burned ${amount} ${token.name}!`, {
         variant: 'success',
       });
+      setAmount(0);
+      setPin('');
+      setMemo('');
     } catch (err) {
       const errorMessage = errorToString(err);
       enqueueSnackbar(errorMessage, { variant: 'error' });
@@ -210,13 +233,22 @@ const BurnTokens: FC = () => {
                 helperText={amountError}
               />
               <TextField
-                label="Memo"
+                label="Memo (eth wallet address)"
                 onChange={handleMemoChange}
                 fullWidth
                 value={memo}
                 multiline
                 error={Boolean(memoError)}
                 helperText={memoError}
+                style={{ marginBottom: 8, marginTop: 8 }}
+              />
+              <TextField
+                label="PIN"
+                onChange={handlePinChange}
+                fullWidth
+                value={pin}
+                error={Boolean(pinError)}
+                helperText={pinError}
                 style={{ marginBottom: 8, marginTop: 8 }}
               />
               <SubmitButton disabled={!submitEnabled} onClick={handleSubmit} isSubmitting={false}>

@@ -1,9 +1,14 @@
+import { TextEncoder } from 'util';
+
 import {
   convertMnemonicOrHexToEntropy,
   entropyToMnemonic,
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
+  convertEthAddressToMemo,
 } from './bip39Functions';
+
+global.TextEncoder = TextEncoder;
 
 const hexOk = '123abd4876590cef'.repeat(4);
 const hexBad1 = hexOk.substr(1, 60);
@@ -70,5 +75,22 @@ describe('a non-valid entropy', () => {
 describe('entropy', () => {
   test('is correctly converted to mnemonic', () => {
     expect(entropyToMnemonic(validEntropy)).toBe(validMnemonic);
+  });
+});
+
+describe('convert eth address to memo', () => {
+  test('returns expected memo', () => {
+    const expectedMemo =
+      '30786639633263413534356533343364393366633945373938304237383937353763393631423163353600000000000000000000000000000000000000000000';
+    const inputAddress = '0xf9c2cA545e343d93fc9E7980B789757c961B1c56';
+
+    expect(convertEthAddressToMemo(inputAddress)).toBe(expectedMemo);
+  });
+  test('returns expected memo for a different adress', () => {
+    const expectedMemo =
+      '30783039353535333136373235303733654630433231396637343162453439313861393844456342393600000000000000000000000000000000000000000000';
+    const inputAddress = '0x09555316725073eF0C219f741bE4918a98DEcB96';
+
+    expect(convertEthAddressToMemo(inputAddress)).toBe(expectedMemo);
   });
 });

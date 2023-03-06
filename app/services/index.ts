@@ -13,6 +13,7 @@ import {
 } from './deleteStoredGiftCodeB58.service';
 import { encryptContacts, EncryptContactsService } from './encryptContacts.service';
 import { getWalletStatus, GetWalletStatusService } from './getWalletStatus.service';
+import { resyncAccount, ResyncAccount } from './resyncAccount.service';
 import { retrieveEntropy, RetrieveEntropyService } from './retrieveEntropy.service';
 import { submitGiftCode, SubmitGiftCodeService } from './submitGiftCode.service';
 import { submitTransaction, SubmitTransactionService } from './submitTransaction.service';
@@ -28,6 +29,7 @@ export {
   encryptContacts,
   getWalletStatus,
   retrieveEntropy,
+  resyncAccount,
   submitGiftCode,
   submitTransaction,
 };
@@ -43,6 +45,7 @@ export type {
   EncryptContactsService,
   GetWalletStatusService,
   RetrieveEntropyService,
+  ResyncAccount,
   SubmitGiftCodeService,
   SubmitTransactionService,
 };

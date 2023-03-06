@@ -35,3 +35,4 @@ export { default as submitTransaction } from './submitTransaction';
 export { default as syncViewOnlyAccount } from './syncViewOnlyAccount';
 export { default as updateAccountName } from './updateAccountName';
 export { default as validateConfirmation } from './validateConfirmation';
+export { default as resyncAccount } from './resyncAccount';

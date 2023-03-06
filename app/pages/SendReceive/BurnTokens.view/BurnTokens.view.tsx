@@ -1,7 +1,5 @@
 import React, { useState, FC, useCallback } from 'react';
 
-// TODO REMOVE TRHIS BEFORE COMITTING
-// 0xf9c2cA545e343d93fc9E7980B789757c961B1c56
 import {
   Box,
   Button,
@@ -215,7 +213,7 @@ const BurnTokens: FC = () => {
           </Box>
           <Box flexGrow={1} mt={3}>
             <Box marginBottom={1} marginTop={6}>
-              <Typography color="primary">Burn Detailssssss</Typography>
+              <Typography color="primary">Burn Details</Typography>
             </Box>
             <form>
               <TextField

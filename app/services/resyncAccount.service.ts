@@ -1,4 +1,5 @@
 import { TOKENS } from '../constants/tokens';
+import { resyncAccount as resyncFS } from '../fullService/api';
 import { updateStatusAction } from '../redux/actions';
 import { store } from '../redux/store';
 import { Account } from '../types';
@@ -33,6 +34,7 @@ const resyncAccount = async (account: Account): Promise<void> => {
   };
 
   try {
+    await resyncFS(account.accountId);
     store.dispatch(updateStatusAction(account, emptyBalance));
   } catch (err) {
     const errorMessage = errorToString(err);

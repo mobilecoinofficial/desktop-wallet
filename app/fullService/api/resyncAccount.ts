@@ -3,11 +3,7 @@ import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService'
 
 const RESYNC_ACCOUNT_METHOD = 'resync_account';
 
-export type ResyncAccountParams = {
-  accountId: StringHex;
-};
-
-const resyncAccount = async ({ accountId }: ResyncAccountParams): Promise<void> => {
+const resyncAccount = async (accountId: StringHex): Promise<void> => {
   const { error }: AxiosFullServiceResponse<null> = await axiosFullService(RESYNC_ACCOUNT_METHOD, {
     accountId,
   });

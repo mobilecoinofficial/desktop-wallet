@@ -1,6 +1,5 @@
 import { TOKENS } from '../constants/tokens';
 import { updateStatusAction } from '../redux/actions';
-// import * as fullServiceApi from '../fullService/api';
 import { store } from '../redux/store';
 import { Account } from '../types';
 import { errorToString } from '../utils/errorHandler';

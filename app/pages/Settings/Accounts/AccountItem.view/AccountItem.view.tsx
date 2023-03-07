@@ -9,10 +9,13 @@ import {
   CardHeader,
   Grid,
   makeStyles,
+  Tooltip,
 } from '@material-ui/core';
+import SyncIcon from '@material-ui/icons/Sync';
 
 import { ShortCode } from '../../../../components/ShortCode';
 import { MOBIcon, TrashcanIcon } from '../../../../components/icons';
+import { resyncAccount } from '../../../../services';
 import { Theme } from '../../../../theme';
 import type { AccountItemProps } from './AccountItem';
 
@@ -76,6 +79,11 @@ const AccountItem: FC<AccountItemProps> = ({
             }}
           />
         </CardActionArea>
+        <Tooltip title="resync account">
+          <Button onClick={() => resyncAccount(account)} disabled={!selected}>
+            <SyncIcon style={{ color: selected ? 'white' : 'gray' }} />
+          </Button>
+        </Tooltip>
 
         <Button onClick={onDelete} disabled={selected} name="deleteButton">
           <TrashcanIcon color={selected ? 'grey' : 'red'} />

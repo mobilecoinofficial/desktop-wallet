@@ -11,7 +11,7 @@ import {
   makeStyles,
   Tooltip,
 } from '@material-ui/core';
-import SyncIcon from '@material-ui/icons/sync';
+import SyncIcon from '@material-ui/icons/Sync';
 
 import { ShortCode } from '../../../../components/ShortCode';
 import { MOBIcon, TrashcanIcon } from '../../../../components/icons';

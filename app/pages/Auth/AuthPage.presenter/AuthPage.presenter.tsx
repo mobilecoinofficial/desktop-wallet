@@ -34,6 +34,7 @@ import { getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { CreateWalletView } from '../CreateWallet.view';
 import { ImportAccountView } from '../ImportAccount.view';
+import { ImportAccountFromLedgerView } from '../ImportAccountFromLedger.view';
 import { ImportViewOnlyAccountView } from '../ImportViewOnlyAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
 
@@ -255,7 +256,6 @@ export const AuthPage: FC = (): JSX.Element => {
   };
 
   const onClickCancel = () => addAccount(false);
-
   return (
     <Box data-testid="AuthPageId" className={classes.root}>
       <Container className={classes.viewContainer} maxWidth="sm">
@@ -264,6 +264,7 @@ export const AuthPage: FC = (): JSX.Element => {
           {selectedView === 1 && <CreateAccountView onClickCreate={onClickCreate} />}
           {selectedView === 2 && <ImportAccountView onClickImport={onClickImport} />}
           {selectedView === 3 && <ImportViewOnlyAccountView />}
+          {selectedView === 4 && <ImportAccountFromLedgerView />}
           <Box my={3}>
             <Divider />
           </Box>
@@ -271,6 +272,7 @@ export const AuthPage: FC = (): JSX.Element => {
           {optButton(1, t('createInstead'))}
           {optButton(2, t('importInstead'))}
           {!offlineStart && optButton(3, 'Import View Only Account')}
+          {!offlineStart && optButton(4, 'Import Account from Ledger')}
           {addingAccount ? <Button onClick={onClickCancel}>Cancel</Button> : <></>}
         </Card>
       </Container>

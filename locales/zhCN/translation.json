@@ -350,7 +350,8 @@
     "exportTransactionHistory": "Export Tx History",
     "formLabel": "MobileCoin 守护进程目录",
     "ledgerDbPathHeader": "账簿数据库路径：",
-    "fullServiceDbPathHeader": "MobileCoin 守护进程数据库路径："
+    "fullServiceDbPathHeader": "MobileCoin 守护进程数据库路径：",
+    "logsPath": "Full-Serice Logs Path"
   },
   "NavBar": {
     "contacts": "通讯录",

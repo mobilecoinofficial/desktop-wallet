@@ -372,7 +372,7 @@
     "formLabel": "FULL-SERVICE DIRECTORY",
     "ledgerDbPathHeader": "LEDGER DATABASE PATH:",
     "fullServiceDbPathHeader": "FULL-SERVICE DATABASE PATH:",
-    "logsPath": "Full-Serice Logs Path"
+    "logsPath": "FULL_SERVICE LOGS PATH"
   },
   "NavBar": {
     "contacts": "CONTACTS",

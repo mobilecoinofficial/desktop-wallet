@@ -57,7 +57,7 @@ const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
         </div>
         <Box py={1} />
         <Typography variant="body2" color="textPrimary">
-          Full-Serice logs path
+          {t('logsPath')}
         </Typography>
         <div style={{ cursor: 'pointer' }}>
           <Typography

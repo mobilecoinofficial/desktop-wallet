@@ -410,7 +410,8 @@
     "importLedgerDb": "Import",
     "ledgerDbPathHeader": "Ledger Database Path:",
     "fullServiceDbPathHeader": "Full-Service Database Path:",
-    "fullServiceBinariesPathHeader": "Full-Service Binaries Path:"
+    "fullServiceBinariesPathHeader": "Full-Service Binaries Path:",
+    "logsPath": "Full-Serice Logs Path"
   },
   "NavBar": {
     "contacts": "Contacts",

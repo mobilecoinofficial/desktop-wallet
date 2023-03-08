@@ -55,6 +55,19 @@ const FullServiceDirectory: FC<FullServiceDirectoryProps> = ({
             {`${fullServiceBinariesPath}`}
           </Typography>
         </div>
+        <Box py={1} />
+        <Typography variant="body2" color="textPrimary">
+          Full-Serice logs path
+        </Typography>
+        <div style={{ cursor: 'pointer' }}>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            onClick={() => ipcRenderer.send('view-path', '/tmp')}
+          >
+            /tmp
+          </Typography>
+        </div>
       </Box>
     </Box>
   );

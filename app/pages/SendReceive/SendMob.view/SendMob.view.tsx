@@ -106,7 +106,7 @@ const SendMob: FC<SendMobProps> = ({
 }: SendMobProps) => {
   const classes = useStyles();
   const { t } = useTranslation('SendMobForm');
-  const { viewOnly } = selectedAccount.account;
+  const { viewOnly, managedByHardwareWallet } = selectedAccount.account;
 
   const [contactId, setContactId] = useState(NO_CONTACT_SELECTED);
   const [contactName, setContactName] = useState('');
@@ -195,8 +195,12 @@ const SendMob: FC<SendMobProps> = ({
     confirmSendText = t('saveTxConfirmation');
     sendButtonText = t('saveTxConfirmation');
   }
-  if (viewOnly) {
+  if (viewOnly && !managedByHardwareWallet) {
     sendButtonText = 'save unsigned transaction';
+  }
+
+  if (managedByHardwareWallet) {
+    sendButtonText = 'Send with Ledger';
   }
 
   return (
@@ -436,27 +440,11 @@ const SendMob: FC<SendMobProps> = ({
                         isSubmitting ||
                         (isChecked && !values.alias)
                       }
-                      onClick={handleOpen(values)}
+                      onClick={handleOpen({ ...values, useLedger: managedByHardwareWallet })}
                       isSubmitting={/* isAwaitingConformation || */ isSubmitting}
                     >
                       {sendButtonText}
                     </SubmitButton>
-
-                    {viewOnly && (
-                      <SubmitButton
-                        disabled={
-                          !dirty ||
-                          !isSynced ||
-                          !isValid ||
-                          isSubmitting ||
-                          (isChecked && !values.alias)
-                        }
-                        onClick={handleOpen({ ...values, useLedger: true })}
-                        isSubmitting={/* isAwaitingConformation || */ isSubmitting}
-                      >
-                        Build Transaction Using Ledger
-                      </SubmitButton>
-                    )}
 
                     <Box marginTop={1}>
                       {!offlineModeEnabled && !viewOnly && (

@@ -97,11 +97,20 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
   };
 
   const syncAccountWithLedger = async () => {
-    const success = await syncViewOnlyAccountWithLedger({
-      accountId: selectedAccount.account.accountId,
-    });
+    // enqueueSnackbar('You may be prompted to confirm on your Ledger device', { variant: 'info' });
+    console.log('syncAccountWithLedger');
 
-    enqueueSnackbar(success ? 'Success' : 'Failure', { variant: success ? 'success' : 'error' });
+    try {
+      await syncViewOnlyAccountWithLedger({
+        accountId: selectedAccount.account.accountId,
+      });
+      enqueueSnackbar('Success', { variant: 'success' });
+    } catch (error) {
+      enqueueSnackbar(
+        "You may need to confirm on your Ledger device. If you're sure you've confirmed, try again or reconnect your Ledger device.",
+        { variant: 'error' }
+      );
+    }
   };
 
   const accountBalance = selectedAccount.balanceStatus.balancePerToken[tokenId];
@@ -136,6 +145,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
             isSynced={selectedAccount.balanceStatus.isSynced}
             offlineModeEnabled={offlineModeEnabled}
             viewOnly={selectedAccount.account.viewOnly}
+            managedByHardwareWallet={selectedAccount.account.managedByHardwareWallet}
           />
         </Box>
         <Box className={classes.contentContainer}>

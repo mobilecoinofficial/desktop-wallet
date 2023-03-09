@@ -69,6 +69,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   isSynced,
   offlineModeEnabled,
   viewOnly,
+  managedByHardwareWallet,
 }: BalanceIndicatorProps) => {
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
@@ -113,15 +114,29 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
           <MOBNumberFormat token={token} value={balance} />
         </Typography>
 
-        {viewOnly && !containsUnverified && (
+        {viewOnly && !managedByHardwareWallet && !containsUnverified && (
           <Tooltip title="This is a view-only account. Learn more at https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts">
             <InfoOutlinedIcon style={{ marginLeft: 8 }} />
           </Tooltip>
         )}
 
-        {containsUnverified && (
+        {viewOnly && !managedByHardwareWallet && containsUnverified && (
           <Tooltip
             title={`The balance for this view only account may contain spent ${token.name} Please sync the account to ensure an accurate balance.`}
+          >
+            <Link
+              target="_blank"
+              rel="noreferrer"
+              href="https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts"
+            >
+              <InfoOutlinedIcon htmlColor={GOLD_LIGHT} style={{ marginLeft: 8 }} />
+            </Link>
+          </Tooltip>
+        )}
+
+        {viewOnly && managedByHardwareWallet && containsUnverified && (
+          <Tooltip
+            title={`The balance for this account may contain spent ${token.name} Please verify the balance with your hardware wallet to ensure it is accurate.`}
           >
             <Link
               target="_blank"
@@ -154,7 +169,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         </Tooltip>
       )}
 
-      {containsUnverified && (
+      {viewOnly && !managedByHardwareWallet && containsUnverified && (
         <Box display="flex" justifyContent="center">
           <Tooltip title="Download account sync request file">
             <Button onClick={getViewOnlySync} name="syncViewOnlyButtonDL">
@@ -166,6 +181,11 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
               <SyncIcon />
             </Button>
           </Tooltip>
+        </Box>
+      )}
+
+      {viewOnly && managedByHardwareWallet && containsUnverified && (
+        <Box display="flex" justifyContent="center">
           <Tooltip title="Sync account with Ledger">
             <Button onClick={syncAccountWithLedger} name="syncViewOnlyWithLedgerButtonUL">
               <SyncIcon />

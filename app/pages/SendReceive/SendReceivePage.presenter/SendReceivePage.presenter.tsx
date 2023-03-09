@@ -193,6 +193,10 @@ export const SendReceivePage: FC = (): JSX.Element => {
         return;
       }
 
+      if (useLedger) {
+        enqueueSnackbar('Please confirm transaction on your Ledger device', { variant: 'info' });
+      }
+
       result = await buildTransaction({
         accountId,
         addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],

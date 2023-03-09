@@ -8,4 +8,5 @@ export interface BalanceIndicatorProps {
   isSynced: boolean;
   offlineModeEnabled: boolean;
   viewOnly: boolean;
+  managedByHardwareWallet: boolean;
 }

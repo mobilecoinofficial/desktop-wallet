@@ -21,6 +21,7 @@ export function convertAccountV2(account: AccountV2): Account {
     accountId: account.id,
     firstBlockIndex: account.firstBlockIndex,
     mainAddress: account.mainAddress,
+    managedByHardwareWallet: account.managedByHardwareWallet,
     name: account.name,
     nextSubaddressIndex: account.nextSubaddressIndex,
     recoveryMode: account.recoveryMode,

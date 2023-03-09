@@ -1,6 +1,6 @@
 {
-  "name": "mobilecoin-wallet-ledger-preview",
-  "productName": "MobileCoin Wallet Ledger Preview",
+  "name": "mobilecoin-wallet-ledger-preview-testnet",
+  "productName": "MobileCoin Wallet Ledger Preview - TestNet",
   "version": "1.8.0-ledgerpreview",
   "description": "Desktop hot wallet for your MobileCoin needs.",
   "scripts": {
@@ -52,7 +52,7 @@
     ]
   },
   "build": {
-    "productName": "MobileCoin Wallet",
+    "productName": "MobileCoin Wallet Ledger Preview Testnet",
     "appId": "com.mobilecoin.vault",
     "files": [
       "dist/",

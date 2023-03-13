@@ -17,19 +17,16 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import SyncIcon from '@material-ui/icons/Sync';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 
 import { MOBNumberFormat } from '../../../components';
 import { GOLD_LIGHT } from '../../../constants/colors';
 import { TOKENS } from '../../../constants/tokens';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
-import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { setTokenId } from '../../../redux/services';
 import { Theme } from '../../../theme';
 import { BalanceIndicatorProps } from './BalanceIndicator';
 
 const useStyles = makeStyles((theme: Theme) => ({
-  disabledIcon: { display: 'none' },
   formControlLabel: {
     left: 24,
   },
@@ -73,13 +70,6 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   const matches = useMediaQuery('(min-height:768px)');
   const token = useCurrentToken();
   const { t } = useTranslation('BalanceIndicator');
-  const { walletStatus } = useSelector((state: ReduxStoreState) => state);
-
-  // Look at all balance values in wallet for eUSD token. If any > 0, wallet has access to eUSD
-  const walletHasEUSD = Boolean(
-    Object.values(walletStatus.balancePerToken[TOKENS.EUSD.id]).filter((value) => Number(value) > 0)
-      .length
-  );
 
   return (
     <Box className={classes.item} style={matches ? {} : { padding: '0' }}>
@@ -90,11 +80,10 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         <Select
           value={token.id}
           classes={{
-            icon: walletHasEUSD ? classes.icon : classes.disabledIcon,
+            icon: classes.icon,
             iconOpen: classes.iconOpen,
             select: classes.selectSelect,
           }}
-          disabled={!walletHasEUSD}
           disableUnderline
           onChange={(e) => setTokenId(e.target.value as number)}
           renderValue={() => token.icon({ className: classes.iconElement })}

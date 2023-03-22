@@ -5,6 +5,7 @@ export type Fees = {
 };
 
 export interface NetworkStatus {
+  blockVersion: string;
   localBlockHeight: StringUInt64;
   networkBlockHeight: StringUInt64;
   fees: Fees;

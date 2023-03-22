@@ -10,7 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { buildUnsignedTransaction } from '../../../fullService/api';
 import { BuildUnsignedTransactionParams } from '../../../fullService/api/buildUnsignedTransaction';
-import { BLOCK_VERSION } from '../../../fullService/api/getNetworkStatus';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { useMaxTombstone } from '../../../hooks/useMaxTombstone';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
@@ -61,6 +60,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
     fees,
     pinThresholdPmob,
     selectedAccount,
+    blockVersion,
   } = useSelector((state: ReduxStoreState) => state);
 
   const token = useCurrentToken();
@@ -128,7 +128,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
       await submitTransaction(
         confirmation.txProposal,
         accountId,
-        offlineModeEnabled ? BLOCK_VERSION : undefined
+        offlineModeEnabled ? blockVersion : undefined
       );
 
       const totalValueConfirmationAsMob = convertTokenValueToDisplayValue(
@@ -194,7 +194,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
       result = await buildTransaction({
         accountId,
         addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
-        blockVersion: offlineModeEnabled ? BLOCK_VERSION : undefined,
+        blockVersion: offlineModeEnabled ? blockVersion : undefined,
         feeValue: fee,
         tombstoneBlock: offlineModeEnabled ? offlineTombstone : undefined,
       });
@@ -320,7 +320,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
         addressesAndAmounts: [
           [recipientPublicAddress, { tokenId: `${token.id}`, value: valuePmob }],
         ],
-        blockVersion: offlineModeEnabled ? BLOCK_VERSION : undefined,
+        blockVersion: offlineModeEnabled ? blockVersion : undefined,
         feeValue: fee,
       });
       if (result === null || result === undefined) {

@@ -60,6 +60,7 @@ export type ReduxStoreState = {
   accounts: Accounts;
   addingAccount: boolean;
   addresses: Addresses;
+  blockVersion: string;
   contacts: Contact[];
   giftCodes: GiftCode[] | null;
   encryptedPassword: SjclCipherEncrypted | undefined;
@@ -84,6 +85,7 @@ export const initialReduxStoreState: ReduxStoreState = {
   accounts: { accountIds: [], accountMap: {} },
   addingAccount: false,
   addresses: { addressIds: [], addressMap: {} },
+  blockVersion: '',
   contacts: [],
   encryptedPassword: undefined,
   fees: {},
@@ -240,9 +242,10 @@ export const reducer = (
     }
 
     case GET_FEE_PMOB: {
-      const { fees } = (action as GetFeesAction).payload;
+      const { fees, blockVersion } = (action as GetFeesAction).payload;
       return {
         ...state,
+        blockVersion,
         fees,
       };
     }

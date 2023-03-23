@@ -86,23 +86,17 @@ export function convertTransactionLogsResponseFromV2(
 ): TransactionLogs {
   // remove any tx logs for txs that were canceled/failed
   const filteredLogids: string[] = [];
-  const filteredLogMap: { [transactionLogId: string]: TransactionLogV2 } = {};
+  const filteredConvertedLogMap: { [transactionLogId: string]: TransactionLog } = {};
   Object.entries(transactionlogs.transactionLogMap).forEach(([id, log]) => {
     if (log.finalizedBlockIndex) {
       filteredLogids.push(id);
-      filteredLogMap[id] = log;
+      filteredConvertedLogMap[id] = convertTransactionLogFromV2(log);
     }
   });
 
   return {
     transactionLogIds: filteredLogids,
-    transactionLogMap: filteredLogids.reduce(
-      (accum: { [transactionLogId: string]: TransactionLog }, key) => ({
-        ...accum,
-        [key]: convertTransactionLogFromV2(filteredLogMap[key]),
-      }),
-      {}
-    ),
+    transactionLogMap: filteredConvertedLogMap,
   };
 }
 

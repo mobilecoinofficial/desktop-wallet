@@ -88,7 +88,7 @@ export function convertTransactionLogsResponseFromV2(
   const filteredLogids: string[] = [];
   const filteredConvertedLogMap: { [transactionLogId: string]: TransactionLog } = {};
   Object.entries(transactionlogs.transactionLogMap).forEach(([id, log]) => {
-    if (log.finalizedBlockIndex) {
+    if (log.submittedBlockIndex) {
       filteredLogids.push(id);
       filteredConvertedLogMap[id] = convertTransactionLogFromV2(log);
     }

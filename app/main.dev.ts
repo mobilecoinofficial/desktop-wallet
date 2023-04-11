@@ -67,7 +67,6 @@ if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true')
   require('electron-debug')();
 }
 
-let syncStatus = ''; // For the app to update, via ipcRenderer.send(...)
 let networkStatus = '';
 
 // TODO: rename this function to full service after integration
@@ -245,15 +244,7 @@ const createWindow = async () => {
       localStore.setLeaveFullServiceRunning(false);
     } else {
       const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
-      if (syncStatus !== 'SYNCED' && !leaveFullServiceRunning) {
-        const choice = dialog.showMessageBoxSync(mainWindow as BrowserWindow, {
-          buttons: [i18n.t('CloseApp.yes'), i18n.t('CloseApp.no')],
-          message: i18n.t('CloseApp.explain'),
-          title: i18n.t('CloseApp.confirm'),
-          type: 'question',
-        });
-        localStore.setLeaveFullServiceRunning(choice === 0);
-      }
+      localStore.setLeaveFullServiceRunning(leaveFullServiceRunning);
     }
   });
 
@@ -361,10 +352,6 @@ ipcMain.on('close-app', () => app.quit());
 ipcMain.on('network-status', (_e, status) => {
   console.log('SETTING NETWORK STATUS', status);
   networkStatus = status;
-});
-
-ipcMain.on('sync-status', (_e, status) => {
-  syncStatus = status;
 });
 
 ipcMain.handle('save-tx-confirmation', (_, txConfirmationText) => {

@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, FormHelperText, Typography, Link } from '@material-ui/core';
-import { ipcRenderer } from 'electron';
+import { Box, FormHelperText, Typography, TextField } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import { useDispatch } from 'react-redux';
 
 import { SubmitButton } from '../../../components';
-import { camelCaseObjectKeys } from '../../../fullService/utils';
 import { setLoadingAction } from '../../../redux/actions';
 import { importViewOnlyAccount } from '../../../redux/services';
 
-const ImportViewOnlyAccountView: FC = () => {
+const ImportLedgerAccountView: FC = () => {
   const [error, setError] = useState<string | null>(null);
+  const [name, setName] = useState<string>('');
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
+  const updateName = (e) => {
+    setName(e.target.value);
+  };
+
   const handleUpload = async () => {
     setError(null);
-    const rawRequest = await ipcRenderer.invoke('import-file');
-    const parsedParams = camelCaseObjectKeys(JSON.parse(rawRequest).params);
 
     try {
+      enqueueSnackbar('Please approve the import on your ledger device');
       dispatch(setLoadingAction(true));
-      await importViewOnlyAccount(parsedParams);
+      await importViewOnlyAccount({ name });
       dispatch(setLoadingAction(false));
       enqueueSnackbar('Account Imported', { variant: 'success' });
     } catch (_) {
@@ -37,29 +39,25 @@ const ImportViewOnlyAccountView: FC = () => {
   return (
     <>
       <Typography variant="h2" paragraph>
-        Import View Only Account
+        Import Account From Ledger
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
-        Create a view only version of an existing account
+        Create an account using the Ledger Hardware Wallet
       </Typography>
       <Typography variant="body2" color="textSecondary" paragraph>
-        View only accounts can read transactions, but can not submit transactions or know which
-        transactions have been spent. They are a way to use MobileCoin without exposing your spend
-        keys to an online computer.
-      </Typography>
-      <Typography variant="body2" color="textSecondary" paragraph>
-        View only account import files are created with the MobileCoin Transaction Signer.
-        <Link
-          target="_blank"
-          rel="noreferrer"
-          href="https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts"
-        >
-          <Typography>Learn more</Typography>
-        </Link>
+        Make sure that your ledger device is plugged into the computer and that the MobileCoin app
+        is running. You will have to approve the import on the ledger device.
       </Typography>
 
+      <TextField
+        fullWidth
+        value={name}
+        onChange={updateName}
+        placeholder="Account Name (optional)"
+      />
+
       <SubmitButton disabled={false} onClick={handleUpload} isSubmitting={false}>
-        Upload View Only Account Import File
+        Import Account Using Ledger
       </SubmitButton>
 
       {error && (
@@ -71,5 +69,5 @@ const ImportViewOnlyAccountView: FC = () => {
   );
 };
 
-export default ImportViewOnlyAccountView;
-export { ImportViewOnlyAccountView };
+export default ImportLedgerAccountView;
+export { ImportLedgerAccountView };

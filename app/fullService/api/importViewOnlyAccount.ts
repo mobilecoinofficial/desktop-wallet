@@ -8,8 +8,8 @@ export type ImportViewOnlyAccountParams = {
   firstBlockIndex?: string;
   name?: string;
   nextSubaddressIndex?: string;
-  spendPublicKey: string;
-  viewPrivateKey: string;
+  spendPublicKey?: string;
+  viewPrivateKey?: string;
 };
 
 type ImportViewOnlyAccountResult = {

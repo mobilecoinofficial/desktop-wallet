@@ -34,6 +34,7 @@ import { getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { CreateWalletView } from '../CreateWallet.view';
 import { ImportAccountView } from '../ImportAccount.view';
+import { ImportLedgerAccountView } from '../ImportLedgerAcoount.view/ImportLedgerAccount.view';
 import { ImportViewOnlyAccountView } from '../ImportViewOnlyAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
 
@@ -264,6 +265,7 @@ export const AuthPage: FC = (): JSX.Element => {
           {selectedView === 1 && <CreateAccountView onClickCreate={onClickCreate} />}
           {selectedView === 2 && <ImportAccountView onClickImport={onClickImport} />}
           {selectedView === 3 && <ImportViewOnlyAccountView />}
+          {selectedView === 4 && <ImportLedgerAccountView />}
           <Box my={3}>
             <Divider />
           </Box>
@@ -271,6 +273,7 @@ export const AuthPage: FC = (): JSX.Element => {
           {optButton(1, t('createInstead'))}
           {optButton(2, t('importInstead'))}
           {!offlineStart && optButton(3, 'Import View Only Account')}
+          {!offlineStart && optButton(4, 'Import Account From Ledger')}
           {addingAccount ? <Button onClick={onClickCancel}>Cancel</Button> : <></>}
         </Card>
       </Container>

@@ -4,8 +4,8 @@ const SYNC_VIEW_ONLY_ACCOUNT_METHOD = 'sync_view_only_account';
 
 export type SyncViewOnlyAccountParams = {
   accountId: string;
-  completedTxos: [string, string][];
-  nextSubaddressIndex: string;
+  completedTxos?: [string, string][];
+  nextSubaddressIndex?: string;
 };
 
 export type SyncViewOnlyAccountResult = boolean;

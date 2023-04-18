@@ -106,7 +106,7 @@ const SendMob: FC<SendMobProps> = ({
 }: SendMobProps) => {
   const classes = useStyles();
   const { t } = useTranslation('SendMobForm');
-  const { viewOnly } = selectedAccount.account;
+  const { viewOnly, managedByHardwareWallet } = selectedAccount.account;
 
   const [contactId, setContactId] = useState(NO_CONTACT_SELECTED);
   const [contactName, setContactName] = useState('');
@@ -198,6 +198,10 @@ const SendMob: FC<SendMobProps> = ({
     sendButtonText = 'save unsigned transaction';
   }
 
+  if (managedByHardwareWallet) {
+    sendButtonText = 'Send Payment';
+  }
+
   return (
     <Container maxWidth="sm">
       <Card>
@@ -261,7 +265,7 @@ const SendMob: FC<SendMobProps> = ({
                 if (confirmation.totalValueConfirmation) {
                   isPinRequiredForTransaction =
                     confirmation.totalValueConfirmation + confirmation.feeConfirmation >=
-                    BigInt(pinThresholdPmob);
+                      BigInt(pinThresholdPmob) && !managedByHardwareWallet;
                 }
 
                 let remainingBalance;
@@ -444,7 +448,7 @@ const SendMob: FC<SendMobProps> = ({
                       {!offlineModeEnabled && !viewOnly && (
                         <Button onClick={importTxConfirmation}>{t('importTxConfirmation')}</Button>
                       )}
-                      {viewOnly && (
+                      {viewOnly && !managedByHardwareWallet && (
                         <Button onClick={importSignedTransaction}>{t('importSignedTx')}</Button>
                       )}
                     </Box>

@@ -104,6 +104,7 @@ export const initialReduxStoreState: ReduxStoreState = {
       accountId: '',
       firstBlockIndex: '',
       mainAddress: '',
+      managedByHardwareWallet: false,
       name: '',
       nextSubaddressIndex: '',
       recoveryMode: false,

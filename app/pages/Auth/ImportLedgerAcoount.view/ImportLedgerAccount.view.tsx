@@ -8,15 +8,21 @@ import { useDispatch } from 'react-redux';
 import { SubmitButton } from '../../../components';
 import { setLoadingAction } from '../../../redux/actions';
 import { importViewOnlyAccount } from '../../../redux/services';
+import { ToggleFogInput } from '../CreateAccount.view/CreateAccount.view';
 
 const ImportLedgerAccountView: FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState<string>('');
+  const [isFogEnabled, setIsFogEnabled] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
   const updateName = (e) => {
     setName(e.target.value);
+  };
+
+  const handleChangeFog = () => {
+    setIsFogEnabled(!isFogEnabled);
   };
 
   const handleUpload = async () => {
@@ -55,6 +61,8 @@ const ImportLedgerAccountView: FC = () => {
         onChange={updateName}
         placeholder="Account Name (optional)"
       />
+
+      <ToggleFogInput value={isFogEnabled} onChange={handleChangeFog} />
 
       <SubmitButton disabled={false} onClick={handleUpload} isSubmitting={false}>
         Import Account Using Ledger

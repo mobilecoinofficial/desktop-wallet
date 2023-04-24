@@ -1,7 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, FormHelperText, Typography } from '@material-ui/core';
+import {
+  Box,
+  FormHelperText,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+  Tooltip,
+} from '@material-ui/core';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
@@ -15,13 +23,40 @@ interface CreateAccountFormValues {
   submit: null;
 }
 
+type ToggleFogInputProps = {
+  onChange: (event: React.ChangeEvent) => void;
+  value: boolean;
+};
+
+export const ToggleFogInput: FC<ToggleFogInputProps> = ({
+  onChange,
+  value,
+}: ToggleFogInputProps) => (
+  <FormControlLabel
+    control={<Checkbox checked={value} onChange={onChange} />}
+    label={
+      <Box display="flex">
+        <Typography>Enable Fog</Typography>
+        <Tooltip title="Enabling fog for this account will make it compatible with other fog-enabled services, such as Moby and the Signal wallet">
+          <HelpOutlineIcon style={{ color: '#878993', marginLeft: 4 }} />
+        </Tooltip>
+      </Box>
+    }
+  />
+);
+
 const CreateAccountView: FC<CreateAccountViewProps> = ({
   onClickCreate,
 }: CreateAccountViewProps) => {
   const { t } = useTranslation('CreateAccount');
+  const [isFogEnabled, setIsFogEnabled] = useState(true);
 
   const handleOnSubmit = async (values: CreateAccountFormValues) =>
     onClickCreate(values.accountName);
+
+  const handleChangeFog = () => {
+    setIsFogEnabled(!isFogEnabled);
+  };
 
   return (
     <>
@@ -37,6 +72,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
       <Formik
         initialValues={{
           accountName: '',
+          fogEnabled: true,
           submit: null,
         }}
         onSubmit={handleOnSubmit}
@@ -53,6 +89,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
               label={t('nameLabel')}
               name="accountName"
             />
+            <ToggleFogInput value={isFogEnabled} onChange={handleChangeFog} />
             {errors.submit && (
               <Box mt={3}>
                 <FormHelperText error>{errors.submit}</FormHelperText>

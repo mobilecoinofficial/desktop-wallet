@@ -46,15 +46,21 @@ export const ContactsPage: FC = (): JSX.Element => {
     id,
     recipientAddress,
   }: Contact) => {
-    const result = await assignAddressForAccount(
-      selectedAccount.account.accountId || String(Math.random())
-    );
+    let assignedAddress;
+    // fog accounts can not use assigned subaddresses for contacts
+    // TODO change this to fog account, not just hardware wallet
+    if (!selectedAccount.account.managedByHardwareWallet) {
+      const result = await assignAddressForAccount(
+        selectedAccount.account.accountId || String(Math.random())
+      );
+      assignedAddress = result.address.publicAddressB58;
+    }
 
     setStatus(PAGE.LIST);
     contacts.push({
       abbreviation,
       alias,
-      assignedAddress: result.address.publicAddressB58,
+      assignedAddress,
       color,
       id,
       isFavorite,

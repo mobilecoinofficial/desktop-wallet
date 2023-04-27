@@ -17,7 +17,7 @@ function convertNetworkStatusFromV2(networkStatus: NetworkStatusV2): GetNetworkS
       blockVersion: networkStatus.blockVersion,
       fees: networkStatus.fees,
       localBlockHeight: networkStatus.localBlockHeight,
-      network: networkStatus.networkInfo.chain_id,
+      network: networkStatus.networkInfo.chainId,
       networkBlockHeight: networkStatus.networkBlockHeight,
     },
   };

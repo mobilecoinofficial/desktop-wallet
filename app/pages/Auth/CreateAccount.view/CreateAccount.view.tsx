@@ -49,10 +49,10 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
   onClickCreate,
 }: CreateAccountViewProps) => {
   const { t } = useTranslation('CreateAccount');
-  const [isFogEnabled, setIsFogEnabled] = useState(true);
+  const [isFogEnabled, setIsFogEnabled] = useState(false);
 
   const handleOnSubmit = async (values: CreateAccountFormValues) =>
-    onClickCreate(values.accountName);
+    onClickCreate(values.accountName, isFogEnabled);
 
   const handleChangeFog = () => {
     setIsFogEnabled(!isFogEnabled);

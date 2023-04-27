@@ -16,9 +16,9 @@ export type Network = 'main' | 'test';
 
 export type NetworkConfig = {
   offline: boolean;
-  chain_id: Network;
+  chainId: Network;
   peers?: string[];
-  tx_sources?: string[];
+  txSources?: string[];
 };
 
 export interface NetworkStatusV2 {

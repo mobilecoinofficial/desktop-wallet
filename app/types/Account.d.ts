@@ -5,6 +5,7 @@ export interface Account {
   accountId: StringHex;
   accountHeight?: StringUInt64;
   firstBlockIndex: StringUInt64;
+  fogEnabled: boolean;
   mainAddress: StringB58;
   name: string | null;
   nextSubaddressIndex: StringUInt64;

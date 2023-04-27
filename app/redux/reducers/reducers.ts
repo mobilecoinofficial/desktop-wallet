@@ -6,6 +6,7 @@ import {
   Addresses,
   Contact,
   GiftCode,
+  Network,
   SelectedAccount,
   StringUInt64,
   TransactionLogs,
@@ -70,6 +71,7 @@ export type ReduxStoreState = {
   isInitialized: boolean;
   isPinRequired: boolean;
   loading: boolean;
+  network: Network | null;
   offlineModeEnabled: boolean;
   secretKey: string;
   selectedAccount: SelectedAccount;
@@ -95,6 +97,7 @@ export const initialReduxStoreState: ReduxStoreState = {
   isInitialized: false,
   isPinRequired: false,
   loading: false,
+  network: null,
   offlineModeEnabled: false,
   pin: undefined,
   pinThresholdPmob: '',
@@ -243,11 +246,12 @@ export const reducer = (
     }
 
     case GET_FEE_PMOB: {
-      const { fees, blockVersion } = (action as GetFeesAction).payload;
+      const { fees, blockVersion, network } = (action as GetFeesAction).payload;
       return {
         ...state,
         blockVersion,
         fees,
+        network,
       };
     }
 

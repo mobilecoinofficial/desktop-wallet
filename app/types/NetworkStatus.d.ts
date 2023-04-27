@@ -9,7 +9,17 @@ export interface NetworkStatus {
   localBlockHeight: StringUInt64;
   networkBlockHeight: StringUInt64;
   fees: Fees;
+  network: Network;
 }
+
+export type Network = 'main' | 'test';
+
+export type NetworkConfig = {
+  offline: boolean;
+  chain_id: Network;
+  peers?: string[];
+  tx_sources?: string[];
+};
 
 export interface NetworkStatusV2 {
   // The block count of MobileCoin's distributed ledger.
@@ -21,4 +31,5 @@ export interface NetworkStatusV2 {
   fees: Fees;
   // The current block version
   blockVersion: StringUInt64;
+  networkInfo: NetworkConfig;
 }

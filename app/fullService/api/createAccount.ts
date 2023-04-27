@@ -1,4 +1,5 @@
 import type { Account, AccountV2 } from '../../types/Account.d';
+import { FogInfo } from '../../utils/fogConstants';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 import getAccount from './getAccount';
 
@@ -6,6 +7,7 @@ const CREATE_ACCOUNT_METHOD = 'create_account';
 
 type CreateAccountParams = {
   name: string | null;
+  fogInfo?: FogInfo;
 };
 
 type CreateAccountResult = {
@@ -16,10 +18,14 @@ type CreateAccountResultV2 = {
   account: AccountV2;
 };
 
-const createAccount = async ({ name }: CreateAccountParams): Promise<CreateAccountResult> => {
+const createAccount = async ({
+  name,
+  fogInfo,
+}: CreateAccountParams): Promise<CreateAccountResult> => {
   const { result, error }: AxiosFullServiceResponse<CreateAccountResultV2> = await axiosFullService(
     CREATE_ACCOUNT_METHOD,
     {
+      fog_info: fogInfo ? { ...fogInfo } : undefined,
       name,
     }
   );

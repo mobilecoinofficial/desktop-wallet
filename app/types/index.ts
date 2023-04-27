@@ -5,7 +5,7 @@ import { BalanceStatus } from './BalanceStatus';
 import { Confirmation, Confirmations } from './Confirmation';
 import { Contact } from './Contact';
 import { GiftCode } from './GiftCode';
-import { NetworkStatus } from './NetworkStatus';
+import { NetworkStatus, Network } from './NetworkStatus';
 import { ReceiverReceipt, ReceiverReceipts } from './ReceiverReceipt';
 import { SelectedAccount } from './SelectedAccount';
 import { StringB58, StringHex, StringUInt64 } from './SpecialStrings';
@@ -33,6 +33,7 @@ export type {
   Contact,
   GiftCode,
   InputTxo,
+  Network,
   NetworkStatus,
   OutputTxo,
   ReceiverReceipt,

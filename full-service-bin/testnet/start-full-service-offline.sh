@@ -25,6 +25,7 @@ echo "Starting full-service with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR} and ${WAL
 RUST_LOG=debug,mc_connection=error,mc_ledger_sync=error ./full-service \
         --ledger-db "${LEDGER_DB_DIR}" \
         --wallet-db "${WALLET_DB_FILE}" \
+        --chain-id "test" \
         --poll-interval 1 \
         --fog-ingest-enclave-css ./ingest-enclave.css \
         --offline \

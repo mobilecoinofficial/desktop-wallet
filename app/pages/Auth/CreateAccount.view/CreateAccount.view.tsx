@@ -26,17 +26,19 @@ interface CreateAccountFormValues {
 type ToggleFogInputProps = {
   onChange: (event: React.ChangeEvent) => void;
   value: boolean;
+  title?: string;
 };
 
 export const ToggleFogInput: FC<ToggleFogInputProps> = ({
   onChange,
   value,
+  title,
 }: ToggleFogInputProps) => (
   <FormControlLabel
     control={<Checkbox checked={value} onChange={onChange} />}
     label={
       <Box display="flex">
-        <Typography>Enable Fog</Typography>
+        <Typography>{title ?? 'Enable Fog'}</Typography>
         <Tooltip title="Enabling fog for this account will make it compatible with other fog-enabled services, such as Moby and the Signal wallet">
           <HelpOutlineIcon style={{ color: '#878993', marginLeft: 4 }} />
         </Tooltip>

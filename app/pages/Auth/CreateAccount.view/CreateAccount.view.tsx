@@ -8,6 +8,7 @@ import {
   Checkbox,
   FormControlLabel,
   Tooltip,
+  Link,
 } from '@material-ui/core';
 import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { Formik, Form, Field } from 'formik';
@@ -27,25 +28,48 @@ type ToggleFogInputProps = {
   onChange: (event: React.ChangeEvent) => void;
   value: boolean;
   title?: string;
+  description: string;
 };
 
 export const ToggleFogInput: FC<ToggleFogInputProps> = ({
   onChange,
   value,
   title,
+  description,
 }: ToggleFogInputProps) => (
-  <FormControlLabel
-    control={<Checkbox checked={value} onChange={onChange} />}
-    label={
-      <Box display="flex">
-        <Typography>{title ?? 'Enable Fog'}</Typography>
-        <Tooltip title="Enabling fog for this account will make it compatible with other fog-enabled services, such as Moby and the Signal wallet">
-          <HelpOutlineIcon style={{ color: '#878993', marginLeft: 4 }} />
-        </Tooltip>
-      </Box>
-    }
-  />
+  <>
+    <FormControlLabel
+      control={<Checkbox checked={value} onChange={onChange} />}
+      label={
+        <Box display="flex">
+          <Typography>{title}</Typography>
+          <Tooltip
+            interactive
+            title={
+              <Typography>
+                {description}{' '}
+                <Link
+                  href="https://mobilecoin.com/learn/explain-like-im-five/fog/"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: 'white', textDecoration: 'underline' }}
+                >
+                  Learn More
+                </Link>
+              </Typography>
+            }
+          >
+            <HelpOutlineIcon style={{ color: '#878993', marginLeft: 4 }} />
+          </Tooltip>
+        </Box>
+      }
+    />
+  </>
 );
+
+ToggleFogInput.defaultProps = {
+  title: 'Enable Fog',
+};
 
 const CreateAccountView: FC<CreateAccountViewProps> = ({
   onClickCreate,
@@ -91,7 +115,11 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
               label={t('nameLabel')}
               name="accountName"
             />
-            <ToggleFogInput value={isFogEnabled} onChange={handleChangeFog} />
+            <ToggleFogInput
+              value={isFogEnabled}
+              onChange={handleChangeFog}
+              description="Enabling Fog for this account will make it compatible with Moby."
+            />
             {errors.submit && (
               <Box mt={3}>
                 <FormHelperText error>{errors.submit}</FormHelperText>

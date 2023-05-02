@@ -41,8 +41,8 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
   const handleChangeFog = () => {
     setIsFogEnabled(!isFogEnabled);
   };
-  const handleChangeFogType = (e) => {
-    setFogType(e.target.value);
+  const handleChangeFogType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFogType(e.target.value as 'MOBILECOIN' | 'SIGNAL');
   };
 
   return (
@@ -101,15 +101,15 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
               }}
             />
 
-            <Box display="flex" flexDirection="column" marginTop={1} marginBottom={3}>
+            <Box display="flex" flexDirection="column" marginTop={1} marginBottom={1}>
               <ToggleFogInput
                 value={isFogEnabled}
                 onChange={handleChangeFog}
                 title="This is a Fog account"
+                description="If this account was created with Fog, select which fog. If the account was created with Desktop Wallet, select Mobilecoin."
               />
-
               {isFogEnabled && (
-                <FormControl style={{ marginTop: 1 }}>
+                <FormControl>
                   <InputLabel>Fog Application</InputLabel>
                   <Select
                     labelId="fog-type"

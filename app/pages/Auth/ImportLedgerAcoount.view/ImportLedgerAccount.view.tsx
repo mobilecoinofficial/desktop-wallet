@@ -3,35 +3,40 @@ import type { FC } from 'react';
 
 import { Box, FormHelperText, Typography, TextField } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { SubmitButton } from '../../../components';
 import { setLoadingAction } from '../../../redux/actions';
+import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { importViewOnlyAccount } from '../../../redux/services';
-import { ToggleFogInput } from '../CreateAccount.view/CreateAccount.view';
+import { getFogInfo } from '../../../utils/fogConstants';
 
 const ImportLedgerAccountView: FC = () => {
+  const { network } = useSelector((state: ReduxStoreState) => state);
   const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState<string>('');
-  const [isFogEnabled, setIsFogEnabled] = useState(true);
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
-  const updateName = (e) => {
+  const updateName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-  };
-
-  const handleChangeFog = () => {
-    setIsFogEnabled(!isFogEnabled);
   };
 
   const handleUpload = async () => {
     setError(null);
 
     try {
+      if (!network) {
+        throw new Error('consensus network not set');
+      }
+
+      const fogInfo = getFogInfo({
+        application: 'MOBILECOIN',
+        network,
+      });
       enqueueSnackbar('Please approve the import on your ledger device');
       dispatch(setLoadingAction(true));
-      await importViewOnlyAccount({ name });
+      await importViewOnlyAccount({ fogInfo, name });
       dispatch(setLoadingAction(false));
       enqueueSnackbar('Account Imported', { variant: 'success' });
     } catch (_) {
@@ -61,8 +66,6 @@ const ImportLedgerAccountView: FC = () => {
         onChange={updateName}
         placeholder="Account Name (optional)"
       />
-
-      <ToggleFogInput value={isFogEnabled} onChange={handleChangeFog} />
 
       <SubmitButton disabled={false} onClick={handleUpload} isSubmitting={false}>
         Import Account Using Ledger

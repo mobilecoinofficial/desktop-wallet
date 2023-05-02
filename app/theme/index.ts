@@ -64,6 +64,11 @@ const baseOptions: ThemeOptions = {
         minWidth: 32,
       },
     },
+    MuiTooltip: {
+      tooltip: {
+        fontSize: '12px',
+      },
+    },
   },
   typography,
 };

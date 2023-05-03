@@ -81,7 +81,7 @@ const AccountItem: FC<AccountItemProps> = ({
         </CardActionArea>
         <Tooltip title="resync account">
           <Button onClick={() => resyncAccount(account)} disabled={!selected}>
-            <SyncIcon style={{ color: selected ? 'white' : 'gray' }} />
+            <SyncIcon style={{ color: selected ? '#325ED4' : 'gray' }} />
           </Button>
         </Tooltip>
 

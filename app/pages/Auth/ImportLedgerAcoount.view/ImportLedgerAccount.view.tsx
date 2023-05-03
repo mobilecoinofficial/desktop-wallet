@@ -10,16 +10,22 @@ import { setLoadingAction } from '../../../redux/actions';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { importViewOnlyAccount } from '../../../redux/services';
 import { getFogInfo } from '../../../utils/fogConstants';
+import { ToggleFogInput } from '../CreateAccount.view/CreateAccount.view';
 
 const ImportLedgerAccountView: FC = () => {
   const { network } = useSelector((state: ReduxStoreState) => state);
   const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState<string>('');
   const { enqueueSnackbar } = useSnackbar();
+  const [isFogEnabled, setIsFogEnabled] = useState(true);
   const dispatch = useDispatch();
 
   const updateName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
+  };
+
+  const handleChangeFog = () => {
+    setIsFogEnabled(!isFogEnabled);
   };
 
   const handleUpload = async () => {
@@ -30,10 +36,13 @@ const ImportLedgerAccountView: FC = () => {
         throw new Error('consensus network not set');
       }
 
-      const fogInfo = getFogInfo({
-        application: 'MOBILECOIN',
-        network,
-      });
+      const fogInfo = isFogEnabled
+        ? getFogInfo({
+            application: 'MOBILECOIN',
+            network,
+          })
+        : undefined;
+
       enqueueSnackbar('Please approve the import on your ledger device');
       dispatch(setLoadingAction(true));
       await importViewOnlyAccount({ fogInfo, name });
@@ -65,6 +74,12 @@ const ImportLedgerAccountView: FC = () => {
         value={name}
         onChange={updateName}
         placeholder="Account Name (optional)"
+      />
+
+      <ToggleFogInput
+        value={isFogEnabled}
+        onChange={handleChangeFog}
+        description="Creating this account with fog enabled makes it possible to import the account to Moby on you mobile phone."
       />
 
       <SubmitButton disabled={false} onClick={handleUpload} isSubmitting={false}>

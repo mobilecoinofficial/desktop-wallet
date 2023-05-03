@@ -118,7 +118,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
             <ToggleFogInput
               value={isFogEnabled}
               onChange={handleChangeFog}
-              description="Enabling Fog for this account will make it compatible with Moby."
+              description="Creating this account with fog enabled makes it possible to import the account to Moby on you mobile phone."
             />
             {errors.submit && (
               <Box mt={3}>

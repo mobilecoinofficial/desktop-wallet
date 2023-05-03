@@ -106,7 +106,7 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
                 value={isFogEnabled}
                 onChange={handleChangeFog}
                 title="This is a Fog account"
-                description="If this account was created with Fog, select which fog. If the account was created with Desktop Wallet, select Mobilecoin."
+                description="Check this box if you are importing an account from Moby or Signal, or are importing a Desktop Wallet account that included Fog compatibility when it was created."
               />
               {isFogEnabled && (
                 <FormControl>

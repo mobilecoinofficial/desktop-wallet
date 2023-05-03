@@ -87,12 +87,11 @@ export const AuthPage: FC = (): JSX.Element => {
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
   const [fullServiceIsRunning, setFullServiceIsRunning] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [accountIds, setAccountIds] = useState([]);
+  const [accountIds, setAccountIds] = useState<string[]>([]);
   const { enqueueSnackbar } = useSnackbar();
 
   const offlineStart = localStore.getOfflineStart();
   useEffect(() => {
-    const controller = new AbortController();
     (async () => {
       try {
         const accounts = await getAllAccounts();
@@ -106,8 +105,6 @@ export const AuthPage: FC = (): JSX.Element => {
         setLoading(false);
       }
     })();
-
-    return () => controller?.abort();
   }, []);
 
   if (loading) {

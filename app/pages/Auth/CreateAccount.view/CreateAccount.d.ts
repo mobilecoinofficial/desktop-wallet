@@ -1,3 +1,3 @@
 export interface CreateAccountViewProps {
-  onClickCreate: (name: string) => void;
+  onClickCreate: (name: string, isFogEnbled: boolean) => void;
 }

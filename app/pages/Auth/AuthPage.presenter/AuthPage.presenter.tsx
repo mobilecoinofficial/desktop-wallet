@@ -30,6 +30,7 @@ import * as localStore from '../../../utils/LocalStore';
 import { validatePassphrase } from '../../../utils/authentication';
 import { isHex64 } from '../../../utils/bip39Functions';
 import { errorToString } from '../../../utils/errorHandler';
+import { getFogInfo } from '../../../utils/fogConstants';
 import { getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { CreateWalletView } from '../CreateWallet.view';
@@ -79,9 +80,8 @@ const untilFullServiceRuns = async () => {
 /* eslint-enable no-await-in-loop */
 
 export const AuthPage: FC = (): JSX.Element => {
-  const { addingAccount, isAuthenticated, selectedAccount, encryptedPassword } = useSelector(
-    (state: ReduxStoreState) => state
-  );
+  const { addingAccount, isAuthenticated, selectedAccount, encryptedPassword, network } =
+    useSelector((state: ReduxStoreState) => state);
   const classes = useStyles();
   const [selectedView, setView] = useState(1);
   const { t } = useTranslation('AuthPage');
@@ -234,9 +234,19 @@ export const AuthPage: FC = (): JSX.Element => {
     );
   }
 
-  const onClickCreate = async (accountName: string) => {
+  const onClickCreate = async (accountName: string, isFogEnabled: boolean) => {
     try {
-      await createAccount(accountName);
+      if (!network) {
+        throw new Error('consensus network not set');
+      }
+
+      const fogInfo = isFogEnabled
+        ? getFogInfo({
+            application: 'MOBILECOIN',
+            network,
+          })
+        : undefined;
+      await createAccount(accountName, fogInfo);
     } catch (err) {
       const errorMessage = errorToString(err);
       enqueueSnackbar(errorMessage, { variant: 'error' });

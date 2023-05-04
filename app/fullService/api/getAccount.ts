@@ -20,6 +20,7 @@ export function convertAccountV2(account: AccountV2): Account {
     accountHeight: account.nextBlockIndex,
     accountId: account.id,
     firstBlockIndex: account.firstBlockIndex,
+    fogEnabled: account.fogEnabled,
     mainAddress: account.mainAddress,
     managedByHardwareWallet: account.managedByHardwareWallet,
     name: account.name,

@@ -125,6 +125,7 @@ const AccountCard: FC<AccountCardProps> = ({
                       data-testid="account-card-long-code"
                       codeClass={classes.code}
                       code={b58Code}
+                      isLong={account.fogEnabled}
                     />
                   </Box>
                 </Tooltip>

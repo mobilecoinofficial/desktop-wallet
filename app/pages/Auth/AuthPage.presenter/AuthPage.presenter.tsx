@@ -254,11 +254,27 @@ export const AuthPage: FC = (): JSX.Element => {
   };
 
   // TODO: improve error handling
-  const onClickImport = async (accountName: string, entropy: string) => {
+  const onClickImport = async (
+    accountName: string,
+    entropy: string,
+    fogEnabled: boolean,
+    fogType: 'MOBILECOIN' | 'SIGNAL'
+  ) => {
+    if (!network) {
+      throw new Error('consensus network not set');
+    }
+
+    const fogInfo = fogEnabled
+      ? getFogInfo({
+          application: fogType,
+          network,
+        })
+      : undefined;
+
     if (isHex64(entropy)) {
-      await importLegacyAccount(accountName, entropy);
+      await importLegacyAccount(accountName, entropy, fogInfo);
     } else {
-      await importAccount(accountName, entropy);
+      await importAccount(accountName, entropy, fogInfo);
     }
   };
 

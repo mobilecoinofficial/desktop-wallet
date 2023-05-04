@@ -35,8 +35,9 @@ const ImportAccountView: FC<ImportAccountViewProps> = ({
   const [isFogEnabled, setIsFogEnabled] = useState(false);
   const [fogType, setFogType] = useState<'MOBILECOIN' | 'SIGNAL'>('MOBILECOIN');
 
-  const handleOnSubmit = async (values: ImportAccountFormValues) =>
-    onClickImport(values.accountName, values.entropy);
+  const handleOnSubmit = async (values: ImportAccountFormValues) => {
+    onClickImport(values.accountName, values.entropy, isFogEnabled, fogType);
+  };
 
   const handleChangeFog = () => {
     setIsFogEnabled(!isFogEnabled);

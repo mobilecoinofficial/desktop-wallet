@@ -1,15 +1,21 @@
 import * as fullServiceApi from '../../fullService/api';
 import { errorToString } from '../../utils/errorHandler';
+import { FogInfo } from '../../utils/fogConstants';
 import { importAccountAction } from '../actions';
 import { store } from '../store';
 
 // Import the wallet should initialize the basic wallet information
 // The wallet status
 // Accounts + status
-export const importAccount = async (name: string | null, mnemonic: string): Promise<void> => {
+export const importAccount = async (
+  name: string | null,
+  mnemonic: string,
+  fogInfo?: FogInfo
+): Promise<void> => {
   try {
     // Attempt import
     const { account } = await fullServiceApi.importAccount({
+      fogInfo,
       key_derivation_version: '2',
       mnemonic,
       name,
@@ -44,12 +50,16 @@ export const importAccount = async (name: string | null, mnemonic: string): Prom
 // Import the wallet should initalize the basic wallet information
 // The wallet status
 // Accounts + status
-export const importLegacyAccount = async (name: string | null, entropy: string): Promise<void> => {
+export const importLegacyAccount = async (
+  name: string | null,
+  entropy: string,
+  fogInfo?: FogInfo
+): Promise<void> => {
   try {
     // await wipeAccountContactAndPin();
 
     // Attempt import
-    const { account } = await fullServiceApi.importLegacyAccount({ entropy, name });
+    const { account } = await fullServiceApi.importLegacyAccount({ entropy, fogInfo, name });
     const { accountId } = account;
 
     // Get basic wallet information

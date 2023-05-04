@@ -66,7 +66,7 @@ const baseOptions: ThemeOptions = {
     },
     MuiTooltip: {
       tooltip: {
-        fontSize: '12px',
+        fontSize: '11px',
       },
     },
   },

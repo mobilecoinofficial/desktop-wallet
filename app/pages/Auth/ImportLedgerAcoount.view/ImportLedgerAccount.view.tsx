@@ -45,13 +45,11 @@ const ImportLedgerAccountView: FC = () => {
 
       enqueueSnackbar('Please approve the import on your ledger device');
       dispatch(setLoadingAction(true));
-      await importViewOnlyAccount({ fogInfo, name });
+      await importViewOnlyAccount({ fogInfo, name, useLedger: true });
       dispatch(setLoadingAction(false));
       enqueueSnackbar('Account Imported', { variant: 'success' });
-    } catch (_) {
-      setError(
-        'Something went wrong with the view only account import. Please check your request and try again. For more information see the docs at https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts'
-      );
+    } catch (e) {
+      setError(`Something went wrong with the ledger account import. ${e}`);
       dispatch(setLoadingAction(false));
     }
   };

@@ -13,6 +13,7 @@ export type ImportViewOnlyAccountParams = {
   spendPublicKey?: string;
   viewPrivateKey?: string;
   fogInfo?: FogInfo;
+  useLedger?: boolean;
 };
 
 type ImportViewOnlyAccountResult = {
@@ -30,8 +31,11 @@ const importViewOnlyAccount = async ({
   spendPublicKey,
   viewPrivateKey,
   fogInfo,
+  useLedger,
 }: ImportViewOnlyAccountParams): Promise<ImportViewOnlyAccountResult> => {
-  const method = fogInfo ? IMPORT_VIEW_ONLY_ACCOUNT_LEDGER_METHOD : IMPORT_VIEW_ONLY_ACCOUNT_METHOD;
+  const method = useLedger
+    ? IMPORT_VIEW_ONLY_ACCOUNT_LEDGER_METHOD
+    : IMPORT_VIEW_ONLY_ACCOUNT_METHOD;
   const { result, error }: AxiosFullServiceResponse<ImportViewOnlyAccountResultV2> =
     await axiosFullService(method, {
       firstBlockIndex,

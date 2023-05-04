@@ -55,11 +55,18 @@ const AccountItem: FC<AccountItemProps> = ({
   let title: string;
   if (account.name) {
     title = account.name;
-    if (account.viewOnly) {
-      title += ' (view only)';
-    }
   } else {
     title = 'unnamed account';
+  }
+
+  if (account.viewOnly && !account.managedByHardwareWallet) {
+    title += ' (View Only)';
+  }
+  if (account.managedByHardwareWallet) {
+    title += ' (Ledger)';
+  }
+  if (account.fogEnabled) {
+    title += ' (Fog)';
   }
 
   return (

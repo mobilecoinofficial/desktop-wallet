@@ -140,6 +140,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
             syncHardwareWallet={syncHardwareWallet}
             viewOnly={selectedAccount.account.viewOnly}
             hardwareWallet={selectedAccount.account.managedByHardwareWallet}
+            fogEnabled={selectedAccount.account.fogEnabled}
           />
         </Box>
         <Box className={classes.contentContainer}>

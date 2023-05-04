@@ -1,6 +1,7 @@
 export interface BalanceIndicatorProps {
   balance: string;
   containsUnverified: boolean;
+  fogEnabled: boolean;
   getViewOnlySync: () => Promise<void>;
   importLedger: () => Promise<void>;
   importViewOnlySync: () => Promise<void>;

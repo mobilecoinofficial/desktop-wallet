@@ -11,8 +11,8 @@ import {
   MenuItem,
   ListItemIcon,
   Tooltip,
-  Link,
 } from '@material-ui/core';
+import CloudQueueIcon from '@material-ui/icons/CloudQueue';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import SyncIcon from '@material-ui/icons/Sync';
@@ -67,6 +67,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   syncHardwareWallet,
   viewOnly,
   hardwareWallet,
+  fogEnabled,
 }: BalanceIndicatorProps) => {
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
@@ -114,13 +115,13 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
           <Tooltip
             title={`The balance for this ${accountTypeText} account may contain spent ${token.name} Please sync the account to ensure an accurate balance.`}
           >
-            <Link
-              target="_blank"
-              rel="noreferrer"
-              href="https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts"
-            >
-              <InfoOutlinedIcon htmlColor={GOLD_LIGHT} style={{ marginLeft: 8 }} />
-            </Link>
+            <InfoOutlinedIcon htmlColor={GOLD_LIGHT} style={{ marginLeft: 8 }} />
+          </Tooltip>
+        )}
+
+        {fogEnabled && (
+          <Tooltip title="This account uses Fog">
+            <CloudQueueIcon style={{ marginLeft: 8 }} />
           </Tooltip>
         )}
       </Box>

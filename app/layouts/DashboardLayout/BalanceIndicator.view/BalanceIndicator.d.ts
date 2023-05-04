@@ -6,5 +6,7 @@ export interface BalanceIndicatorProps {
   importViewOnlySync: () => Promise<void>;
   isSynced: boolean;
   offlineModeEnabled: boolean;
+  syncHardwareWallet: () => Promise<void>;
   viewOnly: boolean;
+  hardwareWallet: boolean;
 }

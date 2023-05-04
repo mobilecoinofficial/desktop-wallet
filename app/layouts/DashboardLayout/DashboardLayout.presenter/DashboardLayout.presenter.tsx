@@ -85,6 +85,21 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
     enqueueSnackbar('Account Synced', { variant: 'success' });
   };
 
+  const syncHardwareWallet = async () => {
+    enqueueSnackbar('Please approve the sync on your ledger device');
+    dispatch(setLoadingAction(true));
+    try {
+      await syncViewOnlyAccount({ accountId: selectedAccount.account.accountId });
+      await getAllTransactionLogsForAccount(selectedAccount.account.accountId);
+      await updateStatus(selectedAccount.account.accountId, selectedAccount.account);
+      dispatch(setLoadingAction(false));
+      enqueueSnackbar('Account Synced', { variant: 'success' });
+    } catch {
+      dispatch(setLoadingAction(false));
+      enqueueSnackbar('Error Syncing', { variant: 'error' });
+    }
+  };
+
   const getViewOnlySync = async () => {
     const response = await getViewOnlyAccountSyncRequest({
       accountId: selectedAccount.account.accountId,
@@ -122,7 +137,9 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (
             importLedger={importLedger}
             isSynced={selectedAccount.balanceStatus.isSynced}
             offlineModeEnabled={offlineModeEnabled}
+            syncHardwareWallet={syncHardwareWallet}
             viewOnly={selectedAccount.account.viewOnly}
+            hardwareWallet={selectedAccount.account.managedByHardwareWallet}
           />
         </Box>
         <Box className={classes.contentContainer}>

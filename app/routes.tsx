@@ -122,7 +122,11 @@ export const InternalRoutesRenderer: FC<{ routes: Routes }> = (props: { routes: 
   // TODO: the update checking flow should all get pulled out into an app container layer.
   // TODO: create an app container layer.
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const { loading } = useSelector((state: ReduxStoreState) => state);
+  const { loading, network } = useSelector((state: ReduxStoreState) => state);
+
+  if (network === 'test') {
+    document.title = 'Testnet MobileCoin Wallet';
+  }
 
   useEffect(() => {
     ipcRenderer.on('app-update-ready', () => {

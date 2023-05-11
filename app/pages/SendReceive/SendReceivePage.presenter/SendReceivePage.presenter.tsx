@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
-import { buildUnsignedTransaction } from '../../../fullService/api';
+import { buildAndSubmitTransaction, buildUnsignedTransaction } from '../../../fullService/api';
 import { BuildUnsignedTransactionParams } from '../../../fullService/api/buildUnsignedTransaction';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { useMaxTombstone } from '../../../hooks/useMaxTombstone';
@@ -197,6 +197,22 @@ export const SendReceivePage: FC = (): JSX.Element => {
 
       if (selectedAccount.account.managedByHardwareWallet) {
         enqueueSnackbar('Please approve the transaction on your ledger device');
+        result = await buildAndSubmitTransaction({
+          accountId,
+          addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
+          blockVersion: offlineModeEnabled ? blockVersion : undefined,
+          feeValue: fee,
+          tombstoneBlock: offlineModeEnabled ? offlineTombstone : undefined,
+        });
+        dispatch(setLoadingAction(false));
+        if (result === null || result === undefined) {
+          throw new Error(t('sendBuildError'));
+        }
+
+        enqueueSnackbar(t('sendSuccess'), {
+          variant: 'success',
+        });
+        return;
       }
 
       result = await buildTransaction({

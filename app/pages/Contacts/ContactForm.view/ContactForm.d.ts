@@ -8,6 +8,7 @@ export interface ContactFormProps {
   id?: string;
   isFavorite?: boolean;
   recipientAddress?: string;
+  isNew?: boolean;
   onClickCancel: () => void;
   onClickDelete?: () => void;
   onClickSaved: (x: Contact) => void;

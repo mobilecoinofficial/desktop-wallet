@@ -49,7 +49,7 @@ export const ContactsPage: FC = (): JSX.Element => {
     let assignedAddress;
     // fog accounts can not use assigned subaddresses for contacts
     // TODO change this to fog account, not just hardware wallet
-    if (!selectedAccount.account.managedByHardwareWallet) {
+    if (!selectedAccount.account.managedByHardwareWallet && !selectedAccount.account.fogEnabled) {
       const result = await assignAddressForAccount(
         selectedAccount.account.accountId || String(Math.random())
       );
@@ -120,7 +120,11 @@ export const ContactsPage: FC = (): JSX.Element => {
 
     case PAGE.ADD:
       return (
-        <ContactForm onClickCancel={() => setStatus(PAGE.LIST)} onClickSaved={addNewContact} />
+        <ContactForm
+          isNew
+          onClickCancel={() => setStatus(PAGE.LIST)}
+          onClickSaved={addNewContact}
+        />
       );
 
     case PAGE.EDIT:

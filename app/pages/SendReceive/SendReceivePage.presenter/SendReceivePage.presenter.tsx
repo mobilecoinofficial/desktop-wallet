@@ -215,7 +215,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
           throw new Error(t('sendBuildError'));
         }
 
-        if (formIsChecked) {
+        if (isChecked) {
           saveToContacts();
         }
 

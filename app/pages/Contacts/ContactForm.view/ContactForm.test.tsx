@@ -93,6 +93,7 @@ describe('Contact form', () => {
         color="#FF0000"
         recipientAddress=""
         isFavorite={false}
+        isNew
         onClickCancel={handleClick1}
         onClickDelete={handleClick2}
         onClickSaved={handleClick3}
@@ -158,6 +159,7 @@ describe('Contact form', () => {
         assignedAddress=""
         color=""
         isFavorite={false}
+        isNew
         onClickCancel={handleClick1}
         onClickDelete={handleClick2}
         onClickSaved={handleClick3}

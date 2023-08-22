@@ -108,12 +108,18 @@ export const SendReceivePage: FC = (): JSX.Element => {
       return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
     };
 
-    const result = await assignAddressForAccount(selectedAccount.account.accountId as StringHex);
+    let assignedAddress: string | undefined;
+
+    if (!selectedAccount.account.managedByHardwareWallet && !selectedAccount.account.fogEnabled) {
+      assignedAddress = (
+        await assignAddressForAccount(selectedAccount.account.accountId as StringHex)
+      ).address.publicAddressB58;
+    }
 
     contacts.push({
       abbreviation: formAlias[0].toUpperCase(),
       alias: formAlias,
-      assignedAddress: result.address.publicAddressB58,
+      assignedAddress,
       color: randomColor(),
       id: uuidv4(),
       isFavorite: false,
@@ -207,6 +213,10 @@ export const SendReceivePage: FC = (): JSX.Element => {
         dispatch(setLoadingAction(false));
         if (result === null || result === undefined) {
           throw new Error(t('sendBuildError'));
+        }
+
+        if (isChecked) {
+          saveToContacts();
         }
 
         enqueueSnackbar(t('sendSuccess'), {

@@ -50,7 +50,7 @@ fi
 
 # Lookup latest release if not specified
 if [ -z ${FS_VERSION} ]; then
-  FS_VERSION=$(wget -q -O- https://api.github.com/repos/mobilecoinofficial/full-service/releases/latest | jq -r '.name')
+  FS_VERSION=$(curl -L https://api.github.com/repos/mobilecoinofficial/full-service/releases/latest | jq -r '.name')
   echo "Resolved latest full-service version: ${FS_VERSION}"
 else
   echo "Using specified full-service version: ${FS_VERSION}"
@@ -87,7 +87,7 @@ mkdir -p $TEMP_DIR
 # Download file
 if [ ! -f "${TEMP_DIR}/${FILE}" ]; then
   echo "Downloading ${BASE_URL}/${FS_VERSION}/${FILE} to ${TEMP_DIR}"
-  wget -qN --show-progress -P $TEMP_DIR "${BASE_URL}/${FS_VERSION}/${FILE}"
+  curl -L "${BASE_URL}/${FS_VERSION}/${FILE}" --output ${TEMP_DIR}/${FILE}
 else
   echo "Using existing ${TEMP_DIR}/${FILE}"
 fi

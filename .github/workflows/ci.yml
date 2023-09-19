@@ -23,11 +23,19 @@ jobs:
           - target: x86_64-unknown-linux-gnu
             runner: ubuntu-latest
             os: linux
+            arch: x64
             ext: AppImage
             network: mainnet
           - target: x86_64-apple-darwin
             runner: macos-latest
             os: mac
+            arch: x64
+            ext: dmg
+            network: mainnet
+          - target: aarch64-apple-darwin
+            runner: [self-hosted, macOS, ARM64]
+            os: mac
+            arch: arm64
             ext: dmg
             network: mainnet
 
@@ -63,7 +71,7 @@ jobs:
 
     - name: Fetch and link full-service binaries for packaging
       run: |
-        ./get-full-service.sh -o ${{ matrix.os }} -n ${{ matrix.network }}
+        ./get-full-service.sh -o ${{ matrix.os }} -a ${{ matrix.arch }} -n ${{ matrix.network }}
         cp -r ./full-service-bin/${{ matrix.network }}/* ./full-service-bin/
         ls ./full-service-bin/
 

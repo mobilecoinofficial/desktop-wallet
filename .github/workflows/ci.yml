@@ -99,3 +99,12 @@ jobs:
       with:
         name: mobilecoin-desktop-${{ matrix.target }}-${{ matrix.network }}
         path: release/*.${{ matrix.ext }}
+
+    - name: Create prerelease for tagged versions
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        draft: true
+        prerelease: true
+        files: |
+          release/*.${{ matrix.ext }}

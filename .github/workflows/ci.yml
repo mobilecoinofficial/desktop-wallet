@@ -26,12 +26,14 @@ jobs:
             arch: x64
             ext: AppImage
             network: mainnet
+
           - target: x86_64-apple-darwin
             runner: macos-latest
             os: mac
             arch: x64
             ext: dmg
             network: mainnet
+
           - target: aarch64-apple-darwin
             runner: [self-hosted, macOS, ARM64]
             os: mac
@@ -55,6 +57,15 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 16
+
+    - name: Setup python@3.10 for self-hosted runners
+      # required due to issue with node-gyp@0.7 and python@3.11
+      # see: https://stackoverflow.com/questions/74715990/node-gyp-err-invalid-mode-ru-while-trying-to-load-binding-gyp
+      if: ${{ matrix.os == 'mac' && matrix.arch == 'arm64' }}
+      run: |
+        brew install python@3.10
+        python3.10 -m venv .venv
+        echo "$(pwd)/.venv/bin" >> $GITHUB_PATH
 
     - name: Configure caching
       uses: actions/cache@v3

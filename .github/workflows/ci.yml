@@ -16,7 +16,7 @@ jobs:
     permissions:
       contents: write
     env:
-      # Set full service version for binary fetch
+      # Pin full service binary version
       FULL_SERVICE_VERSION: "v2.7.0"
 
     strategy:
@@ -31,7 +31,7 @@ jobs:
             network: mainnet
 
           - target: x86_64-apple-darwin
-            runner: macos-latest
+            runner: [self-hosted, macOS, X64]
             os: mac
             arch: x64
             ext: dmg
@@ -64,7 +64,7 @@ jobs:
     - name: Setup python@3.10 for self-hosted runners
       # required due to issue with node-gyp@0.7 and python@3.11
       # see: https://stackoverflow.com/questions/74715990/node-gyp-err-invalid-mode-ru-while-trying-to-load-binding-gyp
-      if: ${{ matrix.os == 'mac' && matrix.arch == 'arm64' }}
+      if: ${{ matrix.os == 'mac' }}
       run: |
         brew install python@3.10
         python3.10 -m venv .venv

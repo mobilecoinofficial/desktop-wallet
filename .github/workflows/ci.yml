@@ -10,11 +10,14 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  # Build desktop wallet
+  # Build and package desktop wallet
   build:
     runs-on: ${{ matrix.runner }}
     permissions:
       contents: write
+    env:
+      # Set full service version for binary fetch
+      FULL_SERVICE_VERSION: "v2.7.0"
 
     strategy:
       fail-fast: false
@@ -67,7 +70,7 @@ jobs:
         python3.10 -m venv .venv
         echo "$(pwd)/.venv/bin" >> $GITHUB_PATH
 
-    - name: Configure caching
+    - name: Configure node module caching
       uses: actions/cache@v3
       with:
         key: desktop-wallet-${{ matrix.os }}-${{ github.run_id }}
@@ -75,14 +78,14 @@ jobs:
         path: |
           ./node_modules
 
-    - name: Install dependencies
+    - name: Install node dependencies
       uses: borales/actions-yarn@v4
       with:
         cmd: install
 
     - name: Fetch and link full-service binaries for packaging
       run: |
-        ./get-full-service.sh -o ${{ matrix.os }} -a ${{ matrix.arch }} -n ${{ matrix.network }}
+        ./get-full-service.sh -o ${{ matrix.os }} -a ${{ matrix.arch }} -n ${{ matrix.network }} -v ${{ env.FULL_SERVICE_VERSION }}
         cp -r ./full-service-bin/${{ matrix.network }}/* ./full-service-bin/
         ls ./full-service-bin/
 

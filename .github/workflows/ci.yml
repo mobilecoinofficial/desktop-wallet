@@ -9,3 +9,102 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+jobs:
+  # Build and package desktop wallet
+  build:
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      contents: write
+    env:
+      # Pin full service binary version
+      FULL_SERVICE_VERSION: "v2.7.0"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            runner: ubuntu-latest
+            os: linux
+            arch: x64
+            ext: AppImage
+            network: mainnet
+
+          - target: x86_64-apple-darwin
+            runner: [self-hosted, macOS, X64]
+            os: mac
+            arch: x64
+            ext: dmg
+            network: mainnet
+
+          - target: aarch64-apple-darwin
+            runner: [self-hosted, macOS, ARM64]
+            os: mac
+            arch: arm64
+            ext: dmg
+            network: mainnet
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 0
+
+    - uses: FranzDiebold/github-env-vars-action@v1.2.1
+
+    - name: Export version tag
+      run: |
+        echo "VERSION=$(git describe --dirty=+ --always --tags)" >> $GITHUB_ENV
+
+    - name: Configure node
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Setup python@3.10 for self-hosted runners
+      # required due to issue with node-gyp@0.7 and python@3.11
+      # see: https://stackoverflow.com/questions/74715990/node-gyp-err-invalid-mode-ru-while-trying-to-load-binding-gyp
+      if: ${{ matrix.os == 'mac' }}
+      run: |
+        brew install python@3.10
+        python3.10 -m venv .venv
+        echo "$(pwd)/.venv/bin" >> $GITHUB_PATH
+
+    - name: Configure node module caching
+      uses: actions/cache@v3
+      with:
+        key: desktop-wallet-${{ matrix.os }}-${{ github.run_id }}
+        restore-keys: desktop-wallet-${{ matrix.os }}
+        path: |
+          ./node_modules
+
+    - name: Install node dependencies
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: install
+
+    - name: Fetch and link full-service binaries for packaging
+      run: |
+        ./get-full-service.sh -o ${{ matrix.os }} -a ${{ matrix.arch }} -n ${{ matrix.network }} -v ${{ env.FULL_SERVICE_VERSION }}
+        cp -r ./full-service-bin/${{ matrix.network }}/* ./full-service-bin/
+        ls ./full-service-bin/
+
+    - name: Build and package app
+      uses: borales/actions-yarn@v4
+      with:
+        cmd: package-${{ matrix.os }}
+
+    - name: Upload package artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: mobilecoin-desktop-${{ matrix.target }}-${{ matrix.network }}
+        path: release/*.${{ matrix.ext }}
+
+    - name: Create prerelease for tagged versions
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        draft: true
+        prerelease: true
+        files: |
+          release/*.${{ matrix.ext }}

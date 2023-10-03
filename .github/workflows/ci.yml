@@ -17,7 +17,7 @@ jobs:
       contents: write
     env:
       # Pin full service binary version
-      FULL_SERVICE_VERSION: "v2.7.0"
+      FULL_SERVICE_VERSION: "v2.8.0-pre.0"
 
     strategy:
       fail-fast: false

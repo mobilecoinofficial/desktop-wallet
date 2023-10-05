@@ -62,12 +62,12 @@ echo "Fetching ${FS_VERSION} binaries for ${FS_OS}-${FS_ARCH}-${FS_NET}"
 case $FS_OS in
   mac)
     echo "Fetching macOS ${FS_NET} binaries"
-    FILE="${FS_VERSION}-macOS-${FS_ARCH}-${FS_NET}.tar.gz"
+    FILE="MobileCoin-${FS_VERSION}-macOS-${FS_ARCH}-${FS_NET}.tar.gz"
     ;;
 
   linux)
     echo "Fetching linux ${FS_NET} binaries"
-    FILE="${FS_VERSION}-Linux-${FS_ARCH}-${FS_NET}.tar.gz"
+    FILE="MobileCoin-${FS_VERSION}-Linux-${FS_ARCH}-${FS_NET}.tar.gz"
     ;;
 
   win)

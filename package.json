@@ -106,10 +106,10 @@
     },
     "linux": {
       "target": [
-	"tar.gz",
+	      "tar.gz",
         "AppImage",
-	"deb",
-	"rpm"
+	      "deb",
+	      "rpm"
       ],
       "category": "Development"
     },

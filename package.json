@@ -16,8 +16,8 @@
     "package": "yarn build && electron-builder build --publish never",
     "package-all": "yarn build && electron-builder build -mwl",
     "package-ci": "yarn postinstall && yarn build && electron-builder --publish always",
-    "package-mac": "yarn build && electron-builder build --mac --publish never",
-    "package-linux": "yarn build && electron-builder build --linux --publish never",
+    "package-mac": "yarn build && electron-builder build --publish never --mac",
+    "package-linux": "yarn build && electron-builder build --publish never --linux",
     "package-linux-for-updater": "yarn build && electron-builder build --linux AppImage --publish never",
     "package-win": "yarn build && electron-builder build --win --x64 --publish never",
     "postinstall": "node -r @babel/register internals/scripts/CheckNativeDep.js && electron-builder install-app-deps && yarn build-dll && opencollective-postinstall",
@@ -106,7 +106,10 @@
     },
     "linux": {
       "target": [
-        "AppImage"
+        "tar.gz",
+        "AppImage",
+        "deb",
+        "rpm"
       ],
       "category": "Development"
     },

@@ -18,6 +18,13 @@ jobs:
     env:
       # Pin full service binary version
       FULL_SERVICE_VERSION: "v2.7.0"
+      # Apple codesigning certs
+      CSC_LINK: ${{ secrets.CSC_LINK }}
+      CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+      # AppleID for notarising
+      APPLE_ID: ${{ secrets.APPLE_ID }}
+      APPLE_ID_PASSWORD: ${{ secrets.APPLE_ID_PASSWORD }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
 
     strategy:
       fail-fast: false

@@ -120,6 +120,7 @@ jobs:
         path: |
           release/MobileCoin Wallet*
           release/mobilecoin-wallet*
+          release/latest-*.yml
 
     - name: Create prerelease for tagged versions
       if: startsWith(github.ref, 'refs/tags/v')

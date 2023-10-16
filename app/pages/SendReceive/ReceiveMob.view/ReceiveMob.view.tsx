@@ -86,6 +86,7 @@ const ReceiveMob: FC<ReceiveMobProps> = ({
         <AccountCard
           account={{
             b58Code: selectedAddress,
+            fogEnabled: selectedAccount.account.fogEnabled,
           }}
           onClickCode={onClickCode}
         />

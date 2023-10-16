@@ -5,11 +5,13 @@ export interface Account {
   accountId: StringHex;
   accountHeight?: StringUInt64;
   firstBlockIndex: StringUInt64;
+  fogEnabled: boolean;
   mainAddress: StringB58;
   name: string | null;
   nextSubaddressIndex: StringUInt64;
   recoveryMode: boolean;
   viewOnly: boolean;
+  managedByHardwareWallet: boolean;
 }
 
 export interface AccountV2 {
@@ -43,6 +45,9 @@ export interface AccountV2 {
   fogEnabled: boolean;
   // A flag that indicates if this account is a watch only account.
   viewOnly: boolean;
+  /// A flag that indicates if this account's private spend key is managed by
+  /// a hardware wallet.
+  managedByHardwareWallet: boolean;
 }
 
 export interface AccountStatus {

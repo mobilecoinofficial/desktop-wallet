@@ -1,4 +1,5 @@
 import type { Account, AccountV2 } from '../../types/Account.d';
+import { FogInfo } from '../../utils/fogConstants';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 import getAccount from './getAccount';
 
@@ -8,6 +9,7 @@ type ImportAccountParams = {
   entropy: string;
   firstBlockIndex?: string;
   name: string | null;
+  fogInfo?: FogInfo;
 };
 
 type ImportAccountResult = {
@@ -22,12 +24,14 @@ const importLegacyAccount = async ({
   entropy,
   firstBlockIndex,
   name,
+  fogInfo,
 }: ImportAccountParams): Promise<ImportAccountResult> => {
   const { result, error }: AxiosFullServiceResponse<ImportAccountResultV2> = await axiosFullService(
     IMPORT_LEGACY_ACCOUNT_METHOD,
     {
       entropy,
       firstBlockIndex,
+      fogInfo,
       name,
     }
   );

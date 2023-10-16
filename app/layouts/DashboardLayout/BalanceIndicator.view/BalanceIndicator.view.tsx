@@ -11,8 +11,8 @@ import {
   MenuItem,
   ListItemIcon,
   Tooltip,
-  Link,
 } from '@material-ui/core';
+import CloudQueueIcon from '@material-ui/icons/CloudQueue';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import SyncIcon from '@material-ui/icons/Sync';
@@ -64,12 +64,16 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
   importViewOnlySync,
   isSynced,
   offlineModeEnabled,
+  syncHardwareWallet,
   viewOnly,
+  hardwareWallet,
+  fogEnabled,
 }: BalanceIndicatorProps) => {
   const classes = useStyles();
   const matches = useMediaQuery('(min-height:768px)');
   const token = useCurrentToken();
   const { t } = useTranslation('BalanceIndicator');
+  const accountTypeText = hardwareWallet ? 'Ledger' : 'view-only';
 
   return (
     <Box className={classes.item} style={matches ? {} : { padding: '0' }}>
@@ -102,22 +106,22 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         </Typography>
 
         {viewOnly && !containsUnverified && (
-          <Tooltip title="This is a view-only account. Learn more at https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts">
+          <Tooltip title={`This is a ${accountTypeText} account`}>
             <InfoOutlinedIcon style={{ marginLeft: 8 }} />
           </Tooltip>
         )}
 
         {containsUnverified && (
           <Tooltip
-            title={`The balance for this view only account may contain spent ${token.name} Please sync the account to ensure an accurate balance.`}
+            title={`The balance for this ${accountTypeText} account may contain spent ${token.name} Please sync the account to ensure an accurate balance.`}
           >
-            <Link
-              target="_blank"
-              rel="noreferrer"
-              href="https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts"
-            >
-              <InfoOutlinedIcon htmlColor={GOLD_LIGHT} style={{ marginLeft: 8 }} />
-            </Link>
+            <InfoOutlinedIcon htmlColor={GOLD_LIGHT} style={{ marginLeft: 8 }} />
+          </Tooltip>
+        )}
+
+        {fogEnabled && (
+          <Tooltip title="This account uses Fog">
+            <CloudQueueIcon style={{ marginLeft: 8 }} />
           </Tooltip>
         )}
       </Box>
@@ -142,7 +146,7 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
         </Tooltip>
       )}
 
-      {containsUnverified && (
+      {containsUnverified && !hardwareWallet && (
         <Box display="flex" justifyContent="center">
           <Tooltip title="Download account sync request file">
             <Button onClick={getViewOnlySync} name="syncViewOnlyButtonDL">
@@ -151,6 +155,16 @@ const BalanceIndicator: FC<BalanceIndicatorProps> = ({
           </Tooltip>
           <Tooltip title="Import synced account file">
             <Button onClick={importViewOnlySync} name="syncViewOnlyButtonUL">
+              <SyncIcon />
+            </Button>
+          </Tooltip>
+        </Box>
+      )}
+
+      {containsUnverified && hardwareWallet && (
+        <Box display="flex" justifyContent="center">
+          <Tooltip title="Sync hardware wallet">
+            <Button onClick={syncHardwareWallet} name="syncViewOnlyButtonUL">
               <SyncIcon />
             </Button>
           </Tooltip>

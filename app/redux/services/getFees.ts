@@ -4,5 +4,7 @@ import { store } from '../store';
 
 export const getFees = async (): Promise<void> => {
   const { networkStatus } = await fullServiceApi.getNetworkStatus();
-  store.dispatch(getFeesAction(networkStatus.fees, networkStatus.blockVersion));
+  store.dispatch(
+    getFeesAction(networkStatus.fees, networkStatus.blockVersion, networkStatus.network)
+  );
 };

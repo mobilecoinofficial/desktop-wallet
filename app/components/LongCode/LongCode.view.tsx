@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const LongCode: FC<LongCodeProps> = ({ code, codeClass, isTruncated }: LongCodeProps) => {
+const LongCode: FC<LongCodeProps> = ({ code, codeClass, isTruncated, isLong }: LongCodeProps) => {
   const classes = useStyles();
 
   // Remove the center of the code and replace with * *
@@ -50,11 +50,13 @@ const LongCode: FC<LongCodeProps> = ({ code, codeClass, isTruncated }: LongCodeP
   let nextCodeLine: JSX.Element[] = [];
   const codeLines: JSX.Element[][] = [];
 
+  const lineLength = isLong ? 18 : 11;
+
   colorCode.forEach((char, i) => {
     nextCodeLine.push(char);
     if (i === displayedCode.length - 1) {
       codeLines.push(nextCodeLine);
-    } else if (nextCodeLine.length === 11) {
+    } else if (nextCodeLine.length === lineLength) {
       codeLines.push(nextCodeLine);
       nextCodeLine = [];
     }

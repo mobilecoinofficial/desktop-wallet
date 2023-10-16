@@ -5,13 +5,14 @@ import { Box, Grid, makeStyles, Tab, Tabs } from '@material-ui/core';
 import { clipboard, ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
-import { buildUnsignedTransaction } from '../../../fullService/api';
+import { buildAndSubmitTransaction, buildUnsignedTransaction } from '../../../fullService/api';
 import { BuildUnsignedTransactionParams } from '../../../fullService/api/buildUnsignedTransaction';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { useMaxTombstone } from '../../../hooks/useMaxTombstone';
+import { setLoadingAction } from '../../../redux/actions';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { updateContacts } from '../../../redux/services';
 import { assignAddressForAccount, buildTransaction, submitTransaction } from '../../../services';
@@ -75,6 +76,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
   const [formAlias, setAlias] = useState('');
   const [formRecipientPublicAddress, setRecipientPublicAddress] = useState('');
   const [burnMenuState, setBurnMenuState] = useState<BurnMenuState>('off');
+  const dispatch = useDispatch();
 
   const networkBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.networkBlockHeight ?? 0);
   const accountBlockHeightBigInt = BigInt(selectedAccount.balanceStatus.accountBlockHeight ?? 0);
@@ -106,12 +108,18 @@ export const SendReceivePage: FC = (): JSX.Element => {
       return RANDOM_COLORS[Math.floor(RANDOM_COLORS.length * Math.random())];
     };
 
-    const result = await assignAddressForAccount(selectedAccount.account.accountId as StringHex);
+    let assignedAddress: string | undefined;
+
+    if (!selectedAccount.account.managedByHardwareWallet && !selectedAccount.account.fogEnabled) {
+      assignedAddress = (
+        await assignAddressForAccount(selectedAccount.account.accountId as StringHex)
+      ).address.publicAddressB58;
+    }
 
     contacts.push({
       abbreviation: formAlias[0].toUpperCase(),
       alias: formAlias,
-      assignedAddress: result.address.publicAddressB58,
+      assignedAddress,
       color: randomColor(),
       id: uuidv4(),
       isFavorite: false,
@@ -181,12 +189,38 @@ export const SendReceivePage: FC = (): JSX.Element => {
       tombstoneBlock: offlineTombstone,
     };
 
+    dispatch(setLoadingAction(true));
     try {
-      if (selectedAccount.account.viewOnly) {
+      if (selectedAccount.account.viewOnly && !selectedAccount.account.managedByHardwareWallet) {
         const unsignedTx = await buildUnsignedTransaction(txParams);
         const success = await ipcRenderer.invoke('save-unsigned-transaction', unsignedTx);
+        dispatch(setLoadingAction(false));
         enqueueSnackbar(success ? 'Success' : 'Failure', {
           variant: success ? 'success' : 'error',
+        });
+        return;
+      }
+
+      if (selectedAccount.account.managedByHardwareWallet) {
+        enqueueSnackbar('Please approve the transaction on your ledger device');
+        result = await buildAndSubmitTransaction({
+          accountId,
+          addressesAndAmounts: [[recipientPublicAddress, { tokenId: `${token.id}`, value }]],
+          blockVersion: offlineModeEnabled ? blockVersion : undefined,
+          feeValue: fee,
+          tombstoneBlock: offlineModeEnabled ? offlineTombstone : undefined,
+        });
+        dispatch(setLoadingAction(false));
+        if (result === null || result === undefined) {
+          throw new Error(t('sendBuildError'));
+        }
+
+        if (isChecked) {
+          saveToContacts();
+        }
+
+        enqueueSnackbar(t('sendSuccess'), {
+          variant: 'success',
         });
         return;
       }
@@ -198,6 +232,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
         feeValue: fee,
         tombstoneBlock: offlineModeEnabled ? offlineTombstone : undefined,
       });
+      dispatch(setLoadingAction(false));
 
       if (result === null || result === undefined) {
         throw new Error(t('sendBuildError'));
@@ -217,6 +252,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
       setSendingStatus(Showing.CONFIRM_FORM);
     } catch (err) {
       const errorMessage = errorToString(err);
+      dispatch(setLoadingAction(false));
       enqueueSnackbar(errorMessage, { variant: 'error' });
     }
   };

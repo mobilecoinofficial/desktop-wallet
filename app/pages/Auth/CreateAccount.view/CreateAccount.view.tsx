@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { FC } from 'react';
 
-import { Box, FormHelperText, Typography } from '@material-ui/core';
+import {
+  Box,
+  FormHelperText,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+  Tooltip,
+  Link,
+} from '@material-ui/core';
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline';
 import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
@@ -15,13 +24,65 @@ interface CreateAccountFormValues {
   submit: null;
 }
 
+type ToggleFogInputProps = {
+  onChange: (event: React.ChangeEvent) => void;
+  value: boolean;
+  title?: string;
+  description: string;
+};
+
+export const ToggleFogInput: FC<ToggleFogInputProps> = ({
+  onChange,
+  value,
+  title,
+  description,
+}: ToggleFogInputProps) => (
+  <>
+    <FormControlLabel
+      control={<Checkbox checked={value} onChange={onChange} />}
+      label={
+        <Box display="flex">
+          <Typography>{title}</Typography>
+          <Tooltip
+            interactive
+            title={
+              <Typography>
+                {description}{' '}
+                <Link
+                  href="https://mobilecoin.com/learn/explain-like-im-five/fog/"
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{ color: 'white', textDecoration: 'underline' }}
+                >
+                  Learn More
+                </Link>
+              </Typography>
+            }
+          >
+            <HelpOutlineIcon style={{ color: '#878993', marginLeft: 4 }} />
+          </Tooltip>
+        </Box>
+      }
+    />
+  </>
+);
+
+ToggleFogInput.defaultProps = {
+  title: 'Enable Fog',
+};
+
 const CreateAccountView: FC<CreateAccountViewProps> = ({
   onClickCreate,
 }: CreateAccountViewProps) => {
   const { t } = useTranslation('CreateAccount');
+  const [isFogEnabled, setIsFogEnabled] = useState(true);
 
   const handleOnSubmit = async (values: CreateAccountFormValues) =>
-    onClickCreate(values.accountName);
+    onClickCreate(values.accountName, isFogEnabled);
+
+  const handleChangeFog = () => {
+    setIsFogEnabled(!isFogEnabled);
+  };
 
   return (
     <>
@@ -37,6 +98,7 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
       <Formik
         initialValues={{
           accountName: '',
+          fogEnabled: true,
           submit: null,
         }}
         onSubmit={handleOnSubmit}
@@ -52,6 +114,11 @@ const CreateAccountView: FC<CreateAccountViewProps> = ({
               fullWidth
               label={t('nameLabel')}
               name="accountName"
+            />
+            <ToggleFogInput
+              value={isFogEnabled}
+              onChange={handleChangeFog}
+              description="Creating this account with fog enabled makes it possible to import the account to Moby on you mobile phone."
             />
             {errors.submit && (
               <Box mt={3}>

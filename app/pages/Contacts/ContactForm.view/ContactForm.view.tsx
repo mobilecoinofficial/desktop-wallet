@@ -93,6 +93,7 @@ const ContactForm: FC<ContactFormProps> = ({
   color,
   isFavorite,
   recipientAddress,
+  isNew,
   onClickCancel,
   onClickDelete,
   onClickSaved,
@@ -103,7 +104,6 @@ const ContactForm: FC<ContactFormProps> = ({
   const [showPicker, setShowPicker] = useState(false);
 
   const { t } = useTranslation('ContactForm');
-  const isNew = !assignedAddress;
 
   return (
     <Container className={classes.cardContainer} maxWidth="sm">

@@ -1,12 +1,13 @@
 import * as fullServiceApi from '../../fullService/api';
 import { errorToString } from '../../utils/errorHandler';
+import { FogInfo } from '../../utils/fogConstants';
 import { createAccountAction } from '../actions';
 import { store } from '../store';
 
-export const createAccount = async (name: string): Promise<void> => {
+export const createAccount = async (name: string, fogInfo?: FogInfo): Promise<void> => {
   try {
     // Attempt create
-    const { account } = await fullServiceApi.createAccount({ name });
+    const { account } = await fullServiceApi.createAccount({ fogInfo, name });
     const { accountId } = account;
 
     const { walletStatus } = await fullServiceApi.getWalletStatus();

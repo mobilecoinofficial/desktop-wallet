@@ -30,10 +30,12 @@ import * as localStore from '../../../utils/LocalStore';
 import { validatePassphrase } from '../../../utils/authentication';
 import { isHex64 } from '../../../utils/bip39Functions';
 import { errorToString } from '../../../utils/errorHandler';
+import { getFogInfo } from '../../../utils/fogConstants';
 import { getKeychainAccounts } from '../../../utils/keytarService';
 import { CreateAccountView } from '../CreateAccount.view';
 import { CreateWalletView } from '../CreateWallet.view';
 import { ImportAccountView } from '../ImportAccount.view';
+import { ImportLedgerAccountView } from '../ImportLedgerAcoount.view/ImportLedgerAccount.view';
 import { ImportViewOnlyAccountView } from '../ImportViewOnlyAccount.view';
 import { UnlockWalletView } from '../UnlockWallet.view';
 
@@ -78,21 +80,19 @@ const untilFullServiceRuns = async () => {
 /* eslint-enable no-await-in-loop */
 
 export const AuthPage: FC = (): JSX.Element => {
-  const { addingAccount, isAuthenticated, selectedAccount, encryptedPassword } = useSelector(
-    (state: ReduxStoreState) => state
-  );
+  const { addingAccount, isAuthenticated, selectedAccount, encryptedPassword, network } =
+    useSelector((state: ReduxStoreState) => state);
   const classes = useStyles();
   const [selectedView, setView] = useState(1);
   const { t } = useTranslation('AuthPage');
   const [walletDbExists, setWalletDbExists] = useState(localStore.getWalletDbExists());
   const [fullServiceIsRunning, setFullServiceIsRunning] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [accountIds, setAccountIds] = useState([]);
+  const [accountIds, setAccountIds] = useState<string[]>([]);
   const { enqueueSnackbar } = useSnackbar();
 
   const offlineStart = localStore.getOfflineStart();
   useEffect(() => {
-    const controller = new AbortController();
     (async () => {
       try {
         const accounts = await getAllAccounts();
@@ -106,8 +106,6 @@ export const AuthPage: FC = (): JSX.Element => {
         setLoading(false);
       }
     })();
-
-    return () => controller?.abort();
   }, []);
 
   if (loading) {
@@ -236,9 +234,19 @@ export const AuthPage: FC = (): JSX.Element => {
     );
   }
 
-  const onClickCreate = async (accountName: string) => {
+  const onClickCreate = async (accountName: string, isFogEnabled: boolean) => {
     try {
-      await createAccount(accountName);
+      if (!network) {
+        throw new Error('consensus network not set');
+      }
+
+      const fogInfo = isFogEnabled
+        ? getFogInfo({
+            application: 'MOBILECOIN',
+            network,
+          })
+        : undefined;
+      await createAccount(accountName, fogInfo);
     } catch (err) {
       const errorMessage = errorToString(err);
       enqueueSnackbar(errorMessage, { variant: 'error' });
@@ -246,11 +254,27 @@ export const AuthPage: FC = (): JSX.Element => {
   };
 
   // TODO: improve error handling
-  const onClickImport = async (accountName: string, entropy: string) => {
+  const onClickImport = async (
+    accountName: string,
+    entropy: string,
+    fogEnabled: boolean,
+    fogType: 'MOBILECOIN' | 'SIGNAL'
+  ) => {
+    if (!network) {
+      throw new Error('consensus network not set');
+    }
+
+    const fogInfo = fogEnabled
+      ? getFogInfo({
+          application: fogType,
+          network,
+        })
+      : undefined;
+
     if (isHex64(entropy)) {
-      await importLegacyAccount(accountName, entropy);
+      await importLegacyAccount(accountName, entropy, fogInfo);
     } else {
-      await importAccount(accountName, entropy);
+      await importAccount(accountName, entropy, fogInfo);
     }
   };
 
@@ -264,6 +288,7 @@ export const AuthPage: FC = (): JSX.Element => {
           {selectedView === 1 && <CreateAccountView onClickCreate={onClickCreate} />}
           {selectedView === 2 && <ImportAccountView onClickImport={onClickImport} />}
           {selectedView === 3 && <ImportViewOnlyAccountView />}
+          {selectedView === 4 && <ImportLedgerAccountView />}
           <Box my={3}>
             <Divider />
           </Box>
@@ -271,6 +296,7 @@ export const AuthPage: FC = (): JSX.Element => {
           {optButton(1, t('createInstead'))}
           {optButton(2, t('importInstead'))}
           {!offlineStart && optButton(3, 'Import View Only Account')}
+          {!offlineStart && optButton(4, 'Import Account From Ledger')}
           {addingAccount ? <Button onClick={onClickCancel}>Cancel</Button> : <></>}
         </Card>
       </Container>

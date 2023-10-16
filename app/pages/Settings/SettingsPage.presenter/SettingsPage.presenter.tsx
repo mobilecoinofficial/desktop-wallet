@@ -176,12 +176,6 @@ export const SettingsPage: FC = (): JSX.Element => {
       path: CHANGE_PIN,
     },
     {
-      Icon: KeyIcon,
-      handleOnClick,
-      label: 'retrieveEntropy',
-      path: RETRIEVE_ENTROPY,
-    },
-    {
       Icon: OfficialDocumentIcon,
       handleOnClick,
       label: 'terms',
@@ -200,6 +194,15 @@ export const SettingsPage: FC = (): JSX.Element => {
       path: CONFIGURE_FULL_SERVICE,
     },
   ];
+
+  if (!selectedAccount.account.managedByHardwareWallet) {
+    settingsOptionsList.push({
+      Icon: KeyIcon,
+      handleOnClick,
+      label: 'retrieveEntropy',
+      path: RETRIEVE_ENTROPY,
+    });
+  }
 
   const onClickBack = () => setShowing(SETTINGS);
 

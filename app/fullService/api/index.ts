@@ -1,4 +1,5 @@
 export { default as assignAddressForAccount } from './assignAddressForAccount';
+export { default as buildAndSubmitTransaction } from './buildAndSubmitTransaction';
 export { default as buildGiftCode } from './buildGiftCode';
 export { default as buildTransaction } from './buildTransaction';
 export { default as buildBurnTransaction } from './buildBurnTransaction';

@@ -1,15 +1,19 @@
 import type { Account, AccountV2 } from '../../types/Account.d';
+import { FogInfo } from '../../utils/fogConstants';
 import axiosFullService, { AxiosFullServiceResponse } from '../axiosFullService';
 import getAccount from './getAccount';
 
 const IMPORT_VIEW_ONLY_ACCOUNT_METHOD = 'import_view_only_account';
+const IMPORT_VIEW_ONLY_ACCOUNT_LEDGER_METHOD = 'import_view_only_account_from_hardware_wallet';
 
 export type ImportViewOnlyAccountParams = {
   firstBlockIndex?: string;
   name?: string;
   nextSubaddressIndex?: string;
-  spendPublicKey: string;
-  viewPrivateKey: string;
+  spendPublicKey?: string;
+  viewPrivateKey?: string;
+  fogInfo?: FogInfo;
+  useLedger?: boolean;
 };
 
 type ImportViewOnlyAccountResult = {
@@ -26,10 +30,16 @@ const importViewOnlyAccount = async ({
   nextSubaddressIndex,
   spendPublicKey,
   viewPrivateKey,
+  fogInfo,
+  useLedger,
 }: ImportViewOnlyAccountParams): Promise<ImportViewOnlyAccountResult> => {
+  const method = useLedger
+    ? IMPORT_VIEW_ONLY_ACCOUNT_LEDGER_METHOD
+    : IMPORT_VIEW_ONLY_ACCOUNT_METHOD;
   const { result, error }: AxiosFullServiceResponse<ImportViewOnlyAccountResultV2> =
-    await axiosFullService(IMPORT_VIEW_ONLY_ACCOUNT_METHOD, {
+    await axiosFullService(method, {
       firstBlockIndex,
+      fogInfo,
       name,
       nextSubaddressIndex,
       spendPublicKey,

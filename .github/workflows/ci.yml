@@ -23,23 +23,35 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - target: x86_64-unknown-linux-gnu
-            runner: ubuntu-latest
+          - runner: ubuntu-latest
             os: linux
             arch: x64
             network: mainnet
 
-          - target: x86_64-apple-darwin
-            runner: [self-hosted, macOS, X64]
+          - runner: [self-hosted, macOS, X64]
             os: mac
             arch: x64
             network: mainnet
 
-          - target: aarch64-apple-darwin
-            runner: [self-hosted, macOS, ARM64]
+          - runner: [self-hosted, macOS, ARM64]
             os: mac
             arch: arm64
             network: mainnet
+
+          - runner: ubuntu-latest
+            os: linux
+            arch: x64
+            network: testnet
+
+          - runner: [self-hosted, macOS, X64]
+            os: mac
+            arch: x64
+            network: testnet
+
+          - runner: [self-hosted, macOS, ARM64]
+            os: mac
+            arch: arm64
+            network: testnet
 
     steps:
     - uses: actions/checkout@v2
@@ -72,6 +84,7 @@ jobs:
       with:
         key: desktop-wallet-${{ matrix.os }}-${{ github.run_id }}
         restore-keys: desktop-wallet-${{ matrix.os }}
+        lookup-only: ${{ matrix.network == 'testnet' }}
         path: |
           ./node_modules
 
@@ -86,6 +99,16 @@ jobs:
         cp -r ./full-service-bin/${{ matrix.network }}/* ./full-service-bin/
         ls ./full-service-bin/
 
+    - name: Patch testnet build names and disable autoupdate
+      if: ${{ matrix.network == 'testnet' }}
+      run: |
+        sed -i.bkp -e's/MobileCoin Wallet/MobileCoin Wallet TestNet/g' package.json
+        sed -i.bkp -e's/mobilecoin-wallet/mobilecoin-wallet-testnet/g' package.json
+        sed -i.bkp -e's/MobileCoin Wallet/MobileCoin Wallet TestNet/g' app/package.json
+        sed -i.bkp -e's/mobilecoin-wallet/mobilecoin-wallet-testnet/g' app/package.json
+        sed -i.bkp -e's/new AppUpdater();//g' app/main.dev.ts
+        yarn postinstall
+
     - name: Build and package app
       uses: borales/actions-yarn@v4
       with:
@@ -94,10 +117,11 @@ jobs:
     - name: Upload package artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: mobilecoin-desktop-${{ matrix.target }}-${{ matrix.network }}
+        name: mobilecoin-desktop-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.network }}
         path: |
           release/MobileCoin Wallet*
           release/mobilecoin-wallet*
+          release/latest-*.yml
 
     - name: Create prerelease for tagged versions
       if: startsWith(github.ref, 'refs/tags/v')

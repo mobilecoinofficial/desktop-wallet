@@ -2,8 +2,8 @@ name: Build Desktop Wallet
 
 on:
   push:
-    branches: [ main, develop ]
-    tags: [ 'v*' ]
+    branches: [main, develop]
+    tags: ['v*']
   pull_request:
 
 env:
@@ -17,7 +17,7 @@ jobs:
       contents: write
     env:
       # Pin full service binary version
-      FULL_SERVICE_VERSION: "v2.8.0"
+      FULL_SERVICE_VERSION: 'v2.8.0'
 
     strategy:
       fail-fast: false
@@ -54,82 +54,81 @@ jobs:
             network: testnet
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-        fetch-depth: 0
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
 
-    - uses: FranzDiebold/github-env-vars-action@v1.2.1
+      - uses: FranzDiebold/github-env-vars-action@v1.2.1
 
-    - name: Export version tag
-      run: |
-        echo "VERSION=$(git describe --dirty=+ --always --tags)" >> $GITHUB_ENV
+      - name: Export version tag
+        run: |
+          echo "VERSION=$(git describe --dirty=+ --always --tags)" >> $GITHUB_ENV
 
-    - name: Configure node
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16
+      - name: Configure node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
-    - name: Setup python@3.10 for self-hosted runners
-      # required due to issue with node-gyp@0.7 and python@3.11
-      # see: https://stackoverflow.com/questions/74715990/node-gyp-err-invalid-mode-ru-while-trying-to-load-binding-gyp
-      if: ${{ matrix.os == 'mac' }}
-      run: |
-        brew install python@3.10
-        python3.10 -m venv .venv
-        echo "$(pwd)/.venv/bin" >> $GITHUB_PATH
+      - name: Setup python@3.10 for self-hosted runners
+        # required due to issue with node-gyp@0.7 and python@3.11
+        # see: https://stackoverflow.com/questions/74715990/node-gyp-err-invalid-mode-ru-while-trying-to-load-binding-gyp
+        if: ${{ matrix.os == 'mac' }}
+        run: |
+          brew install python@3.10
+          python3.10 -m venv .venv
+          echo "$(pwd)/.venv/bin" >> $GITHUB_PATH
 
-    - name: Configure node module caching
-      uses: actions/cache@v3
-      with:
-        key: desktop-wallet-${{ matrix.os }}-${{ github.run_id }}
-        restore-keys: desktop-wallet-${{ matrix.os }}
-        lookup-only: ${{ matrix.network == 'testnet' }}
-        path: |
-          ./node_modules
+      - name: Configure node module caching
+        uses: actions/cache@v3
+        with:
+          key: desktop-wallet-${{ matrix.os }}-${{ github.run_id }}
+          restore-keys: desktop-wallet-${{ matrix.os }}
+          lookup-only: ${{ matrix.network == 'testnet' }}
+          path: |
+            ./node_modules
 
-    - name: Install node dependencies
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: install
+      - name: Install node dependencies
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install
 
-    - name: Fetch and link full-service binaries for packaging
-      run: |
-        ./get-full-service.sh -o ${{ matrix.os }} -a ${{ matrix.arch }} -n ${{ matrix.network }} -v ${{ env.FULL_SERVICE_VERSION }}
-        cp -r ./full-service-bin/${{ matrix.network }}/* ./full-service-bin/
-        ls ./full-service-bin/
+      - name: Fetch and link full-service binaries for packaging
+        run: |
+          ./get-full-service.sh -o ${{ matrix.os }} -a ${{ matrix.arch }} -n ${{ matrix.network }} -v ${{ env.FULL_SERVICE_VERSION }}
+          cp -r ./full-service-bin/${{ matrix.network }}/* ./full-service-bin/
+          ls ./full-service-bin/
 
-    - name: Patch testnet build names and disable autoupdate
-      if: ${{ matrix.network == 'testnet' }}
-      run: |
-        sed -i.bkp -e's/MobileCoin Wallet/MobileCoin Wallet TestNet/g' package.json
-        sed -i.bkp -e's/mobilecoin-wallet/mobilecoin-wallet-testnet/g' package.json
-        sed -i.bkp -e's/MobileCoin Wallet/MobileCoin Wallet TestNet/g' app/package.json
-        sed -i.bkp -e's/mobilecoin-wallet/mobilecoin-wallet-testnet/g' app/package.json
-        sed -i.bkp -e's/new AppUpdater();//g' app/main.dev.ts
-        yarn postinstall
+      - name: Patch testnet build names and disable autoupdate
+        if: ${{ matrix.network == 'testnet' }}
+        run: |
+          sed -i.bkp -e's/MobileCoin Wallet/MobileCoin Wallet TestNet/g' package.json
+          sed -i.bkp -e's/mobilecoin-wallet/mobilecoin-wallet-testnet/g' package.json
+          sed -i.bkp -e's/MobileCoin Wallet/MobileCoin Wallet TestNet/g' app/package.json
+          sed -i.bkp -e's/mobilecoin-wallet/mobilecoin-wallet-testnet/g' app/package.json
+          sed -i.bkp -e's/new AppUpdater();//g' app/main.dev.ts
+          yarn postinstall
 
-    - name: Build and package app
-      uses: borales/actions-yarn@v4
-      with:
-        cmd: package-${{ matrix.os }}
+      - name: Build and package app
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: package-${{ matrix.os }}
 
-    - name: Upload package artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: mobilecoin-desktop-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.network }}
-        path: |
-          release/MobileCoin Wallet*
-          release/mobilecoin-wallet*
-          release/latest-*.yml
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: mobilecoin-desktop-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.network }}
+          path: |
+            release/MobileCoin Wallet*
+            release/mobilecoin-wallet*
+            release/latest-*.yml
 
-    - name: Create prerelease for tagged versions
-      if: startsWith(github.ref, 'refs/tags/v')
-      uses: softprops/action-gh-release@v1
-      with:
-        draft: true
-        prerelease: true
-        files: |
-          release/MobileCoin Wallet*
-          release/mobilecoin-wallet*
-
+      - name: Create prerelease for tagged versions
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          prerelease: true
+          files: |
+            release/MobileCoin Wallet*
+            release/mobilecoin-wallet*

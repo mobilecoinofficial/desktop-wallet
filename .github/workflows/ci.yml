@@ -139,3 +139,13 @@ jobs:
           files: |
             release/MobileCoin Wallet*
             release/mobilecoin-wallet*
+
+      - name: Attach self-update file for x64 mainnet builds
+        # This is only enabled for x64 builds as both mac files have the same name
+        if: startsWith(github.ref, 'refs/tags/v') && ${{ matrix.network == 'mainnet' && matrix.arch == 'x64' }}
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          prerelease: true
+          files: |
+            release/latest-*.yml

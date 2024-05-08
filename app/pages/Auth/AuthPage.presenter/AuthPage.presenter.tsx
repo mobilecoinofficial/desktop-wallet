@@ -65,13 +65,27 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 /* eslint-disable no-await-in-loop */
-const untilFullServiceRuns = async () => {
+const untilFullServiceRuns = async (enqueueSnackbar, closeSnackbar) => {
   for (let i = 0; i < 25; i++) {
     try {
       await getAllAccounts();
       return true;
     } catch (e) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const estr = errorToString(e);
+      // On certain upgrades, full-service has started, but won't respond to requests while it
+      // resyncs the wallet db from the ledger.
+      // keep the user informed of the progress, while waiting for
+      // full-service to be ready for normal operation.
+      if (estr.includes('Resync in progress')) {
+        i = 0;
+        // rightmost 14 characters of response from full-service is (%xx complete)
+        const msg = `Wallet DB being upgraded, please standby ${estr.slice(-14)}`;
+        const key = enqueueSnackbar(msg, { persist: true, variant: 'warning' });
+        await new Promise((resolve) => setTimeout(resolve, 30000));
+        closeSnackbar(key);
+      } else {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
     }
   }
 
@@ -89,7 +103,7 @@ export const AuthPage: FC = (): JSX.Element => {
   const [fullServiceIsRunning, setFullServiceIsRunning] = useState(false);
   const [loading, setLoading] = useState(true);
   const [accountIds, setAccountIds] = useState<string[]>([]);
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const offlineStart = localStore.getOfflineStart();
   useEffect(() => {
@@ -139,7 +153,7 @@ export const AuthPage: FC = (): JSX.Element => {
         try {
           await validatePassphrase(password, encryptedPassword);
           await ipcRenderer.invoke('start-full-service', password, null, startInOfflineMode);
-          await untilFullServiceRuns();
+          await untilFullServiceRuns(enqueueSnackbar, closeSnackbar);
           const accounts = await getAllAccounts();
           setAccountIds(accounts.accountIds);
           await unlockWallet(password, startInOfflineMode);

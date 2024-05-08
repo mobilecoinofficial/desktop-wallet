@@ -78,6 +78,7 @@ const untilFullServiceRuns = async (enqueueSnackbar, closeSnackbar) => {
       // full-service to be ready for normal operation.
       if (estr.includes('Resync in progress')) {
         i = 0;
+        // rightmost 14 characters of response from full-service is (%xx complete)
         const msg = `Wallet DB being upgraded, please standby ${estr.slice(-14)}`;
         const key = enqueueSnackbar(msg, { persist: true, variant: 'warning' });
         await new Promise((resolve) => setTimeout(resolve, 30000));

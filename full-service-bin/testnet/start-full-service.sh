@@ -22,7 +22,7 @@ mkdir -p "${WALLET_DB_DIR}"
 
 echo "Starting full-service with ${LEDGER_DB_DIR} and ${WALLET_DB_DIR} and ${WALLET_DB_FILE}"
 
-RUST_LOG=debug,mc_connection=error,mc_ledger_sync=error ./full-service \
+RUST_LOG=info,mc_connection=error,mc_ledger_sync=info ./full-service \
         --ledger-db "${LEDGER_DB_DIR}" \
         --wallet-db "${WALLET_DB_FILE}" \
         --chain-id "test" \

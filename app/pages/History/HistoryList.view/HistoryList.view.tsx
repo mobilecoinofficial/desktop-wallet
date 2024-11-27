@@ -19,12 +19,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const HistoryList: FC<HistoryListProps> = ({
   transactionLogsList,
+  firstToShow,
+  setFirstToShow,
+  selectedTabIndex,
+  setSelectedTabIndex,
   onTransactionClick,
 }: HistoryListProps) => {
   const classes = useStyles();
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [dataToShow, setDataToShow] = useState(transactionLogsList);
-  const [firstToShow, setFirstToShow] = useState(0);
 
   const pageBack = () => setFirstToShow(firstToShow - HISTORY_PAGE_SIZE);
   const pageForward = () => setFirstToShow(firstToShow + HISTORY_PAGE_SIZE);

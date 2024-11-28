@@ -416,6 +416,23 @@ exports[`ConfigureFullServiceView component render ConfigureFullServiceView rend
             undefined
           </p>
         </div>
+        <div
+          class="MuiBox-root MuiBox-root-30"
+        />
+        <p
+          class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextPrimary"
+        >
+          Full-Serice Logs Path
+        </p>
+        <div
+          style="cursor: pointer;"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body2 MuiTypography-colorTextSecondary"
+          >
+            /tmp
+          </p>
+        </div>
       </div>
     </div>
   </div>

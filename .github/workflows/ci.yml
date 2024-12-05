@@ -35,12 +35,12 @@ jobs:
             arch: x64
             network: mainnet
 
-          - runner: [self-hosted, macOS, X64]
-            os: mac
-            arch: x64
-            network: mainnet
+          # - runner: [self-hosted, macOS, X64]
+          #   os: mac
+          #   arch: x64
+          #   network: mainnet
 
-          - runner: [self-hosted, macOS, ARM64]
+          - runner: macos-latest
             os: mac
             arch: arm64
             network: mainnet
@@ -50,12 +50,12 @@ jobs:
             arch: x64
             network: testnet
 
-          - runner: [self-hosted, macOS, X64]
-            os: mac
-            arch: x64
-            network: testnet
+          # - runner: [self-hosted, macOS, X64]
+          #   os: mac
+          #   arch: x64
+          #   network: testnet
 
-          - runner: [self-hosted, macOS, ARM64]
+          - runner: macos-latest
             os: mac
             arch: arm64
             network: testnet

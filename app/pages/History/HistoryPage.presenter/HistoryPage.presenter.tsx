@@ -26,6 +26,8 @@ export const HistoryPage: FC = (): JSX.Element => {
   const [currentTransactionLog, setCurrentTransaction] = useState({} as TransactionLog);
   const [txoValidations, setTxoValidations] = useState({});
   const [showing, setShowing] = useState(HISTORY);
+  const [firstToShow, setFirstToShow] = useState(0);
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const { t } = useTranslation('HistoryView');
   const { enqueueSnackbar } = useSnackbar();
   const logs = useTransactionLogs();
@@ -98,6 +100,10 @@ export const HistoryPage: FC = (): JSX.Element => {
       return (
         <HistoryList
           transactionLogsList={logs}
+          firstToShow={firstToShow}
+          setFirstToShow={setFirstToShow}
+          selectedTabIndex={selectedTabIndex}
+          setSelectedTabIndex={setSelectedTabIndex}
           onTransactionClick={(transactionLog) => {
             setCurrentTransaction(transactionLog);
             setShowing(DETAILS);

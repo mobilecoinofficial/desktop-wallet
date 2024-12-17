@@ -11,35 +11,98 @@ import '../../../testUtils/i18nForTests';
 import { HistoryList } from './HistoryList.view';
 
 describe('History list', () => {
-  test('displays TXOs according to selection', () => {
+  const testTransactionLogs = [
+    {
+      assignedAddressId: 'XYZABC123456',
+      contact: undefined,
+      direction: 'tx_direction_sent',
+      finalizedBlockIndex: '123456',
+      recipientAddressId: null,
+      tokenId: 0,
+      transactionLogId: '123456',
+      value: '220960000000',
+    } as TransactionLog,
+    {
+      assignedAddressId: 'LMNTARYWATSON',
+      contact: undefined,
+      direction: 'tx_direction_received',
+      finalizedBlockIndex: '345678',
+      recipientAddressId: '101010101010101',
+      tokenId: 0,
+      transactionLogId: '789012',
+      value: '31415926',
+    } as TransactionLog,
+  ];
+
+  test('displays TXOs according to selection = ALL', () => {
     const handleClick = jest.fn();
 
     const { container } = render(
       <Provider store={store}>
         <HistoryList
-          transactionLogsList={[
-            {
-              assignedAddressId: 'XYZABC123456',
-              contact: undefined,
-              direction: 'tx_direction_sent',
-              finalizedBlockIndex: '123456',
-              recipientAddressId: null,
-              tokenId: 0,
-              transactionLogId: '123456',
-              value: '220960000000',
-            } as TransactionLog,
-            {
-              assignedAddressId: 'LMNTARYWATSON',
-              contact: undefined,
-              direction: 'tx_direction_received',
-              finalizedBlockIndex: '345678',
-              recipientAddressId: '101010101010101',
-              tokenId: 0,
-              transactionLogId: '789012',
-              value: '31415926',
-            } as TransactionLog,
-          ]}
+          transactionLogsList={testTransactionLogs}
+          firstToShow={0}
+          setFirstToShow={jest.fn()}
+          selectedTabIndex={0}
+          setSelectedTabIndex={jest.fn()}
           onTransactionClick={handleClick}
+        />
+      </Provider>
+    );
+    expect(container.innerHTML.includes('-0.220960000000')).toBeTruthy();
+    expect(container.innerHTML.includes('+0.000031415926')).toBeTruthy();
+  });
+
+  test('displays TXOs according to selection = Sent', () => {
+    const { container } = render(
+      <Provider store={store}>
+        <HistoryList
+          transactionLogsList={testTransactionLogs}
+          firstToShow={0}
+          setFirstToShow={jest.fn()}
+          selectedTabIndex={1}
+          setSelectedTabIndex={jest.fn()}
+          onTransactionClick={jest.fn()}
+        />
+      </Provider>
+    );
+    expect(container.innerHTML.includes('-0.220960000000')).toBeTruthy();
+    expect(container.innerHTML.includes('+0.000031415926')).toBeFalsy();
+  });
+
+  test('displays TXOs according to selection = Received', () => {
+    const { container } = render(
+      <Provider store={store}>
+        <HistoryList
+          transactionLogsList={testTransactionLogs}
+          firstToShow={0}
+          setFirstToShow={jest.fn()}
+          selectedTabIndex={2}
+          setSelectedTabIndex={jest.fn()}
+          onTransactionClick={jest.fn()}
+        />
+      </Provider>
+    );
+    expect(container.innerHTML.includes('-0.220960000000')).toBeFalsy();
+    expect(container.innerHTML.includes('+0.000031415926')).toBeTruthy();
+  });
+
+  test('tab selection changes as it should', () => {
+    let tabIndex = 0;
+
+    const setSelectedTabIndex = (value: number) => {
+      tabIndex = value;
+    };
+
+    const { container } = render(
+      <Provider store={store}>
+        <HistoryList
+          transactionLogsList={testTransactionLogs}
+          firstToShow={0}
+          setFirstToShow={jest.fn()}
+          selectedTabIndex={tabIndex}
+          setSelectedTabIndex={setSelectedTabIndex}
+          onTransactionClick={jest.fn()}
         />
       </Provider>
     );
@@ -48,19 +111,13 @@ describe('History list', () => {
     const showSent = container.querySelector('[id="show-sent"]') as HTMLInputElement;
     const showReceived = container.querySelector('[id="show-received"]') as HTMLInputElement;
 
-    expect(container.innerHTML.includes('-0.220960000000')).toBeTruthy();
-    expect(container.innerHTML.includes('+0.000031415926')).toBeTruthy();
-
     userEvent.click(showSent);
-    expect(container.innerHTML.includes('-0.220960000000')).toBeTruthy();
-    expect(container.innerHTML.includes('+0.000031415926')).toBeFalsy();
+    expect(tabIndex).toBe(1);
 
     userEvent.click(showReceived);
-    expect(container.innerHTML.includes('-0.220960000000')).toBeFalsy();
-    expect(container.innerHTML.includes('+0.000031415926')).toBeTruthy();
+    expect(tabIndex).toBe(2);
 
     userEvent.click(showAll);
-    expect(container.innerHTML.includes('-0.220960000000')).toBeTruthy();
-    expect(container.innerHTML.includes('+0.000031415926')).toBeTruthy();
+    expect(tabIndex).toBe(0);
   });
 });

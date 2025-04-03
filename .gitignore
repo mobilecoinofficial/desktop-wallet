@@ -56,10 +56,12 @@ full-service-bin/*/*.css
 full-service-bin/*/full-service
 full-service-bin/*/transaction-signer
 full-service-bin/*/validator-service
+full-service-bin/*/signer
+full-service-bin/*/signer-service
 full-service-bin/*.css
 full-service-bin/full-service
 full-service-bin/transaction-signer
 full-service-bin/validator-service
 full-service-bin/*.sh
-full-service-bin/mirror/
+full-service-bin/*/mirror/
 *.tar.gz

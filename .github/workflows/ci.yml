@@ -122,7 +122,7 @@ jobs:
           cmd: package-${{ matrix.os }}
 
       - name: Upload package artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mobilecoin-desktop-${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.network }}
           path: |

@@ -103,7 +103,8 @@ jobs:
       - name: Fetch and link full-service binaries for packaging
         run: |
           ./get-full-service.sh -o ${{ matrix.os }} -a ${{ matrix.arch }} -n ${{ matrix.network }} -v ${{ env.FULL_SERVICE_VERSION }}
-          cp -r ./full-service-bin/${{ matrix.network }}/* ./full-service-bin/
+          cp ./full-service-bin/${{ matrix.network }}/* ./full-service-bin/
+          cp ./full-service-bin/${{ matrix.network }}-${{ env.FULL_SERVICE_VERSION }}-download/{*.css,full-service} ./full-service-bin/
           ls ./full-service-bin/
 
       - name: Patch testnet build names and disable autoupdate

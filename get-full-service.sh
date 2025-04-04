@@ -93,5 +93,6 @@ else
 fi
 
 # Unpack to binary directory
-echo "Extracting ${FILE} to ./full-service-bin/${FS_NET}"
-tar -xf ${TEMP_DIR}/${FILE} --strip-components=1 -C ./full-service-bin/${FS_NET}
+echo "Extracting ${FILE} to ./full-service-bin/${FS_NET}-${FS_VERSION}-download"
+mkdir -p ./full-service-bin/${FS_NET}-${FS_VERSION}-download
+tar -xf ${TEMP_DIR}/${FILE} --strip-components=1 -C ./full-service-bin/${FS_NET}-${FS_VERSION}-download

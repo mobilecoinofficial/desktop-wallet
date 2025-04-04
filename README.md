@@ -78,8 +78,12 @@ MobileCoin Desktop Wallet is available under open-source licenses. Look for the 
 
 ### Setup
 
-Depending on your local platform, you'll need to add the correct version from the Downloads section of the [full-service binaries](https://github.com/mobilecoinofficial/full-service/releases) to the `./full-service-bin` directory. Grab the binary `full-service` file and the .css files, and place them in their relative subdirectory in `./full-service-bin`. Once you have the files in the `./full-service-bin/testnet` and `./full-service-bin/mainnet` directories, copy the contents from `./full-service-bin/testnet` into `./full-service-bin`. When you add the binaries, you will likely need to give permissions for the dev environment to run them. In the directory with the binaries, grant permission: `chmod +x full-service`.
+Depending on your local platform, you'll need to add the correct version of ***full-service*** from the Downloads section of the [full-service binaries](https://github.com/mobilecoinofficial/full-service/releases) to the `./full-service-bin` directory. The helper script `./get-full-service.sh` will download the appropriate full-service tarball and extract it into `/tmp/full-service`, and then build `./full-service-bin` with Desktop Wallet's full-service startup scripts and the needed elements from the full-service tarball.
 
+For example, to set up your local repo clone for debugging on MacOS with Apple Silicon using Testnet and v2.10.6 of full-service, you would run `get-full-service.sh` as follows:
+```bash
+./get-full-service.sh -o mac -a arm64 -n testnet -v v2.10.6
+```
 ### Dev
 
 The application is dependent on using node version `^16.0.0`. Since different applications may rely on different versions of node, it is recommended you use a [node manager like n](https://github.com/tj/n). You can check the current node version with `node --version`.

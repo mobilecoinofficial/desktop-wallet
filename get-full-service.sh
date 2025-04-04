@@ -92,7 +92,13 @@ else
   echo "Using existing ${TEMP_DIR}/${FILE}"
 fi
 
-# Unpack to binary directory
-echo "Extracting ${FILE} to ./full-service-bin/${FS_NET}-${FS_VERSION}-download"
-mkdir -p ./full-service-bin/${FS_NET}-${FS_VERSION}-download
-tar -xf ${TEMP_DIR}/${FILE} --strip-components=1 -C ./full-service-bin/${FS_NET}-${FS_VERSION}-download
+# Unpack the tarball
+echo "Extracting ${FILE} to ${TEMP_DIR}"
+tar -xf ${TEMP_DIR}/${FILE} --strip-components=1 -C ${TEMP_DIR}
+
+# Copy what is needed to full-service-bin
+echo "Copying binaries to ./full-service-bin"
+mkdir -p ./full-service-bin
+cp -p ${TEMP_DIR}/{full-service,*.css} ./full-service-bin
+echo "Copying full-service startup scripts to ./full-service--bin"
+cp -p ./full-service-scripts/${FS_NET}/* ./full-service-bin

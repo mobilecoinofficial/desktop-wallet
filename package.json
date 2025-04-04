@@ -69,7 +69,9 @@
         "from": "full-service-bin",
         "to": "full-service-bin",
         "filter": [
-          "**/*"
+          "start-full-service{,offline}.sh",
+          "{consensus,ingest}-enclave.css",
+          "full-service"
         ]
       },
       {

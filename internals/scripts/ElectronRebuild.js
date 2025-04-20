@@ -2,7 +2,8 @@ import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-import { dependencies } from '../../app/package.json';
+import pkg from '../../app/package.json' with { type: 'json' };
+const { dependencies } = pkg;
 
 const nodeModulesPath = path.join(__dirname, '..', '..', 'app', 'node_modules');
 

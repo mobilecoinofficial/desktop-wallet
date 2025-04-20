@@ -2,11 +2,10 @@
  * Base webpack config used across other specific configs
  */
 
-import path from 'path';
+const path = require('path');
+const webpack = require('webpack');
 
-import webpack from 'webpack';
-
-import { dependencies as externals } from '../app/package.json';
+const { dependencies: externals } = require('../app/package.json');
 
 // const CopyWebpackPlugin = require('copy-webpack-plugin');
 // module.exports = {
@@ -25,7 +24,7 @@ import { dependencies as externals } from '../app/package.json';
 //   },
 // };
 
-export default {
+module.exports = {
   externals: [...Object.keys(externals || {})],
 
   module: {
@@ -54,7 +53,6 @@ export default {
       NODE_ENV: 'production',
     }),
 
-    new webpack.NamedModulesPlugin(),
 
     // new webpack.CopyWebpackPlugin([{ from: 'app/protos', to: 'protos' }]),
     // new CopyWebpackPlugin({

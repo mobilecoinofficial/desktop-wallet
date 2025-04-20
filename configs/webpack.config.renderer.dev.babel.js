@@ -60,6 +60,7 @@ export default merge(baseConfig, {
   output: {
     publicPath: `http://localhost:${port}/dist/`,
     filename: 'renderer.dev.js',
+    hashFunction: 'xxhash64',
   },
 
   module: {
@@ -241,27 +242,42 @@ export default merge(baseConfig, {
     __filename: false,
   },
 
+  infrastructureLogging: {
+     level: 'error', // or 'warn', 'info', 'none', etc.
+  },
+
   devServer: {
     port,
-    publicPath,
     compress: true,
-    noInfo: false,
-    stats: 'errors-only',
-    inline: true,
-    lazy: false,
+    client: {
+      logging: 'error',
+      webSocketURL: {
+        hostname: 'localhost',
+        port: 1212,
+        pathname: '/ws',
+        protocol: 'ws',
+      },
+    },
     hot: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
-    contentBase: path.join(__dirname, 'dist'),
-    watchOptions: {
-      aggregateTimeout: 300,
-      ignored: /node_modules/,
-      poll: 100,
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    devMiddleware: {
+      publicPath,
+    },
+    watchFiles: {
+      options: {
+        aggregateTimeout: 300,
+        ignored: /node_modules/,
+        poll: 100,
+      },
     },
     historyApiFallback: {
       verbose: true,
       disableDotRule: false,
     },
-    before() {
+    onBeforeSetupMiddleware(devServer) {
       if (process.env.START_HOT) {
         console.log('Starting Main Process...');
         spawn('npm', ['run', 'start-main-dev'], {

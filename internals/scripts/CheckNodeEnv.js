@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-import chalk from 'chalk';
+const chalk = require('chalk')
 
-export default function CheckNodeEnv(expectedEnv) {
+module.exports = function CheckNodeEnv(expectedEnv) {
   if (!expectedEnv) {
     throw new Error('"expectedEnv" not set');
   }

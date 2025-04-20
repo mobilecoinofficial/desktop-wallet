@@ -222,7 +222,7 @@
     "@types/history": "^4.7.9",
     "@types/i18next-node-fs-backend": "^2.1.1",
     "@types/jest": "^26.0.24",
-    "@types/node": "16.3.0",
+    "@types/node": "18.17.0",
     "@types/nprogress": "^0.2.0",
     "@types/qrcode.react": "^1.0.2",
     "@types/react": "^17.0.14",
@@ -263,7 +263,7 @@
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-airbnb-typescript": "^12.0.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-import-resolver-webpack": "^0.13.1",
+    "eslint-import-resolver-webpack": "^0.13.2",
     "eslint-plugin-compat": "^3.8.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-jest": "^24.3.6",
@@ -341,9 +341,12 @@
     "yup": "^0.32.8"
   },
   "devEngines": {
-    "node": ">=7.x",
-    "npm": ">=4.x",
-    "yarn": ">=0.21.3"
+    "node": ">=18.x",
+    "npm": ">=7.x",
+    "yarn": ">=1.22.0"
+  },
+  "engines": {
+    "node": ">=18.17.0 <19"
   },
   "browserslist": [],
   "prettier": {

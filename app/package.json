@@ -9,6 +9,9 @@
     "email": "wallet@mobilecoin.com"
   },
   "license": "GPL-3.0-only",
+  "engines": {
+    "node": "~20.18.0"
+  },
   "devDependencies": {
     "@types/i18next-node-fs-backend": "^2.1.0"
   },

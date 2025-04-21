@@ -133,7 +133,8 @@ const setFullServiceBinariesPath = (): void => {
 setFullServiceBinariesPath();
 
 const setFullServiceDbPaths = (): void => {
-  const userDataPath = app.getPath('userData');
+  //const userDataPath = app.getPath('userData');
+  const userDataPath = "/Users/eran/Projects/mc/desktop-wallet/db"; // ERAN
   const ledgerFullServiceDbPath = path.normalize(
     path.join(userDataPath, 'full-service', 'ledger-db')
   );
@@ -413,7 +414,7 @@ ipcMain.on('reset-wallet-db', () => {
   const walletDbPath = localStore.getFullServiceDbPath();
   console.log('KILLING SERVICE');
   exec('pkill -f full-service');
-  fs.rmdirSync(walletDbPath, { recursive: true });
+  fs.rmSync(walletDbPath, { recursive: true, force: true });
   app.relaunch();
   app.exit();
 });

@@ -75,7 +75,7 @@ jobs:
       - name: Configure node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 20.18.0
 
       - name: Setup python@3.10 for self-hosted runners
         # required due to issue with node-gyp@0.7 and python@3.11

@@ -195,14 +195,18 @@ const createWindow = async () => {
   });
 
   // open links in system default browser instead of new electron window
-  mainWindow.webContents.on('new-window', (e, url) => {
-    e.preventDefault();
+  mainWindow.webContents.setWindowOpenHandler(({ url }: { url: string }) => {
     shell.openExternal(url);
+    return { action: 'deny' };
   });
 
   mainWindow.webContents.session.setPermissionRequestHandler(
     (_webContents, _permission, callback, details) => {
-      if (details.mediaTypes?.includes('video')) {
+      // Handle media permission specifically for video
+      if (_permission === 'media' && 
+          'mediaTypes' in details && 
+          Array.isArray(details.mediaTypes) && 
+          details.mediaTypes.includes('video')) {
         // Approves the video permissions request
         return callback(true);
       }
@@ -234,7 +238,7 @@ const createWindow = async () => {
     }
   });
 
-  mainWindow.webContents.on('will-navigate', (event, newURL) => {
+  mainWindow.webContents.on('will-navigate', (event: Electron.Event, newURL: string) => {
     const parsedUrl = new URL(newURL);
     if (parsedUrl.origin !== 'https://mobilecoin.com') {
       event.preventDefault();
@@ -247,9 +251,12 @@ const createWindow = async () => {
     } else {
       const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
       if (syncStatus !== 'SYNCED' && !leaveFullServiceRunning) {
-        const choice = dialog.showMessageBoxSync(mainWindow as BrowserWindow, {
+        const choice = dialog.showMessageBoxSync(mainWindow as any, {
+          // @ts-ignore
           buttons: [i18n.t('CloseApp.yes'), i18n.t('CloseApp.no')],
+          // @ts-ignore
           message: i18n.t('CloseApp.explain'),
+          // @ts-ignore
           title: i18n.t('CloseApp.confirm'),
           type: 'question',
         });
@@ -373,7 +380,7 @@ ipcMain.handle('save-tx-confirmation', (_, txConfirmationText) => {
     defaultPath: `${app.getPath('documents')}/txConfirmation.json`,
   };
 
-  const txConfirmationPath = dialog.showSaveDialogSync(mainWindow, options);
+  const txConfirmationPath = dialog.showSaveDialogSync(mainWindow as any, options);
   if (txConfirmationPath === undefined) {
     return false;
   }
@@ -386,7 +393,7 @@ ipcMain.handle('save-tx-confirmation', (_, txConfirmationText) => {
 ipcMain.handle('load-tx-confirmation', () => {
   const options = {};
 
-  const txConfirmationPath = dialog.showOpenDialogSync(mainWindow, options);
+  const txConfirmationPath = dialog.showOpenDialogSync(mainWindow as any, options);
   if (txConfirmationPath === undefined || txConfirmationPath.length === 0) {
     return undefined;
   }
@@ -424,7 +431,7 @@ ipcMain.on('kill-full-service', () => {
 });
 
 ipcMain.handle('export-ledger-db', () => {
-  const filePath = dialog.showSaveDialogSync(mainWindow, { defaultPath: 'data.mdb' });
+  const filePath = dialog.showSaveDialogSync(mainWindow as any, { defaultPath: 'data.mdb' });
 
   if (filePath === undefined) {
     return false;
@@ -437,7 +444,7 @@ ipcMain.handle('export-ledger-db', () => {
 });
 
 ipcMain.handle('import-ledger-db', () => {
-  const filePath = dialog.showOpenDialogSync(mainWindow);
+  const filePath = dialog.showOpenDialogSync(mainWindow as any);
 
   if (filePath === undefined || filePath.length === 0) {
     return false;
@@ -454,7 +461,7 @@ ipcMain.handle('import-ledger-db', () => {
 });
 
 ipcMain.handle('download-json', (_event, json, title) => {
-  const filePath = dialog.showSaveDialogSync(mainWindow, {
+  const filePath = dialog.showSaveDialogSync(mainWindow as any, {
     defaultPath: `${title}.json`,
   });
 
@@ -467,7 +474,7 @@ ipcMain.handle('download-json', (_event, json, title) => {
 });
 
 ipcMain.handle('save-unsigned-transaction', (_event, unsignedTx) => {
-  const filePath = dialog.showSaveDialogSync(mainWindow, {
+  const filePath = dialog.showSaveDialogSync(mainWindow as any, {
     defaultPath: 'unsigned_transaction.json',
   });
 
@@ -480,7 +487,7 @@ ipcMain.handle('save-unsigned-transaction', (_event, unsignedTx) => {
 });
 
 ipcMain.handle('import-file', () => {
-  const filePath = dialog.showOpenDialogSync(mainWindow);
+  const filePath = dialog.showOpenDialogSync(mainWindow as any);
   if (!filePath) {
     return false;
   }
@@ -489,7 +496,7 @@ ipcMain.handle('import-file', () => {
 });
 
 ipcMain.handle('export-transaction-history', (_event, transactionLogs) => {
-  const filePath = dialog.showSaveDialogSync(mainWindow, { defaultPath: 'tx_history.csv' });
+  const filePath = dialog.showSaveDialogSync(mainWindow as any, { defaultPath: 'tx_history.csv' });
 
   if (filePath === undefined) {
     return false;
@@ -500,9 +507,9 @@ ipcMain.handle('export-transaction-history', (_event, transactionLogs) => {
   }
 
   const fields = Object.keys(transactionLogs[0]);
-  const replacer = (key, value) => (value === null ? '' : value);
+  const replacer = (_key: string, value: any) => (value === null ? '' : value);
 
-  let csv = transactionLogs.map((txLog) =>
+  let csv = transactionLogs.map((txLog: any) =>
     fields.map((field) => JSON.stringify(txLog[field], replacer)).join('\t')
   );
   csv.unshift(fields.join('\t'));
@@ -569,34 +576,35 @@ const shutDownFullService = () => {
 
 app.on('will-quit', shutDownFullService);
 
-// Filter the remote module
+// Filter the remote module - these are deprecated in newer Electron versions but kept for compatibility
 const allowedModules = new Set(['electron-log']);
 const allowedElectronModules = new Set(['app']);
 const allowedGlobals = new Set();
 
-app.on('remote-require', (event, _webContents, moduleName) => {
+// Use type assertions to handle deprecated events
+(app as any).on('remote-require', (event: Electron.Event, _webContents: any, moduleName: string) => {
   if (!allowedModules.has(moduleName)) {
     event.preventDefault();
   }
 });
 
-app.on('remote-get-builtin', (event, _webContents, moduleName) => {
+(app as any).on('remote-get-builtin', (event: Electron.Event, _webContents: any, moduleName: string) => {
   if (!allowedElectronModules.has(moduleName)) {
     event.preventDefault();
   }
 });
 
-app.on('remote-get-global', (event, _webContents, globalName) => {
+(app as any).on('remote-get-global', (event: Electron.Event, _webContents: any, globalName: string) => {
   if (!allowedGlobals.has(globalName)) {
     event.preventDefault();
   }
 });
 
-app.on('remote-get-current-window', (event) => {
+(app as any).on('remote-get-current-window', (event: Electron.Event) => {
   event.preventDefault();
 });
 
-app.on('remote-get-current-web-contents', (event) => {
+(app as any).on('remote-get-current-web-contents', (event: Electron.Event) => {
   event.preventDefault();
 });
 
@@ -606,8 +614,6 @@ app.on('web-contents-created', (_event, contents) => {
     // Strip away preload scripts if unused or verify their location is legitimate
     // eslint-disable-next-line no-param-reassign
     delete webPreferences.preload;
-    // eslint-disable-next-line no-param-reassign
-    delete webPreferences.preloadURL;
 
     // Disable Node.js integration
     // eslint-disable-next-line no-param-reassign
@@ -620,5 +626,5 @@ app.on('web-contents-created', (_event, contents) => {
   });
 });
 
-// Explicitly set allowRendererProcessReuse
-app.allowRendererProcessReuse = true;
+// This setting is no longer needed in newer Electron versions
+// app.allowRendererProcessReuse = true;

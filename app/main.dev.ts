@@ -16,6 +16,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { app, BrowserWindow, dialog, ipcMain, nativeTheme, screen, shell } from 'electron';
+import debug from 'electron-debug';
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS,
@@ -64,7 +65,7 @@ if (process.env.NODE_ENV === 'production') {
 
 if (process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true') {
   // eslint-disable-next-line
-  require('electron-debug')();
+  debug();
 }
 
 let syncStatus = ''; // For the app to update, via ipcRenderer.send(...)
@@ -203,9 +204,9 @@ const createWindow = async () => {
   mainWindow.webContents.session.setPermissionRequestHandler(
     (_webContents, _permission, callback, details) => {
       // Handle media permission specifically for video
-      if (_permission === 'media' && 
-          'mediaTypes' in details && 
-          Array.isArray(details.mediaTypes) && 
+      if (_permission === 'media' &&
+          'mediaTypes' in details &&
+          Array.isArray(details.mediaTypes) &&
           details.mediaTypes.includes('video')) {
         // Approves the video permissions request
         return callback(true);
@@ -286,11 +287,12 @@ const createWindow = async () => {
   });
 
   if (!i18n.hasResourceBundle(config.fallbackLng, config.namespace)) {
-    i18n.addResourceBundle(
-      config.fallbackLng,
-      config.namespace,
-      i18n.getResourceBundle(config.fallbackLng, config.namespace)
-    );
+    // TODO
+    // i18n.addResourceBundle(
+    //   config.fallbackLng,
+    //   config.namespace,
+    //   i18n.getResourceBundle(config.fallbackLng, config.namespace)
+    // );
   }
 
   menuFactoryService.buildMenu(app, mainWindow, i18n);

@@ -8,9 +8,11 @@ const menu = null;
 
 function buildMenu(app, mainWindow, i18next) {
   if (config.platform === 'darwin') {
+    // @ts-ignore - menu template type definitions don't match correctly
     this.menu = Menu.buildFromTemplate(darwinTemplate(app, mainWindow, i18next));
     Menu.setApplicationMenu(this.menu);
   } else {
+    // @ts-ignore - menu template type definitions don't match correctly     
     this.menu = Menu.buildFromTemplate(otherTemplate(app, mainWindow, i18next));
     mainWindow.setMenu(this.menu);
   }

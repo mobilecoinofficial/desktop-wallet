@@ -2,10 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "CommonJS",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "declaration": true,
     "declarationMap": true,
     "noEmit": true,
@@ -27,20 +24,9 @@
     "resolveJsonModule": true,
     "allowJs": true
   },
-  "exclude": [
-    "test",
-    "release",
-    "app/main.prod.js",
-    "app/renderer.prod.js",
-    "app/dist",
-    "dll"
-  ],
+  "exclude": ["test", "release", "app/main.prod.js", "app/renderer.prod.js", "app/dist", "dll"],
   "paths": {
-    "react": [
-      "../node_modules/react"
-    ],
-    "react-dom": [
-      "../node_modules/react-dom"
-    ]
+    "react": ["../node_modules/react"],
+    "react-dom": ["../node_modules/react-dom"]
   }
 }

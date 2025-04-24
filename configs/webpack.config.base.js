@@ -2,10 +2,13 @@
  * Base webpack config used across other specific configs
  */
 
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 
+/* eslint-disable @typescript-eslint/no-var-requires */
 const webpack = require('webpack');
 
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { dependencies: externals } = require('../app/package.json');
 
 // const CopyWebpackPlugin = require('copy-webpack-plugin');

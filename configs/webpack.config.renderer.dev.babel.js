@@ -277,7 +277,7 @@ export default merge(baseConfig, {
       verbose: true,
       disableDotRule: false,
     },
-    onBeforeSetupMiddleware(devServer) {
+    onBeforeSetupMiddleware() {
       if (process.env.START_HOT) {
         console.log('Starting Main Process...');
         spawn('npm', ['run', 'start-main-dev'], {

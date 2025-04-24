@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const chalk = require('chalk');
 
 module.exports = function CheckNodeEnv(expectedEnv) {

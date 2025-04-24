@@ -255,11 +255,11 @@ const createWindow = async () => {
       const leaveFullServiceRunning = localStore.getLeaveFullServiceRunning();
       if (syncStatus !== 'SYNCED' && !leaveFullServiceRunning) {
         const choice = dialog.showMessageBoxSync(mainWindow as any, {
-          // @ts-ignore
+          // @ts-ignore: there's something weird with the types here
           buttons: [i18n.t('CloseApp.yes'), i18n.t('CloseApp.no')],
-          // @ts-ignore
+          // @ts-ignore: there's something weird with the types here
           message: i18n.t('CloseApp.explain'),
-          // @ts-ignore
+          // @ts-ignore: there's something weird with the types here
           title: i18n.t('CloseApp.confirm'),
           type: 'question',
         });

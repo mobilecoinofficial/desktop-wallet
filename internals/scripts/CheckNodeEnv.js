@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-const chalk = require('chalk')
+const chalk = require('chalk');
 
 module.exports = function CheckNodeEnv(expectedEnv) {
   if (!expectedEnv) {
@@ -14,4 +14,4 @@ module.exports = function CheckNodeEnv(expectedEnv) {
     );
     process.exit(2);
   }
-}
+};

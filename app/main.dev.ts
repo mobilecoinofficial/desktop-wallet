@@ -134,8 +134,8 @@ const setFullServiceBinariesPath = (): void => {
 setFullServiceBinariesPath();
 
 const setFullServiceDbPaths = (): void => {
-  //const userDataPath = app.getPath('userData');
-  const userDataPath = "/Users/eran/Projects/mc/desktop-wallet/db"; // ERAN
+  // const userDataPath = app.getPath('userData');
+  const userDataPath = '/Users/eran/Projects/mc/desktop-wallet/db'; // ERAN
   const ledgerFullServiceDbPath = path.normalize(
     path.join(userDataPath, 'full-service', 'ledger-db')
   );
@@ -204,10 +204,12 @@ const createWindow = async () => {
   mainWindow.webContents.session.setPermissionRequestHandler(
     (_webContents, _permission, callback, details) => {
       // Handle media permission specifically for video
-      if (_permission === 'media' &&
-          'mediaTypes' in details &&
-          Array.isArray(details.mediaTypes) &&
-          details.mediaTypes.includes('video')) {
+      if (
+        _permission === 'media' &&
+        'mediaTypes' in details &&
+        Array.isArray(details.mediaTypes) &&
+        details.mediaTypes.includes('video')
+      ) {
         // Approves the video permissions request
         return callback(true);
       }
@@ -587,23 +589,32 @@ const allowedModules = new Set(['electron-log']);
 const allowedElectronModules = new Set(['app']);
 const allowedGlobals = new Set();
 
-(app as any).on('remote-require', (event: Electron.Event, _webContents: any, moduleName: string) => {
-  if (!allowedModules.has(moduleName)) {
-    event.preventDefault();
+(app as any).on(
+  'remote-require',
+  (event: Electron.Event, _webContents: any, moduleName: string) => {
+    if (!allowedModules.has(moduleName)) {
+      event.preventDefault();
+    }
   }
-});
+);
 
-(app as any).on('remote-get-builtin', (event: Electron.Event, _webContents: any, moduleName: string) => {
-  if (!allowedElectronModules.has(moduleName)) {
-    event.preventDefault();
+(app as any).on(
+  'remote-get-builtin',
+  (event: Electron.Event, _webContents: any, moduleName: string) => {
+    if (!allowedElectronModules.has(moduleName)) {
+      event.preventDefault();
+    }
   }
-});
+);
 
-(app as any).on('remote-get-global', (event: Electron.Event, _webContents: any, globalName: string) => {
-  if (!allowedGlobals.has(globalName)) {
-    event.preventDefault();
+(app as any).on(
+  'remote-get-global',
+  (event: Electron.Event, _webContents: any, globalName: string) => {
+    if (!allowedGlobals.has(globalName)) {
+      event.preventDefault();
+    }
   }
-});
+);
 
 (app as any).on('remote-get-current-window', (event: Electron.Event) => {
   event.preventDefault();

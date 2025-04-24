@@ -243,7 +243,7 @@ export default merge(baseConfig, {
   },
 
   infrastructureLogging: {
-     level: 'error', // or 'warn', 'info', 'none', etc.
+    level: 'error', // or 'warn', 'info', 'none', etc.
   },
 
   devServer: {

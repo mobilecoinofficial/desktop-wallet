@@ -3,6 +3,7 @@
  */
 
 const path = require('path');
+
 const webpack = require('webpack');
 
 const { dependencies: externals } = require('../app/package.json');
@@ -52,7 +53,6 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'production',
     }),
-
 
     // new webpack.CopyWebpackPlugin([{ from: 'app/protos', to: 'protos' }]),
     // new CopyWebpackPlugin({

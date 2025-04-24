@@ -8,8 +8,8 @@ import { Checkbox, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton, TermsOfUseDialog } from '../../../components';
 import type { CreateWalletViewProps } from './CreateWallet';
+import { SubmitButton, TermsOfUseDialog } from '../../../components';
 
 interface CreateWalletFormValues {
   password: string;

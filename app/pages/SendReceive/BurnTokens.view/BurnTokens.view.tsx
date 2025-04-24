@@ -14,6 +14,7 @@ import { ipcRenderer } from 'electron';
 import { useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 
+import { BurnConfirmation } from './confirmation';
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { TOKENS } from '../../../constants/tokens';
 import {
@@ -27,7 +28,6 @@ import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { TxProposal } from '../../../types';
 import { convertEthAddressToMemo } from '../../../utils/bip39Functions';
 import { errorToString } from '../../../utils/errorHandler';
-import { BurnConfirmation } from './confirmation';
 
 const BurnTokens: FC = () => {
   const [amount, setAmount] = useState(0);

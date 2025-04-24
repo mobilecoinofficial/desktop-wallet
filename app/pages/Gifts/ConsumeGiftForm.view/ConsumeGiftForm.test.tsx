@@ -7,8 +7,8 @@ import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 
 import '../../../testUtils/i18nForTests';
-import { store } from '../../../redux/store';
 import { ConsumeGiftForm } from './ConsumeGiftForm.view';
+import { store } from '../../../redux/store';
 
 /*
   CheckGiftCodeStatus response, if successful:

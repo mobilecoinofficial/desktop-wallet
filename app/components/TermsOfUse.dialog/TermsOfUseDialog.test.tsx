@@ -9,14 +9,14 @@ import '../../testUtils/i18nForTests';
 
 const handleCloseTerms = jest.fn();
 describe('TermsOfUseDialog', () => {
-  test('renders TermsOfUse and closes on click', () => {
+  test('renders TermsOfUse and closes on click', async () => {
     render(<TermsOfUseDialog open handleCloseTerms={handleCloseTerms} />);
 
     expect(screen.getByTestId('tos-header').textContent).toEqual(
       'TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS'
     );
 
-    userEvent.click(screen.getByText('Close Terms of Use'));
+    await userEvent.click(screen.getByText('Close Terms of Use'));
 
     expect(handleCloseTerms).toHaveBeenCalled();
   });

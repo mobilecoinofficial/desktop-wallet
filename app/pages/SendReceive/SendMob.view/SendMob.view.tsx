@@ -32,6 +32,8 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
+import type { SendMobProps } from './SendMob.d';
+import { Showing } from './SendMob.d';
 import { SubmitButton, MOBNumberFormat, QRScanner } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
 import { StarIcon, QRCodeIcon } from '../../../components/icons';
@@ -45,8 +47,6 @@ import {
   convertMicroEUSDToStringEUSD,
   convertEUSDStringToMicroEUSDString,
 } from '../../../utils/convertMob';
-import type { SendMobProps } from './SendMob.d';
-import { Showing } from './SendMob.d';
 
 const NO_CONTACT_SELECTED = '';
 

@@ -17,11 +17,11 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 
+import { ShowEntropyModalProps } from './ShowEntropyModal';
 import { exportAccountSecrets } from '../../../fullService/api';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import type { Theme } from '../../../theme';
 import { AccountSecrets } from '../../../types';
-import { ShowEntropyModalProps } from './ShowEntropyModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
   modal: {

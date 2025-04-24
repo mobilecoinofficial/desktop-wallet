@@ -44,8 +44,8 @@ describe('axiosFullService', () => {
     };
 
     await axiosFullService(fakeMethod, fakeParams);
-    expect(mockAxios.create).toBeCalledWith(expectedConfig);
-    expect(mockUse).toBeCalledWith(handleResposne, handleError);
+    expect(mockAxios.create).toHaveBeenCalledWith(expectedConfig);
+    expect(mockUse).toHaveBeenCalledWith(handleResposne, handleError);
   });
 
   test('calls the axiosInstance with the method and params', async () => {
@@ -61,7 +61,7 @@ describe('axiosFullService', () => {
     mockAxiosInstance.mockImplementation(() => expectedHappyResponse);
 
     expect(await axiosFullService(fakeMethod, fakeParams)).toBe(expectedHappyResponse);
-    expect(mockAxiosInstance).toBeCalledWith(expectedCall);
+    expect(mockAxiosInstance).toHaveBeenCalledWith(expectedCall);
   });
 
   test('on application errors, it returns error message', async () => {

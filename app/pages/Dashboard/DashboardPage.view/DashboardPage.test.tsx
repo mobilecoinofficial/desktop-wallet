@@ -5,8 +5,8 @@ import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 
 import '../../../testUtils/i18nForTests';
-import { store } from '../../../redux/store';
 import { DashboardView } from './DashboardPage.view';
+import { store } from '../../../redux/store';
 
 const selectedAccount = {
   account: {

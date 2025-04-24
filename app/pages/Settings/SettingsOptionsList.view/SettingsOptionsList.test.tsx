@@ -4,8 +4,8 @@ import { render } from '@testing-library/react';
 
 import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
-import { KeyIcon, LockIcon, ToolsIcon } from '../../../components/icons';
 import { SettingsOptionsList } from './SettingsOptionsList.view';
+import { KeyIcon, LockIcon, ToolsIcon } from '../../../components/icons';
 
 const handleOnClick = jest.fn();
 const settingOptionsList = [

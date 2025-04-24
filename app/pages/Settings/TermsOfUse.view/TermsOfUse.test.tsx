@@ -18,13 +18,13 @@ describe('TermsOfUseView', () => {
     });
 
     describe('breadcrumb navigation', () => {
-      test('Settings breadcrumb fires to navigate away from current view', () => {
+      test('Settings breadcrumb fires to navigate away from current view', async () => {
         render(<TermsOfUseView onClickBack={mockOnClickBack} />);
         const termsPanel = screen.queryByText(
           'TERMS OF USE FOR MOBILECOINS AND MOBILECOIN WALLETS'
         );
         expect(termsPanel).toBeInTheDocument();
-        userEvent.click(screen.getByText('Settings'));
+        await userEvent.click(screen.getByText('Settings'));
         expect(mockOnClickBack).toHaveBeenCalled();
       });
     });

@@ -16,8 +16,8 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
-import { SubmitButton } from '../../../components';
 import type { CreateAccountViewProps } from './CreateAccount.d';
+import { SubmitButton } from '../../../components';
 
 interface CreateAccountFormValues {
   accountName: string;

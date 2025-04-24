@@ -1,8 +1,8 @@
-import path from 'path';
+const path = require('path');
 
-import rimraf from 'rimraf';
+const rimraf = require('rimraf');
 
-export default function deleteSourceMaps() {
+module.exports = function deleteSourceMaps() {
   rimraf.sync(path.join(__dirname, '../../app/dist/*.js.map'));
   rimraf.sync(path.join(__dirname, '../../app/*.js.map'));
-}
+};

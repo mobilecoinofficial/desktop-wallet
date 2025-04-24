@@ -20,7 +20,7 @@ describe('convertMobStringToPicoMobString', () => {
   });
 
   test('throws for non-numbers', () => {
-    expect(() => convertMobStringToPicoMobString('FEFK')).toThrowError();
+    expect(() => convertMobStringToPicoMobString('FEFK')).toThrow();
   });
 });
 

@@ -13,11 +13,11 @@ import {
 } from '@material-ui/core';
 import SyncIcon from '@material-ui/icons/Sync';
 
+import type { AccountItemProps } from './AccountItem';
 import { ShortCode } from '../../../../components/ShortCode';
 import { MOBIcon, TrashcanIcon } from '../../../../components/icons';
 import { resyncAccount } from '../../../../services';
 import { Theme } from '../../../../theme';
-import type { AccountItemProps } from './AccountItem';
 
 const useStyles = makeStyles((theme: Theme) => ({
   action: { margin: 'unset' },
@@ -72,7 +72,7 @@ const AccountItem: FC<AccountItemProps> = ({
   return (
     <Grid item xs={12}>
       <Card className={selected ? classes.cardSelected : classes.card}>
-        <CardActionArea onClick={onClick} name="accountCard">
+        <CardActionArea onClick={!selected ? onClick : undefined} name="accountCard">
           <CardHeader
             avatar={
               <Avatar style={{ backgroundColor: '#757575' }}>

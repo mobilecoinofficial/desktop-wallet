@@ -17,6 +17,7 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
+import { SetPinModalProps } from './SetPinModal';
 import { MOBNumberFormat, SubmitButton } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
@@ -26,7 +27,6 @@ import type { Theme } from '../../../theme';
 import { convertMobStringToPicoMobString } from '../../../utils/convertMob';
 import { errorToString } from '../../../utils/errorHandler';
 import { isValidPin } from '../../../utils/isValidPin';
-import { SetPinModalProps } from './SetPinModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: {

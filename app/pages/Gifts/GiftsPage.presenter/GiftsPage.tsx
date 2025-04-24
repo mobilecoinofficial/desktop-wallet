@@ -189,7 +189,7 @@ export const GiftsPage: FC = (): JSX.Element => {
 
       setGiftCode(confirmationBuild.giftCodeB58);
       setshowGiftCode(true);
-    } catch (err) {
+    } catch {
       enqueueSnackbar(t('errorCreate'), { variant: 'error' });
     }
 
@@ -252,7 +252,7 @@ export const GiftsPage: FC = (): JSX.Element => {
       });
 
       enqueueSnackbar(t('giftConsumed'), { variant: 'success' });
-    } catch (err) {
+    } catch {
       enqueueSnackbar(t('giftConsumeError'), { variant: 'error' });
     }
 

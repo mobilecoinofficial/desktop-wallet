@@ -79,7 +79,7 @@ describe('Contacts list', () => {
     expect(container.innerHTML.includes('K2')).toBeTruthy();
     expect(container.innerHTML.includes('ST')).toBeTruthy();
 
-    userEvent.type(container.querySelector('[id="standard-basic"]') as HTMLInputElement, 'T');
+    await userEvent.type(container.querySelector('[id="standard-basic"]') as HTMLInputElement, 'T');
     expect(container.innerHTML.includes('K2')).not.toBeTruthy();
     expect(container.innerHTML.includes('F1')).toBeTruthy();
     expect(container.innerHTML.includes('ST')).toBeTruthy();

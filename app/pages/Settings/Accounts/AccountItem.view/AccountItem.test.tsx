@@ -7,7 +7,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { AccountItem } from './AccountItem.view';
 
 describe('Account Item', () => {
-  test('shows account name and reacts to clicks if not selected', () => {
+  test('shows account name and reacts to clicks if not selected', async () => {
     const handleOnClick = jest.fn();
     const handleOnDelete = jest.fn();
 
@@ -26,14 +26,14 @@ describe('Account Item', () => {
 
     expect(getByText('MY OWN ACCOUNT')).toBeInTheDocument();
 
-    userEvent.click(container.querySelector('[name="deleteButton"]'));
+    await userEvent.click(container.querySelector('[name="deleteButton"]'));
     expect(handleOnDelete).toHaveBeenCalled();
 
-    userEvent.click(container.querySelector('[name="accountCard"]'));
+    await userEvent.click(container.querySelector('[name="accountCard"]'));
     expect(handleOnClick).toHaveBeenCalled();
   });
 
-  test('shows account name and does not react to clicks if  selected', () => {
+  test('shows account name and does not react to clicks if  selected', async () => {
     const handleOnClick = jest.fn();
     const handleOnDelete = jest.fn();
 
@@ -50,12 +50,10 @@ describe('Account Item', () => {
       />
     );
 
-    // eslint-disable-next-line jest/valid-expect
-    expect(() => userEvent.click(container.querySelector('[name="deleteButton"]').toThrow()));
+    expect(() => userEvent.click(container.querySelector('[name="deleteButton"]'))).toThrow();
     expect(handleOnDelete).not.toHaveBeenCalled();
 
-    // eslint-disable-next-line jest/valid-expect
-    expect(() => userEvent.click(container.querySelector('[name="accountCard"]')).toThrow());
+    await userEvent.click(container.querySelector('[name="accountCard"]'));
     expect(handleOnClick).not.toHaveBeenCalled();
   });
 });

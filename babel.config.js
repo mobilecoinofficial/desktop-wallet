@@ -1,6 +1,6 @@
 /* eslint global-require: off, import/no-extraneous-dependencies: off */
 
-const developmentEnvironments = ['development', 'test'];
+const developmentEnvironments = ['development'];
 
 const productionPlugins = [
   require('@babel/plugin-transform-react-constant-elements'),
@@ -8,9 +8,7 @@ const productionPlugins = [
   require('babel-plugin-dev-expression'),
   require('babel-plugin-transform-react-remove-prop-types'),
 ];
-const developmentPlugins = [
-  require('react-refresh/babel'),
-];
+const developmentPlugins = [require('react-refresh/babel')];
 
 module.exports = (api) => {
   // See docs about api at https://babeljs.io/docs/en/config-files#apicache

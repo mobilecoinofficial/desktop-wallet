@@ -2,8 +2,8 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import { KeyIcon, LockIcon, ToolsIcon } from '../../../components/icons';
 import { SettingsOptionsList } from './SettingsOptionsList.view';
+import { KeyIcon, LockIcon, ToolsIcon } from '../../../components/icons';
 
 export default {
   component: SettingsOptionsList,

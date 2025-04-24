@@ -13,8 +13,8 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import type { Theme } from '../../../theme';
 import { ShowRetrievedEntropyModalProps } from './ShowRetrievedEntropy';
+import type { Theme } from '../../../theme';
 
 const useStyles = makeStyles((theme: Theme) => ({
   hiddenEntropy: { letterSpacing: 2.95 },

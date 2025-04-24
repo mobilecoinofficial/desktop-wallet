@@ -18,13 +18,13 @@ describe('PrivacyPolicyView', () => {
     });
 
     describe('breadcrumb navigation', () => {
-      test('Settings breadcrumb fires to navigate away from current view', () => {
+      test('Settings breadcrumb fires to navigate away from current view', async () => {
         render(<PrivacyPolicyView onClickBack={mockOnClickBack} />);
         const privacyMessage = screen.queryByText(
           'This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.'
         );
         expect(privacyMessage).toBeInTheDocument();
-        userEvent.click(screen.getByText('Settings'));
+        await userEvent.click(screen.getByText('Settings'));
         expect(mockOnClickBack).toHaveBeenCalled();
       });
     });

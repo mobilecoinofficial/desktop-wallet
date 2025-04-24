@@ -3,9 +3,9 @@ import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 
+import { LongCodeProps } from './LongCode';
 import type { Theme } from '../../theme';
 import { isStringNumber } from '../../utils/isStringNumber';
-import { LongCodeProps } from './LongCode';
 
 const useStyles = makeStyles((theme: Theme) => ({
   lastLine: {

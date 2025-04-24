@@ -23,12 +23,12 @@ import { useTranslation } from 'react-i18next';
 import { v4 as uuidv4 } from 'uuid';
 import * as Yup from 'yup';
 
+import { ContactFormProps } from './ContactForm';
 import { SubmitButton, StarCheckbox } from '../../../components';
 import { RANDOM_COLORS } from '../../../constants/app';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 import type { Theme } from '../../../theme';
 import { errorToString } from '../../../utils/errorHandler';
-import { ContactFormProps } from './ContactForm';
 
 interface CirclePickerType {
   hex: string;

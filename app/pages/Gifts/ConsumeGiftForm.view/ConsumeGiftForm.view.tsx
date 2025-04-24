@@ -20,10 +20,10 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
+import { ConsumeGiftFormProps } from './ConsumeGiftForm';
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import type { Theme } from '../../../theme';
-import { ConsumeGiftFormProps } from './ConsumeGiftForm';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

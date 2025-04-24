@@ -2,8 +2,8 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 import { DashboardView } from './DashboardPage.view';
+import type { SelectedAccount } from '../../../types/SelectedAccount.d';
 
 export default {
   component: DashboardView,

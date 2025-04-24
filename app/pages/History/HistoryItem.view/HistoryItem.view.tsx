@@ -13,12 +13,12 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+import type { HistoryItemProps } from './HistoryItem.d';
 import { ShortCode } from '../../../components/ShortCode';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import MOBIcon from '../../../components/icons/MOBIcon';
 import { TOKENS } from '../../../constants/tokens';
 import type { Theme } from '../../../theme';
-import type { HistoryItemProps } from './HistoryItem.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   action: { margin: 'unset' },

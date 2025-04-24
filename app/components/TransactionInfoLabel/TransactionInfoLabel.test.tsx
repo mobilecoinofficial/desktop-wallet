@@ -3,9 +3,9 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
+import { TransactionInfoLabel } from './TransactionInfoLabel.view';
 import { TOKENS } from '../../constants/tokens';
 import { store } from '../../redux/store';
-import { TransactionInfoLabel } from './TransactionInfoLabel.view';
 import '@testing-library/jest-dom/extend-expect';
 import '../../testUtils/i18nForTests';
 

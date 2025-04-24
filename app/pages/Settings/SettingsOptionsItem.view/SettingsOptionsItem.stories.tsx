@@ -2,8 +2,8 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import { LockIcon } from '../../../components/icons';
 import { SettingsOptionsItem } from './SettingsOptionsItem.view';
+import { LockIcon } from '../../../components/icons';
 
 export default {
   component: SettingsOptionsItem,

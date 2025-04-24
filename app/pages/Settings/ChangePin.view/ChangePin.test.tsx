@@ -9,8 +9,8 @@ import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
 import { Provider } from 'react-redux';
 
-import { store } from '../../../redux/store';
 import { ChangePinView } from './ChangePin.view';
+import { store } from '../../../redux/store';
 
 const PASSWORD = 'password';
 const PIN_MOB = '10';

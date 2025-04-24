@@ -4,9 +4,9 @@ import type { FC } from 'react';
 import { Box, Card, CardContent, Fade, makeStyles, Modal, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+import { CloseWalletModalProps } from './CloseWalletModal';
 import { SubmitButton } from '../../../components';
 import { Theme } from '../../../theme';
-import { CloseWalletModalProps } from './CloseWalletModal';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

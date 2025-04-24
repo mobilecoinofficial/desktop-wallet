@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 
 import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
-import { store } from '../../../redux/store';
 import { ShowEntropyModal } from './ShowEntropyModal.view';
+import { store } from '../../../redux/store';
 
 const confirmEntropyKnown = jest.fn();
 const showEntropyMsg = screen.queryByText(

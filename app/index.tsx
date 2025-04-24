@@ -1,9 +1,10 @@
 import React from 'react';
+
+import { ipcRenderer } from 'electron';
 import ReactDOM from 'react-dom';
 
 import App from './App';
 import i18n from './i18n';
-import { ipcRenderer } from 'electron';
 
 import './app.global.css';
 
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // HMR hook (this is **critical** for react-refresh to fully apply)
   if (module.hot) {
     module.hot.accept('./App', () => {
+      // eslint-disable-next-line global-require
       const NextApp = require('./App').default;
       ReactDOM.render(<NextApp />, root);
     });

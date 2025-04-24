@@ -1,8 +1,8 @@
 // Check if the renderer and main bundles are built
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
-import chalk from 'chalk';
+const chalk = require('chalk');
 
 const mainPath = path.join(__dirname, '..', '..', 'app', 'main.prod.js');
 const rendererPath = path.join(__dirname, '..', '..', 'app', 'dist', 'renderer.prod.js');

@@ -5,8 +5,8 @@ import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
 import userEvent from '@testing-library/user-event';
 
-import { LockIcon } from '../../../components/icons';
 import { SettingsOptionsItem } from './SettingsOptionsItem.view';
+import { LockIcon } from '../../../components/icons';
 
 describe('SettingsOptionsItem', () => {
   const handleOnClick = jest.fn();
@@ -25,7 +25,7 @@ describe('SettingsOptionsItem', () => {
     expect(getByText('Change Password')).toBeInTheDocument();
   });
 
-  test('Click works', () => {
+  test('Click works', async () => {
     const { container } = render(
       <SettingsOptionsItem
         Icon={LockIcon}
@@ -36,7 +36,7 @@ describe('SettingsOptionsItem', () => {
     );
 
     const card = container.querySelector('[name="card-action"]') as HTMLInputElement;
-    userEvent.click(card);
+    await userEvent.click(card);
     expect(handleOnClick).toHaveBeenCalled();
   });
 });

@@ -1,5 +1,5 @@
-import { PIN_MIN_SIZE } from '../constants/codes';
 import { isStringNumber } from './isStringNumber';
+import { PIN_MIN_SIZE } from '../constants/codes';
 
 /*
     Validates if a string is completely formed by digits

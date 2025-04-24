@@ -8,9 +8,9 @@ import { Checkbox, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
+import type { UnlockWalletViewProps } from './UnlockWallet';
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import { ConfirmDeleteWalletDialog } from '../../../components/ConfirmDeleteWallet.dialog';
-import type { UnlockWalletViewProps } from './UnlockWallet';
 
 interface UnlockWalletFormValues {
   password: string;

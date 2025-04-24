@@ -19,13 +19,13 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
+import { BuildGiftFormProps } from './BuildGiftForm';
 import { MOBNumberFormat } from '../../../components/MOBNumberFormat';
 import { SubmitButton } from '../../../components/SubmitButton';
 import { MOBIcon } from '../../../components/icons';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import type { Theme } from '../../../theme';
 import { convertPicoMobStringToMob } from '../../../utils/convertMob';
-import { BuildGiftFormProps } from './BuildGiftForm';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

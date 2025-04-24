@@ -3,8 +3,8 @@ import React from 'react';
 import NumberFormat from 'react-number-format';
 import type { NumberFormatValues } from 'react-number-format';
 
-import { convertTokenValueToDisplayValue } from '../../utils/convertMob';
 import { MOBNumberFormatProps } from './MOBNumberFormat';
+import { convertTokenValueToDisplayValue } from '../../utils/convertMob';
 
 // This component handles converting incoming pico-mobs and mobs into mobs.
 // All values from FullService are in pico-mobs, but once it hits our frontend,

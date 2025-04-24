@@ -5,8 +5,8 @@ import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
 import { Provider } from 'react-redux';
 
-import { store } from '../../../redux/store';
 import { OnboardingModal } from './OnboardingModal.view';
+import { store } from '../../../redux/store';
 
 const confirmEntropyKnown = jest.fn();
 const updatePin = jest.fn();

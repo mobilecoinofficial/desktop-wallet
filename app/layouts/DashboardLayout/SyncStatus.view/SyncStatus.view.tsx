@@ -4,11 +4,11 @@ import type { FC } from 'react';
 import { Box, makeStyles, Tooltip, CircularProgress } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+import { SyncStatusProps } from './SyncStatus';
 import { CircleMOBIcon } from '../../../components/icons';
 import { BLUE_DARK, GOLD_LIGHT, RED } from '../../../constants/colors';
 import { Theme } from '../../../theme';
 import { getPercentSynced } from '../../../utils/getPercentSynced';
-import { SyncStatusProps } from './SyncStatus';
 
 const ERROR = 'ERROR';
 const SYNCED = 'SYNCED';

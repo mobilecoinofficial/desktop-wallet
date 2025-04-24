@@ -56,7 +56,7 @@ describe('ConfigureFullServiceView', () => {
     });
 
     describe('breadcrumb navigation', () => {
-      test('Settings breadcrumb navigates away from current view', () => {
+      test('Settings breadcrumb navigates away from current view', async () => {
         const { getByText } = render(
           <ConfigureFullServiceView
             onClickBack={mockOnClickBack}
@@ -68,7 +68,7 @@ describe('ConfigureFullServiceView', () => {
         const configMessage =
           'This screen shows how to customize the behavior of background ledger processor (named Full-Service) as well as how to perform some basic resets.';
         expect(getByText(configMessage)).toBeInTheDocument();
-        userEvent.click(screen.getByText('Settings'));
+        await userEvent.click(screen.getByText('Settings'));
         expect(mockOnClickBack).toHaveBeenCalled();
       });
     });

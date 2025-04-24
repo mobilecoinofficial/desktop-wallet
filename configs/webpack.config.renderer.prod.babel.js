@@ -12,9 +12,9 @@ import webpack from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
 
+import baseConfig from './webpack.config.base';
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 import DeleteSourceMaps from '../internals/scripts/DeleteSourceMaps';
-import baseConfig from './webpack.config.base';
 
 // const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -22,7 +22,7 @@ CheckNodeEnv('production');
 DeleteSourceMaps();
 
 export default merge(baseConfig, {
-  devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : 'none',
+  devtool: process.env.DEBUG_PROD === 'true' ? 'source-map' : false,
 
   mode: 'production',
 
@@ -184,8 +184,9 @@ export default merge(baseConfig, {
       : [
           new TerserPlugin({
             parallel: true,
-            sourceMap: true,
-            cache: true,
+            terserOptions: {
+              ecma: 2020,
+            },
           }),
           new OptimizeCSSAssetsPlugin({
             cssProcessorOptions: {

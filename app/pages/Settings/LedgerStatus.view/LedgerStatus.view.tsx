@@ -14,8 +14,8 @@ import {
 } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import { getPercentSynced } from '../../../utils/getPercentSynced';
 import { LedgerStatusProps } from './LedgerStatus';
+import { getPercentSynced } from '../../../utils/getPercentSynced';
 
 const LedgerStatus: FC<LedgerStatusProps> = ({
   offlineModeEnabled,

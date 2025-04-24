@@ -4,9 +4,9 @@ import type { FC } from 'react';
 import { Box, Breadcrumbs, Container, Link, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
+import { TermsOfUseViewProps } from './TermsOfUse';
 import { TermsOfUse } from '../../../components';
 import type { Theme } from '../../../theme';
-import { TermsOfUseViewProps } from './TermsOfUse';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

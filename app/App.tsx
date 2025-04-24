@@ -18,7 +18,6 @@ import { setTheme } from './theme';
 import { SelectedAccount } from './types';
 import * as localStore from './utils/LocalStore';
 
-
 const App: FC = () => {
   const [theme, setThemeReact] = useState(
     setTheme({
@@ -55,7 +54,7 @@ const App: FC = () => {
     try {
       const encryptedPassphrase = localStore.getEncryptedPassphrase();
       initialize(encryptedPassphrase);
-    } catch (err) {
+    } catch {
       initialize(undefined);
     }
   }, []);

@@ -7,11 +7,11 @@ import { Provider } from 'react-redux';
 import '../../../testUtils/i18nForTests';
 import { createStore } from 'redux';
 
+import { SendMob } from './SendMob.view';
 import { TOKENS } from '../../../constants/tokens';
 import { initialReduxStoreState, reducer } from '../../../redux/reducers/reducers';
 import type { Contact } from '../../../types/Contact';
 import type { SelectedAccount } from '../../../types/SelectedAccount';
-import { SendMob } from './SendMob.view';
 
 jest.setTimeout(30000);
 

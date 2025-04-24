@@ -3,6 +3,7 @@ import type { FC } from 'react';
 
 import { Box, makeStyles } from '@material-ui/core';
 
+import { ShortCodeProps } from './ShortCode';
 import {
   LUCKY_ARRAY_INDEX,
   LUCKY_ARRAY_END_INDEX,
@@ -11,7 +12,6 @@ import {
 } from '../../constants/indicies';
 import { Theme } from '../../theme';
 import { isStringNumber } from '../../utils/isStringNumber';
-import { ShortCodeProps } from './ShortCode';
 
 const useStyles = makeStyles((theme: Theme) => ({
   lastLine: {

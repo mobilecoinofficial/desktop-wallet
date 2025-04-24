@@ -16,6 +16,7 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
+import { ChangePinViewProps } from './ChangePin';
 import { SubmitButton, MOBNumberFormat, SavedPasswordsModal } from '../../../components';
 import { MOBIcon } from '../../../components/icons';
 import { PIN_MIN_SIZE } from '../../../constants/codes';
@@ -23,7 +24,6 @@ import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import type { Theme } from '../../../theme';
 import { convertPicoMobStringToMob } from '../../../utils/convertMob';
 import { isValidPin } from '../../../utils/isValidPin';
-import { ChangePinViewProps } from './ChangePin';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

@@ -5,8 +5,8 @@ import { Provider } from 'react-redux';
 import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
 
-import { store } from '../../../redux/store';
 import { BalanceIndicator } from './BalanceIndicator.view';
+import { store } from '../../../redux/store';
 
 const MOCK_BALANCE = '10000000000000';
 
@@ -50,6 +50,6 @@ describe('BalanceIndicator', () => {
       </Provider>
     );
 
-    expect(screen.queryByTestId('balance-sync-message')).not.toBeNull();
+    expect(screen.getByTestId('balance-sync-message')).not.toBeNull();
   });
 });

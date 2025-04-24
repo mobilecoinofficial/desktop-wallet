@@ -11,7 +11,7 @@ export const isValidMnemonicOrHexFormat = (st: string | undefined): boolean =>
 export const convertMnemonicOrHexToEntropy = (st: string): string => {
   try {
     return isHex64(st) ? st : bip39.mnemonicToEntropy(st);
-  } catch (e) {
+  } catch {
     throw new Error('Not a mnemonic or hex');
   }
 };
@@ -24,7 +24,7 @@ export const isValidMnemonicOrHexValue = (st: string | undefined): boolean => {
   try {
     convertMnemonicOrHexToEntropy(st);
     return true;
-  } catch (e) {
+  } catch {
     return false;
   }
 };

@@ -28,9 +28,9 @@ describe('RetrieveEntropyView', () => {
       selector: 'input',
     })) as HTMLInputElement;
     const submitButton = await screen.findByRole('button', { name: 'Retrieve Entropy' });
-    await waitFor(() => userEvent.type(passwordField, 'password'));
-    await waitFor(() => userEvent.click(submitButton));
-    expect(onClickRetrieveEntropy).toHaveBeenCalled();
+    await userEvent.type(passwordField, 'password');
+    await userEvent.click(submitButton);
+    await waitFor(() => expect(onClickRetrieveEntropy).toHaveBeenCalled());
   });
 
   test('shows entropy', async () => {

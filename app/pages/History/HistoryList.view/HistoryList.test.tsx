@@ -5,10 +5,10 @@ import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 
+import { HistoryList } from './HistoryList.view';
 import { store } from '../../../redux/store';
 import type { TransactionLog } from '../../../types/TransactionLog.d';
 import '../../../testUtils/i18nForTests';
-import { HistoryList } from './HistoryList.view';
 
 describe('History list', () => {
   const testTransactionLogs = [
@@ -87,7 +87,7 @@ describe('History list', () => {
     expect(container.innerHTML.includes('+0.000031415926')).toBeTruthy();
   });
 
-  test('tab selection changes as it should', () => {
+  test('tab selection changes as it should', async () => {
     let tabIndex = 0;
 
     const setSelectedTabIndex = (value: number) => {
@@ -111,13 +111,13 @@ describe('History list', () => {
     const showSent = container.querySelector('[id="show-sent"]') as HTMLInputElement;
     const showReceived = container.querySelector('[id="show-received"]') as HTMLInputElement;
 
-    userEvent.click(showSent);
+    await userEvent.click(showSent);
     expect(tabIndex).toBe(1);
 
-    userEvent.click(showReceived);
+    await userEvent.click(showReceived);
     expect(tabIndex).toBe(2);
 
-    userEvent.click(showAll);
+    await userEvent.click(showAll);
     expect(tabIndex).toBe(0);
   });
 });

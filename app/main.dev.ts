@@ -229,11 +229,10 @@ const createWindow = async () => {
     return false;
   });
 
-
   if (process.env.START_HOT) {
     mainWindow.loadURL('http://localhost:1212/dist/');
   } else {
-    //mainWindow.loadFile('dist/index.html');
+    // mainWindow.loadFile('dist/index.html');
     mainWindow.loadURL(`file://${__dirname}/app.html`);
   }
 

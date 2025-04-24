@@ -68,7 +68,7 @@ export const HistoryPage: FC = (): JSX.Element => {
                 txoId: confirmation.txoIdHex,
               });
               results[confirmation.txoIdHex] = result.validated;
-            } catch (err) {
+            } catch {
               results[confirmation.txoIdHex] = false;
             }
           })

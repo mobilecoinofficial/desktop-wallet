@@ -15,13 +15,13 @@ import { TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
+import type { ImportAccountViewProps } from './ImportAccount.d';
 import { SubmitButton } from '../../../components';
 import {
   isValidMnemonicOrHexFormat,
   isValidMnemonicOrHexValue,
 } from '../../../utils/bip39Functions';
 import { ToggleFogInput } from '../CreateAccount.view/CreateAccount.view';
-import type { ImportAccountViewProps } from './ImportAccount.d';
 
 interface ImportAccountFormValues {
   accountName: string;

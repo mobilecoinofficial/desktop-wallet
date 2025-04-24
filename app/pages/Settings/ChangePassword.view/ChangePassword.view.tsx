@@ -16,10 +16,10 @@ import { Checkbox, TextField } from 'formik-material-ui';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 
+import { ChangePasswordViewProps } from './ChangePassword';
 import { SubmitButton, SavedPasswordsModal } from '../../../components';
 import { PASSWORD_MIN_SIZE, PASSWORD_MAX_SIZE } from '../../../constants/codes';
 import type { Theme } from '../../../theme';
-import { ChangePasswordViewProps } from './ChangePassword';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

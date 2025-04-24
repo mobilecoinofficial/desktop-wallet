@@ -16,11 +16,11 @@ import ErrorIcon from '@material-ui/icons/Error';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import { useTranslation } from 'react-i18next';
 
+import type { TransactionDetailsViewProps } from './TransactionDetails.d';
 import { ShortCode, SubmitButton } from '../../../components';
 import { TransactionInfoLabel } from '../../../components/TransactionInfoLabel';
 import { TOKENS } from '../../../constants/tokens';
 import type { Theme } from '../../../theme';
-import type { TransactionDetailsViewProps } from './TransactionDetails.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {

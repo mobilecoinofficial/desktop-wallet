@@ -18,13 +18,13 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import SyncIcon from '@material-ui/icons/Sync';
 import { useTranslation } from 'react-i18next';
 
+import { BalanceIndicatorProps } from './BalanceIndicator';
 import { MOBNumberFormat } from '../../../components';
 import { GOLD_LIGHT } from '../../../constants/colors';
 import { TOKENS } from '../../../constants/tokens';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
 import { setTokenId } from '../../../redux/services';
 import { Theme } from '../../../theme';
-import { BalanceIndicatorProps } from './BalanceIndicator';
 
 const useStyles = makeStyles((theme: Theme) => ({
   formControlLabel: {

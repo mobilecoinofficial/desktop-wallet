@@ -2,8 +2,8 @@ import React, { ComponentProps } from 'react';
 
 import { Story } from '@storybook/react';
 
-import { TransactionLog } from '../../../types/TransactionLog';
 import { TransactionDetails } from './TransactionDetails.view';
+import { TransactionLog } from '../../../types/TransactionLog';
 
 export default {
   component: TransactionDetails,

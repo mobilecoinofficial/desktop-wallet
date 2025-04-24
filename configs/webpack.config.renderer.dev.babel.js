@@ -6,18 +6,16 @@
  * https://webpack.js.org/concepts/hot-module-replacement/
  */
 
-import { spawn, execSync } from 'child_process';
-import fs from 'fs';
+import { spawn } from 'child_process';
 import path from 'path';
 
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
-import chalk from 'chalk';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 
-import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 import baseConfig from './webpack.config.base';
+import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 
 // When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
 // at the dev webpack config is not accidentally run in a production environment
@@ -41,7 +39,7 @@ export default merge(baseConfig, {
     `webpack-dev-server/client?http://localhost:${port}/`,
     'webpack/hot/dev-server',
     './app/index.tsx',
-    //require.resolve('../app/index.tsx'),
+    // require.resolve('../app/index.tsx'),
   ],
 
   output: {

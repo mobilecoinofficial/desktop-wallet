@@ -150,7 +150,7 @@ export const SendReceivePage: FC = (): JSX.Element => {
       enqueueSnackbar(`${t('sendSuccess')} ${totalValueConfirmationAsMobComma} ${token.name}!`, {
         variant: 'success',
       });
-    } catch (err) {
+    } catch {
       enqueueSnackbar('Error submitting transaction', { variant: 'error' });
     }
     resetForm();

@@ -5,9 +5,9 @@ import { Box, Button, IconButton, makeStyles, TextField, Typography } from '@mat
 import CloseIcon from '@material-ui/icons/Close';
 import { useTranslation } from 'react-i18next';
 
+import { CrashShowLogProps } from './CrashShowLog.d';
 import { MOBIcon } from '../../../components/icons';
 import type { Theme } from '../../../theme';
-import { CrashShowLogProps } from './CrashShowLog.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   closeButton: {

@@ -6,9 +6,9 @@ import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 
+import { BuildGiftPanel } from './BuildGiftPanel.view';
 import { store } from '../../../redux/store';
 import '../../../testUtils/i18nForTests';
-import { BuildGiftPanel } from './BuildGiftPanel.view';
 
 const FEE_PMOB = '3000000000';
 

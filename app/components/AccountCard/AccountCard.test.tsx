@@ -7,8 +7,8 @@ import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 
-import { store } from '../../redux/store';
 import { AccountCard } from './AccountCard.view';
+import { store } from '../../redux/store';
 import '@testing-library/jest-dom/extend-expect';
 import '../../testUtils/i18nForTests';
 
@@ -56,9 +56,9 @@ describe('AccountCard', () => {
   test('renders long code with tooltip by default and toggles correctly', async () => {
     setupComponent();
 
-    expect(screen.queryByTestId('account-card-center')).not.toBeNull();
-    expect(screen.queryByTestId('long-code-code')).not.toBeNull();
-    expect(screen.queryByTestId('account-card-tooltip')).toHaveAttribute(
+    expect(screen.getByTestId('account-card-center')).not.toBeNull();
+    expect(screen.getByTestId('long-code-code')).not.toBeNull();
+    expect(screen.getByTestId('account-card-tooltip')).toHaveAttribute(
       'title',
       'Click to copy to clipboard'
     );
@@ -68,7 +68,7 @@ describe('AccountCard', () => {
 
     expect(screen.queryByTestId('long-code-code')).toBeNull();
     expect(screen.queryByTestId('account-card-tooltip')).toBeNull();
-    expect(screen.queryByTestId('account-card-qr-code')).not.toBeNull();
+    expect(screen.getByTestId('account-card-qr-code')).not.toBeNull();
   });
 
   test('renders name correctly', () => {
@@ -76,14 +76,14 @@ describe('AccountCard', () => {
     expect(screen.getByTestId('account-card-name').textContent).toEqual('FK OWN');
   });
 
-  test('renders correct toggle tooltip', () => {
+  test('renders correct toggle tooltip', async () => {
     setupComponent();
 
     const toggle = screen.getByTestId('account-card-toggle');
 
     expect(toggle).toHaveAttribute('title', 'Show MOB URL QR Code');
 
-    userEvent.click(screen.getByTestId('account-card-toggle'));
+    await userEvent.click(screen.getByTestId('account-card-toggle'));
 
     expect(toggle).toHaveAttribute('title', 'Show account address code');
   });

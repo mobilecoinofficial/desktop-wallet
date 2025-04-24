@@ -5,8 +5,8 @@ import '@testing-library/jest-dom/extend-expect';
 import '../../../../testUtils/i18nForTests';
 import { MemoryRouter } from 'react-router-dom';
 
-import { KeyIcon, LockIcon, ToolsIcon } from '../../../../components/icons';
 import { NavBar } from './NavBar.view';
+import { KeyIcon, LockIcon, ToolsIcon } from '../../../../components/icons';
 
 const sections = [
   {

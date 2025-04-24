@@ -4,10 +4,10 @@ import type { FC } from 'react';
 import { Box, Container, makeStyles } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 
+import type { DashboardPageProps } from './DashboardPage.d';
 import { AccountCard } from '../../../components';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { CloseWalletModal } from '../CloseWalletModal.view/CloseWalletModal.view';
-import type { DashboardPageProps } from './DashboardPage.d';
 
 const useStyles = makeStyles(() => ({
   root: {

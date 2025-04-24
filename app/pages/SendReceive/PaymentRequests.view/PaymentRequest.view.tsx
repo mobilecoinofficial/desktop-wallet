@@ -19,6 +19,7 @@ import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 
+import { PaymentRequestProps } from './PaymentRequest.d';
 import { SubmitButton, MOBNumberFormat } from '../../../components';
 import { LongCode } from '../../../components/LongCode';
 import { useCurrentToken } from '../../../hooks/useCurrentToken';
@@ -26,7 +27,6 @@ import { checkB58PaymentRequest } from '../../../services/checkB58PaymentRequest
 import type { Theme } from '../../../theme';
 import type { StringB58 } from '../../../types/SpecialStrings.d';
 import { errorToString } from '../../../utils/errorHandler';
-import { PaymentRequestProps } from './PaymentRequest.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

@@ -4,8 +4,8 @@ import type { FC } from 'react';
 import { Card, CardActionArea, CardContent, Grid, makeStyles, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
-import type { Theme } from '../../../theme';
 import { SettingsOptionsItemProps } from './SettingsOptionsItem';
+import type { Theme } from '../../../theme';
 
 const useStyles = makeStyles((theme: Theme) => ({
   card: {

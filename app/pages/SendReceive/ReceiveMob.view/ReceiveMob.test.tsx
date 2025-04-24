@@ -5,10 +5,10 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import { Provider } from 'react-redux';
 
+import { ReceiveMob } from './ReceiveMob.view';
 import { store } from '../../../redux/store';
 import '../../../testUtils/i18nForTests';
 import type { SelectedAccount } from '../../../types/SelectedAccount.d';
-import { ReceiveMob } from './ReceiveMob.view';
 
 const SELECTED_ACCOUNT = {
   account: {
@@ -36,7 +36,7 @@ const SELECTED_ACCOUNT = {
   },
 } as SelectedAccount;
 
-test('Displays and hides contacts', () => {
+test('Displays and hides contacts', async () => {
   const { container } = render(
     <Provider store={store}>
       <ReceiveMob
@@ -76,7 +76,7 @@ test('Displays and hides contacts', () => {
   expect(container?.parentElement?.innerHTML.includes('Foxtrot Golf')).toBeFalsy();
   expect(container?.parentElement?.innerHTML.includes('Kilo Lima')).toBeFalsy();
   expect(container?.parentElement?.innerHTML.includes('Sierra Tango')).toBeFalsy();
-  userEvent.click(contactsList);
+  await userEvent.click(contactsList);
   expect(container?.parentElement?.innerHTML.includes('Foxtrot Golf')).toBeTruthy();
   expect(container?.parentElement?.innerHTML.includes('Kilo Lima')).toBeTruthy();
   expect(container?.parentElement?.innerHTML.includes('Sierra Tango')).toBeTruthy();

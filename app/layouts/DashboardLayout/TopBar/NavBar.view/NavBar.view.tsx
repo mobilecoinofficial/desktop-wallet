@@ -5,8 +5,8 @@ import { Tab, Tabs } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { NavLink as RouterLink, matchPath, useLocation } from 'react-router-dom';
 
-import { BLUE_DARK, GREY_LIGHT } from '../../../../constants/colors';
 import { NavBarProps } from './NavBar';
+import { BLUE_DARK, GREY_LIGHT } from '../../../../constants/colors';
 
 const NavBar: FC<NavBarProps> = ({ sections }: NavBarProps) => {
   const location = useLocation();

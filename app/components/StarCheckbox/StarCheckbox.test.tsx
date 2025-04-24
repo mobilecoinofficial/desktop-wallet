@@ -9,21 +9,21 @@ import { StarCheckbox } from './StarCheckbox.view';
 const FORMIK = { field: { name: 'starcheckbox' } } as StarCheckboxProps;
 
 describe('StarCheckbox', () => {
-  test('renders to screen when called', () => {
+  test('renders to screen when called', async () => {
     const { container } = render(<StarCheckbox field={FORMIK.field} />);
     const scCheckBox = container.querySelector('[name="starcheckbox"]') as HTMLInputElement;
     expect(scCheckBox).not.toBeFalsy();
     expect(scCheckBox.checked).toBeFalsy();
     const originalContent = container.querySelector('[class="MuiIconButton-label"]')?.innerHTML;
-    userEvent.click(scCheckBox);
+    await userEvent.click(scCheckBox);
     const alternateContent = container.querySelector('[class="MuiIconButton-label"]')?.innerHTML;
     expect(scCheckBox.checked).toBeTruthy();
-    userEvent.click(scCheckBox);
+    await userEvent.click(scCheckBox);
     expect(container.querySelector('[class="MuiIconButton-label"]')?.innerHTML).toEqual(
       originalContent
     );
     expect(scCheckBox.checked).toBeFalsy();
-    userEvent.click(scCheckBox);
+    await userEvent.click(scCheckBox);
     expect(container.querySelector('[class="MuiIconButton-label"]')?.innerHTML).toEqual(
       alternateContent
     );

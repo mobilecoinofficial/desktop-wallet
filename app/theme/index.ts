@@ -7,9 +7,9 @@ import type {
 import type { Theme as MuiTheme } from '@material-ui/core/styles/createTheme';
 import type { Shadows as MuiShadows } from '@material-ui/core/styles/shadows';
 
+import typography from './typography';
 import { BLACK_LIGHT } from '../constants/colors';
 import { MOBILE_COIN_DARK_THEME, MOBILE_COIN_LIGHT_THEME } from '../constants/themes';
-import typography from './typography';
 
 interface TypeBackground extends MuiTypeBackground {
   dark: string;

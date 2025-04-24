@@ -6,8 +6,8 @@ import '@testing-library/jest-dom/extend-expect';
 import '../../../testUtils/i18nForTests';
 import { Provider } from 'react-redux';
 
-import { store } from '../../../redux/store';
 import { SetPinModal } from './SetPinModal.view';
+import { store } from '../../../redux/store';
 
 describe('SetPinModal', () => {
   const setPinMsg =
@@ -47,14 +47,14 @@ describe('SetPinModal', () => {
     }) as HTMLInputElement;
     const submitButton = screen.getByRole('button', { name: 'Set PIN' });
 
-    userEvent.type(newPinField, pin);
-    userEvent.type(confirmPinField, pin);
-    userEvent.type(pinThresholdField, pinThreshold);
-    await waitFor(() => {
-      userEvent.click(submitButton);
+    await userEvent.type(newPinField, pin);
+    await userEvent.type(confirmPinField, pin);
+    await userEvent.type(pinThresholdField, pinThreshold);
+    await waitFor(async () => {
+      await userEvent.click(submitButton);
     });
 
-    expect(handleOnClick).toBeCalled();
+    expect(handleOnClick).toHaveBeenCalled();
   });
 
   test('does not submit and throws error with invalid form data', async () => {
@@ -79,11 +79,11 @@ describe('SetPinModal', () => {
     }) as HTMLInputElement;
     const submitButton = screen.getByRole('button', { name: 'Set PIN' });
 
-    userEvent.type(newPinField, pin);
-    userEvent.type(confirmPinField, pin);
-    userEvent.type(pinThresholdField, pinThreshold);
-    await waitFor(() => {
-      userEvent.click(submitButton);
+    await userEvent.type(newPinField, pin);
+    await userEvent.type(confirmPinField, pin);
+    await userEvent.type(pinThresholdField, pinThreshold);
+    await waitFor(async () => {
+      await userEvent.click(submitButton);
     });
 
     expect(screen.getByText('PIN must be at least 6 characters long.')).toBeInTheDocument();

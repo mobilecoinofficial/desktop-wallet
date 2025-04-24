@@ -26,7 +26,7 @@ const ImportViewOnlyAccountView: FC = () => {
       await importViewOnlyAccount(parsedParams);
       dispatch(setLoadingAction(false));
       enqueueSnackbar('Account Imported', { variant: 'success' });
-    } catch (_) {
+    } catch {
       setError(
         'Something went wrong with the view only account import. Please check your request and try again. For more information see the docs at https://github.com/mobilecoinofficial/desktop-wallet#view-only-accounts'
       );

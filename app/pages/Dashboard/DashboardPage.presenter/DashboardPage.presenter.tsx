@@ -7,13 +7,13 @@ import { useSnackbar } from 'notistack';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
+import type { DashboardPageProps } from './DashboardPage.d';
 import routePaths from '../../../constants/routePaths';
 import { logger } from '../../../fullService/utils';
 import { ReduxStoreState } from '../../../redux/reducers/reducers';
 import { addAccount } from '../../../redux/services';
 import type { Theme } from '../../../theme';
 import { DashboardView } from '../DashboardPage.view/DashboardPage.view';
-import type { DashboardPageProps } from './DashboardPage.d';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {

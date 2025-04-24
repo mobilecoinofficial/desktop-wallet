@@ -9,6 +9,7 @@
 import { spawn, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 import chalk from 'chalk';
 import webpack from 'webpack';
@@ -16,6 +17,7 @@ import { merge } from 'webpack-merge';
 
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 import baseConfig from './webpack.config.base';
+
 
 // When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
 // at the dev webpack config is not accidentally run in a production environment
@@ -196,8 +198,13 @@ export default merge(baseConfig, {
       },
     ],
   },
+  // externals: {
+  //   react: 'React',
+  //   'react-dom': 'ReactDOM',
+  // },
   resolve: {
     alias: {
+      react: path.resolve(__dirname, '..', 'node_modules', 'react'),
       'react-dom': '@hot-loader/react-dom',
     },
   },
@@ -235,6 +242,11 @@ export default merge(baseConfig, {
     new webpack.LoaderOptionsPlugin({
       debug: true,
     }),
+
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../app/app.html'), // your existing HTML
+      filename: 'index.html', // this is what WDS will serve at `/`
+    }),
   ],
 
   node: {
@@ -259,10 +271,21 @@ export default merge(baseConfig, {
       },
     },
     hot: true,
-    headers: { 'Access-Control-Allow-Origin': '*' },
-    static: {
-      directory: path.join(__dirname, 'dist'),
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept'
     },
+    static: [
+      {
+        directory: path.join(__dirname, 'dist'),
+        publicPath: '/dist/',
+      },
+      {
+        directory: path.join(__dirname, '..', 'dll'),
+        publicPath: '/dll/',
+      },
+    ],
     devMiddleware: {
       publicPath,
     },

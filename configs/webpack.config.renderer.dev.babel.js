@@ -18,6 +18,7 @@ import { merge } from 'webpack-merge';
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 import baseConfig from './webpack.config.base';
 
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 // When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
 // at the dev webpack config is not accidentally run in a production environment
@@ -27,21 +28,6 @@ if (process.env.NODE_ENV === 'production') {
 
 const port = process.env.PORT || 1212;
 const publicPath = `http://localhost:${port}/dist`;
-const dll = path.join(__dirname, '..', 'dll');
-const manifest = path.resolve(dll, 'renderer.json');
-const requiredByDLLConfig = module.parent.filename.includes('webpack.config.renderer.dev.dll');
-
-/**
- * Warn if the DLL is not built
- */
-if (!requiredByDLLConfig && !(fs.existsSync(dll) && fs.existsSync(manifest))) {
-  console.log(
-    chalk.black.bgYellow.bold(
-      'The DLL files are missing. Sit back while we build them for you with "yarn build-dll"'
-    )
-  );
-  execSync('yarn build-dll');
-}
 
 export default merge(baseConfig, {
   devtool: 'inline-source-map',
@@ -209,13 +195,6 @@ export default merge(baseConfig, {
     },
   },
   plugins: [
-    requiredByDLLConfig
-      ? null
-      : new webpack.DllReferencePlugin({
-          context: path.join(__dirname, '..', 'dll'),
-          manifest: require(manifest),
-          sourceType: 'var',
-        }),
 
     new webpack.HotModuleReplacementPlugin({
       multiStep: true,
@@ -247,6 +226,7 @@ export default merge(baseConfig, {
       template: path.resolve(__dirname, '../app/app.html'), // your existing HTML
       filename: 'index.html', // this is what WDS will serve at `/`
     }),
+    new BundleAnalyzerPlugin({ analyzerMode: 'json' }),
   ],
 
   node: {
@@ -256,6 +236,13 @@ export default merge(baseConfig, {
 
   infrastructureLogging: {
     level: 'error', // or 'warn', 'info', 'none', etc.
+  },
+
+  cache: {
+    type: 'filesystem',
+    buildDependencies: {
+      config: [__filename],
+    },
   },
 
   devServer: {
@@ -280,11 +267,7 @@ export default merge(baseConfig, {
       {
         directory: path.join(__dirname, 'dist'),
         publicPath: '/dist/',
-      },
-      {
-        directory: path.join(__dirname, '..', 'dll'),
-        publicPath: '/dll/',
-      },
+      }
     ],
     devMiddleware: {
       publicPath,

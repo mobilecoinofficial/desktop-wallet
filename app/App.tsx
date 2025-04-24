@@ -19,6 +19,7 @@ import { setTheme } from './theme';
 import { SelectedAccount } from './types';
 import * as localStore from './utils/LocalStore';
 
+
 const App: FC = () => {
   const [theme, setThemeReact] = useState(
     setTheme({

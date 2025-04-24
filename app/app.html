@@ -18,6 +18,8 @@
                               'sha256-1IUHPNXweUJ6kDru06FXRLzQKpg7vV9HfCeHGSX1D7A='
                               'sha256-G+65ZEto08yNK6BZUBlB9ImPXm3T7nRPSBJNonzxqZA='
                               'sha256-6cUhHHHtELVX3jTvB1oDuB/8twozeyvNyR3nMmUWZk8='
+                              'sha256-lGcyD6RN24k1AkpRSp/d69DWbE920Sj1ZbGtnCfcwRA='
+                              'sha256-Z/0CBcQfn0yDHw3Muq5WZk0wzTjRtFmHq5XkhEksSXM='
                               'sha256-f7gMtshsVI7mmPkQlBpl9zRvFqFSagSGF35HpPJWVN0=';
                    style-src 'self'
                              http://localhost:1212/
@@ -51,16 +53,6 @@
         const scripts = [];
         const port = process.env.PORT || 1212;
 
-        if (process.env.NODE_ENV === 'development') {
-          // Dynamically insert the DLL script in development env in the
-          // renderer process
-          if (process.env.START_HOT) {
-            scripts.push(`http://localhost:${port}/dll/renderer.dev.dll.js`);
-          } else {
-            scripts.push('../dll/renderer.dev.dll.js');
-          }
-        }
-
         if (process.env.START_HOT) {
           // Dynamically insert the bundled app script in the renderer process
           scripts.push(`http://localhost:${port}/dist/renderer.dev.js`);
@@ -69,9 +61,15 @@
         }
 
         if (scripts.length) {
-          document.write(
-            scripts.map((script) => `<script defer src="${script}"><\/script>`).join('')
-          );
+          // document.write(
+          //   scripts.map((script) => `<script defer src="${script}"><\/script>`).join('')
+          // );
+          scripts.forEach((script) => {
+            const scriptElement = document.createElement('script');
+            scriptElement.src = script;
+            scriptElement.defer = true;
+            document.head.appendChild(scriptElement);
+          });
         }
       }
     </script>

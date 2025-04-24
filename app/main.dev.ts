@@ -195,6 +195,10 @@ const createWindow = async () => {
     width: 700,
   });
 
+  mainWindow.webContents.on('did-navigate', () => {
+    console.log('[Electron] Renderer navigated (HMR might have triggered a reload)');
+  });
+
   // open links in system default browser instead of new electron window
   mainWindow.webContents.setWindowOpenHandler(({ url }: { url: string }) => {
     shell.openExternal(url);

@@ -277,7 +277,7 @@ export default merge(baseConfig, {
       verbose: true,
       disableDotRule: false,
     },
-    onBeforeSetupMiddleware() {
+    setupMiddlewares(middlewares) {
       if (process.env.START_HOT) {
         console.log('Starting Main Process...');
         spawn('npm', ['run', 'start-main-dev'], {
@@ -288,6 +288,7 @@ export default merge(baseConfig, {
           .on('close', (code) => process.exit(code))
           .on('error', (spawnError) => console.error(spawnError));
       }
+      return middlewares;
     },
   },
 });

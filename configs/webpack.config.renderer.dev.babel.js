@@ -9,16 +9,15 @@
 import { spawn, execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import chalk from 'chalk';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
 import baseConfig from './webpack.config.base';
-
-import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 
 // When an ESLint server is running, we can't set the NODE_ENV so we'll check if it's
 // at the dev webpack config is not accidentally run in a production environment
@@ -39,10 +38,10 @@ export default merge(baseConfig, {
   entry: [
     'core-js',
     'regenerator-runtime/runtime',
-    ...(process.env.PLAIN_HMR ? [] : ['react-hot-loader/patch']),
     `webpack-dev-server/client?http://localhost:${port}/`,
-    'webpack/hot/only-dev-server',
-    require.resolve('../app/index.tsx'),
+    'webpack/hot/dev-server',
+    './app/index.tsx',
+    //require.resolve('../app/index.tsx'),
   ],
 
   output: {
@@ -191,13 +190,16 @@ export default merge(baseConfig, {
   resolve: {
     alias: {
       react: path.resolve(__dirname, '..', 'node_modules', 'react'),
-      'react-dom': '@hot-loader/react-dom',
+      'react-dom': path.resolve(__dirname, '..', 'node_modules', 'react-dom'),
     },
   },
   plugins: [
-
     new webpack.HotModuleReplacementPlugin({
-      multiStep: true,
+      // multiStep: true,
+    }),
+
+    new ReactRefreshWebpackPlugin({
+      overlay: false,
     }),
 
     new webpack.NoEmitOnErrorsPlugin(),
@@ -225,8 +227,8 @@ export default merge(baseConfig, {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../app/app.html'), // your existing HTML
       filename: 'index.html', // this is what WDS will serve at `/`
+      inject: true,
     }),
-    new BundleAnalyzerPlugin({ analyzerMode: 'json' }),
   ],
 
   node: {
@@ -235,7 +237,7 @@ export default merge(baseConfig, {
   },
 
   infrastructureLogging: {
-    level: 'error', // or 'warn', 'info', 'none', etc.
+    level: 'info', // or 'warn', 'info', 'none', etc.
   },
 
   cache: {
@@ -250,6 +252,10 @@ export default merge(baseConfig, {
     compress: true,
     client: {
       logging: 'error',
+      overlay: {
+        errors: false,
+        warnings: false,
+      },
       webSocketURL: {
         hostname: 'localhost',
         port: 1212,
@@ -261,13 +267,13 @@ export default merge(baseConfig, {
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
-      'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept'
+      'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept',
     },
     static: [
       {
         directory: path.join(__dirname, 'dist'),
         publicPath: '/dist/',
-      }
+      },
     ],
     devMiddleware: {
       publicPath,

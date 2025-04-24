@@ -8,7 +8,9 @@ const productionPlugins = [
   require('babel-plugin-dev-expression'),
   require('babel-plugin-transform-react-remove-prop-types'),
 ];
-const developmentPlugins = [require('react-hot-loader/babel')];
+const developmentPlugins = [
+  require('react-refresh/babel'),
+];
 
 module.exports = (api) => {
   // See docs about api at https://babeljs.io/docs/en/config-files#apicache

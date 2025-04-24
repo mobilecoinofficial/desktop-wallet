@@ -4,7 +4,6 @@ import type { FC } from 'react';
 import { ThemeProvider } from '@material-ui/core';
 import { ipcRenderer } from 'electron';
 import { SnackbarProvider } from 'notistack';
-import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -110,4 +109,4 @@ const App: FC = () => {
   );
 };
 
-export default hot(App);
+export default App;

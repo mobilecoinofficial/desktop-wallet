@@ -1,34 +1,30 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-import React, { Fragment } from 'react';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-import { ipcRenderer } from 'electron';
-import { render } from 'react-dom';
-import { AppContainer as ReactHotAppContainer } from 'react-hot-loader';
-
+import App from './App';
 import i18n from './i18n';
+import { ipcRenderer } from 'electron';
 
 import './app.global.css';
 
-const AppContainer = process.env.PLAIN_HMR ? Fragment : ReactHotAppContainer;
-
+// i18n wiring
 ipcRenderer.sendSync('get-initial-translations');
-
 ipcRenderer.on('language-changed', (_, message) => {
   if (!i18n.hasResourceBundle(message.language, message.namespace)) {
     i18n.addResourceBundle(message.language, message.namespace, message.resource);
   }
-
   i18n.changeLanguage(message.language);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // eslint-disable-next-line global-require, import/extensions
-  const App = require('./App.tsx').default;
+  const root = document.getElementById('root');
+  ReactDOM.render(<App />, root);
 
-  render(
-    <AppContainer>
-      <App />
-    </AppContainer>,
-    document.getElementById('root')
-  );
+  // HMR hook (this is **critical** for react-refresh to fully apply)
+  if (module.hot) {
+    module.hot.accept('./App', () => {
+      const NextApp = require('./App').default;
+      ReactDOM.render(<NextApp />, root);
+    });
+  }
 });

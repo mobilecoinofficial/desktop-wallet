@@ -286,14 +286,18 @@ const createWindow = async () => {
     });
   });
 
-  if (!i18n.hasResourceBundle(config.fallbackLng, config.namespace)) {
-    // TODO
-    // i18n.addResourceBundle(
-    //   config.fallbackLng,
-    //   config.namespace,
-    //   i18n.getResourceBundle(config.fallbackLng, config.namespace)
-    // );
-  }
+  // if (!i18n.hasResourceBundle(config.fallbackLng, config.namespace)) {
+  //   // TODO
+  //   console.log('ADDING RESOURCE BUNDLE');
+  //   console.log(config.fallbackLng);
+  //   console.log(config.namespace);
+  //   console.log(i18n.getResourceBundle(config.fallbackLng, config.namespace));
+  //   i18n.addResourceBundle(
+  //     config.fallbackLng,
+  //     config.namespace,
+  //     i18n.getResourceBundle(config.fallbackLng, config.namespace)
+  //   );
+  // }
 
   menuFactoryService.buildMenu(app, mainWindow, i18n);
 
@@ -423,7 +427,7 @@ ipcMain.on('reset-wallet-db', () => {
   const walletDbPath = localStore.getFullServiceDbPath();
   console.log('KILLING SERVICE');
   exec('pkill -f full-service');
-  fs.rmSync(walletDbPath, { recursive: true, force: true });
+  fs.rmSync(walletDbPath, { recursive: true });
   app.relaunch();
   app.exit();
 });
@@ -578,12 +582,11 @@ const shutDownFullService = () => {
 
 app.on('will-quit', shutDownFullService);
 
-// Filter the remote module - these are deprecated in newer Electron versions but kept for compatibility
+// Filter the remote module
 const allowedModules = new Set(['electron-log']);
 const allowedElectronModules = new Set(['app']);
 const allowedGlobals = new Set();
 
-// Use type assertions to handle deprecated events
 (app as any).on('remote-require', (event: Electron.Event, _webContents: any, moduleName: string) => {
   if (!allowedModules.has(moduleName)) {
     event.preventDefault();
@@ -627,6 +630,3 @@ app.on('web-contents-created', (_event, contents) => {
     }
   });
 });
-
-// This setting is no longer needed in newer Electron versions
-// app.allowRendererProcessReuse = true;

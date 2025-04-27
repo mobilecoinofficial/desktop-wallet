@@ -190,7 +190,8 @@ const createWindow = async () => {
             disableBlinkFeatures: 'Auxclick',
             nodeIntegration: false,
             nodeIntegrationInWorker: false,
-            preload: path.join(__dirname, 'dist/renderer.prod.js'),
+            preload: path.join(__dirname, 'dist/preload.js'),
+            //preload: path.join(__dirname, 'dist/renderer.prod.js'),
           },
     width: 700,
   });

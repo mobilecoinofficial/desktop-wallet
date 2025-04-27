@@ -11,6 +11,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import webpack from 'webpack';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { merge } from 'webpack-merge';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 import baseConfig from './webpack.config.base';
 import CheckNodeEnv from '../internals/scripts/CheckNodeEnv';
@@ -26,9 +27,11 @@ export default merge(baseConfig, {
 
   mode: 'production',
 
-  target: process.env.E2E_BUILD ? 'electron-renderer' : 'electron-preload',
+  //target: process.env.E2E_BUILD ? 'electron-renderer' : 'electron-preload',
+  target: 'electron-renderer',
 
   entry: ['core-js', 'regenerator-runtime/runtime', path.join(__dirname, '..', 'app/index.tsx')],
+
 
   output: {
     path: path.join(__dirname, '..', 'app/dist'),
@@ -178,26 +181,26 @@ export default merge(baseConfig, {
     ],
   },
 
-  optimization: {
-    minimizer: process.env.E2E_BUILD
-      ? []
-      : [
-          new TerserPlugin({
-            parallel: true,
-            terserOptions: {
-              ecma: 2020,
-            },
-          }),
-          new OptimizeCSSAssetsPlugin({
-            cssProcessorOptions: {
-              map: {
-                inline: false,
-                annotation: true,
-              },
-            },
-          }),
-        ],
-  },
+  // optimization: {
+  //   minimizer: process.env.E2E_BUILD
+  //     ? []
+  //     : [
+  //         new TerserPlugin({
+  //           parallel: true,
+  //           terserOptions: {
+  //             ecma: 2020,
+  //           },
+  //         }),
+  //         new OptimizeCSSAssetsPlugin({
+  //           cssProcessorOptions: {
+  //             map: {
+  //               inline: false,
+  //               annotation: true,
+  //             },
+  //           },
+  //         }),
+  //       ],
+  // },
 
   plugins: [
     /**
@@ -218,6 +221,13 @@ export default merge(baseConfig, {
     new MiniCssExtractPlugin({
       filename: 'style.css',
     }),
+
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../app/app.html'), // your existing HTML
+      filename: 'index.html', // this is what WDS will serve at `/`
+      inject: true,
+    }),
+
 
     new BundleAnalyzerPlugin({
       analyzerMode: process.env.OPEN_ANALYZER === 'true' ? 'server' : 'disabled',

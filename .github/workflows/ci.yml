@@ -115,6 +115,16 @@ jobs:
           sed -i.bkp -e's/new AppUpdater();//g' app/main.dev.ts
           yarn postinstall
 
+      - name: Build app
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+
+      - name: Test app CI
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: test-ci
+
       - name: Build and package app
         uses: borales/actions-yarn@v4
         with:
